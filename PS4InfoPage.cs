@@ -82,7 +82,7 @@ namespace Dobby {
             this.MainBox.Controls.Add(this.ExitBtn);
             this.MainBox.Controls.Add(this.MinimizeBtn);
             this.MainBox.Controls.Add(this.MainLabel);
-            this.MainBox.Location = new System.Drawing.Point(2, 14);
+            this.MainBox.Location = new System.Drawing.Point(2, 0);
             this.MainBox.Name = "MainBox";
             this.MainBox.Size = new System.Drawing.Size(317, 32);
             this.MainBox.TabIndex = 5;
@@ -96,7 +96,7 @@ namespace Dobby {
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(-3, 256);
+            this.CreditsBtn.Location = new System.Drawing.Point(-3, 240);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
@@ -116,7 +116,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(-3, 280);
+            this.BackBtn.Location = new System.Drawing.Point(-3, 264);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(60, 23);
             this.BackBtn.TabIndex = 13;
@@ -131,7 +131,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(3, 301);
+            this.Info.Location = new System.Drawing.Point(7, 286);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
@@ -141,7 +141,7 @@ namespace Dobby {
             // 
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold);
             this.label1.ForeColor = System.Drawing.SystemColors.Control;
-            this.label1.Location = new System.Drawing.Point(-1, 49);
+            this.label1.Location = new System.Drawing.Point(-1, 33);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(313, 18);
             this.label1.TabIndex = 29;
@@ -151,7 +151,7 @@ namespace Dobby {
             // 
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold);
             this.label2.ForeColor = System.Drawing.SystemColors.Control;
-            this.label2.Location = new System.Drawing.Point(1, 71);
+            this.label2.Location = new System.Drawing.Point(1, 55);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(274, 172);
             this.label2.TabIndex = 30;
@@ -160,7 +160,7 @@ namespace Dobby {
             // label3
             // 
             this.label3.ForeColor = System.Drawing.SystemColors.Control;
-            this.label3.Location = new System.Drawing.Point(-6, 238);
+            this.label3.Location = new System.Drawing.Point(-6, 222);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(319, 17);
             this.label3.TabIndex = 31;
@@ -171,7 +171,7 @@ namespace Dobby {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 319);
+            this.ClientSize = new System.Drawing.Size(320, 306);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Info);

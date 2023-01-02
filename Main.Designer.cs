@@ -67,7 +67,7 @@ namespace Dobby
             this.MainBox.Controls.Add(this.ExitBtn);
             this.MainBox.Controls.Add(this.MinimizeBtn);
             this.MainBox.Controls.Add(this.MainLabel);
-            this.MainBox.Location = new System.Drawing.Point(2, 14);
+            this.MainBox.Location = new System.Drawing.Point(2, 0);
             this.MainBox.Name = "MainBox";
             this.MainBox.Size = new System.Drawing.Size(317, 32);
             this.MainBox.TabIndex = 5;
@@ -132,7 +132,7 @@ namespace Dobby
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(2, 197);
+            this.Info.Location = new System.Drawing.Point(9, 178);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
@@ -149,7 +149,7 @@ namespace Dobby
             this.PS4DebugPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PS4DebugPageBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.PS4DebugPageBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.PS4DebugPageBtn.Location = new System.Drawing.Point(-5, 52);
+            this.PS4DebugPageBtn.Location = new System.Drawing.Point(-5, 33);
             this.PS4DebugPageBtn.Name = "PS4DebugPageBtn";
             this.PS4DebugPageBtn.Size = new System.Drawing.Size(262, 23);
             this.PS4DebugPageBtn.TabIndex = 20;
@@ -168,7 +168,7 @@ namespace Dobby
             this.EbootPatchPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EbootPatchPageBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.EbootPatchPageBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.EbootPatchPageBtn.Location = new System.Drawing.Point(-5, 81);
+            this.EbootPatchPageBtn.Location = new System.Drawing.Point(-5, 62);
             this.EbootPatchPageBtn.Name = "EbootPatchPageBtn";
             this.EbootPatchPageBtn.Size = new System.Drawing.Size(312, 23);
             this.EbootPatchPageBtn.TabIndex = 25;
@@ -187,7 +187,7 @@ namespace Dobby
             this.MiscPatchesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MiscPatchesBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Strikeout))));
             this.MiscPatchesBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MiscPatchesBtn.Location = new System.Drawing.Point(-5, 110);
+            this.MiscPatchesBtn.Location = new System.Drawing.Point(-5, 91);
             this.MiscPatchesBtn.Name = "MiscPatchesBtn";
             this.MiscPatchesBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.MiscPatchesBtn.Size = new System.Drawing.Size(202, 23);
@@ -207,7 +207,7 @@ namespace Dobby
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(-5, 173);
+            this.CreditsBtn.Location = new System.Drawing.Point(-5, 154);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
@@ -215,7 +215,7 @@ namespace Dobby
             this.CreditsBtn.Text = "Credits...";
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
-            this.CreditsBtn.Click += new System.EventHandler(CreditsBtn_Click);
+            this.CreditsBtn.Click += new System.EventHandler(this.CreditsBtn_Click);
             this.CreditsBtn.MouseEnter += new System.EventHandler(this.CreditsBtnMH);
             this.CreditsBtn.MouseLeave += new System.EventHandler(this.CreditsBtnML);
             // 
@@ -227,7 +227,7 @@ namespace Dobby
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(-5, 145);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(-5, 126);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.InfoHelpBtn.Size = new System.Drawing.Size(147, 23);
@@ -243,7 +243,7 @@ namespace Dobby
             // 
             this.Seperatorlabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.Seperatorlabel.ForeColor = System.Drawing.Color.White;
-            this.Seperatorlabel.Location = new System.Drawing.Point(-4, 120);
+            this.Seperatorlabel.Location = new System.Drawing.Point(-4, 101);
             this.Seperatorlabel.Name = "Seperatorlabel";
             this.Seperatorlabel.Size = new System.Drawing.Size(324, 19);
             this.Seperatorlabel.TabIndex = 30;
@@ -254,7 +254,7 @@ namespace Dobby
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 218);
+            this.ClientSize = new System.Drawing.Size(320, 199);
             this.Controls.Add(this.MainBox);
             this.Controls.Add(this.PS4DebugPageBtn);
             this.Controls.Add(this.EbootPatchPageBtn);

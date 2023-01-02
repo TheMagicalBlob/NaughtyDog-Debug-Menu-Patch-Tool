@@ -57,7 +57,7 @@ namespace Dobby {
             this.MainBox.Controls.Add(this.ExitBtn);
             this.MainBox.Controls.Add(this.MinimizeBtn);
             this.MainBox.Controls.Add(this.MainLabel);
-            this.MainBox.Location = new System.Drawing.Point(2, 14);
+            this.MainBox.Location = new System.Drawing.Point(2, 0);
             this.MainBox.Name = "MainBox";
             this.MainBox.Size = new System.Drawing.Size(317, 32);
             this.MainBox.TabIndex = 5;
@@ -109,7 +109,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(-4, 330);
+            this.BackBtn.Location = new System.Drawing.Point(-4, 315);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(60, 23);
             this.BackBtn.TabIndex = 13;
@@ -124,7 +124,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(2, 355);
+            this.Info.Location = new System.Drawing.Point(8, 340);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
@@ -138,7 +138,7 @@ namespace Dobby {
             this.PS4DebugHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PS4DebugHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.PS4DebugHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.PS4DebugHelpBtn.Location = new System.Drawing.Point(-2, 250);
+            this.PS4DebugHelpBtn.Location = new System.Drawing.Point(-2, 235);
             this.PS4DebugHelpBtn.Name = "PS4DebugHelpBtn";
             this.PS4DebugHelpBtn.Size = new System.Drawing.Size(166, 23);
             this.PS4DebugHelpBtn.TabIndex = 14;
@@ -157,7 +157,7 @@ namespace Dobby {
             this.EbootPatchPageHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EbootPatchPageHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.EbootPatchPageHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.EbootPatchPageHelpBtn.Location = new System.Drawing.Point(-2, 274);
+            this.EbootPatchPageHelpBtn.Location = new System.Drawing.Point(-2, 259);
             this.EbootPatchPageHelpBtn.Name = "EbootPatchPageHelpBtn";
             this.EbootPatchPageHelpBtn.Size = new System.Drawing.Size(253, 23);
             this.EbootPatchPageHelpBtn.TabIndex = 29;
@@ -170,7 +170,7 @@ namespace Dobby {
             // 
             this.label1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.label1.ForeColor = System.Drawing.SystemColors.Control;
-            this.label1.Location = new System.Drawing.Point(-5, 307);
+            this.label1.Location = new System.Drawing.Point(-5, 292);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(325, 20);
             this.label1.TabIndex = 30;
@@ -181,7 +181,7 @@ namespace Dobby {
             this.BuildLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.BuildLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
             this.BuildLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.BuildLabel.Location = new System.Drawing.Point(-3, 223);
+            this.BuildLabel.Location = new System.Drawing.Point(-3, 208);
             this.BuildLabel.Name = "BuildLabel";
             this.BuildLabel.Size = new System.Drawing.Size(304, 22);
             this.BuildLabel.TabIndex = 20;
@@ -194,7 +194,7 @@ namespace Dobby {
             // 
             this.label2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.label2.ForeColor = System.Drawing.SystemColors.Control;
-            this.label2.Location = new System.Drawing.Point(-7, 233);
+            this.label2.Location = new System.Drawing.Point(-7, 218);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(325, 20);
             this.label2.TabIndex = 31;
@@ -205,7 +205,7 @@ namespace Dobby {
             this.BlobLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.BlobLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.BlobLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.BlobLabel.Location = new System.Drawing.Point(145, 222);
+            this.BlobLabel.Location = new System.Drawing.Point(145, 207);
             this.BlobLabel.Name = "BlobLabel";
             this.BlobLabel.Size = new System.Drawing.Size(170, 22);
             this.BlobLabel.TabIndex = 32;
@@ -216,7 +216,7 @@ namespace Dobby {
             this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label3.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
             this.label3.ForeColor = System.Drawing.SystemColors.Control;
-            this.label3.Location = new System.Drawing.Point(3, 69);
+            this.label3.Location = new System.Drawing.Point(3, 54);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(302, 171);
             this.label3.TabIndex = 33;
@@ -227,7 +227,7 @@ namespace Dobby {
             this.label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label4.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
             this.label4.ForeColor = System.Drawing.SystemColors.Control;
-            this.label4.Location = new System.Drawing.Point(84, 47);
+            this.label4.Location = new System.Drawing.Point(84, 32);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(128, 22);
             this.label4.TabIndex = 34;
@@ -241,7 +241,7 @@ namespace Dobby {
             this.MiscPatchPageHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MiscPatchPageHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.MiscPatchPageHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MiscPatchPageHelpBtn.Location = new System.Drawing.Point(-2, 298);
+            this.MiscPatchPageHelpBtn.Location = new System.Drawing.Point(-2, 283);
             this.MiscPatchPageHelpBtn.Name = "MiscPatchPageHelpBtn";
             this.MiscPatchPageHelpBtn.Size = new System.Drawing.Size(172, 23);
             this.MiscPatchPageHelpBtn.TabIndex = 35;
@@ -255,7 +255,7 @@ namespace Dobby {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 374);
+            this.ClientSize = new System.Drawing.Size(320, 359);
             this.Controls.Add(this.PS4DebugHelpBtn);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.BlobLabel);

@@ -37,17 +37,6 @@ namespace Dobby {
             this.MainBox.SuspendLayout();
             this.SuspendLayout();
             // 
-            // MainBox
-            // 
-            this.MainBox.Controls.Add(this.ExitBtn);
-            this.MainBox.Controls.Add(this.MinimizeBtn);
-            this.MainBox.Controls.Add(this.MainLabel);
-            this.MainBox.Location = new System.Drawing.Point(2, 16);
-            this.MainBox.Name = "MainBox";
-            this.MainBox.Size = new System.Drawing.Size(317, 32);
-            this.MainBox.TabIndex = 5;
-            this.MainBox.TabStop = false;
-            // 
             // MainLabel
             // 
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -67,7 +56,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(-4, 378);
+            this.BackBtn.Location = new System.Drawing.Point(-4, 362);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(60, 22);
             this.BackBtn.TabIndex = 14;
@@ -77,6 +66,17 @@ namespace Dobby {
             this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
             this.BackBtn.MouseEnter += new System.EventHandler(this.BackBtnMH);
             this.BackBtn.MouseLeave += new System.EventHandler(this.BackBtnML);
+            // 
+            // MainBox
+            // 
+            this.MainBox.Controls.Add(this.ExitBtn);
+            this.MainBox.Controls.Add(this.MinimizeBtn);
+            this.MainBox.Controls.Add(this.MainLabel);
+            this.MainBox.Location = new System.Drawing.Point(2, 0);
+            this.MainBox.Name = "MainBox";
+            this.MainBox.Size = new System.Drawing.Size(317, 32);
+            this.MainBox.TabIndex = 5;
+            this.MainBox.TabStop = false;
             // 
             // ExitBtn
             // 
@@ -120,7 +120,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(3, 400);
+            this.Info.Location = new System.Drawing.Point(3, 384);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
@@ -130,7 +130,7 @@ namespace Dobby {
             // 
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(-2, 354);
+            this.label5.Location = new System.Drawing.Point(-2, 338);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(324, 19);
             this.label5.TabIndex = 30;
@@ -141,7 +141,7 @@ namespace Dobby {
             this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label1.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.Control;
-            this.label1.Location = new System.Drawing.Point(2, 49);
+            this.label1.Location = new System.Drawing.Point(2, 33);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(307, 36);
             this.label1.TabIndex = 20;
@@ -152,7 +152,7 @@ namespace Dobby {
             this.BlobGithubBtn.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.BlobGithubBtn.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BlobGithubBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BlobGithubBtn.Location = new System.Drawing.Point(-1, 324);
+            this.BlobGithubBtn.Location = new System.Drawing.Point(-1, 308);
             this.BlobGithubBtn.Name = "BlobGithubBtn";
             this.BlobGithubBtn.Size = new System.Drawing.Size(170, 23);
             this.BlobGithubBtn.TabIndex = 31;
@@ -166,7 +166,7 @@ namespace Dobby {
             this.IllusionBlogBtn.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.IllusionBlogBtn.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.IllusionBlogBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.IllusionBlogBtn.Location = new System.Drawing.Point(2, 347);
+            this.IllusionBlogBtn.Location = new System.Drawing.Point(2, 331);
             this.IllusionBlogBtn.Name = "IllusionBlogBtn";
             this.IllusionBlogBtn.Size = new System.Drawing.Size(100, 23);
             this.IllusionBlogBtn.TabIndex = 32;
@@ -179,7 +179,7 @@ namespace Dobby {
             // 
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(-9, 67);
+            this.label2.Location = new System.Drawing.Point(-9, 51);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(324, 19);
             this.label2.TabIndex = 33;
@@ -189,7 +189,7 @@ namespace Dobby {
             // 
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(-8, 300);
+            this.label3.Location = new System.Drawing.Point(-8, 284);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(324, 19);
             this.label3.TabIndex = 34;
@@ -200,7 +200,7 @@ namespace Dobby {
             this.label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label4.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.SystemColors.Control;
-            this.label4.Location = new System.Drawing.Point(0, 86);
+            this.label4.Location = new System.Drawing.Point(0, 70);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(309, 231);
             this.label4.TabIndex = 35;
@@ -211,7 +211,7 @@ namespace Dobby {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 428);
+            this.ClientSize = new System.Drawing.Size(320, 404);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.IllusionBlogBtn);

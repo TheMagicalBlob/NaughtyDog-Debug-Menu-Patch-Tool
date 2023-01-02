@@ -108,7 +108,7 @@ namespace Dobby {
             this.MainBox.Controls.Add(this.ExitBtn);
             this.MainBox.Controls.Add(this.MinimizeBtn);
             this.MainBox.Controls.Add(this.MainLabel);
-            this.MainBox.Location = new System.Drawing.Point(2, 14);
+            this.MainBox.Location = new System.Drawing.Point(2, 0);
             this.MainBox.Name = "MainBox";
             this.MainBox.Size = new System.Drawing.Size(317, 32);
             this.MainBox.TabIndex = 5;
@@ -163,7 +163,7 @@ namespace Dobby {
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(-5, 224);
+            this.CreditsBtn.Location = new System.Drawing.Point(-5, 205);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(74, 23);
@@ -179,7 +179,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(0, 274);
+            this.Info.Location = new System.Drawing.Point(4, 254);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(313, 19);
             this.Info.TabIndex = 7;
@@ -193,7 +193,7 @@ namespace Dobby {
             this.BaseDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BaseDebugBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BaseDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BaseDebugBtn.Location = new System.Drawing.Point(-6, 80);
+            this.BaseDebugBtn.Location = new System.Drawing.Point(-6, 61);
             this.BaseDebugBtn.Name = "BaseDebugBtn";
             this.BaseDebugBtn.Size = new System.Drawing.Size(205, 23);
             this.BaseDebugBtn.TabIndex = 9;
@@ -212,7 +212,7 @@ namespace Dobby {
             this.CustomOptDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CustomOptDebugBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.CustomOptDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CustomOptDebugBtn.Location = new System.Drawing.Point(-5, 164);
+            this.CustomOptDebugBtn.Location = new System.Drawing.Point(-5, 145);
             this.CustomOptDebugBtn.Name = "CustomOptDebugBtn";
             this.CustomOptDebugBtn.Size = new System.Drawing.Size(292, 23);
             this.CustomOptDebugBtn.TabIndex = 21;
@@ -231,7 +231,7 @@ namespace Dobby {
             this.DisableDebugModeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DisableDebugModeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.DisableDebugModeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.DisableDebugModeBtn.Location = new System.Drawing.Point(-5, 52);
+            this.DisableDebugModeBtn.Location = new System.Drawing.Point(-5, 33);
             this.DisableDebugModeBtn.Name = "DisableDebugModeBtn";
             this.DisableDebugModeBtn.Size = new System.Drawing.Size(150, 23);
             this.DisableDebugModeBtn.TabIndex = 12;
@@ -250,7 +250,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(-4, 250);
+            this.BackBtn.Location = new System.Drawing.Point(-4, 231);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(60, 23);
             this.BackBtn.TabIndex = 13;
@@ -265,7 +265,7 @@ namespace Dobby {
             // 
             this.label4.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.label4.ForeColor = System.Drawing.SystemColors.Control;
-            this.label4.Location = new System.Drawing.Point(-10, 178);
+            this.label4.Location = new System.Drawing.Point(-10, 159);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(325, 20);
             this.label4.TabIndex = 14;
@@ -279,7 +279,7 @@ namespace Dobby {
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(-5, 200);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(-5, 181);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.Size = new System.Drawing.Size(147, 23);
             this.InfoHelpBtn.TabIndex = 15;
@@ -298,7 +298,7 @@ namespace Dobby {
             this.CustomDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CustomDebugBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.CustomDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CustomDebugBtn.Location = new System.Drawing.Point(-5, 136);
+            this.CustomDebugBtn.Location = new System.Drawing.Point(-5, 117);
             this.CustomDebugBtn.Name = "CustomDebugBtn";
             this.CustomDebugBtn.Size = new System.Drawing.Size(206, 23);
             this.CustomDebugBtn.TabIndex = 22;
@@ -317,7 +317,7 @@ namespace Dobby {
             this.RestoredDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RestoredDebugBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.RestoredDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.RestoredDebugBtn.Location = new System.Drawing.Point(-5, 108);
+            this.RestoredDebugBtn.Location = new System.Drawing.Point(-5, 89);
             this.RestoredDebugBtn.Name = "RestoredDebugBtn";
             this.RestoredDebugBtn.Size = new System.Drawing.Size(215, 23);
             this.RestoredDebugBtn.TabIndex = 23;
@@ -333,7 +333,7 @@ namespace Dobby {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 297);
+            this.ClientSize = new System.Drawing.Size(320, 273);
             this.Controls.Add(this.RestoredDebugBtn);
             this.Controls.Add(this.CustomDebugBtn);
             this.Controls.Add(this.InfoHelpBtn);

@@ -51,487 +51,487 @@ namespace Dobby {
         public static string processname = "Jack Shit";
 
         public void InitializeComponent() {
-            MainLabel = new System.Windows.Forms.Label();
-            TLL100Btn = new System.Windows.Forms.Button();
-            MainBox = new System.Windows.Forms.GroupBox();
-            ExitBtn = new System.Windows.Forms.Button();
-            MinimizeBtn = new System.Windows.Forms.Button();
-            ManualConnectBtn = new System.Windows.Forms.Button();
-            IPBOX_E = new System.Windows.Forms.TextBox();
-            Info = new System.Windows.Forms.Label();
-            T1RBtn = new System.Windows.Forms.Button();
-            T2100Btn = new System.Windows.Forms.Button();
-            UC4100Btn = new System.Windows.Forms.Button();
-            BackBtn = new System.Windows.Forms.Button();
-            UC1Btn = new System.Windows.Forms.Button();
-            UC2Btn = new System.Windows.Forms.Button();
-            UC3Btn = new System.Windows.Forms.Button();
-            label2 = new System.Windows.Forms.Label();
-            DebugPayloadBtn = new System.Windows.Forms.Button();
-            PortBox = new System.Windows.Forms.TextBox();
-            IPLabelBtn = new System.Windows.Forms.Button();
-            PortLabelBtn = new System.Windows.Forms.Button();
-            label3 = new System.Windows.Forms.Label();
-            InfoHelpBtn = new System.Windows.Forms.Button();
-            CreditsBtn = new System.Windows.Forms.Button();
-            UC4MPBetaBtn = new System.Windows.Forms.Button();
-            MainBox.SuspendLayout();
-            SuspendLayout();
-            // 
-            // ExitBtn
-            // 
-            ExitBtn.BackColor = System.Drawing.Color.DimGray;
-            ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            ExitBtn.FlatAppearance.BorderSize = 0;
-            ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            ExitBtn.Location = new System.Drawing.Point(293, 7);
-            ExitBtn.Name = "ExitBtn";
-            ExitBtn.Size = new System.Drawing.Size(23, 23);
-            ExitBtn.TabIndex = 18;
-            ExitBtn.Text = "X";
-            ExitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            ExitBtn.UseVisualStyleBackColor = false;
-            ExitBtn.Click += new System.EventHandler(ExitBtn_Click);
-            ExitBtn.MouseEnter += new System.EventHandler(ExitBtnMH);
-            ExitBtn.MouseLeave += new System.EventHandler(ExitBtnML);
-            // 
-            // MinimizeBtn
-            // 
-            MinimizeBtn.BackColor = System.Drawing.Color.DimGray;
-            MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            MinimizeBtn.FlatAppearance.BorderSize = 0;
-            MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            MinimizeBtn.Location = new System.Drawing.Point(270, 7);
-            MinimizeBtn.Name = "MinimizeBtn";
-            MinimizeBtn.Size = new System.Drawing.Size(23, 23);
-            MinimizeBtn.TabIndex = 19;
-            MinimizeBtn.Text = "--";
-            MinimizeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            MinimizeBtn.UseVisualStyleBackColor = false;
-            MinimizeBtn.Click += new System.EventHandler(MinimizeBtn_Click);
-            MinimizeBtn.MouseEnter += new System.EventHandler(MinimizeBtnMH);
-            MinimizeBtn.MouseLeave += new System.EventHandler(MinimizeBtnML);
-            // 
-            // MainBox
-            // 
-            MainBox.Controls.Add(ExitBtn);
-            MainBox.Controls.Add(MinimizeBtn);
-            MainBox.Controls.Add(MainLabel);
-            MainBox.Location = new System.Drawing.Point(3, 17);
-            MainBox.Name = "MainBox";
-            MainBox.Size = new System.Drawing.Size(317, 32);
-            MainBox.TabIndex = 5;
-            MainBox.TabStop = false;
-            MainBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            MainBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            MainBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
+            this.MainLabel = new System.Windows.Forms.Label();
+            this.TLL100Btn = new System.Windows.Forms.Button();
+            this.MainBox = new System.Windows.Forms.GroupBox();
+            this.ExitBtn = new System.Windows.Forms.Button();
+            this.MinimizeBtn = new System.Windows.Forms.Button();
+            this.ManualConnectBtn = new System.Windows.Forms.Button();
+            this.IPBOX_E = new System.Windows.Forms.TextBox();
+            this.Info = new System.Windows.Forms.Label();
+            this.T1RBtn = new System.Windows.Forms.Button();
+            this.T2100Btn = new System.Windows.Forms.Button();
+            this.UC4100Btn = new System.Windows.Forms.Button();
+            this.BackBtn = new System.Windows.Forms.Button();
+            this.UC1Btn = new System.Windows.Forms.Button();
+            this.UC2Btn = new System.Windows.Forms.Button();
+            this.UC3Btn = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.DebugPayloadBtn = new System.Windows.Forms.Button();
+            this.PortBox = new System.Windows.Forms.TextBox();
+            this.IPLabelBtn = new System.Windows.Forms.Button();
+            this.PortLabelBtn = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.InfoHelpBtn = new System.Windows.Forms.Button();
+            this.CreditsBtn = new System.Windows.Forms.Button();
+            this.UC4MPBetaBtn = new System.Windows.Forms.Button();
+            this.MainBox.SuspendLayout();
+            this.SuspendLayout();
             // 
             // MainLabel
             // 
-            MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            MainLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 12.25F, System.Drawing.FontStyle.Bold);
-            MainLabel.ForeColor = System.Drawing.SystemColors.Control;
-            MainLabel.Location = new System.Drawing.Point(2, 7);
-            MainLabel.Name = "MainLabel";
-            MainLabel.Size = new System.Drawing.Size(314, 22);
-            MainLabel.TabIndex = 0;
-            MainLabel.Text = "PS4Debug Menu";
-            MainLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            MainLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            MainLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            // 
-            // ManualConnectBtn
-            // 
-            ManualConnectBtn.BackColor = System.Drawing.Color.DimGray;
-            ManualConnectBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            ManualConnectBtn.FlatAppearance.BorderSize = 0;
-            ManualConnectBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            ManualConnectBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            ManualConnectBtn.ForeColor = System.Drawing.SystemColors.Control;
-            ManualConnectBtn.Location = new System.Drawing.Point(-5, 309);
-            ManualConnectBtn.Name = "ManualConnectBtn";
-            ManualConnectBtn.Size = new System.Drawing.Size(164, 23);
-            ManualConnectBtn.TabIndex = 6;
-            ManualConnectBtn.Text = "Connect To PS4Debug";
-            ManualConnectBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            ManualConnectBtn.UseVisualStyleBackColor = false;
-            ManualConnectBtn.Click += new System.EventHandler(ManualConnectBtn_Click);
-            ManualConnectBtn.MouseEnter += new System.EventHandler(ManualConnectBtnMH);
-            ManualConnectBtn.MouseLeave += new System.EventHandler(ManualConnectBtnML);
-            ManualConnectBtn.MouseWheel += new System.Windows.Forms.MouseEventHandler(ManualConnectBtn_Click);
-            // 
-            // IPBOX_E
-            // 
-            IPBOX_E.BackColor = System.Drawing.Color.DimGray;
-            IPBOX_E.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            IPBOX_E.Cursor = System.Windows.Forms.Cursors.Cross;
-            IPBOX_E.ForeColor = System.Drawing.SystemColors.Control;
-            IPBOX_E.Location = new System.Drawing.Point(90, 245);
-            IPBOX_E.MaxLength = 15;
-            IPBOX_E.Name = "IPBOX_E";
-            IPBOX_E.Size = new System.Drawing.Size(100, 13);
-            IPBOX_E.TabIndex = 8;
-            IPBOX_E.Text = "IP()";
-            IPBOX_E.TextChanged += new System.EventHandler(IPBOX_TextChanged);
-            // 
-            // Info
-            // 
-            Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            Info.Location = new System.Drawing.Point(2, 409);
-            Info.Name = "Info";
-            Info.Size = new System.Drawing.Size(304, 17);
-            Info.TabIndex = 7;
-            Info.Text = "=======================================";
-            Info.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            Info.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            Info.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            // 
-            // T1RBtn
-            // 
-            T1RBtn.BackColor = System.Drawing.Color.DimGray;
-            T1RBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            T1RBtn.FlatAppearance.BorderSize = 0;
-            T1RBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            T1RBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            T1RBtn.ForeColor = System.Drawing.SystemColors.Control;
-            T1RBtn.Location = new System.Drawing.Point(-5, 50);
-            T1RBtn.Name = "T1RBtn";
-            T1RBtn.Size = new System.Drawing.Size(193, 22);
-            T1RBtn.TabIndex = 8;
-            T1RBtn.Text = "The Last of Us: Remastered";
-            T1RBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            T1RBtn.UseVisualStyleBackColor = false;
-            T1RBtn.Click += new System.EventHandler(T1RBtn_Click);
-            T1RBtn.MouseEnter += new System.EventHandler(T1R100MH);
-            T1RBtn.MouseLeave += new System.EventHandler(T1R100ML);
-            // 
-            // T2100Btn
-            // 
-            T2100Btn.BackColor = System.Drawing.Color.DimGray;
-            T2100Btn.Cursor = System.Windows.Forms.Cursors.Cross;
-            T2100Btn.FlatAppearance.BorderSize = 0;
-            T2100Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            T2100Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            T2100Btn.ForeColor = System.Drawing.SystemColors.Control;
-            T2100Btn.Location = new System.Drawing.Point(-5, 73);
-            T2100Btn.Name = "T2100Btn";
-            T2100Btn.Size = new System.Drawing.Size(150, 22);
-            T2100Btn.TabIndex = 9;
-            T2100Btn.Text = "The Last of Us Part II";
-            T2100Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            T2100Btn.UseVisualStyleBackColor = false;
-            T2100Btn.Click += new System.EventHandler(T2100Btn_Click);
-            T2100Btn.MouseEnter += new System.EventHandler(T2100MH);
-            T2100Btn.MouseLeave += new System.EventHandler(T2100ML);
-            // 
-            // UC1Btn
-            // 
-            UC1Btn.BackColor = System.Drawing.Color.DimGray;
-            UC1Btn.Cursor = System.Windows.Forms.Cursors.Cross;
-            UC1Btn.FlatAppearance.BorderSize = 0;
-            UC1Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            UC1Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            UC1Btn.ForeColor = System.Drawing.SystemColors.Control;
-            UC1Btn.Location = new System.Drawing.Point(-5, 96);
-            UC1Btn.Name = "UC1Btn";
-            UC1Btn.Size = new System.Drawing.Size(190, 22);
-            UC1Btn.TabIndex = 15;
-            UC1Btn.Text = "Uncharted: Drakes Fortune";
-            UC1Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            UC1Btn.UseVisualStyleBackColor = false;
-            UC1Btn.Click += new System.EventHandler(UC1Btn_Click);
-            UC1Btn.MouseEnter += new System.EventHandler(UC1BtnMH);
-            UC1Btn.MouseLeave += new System.EventHandler(UC1BtnML);
-            // 
-            // UC2Btn
-            // 
-            UC2Btn.BackColor = System.Drawing.Color.DimGray;
-            UC2Btn.Cursor = System.Windows.Forms.Cursors.Cross;
-            UC2Btn.FlatAppearance.BorderSize = 0;
-            UC2Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            UC2Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            UC2Btn.ForeColor = System.Drawing.SystemColors.Control;
-            UC2Btn.Location = new System.Drawing.Point(-5, 119);
-            UC2Btn.Name = "UC2Btn";
-            UC2Btn.Size = new System.Drawing.Size(201, 23);
-            UC2Btn.TabIndex = 16;
-            UC2Btn.Text = "Uncharted 2: Among Thieves";
-            UC2Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            UC2Btn.UseVisualStyleBackColor = false;
-            UC2Btn.Click += new System.EventHandler(UC2Btn_Click);
-            UC2Btn.MouseEnter += new System.EventHandler(UC2BtnMH);
-            UC2Btn.MouseLeave += new System.EventHandler(UC2BtnML);
-            // 
-            // UC3Btn
-            // 
-            UC3Btn.BackColor = System.Drawing.Color.DimGray;
-            UC3Btn.Cursor = System.Windows.Forms.Cursors.Cross;
-            UC3Btn.FlatAppearance.BorderSize = 0;
-            UC3Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            UC3Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            UC3Btn.ForeColor = System.Drawing.SystemColors.Control;
-            UC3Btn.Location = new System.Drawing.Point(-5, 143);
-            UC3Btn.Name = "UC3Btn";
-            UC3Btn.Size = new System.Drawing.Size(219, 23);
-            UC3Btn.TabIndex = 17;
-            UC3Btn.Text = "Uncharted 3: Drakes Deception";
-            UC3Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            UC3Btn.UseVisualStyleBackColor = false;
-            UC3Btn.Click += new System.EventHandler(UC3Btn_Click);
-            UC3Btn.MouseEnter += new System.EventHandler(UC3BtnMH);
-            UC3Btn.MouseLeave += new System.EventHandler(UC3BtnML);
-            // 
-            // UC4100Btn
-            // 
-            UC4100Btn.BackColor = System.Drawing.Color.DimGray;
-            UC4100Btn.Cursor = System.Windows.Forms.Cursors.Cross;
-            UC4100Btn.FlatAppearance.BorderSize = 0;
-            UC4100Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            UC4100Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            UC4100Btn.ForeColor = System.Drawing.SystemColors.Control;
-            UC4100Btn.Location = new System.Drawing.Point(-5, 166);
-            UC4100Btn.Name = "UC4100Btn";
-            UC4100Btn.Size = new System.Drawing.Size(95, 22);
-            UC4100Btn.TabIndex = 12;
-            UC4100Btn.Text = "Uncharted 4";
-            UC4100Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            UC4100Btn.UseVisualStyleBackColor = false;
-            UC4100Btn.Click += new System.EventHandler(UC4100Btn_Click);
-            UC4100Btn.MouseEnter += new System.EventHandler(UC4100MH);
-            UC4100Btn.MouseLeave += new System.EventHandler(UC4100ML);
-            // 
-            // UC4MPBetaBtn
-            // 
-            UC4MPBetaBtn.BackColor = System.Drawing.Color.DimGray;
-            UC4MPBetaBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            UC4MPBetaBtn.FlatAppearance.BorderSize = 0;
-            UC4MPBetaBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            UC4MPBetaBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            UC4MPBetaBtn.ForeColor = System.Drawing.SystemColors.Control;
-            UC4MPBetaBtn.Location = new System.Drawing.Point(-5, 189);
-            UC4MPBetaBtn.Name = "UC4MPBetaBtn";
-            UC4MPBetaBtn.Size = new System.Drawing.Size(153, 22);
-            UC4MPBetaBtn.TabIndex = 29;
-            UC4MPBetaBtn.Text = "Uncharted 4 MP Beta";
-            UC4MPBetaBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            UC4MPBetaBtn.UseVisualStyleBackColor = false;
-            UC4MPBetaBtn.Click += new System.EventHandler(UC4MPBetaBtn_Click);
-            UC4MPBetaBtn.MouseEnter += new System.EventHandler(UC4MPBetaBtnMH);
-            UC4MPBetaBtn.MouseLeave += new System.EventHandler(UC4MPBetaBtnML);
+            this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MainLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 12.25F, System.Drawing.FontStyle.Bold);
+            this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.MainLabel.Location = new System.Drawing.Point(2, 7);
+            this.MainLabel.Name = "MainLabel";
+            this.MainLabel.Size = new System.Drawing.Size(314, 22);
+            this.MainLabel.TabIndex = 0;
+            this.MainLabel.Text = "PS4Debug Menu";
+            this.MainLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.MainLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
+            this.MainLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             // 
             // TLL100Btn
             // 
-            TLL100Btn.BackColor = System.Drawing.Color.DimGray;
-            TLL100Btn.Cursor = System.Windows.Forms.Cursors.Cross;
-            TLL100Btn.FlatAppearance.BorderSize = 0;
-            TLL100Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            TLL100Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            TLL100Btn.ForeColor = System.Drawing.SystemColors.Control;
-            TLL100Btn.Location = new System.Drawing.Point(-5, 212);
-            TLL100Btn.Name = "TLL100Btn";
-            TLL100Btn.Size = new System.Drawing.Size(192, 23);
-            TLL100Btn.TabIndex = 0;
-            TLL100Btn.Text = "Uncharted: The Lost Legacy";
-            TLL100Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            TLL100Btn.UseVisualStyleBackColor = false;
-            TLL100Btn.Click += new System.EventHandler(TLL100);
-            TLL100Btn.MouseEnter += new System.EventHandler(TLL100MH);
-            TLL100Btn.MouseLeave += new System.EventHandler(TLL100ML);
+            this.TLL100Btn.BackColor = System.Drawing.Color.DimGray;
+            this.TLL100Btn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.TLL100Btn.FlatAppearance.BorderSize = 0;
+            this.TLL100Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.TLL100Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.TLL100Btn.ForeColor = System.Drawing.SystemColors.Control;
+            this.TLL100Btn.Location = new System.Drawing.Point(-5, 195);
+            this.TLL100Btn.Name = "TLL100Btn";
+            this.TLL100Btn.Size = new System.Drawing.Size(192, 23);
+            this.TLL100Btn.TabIndex = 0;
+            this.TLL100Btn.Text = "Uncharted: The Lost Legacy";
+            this.TLL100Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.TLL100Btn.UseVisualStyleBackColor = false;
+            this.TLL100Btn.Click += new System.EventHandler(this.TLL100);
+            this.TLL100Btn.MouseEnter += new System.EventHandler(this.TLL100MH);
+            this.TLL100Btn.MouseLeave += new System.EventHandler(this.TLL100ML);
             // 
-            // label2
+            // MainBox
             // 
-            label2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
-            label2.ForeColor = System.Drawing.Color.White;
-            label2.Location = new System.Drawing.Point(-5, 222);
-            label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(320, 16);
-            label2.TabIndex = 20;
-            label2.Text = "______________________________________________________________";
-            label2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            label2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            label2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
+            this.MainBox.Controls.Add(this.ExitBtn);
+            this.MainBox.Controls.Add(this.MinimizeBtn);
+            this.MainBox.Controls.Add(this.MainLabel);
+            this.MainBox.Location = new System.Drawing.Point(2, 0);
+            this.MainBox.Name = "MainBox";
+            this.MainBox.Size = new System.Drawing.Size(317, 32);
+            this.MainBox.TabIndex = 5;
+            this.MainBox.TabStop = false;
+            this.MainBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.MainBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
+            this.MainBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             // 
-            // DebugPayloadBtn
+            // ExitBtn
             // 
-            DebugPayloadBtn.BackColor = System.Drawing.Color.DimGray;
-            DebugPayloadBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            DebugPayloadBtn.FlatAppearance.BorderSize = 0;
-            DebugPayloadBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            DebugPayloadBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            DebugPayloadBtn.ForeColor = System.Drawing.SystemColors.Control;
-            DebugPayloadBtn.Location = new System.Drawing.Point(-5, 285);
-            DebugPayloadBtn.Name = "DebugPayloadBtn";
-            DebugPayloadBtn.Size = new System.Drawing.Size(124, 23);
-            DebugPayloadBtn.TabIndex = 22;
-            DebugPayloadBtn.Text = "Send PS4Debug";
-            DebugPayloadBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            DebugPayloadBtn.UseVisualStyleBackColor = false;
-            DebugPayloadBtn.Click += new System.EventHandler(DebugPayloadBtn_Click);
-            DebugPayloadBtn.MouseEnter += new System.EventHandler(DebugPayloadBtnMH);
-            DebugPayloadBtn.MouseLeave += new System.EventHandler(DebugPayloadBtnML);
+            this.ExitBtn.BackColor = System.Drawing.Color.DimGray;
+            this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.ExitBtn.FlatAppearance.BorderSize = 0;
+            this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.ExitBtn.Location = new System.Drawing.Point(293, 7);
+            this.ExitBtn.Name = "ExitBtn";
+            this.ExitBtn.Size = new System.Drawing.Size(23, 23);
+            this.ExitBtn.TabIndex = 18;
+            this.ExitBtn.Text = "X";
+            this.ExitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ExitBtn.UseVisualStyleBackColor = false;
+            this.ExitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
+            this.ExitBtn.MouseEnter += new System.EventHandler(this.ExitBtnMH);
+            this.ExitBtn.MouseLeave += new System.EventHandler(this.ExitBtnML);
             // 
-            // PortBox
+            // MinimizeBtn
             // 
-            PortBox.BackColor = System.Drawing.Color.DimGray;
-            PortBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            PortBox.Cursor = System.Windows.Forms.Cursors.Cross;
-            PortBox.ForeColor = System.Drawing.SystemColors.Control;
-            PortBox.Location = new System.Drawing.Point(40, 268);
-            PortBox.MaxLength = 4;
-            PortBox.Name = "PortBox";
-            PortBox.Size = new System.Drawing.Size(24, 13);
-            PortBox.TabIndex = 23;
-            PortBox.Text = "port";
-            PortBox.TextChanged += new System.EventHandler(PortBox_TextChanged);
+            this.MinimizeBtn.BackColor = System.Drawing.Color.DimGray;
+            this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.MinimizeBtn.FlatAppearance.BorderSize = 0;
+            this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.MinimizeBtn.Location = new System.Drawing.Point(270, 7);
+            this.MinimizeBtn.Name = "MinimizeBtn";
+            this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
+            this.MinimizeBtn.TabIndex = 19;
+            this.MinimizeBtn.Text = "--";
+            this.MinimizeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.MinimizeBtn.UseVisualStyleBackColor = false;
+            this.MinimizeBtn.Click += new System.EventHandler(this.MinimizeBtn_Click);
+            this.MinimizeBtn.MouseEnter += new System.EventHandler(this.MinimizeBtnMH);
+            this.MinimizeBtn.MouseLeave += new System.EventHandler(this.MinimizeBtnML);
             // 
-            // IPLabelBtn
+            // ManualConnectBtn
             // 
-            IPLabelBtn.BackColor = System.Drawing.Color.DimGray;
-            IPLabelBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            IPLabelBtn.FlatAppearance.BorderSize = 0;
-            IPLabelBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            IPLabelBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            IPLabelBtn.ForeColor = System.Drawing.Color.Silver;
-            IPLabelBtn.Location = new System.Drawing.Point(-5, 239);
-            IPLabelBtn.Name = "IPLabelBtn";
-            IPLabelBtn.Size = new System.Drawing.Size(97, 22);
-            IPLabelBtn.TabIndex = 24;
-            IPLabelBtn.Text = "I.P. Address:";
-            IPLabelBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            IPLabelBtn.UseVisualStyleBackColor = false;
-            IPLabelBtn.Click += new System.EventHandler(IPLabelBtn_Click);
+            this.ManualConnectBtn.BackColor = System.Drawing.Color.DimGray;
+            this.ManualConnectBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.ManualConnectBtn.FlatAppearance.BorderSize = 0;
+            this.ManualConnectBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ManualConnectBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.ManualConnectBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.ManualConnectBtn.Location = new System.Drawing.Point(-5, 292);
+            this.ManualConnectBtn.Name = "ManualConnectBtn";
+            this.ManualConnectBtn.Size = new System.Drawing.Size(164, 23);
+            this.ManualConnectBtn.TabIndex = 6;
+            this.ManualConnectBtn.Text = "Connect To PS4Debug";
+            this.ManualConnectBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ManualConnectBtn.UseVisualStyleBackColor = false;
+            this.ManualConnectBtn.Click += new System.EventHandler(this.ManualConnectBtn_Click);
+            this.ManualConnectBtn.MouseEnter += new System.EventHandler(this.ManualConnectBtnMH);
+            this.ManualConnectBtn.MouseLeave += new System.EventHandler(this.ManualConnectBtnML);
+            this.ManualConnectBtn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.ManualConnectBtn_Click);
             // 
-            // PortLabelBtn
+            // IPBOX_E
             // 
-            PortLabelBtn.BackColor = System.Drawing.Color.DimGray;
-            PortLabelBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            PortLabelBtn.FlatAppearance.BorderSize = 0;
-            PortLabelBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            PortLabelBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            PortLabelBtn.ForeColor = System.Drawing.Color.Silver;
-            PortLabelBtn.Location = new System.Drawing.Point(-5, 262);
-            PortLabelBtn.Name = "PortLabelBtn";
-            PortLabelBtn.Size = new System.Drawing.Size(47, 22);
-            PortLabelBtn.TabIndex = 25;
-            PortLabelBtn.Text = "Port:";
-            PortLabelBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            PortLabelBtn.UseVisualStyleBackColor = false;
-            PortLabelBtn.Click += new System.EventHandler(PortLabelBtn_Click);
+            this.IPBOX_E.BackColor = System.Drawing.Color.DimGray;
+            this.IPBOX_E.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.IPBOX_E.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.IPBOX_E.ForeColor = System.Drawing.SystemColors.Control;
+            this.IPBOX_E.Location = new System.Drawing.Point(90, 228);
+            this.IPBOX_E.MaxLength = 15;
+            this.IPBOX_E.Name = "IPBOX_E";
+            this.IPBOX_E.Size = new System.Drawing.Size(100, 13);
+            this.IPBOX_E.TabIndex = 8;
+            this.IPBOX_E.Text = "IP()";
+            this.IPBOX_E.TextChanged += new System.EventHandler(this.IPBOX_TextChanged);
             // 
-            // label3
+            // Info
             // 
-            label3.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
-            label3.ForeColor = System.Drawing.Color.White;
-            label3.Location = new System.Drawing.Point(-4, 319);
-            label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(320, 16);
-            label3.TabIndex = 26;
-            label3.Text = "______________________________________________________________";
-            label3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            label3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            label3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
+            this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.Info.Location = new System.Drawing.Point(9, 393);
+            this.Info.Name = "Info";
+            this.Info.Size = new System.Drawing.Size(304, 17);
+            this.Info.TabIndex = 7;
+            this.Info.Text = "=======================================";
+            this.Info.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.Info.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
+            this.Info.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             // 
-            // InfoHelpBtn
+            // T1RBtn
             // 
-            InfoHelpBtn.BackColor = System.Drawing.Color.DimGray;
-            InfoHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            InfoHelpBtn.FlatAppearance.BorderSize = 0;
-            InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            InfoHelpBtn.Location = new System.Drawing.Point(-5, 336);
-            InfoHelpBtn.Name = "InfoHelpBtn";
-            InfoHelpBtn.Size = new System.Drawing.Size(135, 23);
-            InfoHelpBtn.TabIndex = 27;
-            InfoHelpBtn.Text = "Information / Help";
-            InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            InfoHelpBtn.UseVisualStyleBackColor = false;
-            InfoHelpBtn.Click += new System.EventHandler(InfoHelpBtn_Click);
-            InfoHelpBtn.MouseEnter += new System.EventHandler(InfoHelpBtnMH);
-            InfoHelpBtn.MouseLeave += new System.EventHandler(InfoHelpBtnML);
+            this.T1RBtn.BackColor = System.Drawing.Color.DimGray;
+            this.T1RBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.T1RBtn.FlatAppearance.BorderSize = 0;
+            this.T1RBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.T1RBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.T1RBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.T1RBtn.Location = new System.Drawing.Point(-5, 33);
+            this.T1RBtn.Name = "T1RBtn";
+            this.T1RBtn.Size = new System.Drawing.Size(193, 22);
+            this.T1RBtn.TabIndex = 8;
+            this.T1RBtn.Text = "The Last of Us: Remastered";
+            this.T1RBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.T1RBtn.UseVisualStyleBackColor = false;
+            this.T1RBtn.Click += new System.EventHandler(this.T1RBtn_Click);
+            this.T1RBtn.MouseEnter += new System.EventHandler(this.T1R100MH);
+            this.T1RBtn.MouseLeave += new System.EventHandler(this.T1R100ML);
             // 
-            // CreditsBtn
+            // T2100Btn
             // 
-            CreditsBtn.BackColor = System.Drawing.Color.DimGray;
-            CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            CreditsBtn.FlatAppearance.BorderSize = 0;
-            CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            CreditsBtn.Location = new System.Drawing.Point(-5, 360);
-            CreditsBtn.Name = "CreditsBtn";
-            CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            CreditsBtn.Size = new System.Drawing.Size(75, 23);
-            CreditsBtn.TabIndex = 28;
-            CreditsBtn.Text = "Credits...";
-            CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            CreditsBtn.UseVisualStyleBackColor = false;
-            CreditsBtn.Click += new System.EventHandler(CreditsBtn_Click);
-            CreditsBtn.MouseEnter += new System.EventHandler(CreditsBtnMH);
-            CreditsBtn.MouseLeave += new System.EventHandler(CreditsBtnML);
+            this.T2100Btn.BackColor = System.Drawing.Color.DimGray;
+            this.T2100Btn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.T2100Btn.FlatAppearance.BorderSize = 0;
+            this.T2100Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.T2100Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.T2100Btn.ForeColor = System.Drawing.SystemColors.Control;
+            this.T2100Btn.Location = new System.Drawing.Point(-5, 56);
+            this.T2100Btn.Name = "T2100Btn";
+            this.T2100Btn.Size = new System.Drawing.Size(150, 22);
+            this.T2100Btn.TabIndex = 9;
+            this.T2100Btn.Text = "The Last of Us Part II";
+            this.T2100Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.T2100Btn.UseVisualStyleBackColor = false;
+            this.T2100Btn.Click += new System.EventHandler(this.T2100Btn_Click);
+            this.T2100Btn.MouseEnter += new System.EventHandler(this.T2100MH);
+            this.T2100Btn.MouseLeave += new System.EventHandler(this.T2100ML);
+            // 
+            // UC4100Btn
+            // 
+            this.UC4100Btn.BackColor = System.Drawing.Color.DimGray;
+            this.UC4100Btn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.UC4100Btn.FlatAppearance.BorderSize = 0;
+            this.UC4100Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.UC4100Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.UC4100Btn.ForeColor = System.Drawing.SystemColors.Control;
+            this.UC4100Btn.Location = new System.Drawing.Point(-5, 149);
+            this.UC4100Btn.Name = "UC4100Btn";
+            this.UC4100Btn.Size = new System.Drawing.Size(95, 22);
+            this.UC4100Btn.TabIndex = 12;
+            this.UC4100Btn.Text = "Uncharted 4";
+            this.UC4100Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.UC4100Btn.UseVisualStyleBackColor = false;
+            this.UC4100Btn.Click += new System.EventHandler(this.UC4100Btn_Click);
+            this.UC4100Btn.MouseEnter += new System.EventHandler(this.UC4100MH);
+            this.UC4100Btn.MouseLeave += new System.EventHandler(this.UC4100ML);
             // 
             // BackBtn
             // 
-            BackBtn.BackColor = System.Drawing.Color.DimGray;
-            BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            BackBtn.FlatAppearance.BorderSize = 0;
-            BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            BackBtn.Location = new System.Drawing.Point(-5, 384);
-            BackBtn.Name = "BackBtn";
-            BackBtn.Size = new System.Drawing.Size(60, 22);
-            BackBtn.TabIndex = 14;
-            BackBtn.Text = "Back...";
-            BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            BackBtn.UseVisualStyleBackColor = false;
-            BackBtn.Click += new System.EventHandler(BackBtn_Click);
-            BackBtn.MouseEnter += new System.EventHandler(BackBtnMH);
-            BackBtn.MouseLeave += new System.EventHandler(BackBtnML);
+            this.BackBtn.BackColor = System.Drawing.Color.DimGray;
+            this.BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.BackBtn.FlatAppearance.BorderSize = 0;
+            this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.BackBtn.Location = new System.Drawing.Point(-5, 367);
+            this.BackBtn.Name = "BackBtn";
+            this.BackBtn.Size = new System.Drawing.Size(60, 22);
+            this.BackBtn.TabIndex = 14;
+            this.BackBtn.Text = "Back...";
+            this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BackBtn.UseVisualStyleBackColor = false;
+            this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
+            this.BackBtn.MouseEnter += new System.EventHandler(this.BackBtnMH);
+            this.BackBtn.MouseLeave += new System.EventHandler(this.BackBtnML);
+            // 
+            // UC1Btn
+            // 
+            this.UC1Btn.BackColor = System.Drawing.Color.DimGray;
+            this.UC1Btn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.UC1Btn.FlatAppearance.BorderSize = 0;
+            this.UC1Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.UC1Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.UC1Btn.ForeColor = System.Drawing.SystemColors.Control;
+            this.UC1Btn.Location = new System.Drawing.Point(-5, 79);
+            this.UC1Btn.Name = "UC1Btn";
+            this.UC1Btn.Size = new System.Drawing.Size(190, 22);
+            this.UC1Btn.TabIndex = 15;
+            this.UC1Btn.Text = "Uncharted: Drakes Fortune";
+            this.UC1Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.UC1Btn.UseVisualStyleBackColor = false;
+            this.UC1Btn.Click += new System.EventHandler(this.UC1Btn_Click);
+            this.UC1Btn.MouseEnter += new System.EventHandler(this.UC1BtnMH);
+            this.UC1Btn.MouseLeave += new System.EventHandler(this.UC1BtnML);
+            // 
+            // UC2Btn
+            // 
+            this.UC2Btn.BackColor = System.Drawing.Color.DimGray;
+            this.UC2Btn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.UC2Btn.FlatAppearance.BorderSize = 0;
+            this.UC2Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.UC2Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.UC2Btn.ForeColor = System.Drawing.SystemColors.Control;
+            this.UC2Btn.Location = new System.Drawing.Point(-5, 102);
+            this.UC2Btn.Name = "UC2Btn";
+            this.UC2Btn.Size = new System.Drawing.Size(201, 23);
+            this.UC2Btn.TabIndex = 16;
+            this.UC2Btn.Text = "Uncharted 2: Among Thieves";
+            this.UC2Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.UC2Btn.UseVisualStyleBackColor = false;
+            this.UC2Btn.Click += new System.EventHandler(this.UC2Btn_Click);
+            this.UC2Btn.MouseEnter += new System.EventHandler(this.UC2BtnMH);
+            this.UC2Btn.MouseLeave += new System.EventHandler(this.UC2BtnML);
+            // 
+            // UC3Btn
+            // 
+            this.UC3Btn.BackColor = System.Drawing.Color.DimGray;
+            this.UC3Btn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.UC3Btn.FlatAppearance.BorderSize = 0;
+            this.UC3Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.UC3Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.UC3Btn.ForeColor = System.Drawing.SystemColors.Control;
+            this.UC3Btn.Location = new System.Drawing.Point(-5, 126);
+            this.UC3Btn.Name = "UC3Btn";
+            this.UC3Btn.Size = new System.Drawing.Size(219, 23);
+            this.UC3Btn.TabIndex = 17;
+            this.UC3Btn.Text = "Uncharted 3: Drakes Deception";
+            this.UC3Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.UC3Btn.UseVisualStyleBackColor = false;
+            this.UC3Btn.Click += new System.EventHandler(this.UC3Btn_Click);
+            this.UC3Btn.MouseEnter += new System.EventHandler(this.UC3BtnMH);
+            this.UC3Btn.MouseLeave += new System.EventHandler(this.UC3BtnML);
+            // 
+            // label2
+            // 
+            this.label2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(-5, 205);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(320, 16);
+            this.label2.TabIndex = 20;
+            this.label2.Text = "______________________________________________________________";
+            this.label2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.label2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
+            this.label2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
+            // 
+            // DebugPayloadBtn
+            // 
+            this.DebugPayloadBtn.BackColor = System.Drawing.Color.DimGray;
+            this.DebugPayloadBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.DebugPayloadBtn.FlatAppearance.BorderSize = 0;
+            this.DebugPayloadBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DebugPayloadBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.DebugPayloadBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.DebugPayloadBtn.Location = new System.Drawing.Point(-5, 268);
+            this.DebugPayloadBtn.Name = "DebugPayloadBtn";
+            this.DebugPayloadBtn.Size = new System.Drawing.Size(124, 23);
+            this.DebugPayloadBtn.TabIndex = 22;
+            this.DebugPayloadBtn.Text = "Send PS4Debug";
+            this.DebugPayloadBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.DebugPayloadBtn.UseVisualStyleBackColor = false;
+            this.DebugPayloadBtn.Click += new System.EventHandler(this.DebugPayloadBtn_Click);
+            this.DebugPayloadBtn.MouseEnter += new System.EventHandler(this.DebugPayloadBtnMH);
+            this.DebugPayloadBtn.MouseLeave += new System.EventHandler(this.DebugPayloadBtnML);
+            // 
+            // PortBox
+            // 
+            this.PortBox.BackColor = System.Drawing.Color.DimGray;
+            this.PortBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.PortBox.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.PortBox.ForeColor = System.Drawing.SystemColors.Control;
+            this.PortBox.Location = new System.Drawing.Point(40, 251);
+            this.PortBox.MaxLength = 4;
+            this.PortBox.Name = "PortBox";
+            this.PortBox.Size = new System.Drawing.Size(24, 13);
+            this.PortBox.TabIndex = 23;
+            this.PortBox.Text = "port";
+            this.PortBox.TextChanged += new System.EventHandler(this.PortBox_TextChanged);
+            // 
+            // IPLabelBtn
+            // 
+            this.IPLabelBtn.BackColor = System.Drawing.Color.DimGray;
+            this.IPLabelBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.IPLabelBtn.FlatAppearance.BorderSize = 0;
+            this.IPLabelBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IPLabelBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.IPLabelBtn.ForeColor = System.Drawing.Color.Silver;
+            this.IPLabelBtn.Location = new System.Drawing.Point(-5, 222);
+            this.IPLabelBtn.Name = "IPLabelBtn";
+            this.IPLabelBtn.Size = new System.Drawing.Size(97, 22);
+            this.IPLabelBtn.TabIndex = 24;
+            this.IPLabelBtn.Text = "I.P. Address:";
+            this.IPLabelBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.IPLabelBtn.UseVisualStyleBackColor = false;
+            this.IPLabelBtn.Click += new System.EventHandler(this.IPLabelBtn_Click);
+            // 
+            // PortLabelBtn
+            // 
+            this.PortLabelBtn.BackColor = System.Drawing.Color.DimGray;
+            this.PortLabelBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.PortLabelBtn.FlatAppearance.BorderSize = 0;
+            this.PortLabelBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PortLabelBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.PortLabelBtn.ForeColor = System.Drawing.Color.Silver;
+            this.PortLabelBtn.Location = new System.Drawing.Point(-5, 245);
+            this.PortLabelBtn.Name = "PortLabelBtn";
+            this.PortLabelBtn.Size = new System.Drawing.Size(47, 22);
+            this.PortLabelBtn.TabIndex = 25;
+            this.PortLabelBtn.Text = "Port:";
+            this.PortLabelBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.PortLabelBtn.UseVisualStyleBackColor = false;
+            this.PortLabelBtn.Click += new System.EventHandler(this.PortLabelBtn_Click);
+            // 
+            // label3
+            // 
+            this.label3.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.Location = new System.Drawing.Point(-4, 302);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(320, 16);
+            this.label3.TabIndex = 26;
+            this.label3.Text = "______________________________________________________________";
+            this.label3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.label3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
+            this.label3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
+            // 
+            // InfoHelpBtn
+            // 
+            this.InfoHelpBtn.BackColor = System.Drawing.Color.DimGray;
+            this.InfoHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.InfoHelpBtn.FlatAppearance.BorderSize = 0;
+            this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.InfoHelpBtn.Location = new System.Drawing.Point(-5, 319);
+            this.InfoHelpBtn.Name = "InfoHelpBtn";
+            this.InfoHelpBtn.Size = new System.Drawing.Size(135, 23);
+            this.InfoHelpBtn.TabIndex = 27;
+            this.InfoHelpBtn.Text = "Information / Help";
+            this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.InfoHelpBtn.UseVisualStyleBackColor = false;
+            this.InfoHelpBtn.Click += new System.EventHandler(this.InfoHelpBtn_Click);
+            this.InfoHelpBtn.MouseEnter += new System.EventHandler(this.InfoHelpBtnMH);
+            this.InfoHelpBtn.MouseLeave += new System.EventHandler(this.InfoHelpBtnML);
+            // 
+            // CreditsBtn
+            // 
+            this.CreditsBtn.BackColor = System.Drawing.Color.DimGray;
+            this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.CreditsBtn.FlatAppearance.BorderSize = 0;
+            this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.CreditsBtn.Location = new System.Drawing.Point(-5, 343);
+            this.CreditsBtn.Name = "CreditsBtn";
+            this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
+            this.CreditsBtn.TabIndex = 28;
+            this.CreditsBtn.Text = "Credits...";
+            this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.CreditsBtn.UseVisualStyleBackColor = false;
+            this.CreditsBtn.Click += new System.EventHandler(this.CreditsBtn_Click);
+            this.CreditsBtn.MouseEnter += new System.EventHandler(this.CreditsBtnMH);
+            this.CreditsBtn.MouseLeave += new System.EventHandler(this.CreditsBtnML);
+            // 
+            // UC4MPBetaBtn
+            // 
+            this.UC4MPBetaBtn.BackColor = System.Drawing.Color.DimGray;
+            this.UC4MPBetaBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.UC4MPBetaBtn.FlatAppearance.BorderSize = 0;
+            this.UC4MPBetaBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.UC4MPBetaBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.UC4MPBetaBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.UC4MPBetaBtn.Location = new System.Drawing.Point(-5, 172);
+            this.UC4MPBetaBtn.Name = "UC4MPBetaBtn";
+            this.UC4MPBetaBtn.Size = new System.Drawing.Size(153, 22);
+            this.UC4MPBetaBtn.TabIndex = 29;
+            this.UC4MPBetaBtn.Text = "Uncharted 4 MP Beta";
+            this.UC4MPBetaBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.UC4MPBetaBtn.UseVisualStyleBackColor = false;
+            this.UC4MPBetaBtn.Click += new System.EventHandler(this.UC4MPBetaBtn_Click);
+            this.UC4MPBetaBtn.MouseEnter += new System.EventHandler(this.UC4MPBetaBtnMH);
+            this.UC4MPBetaBtn.MouseLeave += new System.EventHandler(this.UC4MPBetaBtnML);
             // 
             // PS4DebugPage
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            BackColor = System.Drawing.Color.DimGray;
-            ClientSize = new System.Drawing.Size(320, 430);
-            Controls.Add(PortBox);
-            Controls.Add(IPBOX_E);
-            Controls.Add(UC4MPBetaBtn);
-            Controls.Add(InfoHelpBtn);
-            Controls.Add(ManualConnectBtn);
-            Controls.Add(PortLabelBtn);
-            Controls.Add(IPLabelBtn);
-            Controls.Add(DebugPayloadBtn);
-            Controls.Add(UC3Btn);
-            Controls.Add(UC1Btn);
-            Controls.Add(UC4100Btn);
-            Controls.Add(TLL100Btn);
-            Controls.Add(T1RBtn);
-            Controls.Add(T2100Btn);
-            Controls.Add(Info);
-            Controls.Add(MainBox);
-            Controls.Add(UC2Btn);
-            Controls.Add(label2);
-            Controls.Add(label3);
-            Controls.Add(BackBtn);
-            Controls.Add(CreditsBtn);
-            Cursor = System.Windows.Forms.Cursors.Default;
-            FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            Name = "PS4DebugPage";
-            StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            Text = "Main";
-            MainBox.ResumeLayout(false);
-            MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            ResumeLayout(false);
-            PerformLayout();
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.DimGray;
+            this.ClientSize = new System.Drawing.Size(320, 414);
+            this.Controls.Add(this.PortBox);
+            this.Controls.Add(this.IPBOX_E);
+            this.Controls.Add(this.UC4MPBetaBtn);
+            this.Controls.Add(this.InfoHelpBtn);
+            this.Controls.Add(this.ManualConnectBtn);
+            this.Controls.Add(this.PortLabelBtn);
+            this.Controls.Add(this.IPLabelBtn);
+            this.Controls.Add(this.DebugPayloadBtn);
+            this.Controls.Add(this.UC3Btn);
+            this.Controls.Add(this.UC1Btn);
+            this.Controls.Add(this.UC4100Btn);
+            this.Controls.Add(this.TLL100Btn);
+            this.Controls.Add(this.T1RBtn);
+            this.Controls.Add(this.T2100Btn);
+            this.Controls.Add(this.Info);
+            this.Controls.Add(this.MainBox);
+            this.Controls.Add(this.UC2Btn);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.BackBtn);
+            this.Controls.Add(this.CreditsBtn);
+            this.Cursor = System.Windows.Forms.Cursors.Default;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Name = "PS4DebugPage";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.Text = "Main";
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
+            this.MainBox.ResumeLayout(false);
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
         public void MoveForm(object sender, MouseEventArgs e) => Common.MoveForm(sender, e);
