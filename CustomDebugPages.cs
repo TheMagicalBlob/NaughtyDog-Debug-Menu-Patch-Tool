@@ -31,8 +31,6 @@ namespace Dobby {
             MenuScale,
             MenuOpacity = 2
         ;
-        public void ExtraBtn2MH(object sender, EventArgs e) => HoverLeave(ExtraBtn, 0);
-        public void ExtraBtn2ML(object sender, EventArgs e) => HoverLeave(ExtraBtn, 30);
         public void ConfirmBtn_Click(object sender, EventArgs e) {
 
             using (FileStream fs = new FileStream(@"No Path, Fix.", FileMode.Open, FileAccess.ReadWrite)) {
@@ -165,7 +163,7 @@ namespace Dobby {
             // MainBox
             // 
             this.MainBox.Controls.Add(this.MainLabel);
-            this.MainBox.Location = new System.Drawing.Point(2, 0);
+            this.MainBox.Location = new System.Drawing.Point(1, -4);
             this.MainBox.Name = "MainBox";
             this.MainBox.Size = new System.Drawing.Size(317, 32);
             this.MainBox.TabIndex = 5;
@@ -189,7 +187,7 @@ namespace Dobby {
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ExitBtn.Location = new System.Drawing.Point(293, 7);
+            this.ExitBtn.Location = new System.Drawing.Point(293, 3);
             this.ExitBtn.Name = "ExitBtn";
             this.ExitBtn.Size = new System.Drawing.Size(23, 23);
             this.ExitBtn.TabIndex = 18;
@@ -208,7 +206,7 @@ namespace Dobby {
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinimizeBtn.Location = new System.Drawing.Point(270, 7);
+            this.MinimizeBtn.Location = new System.Drawing.Point(270, 3);
             this.MinimizeBtn.Name = "MinimizeBtn";
             this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
             this.MinimizeBtn.TabIndex = 19;
@@ -565,11 +563,15 @@ namespace Dobby {
             this.Name = "T2CustomOptionsDebug";
             this.Text = "Main";
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormMouseDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FormMouseUp);
             this.MainBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
+        public void MoveForm(object sender, MouseEventArgs e) => Common.MoveForm(sender, e);
+        public void MouseUpFunc(object sender, MouseEventArgs e) => Common.MouseUpFunc(sender, e);
+        public void MouseDownFunc(object sender, MouseEventArgs e) => Common.MouseDownFunc(sender, e);
         public void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
         public void ExitBtnMH(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void ExitBtnML(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 255, 255);

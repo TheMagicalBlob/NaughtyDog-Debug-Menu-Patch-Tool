@@ -108,7 +108,7 @@ namespace Dobby {
             this.MainBox.Controls.Add(this.ExitBtn);
             this.MainBox.Controls.Add(this.MinimizeBtn);
             this.MainBox.Controls.Add(this.MainLabel);
-            this.MainBox.Location = new System.Drawing.Point(2, 0);
+            this.MainBox.Location = new System.Drawing.Point(1, -4);
             this.MainBox.Name = "MainBox";
             this.MainBox.Size = new System.Drawing.Size(317, 32);
             this.MainBox.TabIndex = 5;
@@ -833,21 +833,22 @@ skip: ActiveForm.Location = LastPos;
                                 0x18725CA, // Switch On/Off Neo Resolution Mode...
                                 0x18737BF, // Optimization...
                                 0x18762C6, // Render Pause
-                                0x18768C7, // Rendering...       (Chunk 1)
-                                0x187D6E0, // Rendering...       (Chunk 2)
+                                0x18768C7, // Rendering...            (Chunk 1)
+                                0x187D6E0, // Rendering...            (Chunk 2)
                                 0x3DA85A,  // IGCs...
-                                0x1B4ABB8, // Post-Processing... (Chunk 1)
-                                0x1B52536, // Post-Processing... (Chunk 2)
-                                0x1894772, // Lighting...        (Chunk 1)
-                                0x189F096, // Lighting...        (Chunk 2)
-                                0x187F975, // Rendering...       (Chunk 3)
+                                0x1B4ABB8, // Post-Processing...      (Chunk 1)
+                                0x1B52536, // Post-Processing...      (Chunk 2)
+                                0x1894772, // Lighting...             (Chunk 1)
+                                0x189F096, // Lighting...             (Chunk 2)
+                                0x187F975, // Rendering...            (Chunk 3)
                                 0x404833,  // Spawn Character...
                                 0x405065,  // Spawn Vehicle...
-                                0x407016,  // Collision (Havok)... (Skip Those Contents tho)
-                                //3D7D50,  // Gameplay Menu Jump 1
+                                0x407016,  // Collision (Havok)...
+                                //3D7D50,  // Gameplay Menu           [Chunk 1 | SKIPPED FOR MEMORY REASONS]
+                                0x3E87C8,  // Gameplay Menu           (Chunk 2)
                                 0x40727F,  // Game Objects...
                                 0x4073D0,  // Levels...
-                                0x3E87C8,  // Gameplay Menu Second Skipped Chunk
+                                0x4085D9,  // A Misc. Levels... Option
                                 0x40912D,  // Navigation...
                                 0x4BD0EF,  // NavMesh...
                                 0x40927F,  // Interactive Background...
@@ -855,24 +856,24 @@ skip: ActiveForm.Location = LastPos;
                                 0x40C78A,  // Animation...
                                 0x241158,  // Camera...
                                 0x40FF86,  // Menu...
-                                //15673A5, // Audio... Chunk 1
-                                //156E3BA, // Audio Output...
-                                //156F366, // Audio Output... Chunk 2
-                                //1570B25, // Audio... Chunk 2
+                                //15673A5, // Audio...                [Chunk 1 | SKIPPED FOR MEMORY REASONS]
+                                0x156E3BA, // Audio Output...
+                                0x156F366, // Audio Output... Chunk 2
+                                0x1570B25, // Audio... Chunk 2
                                 0x4130D6,  // Music...
-                                //413475,  // Vox...
+                                0x413475,  // Vox...
                                 0x414DB0,  // Misc. Vox... Options
                                 0x173236A, // Scripts... (Menu Contents)
-                                //41500A,  // Particles...
+                                0x41500A,  // Particles...
                                 0x415272,  // Level BugFix...
+                                0x24BE58,  // Cinematics              (Chunk 1)
+                                0x24CB24,  // Cinematics              (Chunk 2)
                                 0x24E347,  // Designer...
                                 0x18B01A5, // Load A Few Extra Particle Menu Options
-                                0x24E854,  // Tasks... (Extras)
+                                0x24E854,  // Tasks...                (Extras)
                                 0x24E92A,  // Play Test Tasks...
                                 0x24ED5A,  // Complete Test Tasks...
-                                0x1643865, // Stop SP Tasks From Crashing In Coop/MP
-                                0x4085D9,  // A Misc. Levels... Option
-                                //414F7D   // Scripts... (Submenu String)
+                                0x1643865  // Stop SP Tasks From Crashing In Coop/MP
                             };
                             FunctionNops = new int[] {
                                 0x18768E9, // Rendering Push 1
@@ -885,17 +886,20 @@ skip: ActiveForm.Location = LastPos;
                                 0x40508D,  // Spawn Vehicle Push
                                 0x405311,  // Spawn Vehicle Pop
                                 0x7F6659,  // Stop The Game From Booting SP If The X Button Is Pressed On The Menu
-                                0x3B0EB2,  // Demo Mode Push 1
-                                0x3B10F3,  // Demo Mode Pop  1
-                                0x3D7D79,  // Gameplay Push
-                                0x3DA63D,  // Gameplay Pop
-                                0x3D7D9C,  // StateScripts Push
-                                0x3DA87C,  // IGCs Push
-                                0x3DA9BA,  // IGCs Pop
-                                0x3E806C,  // Gameplay Pop 3 (State Scripts Pop? Check)
+
+                                //These Next 8 Are Only Needed For The Gameplay Menu's First Chunk Which I've Not Loaded, So These Are Commented Out
+                                //3D7D79,  // Gameplay Push
+                                //3DA63D,  // Gameplay Pop
+                                //3B0EB2,  // Demo Mode Push 1
+                                //3B10F3,  // Demo Mode Pop  1
+                                //3D7D9C,  // StateScripts Push
+                                //3DA87C,  // IGCs Push
+                                //3DA9BA,  // IGCs Pop
+                                //3E806C,  // State Scripts Pop
+
                                 0x3E87EA,  // Gameplay Part 2 Push
                                 0x3E9506,  // Gameplay Part 2 Pop
-                                0x40703E,  // Collision (Havok)... Push
+                                0x40703E,  // Collision (Havok)... Push (Outside The Submenu, So Gotta Skip 'EM Still)
                                 0x40715A,  // Collision (Havok)... Pop
                                 0x4072A7,  // Game Objects... Push
                                 0x4073C2,  // Game Objects... Pop
@@ -921,8 +925,8 @@ skip: ActiveForm.Location = LastPos;
                                 0x7E73A9,  // Camera... Pop
                                 0x40FFB5,  // Menu... Push
                                 0x4115BF,  // Menu... Pop
-                                0x15673D2, // Audio... Chunk 1 Push
-                                0x156E314, // Audio... Chunk 1 Pop
+                                //15673D2, // Audio... Chunk 1 Push   [SKIPPED FOR MEMORY REASONS]
+                                //156E314, // Audio... Chunk 1 Pop    [SKIPPED FOR MEMORY REASONS]
                                 0x156E3DC, // Audio Output... Push
                                 0x156EEC6, // Audio Output... Pop
                                 0x156F388, // Audio Output... Chunk 2 Push
@@ -937,6 +941,10 @@ skip: ActiveForm.Location = LastPos;
                                 0x173238C, // Scripts... Pop
                                 0x41529A,  // Level BugFix... Push
                                 0x415A38,  // Level BugFix... Pop
+                                0x24BE82,  // Cinematics Push 1
+                                0x24C5DB,  // Cinematics Pop 1
+                                0x24CB4E,  // Cinematics Push 2
+                                0x24E28D,  // Cinematics Pop 2
                                 0x19CA02F, // Demo Mode Push 2
                                 0x19CA23A, // Demo Mode Pop  2
                                 0x1B4ABE1, // Post-Processing Chunk 1 Push
@@ -963,15 +971,15 @@ skip: ActiveForm.Location = LastPos;
                             var Returns = new int[] {
                                 0x421960,  // Skip Schema Spawn Menu
                                 0x423590,  // Skip DC Spawn Menu
-                                0x16186D0, // Skip Select State Scripts Menu
-                                0x161AC50, // Skip IGCs Menu
-                                0x17176A0, // Skip Select Region By Name Menu
-                                0x72D480,  // Skip Gestures Menu
-                                0x18DE2E0, // Skip "Collision (Havok)..." Contents For Memory Reasons
                                 0x9D5430,  // Skip Select Nav-Mesh
-                                0x39B1E0,  // Designer Content Loop
-                                //3D7D30   // TEMP Skip ENTIRE Gameplay... Menu For Memory, As It Now Crashes After Adding The Animation Menu //!
-                                0x16186D0  // State Scripts Menu For Memory Reasons
+                                0x39B1E0   // Designer Content Loop
+
+                                //These Last 5 Are Only Needed For The Gameplay Menu's First Chunk Which I've Not Loaded, So These Are Commented Out
+                                //161AC50, // Skip IGCs Menu
+                                //17176A0, // Skip Select Region By Name Menu
+                                //72D480,  // Skip Gestures Menu                    
+                                //16186D0, // Skip Select State Script Menu
+                                //16186D0  // State Scripts Menu For Memory Reasons
                             };
 
                             // Main Patches \\
@@ -984,12 +992,14 @@ skip: ActiveForm.Location = LastPos;
                             WriteBytes(0x1B5A9C0, new byte[] { 0xE9, 0x0F, 0x00, 0x00, 0x00 }); // Stop Various Material Debug Options From Crashing After The Above Patch
                             WriteBytes(0x187B6CE, new byte[] { 0xE9, 0x27, 0x01, 0x00, 0x00 }); // Skip Shader Variables, As It Now Crashes After The Above Patch (It's Empty Anyway, No Big Deal)
                             WriteByte (0x1876A1A, 0xC8);                                        // Lower The Amount Of Loops For The Draw Mode Options By 3 To Skip The Ones That Cause Orbis Crashes
-                            WriteBytes(0x1CB63D0, new byte[] {0xB0, 0x01, 0xC3});               // Stop "Choose Lut File..." From Crashing The Game Because Meh
+                            WriteBytes(0x1CB63D0, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Choose Lut File..." From Crashing The Game
+                            WriteBytes(0x15E8AE0, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Play Cinematic..." From Crashing The Game
+                            WriteBytes(0x15E9340, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Select Cinematic..." From Crashing The Game
                             WriteByte (0x18B7547, 0xEB);                                        // Stop Particles Menu From Fully Initializing And Crashing Game On Boot
-                            WriteBytes(0x18AF8FD, new byte[] { 0xE9, 0x0A, 0x01, 0x00, 0x00 }); // Skip Two Unfixable Particles... Submenus
-                            WriteBytes(0x18AFC31, new byte[] { 0xE9, 0x28, 0x03, 0x00, 0x00 }); // Skip Three More /\
+                            WriteBytes(0x18AF8FD, new byte[] { 0xE9, 0x0A, 0x01, 0x00, 0x00 }); // Skip Two Unfixable "Particles..." Submenus
+                            WriteBytes(0x18AFC31, new byte[] { 0xE9, 0x28, 0x03, 0x00, 0x00 }); // Skip Three More Unfixable "Particles..." Submenus
                             WriteBytes(0x166BF6B, new byte[] { 0xE9, 0x5B, 0x04, 0x00, 0x00 }); // Skip Select Spawner By Name Menu
-
+                            WriteBytes(0x18E1900, new byte[] { 0xE9, 0x89, 0xC5, 0x00, 0x00 }); // Skip Most Of "Collision (Havok)..." Starting After "Destruction..."
 
                             // Mass Apply Duplicate Patches \\
                             foreach (int Address in WhiteJumps)
@@ -1000,157 +1010,6 @@ skip: ActiveForm.Location = LastPos;
                                 WriteByte(Address, 0xC3);
                             Inf("Restored Uncharted 4 1.33 MP Debug Menu Applied");
                             break;
-                            #region OldVersion
-                            FunctionNops = new int[] {
-                                0x18768E9,
-                                0x187D702,
-                                0x187F8D0,
-                                0x1B4ABE1,
-                                0x1B5209A,
-                                0x1B52558,
-                                0x1B55062,
-                                0x189479B,
-                                0x189B921,
-                                0x189F0B8,
-                                0x18A06E7,
-                                0x187F997,
-                                0x188DB53,
-                                0x40485B,
-                                0x40497F,
-                                0x42357A,
-                                0x3E87EA, // GameplayMenu Third Chunk
-                                0x3E9506, // GameplayMenu Third Chunk
-                                0x404AB4,
-                                0x4245CA,
-                                0x40508D,
-                                0x405311,
-                                0x4072A7,
-                                0x4073C2,
-                                0x4073F8,
-                                0x187D7B0,
-                                0x408CF3,
-                                0x40703E,
-                                0x40715A,
-                                0x409155,
-                                0x414F6B,
-                                0x41349D,
-                                0x4BEDA8,
-                                0x9D5DF4,
-                                0x4BD11D,
-                                0x4BD14F,
-                                0x4092A7,
-                                0x409581,
-                                0x409E35,
-                                0x166C705,
-                                0x40C7B2,
-                                0x40FF02,
-                                0x241182,
-                                0x2412D3,
-                                0x2412FE,
-                                0x241329,
-                                0x7E074F,
-                                0x7E73A9,
-                                0x40FFB5,
-                                0x4115BF,
-                                0x15673D2,
-                                0x156E314,
-                                0x156E3DC,
-                                0x156EEC6,
-                                0x156F388,
-                                0x1570A85,
-                                0x1570B47,
-                                0x1570E96,
-                                0x41310E,
-                                0x4133C8,
-                                0x173238C,
-                                0x1733078,
-                                0x415032,
-                                0x4150BF,
-                                0x18AF7DF,
-                                0x41529A,
-                                0x415A38,
-                                0x24BE82,
-                                0x24C5DB,
-                                0x24CB4E,
-                                0x24E28D,
-                                0x24E371,
-                                0x24E3A8,
-                                0x24E4DF,
-                                0x24E88B,
-                                0x24EE94
-                            };
-                            WhiteJumps = new int[] {
-                                0x1643865, // Stop Crash On SP Tasks
-                                0x189F096, // Lighting Menu Part 2
-                                0x3E87C8,  // GameplayMenu Third Chunk
-                                0x40912D,
-                                0x4BD0EF,
-                                0x40FF86,
-                                0x4130D6,
-                                0x41500A,
-                                0x404833,
-                                0x413475,
-                                0x173236A,
-                                0x24E347
-                            };
-                            var InvertedDatParams = new int[] {
-                                0x18737BC,
-                                0x187D6D6,
-                                0x1B52533,
-                                0x187F972,
-                                0x40727C,
-                                0x4073CD,
-                                0x41526F,
-                                0x24E5C8,
-                                0x24E851
-                            };
-                            var InvertJump = new int[] {
-                                0x1B4ABB7,
-                                0x1894771,
-                                0x241157,
-                                0x1731F61,
-                                0x24E929,
-                                0x24ED59
-                            };
-                            var PopJumpsThatSkipTheNextDevkitCheck = new int[] {
-                                0x405057, // Spawn Character Pop
-                                0x409271,
-                                0x40954B,
-                                0x40C77C
-                            };
-
-                            WriteByte(new int[] { 0x1CCEB8, 0x24E5C8 }, 0x01);// Enable Debug Mode, Stop SP Tasks From Crashing, Restore UC4 Task List //// Uhh, What? There Are Only Two Offsets Tho
-
-                            WriteByte(new int[] { 0x20760B, 0x207615 }, 0x88); // Swap Disable FPS And Disable Debug Rendering So The Former Gets Toggled Without "Disabling Debug Is All-Inclusive" Enabled Rather Than The Latter
-                            WriteByte(0x20762B, 0x7F);
-
-                            WriteByte(0x2409EC, 0x85); // Relaunch...
-
-                            WriteByte(0x18725CA, 0x00); // Neo Resolution Mode...
-                            WriteBytes(0x1872662, TwoZero); // HDR Mode...
-
-                            WriteByte(0x18762C6, 0x00); // Render Pause
-
-                            WriteBytes(0x18768C7, TwoZero); // Rendering...
-                            
-                            WriteBytes(PopJumpsThatSkipTheNextDevkitCheck, new byte[] { 0xE9, 0x0D, 0x00, 0x00, 0x00 });
-                            
-                            WriteBytes(0x1FA2C3D, new byte[] { 0x2E, 0x2E, 0x2E, 0x00 }); // Fix "Job System ..." String because fuck you
-
-
-                            ///
-                            /// Can You Tell I Got Tired Of Documenting It?
-                            ///
-                            WriteBytes(FunctionNops, E9Jump);  // All The Skipped Functions That Don't Skip Passed The Next Instruction
-                            WriteBytes(WhiteJumps, FourZero);
-                            WriteByte(InvertedDatParams, 0x01); // Invert Various Skip Params 0x00 => 0x01  GET RID OF THIS
-                            WriteByte(InvertJump, 0x85); //  GET RID OF THIS
-                            WriteByte(new int[] { 0x15E9340, 0x15E8AE0 }, 0xC3);
-                            WriteBytes(0x7E62F9, new byte[] { 0xE9, 0x04, 0x00, 0x00, 0x00 });
-                            WriteBytes(0x18AF889, new byte[] { 0xE9, 0x08, 0x3E, 0x00, 0x00 });
-                            WriteBytes(0x39B394, new byte[] { 0xE9, 0x30, 0x00, 0x00, 0x00 });
-                            WriteBytes(new int[] { 0x24E43F, 0x241351 }, new byte[] { 0xE9, 0x05, 0x00, 0x00, 0x00 });
-                            #endregion
                         case TLL100:
                             Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
                             if (Check == DialogResult.No) {

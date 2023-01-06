@@ -100,7 +100,7 @@ namespace Dobby {
             this.TLL100Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.TLL100Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.TLL100Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.TLL100Btn.Location = new System.Drawing.Point(-5, 195);
+            this.TLL100Btn.Location = new System.Drawing.Point(-5, 191);
             this.TLL100Btn.Name = "TLL100Btn";
             this.TLL100Btn.Size = new System.Drawing.Size(192, 23);
             this.TLL100Btn.TabIndex = 0;
@@ -116,7 +116,7 @@ namespace Dobby {
             this.MainBox.Controls.Add(this.ExitBtn);
             this.MainBox.Controls.Add(this.MinimizeBtn);
             this.MainBox.Controls.Add(this.MainLabel);
-            this.MainBox.Location = new System.Drawing.Point(2, 0);
+            this.MainBox.Location = new System.Drawing.Point(1, -4);
             this.MainBox.Name = "MainBox";
             this.MainBox.Size = new System.Drawing.Size(317, 32);
             this.MainBox.TabIndex = 5;
@@ -171,7 +171,7 @@ namespace Dobby {
             this.ManualConnectBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ManualConnectBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.ManualConnectBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ManualConnectBtn.Location = new System.Drawing.Point(-5, 292);
+            this.ManualConnectBtn.Location = new System.Drawing.Point(-5, 288);
             this.ManualConnectBtn.Name = "ManualConnectBtn";
             this.ManualConnectBtn.Size = new System.Drawing.Size(164, 23);
             this.ManualConnectBtn.TabIndex = 6;
@@ -189,7 +189,7 @@ namespace Dobby {
             this.IPBOX_E.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.IPBOX_E.Cursor = System.Windows.Forms.Cursors.Cross;
             this.IPBOX_E.ForeColor = System.Drawing.SystemColors.Control;
-            this.IPBOX_E.Location = new System.Drawing.Point(90, 228);
+            this.IPBOX_E.Location = new System.Drawing.Point(90, 224);
             this.IPBOX_E.MaxLength = 15;
             this.IPBOX_E.Name = "IPBOX_E";
             this.IPBOX_E.Size = new System.Drawing.Size(100, 13);
@@ -201,7 +201,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(9, 393);
+            this.Info.Location = new System.Drawing.Point(9, 389);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
@@ -218,7 +218,7 @@ namespace Dobby {
             this.T1RBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.T1RBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.T1RBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.T1RBtn.Location = new System.Drawing.Point(-5, 33);
+            this.T1RBtn.Location = new System.Drawing.Point(-5, 29);
             this.T1RBtn.Name = "T1RBtn";
             this.T1RBtn.Size = new System.Drawing.Size(193, 22);
             this.T1RBtn.TabIndex = 8;
@@ -237,7 +237,7 @@ namespace Dobby {
             this.T2100Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.T2100Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.T2100Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.T2100Btn.Location = new System.Drawing.Point(-5, 56);
+            this.T2100Btn.Location = new System.Drawing.Point(-5, 52);
             this.T2100Btn.Name = "T2100Btn";
             this.T2100Btn.Size = new System.Drawing.Size(150, 22);
             this.T2100Btn.TabIndex = 9;
@@ -256,7 +256,7 @@ namespace Dobby {
             this.UC4100Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.UC4100Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.UC4100Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.UC4100Btn.Location = new System.Drawing.Point(-5, 149);
+            this.UC4100Btn.Location = new System.Drawing.Point(-5, 145);
             this.UC4100Btn.Name = "UC4100Btn";
             this.UC4100Btn.Size = new System.Drawing.Size(95, 22);
             this.UC4100Btn.TabIndex = 12;
@@ -275,7 +275,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(-5, 367);
+            this.BackBtn.Location = new System.Drawing.Point(-5, 363);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(60, 22);
             this.BackBtn.TabIndex = 14;
@@ -294,7 +294,7 @@ namespace Dobby {
             this.UC1Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.UC1Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.UC1Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.UC1Btn.Location = new System.Drawing.Point(-5, 79);
+            this.UC1Btn.Location = new System.Drawing.Point(-5, 75);
             this.UC1Btn.Name = "UC1Btn";
             this.UC1Btn.Size = new System.Drawing.Size(190, 22);
             this.UC1Btn.TabIndex = 15;
@@ -313,7 +313,7 @@ namespace Dobby {
             this.UC2Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.UC2Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.UC2Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.UC2Btn.Location = new System.Drawing.Point(-5, 102);
+            this.UC2Btn.Location = new System.Drawing.Point(-5, 98);
             this.UC2Btn.Name = "UC2Btn";
             this.UC2Btn.Size = new System.Drawing.Size(201, 23);
             this.UC2Btn.TabIndex = 16;
@@ -332,7 +332,7 @@ namespace Dobby {
             this.UC3Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.UC3Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.UC3Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.UC3Btn.Location = new System.Drawing.Point(-5, 126);
+            this.UC3Btn.Location = new System.Drawing.Point(-5, 122);
             this.UC3Btn.Name = "UC3Btn";
             this.UC3Btn.Size = new System.Drawing.Size(219, 23);
             this.UC3Btn.TabIndex = 17;
@@ -347,7 +347,7 @@ namespace Dobby {
             // 
             this.label2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(-5, 205);
+            this.label2.Location = new System.Drawing.Point(-5, 201);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(320, 16);
             this.label2.TabIndex = 20;
@@ -364,7 +364,7 @@ namespace Dobby {
             this.DebugPayloadBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DebugPayloadBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.DebugPayloadBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.DebugPayloadBtn.Location = new System.Drawing.Point(-5, 268);
+            this.DebugPayloadBtn.Location = new System.Drawing.Point(-5, 264);
             this.DebugPayloadBtn.Name = "DebugPayloadBtn";
             this.DebugPayloadBtn.Size = new System.Drawing.Size(124, 23);
             this.DebugPayloadBtn.TabIndex = 22;
@@ -381,7 +381,7 @@ namespace Dobby {
             this.PortBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.PortBox.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PortBox.ForeColor = System.Drawing.SystemColors.Control;
-            this.PortBox.Location = new System.Drawing.Point(40, 251);
+            this.PortBox.Location = new System.Drawing.Point(40, 247);
             this.PortBox.MaxLength = 4;
             this.PortBox.Name = "PortBox";
             this.PortBox.Size = new System.Drawing.Size(24, 13);
@@ -397,7 +397,7 @@ namespace Dobby {
             this.IPLabelBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IPLabelBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.IPLabelBtn.ForeColor = System.Drawing.Color.Silver;
-            this.IPLabelBtn.Location = new System.Drawing.Point(-5, 222);
+            this.IPLabelBtn.Location = new System.Drawing.Point(-5, 218);
             this.IPLabelBtn.Name = "IPLabelBtn";
             this.IPLabelBtn.Size = new System.Drawing.Size(97, 22);
             this.IPLabelBtn.TabIndex = 24;
@@ -414,7 +414,7 @@ namespace Dobby {
             this.PortLabelBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PortLabelBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.PortLabelBtn.ForeColor = System.Drawing.Color.Silver;
-            this.PortLabelBtn.Location = new System.Drawing.Point(-5, 245);
+            this.PortLabelBtn.Location = new System.Drawing.Point(-5, 241);
             this.PortLabelBtn.Name = "PortLabelBtn";
             this.PortLabelBtn.Size = new System.Drawing.Size(47, 22);
             this.PortLabelBtn.TabIndex = 25;
@@ -427,7 +427,7 @@ namespace Dobby {
             // 
             this.label3.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
             this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(-4, 302);
+            this.label3.Location = new System.Drawing.Point(-4, 298);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(320, 16);
             this.label3.TabIndex = 26;
@@ -444,7 +444,7 @@ namespace Dobby {
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(-5, 319);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(-5, 315);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.Size = new System.Drawing.Size(135, 23);
             this.InfoHelpBtn.TabIndex = 27;
@@ -463,7 +463,7 @@ namespace Dobby {
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(-5, 343);
+            this.CreditsBtn.Location = new System.Drawing.Point(-5, 339);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
@@ -483,7 +483,7 @@ namespace Dobby {
             this.UC4MPBetaBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.UC4MPBetaBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.UC4MPBetaBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.UC4MPBetaBtn.Location = new System.Drawing.Point(-5, 172);
+            this.UC4MPBetaBtn.Location = new System.Drawing.Point(-5, 168);
             this.UC4MPBetaBtn.Name = "UC4MPBetaBtn";
             this.UC4MPBetaBtn.Size = new System.Drawing.Size(153, 22);
             this.UC4MPBetaBtn.TabIndex = 29;
@@ -499,7 +499,7 @@ namespace Dobby {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 414);
+            this.ClientSize = new System.Drawing.Size(320, 408);
             this.Controls.Add(this.PortBox);
             this.Controls.Add(this.IPBOX_E);
             this.Controls.Add(this.UC4MPBetaBtn);
@@ -989,6 +989,11 @@ namespace Dobby {
         public Button button2;
         public Button InfoHelpBtn;
         public Button CreditsBtn;
+
+        private void ManualConnectBtn_Click(object sender, MouseEventArgs e) {
+
+        }
+
         public Button BackBtn;
         public Label Info;
 

@@ -67,7 +67,7 @@ namespace Dobby
             this.MainBox.Controls.Add(this.ExitBtn);
             this.MainBox.Controls.Add(this.MinimizeBtn);
             this.MainBox.Controls.Add(this.MainLabel);
-            this.MainBox.Location = new System.Drawing.Point(2, 0);
+            this.MainBox.Location = new System.Drawing.Point(1, -5);
             this.MainBox.Name = "MainBox";
             this.MainBox.Size = new System.Drawing.Size(317, 32);
             this.MainBox.TabIndex = 5;
@@ -288,7 +288,7 @@ namespace Dobby
         }
         public void InfoHelpBtnMH(object sender, EventArgs e) => HoverString(InfoHelpBtn, "Additional Information On Verious Pages");
         public void InfoHelpBtnML(object sender, EventArgs e) => HoverLeave(InfoHelpBtn, 1);
-        public static void CreditsBtn_Click(object sender, EventArgs e) {
+        public void CreditsBtn_Click(object sender, EventArgs e) {
             if (MainForm == null && ActiveForm.Name == "Dobby")
                 MainForm = ActiveForm;
             LastForm = ActiveForm;

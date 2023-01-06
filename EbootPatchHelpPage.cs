@@ -95,7 +95,7 @@ namespace Dobby {
             this.MainBox.Controls.Add(this.ExitBtn);
             this.MainBox.Controls.Add(this.MinimizeBtn);
             this.MainBox.Controls.Add(this.MainLabel);
-            this.MainBox.Location = new System.Drawing.Point(2, 0);
+            this.MainBox.Location = new System.Drawing.Point(1, -4);
             this.MainBox.Name = "MainBox";
             this.MainBox.Size = new System.Drawing.Size(317, 32);
             this.MainBox.TabIndex = 5;
@@ -108,9 +108,9 @@ namespace Dobby {
             // 
             this.GeneralLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
             this.GeneralLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.GeneralLabel.Location = new System.Drawing.Point(1, 32);
+            this.GeneralLabel.Location = new System.Drawing.Point(1, 30);
             this.GeneralLabel.Name = "GeneralLabel";
-            this.GeneralLabel.Size = new System.Drawing.Size(320, 263);
+            this.GeneralLabel.Size = new System.Drawing.Size(320, 244);
             this.GeneralLabel.TabIndex = 34;
             this.GeneralLabel.Text = resources.GetString("GeneralLabel.Text");
             this.GeneralLabel.Click += new System.EventHandler(this.GeneralLabel_Click);
@@ -121,7 +121,7 @@ namespace Dobby {
             this.Question1Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Question1Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
             this.Question1Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Question1Btn.Location = new System.Drawing.Point(-5, 298);
+            this.Question1Btn.Location = new System.Drawing.Point(-2, 278);
             this.Question1Btn.Name = "Question1Btn";
             this.Question1Btn.Size = new System.Drawing.Size(240, 21);
             this.Question1Btn.TabIndex = 30;
@@ -134,7 +134,7 @@ namespace Dobby {
             this.Question2Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Question2Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.Question2Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Question2Btn.Location = new System.Drawing.Point(-5, 320);
+            this.Question2Btn.Location = new System.Drawing.Point(-2, 300);
             this.Question2Btn.Name = "Question2Btn";
             this.Question2Btn.Size = new System.Drawing.Size(268, 22);
             this.Question2Btn.TabIndex = 29;
@@ -147,7 +147,7 @@ namespace Dobby {
             this.User_Is_An_IdiotBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.User_Is_An_IdiotBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold);
             this.User_Is_An_IdiotBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.User_Is_An_IdiotBtn.Location = new System.Drawing.Point(-5, 342);
+            this.User_Is_An_IdiotBtn.Location = new System.Drawing.Point(-2, 322);
             this.User_Is_An_IdiotBtn.Name = "User_Is_An_IdiotBtn";
             this.User_Is_An_IdiotBtn.Size = new System.Drawing.Size(147, 21);
             this.User_Is_An_IdiotBtn.TabIndex = 32;
@@ -161,7 +161,7 @@ namespace Dobby {
             this.Question4Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Question4Btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold);
             this.Question4Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Question4Btn.Location = new System.Drawing.Point(-5, 364);
+            this.Question4Btn.Location = new System.Drawing.Point(-2, 344);
             this.Question4Btn.Name = "Question4Btn";
             this.Question4Btn.Size = new System.Drawing.Size(147, 21);
             this.Question4Btn.TabIndex = 33;
@@ -171,7 +171,7 @@ namespace Dobby {
             // label3
             // 
             this.label3.ForeColor = System.Drawing.SystemColors.Control;
-            this.label3.Location = new System.Drawing.Point(-6, 374);
+            this.label3.Location = new System.Drawing.Point(-3, 354);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(319, 17);
             this.label3.TabIndex = 31;
@@ -180,7 +180,7 @@ namespace Dobby {
             // Seperator
             // 
             this.Seperator.ForeColor = System.Drawing.SystemColors.Control;
-            this.Seperator.Location = new System.Drawing.Point(-1, 284);
+            this.Seperator.Location = new System.Drawing.Point(2, 264);
             this.Seperator.Name = "Seperator";
             this.Seperator.Size = new System.Drawing.Size(319, 17);
             this.Seperator.TabIndex = 35;
@@ -194,7 +194,7 @@ namespace Dobby {
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(-3, 387);
+            this.CreditsBtn.Location = new System.Drawing.Point(0, 367);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
@@ -214,7 +214,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(-3, 411);
+            this.BackBtn.Location = new System.Drawing.Point(0, 391);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(60, 23);
             this.BackBtn.TabIndex = 13;
@@ -229,7 +229,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(9, 433);
+            this.Info.Location = new System.Drawing.Point(8, 414);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
@@ -253,7 +253,7 @@ namespace Dobby {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 452);
+            this.ClientSize = new System.Drawing.Size(320, 433);
             this.Controls.Add(this.WithSomeExceptionsLabel);
             this.Controls.Add(this.Question4Btn);
             this.Controls.Add(this.User_Is_An_IdiotBtn);
