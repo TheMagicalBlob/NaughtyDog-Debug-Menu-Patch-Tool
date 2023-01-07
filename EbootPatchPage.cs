@@ -66,7 +66,10 @@ namespace Dobby {
 
         
         public byte FPSMode;
-
+        private Label label1;
+        private TextBox ExecutablePathBox;
+        public Button BrowseButton;
+        private Label GameInfoLabel;
         public FileStream fs;
 
 
@@ -86,6 +89,10 @@ namespace Dobby {
             this.InfoHelpBtn = new System.Windows.Forms.Button();
             this.CustomDebugBtn = new System.Windows.Forms.Button();
             this.RestoredDebugBtn = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.ExecutablePathBox = new System.Windows.Forms.TextBox();
+            this.BrowseButton = new System.Windows.Forms.Button();
+            this.GameInfoLabel = new System.Windows.Forms.Label();
             this.MainBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -163,7 +170,7 @@ namespace Dobby {
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(-5, 205);
+            this.CreditsBtn.Location = new System.Drawing.Point(-6, 261);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(74, 23);
@@ -179,7 +186,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(4, 254);
+            this.Info.Location = new System.Drawing.Point(3, 310);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(313, 19);
             this.Info.TabIndex = 7;
@@ -214,9 +221,9 @@ namespace Dobby {
             this.CustomOptDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.CustomOptDebugBtn.Location = new System.Drawing.Point(-5, 145);
             this.CustomOptDebugBtn.Name = "CustomOptDebugBtn";
-            this.CustomOptDebugBtn.Size = new System.Drawing.Size(292, 23);
+            this.CustomOptDebugBtn.Size = new System.Drawing.Size(296, 23);
             this.CustomOptDebugBtn.TabIndex = 21;
-            this.CustomOptDebugBtn.Text = "Enable Debug Mode - Custom With Options";
+            this.CustomOptDebugBtn.Text = "Enable Debug Mode - Custom With Settings";
             this.CustomOptDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CustomOptDebugBtn.UseVisualStyleBackColor = false;
             this.CustomOptDebugBtn.Click += new System.EventHandler(this.CustomOptDebugBtn_Click);
@@ -250,7 +257,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(-4, 231);
+            this.BackBtn.Location = new System.Drawing.Point(-5, 287);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(60, 23);
             this.BackBtn.TabIndex = 13;
@@ -265,7 +272,7 @@ namespace Dobby {
             // 
             this.label4.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.label4.ForeColor = System.Drawing.SystemColors.Control;
-            this.label4.Location = new System.Drawing.Point(-10, 159);
+            this.label4.Location = new System.Drawing.Point(-11, 215);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(325, 20);
             this.label4.TabIndex = 14;
@@ -279,7 +286,7 @@ namespace Dobby {
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(-5, 181);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(-6, 237);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.Size = new System.Drawing.Size(147, 23);
             this.InfoHelpBtn.TabIndex = 15;
@@ -328,12 +335,61 @@ namespace Dobby {
             this.RestoredDebugBtn.MouseEnter += new System.EventHandler(this.RestoredDebugBtnMH);
             this.RestoredDebugBtn.MouseLeave += new System.EventHandler(this.RestoredDebugBtnML);
             // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.label1.ForeColor = System.Drawing.SystemColors.Control;
+            this.label1.Location = new System.Drawing.Point(-10, 159);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(325, 20);
+            this.label1.TabIndex = 29;
+            this.label1.Text = "________________________________________________________";
+            // 
+            // ExecutablePathBox
+            // 
+            this.ExecutablePathBox.BackColor = System.Drawing.Color.Gray;
+            this.ExecutablePathBox.Location = new System.Drawing.Point(0, 179);
+            this.ExecutablePathBox.Name = "ExecutablePathBox";
+            this.ExecutablePathBox.Size = new System.Drawing.Size(240, 20);
+            this.ExecutablePathBox.TabIndex = 30;
+            // 
+            // BrowseButton
+            // 
+            this.BrowseButton.BackColor = System.Drawing.Color.DimGray;
+            this.BrowseButton.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.BrowseButton.FlatAppearance.BorderSize = 0;
+            this.BrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BrowseButton.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.BrowseButton.ForeColor = System.Drawing.SystemColors.Control;
+            this.BrowseButton.Location = new System.Drawing.Point(241, 177);
+            this.BrowseButton.Name = "BrowseButton";
+            this.BrowseButton.Size = new System.Drawing.Size(75, 23);
+            this.BrowseButton.TabIndex = 31;
+            this.BrowseButton.Text = "Browse...";
+            this.BrowseButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BrowseButton.UseVisualStyleBackColor = false;
+            this.BrowseButton.Click += new System.EventHandler(this.BrowseButton_Click);
+            // 
+            // GameInfoLabel
+            // 
+            this.GameInfoLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.GameInfoLabel.Location = new System.Drawing.Point(1, 205);
+            this.GameInfoLabel.Name = "GameInfoLabel";
+            this.GameInfoLabel.Size = new System.Drawing.Size(313, 19);
+            this.GameInfoLabel.TabIndex = 32;
+            this.GameInfoLabel.Text = "No File Selected";
+            this.GameInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // EbootPatchPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 273);
+            this.ClientSize = new System.Drawing.Size(320, 332);
+            this.Controls.Add(this.GameInfoLabel);
+            this.Controls.Add(this.BrowseButton);
+            this.Controls.Add(this.ExecutablePathBox);
             this.Controls.Add(this.RestoredDebugBtn);
             this.Controls.Add(this.CustomDebugBtn);
             this.Controls.Add(this.InfoHelpBtn);
@@ -345,6 +401,7 @@ namespace Dobby {
             this.Controls.Add(this.Info);
             this.Controls.Add(this.MainBox);
             this.Controls.Add(this.label4);
+            this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -355,6 +412,7 @@ namespace Dobby {
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.MainBox.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
         public void MoveForm(object sender, MouseEventArgs e) => Common.MoveForm(sender, e);
@@ -446,6 +504,86 @@ skip: ActiveForm.Location = LastPos;
             }
         }
 
+        private void BrowseButton_Click(object sender, EventArgs e) {
+            FileDialog f = new OpenFileDialog {
+                Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
+                Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned (The First 4 Bytes Will Be .elf If It Is)"
+            };
+            if (f.ShowDialog() == DialogResult.OK) {
+                ExecutablePathBox.Text = f.FileName;
+
+                using (fs = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite)) {
+
+                    fs.Position = 0x60;
+                    fs.Read(chk, 0, 4);
+                    switch (BitConverter.ToInt32(chk, 0)) {
+                        default:
+                            MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported");
+                            break;
+                        case T1R100:
+                            Inf("The Last Of Us Remastered 1.00 Debug Enabled");
+                            break;
+                        case T1R109:
+                            Inf("The Last Of Us Remastered 1.09 Debug Enabled");
+                            break;
+                        case T1R11X:
+                            fs.Position = 0x18;
+                            Inf($"The Last Of Us Remastered {((byte)fs.ReadByte() == 0x10 ? 1.11 : 1.10)} Debug Enabled");
+                            break;
+                        case T2100:
+                            Inf("The Last Of Us Part II 1.00 Debug Enabled");
+                            break;
+                        case T2101:
+                            Inf("Sorry, This Old Version Isn't Supported Just Yet");
+                            //Inf("The Last Of Us Part II 1.01 Debug Enabled");
+                            break;
+                        case T2102:
+                            Inf("Sorry, This Old Version Isn't Supported Just Yet");
+                            //Inf("The Last Of Us Part II 1.02 Debug Enabled");
+                            break;
+                        case T2105:
+                            Inf("Sorry, This Old Version Isn't Supported Just Yet");
+                            //Inf("The Last Of Us Part II 1.05 Debug Enabled");
+                            break;
+                        case T2107:
+                            Inf("The Last Of Us Part II 1.07 Debug Enabled");
+                            break;
+                        case T2108:
+                            Inf("The Last Of Us Part II 1.08 Debug Enabled");
+                            break;
+                        case T2109:
+                            Inf("The Last Of Us Part II 1.09 Debug Enabled");
+                            break;
+                        case UC1100:
+                            Inf("Uncharted 1 1.00 Default Debug Enabled");
+                            break;
+                        case UC1102:
+                            Inf("Uncharted 1 1.02 Default Debug Enabled");
+                            break;
+                        case UC2100:
+                            Inf("Uncharted 2 1.00 Default Debug Enabled");
+                            break;
+                        case UC3100:
+                            WriteByte(0x168EB6, on);
+                            Inf("Uncharted 3 1.00 Default Debug Enabled");
+                            break;
+                        case UC4100:
+                            Inf("Uncharted 4: A Thief's End 1.00 Debug Enabled");
+                            break;
+                        case UC413X:
+                            Inf("Uncharted 4: A Thief's End 1.32/1.33 Debug Enabled");
+                            break;
+                        case TLL100:
+                            Inf("Uncharted: The Lost Legacy 1.00 Debug Enabled");
+                            break;
+                        case TLL10X:
+                            Inf("Uncharted: The Lost Legacy 1.08/1.09 Debug Enabled");
+                            break;
+                    }
+                }
+            }
+        }
+
         public void MakeBaseDebugBtn_Click(object sender, EventArgs e) {
             FileDialog f = new OpenFileDialog {
                 Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
@@ -470,10 +608,7 @@ skip: ActiveForm.Location = LastPos;
                         case T1R11X:
                             WriteByte(0x61B3, on);
                             fs.Position = 0x18;
-                            if ((byte)fs.ReadByte() == 0x10)
-                                Inf("The Last Of Us Remastered 1.11 Debug Enabled");
-                            else
-                                Inf("The Last Of Us Remastered 1.10 Debug Enabled");
+                            Inf($"The Last Of Us Remastered {((byte)fs.ReadByte() == 0x10 ? 1.11 : 1.10)} Debug Enabled");
                             break;
                         case T2100:
                             WriteBytes(0x1D639C, T2Debug);
@@ -550,10 +685,7 @@ skip: ActiveForm.Location = LastPos;
                 Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned (The First 4 Bytes Will Be .elf If It Is)"
             };
 
-            // Declare The Common Byte Patterns Here Instead Of Having It Declared In Almost Every One Of The Switch Cases... Even Though That's Probably Stupid. \\ Future Blob: it is.
             byte[] E9Jump   = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 };
-            byte[] TwoZero  = new byte[] { 0x00, 0x00 };
-            byte[] FourZero = new byte[] { 0x00, 0x00, 0x00, 0x00 };
             int[] WhiteJumpsOneByte;
             int[] WhiteJumps;
             int[] FunctionNops;
@@ -694,7 +826,7 @@ skip: ActiveForm.Location = LastPos;
                                 WriteByte(Address, 0x00);
 
                             foreach(int Address in WhiteJumps)
-                                WriteBytes(Address, TwoZero);
+                                WriteBytes(Address, new byte[] { 0x00, 0x00 });
 
                             foreach(int Address in FunctionNops)
                                 WriteBytes(Address, E9Jump);
@@ -769,7 +901,7 @@ skip: ActiveForm.Location = LastPos;
                                 WriteByte(Address, 0x00);
 
                             foreach (int Address in WhiteJumps)
-                                WriteBytes(Address, TwoZero);
+                                WriteBytes(Address, new byte[] { 0x00, 0x00 });
 
                             foreach (int Address in FunctionNops)
                                 WriteBytes(Address, E9Jump);
@@ -797,10 +929,7 @@ skip: ActiveForm.Location = LastPos;
                             break;
 
                         case UC2100:
-                            byte[] skip = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 };
-                            WriteByte(0x1EB296, 0x01);
-                            WriteByte(new int[] { 0x6C9C, 0x436CEE }, 0x1C);
-                            WriteBytes(new int[] { 0x6D5E, 0x1C4708, 0x1C4C60, 0x436D71 }, new byte[][] { skip, new byte[] { 0x1C, 0x00, 0x00, 0x00 }, skip, skip });
+
                             Inf("Uncharted 2 1.00 WIP Restored Debug Applied");
                             break;
                         case UC3100:
@@ -1207,6 +1336,7 @@ skip: ActiveForm.Location = LastPos;
                 }
             }
         }
+
         public void CustomDebugBtnMH(object sender, EventArgs e) => HoverString(CustomDebugBtn, "Enables A Customized Version Of The Debug Menu");
         public void CustomDebugBtnML(object sender, EventArgs e) => HoverLeave(CustomDebugBtn, 1);
 

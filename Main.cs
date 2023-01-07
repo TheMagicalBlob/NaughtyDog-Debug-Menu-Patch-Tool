@@ -13,10 +13,12 @@ using static Dobby.Common;
 namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
     public partial class Dobby : Form {
         public Dobby() {
-            Console.WindowHeight = 36;
-            Console.WindowWidth = 130;
             InitializeComponent();
-            if (!Dev.REL) PageInfo(Controls);
+            if (!Dev.REL) {
+                PageInfo(Controls);
+                Console.WindowHeight = 36;
+                Console.WindowWidth = 130;
+            }
             else DebugLabel.Visible = false;
             
             Info.Text = "";

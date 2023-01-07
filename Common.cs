@@ -76,7 +76,8 @@ namespace Dobby {
             "* 2.14.27.57 | Resized All Forms To Simplify Message Box Creation, Message Box Changes (Almost Done...), Other Things I Forget But Know I Did Because I Updated The Build # After Doing 'Em...",
             "* 2.15.27.57 | Moved The Page Title To The Top Of The Page Now That I Can Use Controls As Drag Anchors Instead Of Only The Form",
             "* 2.17.28.66 | UC4 1.3X MP Restored Debug Finally Finished, Only Need To Add Alternative With The Skipped Stuff, Plus Illusions's Stuff | Added Function Pointers For Form Move Functions To CSTMDebugPage | Repositioned The Page Titles",
-            "* 2.17.28.66 | Changed Configuration To Release For Github Release"
+            "* 2.17.28.66 | Changed Configuration To Release For Github Release",
+            "* 2.17.29.69 | Minor EbootPatchPage Code Changes, Other Misc. Stuff"
 
             // TODO: EbootPatchHelpPage
 
