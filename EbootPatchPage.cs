@@ -689,6 +689,7 @@ skip: ActiveForm.Location = LastPos;
             int[] WhiteJumpsOneByte;
             int[] WhiteJumps;
             int[] FunctionNops;
+            int[] Returns;
             if (f.ShowDialog() == DialogResult.OK) {
                 using (fs = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite)) {
                     
@@ -929,9 +930,69 @@ skip: ActiveForm.Location = LastPos;
                             break;
 
                         case UC2100:
+                            WhiteJumpsOneByte = new int[] {
+                                0x6C9C,   // Actor Viewer... (Quick Menu)
+                                0x1C46C7, // BP UCC...
+                                0x1C4CC4, // Net...
+                                0x1C4D52, // Collision (Havok)...
+                                0x1C4DD3, // Gameplay... (Root Entry)
+                                0x1C4E33, // Game Objects...
+                                0x1C4EB5, // Levels...
+                                0x1C53BA, // Profile...
+                            };
+                            WhiteJumps = new int[] {
+                                0x1C4708, // System...
+                                0x545C9C, // Rendering... -> Optimization... (Load Rest Of Contents)
+                                0x37A0DB, // Player Menu (Chunk 1)
+                                0x37A2EC, // Player Menu (Chunk 2)
+                                0x23CDBB, // Gameplay... (Chunk 1)
+                                0x2401F1, // Gameplay... (Chunk 2)
+                            };
+                            FunctionNops = new int[] {
+                                0x6CB7,   // Actor Viewer Push
+                                0x6D5E,   // Actor Viewer Pop
+                                0x1C4723, // System Push
+                                0x1C4C60, // System Pop
+                                0x37A0F6, // Player Menu Chunk 1 Push
+                                0x37A2A6, // Player Menu Chunk 1 Pop
+                                0x37A317, // Player Menu Chunk 2 Push
+                                0x37B699, // Player Menu Chunk 2 Pop
+                                0x1C4CDC, // Net Menu Push
+                                0x1C4D38, // Net Menu Pop
+                                0x2C514C, // Net -> Boosters Push
+                                0x2C5327, // Net -> Boosters Pop
+                                0x1C4D6A, // Collision (Havok) Push
+                                0x1C4DC6, // Collision (Havok) Pop
+                                0x23CDD6, // Gameplay Push 1
+                                0x23FF08, // Gameplay Pop  1
+                                0x24020C, // Gameplay Push 2
+                                0x2404BD, // Gameplay Pop  2
+                                0x428D3A, // Gameplay -> State Scripts Push
+                                0x42980A, // Gameplay -> State Scripts Pop
+                                0x1C4E4B, // Game Objects Push
+                                0x1C4EA7, // Game Objects Pop
+                                0x1C4ED0, // Levels Push
+                                0x1C5250, // Levels Pop
+                            };
+                            Returns = new int[] {
+                                0x429840, // State Scripts Func
+                                0x1C2650, // Selects Objects 
+                            };
+
+                            // Miscellaneous Patches \\
+                            WriteByte(0x1EB297, 0xEB);  // Skip Debug Disable
+
+                            // Mass Apply Duplicate Patches \\
+                            foreach (int address in WhiteJumps)
+                                WriteBytes(address, new byte[] { 0x00, 0x00, 0x00, 0x00 });
+                            foreach (int address in FunctionNops)
+                                WriteBytes(address, new byte[] { 0xE9, 0x00, 0x00, 0x00 });
+                            foreach (int address in Returns)
+                                WriteByte(address, 0xC3);
 
                             Inf("Uncharted 2 1.00 WIP Restored Debug Applied");
                             break;
+
                         case UC3100:
                             Inf("Uncharted 3 1.00 Restored Debug N/A");
                             break;
@@ -1097,7 +1158,7 @@ skip: ActiveForm.Location = LastPos;
                                 0x24E88B,  // Extra Tasks... Options Push
                                 0x24EE94   // Extra Tasks... Options Pop
                             };
-                            var Returns = new int[] {
+                            Returns = new int[] {
                                 0x421960,  // Skip Schema Spawn Menu
                                 0x423590,  // Skip DC Spawn Menu
                                 0x9D5430,  // Skip Select Nav-Mesh
