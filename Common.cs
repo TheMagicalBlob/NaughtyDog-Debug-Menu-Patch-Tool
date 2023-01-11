@@ -78,7 +78,8 @@ namespace Dobby {
             "* 2.17.28.66 | UC4 1.3X MP Restored Debug Finally Finished, Only Need To Add Alternative With The Skipped Stuff, Plus Illusions's Stuff | Added Function Pointers For Form Move Functions To CSTMDebugPage | Repositioned The Page Titles",
             "* 2.17.28.66 | Changed Configuration To Release For Github Release",
             "* 2.17.29.69 | Minor EbootPatchPage Code Changes, Other Misc. Stuff",
-            "* 2.17.30.69 | Uncharted 2 1.00 Restored Debug Work"
+            "* 2.17.30.69 | Uncharted 2 1.00 Restored Debug Work",
+            "* 2.17.31.69 | Uncharted 2 1.00 Restored Debug Work Near-Final"
 
             // TODO: EbootPatchHelpPage
 

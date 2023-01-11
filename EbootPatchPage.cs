@@ -679,7 +679,9 @@ skip: ActiveForm.Location = LastPos;
 
 
         public void RestoredDebugBtn_Click(object sender, EventArgs e) {
-            if (Dev.REL) MessageBox.Show("Note:\nCurrently Supported Games Are:\n- Uncharted 1 1.00\n- Uncharted 1 1.02\n- Uncharted 4 1.33 MP\n\n..yeah, that's it.", "This Part Isn't Entirely Finished");
+            if (Dev.REL)
+            MessageBox.Show("Note:\nCurrently Supported Games Are:\n- Uncharted 1 1.00\n- Uncharted 1 1.02\n- Uncharted 2 1.00\n- Uncharted 4 1.33 MP", "This Part Isn't Entirely Finished");
+            
             FileDialog f = new OpenFileDialog {
                 Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
                 Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned (The First 4 Bytes Will Be .elf If It Is)"
@@ -937,16 +939,32 @@ skip: ActiveForm.Location = LastPos;
                                 0x1C4D52, // Collision (Havok)...
                                 0x1C4DD3, // Gameplay... (Root Entry)
                                 0x1C4E33, // Game Objects...
-                                0x1C4EB5, // Levels...
+                                0x1C525E, // Npc... & Navigating Character...
+                                0x1C5339, // Nav-Mesh...
                                 0x1C53BA, // Profile...
+                                0x1C5449, // Actors... & Process...
+                                0x1C547B, // Animation...
+                                0x1C54AD, // Camera... (String Only :/)
+                                0x1C76E4, // Particles...
+                                0x1C7A51, // Scripts...
+                                0x5262A6, // Some Miscellaneous PLayGo... Options
+                                0x436CED, // Complete Tasks...
+                                0x14EE64, // CutScenes... Jump 1
+                                0x14EE6D, // CutScenes... Jump 2
+                                0x1B4135, // CutScenes...
                             };
                             WhiteJumps = new int[] {
-                                0x1C4708, // System...
+                                0x1C4708, // Rendering... & BP Rendering... & System...
                                 0x545C9C, // Rendering... -> Optimization... (Load Rest Of Contents)
                                 0x37A0DB, // Player Menu (Chunk 1)
                                 0x37A2EC, // Player Menu (Chunk 2)
                                 0x23CDBB, // Gameplay... (Chunk 1)
                                 0x2401F1, // Gameplay... (Chunk 2)
+                                0x1C4EB5, // Levels...
+                                0x1C54E6, // Clock...
+                                0x1C593A, // Menu...
+                                0x1C5CB2, // Audio...
+                                0x1C7746, // Language...
                             };
                             FunctionNops = new int[] {
                                 0x6CB7,   // Actor Viewer Push
@@ -973,6 +991,32 @@ skip: ActiveForm.Location = LastPos;
                                 0x1C4EA7, // Game Objects Pop
                                 0x1C4ED0, // Levels Push
                                 0x1C5250, // Levels Pop
+						        0x1C5279, // Npc Push
+                                0x1C532C, // Npc Pop
+						        0x1C5351, // Nav-Mesh Push
+                                0x1C53AD, // Nav-Mesh Pop
+                                0x1C5461, // Actors & Process Push
+                                0x1C546E, // Actors & Process Pop
+                                0x1C5493, // Animation Push
+                                0x1C54A0, // Animation Pop
+						        0x1C5955, // Menu Push
+                                0x1C5CA4, // Menu Pop
+                                0x1C76FC, // Particles Outer Push
+                                0x5D3C66, // Particles Inner Push
+                                0x5D4D09, // Particles Inner Pop
+                                0x1C7738, // Particles Outer Pop
+                                0x1C7761, // Language Push
+                                0x1C7A44, // Language Pop
+                                0x436D08, // Complete Tasks Outer Push
+                                0x436D71, // Complete Tasks Outer Pop
+                                0x437173, // Complete Tasks Inner Push
+                                0x4371A4, // Complete Tasks Inner Pop
+                                0x1B41BD, // CutScenes Outer Push
+                                0x1B41E5, // CutScenes Outer Pop
+                                0x1CEAA5, // CutScenes Inner Push 1
+                                0x1CEB0C, // CutScenes Inner Pop  1
+                                0x1B3B89, // CutScenes Inner Push 2
+                                0x1B3E7B, // CutScenes Inner Pop  2
                             };
                             Returns = new int[] {
                                 0x429840, // State Scripts Func
@@ -985,12 +1029,17 @@ skip: ActiveForm.Location = LastPos;
                             // Mass Apply Duplicate Patches \\
                             foreach (int address in WhiteJumps)
                                 WriteBytes(address, new byte[] { 0x00, 0x00, 0x00, 0x00 });
-                            foreach (int address in FunctionNops)
-                                WriteBytes(address, new byte[] { 0xE9, 0x00, 0x00, 0x00 });
-                            foreach (int address in Returns)
-                                WriteByte(address, 0xC3);
 
-                            Inf("Uncharted 2 1.00 WIP Restored Debug Applied");
+                            foreach (int address in WhiteJumpsOneByte)
+                                WriteByte (address, 0x00);
+
+                            foreach (int address in FunctionNops)
+                                WriteBytes(address, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 });
+
+                            foreach (int address in Returns)
+                                WriteByte (address, 0xC3);
+
+                            Inf("Uncharted 2 1.00 Restored Debug Applied");
                             break;
 
                         case UC3100:
