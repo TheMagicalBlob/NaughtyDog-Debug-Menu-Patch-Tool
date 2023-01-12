@@ -80,8 +80,9 @@ namespace Dobby {
             "* 2.17.29.69 | Minor EbootPatchPage Code Changes, Other Misc. Stuff",
             "* 2.17.30.69 | Uncharted 2 1.00 Restored Debug Work",
             "* 2.17.31.69 | Uncharted 2 1.00 Restored Debug Work Near-Final",
+            "* 2.17.32.75 | Moving Debug Restoration Code To Seperate Functions Outside Of Switch Case Because Reasons, Other Misc. Changes"
 
-            // TODO: EbootPatchHelpPage
+            // TODO: Finish EbootPatchPageOverhaul
 
         };
         public static string Build = NewChangeList[NewChangeList.Length - 1].Substring(2).Substring(0, NewChangeList[NewChangeList.Length - 1].IndexOf('|') - 3); // Trims The Last ChangeList String For Latest The Build Number
