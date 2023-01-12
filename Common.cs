@@ -79,12 +79,12 @@ namespace Dobby {
             "* 2.17.28.66 | Changed Configuration To Release For Github Release",
             "* 2.17.29.69 | Minor EbootPatchPage Code Changes, Other Misc. Stuff",
             "* 2.17.30.69 | Uncharted 2 1.00 Restored Debug Work",
-            "* 2.17.31.69 | Uncharted 2 1.00 Restored Debug Work Near-Final"
+            "* 2.17.31.69 | Uncharted 2 1.00 Restored Debug Work Near-Final",
 
             // TODO: EbootPatchHelpPage
 
         };
-        public static string Build = NewChangeList[NewChangeList.Length-1].Substring(2).Substring(0, NewChangeList[NewChangeList.Length-1].IndexOf('|')-3); // Trims The Last ChangeList String For Latest The Build Number
+        public static string Build = NewChangeList[NewChangeList.Length - 1].Substring(2).Substring(0, NewChangeList[NewChangeList.Length - 1].IndexOf('|') - 3); // Trims The Last ChangeList String For Latest The Build Number
         public static string CurrentControl, tmp;
 
         public static byte
@@ -129,20 +129,20 @@ namespace Dobby {
             switch (size) {
                 case 0:
                     GBOX.Location = new Point((int)(ActiveForm.Size.Width / 10), (int)(ActiveForm.Size.Height / 4));
-                    GBOX.Size     = new Size((int)(ActiveForm.Size.Width / 1.5), (int)(ActiveForm.Size.Height / 8));
+                    GBOX.Size = new Size((int)(ActiveForm.Size.Width / 1.5), (int)(ActiveForm.Size.Height / 8));
                     break;
                 case 1:
                     GBOX.Location = new Point((int)(ActiveForm.Size.Width / 9.75), (int)(ActiveForm.Size.Height / 2));
-                    GBOX.Size     = new Size((int)(ActiveForm.Size.Width / 1.25), (int)(ActiveForm.Size.Height / 4));
+                    GBOX.Size = new Size((int)(ActiveForm.Size.Width / 1.25), (int)(ActiveForm.Size.Height / 4));
                     break;
                 case 2:
                     GBOX.Location = new Point(0, (ActiveForm.Size.Height / 4));
-                    GBOX.Size     = new Size((int)(ActiveForm.Size.Width), (int)(ActiveForm.Size.Height / 3));
+                    GBOX.Size = new Size((int)(ActiveForm.Size.Width), (int)(ActiveForm.Size.Height / 3));
                     break;
             }
-            TXT.Location = new Point(1,7);
-            TXT.Size     = new Size(GBOX.Size.Width, GBOX.Size.Height);
-            TXT.Text     = $"{GBOX.Location.X}| {Text} |{(ActiveForm.Size.Width - GBOX.Width) - GBOX.Location.X}\nX: {GBOX.Size.Width} | Y: {GBOX.Size.Height}";
+            TXT.Location = new Point(1, 7);
+            TXT.Size = new Size(GBOX.Size.Width, GBOX.Size.Height);
+            TXT.Text = $"{GBOX.Location.X}| {Text} |{(ActiveForm.Size.Width - GBOX.Width) - GBOX.Location.X}\nX: {GBOX.Size.Width} | Y: {GBOX.Size.Height}";
             GBOX.BringToFront();
             TXT.BringToFront();
             PopUpBox1 = GBOX;
@@ -152,8 +152,8 @@ namespace Dobby {
         public static string BlankSpace(string String) {
             string Blanks = string.Empty;
             for (int i = Console.BufferWidth - String.Length; i > 0; i--)
-            Blanks+=" ";
-            String+=Blanks;
+                Blanks += " ";
+            String += Blanks;
             return String;
         }
         public static void HoverLeave(Control c, byte HoverOrLeave) {
@@ -161,11 +161,11 @@ namespace Dobby {
             CurrentControl = c.Name;
             c.ForeColor = HoverOrLeave == 0 ? Color.FromArgb(255, 227, 0) : Color.FromArgb(255, 255, 255);
             c.Text = HoverOrLeave == 0 ? $">{c.Text}" : c.Text.Substring(c.Text.IndexOf('>') + 1);
-            c.Size = new Size(HoverOrLeave == 0 ? c.Width+9 : c.Width-9, c.Height);
+            c.Size = new Size(HoverOrLeave == 0 ? c.Width + 9 : c.Width - 9, c.Height);
             if (!InfoHasImportantStr) Inf("");
             if (HoverOrLeave == 1) MouseScrolled = 0;
         }
-        
+
         public static void HoverString(Control c, string InfoString) {
             CurrentControl = c.Name;
             c.ForeColor = Color.FromArgb(255, 227, 0);
@@ -196,7 +196,7 @@ namespace Dobby {
             }
         }
 
-            
+
         public static new void MouseDownFunc(object sender, MouseEventArgs e) {
             MouseIsDown = 1; LastPos = ActiveForm.Location;
             MouseDif = new Point(MousePosition.X - ActiveForm.Location.X, MousePosition.Y - ActiveForm.Location.Y);
@@ -251,7 +251,7 @@ namespace Dobby {
                     Console.CursorTop = 9; Console.WriteLine(BlankSpace(OutString));
                     Interval = tim - StartTime;
 
-                    if (frm != null && i <1 ) { frm.Invoke(I); i++; }
+                    if (frm != null && i < 1) { frm.Invoke(I); i++; }
                 }
             }
 

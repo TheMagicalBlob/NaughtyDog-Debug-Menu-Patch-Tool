@@ -293,7 +293,7 @@ namespace Dobby {
                 goto skip;
             }
             LastForm.Show();
-       skip:ActiveForm.Location = LastPos;
+skip: ActiveForm.Location = LastPos;
             f.Close();
             Dobby.Page = ActiveForm.Name;
             if (!Dev.REL) PageInfo(ActiveForm.Controls);
@@ -329,16 +329,16 @@ namespace Dobby {
         public void PS4DebugHelpBtnML(object sender, EventArgs e) => HoverLeave(PS4DebugHelpBtn, 1);
 
         private void BuildLabel_Click(object sender, MouseEventArgs e) {
-            if(e.Button == MouseButtons.Right) { //!
+            if (e.Button == MouseButtons.Right) { //!
                 string CL = Dev.REL ? "Release" : "* ----------------\n* |ChangeList|\n* ----------------\n*";
                 if (Dev.REL) goto box; // Yeah I used a goto, how about you goto fuck_yourself
                 int i = 0;
-                foreach(string s in NewChangeList) {
+                foreach (string s in NewChangeList) {
                     i++;
                     CL += $"\n{s}";
                 }
                 CL += "/";
-box:            MessageBox.Show(CL);
+box: MessageBox.Show(CL);
             }
         }
 
@@ -346,7 +346,7 @@ box:            MessageBox.Show(CL);
         void BuildLabelML(object sender, EventArgs e) => HoverLeave(BuildLabel, 1);
 
         private void MiscPatchPageHelpBtn_Click(object sender, EventArgs e) {
-            
+
         }
         void MiscPatchPageHelpBtnMH(object sender, EventArgs e) => HoverLeave(MiscPatchPageHelpBtn, 0);
 

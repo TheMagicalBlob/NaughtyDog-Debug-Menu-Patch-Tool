@@ -78,14 +78,14 @@ namespace Dobby {
                         if (CDO[9]) WriteBytes(0x25B0C06, new byte[] { 0x41, 0xc6, 0x85, 0xb8, 0x3a, 0x00, 0x00, 0x01 });
                         if (FPSMode != 0) WriteBytes(0x25B0C0E, new byte[] { 0x41, 0xc7, 0x85, 0xb4, 0x3a, 0x00, 0x00, FPSMode, 0x00, 0x00, 0x00 });
                         if (true)//!!OptionsUnchanged)
-                                 WriteBytes(0x25B0C19, new byte[] { 0xEB, 0x1E });
+                            WriteBytes(0x25B0C19, new byte[] { 0xEB, 0x1E });
                         break;
                 }
             }
         }
         public void Invert(Control C, int f) {
             if (MouseScrolled == 1 || MouseIsDown == 0 || CurrentControl != C.Name) {
-             Dev.DebugOutStr($"MouseScrolled: {MouseScrolled}\nMouseIsDown: {MouseIsDown}\n CurrentControl: {CurrentControl}\nC.Name: {C.Name}");
+                Dev.DebugOutStr($"MouseScrolled: {MouseScrolled}\nMouseIsDown: {MouseIsDown}\n CurrentControl: {CurrentControl}\nC.Name: {C.Name}");
                 return;
             }
             tmp = C.Text;

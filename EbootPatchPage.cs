@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
 using static Dobby.Common;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
-using static System.Windows.Forms.AxHost;
 using System.Diagnostics;
 
 namespace Dobby {
@@ -34,7 +32,7 @@ namespace Dobby {
         ;
 
         byte[] chk = new byte[4];
-        
+
         public int
             MenuScale,
             MenuOpacity = 2
@@ -64,14 +62,26 @@ namespace Dobby {
             TLL10X = 35227448
         ;
 
-        
-        public byte FPSMode;
-        private Label label1;
-        private TextBox ExecutablePathBox;
-        public Button BrowseButton;
-        private Label GameInfoLabel;
-        public FileStream fs;
 
+        Label label1;
+        TextBox ExecutablePathBox;
+        Button BrowseButton;
+        Label GameInfoLabel;
+        FileStream fs;
+        GroupBox MainBox;
+        Label Info;
+        Label label4;
+        Label MainLabel;
+        Button CreditsBtn;
+        Button BackBtn;
+        Button ExitBtn;
+        Button InfoHelpBtn;
+        Button MinimizeBtn;
+        Button BaseDebugBtn;
+        Button CustomDebugBtn;
+        Button RestoredDebugBtn;
+        Button CustomOptDebugBtn;
+        Button DisableDebugModeBtn;
 
 
         public void InitializeComponent() {
@@ -348,10 +358,13 @@ namespace Dobby {
             // ExecutablePathBox
             // 
             this.ExecutablePathBox.BackColor = System.Drawing.Color.Gray;
+            this.ExecutablePathBox.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.ExecutablePathBox.ForeColor = System.Drawing.SystemColors.Window;
             this.ExecutablePathBox.Location = new System.Drawing.Point(0, 179);
             this.ExecutablePathBox.Name = "ExecutablePathBox";
-            this.ExecutablePathBox.Size = new System.Drawing.Size(240, 20);
+            this.ExecutablePathBox.Size = new System.Drawing.Size(240, 23);
             this.ExecutablePathBox.TabIndex = 30;
+            this.ExecutablePathBox.Text = "Select A .bin/.elf To Modify";
             // 
             // BrowseButton
             // 
@@ -521,29 +534,29 @@ skip: ActiveForm.Location = LastPos;
                             MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported");
                             break;
                         case T1R100:
-                            Inf("The Last Of Us Remastered 1.00 Debug Enabled");
+                            CustomDebugBtn.Enabled = true;
+                            Inf("The Last Of Us Remastered 1.00");
                             break;
                         case T1R109:
-                            Inf("The Last Of Us Remastered 1.09 Debug Enabled");
+                            CustomDebugBtn.Enabled = true;
+                            Inf("The Last Of Us Remastered 1.09");
                             break;
                         case T1R11X:
+                            CustomDebugBtn.Enabled = true;
                             fs.Position = 0x18;
-                            Inf($"The Last Of Us Remastered {((byte)fs.ReadByte() == 0x10 ? 1.11 : 1.10)} Debug Enabled");
+                            Inf($"The Last Of Us Remastered 1.1{((byte)fs.ReadByte() == 0x10 ? 1 : 0)}");
                             break;
                         case T2100:
                             Inf("The Last Of Us Part II 1.00 Debug Enabled");
                             break;
                         case T2101:
-                            Inf("Sorry, This Old Version Isn't Supported Just Yet");
-                            //Inf("The Last Of Us Part II 1.01 Debug Enabled");
+                            Inf("The Last Of Us Part II 1.01 Debug Enabled");
                             break;
                         case T2102:
-                            Inf("Sorry, This Old Version Isn't Supported Just Yet");
-                            //Inf("The Last Of Us Part II 1.02 Debug Enabled");
+                            Inf("The Last Of Us Part II 1.02 Debug Enabled");
                             break;
                         case T2105:
-                            Inf("Sorry, This Old Version Isn't Supported Just Yet");
-                            //Inf("The Last Of Us Part II 1.05 Debug Enabled");
+                            Inf("The Last Of Us Part II 1.05 Debug Enabled");
                             break;
                         case T2107:
                             Inf("The Last Of Us Part II 1.07 Debug Enabled");
@@ -564,7 +577,6 @@ skip: ActiveForm.Location = LastPos;
                             Inf("Uncharted 2 1.00 Default Debug Enabled");
                             break;
                         case UC3100:
-                            WriteByte(0x168EB6, on);
                             Inf("Uncharted 3 1.00 Default Debug Enabled");
                             break;
                         case UC4100:
@@ -680,21 +692,21 @@ skip: ActiveForm.Location = LastPos;
 
         public void RestoredDebugBtn_Click(object sender, EventArgs e) {
             if (Dev.REL)
-            MessageBox.Show("Note:\nCurrently Supported Games Are:\n- Uncharted 1 1.00\n- Uncharted 1 1.02\n- Uncharted 2 1.00\n- Uncharted 4 1.33 MP", "This Part Isn't Entirely Finished");
-            
+                MessageBox.Show("Note:\nCurrently Supported Games Are:\n- Uncharted 1 1.00\n- Uncharted 1 1.02\n- Uncharted 2 1.00\n- Uncharted 4 1.33 MP", "This Part Isn't Entirely Finished");
+
             FileDialog f = new OpenFileDialog {
                 Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
                 Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned (The First 4 Bytes Will Be .elf If It Is)"
             };
 
-            byte[] E9Jump   = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 };
+            byte[] E9Jump = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 };
             int[] WhiteJumpsOneByte;
             int[] WhiteJumps;
             int[] FunctionNops;
             int[] Returns;
             if (f.ShowDialog() == DialogResult.OK) {
                 using (fs = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite)) {
-                    
+
                     fs.Position = 0x60; fs.Read(chk, 0, 4);
                     game = BitConverter.ToInt32(chk, 0);
 
@@ -780,266 +792,15 @@ skip: ActiveForm.Location = LastPos;
                             Inf("The Last Of Us Part II 1.09 Debug Enabled");
                             break;
                         case UC1100: // Uncharted 1 1.00 Restored Debug Ver. 2
-                            WhiteJumpsOneByte = new int[] {
-                                0xE20E3,  // BP UCC...
-                                0xE373A,  // Collision...
-                                0xE379B,  // Gameplay...
-                                0xE37FC,  // Game Objects...
-                                0xE385E,  // Levels...
-                                0xE395E,  // Npc...
-                                0xE39BF,  // Nav-Mesh...
-                                0xE3A58,  // Interactive Background...
-                                0xE3A65,  // Interactive Background... (Pt.2)
-                                0xE3A9E,  // Actors...
-                                0xE3AB0,  // Animation...
-                                0xE3AC2,  // Water...
-                                0xE3B23,  // Fx...
-                                0xE3B84,  // Camera... (Literally Just The String, Unfortunately :/)
-                                0xE3E18,  // Physics...
-                                0xE52F2,  // Particles...
-                                0x39F37C, // Some PlayGo... Options
-                                0x9FF43,  // CutScenes Menu Nest
-                                0xD41B4   // CutScenes...
-                            };
-                            WhiteJumps = new int[] {
-                                0x2A7E08, // Quick Menu Character Options
-                                0xE2125,  // Rendering, BP Rendering, And Rendering PS3
-                                0xE2EA1,  // Spawn Character...
-                                0xE35BA,  // Spawn Vehicle...
-                                0x271F0D, // Player...
-                                0x272161, // Player... (Pt.2)
-                                0x1027BD, // Gameplay... (Pt.2)
-                                0x104B47, // Gameplay... (Pt.3)
-                                0xE3BBE,  // Clock...
-                                0xE3E7C,  // Menu...
-                                0xE4033,  // Audio...
-                                0xE536E   // Language...
-                            };
-                            FunctionNops = new int[] {
-                                0x4462F6, // Particles Push
-                                0x447399, // Particles Pop
-                                0xD3BC9,  // CutScenes Push
-                                0xD3DCE,  // CutScenes Pop
-                                0xD4548   // Skip Crashing CutScenes... Function
-                            };
-
-                            WriteByte(0x102050, 0xC3);                                         // Keep Debug Mode Enabled (It Gets Disabled On Boot, It's Actually On By Default).
-
-                            foreach(int Address in WhiteJumpsOneByte)
-                                WriteByte(Address, 0x00);
-
-                            foreach(int Address in WhiteJumps)
-                                WriteBytes(Address, new byte[] { 0x00, 0x00 });
-
-                            foreach(int Address in FunctionNops)
-                                WriteBytes(Address, E9Jump);
-                            
-
-                            WriteBytes(0x2D6AD3, new byte[] { 0xE9, 0x27, 0x00, 0x00, 0x00 }); // Skip Crashing Shader Variables Code
-                            WriteBytes(0x2D6B26, new byte[] { 0xEB, 0x05 });                   // Skip Some Code That Causes The Material Debug... Menu To Crash When Selected
-                            WriteBytes(0x2D6C87, new byte[] { 0xE9, 0x76 });                   // Skip Crashing Shader Variables Submenu (Crashes The Game Mid-Boot)
-                            WriteByte(new int[] { 0x2D6A70, 0x2D6A50 }, 0xEB);                 // Fix The Material Debug... Options
-
-                            WriteBytes(0x77B2E0, new byte[] { 0x5A, 0x7D, 0x0C, 0x00 });       // Add Valid Build Number. This Enables The "Build: " & "Built: " Debug Text As Well
-
-                            WriteBytes(0x354650, new byte[] { 0xB0, 0x01 });                   // Load HYBRID Text
-                          //WriteByte(0x354681, 0x00);                                         // Change HYBRID To DEBUG
-
-                            WriteBytes(0x2C7230, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Create New Level Render Settings..." From Crashing The Game When "Default Render Settings..." Is Opened
-                            WriteBytes(0x2C7220, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Load Existing Render Settings..." From Crashing The Game When "Default Render Settings..." Is Opened
-                            WriteByte (0x2C71A1, 0xEB);                                        // Stop "Save Current Render Settings..." From Crashing When Selected
-                            
-                            Inf("Uncharted 1 1.00 Restored Debug Applied");
+                            UC1_100Restored();
                             break;
 
                         case UC1102:        // Uncharted 1 1.02 Restored Debug Ver. 2.7
-                            WhiteJumpsOneByte = new int[] {
-                                0xE21D3,    // BP UCC...
-                                0xE382A,    // Collision...
-                                0xE388B,    // Gameplay...
-                                0xE38EC,    // Game Objects...
-                                0xE394E,    // Levels...
-                                0xE3A4E,    // Npc...
-                                0xE3AAF,    // Nav-Mesh...
-                                0xE3B48,    // Interactive Background...
-                                0xE3B8E,    // Actors...
-                                0xE3BA0,    // Animation...
-                                0xE3BB2,    // Water...
-                                0xE3C13,    // Fx...
-                                0xE3C74,    // Camera... (Literally Just The String, Unfortunately :/)
-                                0xE3F08,    // Physics...
-                                0xE53E2,    // Particles...
-                                0x9FF63,    // CutScenes Menu Nest
-                                0xD42A4     // CutScenes...
-                            };
-                            WhiteJumps = new int[] {
-                                  0x2A83F8, // Quick Menu Character Options
-                                  0xE2215,  // Rendering, BP Rendering, And Rendering PS3
-                                  0xE2F91,  // Spawn Character...
-                                  0xE36AA,  // Spawn Vehicle...
-                                  0x27247D, // Player...
-                                  0x2726D1, // Player... (Second Chunk)
-                                  0x1028ED, // Gameplay... (Pt.2)
-                                  0x104C77, // Gameplay... (Pt.3)
-                                  0xE3CAE,  // Clock...
-                                  0xE3F6C,  // Menu...
-                                  0xE4123,  // Audio...
-                                  0xE545E,  // Language...
-                                  0x498DC8  // Some PlayGo... Options
-                            };
-                            FunctionNops = new int[] {
-                                0x31B8F7,   // State Objects Push
-                                0x31BA73,   // State Objects Pop
-                                0x55F8E7,   // Particles Push
-                                0xD3CB9,    // CutScenes Push
-                                0xD3EBE,    // CutScenes Pop
-                                0xD4638     // Skip Crashing CutScenes Function
-                            };
-
-                            WriteByte(new int[] { 0x102187, 0x31B967 }, 0xEB);                 /* Keep Debug Mode Enabled (It Gets Disabled On Boot, It's Actually On By Default).
-                                                                                               Also Puts The State Objects Menu In The Main Dev Menu, Which Is Where It Shows When The
-                                                                                               Gameplay Menu Isn't Loaded. It Looks Cooler, Heh.                                    */
-
-                            foreach (int Address in WhiteJumpsOneByte)
-                                WriteByte(Address, 0x00);
-
-                            foreach (int Address in WhiteJumps)
-                                WriteBytes(Address, new byte[] { 0x00, 0x00 });
-
-                            foreach (int Address in FunctionNops)
-                                WriteBytes(Address, E9Jump);
-
-                            WriteBytes(0x772B80, new byte[] { 0x46, 0x7F, 0x0C, 0x00 });       // Add Valid Build Number. This Enables The "Build: " & "Built: " Debug Text As Well
-
-                            WriteBytes(0x44AE30, new byte[] { 0xB0, 0x01});                    // Load HYBRID Debug Text
-                          //WriteByte(0x44AE41, 0x00);                                         // Change HYBRID To DEBUG
-
-                            WriteBytes( new int[] { 0x30FF09, 0x30FF3C }, new byte[][] { new byte[] { 0xEB, 0x2C }, new byte[] { 0xEB, 0x17 } });
-//                          /\       Skip Some Code In Two Spots In The State Objects Menu To Stop Tasks From Crashing The Game Mid-Load       /\
-
-                            WriteBytes(0x2D70C3, new byte[] { 0xE9, 0x27, 0x00, 0x00, 0x00 }); // Skip Crashing Shader Variables Code
-                            WriteBytes(0x2D7116, new byte[] { 0xEB, 0x05 });                   // Skip Some Code That Causes The Material Debug... Menu To Crash When Selected
-                            WriteBytes(0x2D7277, new byte[] { 0xE9, 0x76 });                   // Skip Crashing Shader Variables Submenu
-                            WriteByte(new int[] { 0x2D7060, 0x2D7040 }, 0xEB);                 // Fix The Material Debug... Options
-                            
-                            WriteBytes(0x2C7810, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Create New Level Render Settings..." From Crashing The Game When "Default Render Settings..." Is Opened
-                            WriteBytes(0x2C7820, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Load Existing Render Settings..." From Crashing The Game When "Default Render Settings..." Is Opened
-                            WriteByte(0x2C7791, 0xEB);                                         // Stop "Save Current Render Settings..." From Crashing When Selected
-
-                            WriteBytes(0x561BB0, new byte[] { 0xE9, 0xB5, 0x00, 0x00, 0x00 }); // Particles Pop
-
-                            Inf("Uncharted 1 1.02 Restored Debug Applied");
+                            UC1_102Restored();
                             break;
 
                         case UC2100:
-                            WhiteJumpsOneByte = new int[] {
-                                0x6C9C,   // Actor Viewer... (Quick Menu)
-                                0x1C46C7, // BP UCC...
-                                0x1C4CC4, // Net...
-                                0x1C4D52, // Collision (Havok)...
-                                0x1C4DD3, // Gameplay... (Root Entry)
-                                0x1C4E33, // Game Objects...
-                                0x1C525E, // Npc... & Navigating Character...
-                                0x1C5339, // Nav-Mesh...
-                                0x1C53BA, // Profile...
-                                0x1C5449, // Actors... & Process...
-                                0x1C547B, // Animation...
-                                0x1C54AD, // Camera... (String Only :/)
-                                0x1C76E4, // Particles...
-                                0x1C7A51, // Scripts...
-                                0x5262A6, // Some Miscellaneous PLayGo... Options
-                                0x436CED, // Complete Tasks...
-                                0x14EE64, // CutScenes... Jump 1
-                                0x14EE6D, // CutScenes... Jump 2
-                                0x1B4135, // CutScenes...
-                            };
-                            WhiteJumps = new int[] {
-                                0x1C4708, // Rendering... & BP Rendering... & System...
-                                0x545C9C, // Rendering... -> Optimization... (Load Rest Of Contents)
-                                0x37A0DB, // Player Menu (Chunk 1)
-                                0x37A2EC, // Player Menu (Chunk 2)
-                                0x23CDBB, // Gameplay... (Chunk 1)
-                                0x2401F1, // Gameplay... (Chunk 2)
-                                0x1C4EB5, // Levels...
-                                0x1C54E6, // Clock...
-                                0x1C593A, // Menu...
-                                0x1C5CB2, // Audio...
-                                0x1C7746, // Language...
-                            };
-                            FunctionNops = new int[] {
-                                0x6CB7,   // Actor Viewer Push
-                                0x6D5E,   // Actor Viewer Pop
-                                0x1C4723, // System Push
-                                0x1C4C60, // System Pop
-                                0x37A0F6, // Player Menu Chunk 1 Push
-                                0x37A2A6, // Player Menu Chunk 1 Pop
-                                0x37A317, // Player Menu Chunk 2 Push
-                                0x37B699, // Player Menu Chunk 2 Pop
-                                0x1C4CDC, // Net Menu Push
-                                0x1C4D38, // Net Menu Pop
-                                0x2C514C, // Net -> Boosters Push
-                                0x2C5327, // Net -> Boosters Pop
-                                0x1C4D6A, // Collision (Havok) Push
-                                0x1C4DC6, // Collision (Havok) Pop
-                                0x23CDD6, // Gameplay Push 1
-                                0x23FF08, // Gameplay Pop  1
-                                0x24020C, // Gameplay Push 2
-                                0x2404BD, // Gameplay Pop  2
-                                0x428D3A, // Gameplay -> State Scripts Push
-                                0x42980A, // Gameplay -> State Scripts Pop
-                                0x1C4E4B, // Game Objects Push
-                                0x1C4EA7, // Game Objects Pop
-                                0x1C4ED0, // Levels Push
-                                0x1C5250, // Levels Pop
-						        0x1C5279, // Npc Push
-                                0x1C532C, // Npc Pop
-						        0x1C5351, // Nav-Mesh Push
-                                0x1C53AD, // Nav-Mesh Pop
-                                0x1C5461, // Actors & Process Push
-                                0x1C546E, // Actors & Process Pop
-                                0x1C5493, // Animation Push
-                                0x1C54A0, // Animation Pop
-						        0x1C5955, // Menu Push
-                                0x1C5CA4, // Menu Pop
-                                0x1C76FC, // Particles Outer Push
-                                0x5D3C66, // Particles Inner Push
-                                0x5D4D09, // Particles Inner Pop
-                                0x1C7738, // Particles Outer Pop
-                                0x1C7761, // Language Push
-                                0x1C7A44, // Language Pop
-                                0x436D08, // Complete Tasks Outer Push
-                                0x436D71, // Complete Tasks Outer Pop
-                                0x437173, // Complete Tasks Inner Push
-                                0x4371A4, // Complete Tasks Inner Pop
-                                0x1B41BD, // CutScenes Outer Push
-                                0x1B41E5, // CutScenes Outer Pop
-                                0x1CEAA5, // CutScenes Inner Push 1
-                                0x1CEB0C, // CutScenes Inner Pop  1
-                                0x1B3B89, // CutScenes Inner Push 2
-                                0x1B3E7B, // CutScenes Inner Pop  2
-                            };
-                            Returns = new int[] {
-                                0x429840, // State Scripts Func
-                                0x1C2650, // Selects Objects 
-                            };
-
-                            // Miscellaneous Patches \\
-                            WriteByte(0x1EB297, 0xEB);  // Skip Debug Disable
-
-                            // Mass Apply Duplicate Patches \\
-                            foreach (int address in WhiteJumps)
-                                WriteBytes(address, new byte[] { 0x00, 0x00, 0x00, 0x00 });
-
-                            foreach (int address in WhiteJumpsOneByte)
-                                WriteByte (address, 0x00);
-
-                            foreach (int address in FunctionNops)
-                                WriteBytes(address, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 });
-
-                            foreach (int address in Returns)
-                                WriteByte (address, 0xC3);
-
-                            Inf("Uncharted 2 1.00 Restored Debug Applied");
+                            UC2_100Restored();
                             break;
 
                         case UC3100:
@@ -1222,7 +983,7 @@ skip: ActiveForm.Location = LastPos;
                             };
 
                             // Main Patches \\
-                            WriteByte (new int[] { 0x1CCEB8, 0x24E5C8 }, 0x01);                 // Enables The Debug Mode, Then The UC4 Tasks Menu
+                            WriteByte(new int[] { 0x1CCEB8, 0x24E5C8 }, 0x01);                 // Enables The Debug Mode, Then The UC4 Tasks Menu
                             WriteBytes(0xA37DE1, new byte[] { 0xE9, 0x08, 0x00, 0x00, 0x00 });  // Skip PSN Sign-In Check
 
                             // Misc Patches \\
@@ -1230,11 +991,11 @@ skip: ActiveForm.Location = LastPos;
                             WriteBytes(0x187B214, new byte[] { 0xE9, 0x07, 0x00, 0x00, 0x00 }); // Skip Material Debug Code That Breaks Some SP Tasks
                             WriteBytes(0x1B5A9C0, new byte[] { 0xE9, 0x0F, 0x00, 0x00, 0x00 }); // Stop Various Material Debug Options From Crashing After The Above Patch
                             WriteBytes(0x187B6CE, new byte[] { 0xE9, 0x27, 0x01, 0x00, 0x00 }); // Skip Shader Variables, As It Now Crashes After The Above Patch (It's Empty Anyway, No Big Deal)
-                            WriteByte (0x1876A1A, 0xC8);                                        // Lower The Amount Of Loops For The Draw Mode Options By 3 To Skip The Ones That Cause Orbis Crashes
+                            WriteByte(0x1876A1A, 0xC8);                                        // Lower The Amount Of Loops For The Draw Mode Options By 3 To Skip The Ones That Cause Orbis Crashes
                             WriteBytes(0x1CB63D0, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Choose Lut File..." From Crashing The Game
                             WriteBytes(0x15E8AE0, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Play Cinematic..." From Crashing The Game
                             WriteBytes(0x15E9340, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Select Cinematic..." From Crashing The Game
-                            WriteByte (0x18B7547, 0xEB);                                        // Stop Particles Menu From Fully Initializing And Crashing Game On Boot
+                            WriteByte(0x18B7547, 0xEB);                                        // Stop Particles Menu From Fully Initializing And Crashing Game On Boot
                             WriteBytes(0x18AF8FD, new byte[] { 0xE9, 0x0A, 0x01, 0x00, 0x00 }); // Skip Two Unfixable "Particles..." Submenus
                             WriteBytes(0x18AFC31, new byte[] { 0xE9, 0x28, 0x03, 0x00, 0x00 }); // Skip Three More Unfixable "Particles..." Submenus
                             WriteBytes(0x166BF6B, new byte[] { 0xE9, 0x5B, 0x04, 0x00, 0x00 }); // Skip Select Spawner By Name Menu
@@ -1242,7 +1003,7 @@ skip: ActiveForm.Location = LastPos;
 
                             // Mass Apply Duplicate Patches \\
                             foreach (int Address in WhiteJumps)
-                                WriteBytes(Address, new byte[] {0x00, 0x00, 0x00, 0x00});
+                                WriteBytes(Address, new byte[] { 0x00, 0x00, 0x00, 0x00 });
                             foreach (int Address in FunctionNops)
                                 WriteBytes(Address, E9Jump);
                             foreach (int Address in Returns)
@@ -1662,22 +1423,271 @@ skip: ActiveForm.Location = LastPos;
         }
         public void DisableDebugModeBtnMH(object sender, EventArgs e) => HoverString(DisableDebugModeBtn, "Disable Debug Mode. Doesn't Undo Other Patches");
         public void DisableDebugModeBtnML(object sender, EventArgs e) => HoverLeave(DisableDebugModeBtn, 1);
+        /*======================================================================================================================
+        | Patch Functions
+        ======================================================================================================================*/
+        void UC1_100Restored() {
+            int[] WhiteJumpsOneByte = new int[] {
+                                0xE20E3,  // BP UCC...
+                                0xE373A,  // Collision...
+                                0xE379B,  // Gameplay...
+                                0xE37FC,  // Game Objects...
+                                0xE385E,  // Levels...
+                                0xE395E,  // Npc...
+                                0xE39BF,  // Nav-Mesh...
+                                0xE3A58,  // Interactive Background...
+                                0xE3A65,  // Interactive Background... (Pt.2)
+                                0xE3A9E,  // Actors...
+                                0xE3AB0,  // Animation...
+                                0xE3AC2,  // Water...
+                                0xE3B23,  // Fx...
+                                0xE3B84,  // Camera... (Literally Just The String, Unfortunately :/)
+                                0xE3E18,  // Physics...
+                                0xE52F2,  // Particles...
+                                0x39F37C, // Some PlayGo... Options
+                                0x9FF43,  // CutScenes Menu Nest
+                                0xD41B4   // CutScenes...
+                            };
+            int[] WhiteJumps = new int[] {
+                                0x2A7E08, // Quick Menu Character Options
+                                0xE2125,  // Rendering, BP Rendering, And Rendering PS3
+                                0xE2EA1,  // Spawn Character...
+                                0xE35BA,  // Spawn Vehicle...
+                                0x271F0D, // Player...
+                                0x272161, // Player... (Pt.2)
+                                0x1027BD, // Gameplay... (Pt.2)
+                                0x104B47, // Gameplay... (Pt.3)
+                                0xE3BBE,  // Clock...
+                                0xE3E7C,  // Menu...
+                                0xE4033,  // Audio...
+                                0xE536E   // Language...
+                            };
+            int[] FunctionNops = new int[] {
+                                0x4462F6, // Particles Push
+                                0x447399, // Particles Pop
+                                0xD3BC9,  // CutScenes Push
+                                0xD3DCE,  // CutScenes Pop
+                                0xD4548   // Skip Crashing CutScenes... Function
+                            };
+
+            WriteByte(0x102050, 0xC3);                                         // Keep Debug Mode Enabled (It Gets Disabled On Boot, It's Actually On By Default).
+
+            WriteBytes(0x2D6AD3, new byte[] { 0xE9, 0x27, 0x00, 0x00, 0x00 }); // Skip Crashing Shader Variables Code
+            WriteBytes(0x2D6B26, new byte[] { 0xEB, 0x05 });                   // Skip Some Code That Causes The Material Debug... Menu To Crash When Selected
+            WriteBytes(0x2D6C87, new byte[] { 0xE9, 0x76 });                   // Skip Crashing Shader Variables Submenu (Crashes The Game Mid-Boot)
+            WriteByte (new int[] { 0x2D6A70, 0x2D6A50 }, 0xEB);                // Fix The Material Debug... Options
+
+            WriteBytes(0x77B2E0, new byte[] { 0x5A, 0x7D, 0x0C, 0x00 });       // Add Valid Build Number. This Enables The "Build: " & "Built: " Debug Text As Well
+
+            WriteBytes(0x354650, new byte[] { 0xB0, 0x01 });                   // Load HYBRID Text
+          //WriteByte (0x354681, 0x00);                                        // Change HYBRID To DEBUG
+
+            WriteBytes(0x2C7230, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Create New Level Render Settings..." From Crashing The Game When "Default Render Settings..." Is Opened
+            WriteBytes(0x2C7220, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Load Existing Render Settings..." From Crashing The Game When "Default Render Settings..." Is Opened
+            WriteByte (0x2C71A1, 0xEB);                                        // Stop "Save Current Render Settings..." From Crashing When Selected
+
+            foreach (int Address in WhiteJumpsOneByte)
+                WriteByte(Address, 0x00);
+
+            foreach (int Address in WhiteJumps)
+                WriteBytes(Address, new byte[] { 0x00, 0x00 });
+
+            foreach (int Address in FunctionNops)
+                WriteBytes(Address, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 });
+
+            Inf("Restored Debug Patch Applied");
+        }
+        void UC1_102Restored() {
+            int[] WhiteJumpsOneByte = new int[] {
+                0xE21D3,    // BP UCC...
+                0xE382A,    // Collision...
+                0xE388B,    // Gameplay...
+                0xE38EC,    // Game Objects...
+                0xE394E,    // Levels...
+                0xE3A4E,    // Npc...
+                0xE3AAF,    // Nav-Mesh...
+                0xE3B48,    // Interactive Background...
+                0xE3B8E,    // Actors...
+                0xE3BA0,    // Animation...
+                0xE3BB2,    // Water...
+                0xE3C13,    // Fx...
+                0xE3C74,    // Camera... (Literally Just The String, Unfortunately :/)
+                0xE3F08,    // Physics...
+                0xE53E2,    // Particles...
+                0x9FF63,    // CutScenes Menu Nest
+                0xD42A4     // CutScenes...
+            };
+            int[] WhiteJumps = new int[] {
+                0x2A83F8, // Quick Menu Character Options
+                0xE2215,  // Rendering, BP Rendering, And Rendering PS3
+                0xE2F91,  // Spawn Character...
+                0xE36AA,  // Spawn Vehicle...
+                0x27247D, // Player...
+                0x2726D1, // Player... (Second Chunk)
+                0x1028ED, // Gameplay... (Pt.2)
+                0x104C77, // Gameplay... (Pt.3)
+                0xE3CAE,  // Clock...
+                0xE3F6C,  // Menu...
+                0xE4123,  // Audio...
+                0xE545E,  // Language...
+                0x498DC8  // Some PlayGo... Options
+            };
+            int[] FunctionNops = new int[] {
+                0x31B8F7,   // State Objects Push
+                0x31BA73,   // State Objects Pop
+                0x55F8E7,   // Particles Push
+                0xD3CB9,    // CutScenes Push
+                0xD3EBE,    // CutScenes Pop
+                0xD4638     // Skip Crashing CutScenes Function
+            };
+
+            WriteByte(new int[] { 0x102187, 0x31B967 }, 0xEB);                 /* Keep Debug Mode Enabled (It Gets Disabled On Boot, It's Actually On By Default).
+                                                                                               Also Puts The State Objects Menu In The Main Dev Menu, Which Is Where It Shows When The
+                                                                                               Gameplay Menu Isn't Loaded. It Looks Cooler, Heh.                                    */
 
 
-        GroupBox MainBox;
+            WriteBytes(0x772B80, new byte[] { 0x46, 0x7F, 0x0C, 0x00 });       // Add Valid Build Number. This Enables The "Build: " & "Built: " Debug Text As Well
 
-        Label Info;
-        Label label4;
-        Label MainLabel;
-        Button CreditsBtn;
-        public Button BackBtn;
-        Button ExitBtn;
-        Button InfoHelpBtn;
-        Button MinimizeBtn;
-        Button BaseDebugBtn;
-        Button CustomDebugBtn;
-        Button RestoredDebugBtn;
-        Button CustomOptDebugBtn;
-        Button DisableDebugModeBtn;
+            WriteBytes(0x44AE30, new byte[] { 0xB0, 0x01 });                   // Load HYBRID Debug Text
+          //WriteByte (0x44AE41, 0x00);                                        // Change HYBRID To DEBUG
+
+            WriteBytes(new int[] { 0x30FF09, 0x30FF3C }, new byte[][] { new byte[] { 0xEB, 0x2C }, new byte[] { 0xEB, 0x17 } });
+            //                          /\       Skip Some Code In Two Spots In The State Objects Menu To Stop Tasks From Crashing The Game Mid-Load       /\
+
+            WriteBytes(0x2D70C3, new byte[] { 0xE9, 0x27, 0x00, 0x00, 0x00 }); // Skip Crashing Shader Variables Code
+            WriteBytes(0x2D7116, new byte[] { 0xEB, 0x05 });                   // Skip Some Code That Causes The Material Debug... Menu To Crash When Selected
+            WriteBytes(0x2D7277, new byte[] { 0xE9, 0x76 });                   // Skip Crashing Shader Variables Submenu
+            WriteByte (new int[] { 0x2D7060, 0x2D7040 }, 0xEB);                // Fix The Material Debug... Options
+
+            WriteBytes(0x2C7810, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Create New Level Render Settings..." From Crashing The Game When "Default Render Settings..." Is Opened
+            WriteBytes(0x2C7820, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Load Existing Render Settings..." From Crashing The Game When "Default Render Settings..." Is Opened
+            WriteByte(0x2C7791, 0xEB);                                         // Stop "Save Current Render Settings..." From Crashing When Selected
+
+            WriteBytes(0x561BB0, new byte[] { 0xE9, 0xB5, 0x00, 0x00, 0x00 }); // Particles Pop
+
+            foreach (int Address in WhiteJumpsOneByte)
+                WriteByte(Address, 0x00);
+
+            foreach (int Address in WhiteJumps)
+                WriteBytes(Address, new byte[] { 0x00, 0x00 });
+
+            foreach (int Address in FunctionNops)
+                WriteBytes(Address, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 });
+
+            Inf("Restored Debug Patch Applied");
+        }
+        void UC2_100Restored() {
+            int[] WhiteJumpsOneByte = new int[] {
+                0x6C9C,   // Actor Viewer... (Quick Menu)
+                0x1C46C7, // BP UCC...
+                0x1C4CC4, // Net...
+                0x1C4D52, // Collision (Havok)...
+                0x1C4DD3, // Gameplay... (Root Entry)
+                0x1C4E33, // Game Objects...
+                0x1C525E, // Npc... & Navigating Character...
+                0x1C5339, // Nav-Mesh...
+                0x1C53BA, // Profile...
+                0x1C5449, // Actors... & Process...
+                0x1C547B, // Animation...
+                0x1C54AD, // Camera... (String Only :/)
+                0x1C76E4, // Particles...
+                0x1C7A51, // Scripts...
+                0x5262A6, // Some Miscellaneous PLayGo... Options
+                0x436CED, // Complete Tasks...
+                0x14EE64, // CutScenes... Jump 1
+                0x14EE6D, // CutScenes... Jump 2
+                0x1B4135, // CutScenes...
+            };
+            int[] WhiteJumps = new int[] {
+                0x1C4708, // Rendering... & BP Rendering... & System...
+                0x545C9C, // Rendering... -> Optimization... (Load Rest Of Contents)
+                0x37A0DB, // Player Menu (Chunk 1)
+                0x37A2EC, // Player Menu (Chunk 2)
+                0x23CDBB, // Gameplay... (Chunk 1)
+                0x2401F1, // Gameplay... (Chunk 2)
+                0x1C4EB5, // Levels...
+                0x1C54E6, // Clock...
+                0x1C593A, // Menu...
+                0x1C5CB2, // Audio...
+                0x1C7746, // Language...
+            };
+            int[] FunctionNops = new int[] {
+                0x6CB7,   // Actor Viewer Push
+                0x6D5E,   // Actor Viewer Pop
+                0x1C4723, // System Push
+                0x1C4C60, // System Pop
+                0x37A0F6, // Player Menu Chunk 1 Push
+                0x37A2A6, // Player Menu Chunk 1 Pop
+                0x37A317, // Player Menu Chunk 2 Push
+                0x37B699, // Player Menu Chunk 2 Pop
+                0x1C4CDC, // Net Menu Push
+                0x1C4D38, // Net Menu Pop
+                0x2C514C, // Net -> Boosters Push
+                0x2C5327, // Net -> Boosters Pop
+                0x1C4D6A, // Collision (Havok) Push
+                0x1C4DC6, // Collision (Havok) Pop
+                0x23CDD6, // Gameplay Push 1
+                0x23FF08, // Gameplay Pop  1
+                0x24020C, // Gameplay Push 2
+                0x2404BD, // Gameplay Pop  2
+                0x428D3A, // Gameplay -> State Scripts Push
+                0x42980A, // Gameplay -> State Scripts Pop
+                0x1C4E4B, // Game Objects Push
+                0x1C4EA7, // Game Objects Pop
+                0x1C4ED0, // Levels Push
+                0x1C5250, // Levels Pop
+				0x1C5279, // Npc Push
+                0x1C532C, // Npc Pop
+				0x1C5351, // Nav-Mesh Push
+                0x1C53AD, // Nav-Mesh Pop
+                0x1C5461, // Actors & Process Push
+                0x1C546E, // Actors & Process Pop
+                0x1C5493, // Animation Push
+                0x1C54A0, // Animation Pop
+				0x1C5955, // Menu Push
+                0x1C5CA4, // Menu Pop
+                0x1C76FC, // Particles Outer Push
+                0x5D3C66, // Particles Inner Push
+                0x5D4D09, // Particles Inner Pop
+                0x1C7738, // Particles Outer Pop
+                0x1C7761, // Language Push
+                0x1C7A44, // Language Pop
+                0x436D08, // Complete Tasks Outer Push
+                0x436D71, // Complete Tasks Outer Pop
+                0x437173, // Complete Tasks Inner Push
+                0x4371A4, // Complete Tasks Inner Pop
+                0x1B41BD, // CutScenes Outer Push
+                0x1B41E5, // CutScenes Outer Pop
+                0x1CEAA5, // CutScenes Inner Push 1
+                0x1CEB0C, // CutScenes Inner Pop  1
+                0x1B3B89, // CutScenes Inner Push 2
+                0x1B3E7B, // CutScenes Inner Pop  2
+            };
+            int[] Returns = new int[] {
+                0x429840, // State Scripts Func
+                0x1C2650, // Selects Objects 
+            };
+
+            // Miscellaneous Patches \\
+            WriteByte(0x1EB297, 0xEB);  // Skip Debug Disable
+
+            // Mass Apply Duplicate Patches \\
+            foreach (int address in WhiteJumps)
+                WriteBytes(address, new byte[] { 0x00, 0x00, 0x00, 0x00 });
+
+            foreach (int address in WhiteJumpsOneByte)
+                WriteByte(address, 0x00);
+
+            foreach (int address in FunctionNops)
+                WriteBytes(address, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 });
+
+            foreach (int address in Returns)
+                WriteByte(address, 0xC3);
+
+            Inf("Restored Debug Menu Patch Applied");
+        }
+        void UC4MP_133Restored() {
+
+        }
     }
 }

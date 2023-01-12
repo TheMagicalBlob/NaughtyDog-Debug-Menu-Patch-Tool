@@ -248,7 +248,7 @@ namespace Dobby {
                 goto skip;
             }
             LastForm.Show();
-       skip:ActiveForm.Location = LastPos;
+skip: ActiveForm.Location = LastPos;
             f.Close();
             Dobby.Page = ActiveForm.Name;
             if (!Dev.REL) PageInfo(ActiveForm.Controls);

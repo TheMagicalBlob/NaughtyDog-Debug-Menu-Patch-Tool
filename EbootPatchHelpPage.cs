@@ -17,7 +17,7 @@ namespace Dobby {
         private Label WithSomeExceptionsLabel;
         bool[] questions = new bool[] { false, false, false, false };
         public static int tst = 0;
-        
+
         public void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EbootPatchHelpPage));
             this.ExitBtn = new System.Windows.Forms.Button();
@@ -297,7 +297,7 @@ namespace Dobby {
                 goto skip;
             }
             LastForm.Show();
-skip:       ActiveForm.Location = LastPos;
+skip: ActiveForm.Location = LastPos;
             f.Close();
             Dobby.Page = ActiveForm.Name;
             if (!Dev.REL) PageInfo(ActiveForm.Controls);
@@ -346,7 +346,7 @@ skip:       ActiveForm.Location = LastPos;
         private void Question2Btn_Click(object sender, EventArgs e) { // TMP //!
             questions[1] = !questions[1];
             if (questions[1]) {
-                Question2Btn.Location = new Point(0,0);
+                Question2Btn.Location = new Point(0, 0);
             }
             else {
                 Question2Btn.Location = new Point(-1, 331);

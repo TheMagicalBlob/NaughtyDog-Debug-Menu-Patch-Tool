@@ -584,7 +584,7 @@ namespace Dobby {
             LastForm.Hide();
             if (!Dev.REL) PageInfo(ActiveForm.Controls);
         }
-        public void CreditsBtnMH(object sender, EventArgs e) => HoverString(CreditsBtn,  "View Credits For The Tool And Included Patches");
+        public void CreditsBtnMH(object sender, EventArgs e) => HoverString(CreditsBtn, "View Credits For The Tool And Included Patches");
         public void CreditsBtnML(object sender, EventArgs e) => HoverLeave(CreditsBtn, 1);
 
 
@@ -598,7 +598,8 @@ namespace Dobby {
                 geo.Connect();
                 foreach (libdebug.Process prc in geo.GetProcessList().processes) {
                     foreach (string id in executables) {
-                        if (prc.name == id) { {
+                        if (prc.name == id) {
+                            {
                                 string title = geo.GetProcessInfo(prc.pid).titleid;
                                 if (title == "FLTZ00003" || title == "ITEM00003") {
                                     Dev.DebugOutStr($"Skipping Lightning's Stuff {title}");
@@ -672,7 +673,7 @@ namespace Dobby {
                 }
             }
             catch (FileNotFoundException) { IP(); }
-            catch (Exception tabarnack) { Dev.DebugOutStr(tabarnack.Message + $"\n{tabarnack.StackTrace}");}
+            catch (Exception tabarnack) { Dev.DebugOutStr(tabarnack.Message + $"\n{tabarnack.StackTrace}"); }
         }
 
         public int Port() {
@@ -951,7 +952,7 @@ namespace Dobby {
         public void UC4100ML(object sender, EventArgs e) => HoverLeave(UC4100Btn, 1);
 
         public void UC4133_Click(object sender, EventArgs e) => Toggle(PS4DebugIsConnected ? geo.GetProcessInfo(exec).name != "eboot.bin" ? (ulong)0x1104B1AE79 : 0x110491AE79 : Connect(sender, e));
-        
+
         private void UC4MPBetaBtn_Click(object sender, EventArgs e) => Toggle(0x113408AE83);
         public void UC4MPBetaBtnMH(object sender, EventArgs e) => HoverString(UC4MPBetaBtn, "Supports: 1.09 - Use .bin Patch For 1.00");
         public void UC4MPBetaBtnML(object sender, EventArgs e) => HoverLeave(UC4MPBetaBtn, 1);

@@ -20,7 +20,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
                 Console.WindowWidth = 130;
             }
             else DebugLabel.Visible = false;
-            
+
             Info.Text = "";
             Page = "Dobby";
             YellowInformationLabel = Info;
