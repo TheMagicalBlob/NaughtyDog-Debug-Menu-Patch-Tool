@@ -31,7 +31,10 @@ namespace Dobby {
             T2DebugOff = new byte[] { 0xb2, 0x01, 0x31, 0xc0 }
         ;
 
-        byte[] chk = new byte[4];
+        byte[]
+            chk    = new byte[4],
+            E9Jump = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 }
+        ;
 
         public int
             MenuScale,
@@ -61,97 +64,271 @@ namespace Dobby {
             TLL100 = 35178432,
             TLL10X = 35227448
         ;
-
-
-        Label label1;
-        TextBox ExecutablePathBox;
-        Button BrowseButton;
-        Label GameInfoLabel;
-        FileStream fs;
-        GroupBox MainBox;
-        Label Info;
-        Label label4;
-        Label MainLabel;
-        Button CreditsBtn;
-        Button BackBtn;
-        Button ExitBtn;
-        Button InfoHelpBtn;
-        Button MinimizeBtn;
-        Button BaseDebugBtn;
-        Button CustomDebugBtn;
-        Button RestoredDebugBtn;
-        Button CustomOptDebugBtn;
-        Button DisableDebugModeBtn;
+        private Label GameInfoLabel;
+        private Button BrowseButton;
+        private TextBox ExecutablePathBox;
+        private Label label1;
+        private Button RestoredDebugBtn;
+        private Button CustomDebugBtn;
+        private Button InfoHelpBtn;
+        private Label label4;
+        private Button BackBtn;
+        private Button DisableDebugModeBtn;
+        private Button CustomOptDebugBtn;
+        private Button BaseDebugBtn;
+        private Label Info;
+        private Button CreditsBtn;
+        private Button MinimizeBtn;
+        private Button ExitBtn;
+        private GroupBox MainBox;
+        private Label MainLabel;
+        private Label label2;
+        FileStream MainStream;
 
 
         public void InitializeComponent() {
-            this.MainLabel = new System.Windows.Forms.Label();
-            this.MainBox = new System.Windows.Forms.GroupBox();
-            this.ExitBtn = new System.Windows.Forms.Button();
-            this.MinimizeBtn = new System.Windows.Forms.Button();
-            this.CreditsBtn = new System.Windows.Forms.Button();
-            this.Info = new System.Windows.Forms.Label();
-            this.BaseDebugBtn = new System.Windows.Forms.Button();
-            this.CustomOptDebugBtn = new System.Windows.Forms.Button();
-            this.DisableDebugModeBtn = new System.Windows.Forms.Button();
-            this.BackBtn = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
-            this.InfoHelpBtn = new System.Windows.Forms.Button();
-            this.CustomDebugBtn = new System.Windows.Forms.Button();
-            this.RestoredDebugBtn = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.ExecutablePathBox = new System.Windows.Forms.TextBox();
-            this.BrowseButton = new System.Windows.Forms.Button();
             this.GameInfoLabel = new System.Windows.Forms.Label();
-            this.MainBox.SuspendLayout();
+            this.BrowseButton = new System.Windows.Forms.Button();
+            this.ExecutablePathBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.RestoredDebugBtn = new System.Windows.Forms.Button();
+            this.CustomDebugBtn = new System.Windows.Forms.Button();
+            this.InfoHelpBtn = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.BackBtn = new System.Windows.Forms.Button();
+            this.DisableDebugModeBtn = new System.Windows.Forms.Button();
+            this.CustomOptDebugBtn = new System.Windows.Forms.Button();
+            this.BaseDebugBtn = new System.Windows.Forms.Button();
+            this.Info = new System.Windows.Forms.Label();
+            this.CreditsBtn = new System.Windows.Forms.Button();
+            this.MinimizeBtn = new System.Windows.Forms.Button();
+            this.ExitBtn = new System.Windows.Forms.Button();
+            this.MainBox = new System.Windows.Forms.GroupBox();
+            this.MainLabel = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // MainLabel
+            // GameInfoLabel
             // 
-            this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MainLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 12.25F, System.Drawing.FontStyle.Bold);
-            this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.MainLabel.Location = new System.Drawing.Point(2, 7);
-            this.MainLabel.Name = "MainLabel";
-            this.MainLabel.Size = new System.Drawing.Size(314, 22);
-            this.MainLabel.TabIndex = 0;
-            this.MainLabel.Text = "Eboot Patch Page";
-            this.MainLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MainLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.MainLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
+            this.GameInfoLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.GameInfoLabel.Location = new System.Drawing.Point(1, 205);
+            this.GameInfoLabel.Name = "GameInfoLabel";
+            this.GameInfoLabel.Size = new System.Drawing.Size(316, 19);
+            this.GameInfoLabel.TabIndex = 32;
+            this.GameInfoLabel.Text = "No File Selected";
+            this.GameInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // MainBox
+            // BrowseButton
             // 
-            this.MainBox.Controls.Add(this.ExitBtn);
-            this.MainBox.Controls.Add(this.MinimizeBtn);
-            this.MainBox.Controls.Add(this.MainLabel);
-            this.MainBox.Location = new System.Drawing.Point(1, -4);
-            this.MainBox.Name = "MainBox";
-            this.MainBox.Size = new System.Drawing.Size(318, 32);
-            this.MainBox.TabIndex = 5;
-            this.MainBox.TabStop = false;
-            this.MainBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MainBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            this.MainBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
+            this.BrowseButton.BackColor = System.Drawing.Color.DimGray;
+            this.BrowseButton.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.BrowseButton.FlatAppearance.BorderSize = 0;
+            this.BrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BrowseButton.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.BrowseButton.ForeColor = System.Drawing.SystemColors.Control;
+            this.BrowseButton.Location = new System.Drawing.Point(238, 179);
+            this.BrowseButton.Name = "BrowseButton";
+            this.BrowseButton.Size = new System.Drawing.Size(75, 23);
+            this.BrowseButton.TabIndex = 31;
+            this.BrowseButton.Text = "Browse...";
+            this.BrowseButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BrowseButton.UseVisualStyleBackColor = false;
+            this.BrowseButton.Click += new System.EventHandler(this.BrowseButton_Click);
             // 
-            // ExitBtn
+            // ExecutablePathBox
             // 
-            this.ExitBtn.BackColor = System.Drawing.Color.DimGray;
-            this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.ExitBtn.FlatAppearance.BorderSize = 0;
-            this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ExitBtn.Location = new System.Drawing.Point(294, 7);
-            this.ExitBtn.Name = "ExitBtn";
-            this.ExitBtn.Size = new System.Drawing.Size(23, 23);
-            this.ExitBtn.TabIndex = 18;
-            this.ExitBtn.Text = "X";
-            this.ExitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ExitBtn.UseVisualStyleBackColor = false;
-            this.ExitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
-            this.ExitBtn.MouseEnter += new System.EventHandler(this.ExitBtnMH);
-            this.ExitBtn.MouseLeave += new System.EventHandler(this.ExitBtnML);
+            this.ExecutablePathBox.BackColor = System.Drawing.Color.Gray;
+            this.ExecutablePathBox.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.ExecutablePathBox.ForeColor = System.Drawing.SystemColors.Window;
+            this.ExecutablePathBox.Location = new System.Drawing.Point(6, 179);
+            this.ExecutablePathBox.Name = "ExecutablePathBox";
+            this.ExecutablePathBox.Size = new System.Drawing.Size(233, 23);
+            this.ExecutablePathBox.TabIndex = 30;
+            this.ExecutablePathBox.Text = "Select A .bin/.elf To Modify";
+            // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.label1.Location = new System.Drawing.Point(2, 159);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(316, 20);
+            this.label1.TabIndex = 29;
+            this.label1.Text = "____________________________________________";
+            // 
+            // RestoredDebugBtn
+            // 
+            this.RestoredDebugBtn.BackColor = System.Drawing.Color.DimGray;
+            this.RestoredDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.RestoredDebugBtn.FlatAppearance.BorderSize = 0;
+            this.RestoredDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.RestoredDebugBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.RestoredDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.RestoredDebugBtn.Location = new System.Drawing.Point(1, 88);
+            this.RestoredDebugBtn.Name = "RestoredDebugBtn";
+            this.RestoredDebugBtn.Size = new System.Drawing.Size(215, 23);
+            this.RestoredDebugBtn.TabIndex = 23;
+            this.RestoredDebugBtn.Text = "Enable Debug Mode - Restored";
+            this.RestoredDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.RestoredDebugBtn.UseVisualStyleBackColor = false;
+            this.RestoredDebugBtn.Click += new System.EventHandler(this.RestoredDebugBtn_Click);
+            this.RestoredDebugBtn.MouseEnter += new System.EventHandler(this.RestoredDebugBtnMH);
+            this.RestoredDebugBtn.MouseLeave += new System.EventHandler(this.RestoredDebugBtnML);
+            // 
+            // CustomDebugBtn
+            // 
+            this.CustomDebugBtn.BackColor = System.Drawing.Color.DimGray;
+            this.CustomDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.CustomDebugBtn.FlatAppearance.BorderSize = 0;
+            this.CustomDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CustomDebugBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.CustomDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.CustomDebugBtn.Location = new System.Drawing.Point(1, 117);
+            this.CustomDebugBtn.Name = "CustomDebugBtn";
+            this.CustomDebugBtn.Size = new System.Drawing.Size(206, 23);
+            this.CustomDebugBtn.TabIndex = 22;
+            this.CustomDebugBtn.Text = "Enable Debug Mode - Custom";
+            this.CustomDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.CustomDebugBtn.UseVisualStyleBackColor = false;
+            this.CustomDebugBtn.Click += new System.EventHandler(this.CustomDebugBtn_Click);
+            this.CustomDebugBtn.MouseEnter += new System.EventHandler(this.CustomDebugBtnMH);
+            this.CustomDebugBtn.MouseLeave += new System.EventHandler(this.CustomDebugBtnML);
+            // 
+            // InfoHelpBtn
+            // 
+            this.InfoHelpBtn.BackColor = System.Drawing.Color.DimGray;
+            this.InfoHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.InfoHelpBtn.FlatAppearance.BorderSize = 0;
+            this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 237);
+            this.InfoHelpBtn.Name = "InfoHelpBtn";
+            this.InfoHelpBtn.Size = new System.Drawing.Size(147, 23);
+            this.InfoHelpBtn.TabIndex = 15;
+            this.InfoHelpBtn.Text = "Information / Help...";
+            this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.InfoHelpBtn.UseVisualStyleBackColor = false;
+            this.InfoHelpBtn.Click += new System.EventHandler(this.InfoHelpBtn_Click);
+            this.InfoHelpBtn.MouseEnter += new System.EventHandler(this.InfoHelpBtnMH);
+            this.InfoHelpBtn.MouseLeave += new System.EventHandler(this.InfoHelpBtnML);
+            // 
+            // label4
+            // 
+            this.label4.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.label4.Location = new System.Drawing.Point(2, 215);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(316, 20);
+            this.label4.TabIndex = 14;
+            this.label4.Text = "____________________________________________";
+            // 
+            // BackBtn
+            // 
+            this.BackBtn.BackColor = System.Drawing.Color.DimGray;
+            this.BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.BackBtn.FlatAppearance.BorderSize = 0;
+            this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.BackBtn.Location = new System.Drawing.Point(1, 287);
+            this.BackBtn.Name = "BackBtn";
+            this.BackBtn.Size = new System.Drawing.Size(60, 23);
+            this.BackBtn.TabIndex = 13;
+            this.BackBtn.Text = "Back...";
+            this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BackBtn.UseVisualStyleBackColor = false;
+            this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
+            this.BackBtn.MouseEnter += new System.EventHandler(this.BackBtnMH);
+            this.BackBtn.MouseLeave += new System.EventHandler(this.BackBtnML);
+            // 
+            // DisableDebugModeBtn
+            // 
+            this.DisableDebugModeBtn.BackColor = System.Drawing.Color.DimGray;
+            this.DisableDebugModeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.DisableDebugModeBtn.FlatAppearance.BorderSize = 0;
+            this.DisableDebugModeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DisableDebugModeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.DisableDebugModeBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.DisableDebugModeBtn.Location = new System.Drawing.Point(1, 33);
+            this.DisableDebugModeBtn.Name = "DisableDebugModeBtn";
+            this.DisableDebugModeBtn.Size = new System.Drawing.Size(150, 23);
+            this.DisableDebugModeBtn.TabIndex = 12;
+            this.DisableDebugModeBtn.Text = "Disable Debug Mode";
+            this.DisableDebugModeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.DisableDebugModeBtn.UseVisualStyleBackColor = false;
+            this.DisableDebugModeBtn.Click += new System.EventHandler(this.DisableDebugModeBtn_Click);
+            this.DisableDebugModeBtn.MouseEnter += new System.EventHandler(this.DisableDebugModeBtnMH);
+            this.DisableDebugModeBtn.MouseLeave += new System.EventHandler(this.DisableDebugModeBtnML);
+            // 
+            // CustomOptDebugBtn
+            // 
+            this.CustomOptDebugBtn.BackColor = System.Drawing.Color.DimGray;
+            this.CustomOptDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.CustomOptDebugBtn.FlatAppearance.BorderSize = 0;
+            this.CustomOptDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CustomOptDebugBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.CustomOptDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.CustomOptDebugBtn.Location = new System.Drawing.Point(1, 145);
+            this.CustomOptDebugBtn.Name = "CustomOptDebugBtn";
+            this.CustomOptDebugBtn.Size = new System.Drawing.Size(309, 23);
+            this.CustomOptDebugBtn.TabIndex = 21;
+            this.CustomOptDebugBtn.Text = "Enable Debug Mode - Custom + User Settings";
+            this.CustomOptDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.CustomOptDebugBtn.UseVisualStyleBackColor = false;
+            this.CustomOptDebugBtn.Click += new System.EventHandler(this.CustomOptDebugBtn_Click);
+            this.CustomOptDebugBtn.MouseEnter += new System.EventHandler(this.CustomOptDebugBtnMH);
+            this.CustomOptDebugBtn.MouseLeave += new System.EventHandler(this.CustomOptDebugBtnML);
+            // 
+            // BaseDebugBtn
+            // 
+            this.BaseDebugBtn.BackColor = System.Drawing.Color.DimGray;
+            this.BaseDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.BaseDebugBtn.FlatAppearance.BorderSize = 0;
+            this.BaseDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BaseDebugBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.BaseDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.BaseDebugBtn.Location = new System.Drawing.Point(1, 61);
+            this.BaseDebugBtn.Name = "BaseDebugBtn";
+            this.BaseDebugBtn.Size = new System.Drawing.Size(205, 23);
+            this.BaseDebugBtn.TabIndex = 9;
+            this.BaseDebugBtn.Text = "Enable Debug Mode - Default";
+            this.BaseDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BaseDebugBtn.UseVisualStyleBackColor = false;
+            this.BaseDebugBtn.Click += new System.EventHandler(this.MakeBaseDebugBtn_Click);
+            this.BaseDebugBtn.MouseEnter += new System.EventHandler(this.MakeBaseDebugBtnMH);
+            this.BaseDebugBtn.MouseLeave += new System.EventHandler(this.MakeBaseDebugBtnML);
+            // 
+            // Info
+            // 
+            this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.Info.Location = new System.Drawing.Point(3, 310);
+            this.Info.Name = "Info";
+            this.Info.Size = new System.Drawing.Size(313, 19);
+            this.Info.TabIndex = 7;
+            this.Info.Text = "======================================";
+            // 
+            // CreditsBtn
+            // 
+            this.CreditsBtn.BackColor = System.Drawing.Color.DimGray;
+            this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.CreditsBtn.FlatAppearance.BorderSize = 0;
+            this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 261);
+            this.CreditsBtn.Name = "CreditsBtn";
+            this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.CreditsBtn.Size = new System.Drawing.Size(74, 23);
+            this.CreditsBtn.TabIndex = 28;
+            this.CreditsBtn.Text = "Credits...";
+            this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.CreditsBtn.UseVisualStyleBackColor = false;
+            this.CreditsBtn.Click += new System.EventHandler(this.CreditsBtn_Click);
+            this.CreditsBtn.MouseEnter += new System.EventHandler(this.CreditsBtnMH);
+            this.CreditsBtn.MouseLeave += new System.EventHandler(this.CreditsBtnML);
             // 
             // MinimizeBtn
             // 
@@ -172,234 +349,70 @@ namespace Dobby {
             this.MinimizeBtn.MouseEnter += new System.EventHandler(this.MinimizeBtnMH);
             this.MinimizeBtn.MouseLeave += new System.EventHandler(this.MinimizeBtnML);
             // 
-            // CreditsBtn
+            // ExitBtn
             // 
-            this.CreditsBtn.BackColor = System.Drawing.Color.DimGray;
-            this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.CreditsBtn.FlatAppearance.BorderSize = 0;
-            this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(-6, 261);
-            this.CreditsBtn.Name = "CreditsBtn";
-            this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.CreditsBtn.Size = new System.Drawing.Size(74, 23);
-            this.CreditsBtn.TabIndex = 28;
-            this.CreditsBtn.Text = "Credits...";
-            this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.CreditsBtn.UseVisualStyleBackColor = false;
-            this.CreditsBtn.Click += new System.EventHandler(this.CreditsBtn_Click);
-            this.CreditsBtn.MouseEnter += new System.EventHandler(this.CreditsBtnMH);
-            this.CreditsBtn.MouseLeave += new System.EventHandler(this.CreditsBtnML);
+            this.ExitBtn.BackColor = System.Drawing.Color.DimGray;
+            this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.ExitBtn.FlatAppearance.BorderSize = 0;
+            this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.ExitBtn.Location = new System.Drawing.Point(294, 7);
+            this.ExitBtn.Name = "ExitBtn";
+            this.ExitBtn.Size = new System.Drawing.Size(23, 23);
+            this.ExitBtn.TabIndex = 18;
+            this.ExitBtn.Text = "X";
+            this.ExitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ExitBtn.UseVisualStyleBackColor = false;
+            this.ExitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
+            this.ExitBtn.MouseEnter += new System.EventHandler(this.ExitBtnMH);
+            this.ExitBtn.MouseLeave += new System.EventHandler(this.ExitBtnML);
             // 
-            // Info
+            // MainBox
             // 
-            this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(3, 310);
-            this.Info.Name = "Info";
-            this.Info.Size = new System.Drawing.Size(313, 19);
-            this.Info.TabIndex = 7;
-            this.Info.Text = "======================================";
+            this.MainBox.Location = new System.Drawing.Point(1, -4);
+            this.MainBox.Name = "MainBox";
+            this.MainBox.Size = new System.Drawing.Size(318, 32);
+            this.MainBox.TabIndex = 5;
+            this.MainBox.TabStop = false;
+            this.MainBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.MainBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
+            this.MainBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             // 
-            // BaseDebugBtn
+            // MainLabel
             // 
-            this.BaseDebugBtn.BackColor = System.Drawing.Color.DimGray;
-            this.BaseDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.BaseDebugBtn.FlatAppearance.BorderSize = 0;
-            this.BaseDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BaseDebugBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.BaseDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BaseDebugBtn.Location = new System.Drawing.Point(-6, 61);
-            this.BaseDebugBtn.Name = "BaseDebugBtn";
-            this.BaseDebugBtn.Size = new System.Drawing.Size(205, 23);
-            this.BaseDebugBtn.TabIndex = 9;
-            this.BaseDebugBtn.Text = "Enable Debug Mode - Default";
-            this.BaseDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BaseDebugBtn.UseVisualStyleBackColor = false;
-            this.BaseDebugBtn.Click += new System.EventHandler(this.MakeBaseDebugBtn_Click);
-            this.BaseDebugBtn.MouseEnter += new System.EventHandler(this.MakeBaseDebugBtnMH);
-            this.BaseDebugBtn.MouseLeave += new System.EventHandler(this.MakeBaseDebugBtnML);
+            this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MainLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 12.25F, System.Drawing.FontStyle.Bold);
+            this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.MainLabel.Location = new System.Drawing.Point(2, 7);
+            this.MainLabel.Name = "MainLabel";
+            this.MainLabel.Size = new System.Drawing.Size(314, 22);
+            this.MainLabel.TabIndex = 0;
+            this.MainLabel.Text = "Eboot Patch Page";
+            this.MainLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.MainLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
+            this.MainLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             // 
-            // CustomOptDebugBtn
+            // label2
             // 
-            this.CustomOptDebugBtn.BackColor = System.Drawing.Color.DimGray;
-            this.CustomOptDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.CustomOptDebugBtn.FlatAppearance.BorderSize = 0;
-            this.CustomOptDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CustomOptDebugBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.CustomOptDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CustomOptDebugBtn.Location = new System.Drawing.Point(-5, 145);
-            this.CustomOptDebugBtn.Name = "CustomOptDebugBtn";
-            this.CustomOptDebugBtn.Size = new System.Drawing.Size(296, 23);
-            this.CustomOptDebugBtn.TabIndex = 21;
-            this.CustomOptDebugBtn.Text = "Enable Debug Mode - Custom With Settings";
-            this.CustomOptDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.CustomOptDebugBtn.UseVisualStyleBackColor = false;
-            this.CustomOptDebugBtn.Click += new System.EventHandler(this.CustomOptDebugBtn_Click);
-            this.CustomOptDebugBtn.MouseEnter += new System.EventHandler(this.CustomOptDebugBtnMH);
-            this.CustomOptDebugBtn.MouseLeave += new System.EventHandler(this.CustomOptDebugBtnML);
-            // 
-            // DisableDebugModeBtn
-            // 
-            this.DisableDebugModeBtn.BackColor = System.Drawing.Color.DimGray;
-            this.DisableDebugModeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.DisableDebugModeBtn.FlatAppearance.BorderSize = 0;
-            this.DisableDebugModeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DisableDebugModeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.DisableDebugModeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.DisableDebugModeBtn.Location = new System.Drawing.Point(-5, 33);
-            this.DisableDebugModeBtn.Name = "DisableDebugModeBtn";
-            this.DisableDebugModeBtn.Size = new System.Drawing.Size(150, 23);
-            this.DisableDebugModeBtn.TabIndex = 12;
-            this.DisableDebugModeBtn.Text = "Disable Debug Mode";
-            this.DisableDebugModeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.DisableDebugModeBtn.UseVisualStyleBackColor = false;
-            this.DisableDebugModeBtn.Click += new System.EventHandler(this.DisableDebugModeBtn_Click);
-            this.DisableDebugModeBtn.MouseEnter += new System.EventHandler(this.DisableDebugModeBtnMH);
-            this.DisableDebugModeBtn.MouseLeave += new System.EventHandler(this.DisableDebugModeBtnML);
-            // 
-            // BackBtn
-            // 
-            this.BackBtn.BackColor = System.Drawing.Color.DimGray;
-            this.BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.BackBtn.FlatAppearance.BorderSize = 0;
-            this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(-5, 287);
-            this.BackBtn.Name = "BackBtn";
-            this.BackBtn.Size = new System.Drawing.Size(60, 23);
-            this.BackBtn.TabIndex = 13;
-            this.BackBtn.Text = "Back...";
-            this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BackBtn.UseVisualStyleBackColor = false;
-            this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
-            this.BackBtn.MouseEnter += new System.EventHandler(this.BackBtnMH);
-            this.BackBtn.MouseLeave += new System.EventHandler(this.BackBtnML);
-            // 
-            // label4
-            // 
-            this.label4.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.label4.ForeColor = System.Drawing.SystemColors.Control;
-            this.label4.Location = new System.Drawing.Point(-11, 215);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(325, 20);
-            this.label4.TabIndex = 14;
-            this.label4.Text = "________________________________________________________";
-            // 
-            // InfoHelpBtn
-            // 
-            this.InfoHelpBtn.BackColor = System.Drawing.Color.DimGray;
-            this.InfoHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.InfoHelpBtn.FlatAppearance.BorderSize = 0;
-            this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(-6, 237);
-            this.InfoHelpBtn.Name = "InfoHelpBtn";
-            this.InfoHelpBtn.Size = new System.Drawing.Size(147, 23);
-            this.InfoHelpBtn.TabIndex = 15;
-            this.InfoHelpBtn.Text = "Information / Help...";
-            this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.InfoHelpBtn.UseVisualStyleBackColor = false;
-            this.InfoHelpBtn.Click += new System.EventHandler(this.InfoHelpBtn_Click);
-            this.InfoHelpBtn.MouseEnter += new System.EventHandler(this.InfoHelpBtnMH);
-            this.InfoHelpBtn.MouseLeave += new System.EventHandler(this.InfoHelpBtnML);
-            // 
-            // CustomDebugBtn
-            // 
-            this.CustomDebugBtn.BackColor = System.Drawing.Color.DimGray;
-            this.CustomDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.CustomDebugBtn.FlatAppearance.BorderSize = 0;
-            this.CustomDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CustomDebugBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.CustomDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CustomDebugBtn.Location = new System.Drawing.Point(-5, 117);
-            this.CustomDebugBtn.Name = "CustomDebugBtn";
-            this.CustomDebugBtn.Size = new System.Drawing.Size(206, 23);
-            this.CustomDebugBtn.TabIndex = 22;
-            this.CustomDebugBtn.Text = "Enable Debug Mode - Custom";
-            this.CustomDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.CustomDebugBtn.UseVisualStyleBackColor = false;
-            this.CustomDebugBtn.Click += new System.EventHandler(this.CustomDebugBtn_Click);
-            this.CustomDebugBtn.MouseEnter += new System.EventHandler(this.CustomDebugBtnMH);
-            this.CustomDebugBtn.MouseLeave += new System.EventHandler(this.CustomDebugBtnML);
-            // 
-            // RestoredDebugBtn
-            // 
-            this.RestoredDebugBtn.BackColor = System.Drawing.Color.DimGray;
-            this.RestoredDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.RestoredDebugBtn.FlatAppearance.BorderSize = 0;
-            this.RestoredDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.RestoredDebugBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.RestoredDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.RestoredDebugBtn.Location = new System.Drawing.Point(-5, 89);
-            this.RestoredDebugBtn.Name = "RestoredDebugBtn";
-            this.RestoredDebugBtn.Size = new System.Drawing.Size(215, 23);
-            this.RestoredDebugBtn.TabIndex = 23;
-            this.RestoredDebugBtn.Text = "Enable Debug Mode - Restored";
-            this.RestoredDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.RestoredDebugBtn.UseVisualStyleBackColor = false;
-            this.RestoredDebugBtn.Click += new System.EventHandler(this.RestoredDebugBtn_Click);
-            this.RestoredDebugBtn.MouseEnter += new System.EventHandler(this.RestoredDebugBtnMH);
-            this.RestoredDebugBtn.MouseLeave += new System.EventHandler(this.RestoredDebugBtnML);
-            // 
-            // label1
-            // 
-            this.label1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.label1.ForeColor = System.Drawing.SystemColors.Control;
-            this.label1.Location = new System.Drawing.Point(-10, 159);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(325, 20);
-            this.label1.TabIndex = 29;
-            this.label1.Text = "________________________________________________________";
-            // 
-            // ExecutablePathBox
-            // 
-            this.ExecutablePathBox.BackColor = System.Drawing.Color.Gray;
-            this.ExecutablePathBox.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.ExecutablePathBox.ForeColor = System.Drawing.SystemColors.Window;
-            this.ExecutablePathBox.Location = new System.Drawing.Point(0, 179);
-            this.ExecutablePathBox.Name = "ExecutablePathBox";
-            this.ExecutablePathBox.Size = new System.Drawing.Size(240, 23);
-            this.ExecutablePathBox.TabIndex = 30;
-            this.ExecutablePathBox.Text = "Select A .bin/.elf To Modify";
-            // 
-            // BrowseButton
-            // 
-            this.BrowseButton.BackColor = System.Drawing.Color.DimGray;
-            this.BrowseButton.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.BrowseButton.FlatAppearance.BorderSize = 0;
-            this.BrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BrowseButton.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.BrowseButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.BrowseButton.Location = new System.Drawing.Point(241, 177);
-            this.BrowseButton.Name = "BrowseButton";
-            this.BrowseButton.Size = new System.Drawing.Size(75, 23);
-            this.BrowseButton.TabIndex = 31;
-            this.BrowseButton.Text = "Browse...";
-            this.BrowseButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BrowseButton.UseVisualStyleBackColor = false;
-            this.BrowseButton.Click += new System.EventHandler(this.BrowseButton_Click);
-            // 
-            // GameInfoLabel
-            // 
-            this.GameInfoLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.GameInfoLabel.Location = new System.Drawing.Point(1, 205);
-            this.GameInfoLabel.Name = "GameInfoLabel";
-            this.GameInfoLabel.Size = new System.Drawing.Size(313, 19);
-            this.GameInfoLabel.TabIndex = 32;
-            this.GameInfoLabel.Text = "No File Selected";
-            this.GameInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.label2.Location = new System.Drawing.Point(3, 16);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(316, 20);
+            this.label2.TabIndex = 33;
+            this.label2.Text = "____________________________________________";
             // 
             // EbootPatchPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
+            this.BackgroundImage = global::Dobby.Properties.Resources.EbootPatchPageBorder_319x331;
             this.ClientSize = new System.Drawing.Size(320, 332);
+            this.Controls.Add(this.ExitBtn);
+            this.Controls.Add(this.MinimizeBtn);
+            this.Controls.Add(this.MainLabel);
             this.Controls.Add(this.GameInfoLabel);
             this.Controls.Add(this.BrowseButton);
             this.Controls.Add(this.ExecutablePathBox);
@@ -409,12 +422,13 @@ namespace Dobby {
             this.Controls.Add(this.BackBtn);
             this.Controls.Add(this.DisableDebugModeBtn);
             this.Controls.Add(this.CustomOptDebugBtn);
-            this.Controls.Add(this.BaseDebugBtn);
             this.Controls.Add(this.CreditsBtn);
             this.Controls.Add(this.Info);
-            this.Controls.Add(this.MainBox);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.BaseDebugBtn);
+            this.Controls.Add(this.label2);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -423,7 +437,6 @@ namespace Dobby {
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            this.MainBox.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -489,34 +502,27 @@ skip: ActiveForm.Location = LastPos;
         // Start Of PS4Debug Page Specific Functions                                                                                                                      */
 
         public void WriteBytes(int offset, byte[] data) {
-            fs.Position = offset;
-            fs.Write(data, 0, data.Length);
-        }
-        public void WriteByte(int offset, byte data) {
-            fs.Position = offset;
-            fs.WriteByte(data);
+            MainStream.Position = offset;
+            MainStream.Write(data, 0, data.Length);
         }
         public void WriteBytes(int[] offset, byte[][] data) {
             int i = 0;
             foreach (byte[] bytes in data) {
-                fs.Position = offset[i];
-                fs.Write(bytes, 0, data.Length);
+                MainStream.Position = offset[i];
+                MainStream.Write(bytes, 0, data.Length);
                 i++;
             }
         }
+        public void WriteByte(int offset, byte data) {
+            MainStream.Position = offset;
+            MainStream.WriteByte(data);
+        }
         public void WriteByte(int[] offset, byte data) {
             foreach (int ofs in offset) {
-                fs.Position = ofs;
-                fs.WriteByte(data);
+                MainStream.Position = ofs;
+                MainStream.WriteByte(data);
             }
         }
-        public void WriteBytes(int[] offset, byte[] data) {
-            foreach (int ofs in offset) {
-                fs.Position = ofs;
-                fs.Write(data, 0, data.Length);
-            }
-        }
-
         private void BrowseButton_Click(object sender, EventArgs e) {
             FileDialog f = new OpenFileDialog {
                 Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
@@ -525,10 +531,10 @@ skip: ActiveForm.Location = LastPos;
             if (f.ShowDialog() == DialogResult.OK) {
                 ExecutablePathBox.Text = f.FileName;
 
-                using (fs = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite)) {
+                using (MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite)) {
 
-                    fs.Position = 0x60;
-                    fs.Read(chk, 0, 4);
+                    MainStream.Position = 0x60;
+                    MainStream.Read(chk, 0, 4);
                     switch (BitConverter.ToInt32(chk, 0)) {
                         default:
                             MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported");
@@ -543,8 +549,8 @@ skip: ActiveForm.Location = LastPos;
                             break;
                         case T1R11X:
                             CustomDebugBtn.Enabled = true;
-                            fs.Position = 0x18;
-                            Inf($"The Last Of Us Remastered 1.1{((byte)fs.ReadByte() == 0x10 ? 1 : 0)}");
+                            MainStream.Position = 0x18;
+                            Inf($"The Last Of Us Remastered 1.1{((byte)MainStream.ReadByte() == 0x10 ? 1 : 0)}");
                             break;
                         case T2100:
                             Inf("The Last Of Us Part II 1.00 Debug Enabled");
@@ -568,7 +574,7 @@ skip: ActiveForm.Location = LastPos;
                             Inf("The Last Of Us Part II 1.09 Debug Enabled");
                             break;
                         case UC1100:
-                            Inf("Uncharted 1 1.00 Default Debug Enabled");
+                            GameInfoLabel.Text = "Uncharted 1 1.00";
                             break;
                         case UC1102:
                             Inf("Uncharted 1 1.02 Default Debug Enabled");
@@ -602,15 +608,15 @@ skip: ActiveForm.Location = LastPos;
                 Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned (The First 4 Bytes Will Be .elf If It Is)"
             };
             if (f.ShowDialog() == DialogResult.OK) {
-                using (fs = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite)) {
-                    fs.Position = 0x60;
-                    fs.Read(chk, 0, 4);
+                using (MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite)) {
+                    MainStream.Position = 0x60;
+                    MainStream.Read(chk, 0, 4);
                     switch (BitConverter.ToInt32(chk, 0)) {
                         default:
                             MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported");
                             break;
                         case T1R100:
-                            WriteByte(0x5C79, on);
+                            T1R100_Patches("Default");
                             Inf("The Last Of Us Remastered 1.00 Debug Enabled");
                             break;
                         case T1R109:
@@ -619,8 +625,8 @@ skip: ActiveForm.Location = LastPos;
                             break;
                         case T1R11X:
                             WriteByte(0x61B3, on);
-                            fs.Position = 0x18;
-                            Inf($"The Last Of Us Remastered {((byte)fs.ReadByte() == 0x10 ? 1.11 : 1.10)} Debug Enabled");
+                            MainStream.Position = 0x18;
+                            Inf($"The Last Of Us Remastered {((byte)MainStream.ReadByte() == 0x10 ? 1.11 : 1.10)} Debug Enabled");
                             break;
                         case T2100:
                             WriteBytes(0x1D639C, T2Debug);
@@ -699,15 +705,10 @@ skip: ActiveForm.Location = LastPos;
                 Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned (The First 4 Bytes Will Be .elf If It Is)"
             };
 
-            byte[] E9Jump = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 };
-            int[] WhiteJumpsOneByte;
-            int[] WhiteJumps;
-            int[] FunctionNops;
-            int[] Returns;
             if (f.ShowDialog() == DialogResult.OK) {
-                using (fs = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite)) {
+                using (MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite)) {
 
-                    fs.Position = 0x60; fs.Read(chk, 0, 4);
+                    MainStream.Position = 0x60; MainStream.Read(chk, 0, 4);
                     game = BitConverter.ToInt32(chk, 0);
 
                     DialogResult Check;
@@ -722,8 +723,8 @@ skip: ActiveForm.Location = LastPos;
                                 Inf("The Last Of Us Remastered 1.00 Isn't Supported Yet");
                                 break;
                             }
-                            fs.Position = 0x5C79;
-                            fs.WriteByte(on);
+                            MainStream.Position = 0x5C79;
+                            MainStream.WriteByte(on);
                             Inf("The Last Of Us Remastered 1.00 Debug Enabled");
                             break;
                         case T1R109:
@@ -732,8 +733,8 @@ skip: ActiveForm.Location = LastPos;
                                 Inf("The Last Of Us Remastered 1.09 Isn't Supported Yet");
                                 break;
                             }
-                            fs.Position = 0x61B3;
-                            fs.WriteByte(on);
+                            MainStream.Position = 0x61B3;
+                            MainStream.WriteByte(on);
                             Inf("The Last Of Us Remastered 1.09 Debug Enabled");
                             break;
                         case T1R11X:
@@ -742,9 +743,9 @@ skip: ActiveForm.Location = LastPos;
                                 Inf("The Last Of Us Remastered 1.10/11 Isn't Supported Yet");
                                 break;
                             }
-                            fs.Position = 0x61B3;
-                            fs.WriteByte(on);
-                            Inf($"The Last Of Us Remastered 1.1{((byte)fs.ReadByte() == 0x10 ? "1" : "0")} WIP");
+                            MainStream.Position = 0x61B3;
+                            MainStream.WriteByte(on);
+                            Inf($"The Last Of Us Remastered 1.1{((byte)MainStream.ReadByte() == 0x10 ? "1" : "0")} WIP");
                             break;
                         case T2100:
                             Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
@@ -792,15 +793,15 @@ skip: ActiveForm.Location = LastPos;
                             Inf("The Last Of Us Part II 1.09 Debug Enabled");
                             break;
                         case UC1100: // Uncharted 1 1.00 Restored Debug Ver. 2
-                            UC1_100Restored();
+                            UC1100_Patches("Restored");
                             break;
 
-                        case UC1102:        // Uncharted 1 1.02 Restored Debug Ver. 2.7
-                            UC1_102Restored();
+                        case UC1102: // Uncharted 1 1.02 Restored Debug Ver. 2.7
+                            UC1102_Patches("Restored");
                             break;
 
                         case UC2100:
-                            UC2_100Restored();
+                            UC2100_Patches("Restored");
                             break;
 
                         case UC3100:
@@ -828,7 +829,7 @@ skip: ActiveForm.Location = LastPos;
                             break;
 
                         case UC4133MP: // Uncharted 4 1.33 Multiplayer
-                            UC4MP_133Restored();
+                            UC4MP133_Patches("Restored");
                             break;
 
                         case TLL100:
@@ -864,9 +865,9 @@ skip: ActiveForm.Location = LastPos;
                 Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned (The First 4 Bytes Will Be .elf If It Is)"
             };
             if (f.ShowDialog() == DialogResult.OK) {
-                using (fs = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite)) {
-                    fs.Position = 0x60;
-                    fs.Read(chk, 0, 4);
+                using (MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite)) {
+                    MainStream.Position = 0x60;
+                    MainStream.Read(chk, 0, 4);
 
                     game = BitConverter.ToInt32(chk, 0);
 
@@ -882,8 +883,8 @@ skip: ActiveForm.Location = LastPos;
                                 Inf("The Last Of Us Remastered 1.00 Isn't Supported Yet");
                                 break;
                             }
-                            fs.Position = 0x5C79;
-                            fs.WriteByte(on);
+                            MainStream.Position = 0x5C79;
+                            MainStream.WriteByte(on);
                             Inf("The Last Of Us Remastered 1.00 Debug Enabled");
                             break;
                         case T1R109:
@@ -892,8 +893,8 @@ skip: ActiveForm.Location = LastPos;
                                 Inf("The Last Of Us Remastered 1.09 Isn't Supported Yet");
                                 break;
                             }
-                            fs.Position = 0x61B3;
-                            fs.WriteByte(on);
+                            MainStream.Position = 0x61B3;
+                            MainStream.WriteByte(on);
                             Inf("The Last Of Us Remastered 1.09 Debug Enabled");
                             break;
                         case T1R11X:
@@ -902,10 +903,10 @@ skip: ActiveForm.Location = LastPos;
                                 Inf("The Last Of Us Remastered 1.10/1.11 Isn't Supported Yet");
                                 break;
                             }
-                            fs.Position = 0x61B3;
-                            fs.WriteByte(on);
-                            fs.Position = 0x18;
-                            Inf($"The Last Of Us Remastered 1.1{((byte)fs.ReadByte() == 0x10 ? "1" : "0")} Debug Enabled");
+                            MainStream.Position = 0x61B3;
+                            MainStream.WriteByte(on);
+                            MainStream.Position = 0x18;
+                            Inf($"The Last Of Us Remastered 1.1{((byte)MainStream.ReadByte() == 0x10 ? "1" : "0")} Debug Enabled");
                             break;
                         case T2100:
                             Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
@@ -944,11 +945,11 @@ skip: ActiveForm.Location = LastPos;
                             Inf("The Last Of Us Part II 1.08 Debug Enabled");
                             break;
                         case T2109:
-                            fs.Position = 0x6181FA; // Enable Debug + Change L3 & Triangle Toggle First
-                            fs.Write(T2Debug, 0, 2);
+                            MainStream.Position = 0x6181FA; // Enable Debug + Change L3 & Triangle Toggle First
+                            MainStream.Write(T2Debug, 0, 2);
                             WriteByte(0x1C45085, 0xB8);
-                            fs.Position = 0x1C45092;
-                            fs.WriteByte(0xB8);
+                            MainStream.Position = 0x1C45092;
+                            MainStream.WriteByte(0xB8);
 
                             int i = 0;
                             int[] addrs = new int[] { 0x25AE9DA, 0x25AE990, 0x2DF3B50, 0x25B231B, 0x25B2279, 0x2DF3B67, 0x7A4ECF };
@@ -963,8 +964,8 @@ skip: ActiveForm.Location = LastPos;
                             };
 
                             foreach (int addr in addrs) {
-                                fs.Position = addr;
-                                fs.Write(dat[i], 0, dat[i].Length);
+                                MainStream.Position = addr;
+                                MainStream.Write(dat[i], 0, dat[i].Length);
                                 i++;
                             }
                             Inf("The Last Of Us Part II 1.09 Enhanced Debug Enabled");
@@ -1044,9 +1045,9 @@ skip: ActiveForm.Location = LastPos;
             CDO = new bool[10]; CDO[7] = CDO[8] = true; MenuOpacity = 2;
 
             if (true) {//f.ShowDialog() == DialogResult.OK) {
-                using (fs = new FileStream(@"D:\PS4\CUSA10249-patch\CUSA07820_1.09_eboot - Copy.bin" /*f.FileName*/, FileMode.Open, FileAccess.ReadWrite)) {
+                using (MainStream = new FileStream(@"D:\PS4\CUSA10249-patch\CUSA07820_1.09_eboot - Copy.bin" /*f.FileName*/, FileMode.Open, FileAccess.ReadWrite)) {
 
-                    fs.Position = 0x60; fs.Read(chk, 0, 4); // Converts The Data Here To An Int To See Which Game & Patch Is Selected, It's Unique For All But One.
+                    MainStream.Position = 0x60; MainStream.Read(chk, 0, 4); // Converts The Data Here To An Int To See Which Game & Patch Is Selected, It's Unique For All But One.
 
                     game = T2109; //BitConverter.ToInt32(chk, 0); //!
                     Dev.DebugOutStr("Eboot Selection Skipped, D:\\PS4\\CUSA10249-patch\\CUSA07820_1.09_eboot - Copy.bin Auto-Selected And Defaulted To T2109 For Testing");
@@ -1142,36 +1143,36 @@ skip: ActiveForm.Location = LastPos;
                 Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned (The First 4 Bytes Will Be .elf If It Is)"
             };
             if (f.ShowDialog() == DialogResult.OK) {
-                using (fs = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite)) {
-                    fs.Position = 0x60;
-                    fs.Read(chk, 0, 4);
+                using (MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite)) {
+                    MainStream.Position = 0x60;
+                    MainStream.Read(chk, 0, 4);
+
                     game = BitConverter.ToInt32(chk, 0);
                     switch (game) {
                         default:
                             MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported");
                             break;
                         case T1R100:
-                            fs.Position = 0x5C79;
-                            fs.WriteByte(off);
-                            Inf("The Last Of Us Remastered 1.00 Debug Disabled");
+                            T1R100_Patches("Disable");
+                            Inf("Patch Applied Successfully");
                             break;
                         case T1R109:
-                            fs.Position = 0x61B3;
-                            fs.WriteByte(off);
+                            MainStream.Position = 0x61B3;
+                            MainStream.WriteByte(off);
                             Inf("The Last Of Us Remastered 1.09 Debug Disabled");
                             break;
                         case T1R11X:
-                            fs.Position = 0x61B3;
-                            fs.WriteByte(off);
-                            fs.Position = 0x18;
-                            if ((byte)fs.ReadByte() == 0x10)
+                            MainStream.Position = 0x61B3;
+                            MainStream.WriteByte(off);
+                            MainStream.Position = 0x18;
+                            if ((byte)MainStream.ReadByte() == 0x10)
                                 Inf("The Last Of Us Remastered 1.11 Debug Disabled");
                             else
                                 Inf("The Last Of Us Remastered 1.10 Debug Disabled");
                             break;
                         case T2100:
-                            fs.Position = 0x1D639C;
-                            fs.Write(T2DebugOff, 0, 2);
+                            MainStream.Position = 0x1D639C;
+                            MainStream.Write(T2DebugOff, 0, 2);
                             Inf("The Last Of Us Part II 1.00 Debug Disabled");
                             break;
                         case T2101:
@@ -1199,43 +1200,42 @@ skip: ActiveForm.Location = LastPos;
                             Inf("The Last Of Us Part II 1.09 Debug Disabled");
                             break;
                         case UC1100:
-                            fs.Position = 0x102056;
-                            fs.WriteByte(off);
+                            UC1100_Patches("Disable");
                             Inf("Uncharted 1 1.00 Default Debug Disabled");
                             break;
                         case UC2100:
-                            fs.Position = 0x1EB296;
-                            fs.WriteByte(off);
+                            MainStream.Position = 0x1EB296;
+                            MainStream.WriteByte(off);
                             Inf("Uncharted 2 1.00 Default Debug Disabled");
                             break;
                         case UC3100:
-                            fs.Position = 0x168EB6;
-                            fs.WriteByte(off);
+                            MainStream.Position = 0x168EB6;
+                            MainStream.WriteByte(off);
                             Inf("Uncharted 3 1.00 Default Debug Disabled");
                             break;
                         case UC4100:
-                            fs.Position = 0x1297ED;
-                            fs.WriteByte(off);
+                            MainStream.Position = 0x1297ED;
+                            MainStream.WriteByte(off);
                             Inf("Uncharted 4: A Thief's End 1.00 Debug Disabled");
                             break;
                         case UC413X:
-                            fs.Position = 0x1CCDFD;
-                            fs.WriteByte(off);
+                            MainStream.Position = 0x1CCDFD;
+                            MainStream.WriteByte(off);
                             Inf("Uncharted 4: A Thief's End 1.32/1.33 Debug Disabled");
                             break;
                         case 3:
-                            fs.Position = 0x3;
-                            fs.WriteByte(off);
+                            MainStream.Position = 0x3;
+                            MainStream.WriteByte(off);
                             Inf("Uncharted 4: A Thief's End 1.32/1.33 MP Debug Disabled");
                             break;
                         case TLL100:
-                            fs.Position = 0x1CCFED;
-                            fs.WriteByte(off);
+                            MainStream.Position = 0x1CCFED;
+                            MainStream.WriteByte(off);
                             Inf("Uncharted: The Lost Legacy 1.00 Debug Disabled");
                             break;
                         case TLL10X:
-                            fs.Position = 0x1CD02D;
-                            fs.WriteByte(off);
+                            MainStream.Position = 0x1CD02D;
+                            MainStream.WriteByte(off);
                             Inf("Uncharted: The Lost Legacy 1.08/1.09 Debug Disabled");
                             break;
                     }
@@ -1248,51 +1248,67 @@ skip: ActiveForm.Location = LastPos;
         /*======================================================================================================================
         | Patch Functions
         ======================================================================================================================*/
-        void UC1_100Restored() {
-            int[] WhiteJumpsOneByte = new int[] {
-                                0xE20E3,  // BP UCC...
-                                0xE373A,  // Collision...
-                                0xE379B,  // Gameplay...
-                                0xE37FC,  // Game Objects...
-                                0xE385E,  // Levels...
-                                0xE395E,  // Npc...
-                                0xE39BF,  // Nav-Mesh...
-                                0xE3A58,  // Interactive Background...
-                                0xE3A65,  // Interactive Background... (Pt.2)
-                                0xE3A9E,  // Actors...
-                                0xE3AB0,  // Animation...
-                                0xE3AC2,  // Water...
-                                0xE3B23,  // Fx...
-                                0xE3B84,  // Camera... (Literally Just The String, Unfortunately :/)
-                                0xE3E18,  // Physics...
-                                0xE52F2,  // Particles...
-                                0x39F37C, // Some PlayGo... Options
-                                0x9FF43,  // CutScenes Menu Nest
-                                0xD41B4   // CutScenes...
-                            };
-            int[] WhiteJumps = new int[] {
-                                0x2A7E08, // Quick Menu Character Options
-                                0xE2125,  // Rendering, BP Rendering, And Rendering PS3
-                                0xE2EA1,  // Spawn Character...
-                                0xE35BA,  // Spawn Vehicle...
-                                0x271F0D, // Player...
-                                0x272161, // Player... (Pt.2)
-                                0x1027BD, // Gameplay... (Pt.2)
-                                0x104B47, // Gameplay... (Pt.3)
-                                0xE3BBE,  // Clock...
-                                0xE3E7C,  // Menu...
-                                0xE4033,  // Audio...
-                                0xE536E   // Language...
-                            };
-            int[] FunctionNops = new int[] {
-                                0x4462F6, // Particles Push
-                                0x447399, // Particles Pop
-                                0xD3BC9,  // CutScenes Push
-                                0xD3DCE,  // CutScenes Pop
-                                0xD4548   // Skip Crashing CutScenes... Function
-                            };
+        void UC1100_Patches(string type) { // String over an int for readability
 
-            WriteByte(0x102050, 0xC3);                                         // Keep Debug Mode Enabled (It Gets Disabled On Boot, It's Actually On By Default).
+            switch (type) {      // I Have A Very Good Reason For Using goto here:       I Wanted To. Don't Like It? goto Fuck_Yourself
+                case "Default":
+                    goto Default;
+                case "Disable":
+                    goto Default;
+                case "Restored":
+                    goto Restored;
+                case "Custom":
+                    goto Custom;
+            }
+Default:
+            MainStream.Position = 0x102057;
+            MainStream.WriteByte(type == "Default" ? (byte)0xEB : (byte)0x74);
+            return;
+Restored:
+            int[] WhiteJumpsOneByte = new int[] {
+                0xE20E3,  // BP UCC...
+                0xE373A,  // Collision...
+                0xE379B,  // Gameplay...
+                0xE37FC,  // Game Objects...
+                0xE385E,  // Levels...
+                0xE395E,  // Npc...
+                0xE39BF,  // Nav-Mesh...
+                0xE3A58,  // Interactive Background...
+                0xE3A65,  // Interactive Background... (Pt.2)
+                0xE3A9E,  // Actors...
+                0xE3AB0,  // Animation...
+                0xE3AC2,  // Water...
+                0xE3B23,  // Fx...
+                0xE3B84,  // Camera... (Literally Just The String, Unfortunately :/)
+                0xE3E18,  // Physics...
+                0xE52F2,  // Particles...
+                0x39F37C, // Some PlayGo... Options
+                0x9FF43,  // CutScenes Menu Nest
+                0xD41B4   // CutScenes...
+            };
+            int[] WhiteJumps = new int[] {
+                0x2A7E08, // Quick Menu Character Options
+                0xE2125,  // Rendering, BP Rendering, And Rendering PS3
+                0xE2EA1,  // Spawn Character...
+                0xE35BA,  // Spawn Vehicle...
+                0x271F0D, // Player...
+                0x272161, // Player... (Pt.2)
+                0x1027BD, // Gameplay... (Pt.2)
+                0x104B47, // Gameplay... (Pt.3)
+                0xE3BBE,  // Clock...
+                0xE3E7C,  // Menu...
+                0xE4033,  // Audio...
+                0xE536E   // Language...
+            };
+            int[] FunctionNops = new int[] {
+                0x4462F6, // Particles Push
+                0x447399, // Particles Pop
+                0xD3BC9,  // CutScenes Push
+                0xD3DCE,  // CutScenes Pop
+                0xD4548   // Skip Crashing CutScenes... Function
+            };
+
+            WriteByte (0x102050, 0xC3);                                        // Keep Debug Mode Enabled (It Gets Disabled On Boot, It's Actually On By Default).
 
             WriteBytes(0x2D6AD3, new byte[] { 0xE9, 0x27, 0x00, 0x00, 0x00 }); // Skip Crashing Shader Variables Code
             WriteBytes(0x2D6B26, new byte[] { 0xEB, 0x05 });                   // Skip Some Code That Causes The Material Debug... Menu To Crash When Selected
@@ -1318,10 +1334,83 @@ skip: ActiveForm.Location = LastPos;
                 WriteBytes(Address, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 });
 
             Inf("Restored Debug Patch Applied");
+            return;
+
+Custom:
+            WhiteJumpsOneByte = new int[] {
+                0xE20E3,  // BP UCC...
+                0xE373A,  // Collision...
+                0xE379B,  // Gameplay...
+                0xE37FC,  // Game Objects...
+                0xE385E,  // Levels...
+                0xE395E,  // Npc...
+                0xE39BF,  // Nav-Mesh...
+                0xE3A58,  // Interactive Background...
+                0xE3A65,  // Interactive Background... (Pt.2)
+                0xE3A9E,  // Actors...
+                0xE3AB0,  // Animation...
+                0xE3AC2,  // Water...
+                0xE3B23,  // Fx...
+                0xE3B84,  // Camera... (Literally Just The String, Unfortunately :/)
+                0xE3E18,  // Physics...
+                0xE52F2,  // Particles...
+                0x39F37C, // Some PlayGo... Options
+                0x9FF43,  // CutScenes Menu Nest
+                0xD41B4   // CutScenes...
+            };
+            WhiteJumps = new int[] {
+                0x2A7E08, // Quick Menu Character Options
+                0xE2125,  // Rendering, BP Rendering, And Rendering PS3
+                0xE2EA1,  // Spawn Character...
+                0xE35BA,  // Spawn Vehicle...
+                0x271F0D, // Player...
+                0x272161, // Player... (Pt.2)
+                0x1027BD, // Gameplay... (Pt.2)
+                0x104B47, // Gameplay... (Pt.3)
+                0xE3BBE,  // Clock...
+                0xE3E7C,  // Menu...
+                0xE4033,  // Audio...
+                0xE536E   // Language...
+            };
+            FunctionNops = new int[] {
+                0x4462F6, // Particles Push
+                0x447399, // Particles Pop
+                0xD3BC9,  // CutScenes Push
+                0xD3DCE,  // CutScenes Pop
+                0xD4548   // Skip Crashing CutScenes... Function
+            };
+
+            WriteByte (0x102050, 0xC3);                                        // Keep Debug Mode Enabled (It Gets Disabled On Boot, It's Actually On By Default).
+
+            WriteBytes(0x2D6AD3, new byte[] { 0xE9, 0x27, 0x00, 0x00, 0x00 }); // Skip Crashing Shader Variables Code
+            WriteBytes(0x2D6B26, new byte[] { 0xEB, 0x05 });                   // Skip Some Code That Causes The Material Debug... Menu To Crash When Selected
+            WriteBytes(0x2D6C87, new byte[] { 0xE9, 0x76 });                   // Skip Crashing Shader Variables Submenu (Crashes The Game Mid-Boot)
+            WriteByte (new int[] { 0x2D6A70, 0x2D6A50 }, 0xEB);                // Fix The Material Debug... Options
+
+            WriteBytes(0x77B2E0, new byte[] { 0x5A, 0x7D, 0x0C, 0x00 });       // Add Valid Build Number. This Enables The "Build: " & "Built: " Debug Text As Well
+
+            WriteBytes(0x354650, new byte[] { 0xB0, 0x01 });                   // Load HYBRID Text
+          //WriteByte (0x354681, 0x00);                                        // Change HYBRID To DEBUG
+
+            WriteBytes(0x2C7230, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Create New Level Render Settings..." From Crashing The Game When "Default Render Settings..." Is Opened
+            WriteBytes(0x2C7220, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Load Existing Render Settings..." From Crashing The Game When "Default Render Settings..." Is Opened
+            WriteByte (0x2C71A1, 0xEB);                                        // Stop "Save Current Render Settings..." From Crashing When Selected
+
+            foreach (int Address in WhiteJumpsOneByte)
+                WriteByte(Address, 0x00);
+
+            foreach (int Address in WhiteJumps)
+                WriteBytes(Address, new byte[] { 0x00, 0x00 });
+
+            foreach (int Address in FunctionNops)
+                WriteBytes(Address, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 });
+
+            Inf("\"Custom\" Debug Patch Applied");
+            return;
         }
 
 
-        void UC1_102Restored() {
+        void UC1102_Patches(string type) {
             int[] WhiteJumpsOneByte = new int[] {
                 0xE21D3,    // BP UCC...
                 0xE382A,    // Collision...
@@ -1402,7 +1491,7 @@ skip: ActiveForm.Location = LastPos;
         }
 
 
-        void UC2_100Restored() {
+        void UC2100_Patches(string type) {
             int[] WhiteJumpsOneByte = new int[] {
                 0x6C9C,   // Actor Viewer... (Quick Menu)
                 0x1C46C7, // BP UCC...
@@ -1462,15 +1551,15 @@ skip: ActiveForm.Location = LastPos;
                 0x1C4EA7, // Game Objects Pop
                 0x1C4ED0, // Levels Push
                 0x1C5250, // Levels Pop
-				0x1C5279, // Npc Push
+                0x1C5279, // Npc Push
                 0x1C532C, // Npc Pop
-				0x1C5351, // Nav-Mesh Push
+                0x1C5351, // Nav-Mesh Push
                 0x1C53AD, // Nav-Mesh Pop
                 0x1C5461, // Actors & Process Push
                 0x1C546E, // Actors & Process Pop
                 0x1C5493, // Animation Push
                 0x1C54A0, // Animation Pop
-				0x1C5955, // Menu Push
+                0x1C5955, // Menu Push
                 0x1C5CA4, // Menu Pop
                 0x1C76FC, // Particles Outer Push
                 0x5D3C66, // Particles Inner Push
@@ -1514,12 +1603,22 @@ skip: ActiveForm.Location = LastPos;
         }
 
 
-        void UC3_100Restored() {
+        void UC3100_Patches(string type) {
 
         }
 
 
-        void UC4MP_133Restored() {
+        void UC4100_Patches(string type) {
+
+        }
+
+
+        void UC4133_Patches(string type) {
+
+        }
+
+
+        void UC4MP133_Patches(string type) {
             int[] WhiteJumps = new int[] {
                 0x2409ED,  // Relaunch...
                 0x18725CA, // Switch On/Off Neo Resolution Mode...
@@ -1702,6 +1801,35 @@ skip: ActiveForm.Location = LastPos;
                 WriteByte (Address, 0xC3);
 
             Inf("Restored Uncharted 4 1.33 MP Debug Menu Applied");
+        }
+
+
+        void T1R100_Patches(string type) {
+            switch (type) {
+                case "Default":
+                    goto Default;
+                case "Disable":
+                    goto Default;
+            }
+Default:
+            WriteByte(0x5C79, type == "Default" ? on : off);
+
+
+        }
+
+
+        void T1R11X_Patches(string type) {
+
+        }
+
+
+        void T2100_Patches(string type) {
+
+        }
+
+
+        void T2109_Patches(string type) {
+
         }
     }
 }

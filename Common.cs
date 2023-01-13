@@ -80,7 +80,8 @@ namespace Dobby {
             "* 2.17.29.69 | Minor EbootPatchPage Code Changes, Other Misc. Stuff",
             "* 2.17.30.69 | Uncharted 2 1.00 Restored Debug Work",
             "* 2.17.31.69 | Uncharted 2 1.00 Restored Debug Work Near-Final",
-            "* 2.17.32.75 | Moving Debug Restoration Code To Seperate Functions Outside Of Switch Case Because Reasons, Other Misc. Changes"
+            "* 2.17.32.75 | Moving Debug Restoration Code To Seperate Functions Outside Of Switch Case Because Reasons, Other Misc. Changes",
+        "* 2.18-tmp.33.75 | Reworking EbootPatchPage To Better Show Which Patch Types Are Available For The Intended Executable, Start Of Visual Rework (EbootPatchPage Only So Far)"
 
             // TODO: Finish EbootPatchPageOverhaul
 
