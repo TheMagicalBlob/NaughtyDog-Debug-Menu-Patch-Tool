@@ -219,6 +219,28 @@ namespace Dobby {
             public const bool REL = true
                                          ;
 
+            delegate void GameNotSelectedError();
+            static GameNotSelectedError Err = new GameNotSelectedError(dostuff2);
+            public static Thread FlashLabel = new Thread(new ThreadStart(dostuff1));
+            static void dostuff1() {
+                ActiveForm.Invoke(Err);
+            }
+            static void dostuff2() {
+                ActiveForm.Controls.Find("GameInfoLabel", true);
+                
+                Thread.Sleep(250);
+                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = System.Drawing.Color.White;
+                Thread.Sleep(250);
+                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = System.Drawing.Color.White;
+                Thread.Sleep(250);
+                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = System.Drawing.Color.White;
+                Thread.Sleep(250);
+                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = System.Drawing.Color.White;
+                Thread.Sleep(250);
+                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = System.Drawing.Color.White;
+                Thread.Sleep(250);
+            }
+
             public static Thread DebuggerThread = new Thread(new ThreadStart(UpdateConsoleOutput));
             public static void DebuggerInfo() => DebuggerThread.Start();
             public delegate void h();

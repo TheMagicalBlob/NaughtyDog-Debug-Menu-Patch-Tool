@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
 using static Dobby.Common;
 using System.Diagnostics;
+using System.Security.Cryptography;
+using System.ComponentModel;
 
 namespace Dobby {
     public class EbootPatchPage : Form {
@@ -21,7 +24,7 @@ namespace Dobby {
 
         public bool[] CDO = new bool[11]; //Custom Debug Options - 11th is For Eventually Keeping Track Of Whether The Options Were Left Default (true if changed)
 
-        const byte
+        const byte    // Simple Readability Addition
             on = 0x01,
             off = 0x00
         ;
@@ -64,7 +67,7 @@ namespace Dobby {
             TLL100 = 35178432,
             TLL10X = 35227448
         ;
-        private Label GameInfoLabel;
+        public Label GameInfoLabel;
         private Button BrowseButton;
         private TextBox ExecutablePathBox;
         private Label label1;
@@ -75,7 +78,7 @@ namespace Dobby {
         private Button BackBtn;
         private Button DisableDebugModeBtn;
         private Button CustomOptDebugBtn;
-        private Button BaseDebugBtn;
+        private Button EnableDebugBtn;
         private Label Info;
         private Button CreditsBtn;
         private Button MinimizeBtn;
@@ -98,7 +101,7 @@ namespace Dobby {
             this.BackBtn = new System.Windows.Forms.Button();
             this.DisableDebugModeBtn = new System.Windows.Forms.Button();
             this.CustomOptDebugBtn = new System.Windows.Forms.Button();
-            this.BaseDebugBtn = new System.Windows.Forms.Button();
+            this.EnableDebugBtn = new System.Windows.Forms.Button();
             this.Info = new System.Windows.Forms.Label();
             this.CreditsBtn = new System.Windows.Forms.Button();
             this.MinimizeBtn = new System.Windows.Forms.Button();
@@ -258,7 +261,7 @@ namespace Dobby {
             this.DisableDebugModeBtn.Text = "Disable Debug Mode";
             this.DisableDebugModeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisableDebugModeBtn.UseVisualStyleBackColor = false;
-            this.DisableDebugModeBtn.Click += new System.EventHandler(this.DisableDebugModeBtn_Click);
+            this.DisableDebugModeBtn.Click += new System.EventHandler(DisableDebugModeBtn_Click);
             this.DisableDebugModeBtn.MouseEnter += new System.EventHandler(this.DisableDebugModeBtnMH);
             this.DisableDebugModeBtn.MouseLeave += new System.EventHandler(this.DisableDebugModeBtnML);
             // 
@@ -283,22 +286,22 @@ namespace Dobby {
             // 
             // BaseDebugBtn
             // 
-            this.BaseDebugBtn.BackColor = System.Drawing.Color.DimGray;
-            this.BaseDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.BaseDebugBtn.FlatAppearance.BorderSize = 0;
-            this.BaseDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BaseDebugBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.BaseDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BaseDebugBtn.Location = new System.Drawing.Point(1, 61);
-            this.BaseDebugBtn.Name = "BaseDebugBtn";
-            this.BaseDebugBtn.Size = new System.Drawing.Size(205, 23);
-            this.BaseDebugBtn.TabIndex = 9;
-            this.BaseDebugBtn.Text = "Enable Debug Mode - Default";
-            this.BaseDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BaseDebugBtn.UseVisualStyleBackColor = false;
-            this.BaseDebugBtn.Click += new System.EventHandler(this.MakeBaseDebugBtn_Click);
-            this.BaseDebugBtn.MouseEnter += new System.EventHandler(this.MakeBaseDebugBtnMH);
-            this.BaseDebugBtn.MouseLeave += new System.EventHandler(this.MakeBaseDebugBtnML);
+            this.EnableDebugBtn.BackColor = System.Drawing.Color.DimGray;
+            this.EnableDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.EnableDebugBtn.FlatAppearance.BorderSize = 0;
+            this.EnableDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.EnableDebugBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.EnableDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.EnableDebugBtn.Location = new System.Drawing.Point(1, 61);
+            this.EnableDebugBtn.Name = "BaseDebugBtn";
+            this.EnableDebugBtn.Size = new System.Drawing.Size(205, 23);
+            this.EnableDebugBtn.TabIndex = 9;
+            this.EnableDebugBtn.Text = "Enable Debug Mode - Default";
+            this.EnableDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.EnableDebugBtn.UseVisualStyleBackColor = false;
+            this.EnableDebugBtn.Click += new System.EventHandler(this.EnableDebugBtn_Click);
+            this.EnableDebugBtn.MouseEnter += new System.EventHandler(this.EnableDebugBtnMH);
+            this.EnableDebugBtn.MouseLeave += new System.EventHandler(this.EnableDebugBtnML);
             // 
             // Info
             // 
@@ -408,7 +411,7 @@ namespace Dobby {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.BackgroundImage = global::Dobby.Properties.Resources.EbootPatchPageBorder_319x331;
+            this.BackgroundImage = global::Dobby.Properties.Resources.EbootPatchPageBorder_320x332;
             this.ClientSize = new System.Drawing.Size(320, 332);
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.MinimizeBtn);
@@ -426,7 +429,7 @@ namespace Dobby {
             this.Controls.Add(this.Info);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.BaseDebugBtn);
+            this.Controls.Add(this.EnableDebugBtn);
             this.Controls.Add(this.label2);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -523,6 +526,7 @@ skip: ActiveForm.Location = LastPos;
                 MainStream.WriteByte(data);
             }
         }
+
         private void BrowseButton_Click(object sender, EventArgs e) {
             FileDialog f = new OpenFileDialog {
                 Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
@@ -533,9 +537,10 @@ skip: ActiveForm.Location = LastPos;
 
                 using (MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite)) {
 
-                    MainStream.Position = 0x60;
-                    MainStream.Read(chk, 0, 4);
-                    switch (BitConverter.ToInt32(chk, 0)) {
+                    MainStream.Position = 0x60; MainStream.Read(chk, 0, 4);
+                    game = BitConverter.ToInt32(chk, 0);
+
+                    switch (game) {
                         default:
                             MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported");
                             break;
@@ -550,7 +555,7 @@ skip: ActiveForm.Location = LastPos;
                         case T1R11X:
                             CustomDebugBtn.Enabled = true;
                             MainStream.Position = 0x18;
-                            Inf($"The Last Of Us Remastered 1.1{((byte)MainStream.ReadByte() == 0x10 ? 1 : 0)}");
+                            GameInfoLabel.Text = $"The Last Of Us Remastered 1.1{((byte)MainStream.ReadByte() == 0x10 ? 1 : 0)}";
                             break;
                         case T2100:
                             Inf("The Last Of Us Part II 1.00 Debug Enabled");
@@ -580,7 +585,18 @@ skip: ActiveForm.Location = LastPos;
                             Inf("Uncharted 1 1.02 Default Debug Enabled");
                             break;
                         case UC2100:
-                            Inf("Uncharted 2 1.00 Default Debug Enabled");
+                            var IsDebugChk = new bool[3];
+                            var IsDebug = "Debug Mode Disabled";
+                            MainStream.Position = 0x1EB297;
+                            IsDebugChk[0] = (byte)MainStream.ReadByte() == 0xEB;
+                            MainStream.Position = 0x1EB297;
+                            IsDebugChk[1] = (byte)MainStream.ReadByte() == 0x75;
+                            MainStream.Position = 0x1EB296;
+                            IsDebugChk[2] = (byte)MainStream.ReadByte() == 0x01;
+                            foreach(bool chk in IsDebugChk)
+                            if (chk == true) IsDebug = "Debug Mode Enabled";
+
+                            GameInfoLabel.Text = $"Uncharted 2 1.00 | {IsDebug}";
                             break;
                         case UC3100:
                             Inf("Uncharted 3 1.00 Default Debug Enabled");
@@ -602,256 +618,246 @@ skip: ActiveForm.Location = LastPos;
             }
         }
 
-        public void MakeBaseDebugBtn_Click(object sender, EventArgs e) {
-            FileDialog f = new OpenFileDialog {
-                Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
-                Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned (The First 4 Bytes Will Be .elf If It Is)"
-            };
-            if (f.ShowDialog() == DialogResult.OK) {
-                using (MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite)) {
-                    MainStream.Position = 0x60;
-                    MainStream.Read(chk, 0, 4);
-                    switch (BitConverter.ToInt32(chk, 0)) {
-                        default:
-                            MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported");
-                            break;
-                        case T1R100:
-                            T1R100_Patches("Default");
-                            Inf("The Last Of Us Remastered 1.00 Debug Enabled");
-                            break;
-                        case T1R109:
-                            WriteByte(0x61B3, on);
-                            Inf("The Last Of Us Remastered 1.09 Debug Enabled");
-                            break;
-                        case T1R11X:
-                            WriteByte(0x61B3, on);
-                            MainStream.Position = 0x18;
-                            Inf($"The Last Of Us Remastered {((byte)MainStream.ReadByte() == 0x10 ? 1.11 : 1.10)} Debug Enabled");
-                            break;
-                        case T2100:
-                            WriteBytes(0x1D639C, T2Debug);
-                            Inf("The Last Of Us Part II 1.00 Debug Enabled");
-                            break;
-                        case T2101:
-                            Inf("Sorry, This Old Version Isn't Supported Just Yet");
-                            //Inf("The Last Of Us Part II 1.01 Debug Enabled");
-                            break;
-                        case T2102:
-                            Inf("Sorry, This Old Version Isn't Supported Just Yet");
-                            //Inf("The Last Of Us Part II 1.02 Debug Enabled");
-                            break;
-                        case T2105:
-                            Inf("Sorry, This Old Version Isn't Supported Just Yet");
-                            //Inf("The Last Of Us Part II 1.05 Debug Enabled");
-                            break;
-                        case T2107:
-                            WriteBytes(0x1D66BC, T2Debug);
-                            Inf("The Last Of Us Part II 1.07 Debug Enabled");
-                            break;
-                        case T2108:
-                            WriteBytes(0x6181FA, T2Debug);
-                            Inf("The Last Of Us Part II 1.08 Debug Enabled");
-                            break;
-                        case T2109:
-                            WriteBytes(0x6181FA, T2Debug);
-                            Inf("The Last Of Us Part II 1.09 Debug Enabled");
-                            break;
-                        case UC1100:
-                            WriteByte(0x102056, on);
-                            Inf("Uncharted 1 1.00 Default Debug Enabled");
-                            break;
-                        case UC1102:
-                            WriteByte(0x102180, 0xC3);
-                            Inf("Uncharted 1 1.02 Default Debug Enabled");
-                            break;
-                        case UC2100:
-                            WriteByte(0x1EB296, on);
-                            Inf("Uncharted 2 1.00 Default Debug Enabled");
-                            break;
-                        case UC3100:
-                            WriteByte(0x168EB6, on);
-                            Inf("Uncharted 3 1.00 Default Debug Enabled");
-                            break;
-                        case UC4100:
-                            WriteByte(0x1297ED, on);
-                            Inf("Uncharted 4: A Thief's End 1.00 Debug Enabled");
-                            break;
-                        case UC413X:
-                            WriteByte(0x1CCDFD, on);
-                            Inf("Uncharted 4: A Thief's End 1.32/1.33 Debug Enabled");
-                            break;
-                        case TLL100:
-                            WriteByte(0x1CCFED, on);
-                            Inf("Uncharted: The Lost Legacy 1.00 Debug Enabled");
-                            break;
-                        case TLL10X:
-                            WriteByte(0x1CD02D, on);
-                            Inf("Uncharted: The Lost Legacy 1.08/1.09 Debug Enabled");
-                            break;
-                    }
-                }
+        public void EnableDebugBtn_Click(object sender, EventArgs e) => BaseDebugFunction(on);
+        public void EnableDebugBtnMH(object sender, EventArgs e) => HoverString(EnableDebugBtn, "Enable Debug Mode As-Is With No Edits");
+        public void EnableDebugBtnML(object sender, EventArgs e) => HoverLeave(EnableDebugBtn, 1);
+
+
+        void BaseDebugFunction(byte OnOrOff) {
+            if (game == 0)
+                BrowseButton_Click(null, null);
+
+            var Type = OnOrOff == on ? "Enable" : "Disable" ;
+            switch (game) {
+                default:
+                    MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported");
+                    break;
+                case T1R100:
+                    T1R100_Patches(Type);
+                    Inf("Patch Applied Successfully");
+                    break;
+                case T1R109:
+                    T1R11X_Patches(Type);
+                    Inf("The Last Of Us Remastered 1.09 Debug Enabled");
+                    break;
+                case T1R11X:
+                    T1R11X_Patches(Type);
+                    Inf("Patch Applied");
+                    break;
+                case T2100:
+                    T2100_Patches(Type);
+                    Inf("The Last Of Us Part II 1.00 Debug Enabled");
+                    break;
+                case T2101:
+                    Inf("Sorry, This Old Version Isn't Supported Just Yet");
+                    break;
+                case T2102:
+                    Inf("Sorry, This Old Version Isn't Supported Just Yet");
+                    break;
+                case T2105:
+                    Inf("Sorry, This Old Version Isn't Supported Just Yet");
+                    break;
+                case T2107:
+                    T2107_Patches(Type);
+                    Inf("The Last Of Us Part II 1.07 Debug Enabled");
+                    break;
+                case T2108:
+                    T2109_Patches(Type);
+                    Inf("The Last Of Us Part II 1.08 Debug Enabled");
+                    break;
+                case T2109:
+                    T2109_Patches(Type);
+                    Inf("The Last Of Us Part II 1.09 Debug Enabled");
+                    break;
+                case UC1100:
+                    UC1100_Patches(Type);
+                    Inf("Uncharted 1 1.00 Default Debug Enabled");
+                    break;
+                case UC1102:
+                    UC1102_Patches(Type);
+                    GameInfoLabel.Text += "Debug Mode Disabled";
+                    break;
+                case UC2100:
+                    UC2100_Patches(Type);
+                    Inf("Uncharted 2 1.00 Default Debug Enabled");
+                    break;
+                case UC2102:
+                    UC2102_Patches(Type);
+                    break;
+                case UC3100:
+                    UC3100_Patches(Type);
+                    Inf("Uncharted 3 1.00 Default Debug Defaultd");
+                    break;
+                case UC3102:
+                    UC3102_Patches(Type);
+                    break;
+                case UC4100:
+                    UC4100_Patches(Type);
+                    Inf("Uncharted 4: A Thief's End 1.00 Debug Enabled");
+                    break;
+                case UC413X:
+                    UC4133_Patches(Type);
+                    Inf("Uncharted 4: A Thief's End 1.32/1.33 Debug Enabled");
+                    break;
+                case UC4133MP:
+                    UC4MP133_Patches(Type);
+                    Inf("Uncharted 4: A Thief's End 1.32/1.33 MP Debug Enabled");
+                    break;
+                case TLL100:
+                    TLL100_Patches(Type);
+                    Inf("Uncharted: The Lost Legacy 1.00 Debug Enabled");
+                    break;
+                case TLL10X:
+                    TLL109_Patches(Type);
+                    Inf("Uncharted: The Lost Legacy 1.08/1.09 Debug Enabled");
+                    break;
             }
         }
-        public void MakeBaseDebugBtnMH(object sender, EventArgs e) => HoverString(BaseDebugBtn, "Enable Debug Mode As-Is With No Edits");
-        public void MakeBaseDebugBtnML(object sender, EventArgs e) => HoverLeave(BaseDebugBtn, 1);
-
-
         public void RestoredDebugBtn_Click(object sender, EventArgs e) {
+            if (game == 0)
+                BrowseButton_Click(null, null);
             if (Dev.REL)
                 MessageBox.Show("Note:\nCurrently Supported Games Are:\n- Uncharted 1 1.00\n- Uncharted 1 1.02\n- Uncharted 2 1.00\n- Uncharted 4 1.33 MP", "This Part Isn't Entirely Finished");
 
-            FileDialog f = new OpenFileDialog {
-                Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
-                Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned (The First 4 Bytes Will Be .elf If It Is)"
-            };
+            DialogResult Check;
 
-            if (f.ShowDialog() == DialogResult.OK) {
-                using (MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite)) {
-
-                    MainStream.Position = 0x60; MainStream.Read(chk, 0, 4);
-                    game = BitConverter.ToInt32(chk, 0);
-
-                    DialogResult Check;
-
-                    switch (game) {
-                        default:
-                            MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported");
-                            break;
-                        case T1R100:
-                            Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
-                            if (Check == DialogResult.No) {
-                                Inf("The Last Of Us Remastered 1.00 Isn't Supported Yet");
-                                break;
-                            }
-                            MainStream.Position = 0x5C79;
-                            MainStream.WriteByte(on);
-                            Inf("The Last Of Us Remastered 1.00 Debug Enabled");
-                            break;
-                        case T1R109:
-                            Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
-                            if (Check == DialogResult.No) {
-                                Inf("The Last Of Us Remastered 1.09 Isn't Supported Yet");
-                                break;
-                            }
-                            MainStream.Position = 0x61B3;
-                            MainStream.WriteByte(on);
-                            Inf("The Last Of Us Remastered 1.09 Debug Enabled");
-                            break;
-                        case T1R11X:
-                            Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
-                            if (Check == DialogResult.No) {
-                                Inf("The Last Of Us Remastered 1.10/11 Isn't Supported Yet");
-                                break;
-                            }
-                            MainStream.Position = 0x61B3;
-                            MainStream.WriteByte(on);
-                            Inf($"The Last Of Us Remastered 1.1{((byte)MainStream.ReadByte() == 0x10 ? "1" : "0")} WIP");
-                            break;
-                        case T2100:
-                            Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
-                            if (Check == DialogResult.No) {
-                                Inf("The Last Of Us Part II 1.00 Has Nothing To Restore");
-                                break;
-                            }
-                            WriteBytes(0x1D639C, T2Debug);
-                            Inf("The Last Of Us Part II 1.00 Debug Enabled");
-                            break;
-                        case T2101:
-                            Inf("The Last Of Us Part II 1.01 Has Nothing To Restore");
-                            break;
-                        case T2102:
-                            Inf("The Last Of Us Part II 1.02 Has Nothing To Restore");
-                            break;
-                        case T2105:
-                            Inf("The Last Of Us Part II 1.05 Has Nothing To Restore");
-                            break;
-                        case T2107:
-                            Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
-                            if (Check == DialogResult.No) {
-                                Inf("The Last Of Us Part II 1.07 Has Nothing To Restore");
-                                break;
-                            }
-                            WriteBytes(0x1D66BC, T2Debug);
-                            Inf("The Last Of Us Part II 1.07 Debug Enabled");
-                            break;
-                        case T2108:
-                            Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
-                            if (Check == DialogResult.No) {
-                                Inf("The Last Of Us Part II 1.08 Has Nothing To Restore");
-                                break;
-                            }
-                            WriteBytes(0x6181FA, T2Debug);
-                            Inf("The Last Of Us Part II 1.08 Debug Enabled");
-                            break;
-                        case T2109:
-                            Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
-                            if (Check == DialogResult.No) {
-                                Inf("The Last Of Us Part II 1.09 Has Nothing To Restore");
-                                break;
-                            }
-                            WriteBytes(0x6181FA, T2Debug);
-                            Inf("The Last Of Us Part II 1.09 Debug Enabled");
-                            break;
-                        case UC1100: // Uncharted 1 1.00 Restored Debug Ver. 2
-                            UC1100_Patches("Restored");
-                            break;
-
-                        case UC1102: // Uncharted 1 1.02 Restored Debug Ver. 2.7
-                            UC1102_Patches("Restored");
-                            break;
-
-                        case UC2100:
-                            UC2100_Patches("Restored");
-                            break;
-
-                        case UC3100:
-                            Inf("Uncharted 3 1.00 Restored Debug N/A");
-                            break;
-
-                        case UC4100:
-                            Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
-                            if (Check == DialogResult.No) {
-                                Inf("Sorry, No Restored Uncharted 4 1.00 Debug Yet");
-                                break;
-                            }
-                            WriteByte(0x1297ED, on);
-                            Inf("Uncharted 4: A Thief's End 1.00 Debug Enabled");
-                            break;
-
-                        case UC413X:
-                            Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
-                            if (Check == DialogResult.No) {
-                                Inf("Sorry, No Restored Uncharted 4 1.33 Debug Yet");
-                                break;
-                            }
-                            WriteByte(0x1CCDFD, on);
-                            Inf("Uncharted 4: A Thief's End 1.32/1.33 Debug Enabled");
-                            break;
-
-                        case UC4133MP: // Uncharted 4 1.33 Multiplayer
-                            UC4MP133_Patches("Restored");
-                            break;
-
-                        case TLL100:
-                            Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
-                            if (Check == DialogResult.No) {
-                                Inf("Sorry, The Lost Legacy 1.00 Isn't Supported By This");
-                                break;
-                            }
-                            WriteByte(0x1CCFED, on);
-                            Inf("Uncharted: The Lost Legacy 1.00 Debug Enabled");
-                            break;
-                        case TLL10X:
-                            Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
-                            if (Check == DialogResult.No) {
-                                Inf("Sorry, The Lost Legacy 1.08/1.09 Isn't Supported By This");
-                                break;
-                            }
-                            WriteByte(0x1CD02D, on);
-                            Inf("Uncharted: The Lost Legacy 1.08/1.09 Debug Enabled");
-                            break;
+            switch (game) {
+                default:
+                    MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported");
+                    break;
+                case T1R100:
+                    Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
+                    if (Check == DialogResult.No) {
+                        Inf("The Last Of Us Remastered 1.00 Isn't Supported Yet");
+                        break;
                     }
-                }
+                    MainStream.Position = 0x5C79;
+                    MainStream.WriteByte(on);
+                    Inf("The Last Of Us Remastered 1.00 Debug Enabled");
+                    break;
+                case T1R109:
+                    Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
+                    if (Check == DialogResult.No) {
+                        Inf("The Last Of Us Remastered 1.09 Isn't Supported Yet");
+                        break;
+                    }
+                    MainStream.Position = 0x61B3;
+                    MainStream.WriteByte(on);
+                    Inf("The Last Of Us Remastered 1.09 Debug Enabled");
+                    break;
+                case T1R11X:
+                    Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
+                    if (Check == DialogResult.No) {
+                        Inf("The Last Of Us Remastered 1.10/11 Isn't Supported Yet");
+                        break;
+                    }
+                    MainStream.Position = 0x61B3;
+                    MainStream.WriteByte(on);
+                    Inf($"The Last Of Us Remastered 1.1{((byte)MainStream.ReadByte() == 0x10 ? "1" : "0")} WIP");
+                    break;
+                case T2100:
+                    Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
+                    if (Check == DialogResult.No) {
+                        Inf("The Last Of Us Part II 1.00 Has Nothing To Restore");
+                        break;
+                    }
+                    WriteBytes(0x1D639C, T2Debug);
+                    Inf("The Last Of Us Part II 1.00 Debug Enabled");
+                    break;
+                case T2101:
+                    Inf("The Last Of Us Part II 1.01 Has Nothing To Restore");
+                    break;
+                case T2102:
+                    Inf("The Last Of Us Part II 1.02 Has Nothing To Restore");
+                    break;
+                case T2105:
+                    Inf("The Last Of Us Part II 1.05 Has Nothing To Restore");
+                    break;
+                case T2107:
+                    Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
+                    if (Check == DialogResult.No) {
+                        Inf("The Last Of Us Part II 1.07 Has Nothing To Restore");
+                        break;
+                    }
+                    WriteBytes(0x1D66BC, T2Debug);
+                    Inf("The Last Of Us Part II 1.07 Debug Enabled");
+                    break;
+                case T2108:
+                    Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
+                    if (Check == DialogResult.No) {
+                        Inf("The Last Of Us Part II 1.08 Has Nothing To Restore");
+                        break;
+                    }
+                    WriteBytes(0x6181FA, T2Debug);
+                    Inf("The Last Of Us Part II 1.08 Debug Enabled");
+                    break;
+                case T2109:
+                    Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
+                    if (Check == DialogResult.No) {
+                        Inf("The Last Of Us Part II 1.09 Has Nothing To Restore");
+                        break;
+                    }
+                    WriteBytes(0x6181FA, T2Debug);
+                    Inf("The Last Of Us Part II 1.09 Debug Enabled");
+                    break;
+                case UC1100: // Uncharted 1 1.00 Restored Debug Ver. 2
+                    UC1100_Patches("Restored");
+                    break;
+
+                case UC1102: // Uncharted 1 1.02 Restored Debug Ver. 2.7
+                    UC1102_Patches("Restored");
+                    break;
+
+                case UC2100:
+                    UC2100_Patches("Restored");
+                    break;
+
+                case UC3100:
+                    Inf("Uncharted 3 1.00 Restored Debug N/A");
+                    break;
+
+                case UC4100:
+                    Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
+                    if (Check == DialogResult.No) {
+                        Inf("Sorry, No Restored Uncharted 4 1.00 Debug Yet");
+                        break;
+                    }
+                    WriteByte(0x1297ED, on);
+                    Inf("Uncharted 4: A Thief's End 1.00 Debug Enabled");
+                    break;
+
+                case UC413X:
+                    Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
+                    if (Check == DialogResult.No) {
+                        Inf("Sorry, No Restored Uncharted 4 1.33 Debug Yet");
+                        break;
+                    }
+                    WriteByte(0x1CCDFD, on);
+                    Inf("Uncharted 4: A Thief's End 1.32/1.33 Debug Enabled");
+                    break;
+
+                case UC4133MP: // Uncharted 4 1.33 Multiplayer
+                    UC4MP133_Patches("Restored");
+                    break;
+
+                case TLL100:
+                    Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
+                    if (Check == DialogResult.No) {
+                        Inf("Sorry, The Lost Legacy 1.00 Isn't Supported By This");
+                        break;
+                    }
+                    WriteByte(0x1CCFED, on);
+                    Inf("Uncharted: The Lost Legacy 1.00 Debug Enabled");
+                    break;
+                case TLL10X:
+                    Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
+                    if (Check == DialogResult.No) {
+                        Inf("Sorry, The Lost Legacy 1.08/1.09 Isn't Supported By This");
+                        break;
+                    }
+                    WriteByte(0x1CD02D, on);
+                    Inf("Uncharted: The Lost Legacy 1.08/1.09 Debug Enabled");
+                    break;
             }
         }
 
@@ -859,6 +865,8 @@ skip: ActiveForm.Location = LastPos;
         public void RestoredDebugBtnML(object sender, EventArgs e) => HoverLeave(RestoredDebugBtn, 1);
 
         public void CustomDebugBtn_Click(object sender, EventArgs e) { // Just Edited Debug Menus, Some Things May Be Replaced
+            if (game == 0)
+                BrowseButton_Click(null, null);
             if (Dev.REL) MessageBox.Show("Note:\nThe Only Currently Supported Games Are\nThe Last Of Us Part II\nUncharted 2 1.00\n\nThe Restored Debug Menus Are My Current Priority", "This Part Isn't Entirely Finished");
             FileDialog f = new OpenFileDialog {
                 Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
@@ -1036,212 +1044,83 @@ skip: ActiveForm.Location = LastPos;
 
         public void CustomOptDebugBtn_Click(object sender, EventArgs e) {
             if (Dev.REL) return;
-
-            FileDialog f = new OpenFileDialog {
-                Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
-                Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned (The First 4 Bytes Will Be .elf If It Is)"
-            };
+            if (game == 0)
+                BrowseButton_Click(null, null);
 
             CDO = new bool[10]; CDO[7] = CDO[8] = true; MenuOpacity = 2;
 
-            if (true) {//f.ShowDialog() == DialogResult.OK) {
-                using (MainStream = new FileStream(@"D:\PS4\CUSA10249-patch\CUSA07820_1.09_eboot - Copy.bin" /*f.FileName*/, FileMode.Open, FileAccess.ReadWrite)) {
+            switch (game) {
+                default:
+                    MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported");
+                    break;
+                case T1R100:
+                    Inf("Sorry, The Last Of Us Remastered 1.00 Isn't Supported Just Yet");
+                    break;
+                case T1R109:
+                    Inf("Sorry, The Last Of Us Remastered 1.09 Isn't Supported Just Yet");
+                    break;
+                case T1R11X:
+                    Inf("Sorry, The Last Of Us Remastered 1.10/1.11 Isn't Supported Just Yet");
+                    break;
+                case T2100:
+                    MessageBox.Show("Please Get The 1.00, 1.07, or 1.09 Version Of The Game For  I'm Not Doing It For 6 Versions, 3 is Enough");
+                    Inf("Sorry, The Last Of Us Part II 1.00 Isn't Supported Just Yet");
+                    break;
+                case T2101:
+                    MessageBox.Show("Please Get The 1.00, 1.07, or 1.09 Version Of The Game For  I'm Not Doing It For 6 Versions, 3 is Enough");
+                    Inf("Sorry, The Last Of Us Part II 1.01 Isn't Supported");
+                    break;
+                case T2102:
+                    MessageBox.Show("Please Get The 1.00, 1.07, or 1.09 Version Of The Game For  I'm Not Doing It For 6 Versions, 3 is Enough");
+                    Inf("Sorry, The Last Of Us Part II 1.02 Isn't Supported");
+                    break;
+                case T2105:
+                    MessageBox.Show("Please Get The 1.00, 1.07, or 1.09 Version Of The Game For  I'm Not Doing It For 6 Versions, 3 is Enough");
+                    Inf("Sorry, The Last Of Us Part II 1.05 Isn't Supported");
+                    break;
+                case T2107:
+                    MessageBox.Show("Please Get The 1.00, 1.07, or 1.09 Version Of The Game For  I'm Not Doing It For 6 Versions, 3 is Enough");
+                    Inf("Sorry, The Last Of Us Part II 1.07 Isn't Supported Just Yet");
+                    break;
+                case T2108:
+                    MessageBox.Show("Please Get The 1.00, 1.07, or 1.09 Version Of The Game For  I'm Not Doing It For 6 Versions, 3 is Enough");
+                    Inf("Sorry, The Last Of Us Part II 1.08 Isn't Supported");
+                    break;
 
-                    MainStream.Position = 0x60; MainStream.Read(chk, 0, 4); // Converts The Data Here To An Int To See Which Game & Patch Is Selected, It's Unique For All But One.
+                case T2109:
+                    T2CustomOptionsDebug NewPage = new T2CustomOptionsDebug();
+                    NewPage.ShowDialog();
 
-                    game = T2109; //BitConverter.ToInt32(chk, 0); //!
-                    Dev.DebugOutStr("Eboot Selection Skipped, D:\\PS4\\CUSA10249-patch\\CUSA07820_1.09_eboot - Copy.bin Auto-Selected And Defaulted To T2109 For Testing");
+                    Inf("The Last Of Us Part II 1.09 Custom Debug Enabled");
+                    break;
 
-                    switch (game) {
-                        default:
-                            MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported");
-                            break;
-                        case T1R100:/*
-                            fs.Position = 0x5C79;
-                            fs.WriteByte(on);
-                            */
-                            Inf("Sorry, The Last Of Us Remastered 1.00 Isn't Supported Just Yet");
-                            break;
-                        case T1R109:/*
-                            fs.Position = 0x61B3;
-                            fs.WriteByte(on);
-                            */
-                            Inf("Sorry, The Last Of Us Remastered 1.09 Isn't Supported Just Yet");
-                            break;
-                        case T1R11X:/*
-                            fs.Position = 0x61B3;
-                            fs.WriteByte(on);
-                            */
-                            Inf("Sorry, The Last Of Us Remastered 1.10/1.11 Isn't Supported Just Yet");
-                            break;
-                        case T2100:
-                            MessageBox.Show("Please Get The 1.00, 1.07, or 1.09 Version Of The Game For  I'm Not Doing It For 6 Versions, 3 is Enough");
-                            Inf("Sorry, The Last Of Us Part II 1.00 Isn't Supported Just Yet");
-                            break;
-                        case T2101:
-                            MessageBox.Show("Please Get The 1.00, 1.07, or 1.09 Version Of The Game For  I'm Not Doing It For 6 Versions, 3 is Enough");
-                            Inf("Sorry, The Last Of Us Part II 1.01 Isn't Supported");
-                            break;
-                        case T2102:
-                            MessageBox.Show("Please Get The 1.00, 1.07, or 1.09 Version Of The Game For  I'm Not Doing It For 6 Versions, 3 is Enough");
-                            Inf("Sorry, The Last Of Us Part II 1.02 Isn't Supported");
-                            break;
-                        case T2105:
-                            MessageBox.Show("Please Get The 1.00, 1.07, or 1.09 Version Of The Game For  I'm Not Doing It For 6 Versions, 3 is Enough");
-                            Inf("Sorry, The Last Of Us Part II 1.05 Isn't Supported");
-                            break;
-                        case T2107:
-                            MessageBox.Show("Please Get The 1.00, 1.07, or 1.09 Version Of The Game For  I'm Not Doing It For 6 Versions, 3 is Enough");
-                            Inf("Sorry, The Last Of Us Part II 1.07 Isn't Supported Just Yet");
-                            break;
-                        case T2108:
-                            MessageBox.Show("Please Get The 1.00, 1.07, or 1.09 Version Of The Game For  I'm Not Doing It For 6 Versions, 3 is Enough");
-                            Inf("Sorry, The Last Of Us Part II 1.08 Isn't Supported");
-                            break;
-
-                        case T2109:
-                            T2CustomOptionsDebug NewPage = new T2CustomOptionsDebug();
-                            NewPage.ShowDialog();
-
-                            Inf("The Last Of Us Part II 1.09 Custom Debug Enabled");
-                            break;
-
-                        case UC1100: // UC1 1.00
-                            Inf("Sorry, Uncharted 1 1.00 Isn't Supported Yet. Use The Restored Debug");
-                            break;
-                        case UC2100:
-                            Inf("Sorry, Uncharted 2 1.00 Debug Isn't Supported Yet");
-                            break;
-                        case UC3100:
-                            Inf("Sorry, Uncharted 3 1.00 Isn't Supported Just Yet. Use The Restored Debug");
-                            break;
-                        case UC4100:
-                            Inf("Sorry, Uncharted 4 1.00 Isn't Supported Just Yet");
-                            break;
-                        case UC413X:
-                            Inf("Sorry, Uncharted 4 1.3X Isn't Supported Just Yet");
-                            break;
-                        case TLL100:
-                            Inf("Sorry, The Lost Legacy 1.00 Isn't Supported Just Yet");
-                            break;
-                        case TLL10X:
-                            Inf("Sorry, The Lost Legacy 1.08\\1.09 Isn't Supported Just Yet");
-                            break;
-
-                    }
-                }
+                case UC1100: // UC1 1.00
+                    Inf("Sorry, Uncharted 1 1.00 Isn't Supported Yet. Use The Restored Debug");
+                    break;
+                case UC2100:
+                    Inf("Sorry, Uncharted 2 1.00 Debug Isn't Supported Yet");
+                    break;
+                case UC3100:
+                    Inf("Sorry, Uncharted 3 1.00 Isn't Supported Just Yet. Use The Restored Debug");
+                    break;
+                case UC4100:
+                    Inf("Sorry, Uncharted 4 1.00 Isn't Supported Just Yet");
+                    break;
+                case UC413X:
+                    Inf("Sorry, Uncharted 4 1.3X Isn't Supported Just Yet");
+                    break;
+                case TLL100:
+                    Inf("Sorry, The Lost Legacy 1.00 Isn't Supported Just Yet");
+                    break;
+                case TLL10X:
+                    Inf("Sorry, The Lost Legacy 1.08\\1.09 Isn't Supported Just Yet");
+                    break;
             }
         }
-        public void CustomOptDebugBtnMH(object sender, EventArgs e) => HoverString(CustomOptDebugBtn, Dev.REL ? "Temporarily Disabled" : "Enables A Customized Version Of The Debug Menu");
+        public void CustomOptDebugBtnMH(object sender, EventArgs e) => HoverString(CustomOptDebugBtn, Dev.REL ? "Temporarily Disabled" : "change me //!");
         public void CustomOptDebugBtnML(object sender, EventArgs e) => HoverLeave(CustomOptDebugBtn, 1);
-        #region |
-        public static void CatchThatAnnoyingCrash() => Environment.Exit(0);
-        #endregion
-        public void DisableDebugModeBtn_Click(object sender, EventArgs e) {
-            FileDialog f = new OpenFileDialog {
-                Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
-                Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned (The First 4 Bytes Will Be .elf If It Is)"
-            };
-            if (f.ShowDialog() == DialogResult.OK) {
-                using (MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite)) {
-                    MainStream.Position = 0x60;
-                    MainStream.Read(chk, 0, 4);
 
-                    game = BitConverter.ToInt32(chk, 0);
-                    switch (game) {
-                        default:
-                            MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported");
-                            break;
-                        case T1R100:
-                            T1R100_Patches("Disable");
-                            Inf("Patch Applied Successfully");
-                            break;
-                        case T1R109:
-                            MainStream.Position = 0x61B3;
-                            MainStream.WriteByte(off);
-                            Inf("The Last Of Us Remastered 1.09 Debug Disabled");
-                            break;
-                        case T1R11X:
-                            MainStream.Position = 0x61B3;
-                            MainStream.WriteByte(off);
-                            MainStream.Position = 0x18;
-                            if ((byte)MainStream.ReadByte() == 0x10)
-                                Inf("The Last Of Us Remastered 1.11 Debug Disabled");
-                            else
-                                Inf("The Last Of Us Remastered 1.10 Debug Disabled");
-                            break;
-                        case T2100:
-                            MainStream.Position = 0x1D639C;
-                            MainStream.Write(T2DebugOff, 0, 2);
-                            Inf("The Last Of Us Part II 1.00 Debug Disabled");
-                            break;
-                        case T2101:
-                            Inf("Sorry, This Old Version Isn't Supported Just Yet");
-                            //Inf("The Last Of Us Part II 1.01 Debug Disabled");
-                            break;
-                        case T2102:
-                            Inf("Sorry, This Old Version Isn't Supported Just Yet");
-                            //Inf("The Last Of Us Part II 1.02 Debug Disabled");
-                            break;
-                        case T2105:
-                            Inf("Sorry, This Old Version Isn't Supported Just Yet");
-                            //Inf("The Last Of Us Part II 1.05 Debug Disabled");
-                            break;
-                        case T2107:
-                            WriteBytes(0x1D66BC, T2DebugOff);
-                            Inf("The Last Of Us Part II 1.07 Debug Disabled");
-                            break;
-                        case T2108:
-                            WriteBytes(0x6181FA, T2DebugOff);
-                            Inf("The Last Of Us Part II 1.08 Debug Disabled");
-                            break;
-                        case T2109:
-                            WriteBytes(0x6181FA, T2DebugOff);
-                            Inf("The Last Of Us Part II 1.09 Debug Disabled");
-                            break;
-                        case UC1100:
-                            UC1100_Patches("Disable");
-                            Inf("Uncharted 1 1.00 Default Debug Disabled");
-                            break;
-                        case UC2100:
-                            MainStream.Position = 0x1EB296;
-                            MainStream.WriteByte(off);
-                            Inf("Uncharted 2 1.00 Default Debug Disabled");
-                            break;
-                        case UC3100:
-                            MainStream.Position = 0x168EB6;
-                            MainStream.WriteByte(off);
-                            Inf("Uncharted 3 1.00 Default Debug Disabled");
-                            break;
-                        case UC4100:
-                            MainStream.Position = 0x1297ED;
-                            MainStream.WriteByte(off);
-                            Inf("Uncharted 4: A Thief's End 1.00 Debug Disabled");
-                            break;
-                        case UC413X:
-                            MainStream.Position = 0x1CCDFD;
-                            MainStream.WriteByte(off);
-                            Inf("Uncharted 4: A Thief's End 1.32/1.33 Debug Disabled");
-                            break;
-                        case 3:
-                            MainStream.Position = 0x3;
-                            MainStream.WriteByte(off);
-                            Inf("Uncharted 4: A Thief's End 1.32/1.33 MP Debug Disabled");
-                            break;
-                        case TLL100:
-                            MainStream.Position = 0x1CCFED;
-                            MainStream.WriteByte(off);
-                            Inf("Uncharted: The Lost Legacy 1.00 Debug Disabled");
-                            break;
-                        case TLL10X:
-                            MainStream.Position = 0x1CD02D;
-                            MainStream.WriteByte(off);
-                            Inf("Uncharted: The Lost Legacy 1.08/1.09 Debug Disabled");
-                            break;
-                    }
-                }
-            }
-        }
+        public void DisableDebugModeBtn_Click(object sender, EventArgs e) => BaseDebugFunction(off);
         public void DisableDebugModeBtnMH(object sender, EventArgs e) => HoverString(DisableDebugModeBtn, "Disable Debug Mode. Doesn't Undo Other Patches");
         public void DisableDebugModeBtnML(object sender, EventArgs e) => HoverLeave(DisableDebugModeBtn, 1);
 
@@ -1251,7 +1130,7 @@ skip: ActiveForm.Location = LastPos;
         void UC1100_Patches(string type) { // String over an int for readability
 
             switch (type) {      // I Have A Very Good Reason For Using goto here:       I Wanted To. Don't Like It? goto Fuck_Yourself
-                case "Default":
+                case "Enable":
                     goto Default;
                 case "Disable":
                     goto Default;
@@ -1262,7 +1141,7 @@ skip: ActiveForm.Location = LastPos;
             }
 Default:
             MainStream.Position = 0x102057;
-            MainStream.WriteByte(type == "Default" ? (byte)0xEB : (byte)0x74);
+            MainStream.WriteByte(type == "Enable" ? (byte)0xEB : (byte)0x74);
             return;
 Restored:
             int[] WhiteJumpsOneByte = new int[] {
@@ -1492,6 +1371,19 @@ Custom:
 
 
         void UC2100_Patches(string type) {
+            switch (type) {
+                case "Enable":
+                    goto Default;
+                case "Disable":
+                    goto Default;
+                case "Restored":
+                    goto Restored;
+            }
+Default:
+            WriteByte(0x4D7BE7, (byte)(type == "Enable" ? 0xEB : 0x74));
+            return;
+
+Restored:
             int[] WhiteJumpsOneByte = new int[] {
                 0x6C9C,   // Actor Viewer... (Quick Menu)
                 0x1C46C7, // BP UCC...
@@ -1602,23 +1494,90 @@ Custom:
             Inf("Restored Debug Menu Patch Applied");
         }
 
+        void UC2102_Patches(string type) {
+            switch (type) {
+                case "Enable":
+                    goto Default;
+                case "Disable":
+                    goto Default;
+            }
+Default:
+            WriteByte(0x4D7BE7, (byte)(type == "Enable" ? 0xEB : 0x74));
 
+        }
         void UC3100_Patches(string type) {
+            switch (type) {
+                case "Enable":
+                    goto Default;
+                case "Disable":
+                    goto Default;
+            }
+Default:
+            WriteByte(0x168EB7, (byte)(type == "Enable" ? 0xEB : 0x74));
+
+
+
+        }
+
+
+        void UC3102_Patches(string type) {
+            switch (type) {
+                case "Enable":
+                    goto Default;
+                case "Disable":
+                    goto Default;
+            }
+Default:
+            WriteByte(0x578227, (byte)(type == "Enable" ? 0xEB : 0x74));
+
+
 
         }
 
 
         void UC4100_Patches(string type) {
+            switch (type) {
+                case "Enable":
+                    goto Default;
+                case "Disable":
+                    goto Default;
+            }
+Default:
+            WriteByte(0x1297ED, type == "Enable" ? on : off);
+
 
         }
 
 
         void UC4133_Patches(string type) {
+            switch (type) {
+                case "Enable":
+                    goto Default;
+                case "Disable":
+                    goto Default;
+            }
+Default:
+            WriteByte(0x1CCDFD, type == "Enable" ? on : off);
+
+
 
         }
 
 
         void UC4MP133_Patches(string type) {
+            switch (type) {
+                case "Enable":
+                    goto Default;
+                case "Disable":
+                    goto Default;
+                case "Restored":
+                    goto Restored;
+            }
+Default:
+            WriteByte(0x1CCEB8, type == "Enable" ? on : off);
+            return;
+
+Restored:
             int[] WhiteJumps = new int[] {
                 0x2409ED,  // Relaunch...
                 0x18725CA, // Switch On/Off Neo Resolution Mode...
@@ -1798,38 +1757,99 @@ Custom:
             foreach (int Address in FunctionNops)
                 WriteBytes(Address, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 });
             foreach (int Address in Returns)
-                WriteByte (Address, 0xC3);
+                WriteByte(Address, 0xC3);
 
             Inf("Restored Uncharted 4 1.33 MP Debug Menu Applied");
         }
 
 
-        void T1R100_Patches(string type) {
+        void TLL100_Patches(string type) {
             switch (type) {
-                case "Default":
+                case "Enable":
                     goto Default;
                 case "Disable":
                     goto Default;
             }
 Default:
-            WriteByte(0x5C79, type == "Default" ? on : off);
+            WriteByte(0x1CCFED, type == "Enable" ? on : off); //!
+
+        }
+
+
+        void TLL109_Patches(string type) {
+            switch (type) {
+                case "Enable":
+                    goto Default;
+                case "Disable":
+                    goto Default;
+            }
+Default:
+            WriteByte(0x1CD02D, type == "Enable" ? on : off); //!
+
+        }
+
+
+        void T1R100_Patches(string type) {
+            switch (type) {
+                case "Enable":
+                    goto Default;
+                case "Disable":
+                    goto Default;
+            }
+Default:
+            WriteByte(0x5C79, type == "Enable" ? on : off);
 
 
         }
 
 
         void T1R11X_Patches(string type) {
+            switch (type) {
+                case "Enable":
+                    goto Default;
+                case "Disable":
+                    goto Default;
+            }
+Default:
+            WriteByte(0x61B3, type == "Enable" ? on : off);
+
 
         }
 
 
         void T2100_Patches(string type) {
-
+            switch (type) {
+                case "Enable":
+                    goto Default;
+                case "Disable":
+                    goto Default;
+            }
+Default:
+            WriteBytes(0x1D639C, type == "Enable" ? T2Debug : T2DebugOff);
         }
 
 
-        void T2109_Patches(string type) {
+        void T2107_Patches(string type) {
+            switch (type) {
+                case "Enable":
+                    goto Default;
+                case "Disable":
+                    goto Default;
+            }
+Default:
+            WriteBytes(0x1D66BC, type == "Enable" ? T2Debug : T2DebugOff);
+        }
 
+
+        void T2109_Patches(string type) { // 1.08 as well, same offsets
+            switch (type) {
+                case "Enable":
+                    goto Default;
+                case "Disable":
+                    goto Default;
+            }
+Default:
+            WriteBytes(0x6181FA, type == "Enable" ? T2Debug : T2DebugOff);
         }
     }
 }

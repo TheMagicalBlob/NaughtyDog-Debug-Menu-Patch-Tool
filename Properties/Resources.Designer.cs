@@ -63,9 +63,19 @@ namespace Dobby.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap EbootPatchPageBorder_319x331 {
+        public static System.Drawing.Bitmap EbootPatchPageBorder_320x332 {
             get {
-                object obj = ResourceManager.GetObject("EbootPatchPageBorder_319x331", resourceCulture);
+                object obj = ResourceManager.GetObject("EbootPatchPageBorder_320x332", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap MainPageBorder_320x200 {
+            get {
+                object obj = ResourceManager.GetObject("MainPageBorder_320x200", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

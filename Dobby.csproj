@@ -139,9 +139,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\blobwithgreybg.png" />
-    <Content Include="Resources\BorderTest.png" />
-    <None Include="Resources\EbootPatchPageBorder_319x331.png" />
-    <None Include="Resources\BorderTestB.png" />
+    <Content Include="Resources\EbootPatchPageBorder_320x332.png" />
+    <Content Include="Resources\MainPageBorder_320x200.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
