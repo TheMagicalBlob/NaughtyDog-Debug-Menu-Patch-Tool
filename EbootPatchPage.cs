@@ -61,8 +61,30 @@ namespace Dobby {
             UC413X = 33886256,
             UC4133MP = 35877432,
             TLL100 = 35178432,
-            TLL10X = 35227448
+            TLL10X = 35227448,
+            T1R100Debug = 0x579F
+           /* T1R109Debug = ,
+            T1R11XDebug = ,
+            T2100Debug = ,
+            T2101Debug = ,
+            T2102Debug = ,
+            T2105Debug = ,
+            T2107Debug = ,
+            T2108Debug = ,
+            T2109Debug = ,
+            UC1100Debug = ,
+            UC1102Debug = ,
+            UC2100Debug = ,
+            UC2102Debug = ,
+            UC3100Debug = ,
+            UC3102Debug = ,
+            UC4100Debug = ,
+            UC413XDebug = ,
+            UC4133MPDebug = ,
+            TLL100Debug = ,
+            TLL10XDebug = */
         ;
+
         public Label GameInfoLabel;
         private Button BrowseButton;
         private TextBox ExecutablePathBox;
@@ -522,7 +544,23 @@ skip: ActiveForm.Location = LastPos;
                 MainStream.WriteByte(data);
             }
         }
+        string UpdateGameInfoLabel(int game) {
+            string NewString = string.Empty;
 
+            var IsDebugChk = new bool[3];
+            var IsDebug = "Debug Mode Disabled";
+            MainStream.Position = 0x1EB297;
+            IsDebugChk[0] = (byte)MainStream.ReadByte() == 0xEB;
+            MainStream.Position = 0x1EB297;
+            IsDebugChk[1] = (byte)MainStream.ReadByte() == 0x75;
+            MainStream.Position = 0x1EB296;
+            IsDebugChk[2] = (byte)MainStream.ReadByte() == 0x01;
+            foreach (bool chk in IsDebugChk)
+                if (chk == true) IsDebug = "Debug Mode Enabled";
+
+            GameInfoLabel.Text = $"Uncharted 2 1.00 | {IsDebug}";
+            return NewString;
+        }
         private void BrowseButton_Click(object sender, EventArgs e) {
             FileDialog f = new OpenFileDialog {
                 Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
@@ -581,20 +619,15 @@ skip: ActiveForm.Location = LastPos;
                             Inf("Uncharted 1 1.02 Default Debug Enabled");
                             break;
                         case UC2100:
-                            var IsDebugChk = new bool[3];
-                            var IsDebug = "Debug Mode Disabled";
-                            MainStream.Position = 0x1EB297;
-                            IsDebugChk[0] = (byte)MainStream.ReadByte() == 0xEB;
-                            MainStream.Position = 0x1EB297;
-                            IsDebugChk[1] = (byte)MainStream.ReadByte() == 0x75;
-                            MainStream.Position = 0x1EB296;
-                            IsDebugChk[2] = (byte)MainStream.ReadByte() == 0x01;
-                            foreach(bool chk in IsDebugChk)
-                            if (chk == true) IsDebug = "Debug Mode Enabled";
-
-                            GameInfoLabel.Text = $"Uncharted 2 1.00 | {IsDebug}";
+                            GameInfoLabel.Text = UpdateGameInfoLabel(game);
+                            break;
+                        case UC2102:
+                            Inf("Uncharted 3 1.00 Default Debug Enabled");
                             break;
                         case UC3100:
+                            Inf("Uncharted 3 1.00 Default Debug Enabled");
+                            break;
+                        case UC3102:
                             Inf("Uncharted 3 1.00 Default Debug Enabled");
                             break;
                         case UC4100:
@@ -626,11 +659,11 @@ skip: ActiveForm.Location = LastPos;
                     break;
                 case T1R100:
                     T1R100_Patches(Type);
-                    Inf("Patch Applied Successfully");
+                    Inf(GameInfoLabel.Text.Substring(GameInfoLabel.Text.LastIndexOf("/n")) + "\nDefault Debug Menus Enabled");
                     break;
                 case T1R109:
                     T1R11X_Patches(Type);
-                    Inf("The Last Of Us Remastered 1.09 Debug Enabled");
+                    Inf("Patch Applied");
                     break;
                 case T1R11X:
                     T1R11X_Patches(Type);
@@ -734,7 +767,7 @@ skip: ActiveForm.Location = LastPos;
                         Inf("The Last Of Us Remastered 1.00 Isn't Supported Yet");
                         break;
                     }
-                    MainStream.Position = 0x5C79;
+                    MainStream.Position = 0x579F;
                     MainStream.WriteByte(on);
                     Inf("The Last Of Us Remastered 1.00 Debug Enabled");
                     break;
@@ -1660,16 +1693,25 @@ Default:
 
 
         void T1R100_Patches(string type) {
+
+            WriteByte(T1R100Debug, type == "Disable" ? off : on);
+            
             switch (type) {
-                case "Enable":
-                    goto Default;
-                case "Disable":
-                    goto Default;
+                case "Restored":
+                    goto Restored;
+                case "Custom":
+                    goto Custom;
             }
-Default:
-            WriteByte(0x5C79, type == "Enable" ? on : off);
+Restored:
+            WriteBytes(0x6363C,  new byte[] { 0xE8, 0xEF, 0x24, 0x6D, 0x00 }); // Replace Call To Mini-Rendering Menu With One To The Full Rendering Menu
+            WriteBytes(0x94DD35, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 }); // Skip A Function In The Material Debug Menu That Causes The Game To Crash While Booting
+            return;
 
+Custom:
+            WriteBytes(0x6363C, new byte[] { 0xE8, 0xEF, 0x24, 0x6D, 0x00 }); // Replace Call To Mini-Rendering Menu With One To The Full Rendering Menu
+            WriteBytes(0x94DD35, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 }); // Skip A Function In The Material Debug Menu That Causes The Game To Crash While Booting
 
+            return;
         }
 
 
