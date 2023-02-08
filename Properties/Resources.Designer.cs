@@ -89,5 +89,55 @@ namespace Dobby.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] T1R_111_Restored_Menu {
+            get {
+                object obj = ResourceManager.GetObject("T1R_111_Restored_Menu", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] T1R_11X_Restored_Chunk1 {
+            get {
+                object obj = ResourceManager.GetObject("T1R_11X_Restored_Chunk1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] T1R_11X_Restored_Chunk2 {
+            get {
+                object obj = ResourceManager.GetObject("T1R_11X_Restored_Chunk2", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] T1R_11X_Restored_Chunk3 {
+            get {
+                object obj = ResourceManager.GetObject("T1R_11X_Restored_Chunk3", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] T1R_11X_Restored_Chunk4 {
+            get {
+                object obj = ResourceManager.GetObject("T1R_11X_Restored_Chunk4", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

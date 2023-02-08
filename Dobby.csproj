@@ -133,6 +133,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <None Include="Resources\PS4Debug1.1.15.bin" />
+    <None Include="Resources\T1R_111_Restored_Menu" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

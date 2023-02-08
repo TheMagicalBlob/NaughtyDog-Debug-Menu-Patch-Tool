@@ -83,7 +83,8 @@ namespace Dobby {
             "* 2.17.32.75 | Moving Debug Restoration Code To Seperate Functions Outside Of Switch Case Because Reasons, Other Misc. Changes",
         "* 2.18-tmp.33.75 | Reworking EbootPatchPage To Better Show Which Patch Types Are Available For The Intended Executable, Start Of Visual Rework (EbootPatchPage Only So Far)",
         "* 2.18-tmp.35.77 | Further EbootPatchPage Additions, Deleted Various Pointless bits of code, other Misc. UI changes.",
-        "* 2.18-tmp.36.78 | Added Rendering Menu Patch For T1R 1.00, Misc."
+        "* 2.18-tmp.36.78 | Added Rendering Menu Patch For T1R 1.00, Misc.",
+            "* 2.18.38.80 | Added T1R 1.11 Restored Menu, Other Misc Changes"
 
             // TODO:
             // - Finish EbootPatchPageOverhaul
