@@ -127,7 +127,7 @@
 
 - Custom Debug: Customized Menu, Some Useless Things May Be Deleted, Other Things Changed For Convenience
 
-- Disable Debug: Only Turns The Debug Mode From On To Off, Does Not Undo Any Other Patches Applied</value>
+- Disable Debug: Only Disables The Debug Mode, Does Not Undo Any Other Patches Applied</value>
   </data>
   <data name="Question1Btn.Text" xml:space="preserve">
     <value>- How Do I Get My Game's eboot.bin?

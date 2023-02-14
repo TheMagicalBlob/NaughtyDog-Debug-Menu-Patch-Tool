@@ -117,13 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label4.Text" xml:space="preserve">
+  <data name="ContributorsLabel.Text" xml:space="preserve">
     <value>Contributors:
-
 - illusion:
 &gt;Some Misc Help With UC4 Debug
 &gt;All Of The Weapon Menu Related Patches
-/\/\/\/\/\/\ ADD THESE!!! /\/\/\/\/\/\
+_____________ ADD THESE!!! _____________
+
 - ctn123:
 &gt;PS4Debug 1.1.15 Update
 

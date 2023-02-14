@@ -117,10 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label2.Text" xml:space="preserve">
+  <data name="PS4DebugAnswerLabel.Text" xml:space="preserve">
     <value>Have Your PS4 And PC On The Same Network
-Connection, And Inject PS4Debug.
-Then, Add The Local I.P. Address Of Your PS4 To The IPBox.
+Connection, And An Active .bin Loader Active On The PS4. GoldHEN's Built In One Will Work, But So Will Webkit Ones
+
+Then, Add The Local I.P. Address Of Your PS4 To The IPBox,
+(Settings -&gt;System -&gt; System Information)
+And Change The Port To Either 9090 (GoldHEN), 9020, or 9021- These Are The Most
+Common PS4 Bin Loader Ports.
 
 That's All, Now You Can Just Boot Your Game And Select It On The PS4Debug Page
 To Enable The Debug Mode!

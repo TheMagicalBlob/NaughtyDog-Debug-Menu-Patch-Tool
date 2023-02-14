@@ -168,13 +168,13 @@ namespace Dobby {
             this.ExecutablePathBox.Name = "ExecutablePathBox";
             this.ExecutablePathBox.Size = new System.Drawing.Size(233, 23);
             this.ExecutablePathBox.TabIndex = 30;
-            this.ExecutablePathBox.Text = "Select A .bin/.elf To Modify";
+            this.ExecutablePathBox.Text = " Select A .bin/.elf To Modify";
             // 
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label1.Location = new System.Drawing.Point(2, 159);
+            this.label1.Location = new System.Drawing.Point(2, 158);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(316, 20);
             this.label1.TabIndex = 29;
@@ -570,6 +570,10 @@ skip: ActiveForm.Location = LastPos;
             return NewString;
         }
         private void BrowseButton_Click(object sender, EventArgs e) {
+            if (e == null) {
+                GameInfoLabel.Text = "Select An Executable To Patch First.";
+                Refresh();
+            }
             FileDialog f = new OpenFileDialog {
                 Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
                 Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned (The First 4 Bytes Will Be .elf If It Is)"
@@ -765,31 +769,17 @@ skip: ActiveForm.Location = LastPos;
 
             switch (game) {
                 default:
-                    MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported");
+                    MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported\n" + game);
                     break;
                 case T1R100:
-                    Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
-                    if (Check == DialogResult.No) {
-                        Inf("The Last Of Us Remastered 1.00 Isn't Supported Yet");
-                        break;
-                    }
-                    MainStream.Position = 0x579F;
-                    MainStream.WriteByte(on);
-                    Inf("The Last Of Us Remastered 1.00 Debug Enabled");
+                    Inf("No Restored Menu Available Yet (I'm Workin' on It). Try 1.11");
                     break;
                 case T1R109:
-                    Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
-                    if (Check == DialogResult.No) {
-                        Inf("The Last Of Us Remastered 1.09 Isn't Supported Yet");
-                        break;
-                    }
-                    MainStream.Position = 0x61B3;
-                    MainStream.WriteByte(on);
-                    Inf("The Last Of Us Remastered 1.09 Debug Enabled");
+                    Inf("No Restored Menu Available, Try 1.10/1.11");
                     break;
                 case T1R11X:
                     T1R11X_Patches("Restored");
-                    Inf($"The Last Of Us Remastered 1.1{((byte)MainStream.ReadByte() == 0x10 ? "1" : "0")} Restored Menu Applied");
+                    Inf($"The Last Of Us Remastered 1.1X Restored Menu Applied");
                     break;
                 case T2100:
                     Inf("The Last Of Us Part II 1.00 Has Nothing To Restore");
@@ -814,15 +804,19 @@ skip: ActiveForm.Location = LastPos;
                     break;
                 case UC1100: // Uncharted 1 1.00 Restored Debug Ver. 2.6.1
                     UC1100_Patches("Restored");
+                    Inf("Restored Debug Menu Patch Applied");
                     break;
                 case UC1102: // Uncharted 1 1.02 Restored Debug Ver. 2.7
                     UC1102_Patches("Restored");
+                    Inf("Restored Debug Menu Patch Applied");
                     break;
                 case UC2100: // Uncharted 2 1.00 Restored Debug Ver. 1.0 (Diff 1.11) //!
                     UC2100_Patches("Restored");
+                    Inf("Restored Debug Menu Patch Applied");
                     break;
                 case UC2102: // Uncharted 2 1.02 Restored Debug Ver. 1.0
                     UC2102_Patches("Restored");
+                    Inf("Restored Debug Menu Patch Applied");
                     break;
                 case UC3100:
                     Inf("Uncharted 3 1.00 Restored Debug N/A Yet");
@@ -831,51 +825,25 @@ skip: ActiveForm.Location = LastPos;
                     Inf("Uncharted 3 1.02 Restored Debug N/A Yet");
                     break;
                 case UC4100:
-                    Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
-                    if (Check == DialogResult.No) {
-                        Inf("Sorry, No Restored Uncharted 4 1.00 Debug Yet");
-                        break;
-                    }
-                    WriteByte(0x1297ED, on);
-                    Inf("Uncharted 4: A Thief's End 1.00 Debug Enabled");
+                    Inf("Uncharted 4 1.00 Restoration Not Available (Try 1.33 MP)");
                     break;
-
                 case UC413X:
-                    Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
-                    if (Check == DialogResult.No) {
-                        Inf("Sorry, No Restored Uncharted 4 1.33 Debug Yet");
-                        break;
-                    }
-                    WriteByte(0x1CCDFD, on);
-                    Inf("Uncharted 4: A Thief's End 1.32/1.33 Debug Enabled");
+                    Inf("Uncharted 4 1.3X Restoration Not Available, Try MP");
                     break;
-
-                case UC4133MP: // Uncharted 4 1.33 Multiplayer
+                case UC4133MP:
                     UC4MP133_Patches("Restored");
+                    Inf("Restored Multiplayer Debug Menu Patch Applied");
                     break;
-
                 case TLL100:
-                    Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
-                    if (Check == DialogResult.No) {
-                        Inf("Sorry, The Lost Legacy 1.00 Isn't Supported By This");
-                        break;
-                    }
-                    WriteByte(0x1CCFED, on);
-                    Inf("Uncharted: The Lost Legacy 1.00 Debug Enabled");
+                    Inf("The Lost Legacy 1.00 Restoration Not Available");
                     break;
                 case TLL10X:
-                    Check = MessageBox.Show("Only The Default Debug Mode Is Available For This ATM, Would You Like To Apply That Instead?", "", MessageBoxButtons.YesNo);
-                    if (Check == DialogResult.No) {
-                        Inf("Sorry, The Lost Legacy 1.08/1.09 Isn't Supported By This");
-                        break;
-                    }
-                    WriteByte(0x1CD02D, on);
-                    Inf("Uncharted: The Lost Legacy 1.08/1.09 Debug Enabled");
+                    Inf("The Lost Legacy 1.0X Restoration Not Available");
                     break;
             }
         }
 
-        public void RestoredDebugBtnMH(object sender, EventArgs e) => HoverString(RestoredDebugBtn, "Only Restores Options, Replaces No Code");
+        public void RestoredDebugBtnMH(object sender, EventArgs e) => HoverString(RestoredDebugBtn, "Restores The Menu As Authentically As Possible");
         public void RestoredDebugBtnML(object sender, EventArgs e) => HoverLeave(RestoredDebugBtn, 1);
 
         public void CustomDebugBtn_Click(object sender, EventArgs e) { // Just Edited Debug Menus, Some Things May Be Replaced
@@ -893,26 +861,30 @@ skip: ActiveForm.Location = LastPos;
                 case T1R109:
                     break;
                 case T1R11X:
-                    Inf("emmmbep");
+                    T1R11X_Patches("Restored");
+                    Inf("\"Custom\" Menu Applied");
                     break;
                 case T2100:
+                    Inf("Try 1.09");
                     break;
                 case T2101:
-                    Inf("Sorry, The Last Of Us Part II 1.01 Isn't Supported Just Yet");
+                    Inf("Try 1.09");
                     break;
                 case T2102:
-                    Inf("Sorry, The Last Of Us Part II 1.02 Isn't Supported Just Yet");
+                    Inf("Try 1.09");
                     break;
                 case T2105:
-                    Inf("Sorry, The Last Of Us Part II 1.05 Isn't Supported Just Yet");
+                    Inf("Try 1.09");
                     break;
                 case T2107:
+                    Inf("Try 1.09");
                     break;
                 case T2108:
+                    Inf("Try 1.09");
                     break;
                 case T2109:
                     T2109_Patches("Custom");
-                    Inf("The Last Of Us Part II 1.09 Enhanced Debug Enabled");
+                    Inf("The Last Of Us Part II 1.09 Custom Debug Enabled");
                     break;
 
                 case UC1100: // UC1 1.00
@@ -936,6 +908,8 @@ skip: ActiveForm.Location = LastPos;
                     Inf("Sorry, Uncharted 4 1.3X Isn't Supported Just Yet");
                     break;
                 case UC4133MP: // UC4 1.33 MP
+                    UC4MP133_Patches("Restored");
+                    Inf("Resto- I Mean Custom Menu Applied");
                     break;
                 case TLL100:
                     break;
@@ -944,7 +918,7 @@ skip: ActiveForm.Location = LastPos;
             }
         }
 
-        public void CustomDebugBtnMH(object sender, EventArgs e) => HoverString(CustomDebugBtn, "Enables A Customized Version Of The Debug Menu");
+        public void CustomDebugBtnMH(object sender, EventArgs e) => HoverString(CustomDebugBtn, "Patches In My Customized Version Of The Debug Menu");
         public void CustomDebugBtnML(object sender, EventArgs e) => HoverLeave(CustomDebugBtn, 1);
 
 
@@ -1115,7 +1089,6 @@ Restored:
             foreach (int Address in FunctionNops)
                 WriteBytes(Address, E9Jump);
 
-            Inf("Restored Debug Patch Applied");
             return;
 
 Custom:
@@ -1414,10 +1387,14 @@ Default:
                     goto Default;
                 case "Disable":
                     goto Default;
+                case "Restored":
+                    goto Restored;
             }
 Default:
             WriteByte(0x168EB7, (byte)(type == "Enable" ? 0xEB : 0x74));
 
+Restored:
+            WriteByte(0x168EB7, 0xEB);
 
 
         }
@@ -1662,7 +1639,6 @@ Restored:
             foreach (int Address in Returns)
                 WriteByte(Address, 0xC3);
 
-            Inf("Restored Uncharted 4 1.33 MP Debug Menu Applied");
         }
 
 
@@ -1730,10 +1706,7 @@ Default:
             WriteByte(0x61B3, type == "Enable" ? on : off);
 
 Restored:
-
-              WriteBytes(0, Resources.T1R_111_Restored_Menu); // Oh my god fuck it, I'll see what I forgot to write down later
-
-/*            var FunctionsToSkip = new int[] {
+            var FunctionsToSkip = new int[] {
                 0x76E62C, // State Scripts Push
                 0x76F0CF, // State Scripts Pop
                 0x28102A, // Skip Part Of Gestures Menu Init
@@ -1755,26 +1728,44 @@ Restored:
                 0x7A050   // Skip Schema Spawn... Content Loop
             };
 
-            foreach(int addr in FunctionsToSkip)
+            foreach (int addr in FunctionsToSkip)
                 WriteBytes(addr, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 });
             foreach (int addr in Returns)
                 WriteByte(addr, 0xC3);
 
-            WriteByte(0x61A4, 0xEB); // Enable Debug Menu
-            WriteByte(0xA34FCB, 0x87); // Change Useless Debug Rendering Toggle To A On-Screen Debug Text Toggle (L3 & Triangle)
-            WriteBytes(new int[] { 0x56F1A8, 0x56F157 }, new byte[] { 0x90, 0x90 }); // Allow Aim Sensitivity To Go Over 1.00 And Under 0.00
 
-            // Write The 4 Chunks With The Majority Of Function Calls \\
-            WriteBytes(new int[] { 0x1457571, 0x1457D2E, 0x7AA10, 0x8492F0 }, new byte[][] { Resources.T1R_11X_Restored_Chunk1, Resources.T1R_11X_Restored_Chunk2, Resources.T1R_11X_Restored_Chunk3, Resources.T1R_11X_Restored_Chunk4 });
+            // Write The 5 Chunks With The Majority Of Function Calls \\
+            WriteBytes(0x1457571, Resources.T1R_11X_Restored_Chunk1);
+            WriteBytes(0x1457D2E, Resources.T1R_11X_Restored_Chunk2);
+            WriteBytes(0x7AA10, Resources.T1R_11X_Restored_Chunk3);
+            WriteBytes(0x8492F0, Resources.T1R_11X_Restored_Chunk4);
+            WriteBytes(0x7AAC7D, Resources.T1R_11X_Restored_Chunk5);
 
-            // Root Menu Function Calls
+            // Root Menu Function Calls \\
             WriteBytes(0x71F6C, new byte[] { 0xE8, 0x4F, 0x6B, 0x84, 0x00 }); // Call Large Rendering Menu Instead Of Tiny One (Yeah, That's All It Takes...)
             WriteBytes(0x8BA76A, new byte[] { 0xe8, 0x41, 0xd9, 0xb9, 0x00 }); // Call Additional Rendering Related Functions Inside Rendering Menu)
             WriteBytes(0x71FA8, new byte[] { 0x49, 0x8b, 0xfe, 0xe8, 0xc0, 0x8c, 0x73, 0x00, 0xeb, 0x0e }); // Call System, Spawn Character, And Custom Player Menu
+            WriteBytes(0x72012, new byte[] { 0xe8, 0xd4, 0x8a, 0x00, 0x00, 0xeb, 0x03 }); // Call Custom Collision (Havok) Menu
             WriteBytes(0x72044, new byte[] { 0xe8, 0xa6, 0x5a, 0x3e, 0x01 }); // Call Custom Gameplay Menu
             WriteBytes(0x721A1, new byte[] { 0xe8, 0x77, 0x8d, 0x73, 0x00 }); // Call Npc, Navigating Character, Simple Npc, Nav-Mesh
             WriteBytes(0x722CF, new byte[] { 0x48, 0x8B, 0x5D, 0xB8, 0x48, 0x89, 0xDF, 0xE8, 0x35, 0x87, 0x00, 0x00, 0xEB, 0x1A }); // Call Interactive Background, Actors, Process, Animation, Water, Fx, And Camera
-            WriteBytes(0x7290D, new byte[] { 0xe8, 0x12, 0x57, 0x3e, 0x01 }); // Call Custom Menu & Audio Menus*/
+            WriteBytes(0x7290D, new byte[] { 0xe8, 0x12, 0x57, 0x3e, 0x01 }); // Call Custom Menu & Audio Menus
+
+            // Misc Functionality Patches \\
+            WriteByte(0x61A4, 0xEB); // Enable Debug Menu
+            WriteByte(0xA34FCB, 0x87); // Change Useless Debug Rendering Toggle To A On-Screen Debug Text Toggle (L3 & Triangle)
+            WriteBytes(new int[] { 0x56F1A8, 0x56F157 }, new byte[] { 0x90, 0x90 }); // Allow Aim Sensitivity To Go Over 1.00 And Under 0.00
+            WriteBytes(0xAF2A85, new byte[] { 0xBF, 0xB0, 0x00, 0x00, 0x00, 0xEB, 0x2A }); // Skip Some Broken Material Debug Stuff
+            WriteBytes(0xAF2CD2, new byte[] { 0xEB, 0x79 }); // Skip Broken Shader Variables Menu
+            WriteBytes(0xAF255E, new byte[] { 0xEB, 0x29 }); // Force Material Debug Text To Out Of Index To Avoid Crashing (What Did They Change? Wish I Knew Enough To Find Out)
+            WriteBytes(0xAF25E6, new byte[] { 0xEB, 0x57 }); // More Of The Above
+            WriteBytes(0x405405, new byte[] { 0x89, 0x3d, 0xbd, 0xbe, 0x1d, 0x01, 0x4c, 0x8b, 0x25, 0xb6, 0xbe, 0x1d, 0x01, 0xeb, 0x11, 0x48, 0x8b, 0x3d, 0xad, 0xbe, 0x1d, 0x01, 0xe8, 0x3D, 0x26, 0x05, 0x01, 0xe9, 0x37, 0x0b, 0x00, 0x00 }); // Call Custom Server Menu, Jump Like A Rabbit To Call It Last lol
+            WriteBytes(0x405F57, new byte[] { 0xe9, 0xb8, 0xf4, 0xff, 0xff, 0x48, 0x81, 0xc4, 0xc8, 0x00, 0x00, 0x00, 0x5b, 0x41, 0x5c, 0x41, 0x5d, 0x41, 0x5e, 0x41, 0x5f, 0x5d, 0xc3 }); // Another Jump, And Moved Return Instructions To Fit It
+            WriteBytes(0x280E42, new byte[] { 0xE9, 0x79, 0x00, 0x00, 0x00 });  // Skip The Broken First Half Of The Gestures Submenu
+            WriteBytes(0x280FA5, new byte[] { 0xEB, 0x42 }); // Skip Gestures Menu .cfg Check And A Pop | \/ (That One) Rewrite Jumps Menu To Call The One Option In There Instead Of Letting It Be Empty
+            WriteBytes(0x51CE08, new byte[] { 0xe8, 0xf3, 0x4a, 0x51, 0x00, 0x48, 0x8d, 0x15, 0x6c, 0xc3, 0x0d, 0x01, 0x48, 0x8d, 0x35, 0x4a, 0xbc, 0xbd, 0x00, 0x49, 0x8b, 0xff, 0xe8, 0xcd, 0xc4, 0x32, 0x00, 0xbf, 0xa0, 0x00, 0x00, 0x00, 0xe8, 0xe3, 0x81, 0x76, 0x00, 0x48, 0x89, 0xc3, 0x48, 0x8d, 0x35, 0x5d, 0xf4, 0xbc, 0x00, 0x31, 0xc9, 0x45, 0x31, 0xc0, 0x4c, 0x89, 0xfa, 0x48, 0x89, 0xdf, 0xe8, 0x79, 0x3f, 0x51, 0x00, 0x4c, 0x89, 0xf7, 0x48, 0x89, 0xde, 0xe8, 0x6e, 0x4e, 0x51, 0x00, 0x48, 0x83, 0xc4, 0x08, 0x5b, 0x41, 0x5e, 0x41, 0x5f, 0x5d, 0xc3 });
+            WriteBytes(0x4060DE, new byte[] { 0xE9, 0xA6, 0x02, 0x00, 0x00 }); // "Fix" Skins Menu
+            WriteBytes(0x7371F, new byte[] { 0xed, 0x4e, 0xfd, 0xff }); // Call Bonuses Menu In Quick Menu. Might As Well
             return;
         }
 

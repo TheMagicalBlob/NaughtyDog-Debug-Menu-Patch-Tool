@@ -11,6 +11,7 @@ namespace Dobby {
     /// </summary>
     public class T2CustomOptionsDebug : Form {
         public T2CustomOptionsDebug() {
+            Environment.Exit(0);
             if (Dev.REL) return;
             InitializeComponent();
             Dobby.Page = "T2CustomOptionsDebug";

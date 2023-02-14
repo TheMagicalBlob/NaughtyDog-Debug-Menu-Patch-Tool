@@ -84,7 +84,9 @@ namespace Dobby {
         "* 2.18-tmp.33.75 | Reworking EbootPatchPage To Better Show Which Patch Types Are Available For The Intended Executable, Start Of Visual Rework (EbootPatchPage Only So Far)",
         "* 2.18-tmp.35.77 | Further EbootPatchPage Additions, Deleted Various Pointless bits of code, other Misc. UI changes.",
         "* 2.18-tmp.36.78 | Added Rendering Menu Patch For T1R 1.00, Misc.",
-            "* 2.18.38.80 | Added T1R 1.11 Restored Menu, Other Misc Changes"
+            "* 2.18.38.80 | Added T1R 1.11 Restored Menu, Other Misc Changes",
+            "* 2.19.39.82 | Upated PS4DebugPage Look, Other Various Changes (I'm Tired Go Away)",
+            "* 2.19.42.86 | Added Border To The Rest of The Pages"
 
             // TODO:
             // - Finish EbootPatchPageOverhaul
@@ -222,7 +224,7 @@ namespace Dobby {
 
         public class Dev {
 
-            public const bool REL = true
+            public const bool REL = false
                                          ;
 
             delegate void GameNotSelectedError();
