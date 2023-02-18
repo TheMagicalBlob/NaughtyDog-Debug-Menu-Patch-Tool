@@ -355,7 +355,6 @@ skip: ActiveForm.Location = LastPos;
             Question1Btn.BringToFront();
             GeneralLabel.Visible = !questions[0];
             WithSomeExceptionsLabel.Visible = !questions[0];
-            Seperator.BringToFront();
         }
 
         private void Question2Btn_Click(object sender, EventArgs e) { // TMP //!
@@ -377,7 +376,6 @@ skip: ActiveForm.Location = LastPos;
             User_Is_An_IdiotBtn.BringToFront();
             GeneralLabel.Visible = !questions[2];
             WithSomeExceptionsLabel.Visible = !questions[2];
-            Seperator.BringToFront();
         }
 
         private void Question4Btn_Click(object sender, EventArgs e) { // TMP //!

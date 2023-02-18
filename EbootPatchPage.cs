@@ -471,7 +471,7 @@ namespace Dobby {
         public void ExitBtnMH(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void ExitBtnML(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 255, 255);
 
-        public void MinimizeBtn_Click(object sender, EventArgs e) => ActiveForm.WindowState = FormWindowState.Minimized;
+        public void MinimizeBtn_Click(object sender, EventArgs e) => Dev.FlashThread.Start(); //ActiveForm.WindowState = FormWindowState.Minimized;
         public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
 
@@ -972,7 +972,7 @@ skip: ActiveForm.Location = LastPos;
                 case T2109:
                     T2CustomOptionsDebug NewPage = new T2CustomOptionsDebug();
                     NewPage.ShowDialog();
-
+                    //!
                     Inf("The Last Of Us Part II 1.09 Custom Debug Enabled");
                     break;
 
@@ -1371,91 +1371,116 @@ Restored:
         }
 
         void UC2102_Patches(string type) {
+            WriteByte(0x4D7BE7, (byte)(type == "Disable" ? 0x74 : 0xEB));
             switch (type) {
-                case "Enable":
-                    goto Default;
-                case "Disable":
-                    goto Default;
+                default: return;
             }
-Default:
-            WriteByte(0x4D7BE7, (byte)(type == "Enable" ? 0xEB : 0x74));
-
         }
+
         void UC3100_Patches(string type) {
+            WriteByte(0x168EB7, (byte)(type == "Disable" ? 0x74 : 0xEB));
+
+            int[] FunctionNops = new int[] {
+                0x151743, // System Push
+                0x15183D, // System Pop
+                0x151862, // Spawn Character Push
+                0x151874, // Spawn Character Pop
+                0x151898, // Spawn Vehicle Push
+                0x15191F, // Spawn Vehicle Pop
+                0x15199B, // Collision Push
+                0x1519F7, // Collision Pop
+                0x170126, // Gameplay Push 1
+                0x172B13, // Gameplay Pop 1
+                0x172DF1, // Gameplay Push 2
+                0x1730F7, // Gameplay Pop 2
+                0x8699DA, // State Scripts Push
+                0x86A612, // State Scripts Pop
+                0x151A7C, // Game Objects Push
+                0x151AD0, // Game Objects Pop
+                0x151AFD, // Levels Push
+                0x15205F, // Levels Pop
+                0x152088, // Navigating Character Push
+                0x15212B, // Navigating Character Pop
+                0x152150, // Nav-Mesh Push
+                0x1521A4, // Nav-Mesh Pop
+                0x152226, // Interactive Background Push
+                0x152267, // Interactive Background Pop
+                0x15228C, // Actors / Process Push
+                0x152299, // Actors / Process Pop
+                0x1522BE, // Animation Push
+                0x1522CB, // Animation Pop
+                0x1522F0, // Water Push
+                0x15234C, // Water Pop
+                0x152371, // Fx Push
+                0x1523CD, // Fx Pop
+                0x16454D, // Camera Outer Push
+                0x164557, // Camera Outer Pop
+                0x12FE70, // Camera Middle Push
+                0x12FE8A, // Camera Middle Pop
+                0x1301F8, // Camera Inner Push
+                0x131DAB, // Camera Inner Pop
+                0x152921, // Menu Push
+                0x152DDD, // Menu Pop
+                0x154951, // Language / Recorder Push
+                0x154C5C, // Language / Recorder Pop
+                0x833CE5, // Scripts Push
+                0x833FE6, // Scripts Pop
+            };
+            int[] WhiteJumps = new int[] {
+                0x1516E7, // BP UCC...
+                0x151728, // System...
+                0x15184A, // Spawn Character...
+                0x15187D, // Spawn Vehicle...
+            };
+
             switch (type) {
-                case "Enable":
-                    goto Default;
-                case "Disable":
-                    goto Default;
+                default: return;
                 case "Restored":
                     goto Restored;
+                case "Custom":
+                    goto Custom;
             }
-Default:
-            WriteByte(0x168EB7, (byte)(type == "Enable" ? 0xEB : 0x74));
 
 Restored:
             WriteByte(0x168EB7, 0xEB);
 
+            foreach (int addr in FunctionNops)
+                WriteBytes(addr, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 });
+            foreach (int addr in WhiteJumps)
+                WriteBytes(addr, new byte[] { 0x00, 0x00 });
+            return;
 
+Custom:
+            WriteByte(0x168EB7, 0xEB);
+
+            foreach (int addr in FunctionNops)
+                WriteBytes(addr, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 });
+            foreach (int addr in WhiteJumps)
+                WriteBytes(addr, new byte[] { 0x00, 0x00 });
+            return;
         }
 
 
         void UC3102_Patches(string type) {
-            switch (type) {
-                case "Enable":
-                    goto Default;
-                case "Disable":
-                    goto Default;
-            }
-Default:
-            WriteByte(0x578227, (byte)(type == "Enable" ? 0xEB : 0x74));
-
-
-
+            WriteByte(0x578227, (byte)(type == "Disable" ? 0x74 : 0xEB));
         }
-
 
         void UC4100_Patches(string type) {
-            switch (type) {
-                case "Enable":
-                    goto Default;
-                case "Disable":
-                    goto Default;
-            }
-Default:
-            WriteByte(0x1297ED, type == "Enable" ? on : off);
-
-
+            WriteByte(0x1297ED, (byte)(type == "Disable" ? 0x74 : 0xEB));
         }
 
-
         void UC4133_Patches(string type) {
-            switch (type) {
-                case "Enable":
-                    goto Default;
-                case "Disable":
-                    goto Default;
-            }
-Default:
-            WriteByte(0x1CCDFD, type == "Enable" ? on : off);
-
-
-
+            WriteByte(0x1CCDFD, (byte)(type == "Disable" ? 0x74 : 0xEB));
         }
 
 
         void UC4MP133_Patches(string type) {
+            WriteByte(0x1CCEB8, (byte)(type == "Disable" ? 0x74 : 0xEB));
             switch (type) {
-                case "Enable":
-                    goto Default;
-                case "Disable":
-                    goto Default;
+                default: return;
                 case "Restored":
                     goto Restored;
             }
-Default:
-            WriteByte(0x1CCEB8, type == "Enable" ? on : off);
-            return;
 
 Restored:
             int[] WhiteJumps = new int[] {
@@ -1643,41 +1668,25 @@ Restored:
 
 
         void TLL100_Patches(string type) {
-            switch (type) {
-                case "Enable":
-                    goto Default;
-                case "Disable":
-                    goto Default;
-            }
-Default:
-            WriteByte(0x1CCFED, type == "Enable" ? on : off); //!
-
+            WriteByte(0x1CCFED, (byte)(type == "Disable" ? off : on));
         }
 
 
         void TLL109_Patches(string type) {
-            switch (type) {
-                case "Enable":
-                    goto Default;
-                case "Disable":
-                    goto Default;
-            }
-Default:
-            WriteByte(0x1CD02D, type == "Enable" ? on : off); //!
-
+            WriteByte(0x1CD02D, (byte)(type == "Disable" ? off : on));
         }
 
 
         void T1R100_Patches(string type) {
-
-            WriteByte(T1R100Debug, type == "Disable" ? off : on);
-            
+            WriteByte(T1R100Debug, (byte)(type == "Disable" ? off : on));
             switch (type) {
+                default: return;
                 case "Restored":
                     goto Restored;
                 case "Custom":
                     goto Custom;
             }
+
 Restored:
             WriteBytes(0x6363C,  new byte[] { 0xE8, 0xEF, 0x24, 0x6D, 0x00 }); // Replace Call To Mini-Rendering Menu With One To The Full Rendering Menu
             WriteBytes(0x94DD35, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 }); // Skip A Function In The Material Debug Menu That Causes The Game To Crash While Booting
@@ -1694,16 +1703,12 @@ Custom:
 
 
         void T1R11X_Patches(string type) {
+            WriteByte(0x61B3, (byte)(type == "Disable" ? off : on));
             switch (type) {
-                case "Enable":
-                    goto Default;
-                case "Disable":
-                    goto Default;
+                default: return;
                 case "Restored":
                     goto Restored;
             }
-Default:
-            WriteByte(0x61B3, type == "Enable" ? on : off);
 
 Restored:
             var FunctionsToSkip = new int[] {
@@ -1771,35 +1776,19 @@ Restored:
 
 
         void T2100_Patches(string type) {
-            switch (type) {
-                case "Enable":
-                    goto Default;
-                case "Disable":
-                    goto Default;
-            }
-Default:
-            WriteBytes(0x1D639C, type == "Enable" ? T2Debug : T2DebugOff);
+            WriteBytes(0x1D639C, type == "Disable" ? T2DebugOff : T2Debug);
         }
 
 
         void T2107_Patches(string type) {
-            switch (type) {
-                case "Enable":
-                    goto Default;
-                case "Disable":
-                    goto Default;
-            }
-Default:
-            WriteBytes(0x1D66BC, type == "Enable" ? T2Debug : T2DebugOff);
+            WriteBytes(0x1D66BC, type == "Disable" ? T2DebugOff : T2Debug);
         }
 
 
         void T2109_Patches(string type) { // 1.08 as well, same offsets
+            WriteBytes(0x6181FA, type == "Disable" ? T2DebugOff : T2Debug);
             switch (type) {
-                case "Enable":
-                    goto Default;
-                case "Disable":
-                    goto Default;
+                default: return;
                 case "Custom":
                     goto Custom;
             }

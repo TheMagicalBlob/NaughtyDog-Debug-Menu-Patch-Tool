@@ -86,7 +86,9 @@ namespace Dobby {
         "* 2.18-tmp.36.78 | Added Rendering Menu Patch For T1R 1.00, Misc.",
             "* 2.18.38.80 | Added T1R 1.11 Restored Menu, Other Misc Changes",
             "* 2.19.39.82 | Upated PS4DebugPage Look, Other Various Changes (I'm Tired Go Away)",
-            "* 2.19.42.86 | Added Border To The Rest of The Pages"
+            "* 2.19.42.86 | Added Border To The Rest of The Pages",
+            "* 2.19.42.87 | Minor Patch",
+            "* 2.19.42.91 | Minor Exec Patch Functions Optimizations"
 
             // TODO:
             // - Finish EbootPatchPageOverhaul
@@ -228,25 +230,27 @@ namespace Dobby {
                                          ;
 
             delegate void GameNotSelectedError();
-            static GameNotSelectedError Err = new GameNotSelectedError(dostuff2);
-            public static Thread FlashLabel = new Thread(new ThreadStart(dostuff1));
-            static void dostuff1() {
-                ActiveForm.Invoke(Err);
+            static GameNotSelectedError Yellow = new GameNotSelectedError(FlashYellow);
+            static GameNotSelectedError White = new GameNotSelectedError(FlashWhite);
+            public static Thread FlashThread = new Thread(new ThreadStart(FlashLabel));
+            static void FlashLabel() {
+                for (int Flashes = 0; Flashes < 10; Flashes++) {
+Wait:               // Just Keep Hopin' Here 'Till The Form Gets Focus Again
+                    if (ActiveForm == null) goto Wait;
+                    ActiveForm.Invoke(White);
+                    Thread.Sleep(180);
+                    if (ActiveForm == null) goto Wait;
+                    ActiveForm.Invoke(Yellow);
+                    Thread.Sleep(180);
+                }
             }
-            static void dostuff2() {
-                ActiveForm.Controls.Find("GameInfoLabel", true);
-                
-                Thread.Sleep(250);
+            static void FlashWhite() {
                 ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = System.Drawing.Color.White;
-                Thread.Sleep(250);
-                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = System.Drawing.Color.White;
-                Thread.Sleep(250);
-                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = System.Drawing.Color.White;
-                Thread.Sleep(250);
-                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = System.Drawing.Color.White;
-                Thread.Sleep(250);
-                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = System.Drawing.Color.White;
-                Thread.Sleep(250);
+                ActiveForm.Refresh();
+            }
+            static void FlashYellow() {
+                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = System.Drawing.Color.FromArgb(255, 227, 0);
+                ActiveForm.Refresh();
             }
 
             public static Thread DebuggerThread = new Thread(new ThreadStart(UpdateConsoleOutput));
