@@ -31,18 +31,18 @@ namespace Dobby {
             this.MainBox = new System.Windows.Forms.GroupBox();
             this.ExitBtn = new System.Windows.Forms.Button();
             this.MinimizeBtn = new System.Windows.Forms.Button();
-            this.PS4DebugHelpBtn = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.MiscPatchPageHelpBtn = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.BlobLabel = new System.Windows.Forms.Label();
             this.BuildLabel = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.PS4DebugHelpBtn = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
             this.EbootPatchPageHelpBtn = new System.Windows.Forms.Button();
             this.Info = new System.Windows.Forms.Label();
             this.BackBtn = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.MiscPatchPageHelpBtn = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.GeneralInfoLabel = new System.Windows.Forms.Label();
             this.MainBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -56,6 +56,9 @@ namespace Dobby {
             this.MainLabel.Size = new System.Drawing.Size(266, 22);
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "Information / Help";
+            this.MainLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.MainLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
+            this.MainLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             // 
             // MainBox
             // 
@@ -73,12 +76,15 @@ namespace Dobby {
             this.MainBox.Controls.Add(this.EbootPatchPageHelpBtn);
             this.MainBox.Controls.Add(this.Info);
             this.MainBox.Controls.Add(this.BackBtn);
-            this.MainBox.Controls.Add(this.label3);
+            this.MainBox.Controls.Add(this.GeneralInfoLabel);
             this.MainBox.Location = new System.Drawing.Point(0, -6);
             this.MainBox.Name = "MainBox";
             this.MainBox.Size = new System.Drawing.Size(320, 366);
             this.MainBox.TabIndex = 5;
             this.MainBox.TabStop = false;
+            this.MainBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.MainBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
+            this.MainBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             // 
             // ExitBtn
             // 
@@ -118,6 +124,78 @@ namespace Dobby {
             this.MinimizeBtn.MouseEnter += new System.EventHandler(this.MinimizeBtnMH);
             this.MinimizeBtn.MouseLeave += new System.EventHandler(this.MinimizeBtnML);
             // 
+            // label5
+            // 
+            this.label5.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.label5.Location = new System.Drawing.Point(2, 15);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(316, 16);
+            this.label5.TabIndex = 38;
+            this.label5.Text = "______________________________________________________________";
+            // 
+            // MiscPatchPageHelpBtn
+            // 
+            this.MiscPatchPageHelpBtn.BackColor = System.Drawing.Color.DimGray;
+            this.MiscPatchPageHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.MiscPatchPageHelpBtn.FlatAppearance.BorderSize = 0;
+            this.MiscPatchPageHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.MiscPatchPageHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.MiscPatchPageHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.MiscPatchPageHelpBtn.Location = new System.Drawing.Point(1, 283);
+            this.MiscPatchPageHelpBtn.Name = "MiscPatchPageHelpBtn";
+            this.MiscPatchPageHelpBtn.Size = new System.Drawing.Size(172, 23);
+            this.MiscPatchPageHelpBtn.TabIndex = 35;
+            this.MiscPatchPageHelpBtn.Text = "Misc. Patch Page Help...";
+            this.MiscPatchPageHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.MiscPatchPageHelpBtn.UseVisualStyleBackColor = false;
+            this.MiscPatchPageHelpBtn.Click += new System.EventHandler(this.MiscPatchPageHelpBtn_Click);
+            // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.label1.Location = new System.Drawing.Point(2, 296);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(316, 16);
+            this.label1.TabIndex = 37;
+            this.label1.Text = "______________________________________________________________";
+            // 
+            // BlobLabel
+            // 
+            this.BlobLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.BlobLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
+            this.BlobLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.BlobLabel.Location = new System.Drawing.Point(149, 207);
+            this.BlobLabel.Name = "BlobLabel";
+            this.BlobLabel.Size = new System.Drawing.Size(170, 22);
+            this.BlobLabel.TabIndex = 32;
+            this.BlobLabel.Text = "Created By TheMagicalBlob";
+            // 
+            // BuildLabel
+            // 
+            this.BuildLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.BuildLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
+            this.BuildLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.BuildLabel.Location = new System.Drawing.Point(1, 208);
+            this.BuildLabel.Name = "BuildLabel";
+            this.BuildLabel.Size = new System.Drawing.Size(304, 22);
+            this.BuildLabel.TabIndex = 20;
+            this.BuildLabel.Text = "Build: ";
+            this.BuildLabel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BuildLabel_Click);
+            this.BuildLabel.MouseEnter += new System.EventHandler(this.BuildLabelMH);
+            this.BuildLabel.MouseLeave += new System.EventHandler(this.BuildLabelML);
+            // 
+            // label2
+            // 
+            this.label2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.label2.Location = new System.Drawing.Point(2, 215);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(316, 16);
+            this.label2.TabIndex = 36;
+            this.label2.Text = "______________________________________________________________";
+            // 
             // PS4DebugHelpBtn
             // 
             this.PS4DebugHelpBtn.BackColor = System.Drawing.Color.DimGray;
@@ -147,31 +225,6 @@ namespace Dobby {
             this.label4.Size = new System.Drawing.Size(128, 22);
             this.label4.TabIndex = 34;
             this.label4.Text = "General App Info";
-            // 
-            // BlobLabel
-            // 
-            this.BlobLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.BlobLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
-            this.BlobLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.BlobLabel.Location = new System.Drawing.Point(149, 207);
-            this.BlobLabel.Name = "BlobLabel";
-            this.BlobLabel.Size = new System.Drawing.Size(170, 22);
-            this.BlobLabel.TabIndex = 32;
-            this.BlobLabel.Text = "Created By TheMagicalBlob";
-            // 
-            // BuildLabel
-            // 
-            this.BuildLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.BuildLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
-            this.BuildLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.BuildLabel.Location = new System.Drawing.Point(1, 208);
-            this.BuildLabel.Name = "BuildLabel";
-            this.BuildLabel.Size = new System.Drawing.Size(304, 22);
-            this.BuildLabel.TabIndex = 20;
-            this.BuildLabel.Text = "Build: ";
-            this.BuildLabel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BuildLabel_Click);
-            this.BuildLabel.MouseEnter += new System.EventHandler(this.BuildLabelMH);
-            this.BuildLabel.MouseLeave += new System.EventHandler(this.BuildLabelML);
             // 
             // EbootPatchPageHelpBtn
             // 
@@ -219,63 +272,19 @@ namespace Dobby {
             this.BackBtn.MouseEnter += new System.EventHandler(this.BackBtnMH);
             this.BackBtn.MouseLeave += new System.EventHandler(this.BackBtnML);
             // 
-            // label3
+            // GeneralInfoLabel
             // 
-            this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label3.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
-            this.label3.ForeColor = System.Drawing.SystemColors.Control;
-            this.label3.Location = new System.Drawing.Point(3, 54);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(302, 171);
-            this.label3.TabIndex = 33;
-            this.label3.Text = resources.GetString("label3.Text");
-            // 
-            // MiscPatchPageHelpBtn
-            // 
-            this.MiscPatchPageHelpBtn.BackColor = System.Drawing.Color.DimGray;
-            this.MiscPatchPageHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.MiscPatchPageHelpBtn.FlatAppearance.BorderSize = 0;
-            this.MiscPatchPageHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MiscPatchPageHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.MiscPatchPageHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MiscPatchPageHelpBtn.Location = new System.Drawing.Point(1, 283);
-            this.MiscPatchPageHelpBtn.Name = "MiscPatchPageHelpBtn";
-            this.MiscPatchPageHelpBtn.Size = new System.Drawing.Size(172, 23);
-            this.MiscPatchPageHelpBtn.TabIndex = 35;
-            this.MiscPatchPageHelpBtn.Text = "Misc. Patch Page Help...";
-            this.MiscPatchPageHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.MiscPatchPageHelpBtn.UseVisualStyleBackColor = false;
-            this.MiscPatchPageHelpBtn.Click += new System.EventHandler(this.MiscPatchPageHelpBtn_Click);
-            // 
-            // label2
-            // 
-            this.label2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label2.Location = new System.Drawing.Point(2, 215);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(316, 16);
-            this.label2.TabIndex = 36;
-            this.label2.Text = "______________________________________________________________";
-            // 
-            // label1
-            // 
-            this.label1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label1.Location = new System.Drawing.Point(2, 296);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(316, 16);
-            this.label1.TabIndex = 37;
-            this.label1.Text = "______________________________________________________________";
-            // 
-            // label5
-            // 
-            this.label5.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label5.Location = new System.Drawing.Point(2, 15);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(316, 16);
-            this.label5.TabIndex = 38;
-            this.label5.Text = "______________________________________________________________";
+            this.GeneralInfoLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.GeneralInfoLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
+            this.GeneralInfoLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.GeneralInfoLabel.Location = new System.Drawing.Point(3, 54);
+            this.GeneralInfoLabel.Name = "GeneralInfoLabel";
+            this.GeneralInfoLabel.Size = new System.Drawing.Size(302, 171);
+            this.GeneralInfoLabel.TabIndex = 33;
+            this.GeneralInfoLabel.Text = resources.GetString("GeneralInfoLabel.Text");
+            this.GeneralInfoLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.GeneralInfoLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
+            this.GeneralInfoLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             // 
             // InfoHelpPage
             // 
@@ -287,10 +296,16 @@ namespace Dobby {
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "InfoHelpPage";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.MainBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
+        public void MoveForm(object sender, MouseEventArgs e) => Common.MoveForm(sender, e);
+        public void MouseUpFunc(object sender, MouseEventArgs e) => Common.MouseUpFunc(sender, e);
+        public void MouseDownFunc(object sender, MouseEventArgs e) => Common.MouseDownFunc(sender, e);
         public void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
         public void ExitBtnMH(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void ExitBtnML(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 255, 255);
@@ -326,7 +341,7 @@ skip: ActiveForm.Location = LastPos;
         public Button EbootPatchPageHelpBtn;
         public Label BuildLabel;
         public Label BlobLabel;
-        public Label label3;
+        public Label GeneralInfoLabel;
         public Label label4;
         public Button MiscPatchPageHelpBtn;
         public Label Info;

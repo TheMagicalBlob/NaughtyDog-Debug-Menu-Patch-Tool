@@ -54,6 +54,9 @@ namespace Dobby {
             this.MainLabel.Size = new System.Drawing.Size(268, 22);
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "Credits";
+            this.MainLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.MainLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
+            this.MainLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             // 
             // BackBtn
             // 
@@ -94,6 +97,9 @@ namespace Dobby {
             this.MainBox.Size = new System.Drawing.Size(320, 410);
             this.MainBox.TabIndex = 5;
             this.MainBox.TabStop = false;
+            this.MainBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.MainBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
+            this.MainBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             // 
             // IllusionBlogBtn
             // 
@@ -119,27 +125,6 @@ namespace Dobby {
             this.label2.TabIndex = 38;
             this.label2.Text = "______________________________________________________________";
             // 
-            // ContributorsLabel
-            // 
-            this.ContributorsLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ContributorsLabel.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ContributorsLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.ContributorsLabel.Location = new System.Drawing.Point(1, 80);
-            this.ContributorsLabel.Name = "ContributorsLabel";
-            this.ContributorsLabel.Size = new System.Drawing.Size(317, 229);
-            this.ContributorsLabel.TabIndex = 35;
-            this.ContributorsLabel.Text = resources.GetString("ContributorsLabel.Text");
-            // 
-            // label1
-            // 
-            this.label1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label1.Location = new System.Drawing.Point(2, 294);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(316, 16);
-            this.label1.TabIndex = 37;
-            this.label1.Text = "______________________________________________________________";
-            // 
             // NarcissismLabel
             // 
             this.NarcissismLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -150,6 +135,33 @@ namespace Dobby {
             this.NarcissismLabel.Size = new System.Drawing.Size(318, 36);
             this.NarcissismLabel.TabIndex = 20;
             this.NarcissismLabel.Text = "App And Game Patches Developed By:\r\nTheMagicalBlob";
+            this.NarcissismLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.NarcissismLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
+            this.NarcissismLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
+            // 
+            // ContributorsLabel
+            // 
+            this.ContributorsLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ContributorsLabel.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ContributorsLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.ContributorsLabel.Location = new System.Drawing.Point(1, 80);
+            this.ContributorsLabel.Name = "ContributorsLabel";
+            this.ContributorsLabel.Size = new System.Drawing.Size(317, 229);
+            this.ContributorsLabel.TabIndex = 35;
+            this.ContributorsLabel.Text = resources.GetString("ContributorsLabel.Text");
+            this.ContributorsLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.ContributorsLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
+            this.ContributorsLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
+            // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.label1.Location = new System.Drawing.Point(2, 294);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(316, 16);
+            this.label1.TabIndex = 37;
+            this.label1.Text = "______________________________________________________________";
             // 
             // SeperatorLine1
             // 
@@ -240,6 +252,9 @@ namespace Dobby {
             this.BackColor = System.Drawing.Color.DimGray;
             this.ClientSize = new System.Drawing.Size(320, 404);
             this.Controls.Add(this.MainBox);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "CreditsPage";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
@@ -247,8 +262,9 @@ namespace Dobby {
             this.ResumeLayout(false);
 
         }
-
-
+        public void MoveForm(object sender, MouseEventArgs e) => Common.MoveForm(sender, e);
+        public void MouseUpFunc(object sender, MouseEventArgs e) => Common.MouseUpFunc(sender, e);
+        public void MouseDownFunc(object sender, MouseEventArgs e) => Common.MouseDownFunc(sender, e);
         void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
         void ExitBtnMH(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 227, 0);
         void ExitBtnML(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 255, 255);

@@ -43,7 +43,8 @@ namespace Dobby
             this.MiscPatchesBtn = new System.Windows.Forms.Button();
             this.CreditsBtn = new System.Windows.Forms.Button();
             this.InfoHelpBtn = new System.Windows.Forms.Button();
-            this.Seperatorlabel = new System.Windows.Forms.Label();
+            this.SeperatorLine1 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // MainLabel
@@ -231,15 +232,25 @@ namespace Dobby
             this.InfoHelpBtn.MouseEnter += new System.EventHandler(this.InfoHelpBtnMH);
             this.InfoHelpBtn.MouseLeave += new System.EventHandler(this.InfoHelpBtnML);
             // 
-            // Seperatorlabel
+            // SeperatorLine1
             // 
-            this.Seperatorlabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.Seperatorlabel.ForeColor = System.Drawing.Color.White;
-            this.Seperatorlabel.Location = new System.Drawing.Point(2, 101);
-            this.Seperatorlabel.Name = "Seperatorlabel";
-            this.Seperatorlabel.Size = new System.Drawing.Size(316, 19);
-            this.Seperatorlabel.TabIndex = 30;
-            this.Seperatorlabel.Text = "___________________________________________________";
+            this.SeperatorLine1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 14);
+            this.SeperatorLine1.Name = "SeperatorLine1";
+            this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine1.TabIndex = 31;
+            this.SeperatorLine1.Text = "______________________________________________________________";
+            // 
+            // label5
+            // 
+            this.label5.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.label5.Location = new System.Drawing.Point(2, 104);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(316, 16);
+            this.label5.TabIndex = 32;
+            this.label5.Text = "______________________________________________________________";
             // 
             // Dobby
             // 
@@ -251,7 +262,6 @@ namespace Dobby
             this.Controls.Add(this.PS4DebugPageBtn);
             this.Controls.Add(this.EbootPatchPageBtn);
             this.Controls.Add(this.MiscPatchesBtn);
-            this.Controls.Add(this.Seperatorlabel);
             this.Controls.Add(this.InfoHelpBtn);
             this.Controls.Add(this.CreditsBtn);
             this.Controls.Add(this.Info);
@@ -259,6 +269,8 @@ namespace Dobby
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.MinimizeBtn);
             this.Controls.Add(this.MainLabel);
+            this.Controls.Add(this.SeperatorLine1);
+            this.Controls.Add(this.label5);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Dobby";
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
@@ -342,13 +354,14 @@ namespace Dobby
         public Button PS4DebugPageBtn;
         public Button EbootPatchPageBtn;
         public Button MiscPatchesBtn;
-        public Label Seperatorlabel;
         public Button CreditsBtn;
         public Button InfoHelpBtn;
         public Label DebugLabel;
         public Label Info;
         public Button ExitBtn;
         public Button MinimizeBtn;
+        public Label SeperatorLine1;
+        public Label label5;
     }
 }
 

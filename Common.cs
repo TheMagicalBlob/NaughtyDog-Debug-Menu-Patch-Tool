@@ -88,12 +88,16 @@ namespace Dobby {
             "* 2.19.39.82 | Upated PS4DebugPage Look, Other Various Changes (I'm Tired Go Away)",
             "* 2.19.42.86 | Added Border To The Rest of The Pages",
             "* 2.19.42.87 | Minor Patch",
-            "* 2.19.42.91 | Minor Exec Patch Functions Optimizations"
+            "* 2.19.42.91 | Minor Exec Patch Functions Optimizations",
+            "* 2.19.42.92 | Fixed Main Page Seperator Lines",
+            "* 2.19.44.92 | Added Form Move Event Handlers To InfoHelpPage Credits Page",
+            "* 2.19.44.94 | Fixed Discord Contact on Info/Help Page, Misc Move Form Tweaks",
+            "* 2.19.45.94 | Simple Flashing Label Implementation For EbootPatchPage",
+           "* 2.19.46.100 | More Flashing Label Edits And A Bunch Of Tiny Changes I Can't Recall"
 
             // TODO:
-            // - Finish EbootPatchPageOverhaul
-            // - Add Borders To All Forms
-            // - Replace MainBox with a seperator line like in the real menus
+            // - Fix Messy Back Button Implementation
+            // - Stop Back Button From Crashing The FlashLabel Shit
 
         };
         public static string Build = NewChangeList[NewChangeList.Length - 1].Substring(2).Substring(0, NewChangeList[NewChangeList.Length - 1].IndexOf('|') - 3); // Trims The Last ChangeList String For Latest The Build Number
@@ -115,7 +119,7 @@ namespace Dobby {
 
         public static Form[] Pages;
 
-        public static bool LastDebugOutputWasInfoString = false;
+        public static bool LastDebugOutputWasInfoString = false, LabelShouldFlash = false, FlashThreadHasStarted = false;
 
         public static Font MainFont = new Font("Franklin Gothic Medium", 6.5F, System.Drawing.FontStyle.Bold);
         public static void SetPageInfo(Form f) {
@@ -168,7 +172,7 @@ namespace Dobby {
             String += Blanks;
             return String;
         }
-        public static void HoverLeave(Control c, byte HoverOrLeave) {
+        public static void HoverLeave(Control c, byte HoverOrLeave) { //! Fix Readability
             YellowInformationLabel.Font = new Font("Franklin Gothic Medium", 10F); // Reset Font Size To Default
             CurrentControl = c.Name;
             c.ForeColor = HoverOrLeave == 0 ? Color.FromArgb(255, 227, 0) : Color.FromArgb(255, 255, 255);
@@ -178,7 +182,7 @@ namespace Dobby {
             if (HoverOrLeave == 1) MouseScrolled = 0;
         }
 
-        public static void HoverString(Control c, string InfoString) {
+        public static void HoverString(Control c, string InfoString) { //! Fix Readability
             CurrentControl = c.Name;
             c.ForeColor = Color.FromArgb(255, 227, 0);
             c.Text = $">{c.Text}";
@@ -186,7 +190,7 @@ namespace Dobby {
             c.Size = new Size(c.Width + 9, c.Size.Height);
             InfoHasImportantStr = false;
         }
-        public static void HoverStringAlt(Control Info, Control c, string info, float FontScale) {
+        public static void HoverStringAlt(Control Info, Control c, string info, float FontScale) { //! Fix Readability
             CurrentControl = c.Name;
             Info.Font = new Font("Franklin Gothic Medium", FontScale); // Decrease Font Size To Fit String In Info Bar
             c.ForeColor = Color.FromArgb(255, 227, 0);
@@ -195,7 +199,7 @@ namespace Dobby {
             c.Size = new Size(c.Width + 9, c.Height);
             InfoHasImportantStr = false;
         }
-        public static void PageInfo(Control.ControlCollection cunts) {
+        public static void PageInfo(Control.ControlCollection cunts) { // Might use it again so it stays
             if (false) {
                 DebugOutStr("-------------------------------------------------------------------");
                 int id = 1;
@@ -226,32 +230,42 @@ namespace Dobby {
 
         public class Dev {
 
-            public const bool REL = false
-                                         ;
+            public const bool REL = true
+                                        ;
 
             delegate void GameNotSelectedError();
             static GameNotSelectedError Yellow = new GameNotSelectedError(FlashYellow);
             static GameNotSelectedError White = new GameNotSelectedError(FlashWhite);
             public static Thread FlashThread = new Thread(new ThreadStart(FlashLabel));
             static void FlashLabel() {
-                for (int Flashes = 0; Flashes < 10; Flashes++) {
-Wait:               // Just Keep Hopin' Here 'Till The Form Gets Focus Again
-                    if (ActiveForm == null) goto Wait;
-                    ActiveForm.Invoke(White);
-                    Thread.Sleep(180);
-                    if (ActiveForm == null) goto Wait;
-                    ActiveForm.Invoke(Yellow);
-                    Thread.Sleep(180);
+                while (!LabelShouldFlash) { Thread.Sleep(7); }
+                try {
+                    for (int Flashes = 0; Flashes < 709999999; Flashes++) {
+                        while (ActiveForm == null) { } // Just Chill Here 'Till The Form Gets Focus Again
+                        ActiveForm.Invoke(White);
+                        Thread.Sleep(135);
+
+                        while (ActiveForm == null) { }
+                        ActiveForm.Invoke(Yellow);
+                        Thread.Sleep(135);
+                    }
                 }
+                catch (Exception) {
+                    Dev.DebugOutStr("Killing Label Flash");
+                }
+                LabelShouldFlash = false;
+                FlashLabel();
             }
             static void FlashWhite() {
-                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = System.Drawing.Color.White;
+                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.White;
                 ActiveForm.Refresh();
             }
             static void FlashYellow() {
-                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = System.Drawing.Color.FromArgb(255, 227, 0);
+                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.FromArgb(255, 227, 0);
                 ActiveForm.Refresh();
             }
+
+
 
             public static Thread DebuggerThread = new Thread(new ThreadStart(UpdateConsoleOutput));
             public static void DebuggerInfo() => DebuggerThread.Start();

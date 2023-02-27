@@ -16,7 +16,6 @@ namespace Dobby {
             InitializeComponent();
             SetPageInfo(this);
             if (!Dev.REL) PageInfo(Controls);
-            else CustomOptDebugBtn.Font = new Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Strikeout);
         }
 
         public bool[] CDO = new bool[11]; //Custom Debug Options - 11th is For Eventually Keeping Track Of Whether The Options Were Left Default (true if changed)
@@ -471,30 +470,24 @@ namespace Dobby {
         public void ExitBtnMH(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void ExitBtnML(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 255, 255);
 
-        public void MinimizeBtn_Click(object sender, EventArgs e) => Dev.FlashThread.Start(); //ActiveForm.WindowState = FormWindowState.Minimized;
+        public void MinimizeBtn_Click(object sender, EventArgs e) => ActiveForm.WindowState = FormWindowState.Minimized;
         public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
 
-        public void BackBtn_Click(object sender, EventArgs e) { // Making This Universal Is Too Much Trouble, Give Each Page Their Own
-            Form f = ActiveForm;
-            LastPos = f.Location;
-            Dev.DebugOutStr($"Loading: {LastForm.Name}");
-            if (LastForm.Name == ActiveForm.Name) {
-                Dev.DebugOutStr("We're trying to boot the same form again. Showing Main Form Instead");
-                MainForm.Show();
-                Dobby.Page = MainForm.Name;
-                goto skip;
-            }
-            LastForm.Show();
-skip: ActiveForm.Location = LastPos;
-            f.Close();
+        public void BackBtn_Click(object sender, EventArgs e) {
+            LabelShouldFlash = false;
+            Form ClosingForm = ActiveForm;
+            LastPos = ClosingForm.Location;
+            Dev.DebugOutStr($"Loading: {MainForm.Name}");
+            MainForm.Show();
+            ActiveForm.Location = LastPos;
+            ClosingForm.Close();
             Dobby.Page = ActiveForm.Name;
-            if (!Dev.REL) PageInfo(ActiveForm.Controls);
         }
         public void BackBtnMH(object sender, EventArgs e) => HoverString(BackBtn, $"{(Dev.REL ? "" : LastForm.Name)}");
         public void BackBtnML(object sender, EventArgs e) => HoverLeave(BackBtn, 1);
 
-        public void InfoHelpBtn_Click(object sender, EventArgs e) {
+        public void InfoHelpBtn_Click(object sender, EventArgs e) {//!
             if (MainForm == null && ActiveForm.Name == "Dobby")
                 MainForm = ActiveForm;
             LastForm = ActiveForm;
@@ -661,9 +654,6 @@ skip: ActiveForm.Location = LastPos;
 
 
         void BaseDebugFunction(byte OnOrOff) {
-            if (game == 0)
-                BrowseButton_Click(null, null);
-
             var Type = OnOrOff == on ? "Enable" : "Disable";
             switch (game) {
                 default:
@@ -723,7 +713,7 @@ skip: ActiveForm.Location = LastPos;
                     break;
                 case UC3100:
                     UC3100_Patches(Type);
-                    Inf("Uncharted 3 1.00 Default Debug Defaultd");
+                    Inf("Uncharted 3 1.00 Default Debug Enabled");
                     break;
                 case UC3102:
                     UC3102_Patches(Type);
@@ -752,18 +742,50 @@ skip: ActiveForm.Location = LastPos;
         }
 
 
-        public void EnableDebugBtn_Click(object sender, EventArgs e) => BaseDebugFunction(on);
+        public void EnableDebugBtn_Click(object sender, EventArgs e) {
+            if (game == 0) {
+                if (!FlashThreadHasStarted) {
+                    Dev.FlashThread.Start();
+                    FlashThreadHasStarted = true;
+                }
+                LabelShouldFlash = true;
+                Inf("Please Select A Game's Executable First");
+                Dobby.InfoHasImportantStr = true;
+                return;
+            }
+            BaseDebugFunction(on);
+        }
         public void EnableDebugBtnMH(object sender, EventArgs e) => HoverString(EnableDebugBtn, "Enable Debug Mode As-Is With No Edits");
         public void EnableDebugBtnML(object sender, EventArgs e) => HoverLeave(EnableDebugBtn, 1);
 
 
-        public void DisableDebugBtn_Click(object sender, EventArgs e) => BaseDebugFunction(off);
+        public void DisableDebugBtn_Click(object sender, EventArgs e) {
+            if (game == 0) {
+                if (!FlashThreadHasStarted) {
+                    Dev.FlashThread.Start();
+                    FlashThreadHasStarted = true;
+                }
+                LabelShouldFlash = true;
+                Inf("Please Select A Game's Executable First");
+                Dobby.InfoHasImportantStr = true;
+                return;
+            }
+            BaseDebugFunction(off);
+        }
         public void DisableDebugBtnMH(object sender, EventArgs e) => HoverString(DisableDebugBtn, "Disable Debug Mode. Doesn't Undo Other Patches");
         public void DisableDebugBtnML(object sender, EventArgs e) => HoverLeave(DisableDebugBtn, 1);
 
         public void RestoredDebugBtn_Click(object sender, EventArgs e) {
-            if (game == 0)
-                BrowseButton_Click(null, null);
+            if (game == 0) {
+                if (!FlashThreadHasStarted) {
+                    Dev.FlashThread.Start();
+                    FlashThreadHasStarted = true;
+                }
+                LabelShouldFlash = true;
+                Inf("Please Select A Game's Executable First");
+                Dobby.InfoHasImportantStr = true;
+                return;
+            }
 
             DialogResult Check;
 
@@ -819,7 +841,8 @@ skip: ActiveForm.Location = LastPos;
                     Inf("Restored Debug Menu Patch Applied");
                     break;
                 case UC3100:
-                    Inf("Uncharted 3 1.00 Restored Debug N/A Yet");
+                    UC3100_Patches("Restored");
+                    Inf("Uncharted 3 1.00 Restored Debug Applied");
                     break;
                 case UC3102:
                     Inf("Uncharted 3 1.02 Restored Debug N/A Yet");
@@ -847,10 +870,16 @@ skip: ActiveForm.Location = LastPos;
         public void RestoredDebugBtnML(object sender, EventArgs e) => HoverLeave(RestoredDebugBtn, 1);
 
         public void CustomDebugBtn_Click(object sender, EventArgs e) { // Just Edited Debug Menus, Some Things May Be Replaced
-            if (game == 0)
-                BrowseButton_Click(null, null);
-
-            DialogResult Check;
+            if (game == 0) {
+                if (!FlashThreadHasStarted) {
+                    Dev.FlashThread.Start();
+                    FlashThreadHasStarted = true;
+                }
+                LabelShouldFlash = true;
+                Inf("Please Select A Game's Executable First");
+                Dobby.InfoHasImportantStr = true;
+                return;
+            }
 
             switch (game) {
                 default:
@@ -924,8 +953,16 @@ skip: ActiveForm.Location = LastPos;
 
         public void CustomOptDebugBtn_Click(object sender, EventArgs e) {
             if (Dev.REL) return;
-            if (game == 0)
-                BrowseButton_Click(null, null);
+            if (game == 0) {
+                if (!FlashThreadHasStarted) {
+                    Dev.FlashThread.Start();
+                    FlashThreadHasStarted = true;
+                }
+                LabelShouldFlash = true;
+                Inf("Please Select A Game's Executable First");
+                Dobby.InfoHasImportantStr = true;
+                return;
+            }
 
             CDO = new bool[10]; CDO[7] = CDO[8] = true; MenuOpacity = 2;
 
@@ -1247,17 +1284,12 @@ Custom:
 
 
         void UC2100_Patches(string type) {
+            WriteByte(0x4D7BE7, (byte)(type == "Disable" ? 0x74 : 0xEB));
             switch (type) {
-                case "Enable":
-                    goto Default;
-                case "Disable":
-                    goto Default;
+                default: return;
                 case "Restored":
                     goto Restored;
             }
-Default:
-            WriteByte(0x4D7BE7, (byte)(type == "Enable" ? 0xEB : 0x74));
-            return;
 
 Restored:
             int[] WhiteJumpsOneByte = new int[] {
@@ -1387,12 +1419,12 @@ Restored:
                 0x151874, // Spawn Character Pop
                 0x151898, // Spawn Vehicle Push
                 0x15191F, // Spawn Vehicle Pop
-                0x15199B, // Collision Push
-                0x1519F7, // Collision Pop
+               //0x15199B, // Collision Push
+               //0x1519F7, // Collision Pop
                 0x170126, // Gameplay Push 1
-                0x172B13, // Gameplay Pop 1
+                0x172B13, // Gameplay Pop  1
                 0x172DF1, // Gameplay Push 2
-                0x1730F7, // Gameplay Pop 2
+                0x1730F7, // Gameplay Pop  2
                 0x8699DA, // State Scripts Push
                 0x86A612, // State Scripts Pop
                 0x151A7C, // Game Objects Push
@@ -1423,14 +1455,35 @@ Restored:
                 0x152DDD, // Menu Pop
                 0x154951, // Language / Recorder Push
                 0x154C5C, // Language / Recorder Pop
-                0x833CE5, // Scripts Push
-                0x833FE6, // Scripts Pop
+              //0x833CE5, // Scripts Push
+              //0x833FE6, // Scripts Pop
             };
             int[] WhiteJumps = new int[] {
                 0x1516E7, // BP UCC...
                 0x151728, // System...
                 0x15184A, // Spawn Character...
                 0x15187D, // Spawn Vehicle...
+              //0x151983, // Collision (Havok)...
+                0x151A04, // Gameplay...
+              //0x17010B, // Gameplay Chunk 1
+                0x172DD6, // Gameplay Chunk 2
+                0x151A64, // Game Objects...
+                0x151ADE, // Levels...
+                0x151E7E, // Load Misc. Levels... Option
+                0x15206D, // Navigating Character...
+                0x152138, // Nav-Mesh
+                0x15220E, // Interactive Background...
+                0x152274, // Process...
+                0x1522A6, // Animation...
+                0x1522D8, // Water...
+                0x152359, // Fx...
+                0x16452F, // Camera (Outer)
+                0x1523DA, // Camera (inner)
+                0x152412, // Clock...
+                0x152902, // Menu...
+                0x152DEB, // Audio...
+                0x154936, // Language... / Recorder...
+              //0x833CCA, // Scripts...
             };
 
             switch (type) {
@@ -1792,8 +1845,6 @@ Restored:
                 case "Custom":
                     goto Custom;
             }
-Default:
-            WriteBytes(0x6181FA, type == "Enable" ? T2Debug : T2DebugOff);
 
 Custom:
             // Enable Debug + Change L3 & Triangle Toggle First \\
