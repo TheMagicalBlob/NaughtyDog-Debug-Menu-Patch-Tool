@@ -803,7 +803,7 @@ namespace Dobby {
             }
         }
 
-        public string CheckGame(int Game) {
+        public string CheckGame(int Game) { // the fuck!?
             try {
                 if (PS4DebugIsConnected && geo.GetProcessInfo(exec).name == processname || Connect() == 0)
                     switch (Game) { // T1R

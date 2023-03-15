@@ -1,6 +1,8 @@
 ﻿using Dobby.Properties;
+using libdebug;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -20,31 +22,30 @@ namespace Dobby {
 
         /* Old Changelist
          *
-         * 2.3.12   | Added PS4Debug 1.1.15 Payload & Edited Credits Page
-         * 2.3.13   | Added UC4 MP Button (PS4Debug) Addatives
-         * 2.3.14   | Misc. Option Positioning Adjustment
-         * 2.3.18   | Localized A Few Functions In Credits.cs
-         * 2.3.20   | Localized A Few Functions In InfoHelpPage.cs
-         * 2.4.20   | Reworking UC4 Restored Debug - Improved Rendering Menu
-         * 2.4.21   | Added Menu Error SP Boot Skip To UC4 1.33 MP Debug
-         * 2.5.21   | Significant Tweaks To EbootPatchPage.cs To Be More User Friendly
-         * 2.6.22   | Added T2 Check, Misc Tweaks
-         * 2.6.23   | Added A Toggle() Alternative That Doesn't Try To Connect, In Order To Avoid Taking Twice As Long To Fail When An Invalid IP Is Given
-         * 2.7.24   | Added Full Gameplay Menu To Uncharted 4 1.33 MP Debug
-         * 2.7.25   | Added GBuffer Option Skip For Uncharted 4 1.33 MP Debug
-         * 2.7.27   | Added Post-Processing Part 1 & 2 For Uncharted 4 1.33 MP Debug
-         * 2.7.28   | Added Lighting Menu Chunk 1
-         * 2.7.29   | Chunk 2
-         * 2.8.30   | Added Overload For HoverLeave() To Lower Font Scale & Redid The Credits Page Again
-         * 2.9.31   | Added PS4Debug Info Page - Added LastForm Info String To BackBtnMH In Dev Mode
-         * 2.9.32   | PS4DebugInfo Page Edits
          */
 
-        public static string[] NewChangeList = new string[] {
-            /*
-             * ------------
-             * |ChangeList|
-             * ------------
+        public static string[] ChangeList = new string[] {
+            "* ------------",
+            "* |ChangeList|",
+            "* ------------",
+            "* 2.3.12     | Added PS4Debug 1.1.15 Payload & Edited Credits Page",
+            "* 2.3.13     | Added UC4 MP Button (PS4Debug) Addatives",
+            "* 2.3.14     | Misc. Option Positioning Adjustment",
+            "* 2.3.18     | Localized A Few Functions In Credits.cs",
+            "* 2.3.20     | Localized A Few Functions In InfoHelpPage.cs",
+            "* 2.4.20     | Reworking UC4 Restored Debug - Improved Rendering Menu",
+            "* 2.4.21     | Added Menu Error SP Boot Skip To UC4 1.33 MP Debug",
+            "* 2.5.21     | Significant Tweaks To EbootPatchPage.cs To Be More User Friendly",
+            "* 2.6.22     | Added T2 Check, Misc Tweaks",
+            "* 2.6.23     | Added A Toggle() Alternative That Doesn't Try To Connect, In Order To Avoid Taking Twice As Long To Fail When An Invalid IP Is Given",
+            "* 2.7.24     | Added Full Gameplay Menu To Uncharted 4 1.33 MP Debug",
+            "* 2.7.25     | Added GBuffer Option Skip For Uncharted 4 1.33 MP Debug",
+            "* 2.7.27     | Added Post-Processing Part 1 & 2 For Uncharted 4 1.33 MP Debug",
+            "* 2.7.28     | Added Lighting Menu Chunk 1",
+            "* 2.7.29     | Chunk 2",
+            "* 2.8.30     | Added Overload For HoverLeave() To Lower Font Scale & Redid The Credits Page Again",
+            "* 2.9.31     | Added PS4Debug Info Page - Added LastForm Info String To BackBtnMH In Dev Mode",
+            "* 2.9.32     | PS4DebugInfo Page Edits",
             "* 2.9.0.33   | Start Of New Versioning - Added HoverLeave Params To PS4DebugHelpPage Init Button",
             "* 2.9.0.34   | Improved Root InfoHelpPage",
             "* 2.9.1.34   | Added ChangeListDisplay",
@@ -59,7 +60,7 @@ namespace Dobby {
             "* 2.10.8.42  | Added Camera... Menu To UC4 1.33 MP Debug",
         "* 2.10.8-tmp.43  | Prepping To Change The Way Remembering Pages Works, Added Build Label Hover Params",
             "* 2.10.9.43  | Removed Pointless Width / Height Params From The Main HoverLeave Function And It's Overloads Since Just Adding/Removing 9 In The Function Works Perfectly",
-          */"* 2.10.10.43 | Adding Eboot Patch Info Page",
+            "* 2.10.10.43 | Adding Eboot Patch Info Page",
             "* 2.10.11.44 | Added Navigtion... Menu And Fixed Some Previous Offsets I Added Incorrectly",
             "* 2.10.17.44 | Added Multiple Submenus (UC4 1.33 MP)",
             "* 2.10.17.45 | Hid Changelist For Release Mode",
@@ -93,14 +94,17 @@ namespace Dobby {
             "* 2.19.44.92 | Added Form Move Event Handlers To InfoHelpPage Credits Page",
             "* 2.19.44.94 | Fixed Discord Contact on Info/Help Page, Misc Move Form Tweaks",
             "* 2.19.45.94 | Simple Flashing Label Implementation For EbootPatchPage",
-           "* 2.19.46.100 | More Flashing Label Edits And A Bunch Of Tiny Changes I Can't Recall"
+           "* 2.19.46.100 | More Flashing Label Edits And A Bunch Of Tiny Changes I Can't Recall",
+           "* 2.19.47.102 | UC3 1.00 Restored Debug Additions (Still Untested...), Removed Tag From Debug Output, Changed MakeTextBox BG Colour Back To Black"
 
             // TODO:
             // - Fix Messy Back Button Implementation
-            // - Stop Back Button From Crashing The FlashLabel Shit
+            // - Test UC3 Restored Debug
+            // - Finish EbootPatchHelpPage
+            // - Finish EbootPatchPage GameInfoLabel Functionality
 
         };
-        public static string Build = NewChangeList[NewChangeList.Length - 1].Substring(2).Substring(0, NewChangeList[NewChangeList.Length - 1].IndexOf('|') - 3); // Trims The Last ChangeList String For Latest The Build Number
+        public static string Build = ChangeList[ChangeList.Length - 1].Substring(2).Substring(0, ChangeList[ChangeList.Length - 1].IndexOf('|') - 3); // Trims The Last ChangeList String For Latest The Build Number
         public static string CurrentControl, tmp;
 
         public static byte
@@ -127,7 +131,7 @@ namespace Dobby {
             YellowInformationLabel = f.Controls.Find("Info", true)[0];
         }
 
-        public static void MakeTextBox(int size, string Text) {
+        public static void MakeTextBox(int size, string Text) { //!
             if (PopUpBox1 != null && PopUpBox1.FindForm() != null) {
                 PopUpBox1.FindForm().Controls.Remove(PopUpBox2);
                 PopUpBox1.FindForm().Controls.Remove(PopUpBox1);
@@ -137,7 +141,7 @@ namespace Dobby {
             Label TXT = new Label();
             GBOX.BackColor = Color.Black;
             TXT.ForeColor = GBOX.ForeColor = Color.White;
-            TXT.BackColor = Color.Red;
+            TXT.BackColor = Color.Black;
             ActiveForm.Controls.Add(GBOX);
             GBOX.Controls.Add(TXT);
             TXT.Font = MainFont;
@@ -230,7 +234,7 @@ namespace Dobby {
 
         public class Dev {
 
-            public const bool REL = true
+            public const bool REL = false
                                         ;
 
             delegate void GameNotSelectedError();
@@ -240,11 +244,10 @@ namespace Dobby {
             static void FlashLabel() {
                 while (!LabelShouldFlash) { Thread.Sleep(7); }
                 try {
-                    for (int Flashes = 0; Flashes < 709999999; Flashes++) {
+                    for (int Flashes = 0; Flashes < 8; Flashes++) {
                         while (ActiveForm == null) { } // Just Chill Here 'Till The Form Gets Focus Again
                         ActiveForm.Invoke(White);
                         Thread.Sleep(135);
-
                         while (ActiveForm == null) { }
                         ActiveForm.Invoke(Yellow);
                         Thread.Sleep(135);
@@ -264,7 +267,7 @@ namespace Dobby {
                 ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.FromArgb(255, 227, 0);
                 ActiveForm.Refresh();
             }
-
+             
 
 
             public static Thread DebuggerThread = new Thread(new ThreadStart(UpdateConsoleOutput));
@@ -293,8 +296,8 @@ namespace Dobby {
                 while (true) {
                     int StartTime = tim;
                     Form frm = ActiveForm;
-                    int PrevCursorPos = Console.CursorTop;
-                    Console.CursorTop = 0; Console.WriteLine(BlankSpace($"Build: {Build} | 5235025275 | Delay: ~{Interval}ms"));
+                    int PrevCursorPos = Console.CursorTop; //!
+                    Console.CursorTop = 0; Console.WriteLine(BlankSpace($"Build: {Build} | ~{Interval}ms"));
                     Console.CursorTop = 2; Console.WriteLine(BlankSpace($"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}"));
                     Console.CursorTop = 4; Console.WriteLine(BlankSpace($"Page: {Page}"));
                     Console.CursorTop = 6; Console.WriteLine(BlankSpace($"MousePos: {MousePosition}"));

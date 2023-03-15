@@ -358,16 +358,9 @@ skip: ActiveForm.Location = LastPos;
         public void PS4DebugHelpBtnML(object sender, EventArgs e) => HoverLeave(PS4DebugHelpBtn, 1);
 
         private void BuildLabel_Click(object sender, MouseEventArgs e) {
-            if (e.Button == MouseButtons.Right) { //!
-                string CL = Dev.REL ? "Release" : "* ----------------\n* |ChangeList|\n* ----------------\n*";
-                if (Dev.REL) goto box; // Yeah I used a goto, how about you goto fuck_yourself
-                int i = 0;
-                foreach (string s in NewChangeList) {
-                    i++;
-                    CL += $"\n{s}";
-                }
-                CL += "/";
-box: MessageBox.Show(CL);
+            if (e.Button == MouseButtons.Right) {
+                File.WriteAllLines(Directory.GetCurrentDirectory() + @"\ChangeLog.txt", Common.ChangeList );
+                MessageBox.Show($"Changelist Dumped To {Directory.GetCurrentDirectory()}\\ChangeLog.txt");
             }
         }
 

@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using static Dobby.Common;
 using Dobby.Properties;
+using System.Net;
 
 namespace Dobby {
     public class EbootPatchPage : Form {
@@ -1419,8 +1420,8 @@ Restored:
                 0x151874, // Spawn Character Pop
                 0x151898, // Spawn Vehicle Push
                 0x15191F, // Spawn Vehicle Pop
-               //0x15199B, // Collision Push
-               //0x1519F7, // Collision Pop
+                0x15199B, // Collision Push
+                0x1519F7, // Collision Pop
                 0x170126, // Gameplay Push 1
                 0x172B13, // Gameplay Pop  1
                 0x172DF1, // Gameplay Push 2
@@ -1458,17 +1459,13 @@ Restored:
               //0x833CE5, // Scripts Push
               //0x833FE6, // Scripts Pop
             };
-            int[] WhiteJumps = new int[] {
+            int[] WhiteJumpsSmol = new int[] {
                 0x1516E7, // BP UCC...
-                0x151728, // System...
                 0x15184A, // Spawn Character...
                 0x15187D, // Spawn Vehicle...
-              //0x151983, // Collision (Havok)...
+                0x151983, // Collision (Havok)...
                 0x151A04, // Gameplay...
-              //0x17010B, // Gameplay Chunk 1
-                0x172DD6, // Gameplay Chunk 2
                 0x151A64, // Game Objects...
-                0x151ADE, // Levels...
                 0x151E7E, // Load Misc. Levels... Option
                 0x15206D, // Navigating Character...
                 0x152138, // Nav-Mesh
@@ -1481,9 +1478,22 @@ Restored:
                 0x1523DA, // Camera (inner)
                 0x152412, // Clock...
                 0x152902, // Menu...
-                0x152DEB, // Audio...
                 0x154936, // Language... / Recorder...
+            };
+            int[] WhiteJumpsLorge = new int[] {
+                0x151728, // System...
+                0x17010B, // Gameplay Chunk 1
+                0x172DD6, // Gameplay Chunk 2
+                0x151ADE, // Levels...
+                0x152412, // Clock...
+                0x152902, // Menu...
+                0x152DEB, // Audio...
               //0x833CCA, // Scripts...
+            };
+            int[] Returns = new int[] {
+                0x3F89E0, // Skip Schema Spawn Menu Update
+                0x3F93D0, // Skip DCSpawn Menu Update
+                0x86B170, // Skip IGC Menu Update
             };
 
             switch (type) {
@@ -1493,22 +1503,27 @@ Restored:
                 case "Custom":
                     goto Custom;
             }
-
+Custom: //! tmp
 Restored:
-            WriteByte(0x168EB7, 0xEB);
+            WriteBytes(0x1517A0, new byte[] { 0xe8, 0xeb, 0x4a, 0x3a, 0x00, 0x49, 0x89, 0xc7 }); // Load Mini-Rendering Menu For Now
+            WriteBytes(0x54f55f, new byte[] { 0xe9, 0x66, 0x13, 0x00, 0x00 });                   // Skip Four Audio... Submenus
+
 
             foreach (int addr in FunctionNops)
                 WriteBytes(addr, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 });
-            foreach (int addr in WhiteJumps)
+            foreach (int addr in WhiteJumpsLorge)
                 WriteBytes(addr, new byte[] { 0x00, 0x00 });
+            foreach (int addr in WhiteJumpsSmol)
+                WriteByte(addr, 0x00);
+            foreach (int addr in Returns)
+                WriteByte(addr, 0xC3);
             return;
 
-Custom:
-            WriteByte(0x168EB7, 0xEB);
+//Custom: //!
 
             foreach (int addr in FunctionNops)
                 WriteBytes(addr, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 });
-            foreach (int addr in WhiteJumps)
+            foreach (int addr in WhiteJumpsSmol)
                 WriteBytes(addr, new byte[] { 0x00, 0x00 });
             return;
         }
