@@ -470,8 +470,8 @@ namespace Dobby {
         public void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
         public void ExitBtnMH(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void ExitBtnML(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 255, 255);
-
-        public void MinimizeBtn_Click(object sender, EventArgs e) => ActiveForm.WindowState = FormWindowState.Minimized;
+        public int AAAA = 0;
+        public void MinimizeBtn_Click(object sender, EventArgs e) { Dev.DebugOutStr($"test{AAAA}"); AAAA++; } // => ActiveForm.WindowState = FormWindowState.Minimized;
         public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
 
@@ -546,21 +546,113 @@ namespace Dobby {
                 MainStream.WriteByte(data);
             }
         }
-        string UpdateGameInfoLabel(int game) {
+        string UpdateGameInfoLabel(int game) { //!
+            // EG: Uncharted 2 (1.02) | Debug Disabled            
             string NewString = string.Empty;
 
-            var IsDebugChk = new bool[3];
+            var IsDebugChk = new bool[7];
             var IsDebug = "Debug Mode Disabled";
-            MainStream.Position = 0x1EB297;
-            IsDebugChk[0] = (byte)MainStream.ReadByte() == 0xEB;
-            MainStream.Position = 0x1EB297;
-            IsDebugChk[1] = (byte)MainStream.ReadByte() == 0x75;
-            MainStream.Position = 0x1EB296;
-            IsDebugChk[2] = (byte)MainStream.ReadByte() == 0x01;
-            foreach (bool chk in IsDebugChk)
-                if (chk == true) IsDebug = "Debug Mode Enabled";
+            Common.game = game;
+            switch (game) {
+                default:
+                    MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported");
+                    break;
+                case T1R100:
+                    CustomDebugBtn.Enabled = true;
+                    return "The Last Of Us Remastered 1.00";
+                    case T1R109:
+                    CustomDebugBtn.Enabled = true;
+                    Inf("The Last Of Us Remastered 1.09");
+                    break;
+                case T1R11X:
+                    CustomDebugBtn.Enabled = true;
+                    MainStream.Position = 0x18;
+                    GameInfoLabel.Text = $"The Last Of Us Remastered 1.1{((byte)MainStream.ReadByte() == 0x10 ? 1 : 0)}";
+                    break;
+                case T2100:
+                    Inf("The Last Of Us Part II 1.00");
+                    break;
+                case T2101:
+                    Inf("The Last Of Us Part II 1.01");
+                    break;
+                case T2102:
+                    Inf("The Last Of Us Part II 1.02");
+                    break;
+                case T2105:
+                    Inf("The Last Of Us Part II 1.05");
+                    break;
+                case T2107:
+                    Inf("The Last Of Us Part II 1.07");
+                    break;
+                case T2108:
+                    Inf("The Last Of Us Part II 1.08");
+                    break;
+                case T2109:
+                    GameInfoLabel.Text = "The Last Of Us Part II 1.09 Detected";
+                    break;
+                case UC1100:
+                    GameInfoLabel.Text = "Uncharted 1 1.00";
+                    break;
+                case UC1102:
+                    Inf("Uncharted 1 1.02 Default");
+                    break;
+                case UC2100:
+                    MainStream.Position = 0x1EB297;
+                    IsDebugChk[0] = (byte)MainStream.ReadByte() == 0xEB;
+                    MainStream.Position--;
+                    IsDebugChk[1] = (byte)MainStream.ReadByte() == 0x75;
+                    MainStream.Position = 0x1EB296;
+                    IsDebugChk[2] = (byte)MainStream.ReadByte() == 0x01;
+                    foreach (bool chk in IsDebugChk)
+                        if (chk == true) IsDebug = "Debug Mode Enabled";
 
-            GameInfoLabel.Text = $"Uncharted 2 1.00 | {IsDebug}";
+                    return $"Uncharted 2 1.00 | {IsDebug}";
+                case UC2102:
+                    MainStream.Position = 0x3F7A26;
+                    IsDebugChk[0] = (byte)MainStream.ReadByte() == 0xEB;
+                    MainStream.Position = 0x0;
+                    IsDebugChk[1] = (byte)MainStream.ReadByte() == 0x75;
+                    MainStream.Position = 0x0;
+                    IsDebugChk[3] = (byte)MainStream.ReadByte() == 0x01;
+                    foreach (bool chk in IsDebugChk)
+                        if (chk == true) IsDebug = "Debug Mode Enabled";
+
+                    GameInfoLabel.Text = $"Uncharted 2 1.02 | {IsDebug}";
+                    break;
+                case UC3100:
+                    MainStream.Position = 0x168EB7;
+                    IsDebugChk[0] = (byte)MainStream.ReadByte() == 0xEB;
+                    MainStream.Position--;
+                    IsDebugChk[1] = (byte)MainStream.ReadByte() == 0x75;
+                    MainStream.Position = 0x168EDB;
+                    IsDebugChk[2] = (byte)MainStream.ReadByte() == 0x01;
+                    MainStream.Position = 0x0;
+                    IsDebugChk[2] = (byte)MainStream.ReadByte() == 0x01;
+                    foreach (bool chk in IsDebugChk)
+                        if (chk == true) IsDebug = "Debug Mode Enabled";
+
+                    GameInfoLabel.Text = $"Uncharted 3 1.00 | {IsDebug}";
+                    break;
+                case UC3102:
+                    Inf("Uncharted 3 1.00 Default");
+                    break;
+                case UC4100:
+                    Inf("Uncharted 4: A Thief's End 1.00");
+                    break;
+                case UC413X:
+                    Inf("Uncharted 4: A Thief's End 1.32/1.33");
+                    break;
+                case UC4133MP:
+                    Inf("Uncharted 4: A Thief's End 1.33 Multiplayer");
+                    break;
+                case TLL100:
+                    Inf("Uncharted: The Lost Legacy 1.00");
+                    break;
+                case TLL10X:
+                    Inf("Uncharted: The Lost Legacy 1.08/1.09");
+                    break;
+            }
+
             return NewString;
         }
         private void BrowseButton_Click(object sender, EventArgs e) {
@@ -575,81 +667,8 @@ namespace Dobby {
             if (f.ShowDialog() == DialogResult.OK) {
                 ExecutablePathBox.Text = f.FileName;
                 MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite);
-                MainStream.Position = 0x60; MainStream.Read(chk, 0, 4); // 
-                game = BitConverter.ToInt32(chk, 0);
-
-                switch (game) {
-                    default:
-                        MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported");
-                        break;
-                    case T1R100:
-                        CustomDebugBtn.Enabled = true;
-                        Inf("The Last Of Us Remastered 1.00");
-                        break;
-                    case T1R109:
-                        CustomDebugBtn.Enabled = true;
-                        Inf("The Last Of Us Remastered 1.09");
-                        break;
-                    case T1R11X:
-                        CustomDebugBtn.Enabled = true;
-                        MainStream.Position = 0x18;
-                        GameInfoLabel.Text = $"The Last Of Us Remastered 1.1{((byte)MainStream.ReadByte() == 0x10 ? 1 : 0)}";
-                        break;
-                    case T2100:
-                        Inf("The Last Of Us Part II 1.00");
-                        break;
-                    case T2101:
-                        Inf("The Last Of Us Part II 1.01");
-                        break;
-                    case T2102:
-                        Inf("The Last Of Us Part II 1.02");
-                        break;
-                    case T2105:
-                        Inf("The Last Of Us Part II 1.05");
-                        break;
-                    case T2107:
-                        Inf("The Last Of Us Part II 1.07");
-                        break;
-                    case T2108:
-                        Inf("The Last Of Us Part II 1.08");
-                        break;
-                    case T2109:
-                        GameInfoLabel.Text = "The Last Of Us Part II 1.09 Detected";
-                        break;
-                    case UC1100:
-                        GameInfoLabel.Text = "Uncharted 1 1.00";
-                        break;
-                    case UC1102:
-                        Inf("Uncharted 1 1.02 Default");
-                        break;
-                    case UC2100:
-                        GameInfoLabel.Text = UpdateGameInfoLabel(game);
-                        break;
-                    case UC2102:
-                        Inf("Uncharted 3 1.00 Default");
-                        break;
-                    case UC3100:
-                        Inf("Uncharted 3 1.00 Default");
-                        break;
-                    case UC3102:
-                        Inf("Uncharted 3 1.00 Default");
-                        break;
-                    case UC4100:
-                        Inf("Uncharted 4: A Thief's End 1.00");
-                        break;
-                    case UC413X:
-                        Inf("Uncharted 4: A Thief's End 1.32/1.33");
-                        break;
-                    case UC4133MP:
-                        Inf("Uncharted 4: A Thief's End 1.33 Multiplayer");
-                        break;
-                    case TLL100:
-                        Inf("Uncharted: The Lost Legacy 1.00");
-                        break;
-                    case TLL10X:
-                        Inf("Uncharted: The Lost Legacy 1.08/1.09");
-                        break;
-                }
+                MainStream.Position = 0x60; MainStream.Read(chk, 0, 4);
+                UpdateGameInfoLabel(BitConverter.ToInt32(chk, 0));
             }
         }
 
@@ -787,8 +806,6 @@ namespace Dobby {
                 Dobby.InfoHasImportantStr = true;
                 return;
             }
-
-            DialogResult Check;
 
             switch (game) {
                 default:

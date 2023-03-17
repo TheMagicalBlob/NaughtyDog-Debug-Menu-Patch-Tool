@@ -95,7 +95,8 @@ namespace Dobby {
             "* 2.19.44.94 | Fixed Discord Contact on Info/Help Page, Misc Move Form Tweaks",
             "* 2.19.45.94 | Simple Flashing Label Implementation For EbootPatchPage",
            "* 2.19.46.100 | More Flashing Label Edits And A Bunch Of Tiny Changes I Can't Recall",
-           "* 2.19.48.102 | UC3 1.00 Restored Debug Additions, Plus It Actually Works Now..., Removed Tag From Debug Output, Changed MakeTextBox BG Colour Back To Black"
+           "* 2.19.48.102 | UC3 1.00 Restored Debug Additions, Plus It Actually Works Now..., Removed Tag From Debug Output, Changed MakeTextBox BG Colour Back To Black",
+           "* 2.19.49.103 | Debug Output Additions, Added Scrolling Array Of Output Strings Rather Than Only Showing The Last One. Label Flash Exceptions Catch"
 
             // TODO:
             // - Fix Messy Back Button Implementation
@@ -112,7 +113,7 @@ namespace Dobby {
             MouseIsDown
         ;
 
-        public static string OutString = "";
+        public static string[] OutputStrings = new string[] { "", "", "", "", "", "", "" };
         public static Control YellowInformationLabel, PopUpBox1, PopUpBox2;
 
         public static int game;
@@ -254,18 +255,28 @@ namespace Dobby {
                     }
                 }
                 catch (Exception) {
-                    Dev.DebugOutStr("Killing Label Flash");
+                    DebugOutStr("Killing Label Flash");
                 }
                 LabelShouldFlash = false;
                 FlashLabel();
             }
             static void FlashWhite() {
-                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.White;
-                ActiveForm.Refresh();
+                try {
+                    ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.White;
+                    ActiveForm.Refresh();
+                }
+                catch (Exception) {
+                    DebugOutStr("Killing Label Flash WH");
+                }
             }
             static void FlashYellow() {
-                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.FromArgb(255, 227, 0);
-                ActiveForm.Refresh();
+                try {
+                    ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.FromArgb(255, 227, 0);
+                    ActiveForm.Refresh();
+                }
+                catch (Exception) {
+                    DebugOutStr("Killing Label Flash YL");
+                }
             }
              
 
@@ -301,14 +312,36 @@ namespace Dobby {
                     Console.CursorTop = 2; Console.WriteLine(BlankSpace($"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}"));
                     Console.CursorTop = 4; Console.WriteLine(BlankSpace($"Page: {Page}"));
                     Console.CursorTop = 6; Console.WriteLine(BlankSpace($"MousePos: {MousePosition}"));
-                    Console.CursorTop = 9; Console.WriteLine(BlankSpace(OutString));
+                    Console.CursorTop = 8; Console.WriteLine(BlankSpace(OutputStrings[0]));
+                    Console.CursorTop = 9; Console.WriteLine(BlankSpace(OutputStrings[1]));
+                    Console.CursorTop = 10; Console.WriteLine(BlankSpace(OutputStrings[2]));
+                    Console.CursorTop = 11; Console.WriteLine(BlankSpace(OutputStrings[3]));
+                    Console.CursorTop = 12; Console.WriteLine(BlankSpace(OutputStrings[4]));
+                    Console.CursorTop = 13; Console.WriteLine(BlankSpace(OutputStrings[5]));
+                    Console.CursorTop = 14; Console.WriteLine(BlankSpace(OutputStrings[6]));
                     Interval = tim - StartTime;
 
                     if (frm != null && i < 1) { frm.Invoke(I); i++; }
                 }
             }
 
-            public static void DebugOutStr(string s) { if (REL) return; OutString = s; }
+            public static void DebugOutStr(string s) {
+                if (REL) return;
+                for (int i = 0; i < 8; i++) {
+                    if (i == 7) break;
+                    if (OutputStrings[i] == "") {
+                        OutputStrings[i] = s;
+                        return;
+                    }
+                }
+                OutputStrings[0] = OutputStrings[1]; //! make this better
+                OutputStrings[1] = OutputStrings[2];
+                OutputStrings[2] = OutputStrings[3];
+                OutputStrings[3] = OutputStrings[4];
+                OutputStrings[4] = OutputStrings[5];
+                OutputStrings[5] = OutputStrings[6];
+                OutputStrings[6] = s;
+            }
         }
     }
 }
