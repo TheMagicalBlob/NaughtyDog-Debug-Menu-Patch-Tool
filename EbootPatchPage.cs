@@ -1417,7 +1417,7 @@ Restored:
                 0x151743, // System Push
                 0x15183D, // System Pop
                 0x151862, // Spawn Character Push
-                0x151874, // Spawn Character Pop
+                0x15186F, // Spawn Character Pop
                 0x151898, // Spawn Vehicle Push
                 0x15191F, // Spawn Vehicle Pop
                 0x15199B, // Collision Push
@@ -1478,7 +1478,6 @@ Restored:
                 0x1523DA, // Camera (inner)
                 0x152412, // Clock...
                 0x152902, // Menu...
-                0x154936, // Language... / Recorder...
             };
             int[] WhiteJumpsLorge = new int[] {
                 0x151728, // System...
@@ -1488,6 +1487,7 @@ Restored:
                 0x152412, // Clock...
                 0x152902, // Menu...
                 0x152DEB, // Audio...
+                0x154936, // Language... / Recorder...
               //0x833CCA, // Scripts...
             };
             int[] Returns = new int[] {
@@ -1505,8 +1505,9 @@ Restored:
             }
 Custom: //! tmp
 Restored:
+            WriteBytes(0x6cff50, new byte[] { 0x80, 0x34, 0x25, 0x6b, 0x95, 0x7f, 0x01, 0x01 }); // Change Debug Rendering Toggle To Novis One Until I Get The Rendering Menu Loaded
             WriteBytes(0x1517A0, new byte[] { 0xe8, 0xeb, 0x4a, 0x3a, 0x00, 0x49, 0x89, 0xc7 }); // Load Mini-Rendering Menu For Now
-            WriteBytes(0x54f55f, new byte[] { 0xe9, 0x66, 0x13, 0x00, 0x00 });                   // Skip Four Audio... Submenus
+            WriteBytes(0x15355f, new byte[] { 0xe9, 0x66, 0x13, 0x00, 0x00 });                   // Skip Four Audio... Submenus
 
 
             foreach (int addr in FunctionNops)

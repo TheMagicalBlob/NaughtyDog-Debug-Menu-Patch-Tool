@@ -95,7 +95,7 @@ namespace Dobby {
             "* 2.19.44.94 | Fixed Discord Contact on Info/Help Page, Misc Move Form Tweaks",
             "* 2.19.45.94 | Simple Flashing Label Implementation For EbootPatchPage",
            "* 2.19.46.100 | More Flashing Label Edits And A Bunch Of Tiny Changes I Can't Recall",
-           "* 2.19.47.102 | UC3 1.00 Restored Debug Additions (Still Untested...), Removed Tag From Debug Output, Changed MakeTextBox BG Colour Back To Black"
+           "* 2.19.48.102 | UC3 1.00 Restored Debug Additions, Plus It Actually Works Now..., Removed Tag From Debug Output, Changed MakeTextBox BG Colour Back To Black"
 
             // TODO:
             // - Fix Messy Back Button Implementation
