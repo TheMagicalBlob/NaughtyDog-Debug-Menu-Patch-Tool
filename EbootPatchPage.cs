@@ -470,8 +470,11 @@ namespace Dobby {
         public void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
         public void ExitBtnMH(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void ExitBtnML(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 255, 255);
-        public int AAAA = 0;
-        public void MinimizeBtn_Click(object sender, EventArgs e) { Dev.DebugOutStr($"test{AAAA}"); AAAA++; } // => ActiveForm.WindowState = FormWindowState.Minimized;
+        public int tst = 0;
+        public void MinimizeBtn_Click(object sender, EventArgs e) { // For Test Cases
+            if (Dev.REL) ActiveForm.WindowState = FormWindowState.Minimized;
+            else { Dev.DebugOutStr($"Word {tst}"); tst++;}
+        }
         public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
 

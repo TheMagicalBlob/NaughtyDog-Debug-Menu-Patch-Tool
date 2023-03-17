@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Configuration;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
@@ -96,13 +97,17 @@ namespace Dobby {
             "* 2.19.45.94 | Simple Flashing Label Implementation For EbootPatchPage",
            "* 2.19.46.100 | More Flashing Label Edits And A Bunch Of Tiny Changes I Can't Recall",
            "* 2.19.48.102 | UC3 1.00 Restored Debug Additions, Plus It Actually Works Now..., Removed Tag From Debug Output, Changed MakeTextBox BG Colour Back To Black",
-           "* 2.19.49.103 | Debug Output Additions, Added Scrolling Array Of Output Strings Rather Than Only Showing The Last One. Label Flash Exceptions Catch"
+           "* 2.19.49.103 | Debug Output Additions, Added Scrolling Array Of Output Strings Rather Than Only Showing The Last One. Label Flash Exceptions Catch",
+           "* 2.19.49.105 | Removed Test Code, Increased Output String Array Length",
+           "* 2.19.49.107 | Debug Output Improvements; Debug Window Resizing Support"
 
             // TODO:
             // - Fix Messy Back Button Implementation
             // - Test UC3 Restored Debug
             // - Finish EbootPatchHelpPage
             // - Finish EbootPatchPage GameInfoLabel Functionality
+            // KNOWN BUGS:
+            // - Occasional String Duplication In Debug Output (DebugOutputStr / UpdateConsoleOutput)
 
         };
         public static string Build = ChangeList[ChangeList.Length - 1].Substring(2).Substring(0, ChangeList[ChangeList.Length - 1].IndexOf('|') - 3); // Trims The Last ChangeList String For Latest The Build Number
@@ -113,10 +118,10 @@ namespace Dobby {
             MouseIsDown
         ;
 
-        public static string[] OutputStrings = new string[] { "", "", "", "", "", "", "" };
+        public static string[] OutputStrings = new string[Console.WindowHeight - 8];
         public static Control YellowInformationLabel, PopUpBox1, PopUpBox2;
 
-        public static int game;
+        public static int game, OutputStringIndex;
 
         public static Point LastPos;
         public static Form LastForm;
@@ -171,6 +176,7 @@ namespace Dobby {
         }
         public static void Inf(string s) => YellowInformationLabel.Text = s;
         public static string BlankSpace(string String) {
+            if (String == null) return "";
             string Blanks = string.Empty;
             for (int i = Console.BufferWidth - String.Length; i > 0; i--)
                 Blanks += " ";
@@ -301,46 +307,46 @@ namespace Dobby {
             public static void UpdateConsoleOutput() {
                 if (REL) return;
                 int i = 0;
-
-                Console.CursorVisible = false;
                 int Interval = 0;
-                while (true) {
+
+Begin_Again:    
+                Console.CursorVisible = false;
+                Point OriginalConsoleScale = new Point(Console.WindowHeight, Console.WindowWidth);
+                while (OriginalConsoleScale == new Point(Console.WindowHeight, Console.WindowWidth)) {
                     int StartTime = tim;
                     Form frm = ActiveForm;
-                    int PrevCursorPos = Console.CursorTop; //!
                     Console.CursorTop = 0; Console.WriteLine(BlankSpace($"Build: {Build} | ~{Interval}ms"));
                     Console.CursorTop = 2; Console.WriteLine(BlankSpace($"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}"));
                     Console.CursorTop = 4; Console.WriteLine(BlankSpace($"Page: {Page}"));
                     Console.CursorTop = 6; Console.WriteLine(BlankSpace($"MousePos: {MousePosition}"));
-                    Console.CursorTop = 8; Console.WriteLine(BlankSpace(OutputStrings[0]));
-                    Console.CursorTop = 9; Console.WriteLine(BlankSpace(OutputStrings[1]));
-                    Console.CursorTop = 10; Console.WriteLine(BlankSpace(OutputStrings[2]));
-                    Console.CursorTop = 11; Console.WriteLine(BlankSpace(OutputStrings[3]));
-                    Console.CursorTop = 12; Console.WriteLine(BlankSpace(OutputStrings[4]));
-                    Console.CursorTop = 13; Console.WriteLine(BlankSpace(OutputStrings[5]));
-                    Console.CursorTop = 14; Console.WriteLine(BlankSpace(OutputStrings[6]));
+                    Console.CursorTop = 8;
+                    foreach (string msg in OutputStrings) {
+                        Console.CursorTop = Console.CursorTop++; Console.Write(BlankSpace(msg));
+                    }
                     Interval = tim - StartTime;
 
                     if (frm != null && i < 1) { frm.Invoke(I); i++; }
                 }
+                Console.Clear();
+                goto Begin_Again;
             }
 
             public static void DebugOutStr(string s) {
                 if (REL) return;
-                for (int i = 0; i < 8; i++) {
-                    if (i == 7) break;
-                    if (OutputStrings[i] == "") {
-                        OutputStrings[i] = s;
-                        return;
+                if (OutputStringIndex == OutputStrings.Length - 1) {
+                    int ShiftIndex = 0;
+                    for (; ShiftIndex < OutputStrings.Length - 1; ShiftIndex++)
+                    OutputStrings[ShiftIndex] = OutputStrings[ShiftIndex + 1];
+                    OutputStrings[ShiftIndex] = s;
+                    return;
+                }
+                for (; OutputStringIndex < OutputStrings.Length - 1; ) {
+                    if (OutputStrings[OutputStringIndex] == null) {
+                        OutputStrings[OutputStringIndex] = s;
+                        OutputStringIndex++;
+                        break;
                     }
                 }
-                OutputStrings[0] = OutputStrings[1]; //! make this better
-                OutputStrings[1] = OutputStrings[2];
-                OutputStrings[2] = OutputStrings[3];
-                OutputStrings[3] = OutputStrings[4];
-                OutputStrings[4] = OutputStrings[5];
-                OutputStrings[5] = OutputStrings[6];
-                OutputStrings[6] = s;
             }
         }
     }
