@@ -99,13 +99,14 @@ namespace Dobby {
            "* 2.19.48.102 | UC3 1.00 Restored Debug Additions, Plus It Actually Works Now..., Removed Tag From Debug Output, Changed MakeTextBox BG Colour Back To Black",
            "* 2.19.49.103 | Debug Output Additions, Added Scrolling Array Of Output Strings Rather Than Only Showing The Last One. Label Flash Exceptions Catch",
            "* 2.19.49.105 | Removed Test Code, Increased Output String Array Length",
-           "* 2.19.49.107 | Debug Output Improvements; Debug Window Resizing Support"
+           "* 2.19.49.107 | Debug Output Improvements; Debug Window Resizing Support",
+           "* 2.19.49.108 | Removed Test Code Again..."
 
             // TODO:
             // - Fix Messy Back Button Implementation
-            // - Test UC3 Restored Debug
             // - Finish EbootPatchHelpPage
             // - Finish EbootPatchPage GameInfoLabel Functionality
+            
             // KNOWN BUGS:
             // - Occasional String Duplication In Debug Output (DebugOutputStr / UpdateConsoleOutput)
 

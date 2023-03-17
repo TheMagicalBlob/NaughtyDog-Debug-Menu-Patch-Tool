@@ -473,7 +473,7 @@ namespace Dobby {
         public int tst = 0;
         public void MinimizeBtn_Click(object sender, EventArgs e) { // For Test Cases
             if (Dev.REL) ActiveForm.WindowState = FormWindowState.Minimized;
-            else { Dev.DebugOutStr($"Word {tst}"); tst++;}
+            else { ActiveForm.WindowState = FormWindowState.Minimized; }
         }
         public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
