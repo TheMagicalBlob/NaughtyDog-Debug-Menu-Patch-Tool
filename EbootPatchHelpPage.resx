@@ -117,11 +117,47 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="GeneralLabel.Text" xml:space="preserve">
+  <data name="User_Is_An_IdiotBtn.Text" xml:space="preserve">
+    <value>- My .pkg Won't Install!
+====
+
+
+Dumbass.
+
+ - The First Way Is With The Official PS4 SDK Tools,Get Em Urself
+
+- The Second Way Is With The Patch Builder App From ModdedWarfrare
+ (Add A Link)- How Do I Add A Patched .bin To My Game?
+
+ - The First Way Is With The Official PS4 SDK Tools,Get Em Urself
+
+- The Second Way Is With The Patch Builder App From ModdedWarfrare
+ (Add A Link)
+
+
+</value>
+  </data>
+  <data name="Question2Btn.Text" xml:space="preserve">
+    <value>- How Do I Add A Patched .bin To My Game?
+
+ - The First Way Is With The Official PS4 SDK Tools,Get Em Urself
+
+- The Second Way Is With The Patch Builder App From ModdedWarfrare
+ (Add A Link)
+- How Do I Add A Patched .bin To My Game?
+
+ - The First Way Is With The Official PS4 SDK Tools,Get Em Urself
+
+- The Second Way Is With The Patch Builder App From ModdedWarfrare
+ (Add A Link)
+
+</value>
+  </data>
+  <data name="Question0Btn.Text" xml:space="preserve">
     <value>                           [General Info]
 - Default Debug: Turns The Debug Mode
   On Without Any Other Changes
-  (With Some Exceptions)
+
 
 - Restored Debug: Load Some Hidden Menus That Don't Normally Load While Trying Not To Change Anything About Them
 
@@ -131,11 +167,10 @@
   </data>
   <data name="Question1Btn.Text" xml:space="preserve">
     <value>- How Do I Get My Game's eboot.bin?
+1 FTP: Go To mnt/sandbox/CUSAXXXXX/app0 And Find It There
 
-FTP: Go To mnt/sandbox/CUSAXXXXX/app0 And Find It There
+2 PKG: Extract The .bin With orbis-pub-chk.exe And Decrypt It With UnFSelf.exe
 
-PKG: Extract The .bin With orbis-pub-chk.exe And Decrypt It With UnFSelf.exe
-
-Dumper: Dump The App Via The Homebrew Store Or Payload</value>
+3 Dumper: Dump The App Via The Homebrew Store Or Payload.</value>
   </data>
 </root>

@@ -100,7 +100,9 @@ namespace Dobby {
            "* 2.19.49.103 | Debug Output Additions, Added Scrolling Array Of Output Strings Rather Than Only Showing The Last One. Label Flash Exceptions Catch",
            "* 2.19.49.105 | Removed Test Code, Increased Output String Array Length",
            "* 2.19.49.107 | Debug Output Improvements; Debug Window Resizing Support",
-           "* 2.19.49.108 | Removed Test Code Again..."
+           "* 2.19.49.108 | Removed Test Code Again...",
+           "* 2.19.50.109 | GameInfoLabel Base Implementation, Check For Signed Executables",
+           "* 2.19.52.111 | EbootPatchHelpPage Progress, Creation Of Local Function To Reduce Bloat When Checking If An Executable Is Debug Enabled Or Not, Debug Output And Other Misc Tweaks"
 
             // TODO:
             // - Fix Messy Back Button Implementation
@@ -134,7 +136,7 @@ namespace Dobby {
 
         public static Font MainFont = new Font("Franklin Gothic Medium", 6.5F, System.Drawing.FontStyle.Bold);
         public static void SetPageInfo(Form f) {
-            f.Location = LastPos; Page = f.Name;
+            f.Location = LastPos; Page = "";
             YellowInformationLabel = f.Controls.Find("Info", true)[0];
         }
 
@@ -318,7 +320,7 @@ Begin_Again:
                     Form frm = ActiveForm;
                     Console.CursorTop = 0; Console.WriteLine(BlankSpace($"Build: {Build} | ~{Interval}ms"));
                     Console.CursorTop = 2; Console.WriteLine(BlankSpace($"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}"));
-                    Console.CursorTop = 4; Console.WriteLine(BlankSpace($"Page: {Page}"));
+                    Console.CursorTop = 4; Console.WriteLine(BlankSpace($"Page: {(ActiveForm == null ? "null" : (ActiveForm.Name == Page ? Page : ($"{Page} NAME DOESN'T MATCH ({ActiveForm.Name})")))}")); // Just In Case I Get Drunk And Try To Make A New Page, I Suppose...
                     Console.CursorTop = 6; Console.WriteLine(BlankSpace($"MousePos: {MousePosition}"));
                     Console.CursorTop = 8;
                     foreach (string msg in OutputStrings) {

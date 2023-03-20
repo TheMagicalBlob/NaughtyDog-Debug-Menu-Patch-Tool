@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using static Dobby.Common;
 using System.Drawing;
+using Dobby.Properties;
+using System.Windows.Forms.VisualStyles;
 
 namespace Dobby {
     public class EbootPatchHelpPage : Form {
@@ -15,11 +17,18 @@ namespace Dobby {
         }
 
         private Label WithSomeExceptionsLabel;
-        bool[] questions = new bool[] { false, false, false, false };
+        public bool[] Questions = new bool[] { false, false, false, false };
         public Label SeperatorLine3;
         public Label SeperatorLine1;
         public Label SeperatorLine2;
         public static int tst = 0;
+        public string[] headers = new string[] {
+            "",
+            "                [Getting The Game's Executable]\n",
+            "                [Adding The Patched eboot To Your Game]\n",
+            "                [I'm Stupid]\n",
+            "                [My Game Doesn't Boot!]\n"
+        };
 
         public void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EbootPatchHelpPage));
@@ -36,7 +45,7 @@ namespace Dobby {
             this.Info = new System.Windows.Forms.Label();
             this.CreditsBtn = new System.Windows.Forms.Button();
             this.BackBtn = new System.Windows.Forms.Button();
-            this.GeneralLabel = new System.Windows.Forms.Label();
+            this.Question0Btn = new System.Windows.Forms.Label();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
             this.Question1Btn = new System.Windows.Forms.Button();
             this.MainBox.SuspendLayout();
@@ -108,7 +117,7 @@ namespace Dobby {
             this.MainBox.Controls.Add(this.Info);
             this.MainBox.Controls.Add(this.CreditsBtn);
             this.MainBox.Controls.Add(this.BackBtn);
-            this.MainBox.Controls.Add(this.GeneralLabel);
+            this.MainBox.Controls.Add(this.Question0Btn);
             this.MainBox.Controls.Add(this.SeperatorLine2);
             this.MainBox.Controls.Add(this.Question1Btn);
             this.MainBox.Location = new System.Drawing.Point(0, -6);
@@ -126,11 +135,12 @@ namespace Dobby {
             this.Question4Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Question4Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
             this.Question4Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Question4Btn.Location = new System.Drawing.Point(1, 351);
+            this.Question4Btn.Location = new System.Drawing.Point(1, 350);
             this.Question4Btn.Name = "Question4Btn";
             this.Question4Btn.Size = new System.Drawing.Size(155, 21);
             this.Question4Btn.TabIndex = 33;
-            this.Question4Btn.Text = "- My Game Won\'t Start!";
+            this.Question4Btn.Text = "- The First Way Is With The Official PS4 SDK Tools,Get Em Urself\r\n\r\n- The Second " +
+    "Way Is With The Patch Builder App From ModdedWarfrare\r\n (Add A Link)";
             this.Question4Btn.Click += new System.EventHandler(this.Question4Btn_Click);
             // 
             // SeperatorLine3
@@ -176,7 +186,7 @@ namespace Dobby {
             this.User_Is_An_IdiotBtn.Name = "User_Is_An_IdiotBtn";
             this.User_Is_An_IdiotBtn.Size = new System.Drawing.Size(154, 21);
             this.User_Is_An_IdiotBtn.TabIndex = 32;
-            this.User_Is_An_IdiotBtn.Text = "- My .pkg Won\'t Install!\r\n\r\n\r\n\r\nDumbass.";
+            this.User_Is_An_IdiotBtn.Text = resources.GetString("User_Is_An_IdiotBtn.Text");
             this.User_Is_An_IdiotBtn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.User_Is_An_IdiotBtn.Click += new System.EventHandler(this.User_Is_An_IdiotBtn_Click);
             // 
@@ -190,7 +200,7 @@ namespace Dobby {
             this.Question2Btn.Name = "Question2Btn";
             this.Question2Btn.Size = new System.Drawing.Size(275, 22);
             this.Question2Btn.TabIndex = 29;
-            this.Question2Btn.Text = "- How Do I Add A Patched .bin To My Game?";
+            this.Question2Btn.Text = resources.GetString("Question2Btn.Text");
             this.Question2Btn.Click += new System.EventHandler(this.Question2Btn_Click);
             // 
             // Info
@@ -242,16 +252,16 @@ namespace Dobby {
             this.BackBtn.MouseEnter += new System.EventHandler(this.BackBtnMH);
             this.BackBtn.MouseLeave += new System.EventHandler(this.BackBtnML);
             // 
-            // GeneralLabel
+            // Question0Btn
             // 
-            this.GeneralLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
-            this.GeneralLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.GeneralLabel.Location = new System.Drawing.Point(3, 39);
-            this.GeneralLabel.Name = "GeneralLabel";
-            this.GeneralLabel.Size = new System.Drawing.Size(316, 244);
-            this.GeneralLabel.TabIndex = 34;
-            this.GeneralLabel.Text = resources.GetString("GeneralLabel.Text");
-            this.GeneralLabel.Click += new System.EventHandler(this.GeneralLabel_Click);
+            this.Question0Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
+            this.Question0Btn.ForeColor = System.Drawing.SystemColors.Control;
+            this.Question0Btn.Location = new System.Drawing.Point(3, 36);
+            this.Question0Btn.Name = "Question0Btn";
+            this.Question0Btn.Size = new System.Drawing.Size(316, 244);
+            this.Question0Btn.TabIndex = 34;
+            this.Question0Btn.Text = resources.GetString("Question0Btn.Text");
+            this.Question0Btn.Click += new System.EventHandler(this.GeneralLabel_Click);
             // 
             // SeperatorLine2
             // 
@@ -345,49 +355,20 @@ skip: ActiveForm.Location = LastPos;
         private Button Question2Btn;
         private Button User_Is_An_IdiotBtn; // Question3Btn
         private Button Question4Btn;
-        private Label GeneralLabel;
+        private Label Question0Btn;
         public Button ExitBtn;
 
-        private void Question1Btn_Click(object sender, EventArgs e) {
-            questions[0] = !questions[0];
-            Question1Btn.Location = questions[0] ? GeneralLabel.Location : new Point(1, 287);
-            Question1Btn.Size = questions[0] ? GeneralLabel.Size : new Size(240, 21);
-            Question1Btn.BringToFront();
-            GeneralLabel.Visible = !questions[0];
-            WithSomeExceptionsLabel.Visible = !questions[0];
-        }
 
-        private void Question2Btn_Click(object sender, EventArgs e) { // TMP //!
-            questions[1] = !questions[1];
-            if (questions[1]) {
-                Question2Btn.Location = new Point(0, 0);
-            }
-            else {
-                Question2Btn.Location = new Point(-1, 331);
-                Question2Btn.Size = new Size(312, 21);
-            }
-
+        void LoadQuestions(int Index) {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EbootPatchHelpPage));
+            Question0Btn.Text = headers[Questions[Index - 1] ? 0 : Index] + resources.GetString($"Question{(Questions[Index - 1] ? 0 : Index)}Btn.Text");
+            Questions[Index-1] = !Questions[Index-1];
+            WithSomeExceptionsLabel.Visible = !Questions[Index - 1];
         }
-
-        private void User_Is_An_IdiotBtn_Click(object sender, EventArgs e) { // TMP //!
-            questions[2] = !questions[2];
-            User_Is_An_IdiotBtn.Location = questions[2] ? GeneralLabel.Location : new Point(-5, 365);
-            User_Is_An_IdiotBtn.Size = questions[2] ? GeneralLabel.Size : new Size(147, 21);
-            User_Is_An_IdiotBtn.BringToFront();
-            GeneralLabel.Visible = !questions[2];
-            WithSomeExceptionsLabel.Visible = !questions[2];
-        }
-
-        private void Question4Btn_Click(object sender, EventArgs e) { // TMP //!
-            questions[0] = !questions[0];
-            if (questions[0]) {
-                Question1Btn.Location = new Point(0, 0);
-            }
-            else {
-                Question1Btn.Location = new Point(-5, 385);
-                Question1Btn.Size = new Size(147, 21);
-            }
-        }
+        private void Question1Btn_Click(object sender, EventArgs e) => LoadQuestions(1);
+        private void Question2Btn_Click(object sender, EventArgs e) => LoadQuestions(2);
+        private void User_Is_An_IdiotBtn_Click(object sender, EventArgs e) => LoadQuestions(3);
+        private void Question4Btn_Click(object sender, EventArgs e) => LoadQuestions(4);
 
         private void WithSomeExceptionsLabel_Click(object sender, EventArgs e) => MakeTextBox(1, "*Some Misc. Patches Will Be Applied To Uncharted 4/Lost Legacy Multiplayer Eboots To Make The Game Playable");
 

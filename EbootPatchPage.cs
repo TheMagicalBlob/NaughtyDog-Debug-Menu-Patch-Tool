@@ -19,7 +19,9 @@ namespace Dobby {
             if (!Dev.REL) PageInfo(Controls);
         }
 
-        public bool[] CDO = new bool[11]; //Custom Debug Options - 11th is For Eventually Keeping Track Of Whether The Options Were Left Default (true if changed)
+        FileStream MainStream;
+
+        public bool[] CDO = new bool[11]; // Custom Debug Options - 11th is For Eventually Keeping Track Of Whether The Options Were Left Default (true if changed)
 
         const byte    // Simple Readability Addition
             on = 0x01,
@@ -106,8 +108,6 @@ namespace Dobby {
         private GroupBox MainBox;
         private Label MainLabel;
         private Label label2;
-        FileStream MainStream;
-
 
         public void InitializeComponent() {
             this.GameInfoLabel = new System.Windows.Forms.Label();
@@ -471,9 +471,12 @@ namespace Dobby {
         public void ExitBtnMH(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void ExitBtnML(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 255, 255);
         public int tst = 0;
-        public void MinimizeBtn_Click(object sender, EventArgs e) { // For Test Cases
+        public void MinimizeBtn_Click(object sender, EventArgs e) {
             if (Dev.REL) ActiveForm.WindowState = FormWindowState.Minimized;
-            else { ActiveForm.WindowState = FormWindowState.Minimized; }
+            
+            else { // For Tests
+                ActiveForm.WindowState = FormWindowState.Minimized;
+            }
         }
         public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
@@ -482,7 +485,6 @@ namespace Dobby {
             LabelShouldFlash = false;
             Form ClosingForm = ActiveForm;
             LastPos = ClosingForm.Location;
-            Dev.DebugOutStr($"Loading: {MainForm.Name}");
             MainForm.Show();
             ActiveForm.Location = LastPos;
             ClosingForm.Close();
@@ -549,114 +551,130 @@ namespace Dobby {
                 MainStream.WriteByte(data);
             }
         }
-        string UpdateGameInfoLabel(int game) { //!
-            // EG: Uncharted 2 (1.02) | Debug Disabled            
+        string UpdateGameInfoLabel(int game) { //!        
             string NewString = string.Empty;
 
             var IsDebugChk = new bool[7];
-            var IsDebug = "Debug Mode Disabled";
+            var GameString = "Unknown Game";
+            var AddString = "No Debug";
+
+            MainStream.Position = 0;
+            MainStream.Read(chk, 0, 4);
+            if (BitConverter.ToInt32(chk, 0) != 1179403647) {// Make Sure The File's Actually Even A .elf
+                GameString = "Executable Still Encrypted";
+                AddString = "Must Be Decrypted/Unsigned";
+                return $"{GameString} | {AddString}";
+            }
+
+            bool CheckDebugState(int[] offsets, byte[] Data) {
+                int i = 0; // Just Returns True If The Bytes Read At The Specified Address Match The Byte Given
+                foreach (int addr in offsets) {
+                    MainStream.Position = addr; Read:
+                    if ((byte)MainStream.ReadByte() == Data[i])
+                        return true;
+
+                    if (Data[i] == 0x75) {
+                        Data[i] = 0xEB;
+                        goto Read;
+                    }
+
+                    i++;
+                }
+                return false;
+            }
+
             Common.game = game;
             switch (game) {
                 default:
-                    MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported");
+                    MessageBox.Show($"Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported\n{game}");
                     break;
                 case T1R100:
                     CustomDebugBtn.Enabled = true;
-                    return "The Last Of Us Remastered 1.00";
-                    case T1R109:
+                    GameString = "The Last Of Us Remastered 1.00";
+                    break;
+                case T1R109:
                     CustomDebugBtn.Enabled = true;
-                    Inf("The Last Of Us Remastered 1.09");
+                    GameString = "The Last Of Us Remastered 1.09";
                     break;
                 case T1R11X:
                     CustomDebugBtn.Enabled = true;
                     MainStream.Position = 0x18;
-                    GameInfoLabel.Text = $"The Last Of Us Remastered 1.1{((byte)MainStream.ReadByte() == 0x10 ? 1 : 0)}";
+                    GameString = $"The Last Of Us Remastered 1.1{((byte)MainStream.ReadByte() == 0x10 ? 1 : 0)}";
                     break;
                 case T2100:
-                    Inf("The Last Of Us Part II 1.00");
+                    GameString = "The Last Of Us Part II 1.00";
                     break;
                 case T2101:
-                    Inf("The Last Of Us Part II 1.01");
+                    GameString = "The Last Of Us Part II 1.01";
                     break;
                 case T2102:
-                    Inf("The Last Of Us Part II 1.02");
+                    GameString = "The Last Of Us Part II 1.02";
                     break;
                 case T2105:
-                    Inf("The Last Of Us Part II 1.05");
+                    GameString = "The Last Of Us Part II 1.05";
                     break;
                 case T2107:
-                    Inf("The Last Of Us Part II 1.07");
+                    GameString = "The Last Of Us Part II 1.07";
                     break;
                 case T2108:
-                    Inf("The Last Of Us Part II 1.08");
+                    GameString = "The Last Of Us Part II 1.08";
                     break;
                 case T2109:
-                    GameInfoLabel.Text = "The Last Of Us Part II 1.09 Detected";
+                    GameString = "The Last Of Us Part II 1.09";
                     break;
                 case UC1100:
-                    GameInfoLabel.Text = "Uncharted 1 1.00";
+                    if (CheckDebugState(new int[] { 0x102056, 0x102057, 0x10207B }, new byte[] { 0x01, 0x75, 0x01 }) == true)
+                        AddString = "Debug";
+
+                    GameString = "Uncharted 1 1.00";
                     break;
                 case UC1102:
-                    Inf("Uncharted 1 1.02 Default");
+                    if (CheckDebugState(new int[] { 0x102186, 0x102187, 0x1021AB }, new byte[] { 0x01, 0x75, 0x01 }) == true)
+                        AddString = "Debug";
+
+                    GameString = "Uncharted 1 1.02";
                     break;
                 case UC2100:
-                    MainStream.Position = 0x1EB297;
-                    IsDebugChk[0] = (byte)MainStream.ReadByte() == 0xEB;
-                    MainStream.Position--;
-                    IsDebugChk[1] = (byte)MainStream.ReadByte() == 0x75;
-                    MainStream.Position = 0x1EB296;
-                    IsDebugChk[2] = (byte)MainStream.ReadByte() == 0x01;
-                    foreach (bool chk in IsDebugChk)
-                        if (chk == true) IsDebug = "Debug Mode Enabled";
+                    if (CheckDebugState(new int[] { 0x1EB296, 0x1EB297, 0x1EB2BB }, new byte[] { 0x01, 0x75, 0x01 }) == true)
+                        AddString = "Debug";
 
-                    return $"Uncharted 2 1.00 | {IsDebug}";
+                    GameString = "Uncharted 2 1.00";
+                    break;
                 case UC2102:
-                    MainStream.Position = 0x3F7A26;
-                    IsDebugChk[0] = (byte)MainStream.ReadByte() == 0xEB;
-                    MainStream.Position = 0x0;
-                    IsDebugChk[1] = (byte)MainStream.ReadByte() == 0x75;
-                    MainStream.Position = 0x0;
-                    IsDebugChk[3] = (byte)MainStream.ReadByte() == 0x01;
-                    foreach (bool chk in IsDebugChk)
-                        if (chk == true) IsDebug = "Debug Mode Enabled";
+                    if (CheckDebugState(new int[] { 0x3F7A25, 0x3F7A26, 0x3F7A4A }, new byte[] { 0x01, 0x75, 0x01 }) == true)
+                        AddString = "Debug";
 
-                    GameInfoLabel.Text = $"Uncharted 2 1.02 | {IsDebug}";
+                    GameString = "Uncharted 2 1.02";
                     break;
                 case UC3100:
-                    MainStream.Position = 0x168EB7;
-                    IsDebugChk[0] = (byte)MainStream.ReadByte() == 0xEB;
-                    MainStream.Position--;
-                    IsDebugChk[1] = (byte)MainStream.ReadByte() == 0x75;
-                    MainStream.Position = 0x168EDB;
-                    IsDebugChk[2] = (byte)MainStream.ReadByte() == 0x01;
-                    MainStream.Position = 0x0;
-                    IsDebugChk[2] = (byte)MainStream.ReadByte() == 0x01;
-                    foreach (bool chk in IsDebugChk)
-                        if (chk == true) IsDebug = "Debug Mode Enabled";
+                    if (CheckDebugState(new int[] { 0x168EB6, 0x168EB7, 0x168EDB }, new byte[] { 0x01, 0x75, 0x01 }) == true)
+                        AddString = "Debug";
 
-                    GameInfoLabel.Text = $"Uncharted 3 1.00 | {IsDebug}";
+                    GameString = "Uncharted 3 1.00";
                     break;
                 case UC3102:
-                    Inf("Uncharted 3 1.00 Default");
+                    if (CheckDebugState(new int[] { 0x578226, 0x578227, 0x57824B }, new byte[] { 0x01, 0x75, 0x01 }) == true)
+                        AddString = "Debug";
+
+                    GameString = "Uncharted 3 1.02";
                     break;
                 case UC4100:
-                    Inf("Uncharted 4: A Thief's End 1.00");
+                    GameString = "Uncharted 4: A Thief's End 1.00";
                     break;
                 case UC413X:
-                    Inf("Uncharted 4: A Thief's End 1.32/1.33");
+                    GameString = "Uncharted 4: A Thief's End 1.32/1.33";
                     break;
                 case UC4133MP:
-                    Inf("Uncharted 4: A Thief's End 1.33 Multiplayer");
+                    GameString = "Uncharted 4: A Thief's End 1.33 Multiplayer";
                     break;
                 case TLL100:
-                    Inf("Uncharted: The Lost Legacy 1.00");
+                    GameString = "Uncharted: The Lost Legacy 1.00";
                     break;
                 case TLL10X:
-                    Inf("Uncharted: The Lost Legacy 1.08/1.09");
+                    GameString = "Uncharted: The Lost Legacy 1.08/1.09";
                     break;
             }
-
-            return NewString;
+            return $"{GameString} | {AddString}";
         }
         private void BrowseButton_Click(object sender, EventArgs e) {
             if (e == null) {
@@ -665,13 +683,13 @@ namespace Dobby {
             }
             FileDialog f = new OpenFileDialog {
                 Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
-                Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned (The First 4 Bytes Will Be .elf If It Is)"
+                Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned / Decrypted (The First 4 Bytes Will Be .elf If It Is)"
             };
             if (f.ShowDialog() == DialogResult.OK) {
                 ExecutablePathBox.Text = f.FileName;
                 MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite);
                 MainStream.Position = 0x60; MainStream.Read(chk, 0, 4);
-                UpdateGameInfoLabel(BitConverter.ToInt32(chk, 0));
+                GameInfoLabel.Text = UpdateGameInfoLabel(BitConverter.ToInt32(chk, 0));
             }
         }
 

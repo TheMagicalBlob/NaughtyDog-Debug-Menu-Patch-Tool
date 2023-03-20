@@ -559,9 +559,8 @@ namespace Dobby {
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
 
         public void BackBtn_Click(object sender, EventArgs e) { // Making This Universal Is Too Much Trouble, Give Each Page Their Own
-            Form f = ActiveForm;
+            Form f = ActiveForm; //!
             LastPos = f.Location;
-            Dev.DebugOutStr($"Loading: {LastForm.Name}");
             MainForm.Show();
             Dobby.Page = MainForm.Name;
             ActiveForm.Location = LastPos;
