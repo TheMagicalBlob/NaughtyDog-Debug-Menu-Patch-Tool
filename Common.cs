@@ -102,7 +102,7 @@ namespace Dobby {
            "* 2.19.49.107 | Debug Output Improvements; Debug Window Resizing Support",
            "* 2.19.49.108 | Removed Test Code Again...",
            "* 2.19.50.109 | GameInfoLabel Base Implementation, Check For Signed Executables",
-           "* 2.19.52.111 | EbootPatchHelpPage Progress, Creation Of Local Function To Reduce Bloat When Checking If An Executable Is Debug Enabled Or Not, Debug Output And Other Misc Tweaks"
+           "* 2.19.52.112 | EbootPatchHelpPage Progress, Creation Of Local Function To Reduce Bloat When Checking If An Executable Is Debug Enabled Or Not, Debug Output And Other Misc Tweaks"
 
             // TODO:
             // - Fix Messy Back Button Implementation
@@ -136,7 +136,7 @@ namespace Dobby {
 
         public static Font MainFont = new Font("Franklin Gothic Medium", 6.5F, System.Drawing.FontStyle.Bold);
         public static void SetPageInfo(Form f) {
-            f.Location = LastPos; Page = "";
+            f.Location = LastPos; Page = f.Name;
             YellowInformationLabel = f.Controls.Find("Info", true)[0];
         }
 
