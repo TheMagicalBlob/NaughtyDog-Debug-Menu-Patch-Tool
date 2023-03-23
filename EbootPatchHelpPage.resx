@@ -117,12 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="User_Is_An_IdiotBtn.Text" xml:space="preserve">
-    <value>- My .pkg Won't Install!
-====
-
-
-Dumbass.
+  <data name="Question3Btn.Text" xml:space="preserve">
+    <value>Dumbass.
 
  - The First Way Is With The Official PS4 SDK Tools,Get Em Urself
 
@@ -138,8 +134,7 @@ Dumbass.
 </value>
   </data>
   <data name="Question2Btn.Text" xml:space="preserve">
-    <value>- How Do I Add A Patched .bin To My Game?
-
+    <value>
  - The First Way Is With The Official PS4 SDK Tools,Get Em Urself
 
 - The Second Way Is With The Patch Builder App From ModdedWarfrare
@@ -166,11 +161,16 @@ Dumbass.
 - Disable Debug: Only Disables The Debug Mode, Does Not Undo Any Other Patches Applied</value>
   </data>
   <data name="Question1Btn.Text" xml:space="preserve">
-    <value>- How Do I Get My Game's eboot.bin?
-1 FTP: Go To mnt/sandbox/CUSAXXXXX/app0 And Find It There
+    <value>There Are A Few Methods, Here Are A Few:
 
-2 PKG: Extract The .bin With orbis-pub-chk.exe And Decrypt It With UnFSelf.exe
+FTP: Have Your PC And PS4 On The Same Network,
+And Either Send The FTP Payload To Your PS4,
+Or Enable FTP In GoldHEN's Settings.
+Then, Go To mnt/sandbox/CUSAXXXXX/app0,
+And Find It There.
 
-3 Dumper: Dump The App Via The Homebrew Store Or Payload.</value>
+App Dumper: Dump The App Via The Homebrew Store Or Payload.
+
+PKG: Extract The .bin With orbis-pub-chk.exe And Decrypt It With UnFSelf.exe</value>
   </data>
 </root>

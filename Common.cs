@@ -102,7 +102,10 @@ namespace Dobby {
            "* 2.19.49.107 | Debug Output Improvements; Debug Window Resizing Support",
            "* 2.19.49.108 | Removed Test Code Again...",
            "* 2.19.50.109 | GameInfoLabel Base Implementation, Check For Signed Executables",
-           "* 2.19.52.112 | EbootPatchHelpPage Progress, Creation Of Local Function To Reduce Bloat When Checking If An Executable Is Debug Enabled Or Not, Debug Output And Other Misc Tweaks"
+           "* 2.19.52.112 | EbootPatchHelpPage Progress, Creation Of Local Function To Reduce Bloat When Checking If An Executable Is Debug Enabled Or Not, Debug Output And Other Misc Tweaks",
+           "* 2.19.53.113 | Added A Couple Lines To Reset The EbootPatchHelpPage Question Array For Proper Functionality, Debug Output Tweak",
+           "* 2.19.54.115 | More Debug Output Alterations, Other Misc Changes (That Means I Forgot What I've Done...)",
+           "* 2.19.54.118 | Fixed An Issue With The Yellow Label Not Upating"
 
             // TODO:
             // - Fix Messy Back Button Implementation
@@ -121,14 +124,14 @@ namespace Dobby {
             MouseIsDown
         ;
 
-        public static string[] OutputStrings = new string[Console.WindowHeight - 8];
-        public static Control YellowInformationLabel, PopUpBox1, PopUpBox2;
+        public static Control YellowInformationLabel;
 
-        public static int game, OutputStringIndex;
+        public static int game;
 
         public static Point LastPos;
         public static Form LastForm;
         public static Form MainForm;
+        public static Form PopupBox;
 
         public static Form[] Pages;
 
@@ -140,42 +143,36 @@ namespace Dobby {
             YellowInformationLabel = f.Controls.Find("Info", true)[0];
         }
 
-        public static void MakeTextBox(int size, string Text) { //!
-            if (PopUpBox1 != null && PopUpBox1.FindForm() != null) {
-                PopUpBox1.FindForm().Controls.Remove(PopUpBox2);
-                PopUpBox1.FindForm().Controls.Remove(PopUpBox1);
+        public static void MakeTextBox(string Text) { //!
+            if (PopupBox != null) {
+                PopupBox.Close();
                 return;
             }
-            GroupBox GBOX = new GroupBox();
-            Label TXT = new Label();
-            GBOX.BackColor = Color.Black;
-            TXT.ForeColor = GBOX.ForeColor = Color.White;
-            TXT.BackColor = Color.Black;
-            ActiveForm.Controls.Add(GBOX);
-            GBOX.Controls.Add(TXT);
-            TXT.Font = MainFont;
-            TXT.TextAlign = ContentAlignment.MiddleCenter;
-            switch (size) {
-                case 0:
-                    GBOX.Location = new Point((int)(ActiveForm.Size.Width / 10), (int)(ActiveForm.Size.Height / 4));
-                    GBOX.Size = new Size((int)(ActiveForm.Size.Width / 1.5), (int)(ActiveForm.Size.Height / 8));
-                    break;
-                case 1:
-                    GBOX.Location = new Point((int)(ActiveForm.Size.Width / 9.75), (int)(ActiveForm.Size.Height / 2));
-                    GBOX.Size = new Size((int)(ActiveForm.Size.Width / 1.25), (int)(ActiveForm.Size.Height / 4));
-                    break;
-                case 2:
-                    GBOX.Location = new Point(0, (ActiveForm.Size.Height / 4));
-                    GBOX.Size = new Size((int)(ActiveForm.Size.Width), (int)(ActiveForm.Size.Height / 3));
+
+            PopupBox = new Form();
+            Label Label = new Label();
+            Label.ForeColor = PopupBox.ForeColor = Color.White;
+            Label.BackColor = Color.Gray;
+            PopupBox.BackColor = Color.Gray;
+            PopupBox.Controls.Add(Label);
+            Label.Font = MainFont;
+            Label.TextAlign = ContentAlignment.MiddleCenter;
+            switch (ActiveForm.Name) { // Center Based On Active Form
+                default:
+                    Dev.DebugOutStr("Page Unknown, Default Location Used");
+                    PopupBox.Location = new Point(100, 300);
+                    return;
+                case "EbootPatchHelpPage":
+                    PopupBox.Location = new Point(100, 300);
                     break;
             }
-            TXT.Location = new Point(1, 7);
-            TXT.Size = new Size(GBOX.Size.Width, GBOX.Size.Height);
-            TXT.Text = $"{GBOX.Location.X}| {Text} |{(ActiveForm.Size.Width - GBOX.Width) - GBOX.Location.X}\nX: {GBOX.Size.Width} | Y: {GBOX.Size.Height}";
-            GBOX.BringToFront();
-            TXT.BringToFront();
-            PopUpBox1 = GBOX;
-            PopUpBox2 = TXT;
+            PopupBox.Size = new Size(200, 110);
+            Label.Location = new Point(1, 1);
+            Label.Size = new Size(PopupBox.Size.Width - 2 , PopupBox.Size.Height - 3);
+            Label.Text = Text;
+            PopupBox.Name = "PopupBox";
+            PopupBox.FormBorderStyle = FormBorderStyle.None;
+            PopupBox.Show();
         }
         public static void Inf(string s) => YellowInformationLabel.Text = s;
         public static string BlankSpace(string String) {
@@ -214,16 +211,17 @@ namespace Dobby {
             InfoHasImportantStr = false;
         }
         public static void PageInfo(Control.ControlCollection cunts) { // Might use it again so it stays
-            if (false) {
-                DebugOutStr("-------------------------------------------------------------------");
-                int id = 1;
-                foreach (Control C in cunts) {
-                    DebugOutStr($"Control #{id} - {C.Name} | Text = [{C.Text}]\nVisible = {C.Visible} | Enabled = {C.Enabled}\n");
-                    id++;
-                }
-                DebugOutStr($"Page: {Page}\n");
-                DebugOutStr("-------------------------------------------------------------------");
+            //if (Dev.REL)
+                return;
+            
+            DebugOutStr("-------------------------------------------------------------------");
+            int id = 1;
+            foreach (Control C in cunts) {
+                DebugOutStr($"Control #{id} - {C.Name} | Text = [{C.Text}]\nVisible = {C.Visible} | Enabled = {C.Enabled}\n");
+                id++;
             }
+            DebugOutStr($"Page: {Page}\n");
+            DebugOutStr("-------------------------------------------------------------------");
         }
 
 
@@ -247,10 +245,14 @@ namespace Dobby {
             public const bool REL = false
                                         ;
 
-            delegate void GameNotSelectedError();
-            static GameNotSelectedError Yellow = new GameNotSelectedError(FlashYellow);
-            static GameNotSelectedError White = new GameNotSelectedError(FlashWhite);
+            static int TimerTicks = 0, OutputStringIndex = 0;
+
+
+            delegate void LabelFlashDelegate();
+            static LabelFlashDelegate Yellow = new LabelFlashDelegate(FlashYellow);
+            static LabelFlashDelegate White = new LabelFlashDelegate(FlashWhite);
             public static Thread FlashThread = new Thread(new ThreadStart(FlashLabel));
+
             static void FlashLabel() {
                 while (!LabelShouldFlash) { Thread.Sleep(7); }
                 try {
@@ -287,13 +289,13 @@ namespace Dobby {
                     DebugOutStr("Killing Label Flash YL");
                 }
             }
-             
 
 
-            public static Thread DebuggerThread = new Thread(new ThreadStart(UpdateConsoleOutput));
-            public static void DebuggerInfo() => DebuggerThread.Start();
-            public delegate void h();
-            public static h I = new h(StartTimer);
+            public delegate void TimerDelegate();
+            public static TimerDelegate TimerThread = new TimerDelegate(StartTimer);
+            static System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+
+            private static void Timer_Tick(object sender, EventArgs e) => TimerTicks++;
             static void StartTimer() {
                 if (ActiveForm != null) ActiveForm.Location = new Point(10, 10);
                 if (!timer.Enabled) {
@@ -302,54 +304,74 @@ namespace Dobby {
                     timer.Start();
                 }
             }
-            private static void Timer_Tick(object sender, EventArgs e) => tim++;
 
-            static int tim = 0;
 
-            static System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-            public static void UpdateConsoleOutput() {
-                if (REL) return;
-                int i = 0;
+            public static Thread InputThread = new Thread(new ThreadStart(ReadInput));
+            public static void ReadCurrentKey() => InputThread.Start();
+            static void ReadInput() {
+                while (true) {
+                    switch (Console.ReadKey(true).Key) {
+                        case ConsoleKey.R:
+                            Console.Clear();
+                            break;
+                        case ConsoleKey.C:
+                            OutputStrings = new string[OutputStrings.Length];
+                            OutputStringIndex = 0;
+                            Console.Clear(); Thread.Sleep(42); Console.Clear(); // First Clear Doesn't Get It All
+                            break;
+                    }                        
+                }
+            }
+
+            public static string[] OutputStrings = new string[Console.WindowHeight - 13];
+
+
+            public static Thread DebuggerThread = new Thread(new ThreadStart(UpdateConsoleOutput));
+            public static void DebuggerInfo() => DebuggerThread.Start();
+            public static void UpdateConsoleOutput() { if (REL) return;
+                bool TimerThreadStarted = false;
                 int Interval = 0;
 
-Begin_Again:    
+Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIIIIIIGHT
                 Console.CursorVisible = false;
                 Point OriginalConsoleScale = new Point(Console.WindowHeight, Console.WindowWidth);
                 while (OriginalConsoleScale == new Point(Console.WindowHeight, Console.WindowWidth)) {
-                    int StartTime = tim;
+                    int StartTime = TimerTicks;
                     Form frm = ActiveForm;
-                    Console.CursorTop = 0; Console.WriteLine(BlankSpace($"Build: {Build} | ~{Interval}ms"));
-                    Console.CursorTop = 2; Console.WriteLine(BlankSpace($"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}"));
-                    Console.CursorTop = 4; Console.WriteLine(BlankSpace($"Page: {(ActiveForm == null ? "null" : (ActiveForm.Name == Page ? Page : ($"{Page} NAME DOESN'T MATCH ({ActiveForm.Name})")))}")); // Just In Case I Get Drunk And Try To Make A New Page, I Suppose...
-                    Console.CursorTop = 6; Console.WriteLine(BlankSpace($"MousePos: {MousePosition}"));
-                    Console.CursorTop = 8;
-                    foreach (string msg in OutputStrings) {
-                        Console.CursorTop = Console.CursorTop++; Console.Write(BlankSpace(msg));
-                    }
-                    Interval = tim - StartTime;
+                    Console.CursorTop = 0; Console.Write(BlankSpace($"Build: {Build} | ~{Interval}ms"));
+                    Console.CursorTop = 2; Console.Write(BlankSpace($"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}"));
+                    Console.CursorTop = 4; Console.Write(BlankSpace($"Page: {Page} | InfoHasImportantString: {InfoHasImportantStr}"));
+                    Console.CursorTop = 5; Console.Write(BlankSpace($"Form: {(ActiveForm != null ? ActiveForm.Name : "Console")}"));
+                    Console.CursorTop = 7; Console.Write(BlankSpace($"MousePos: {MousePosition}"));
+                    Console.CursorTop = 12; foreach (string msg in OutputStrings)
+                    Console.Write(BlankSpace(msg), Console.CursorTop = Console.CursorTop++);
 
-                    if (frm != null && i < 1) { frm.Invoke(I); i++; }
+                    Interval = TimerTicks - StartTime;
+
+                    if (frm != null && !TimerThreadStarted) { frm.Invoke(TimerThread); TimerThreadStarted = true; }
                 }
                 Console.Clear();
                 goto Begin_Again;
             }
+            public static void DebugOutStr(string s) { if (REL) return;
+                if (s.Contains("\n")) { // Line Breaks Fuck The Console Up lol
+                    s = s.Replace("\n", "");
+                    s += " (Use Seperate Calls For New Line!!!)";
+                }
 
-            public static void DebugOutStr(string s) {
-                if (REL) return;
-                if (OutputStringIndex == OutputStrings.Length - 1) {
-                    int ShiftIndex = 0;
-                    for (; ShiftIndex < OutputStrings.Length - 1; ShiftIndex++)
-                    OutputStrings[ShiftIndex] = OutputStrings[ShiftIndex + 1];
-                    OutputStrings[ShiftIndex] = s;
+                if (OutputStringIndex != OutputStrings.Length - 1) {
+                    for (;OutputStringIndex < OutputStrings.Length - 1; OutputStringIndex++) {
+                        if (OutputStrings[OutputStringIndex] == null) {
+                            OutputStrings[OutputStringIndex] = s;
+                            break;
+                        }
+                    }
                     return;
                 }
-                for (; OutputStringIndex < OutputStrings.Length - 1; ) {
-                    if (OutputStrings[OutputStringIndex] == null) {
-                        OutputStrings[OutputStringIndex] = s;
-                        OutputStringIndex++;
-                        break;
-                    }
-                }
+                int ShiftIndex = 0;
+                for (; ShiftIndex < OutputStrings.Length - 1; ShiftIndex++)
+                    OutputStrings[ShiftIndex] = OutputStrings[ShiftIndex + 1];
+                OutputStrings[ShiftIndex] = s;
             }
         }
     }

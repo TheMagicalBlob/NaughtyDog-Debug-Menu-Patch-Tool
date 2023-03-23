@@ -470,12 +470,16 @@ namespace Dobby {
         public void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
         public void ExitBtnMH(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void ExitBtnML(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 255, 255);
-        public int tst = 0;
+        public int TestInt = 0;
         public void MinimizeBtn_Click(object sender, EventArgs e) {
             if (Dev.REL) ActiveForm.WindowState = FormWindowState.Minimized;
             
             else { // For Tests
-                ActiveForm.WindowState = FormWindowState.Minimized;
+                {
+                    Dev.DebugOutStr($"Test String: {TestInt}");
+                    TestInt++;
+                }
+                //ActiveForm.WindowState = FormWindowState.Minimized;
             }
         }
         public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
@@ -489,6 +493,7 @@ namespace Dobby {
             ActiveForm.Location = LastPos;
             ClosingForm.Close();
             Dobby.Page = ActiveForm.Name;
+            SetPageInfo(MainForm);
         }
         public void BackBtnMH(object sender, EventArgs e) => HoverString(BackBtn, $"{(Dev.REL ? "" : LastForm.Name)}");
         public void BackBtnML(object sender, EventArgs e) => HoverLeave(BackBtn, 1);

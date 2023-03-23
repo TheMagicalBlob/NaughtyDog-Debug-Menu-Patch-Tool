@@ -14,7 +14,18 @@ namespace Dobby {
         public EbootPatchHelpPage() {
             InitializeComponent();
             SetPageInfo(this);
+            Question1Btn.Text = "- How Do I Get My Game's eboot.bin?";
+            Question2Btn.Text = "- How Do I Extract My Game's .pkg?";
+            Question3Btn.Text = "- How Do I Make A New .pkg?";
+            Question4Btn.Text = "- My .pkg Won't Install!";
         }
+        public string[] headers = new string[] {
+            "",
+            "                [Getting The Game's Executable]\n",
+            "     [Extracting Your Game's .pkg \\ Dumping It]\n",
+            "                [Building A New .pkg]\n",
+            "                [\"Fixing\" A Broken .pkg]\n"
+        };
 
         private Label WithSomeExceptionsLabel;
         public bool[] Questions = new bool[] { false, false, false, false };
@@ -22,13 +33,6 @@ namespace Dobby {
         public Label SeperatorLine1;
         public Label SeperatorLine2;
         public static int tst = 0;
-        public string[] headers = new string[] {
-            "",
-            "                [Getting The Game's Executable]\n",
-            "                [Adding The Patched eboot To Your Game]\n",
-            "                [I'm Stupid]\n",
-            "                [My Game Doesn't Boot!]\n"
-        };
 
         public void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EbootPatchHelpPage));
@@ -40,7 +44,7 @@ namespace Dobby {
             this.SeperatorLine3 = new System.Windows.Forms.Label();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.WithSomeExceptionsLabel = new System.Windows.Forms.Label();
-            this.User_Is_An_IdiotBtn = new System.Windows.Forms.Button();
+            this.Question3Btn = new System.Windows.Forms.Button();
             this.Question2Btn = new System.Windows.Forms.Button();
             this.Info = new System.Windows.Forms.Label();
             this.CreditsBtn = new System.Windows.Forms.Button();
@@ -112,7 +116,7 @@ namespace Dobby {
             this.MainBox.Controls.Add(this.MainLabel);
             this.MainBox.Controls.Add(this.SeperatorLine1);
             this.MainBox.Controls.Add(this.WithSomeExceptionsLabel);
-            this.MainBox.Controls.Add(this.User_Is_An_IdiotBtn);
+            this.MainBox.Controls.Add(this.Question3Btn);
             this.MainBox.Controls.Add(this.Question2Btn);
             this.MainBox.Controls.Add(this.Info);
             this.MainBox.Controls.Add(this.CreditsBtn);
@@ -137,7 +141,7 @@ namespace Dobby {
             this.Question4Btn.ForeColor = System.Drawing.SystemColors.Control;
             this.Question4Btn.Location = new System.Drawing.Point(1, 350);
             this.Question4Btn.Name = "Question4Btn";
-            this.Question4Btn.Size = new System.Drawing.Size(155, 21);
+            this.Question4Btn.Size = new System.Drawing.Size(154, 22);
             this.Question4Btn.TabIndex = 33;
             this.Question4Btn.Text = "- The First Way Is With The Official PS4 SDK Tools,Get Em Urself\r\n\r\n- The Second " +
     "Way Is With The Patch Builder App From ModdedWarfrare\r\n (Add A Link)";
@@ -176,19 +180,19 @@ namespace Dobby {
             this.WithSomeExceptionsLabel.MouseEnter += new System.EventHandler(this.WithSomeExceptionsLabelMH);
             this.WithSomeExceptionsLabel.MouseLeave += new System.EventHandler(this.WithSomeExceptionsLabelML);
             // 
-            // User_Is_An_IdiotBtn
+            // Question3Btn
             // 
-            this.User_Is_An_IdiotBtn.FlatAppearance.BorderSize = 0;
-            this.User_Is_An_IdiotBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.User_Is_An_IdiotBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
-            this.User_Is_An_IdiotBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.User_Is_An_IdiotBtn.Location = new System.Drawing.Point(1, 328);
-            this.User_Is_An_IdiotBtn.Name = "User_Is_An_IdiotBtn";
-            this.User_Is_An_IdiotBtn.Size = new System.Drawing.Size(154, 21);
-            this.User_Is_An_IdiotBtn.TabIndex = 32;
-            this.User_Is_An_IdiotBtn.Text = resources.GetString("User_Is_An_IdiotBtn.Text");
-            this.User_Is_An_IdiotBtn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.User_Is_An_IdiotBtn.Click += new System.EventHandler(this.User_Is_An_IdiotBtn_Click);
+            this.Question3Btn.FlatAppearance.BorderSize = 0;
+            this.Question3Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Question3Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
+            this.Question3Btn.ForeColor = System.Drawing.SystemColors.Control;
+            this.Question3Btn.Location = new System.Drawing.Point(1, 328);
+            this.Question3Btn.Name = "Question3Btn";
+            this.Question3Btn.Size = new System.Drawing.Size(189, 22);
+            this.Question3Btn.TabIndex = 32;
+            this.Question3Btn.Text = resources.GetString("Question3Btn.Text");
+            this.Question3Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.Question3Btn.Click += new System.EventHandler(this.Question3Btn_Click);
             // 
             // Question2Btn
             // 
@@ -198,7 +202,7 @@ namespace Dobby {
             this.Question2Btn.ForeColor = System.Drawing.SystemColors.Control;
             this.Question2Btn.Location = new System.Drawing.Point(1, 307);
             this.Question2Btn.Name = "Question2Btn";
-            this.Question2Btn.Size = new System.Drawing.Size(275, 22);
+            this.Question2Btn.Size = new System.Drawing.Size(227, 22);
             this.Question2Btn.TabIndex = 29;
             this.Question2Btn.Text = resources.GetString("Question2Btn.Text");
             this.Question2Btn.Click += new System.EventHandler(this.Question2Btn_Click);
@@ -261,7 +265,6 @@ namespace Dobby {
             this.Question0Btn.Size = new System.Drawing.Size(316, 244);
             this.Question0Btn.TabIndex = 34;
             this.Question0Btn.Text = resources.GetString("Question0Btn.Text");
-            this.Question0Btn.Click += new System.EventHandler(this.GeneralLabel_Click);
             // 
             // SeperatorLine2
             // 
@@ -353,7 +356,7 @@ skip: ActiveForm.Location = LastPos;
         public Button BackBtn;
         private Button Question1Btn;
         private Button Question2Btn;
-        private Button User_Is_An_IdiotBtn; // Question3Btn
+        private Button Question3Btn; // User Is An Idiot
         private Button Question4Btn;
         private Label Question0Btn;
         public Button ExitBtn;
@@ -362,38 +365,21 @@ skip: ActiveForm.Location = LastPos;
         void LoadQuestions(int Index) {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EbootPatchHelpPage));
             Question0Btn.Text = headers[Questions[Index - 1] ? 0 : Index] + resources.GetString($"Question{(Questions[Index - 1] ? 0 : Index)}Btn.Text");
+
+            for (int i = 0; i < Questions.Length - 1; i++) // Reset The Other Buttons
+                Questions[i] = i == Index - 1 ? Questions[i] : false;
             Questions[Index-1] = !Questions[Index-1];
             WithSomeExceptionsLabel.Visible = !Questions[Index - 1];
         }
         private void Question1Btn_Click(object sender, EventArgs e) => LoadQuestions(1);
         private void Question2Btn_Click(object sender, EventArgs e) => LoadQuestions(2);
-        private void User_Is_An_IdiotBtn_Click(object sender, EventArgs e) => LoadQuestions(3);
+        private void Question3Btn_Click(object sender, EventArgs e) => LoadQuestions(3);
         private void Question4Btn_Click(object sender, EventArgs e) => LoadQuestions(4);
 
-        private void WithSomeExceptionsLabel_Click(object sender, EventArgs e) => MakeTextBox(1, "*Some Misc. Patches Will Be Applied To Uncharted 4/Lost Legacy Multiplayer Eboots To Make The Game Playable");
+        private void WithSomeExceptionsLabel_Click(object sender, EventArgs e) => MakeTextBox("Some Misc. Patches Will Be Applied To Uncharted 4/Lost Legacy Multiplayer Eboots To Make The Game Playable");
 
         private void WithSomeExceptionsLabelMH(object sender, EventArgs e) => WithSomeExceptionsLabel.ForeColor = Color.Aqua;
         private void WithSomeExceptionsLabelML(object sender, EventArgs e) => WithSomeExceptionsLabel.ForeColor = Color.White;
 
-        private void GeneralLabel_Click(object sender, EventArgs e) {
-            this.Controls.Remove(PopUpBox1);
-            this.Controls.Remove(PopUpBox2);
-            switch (tst) {
-                case 0:
-                    MakeTextBox(0, "Small");
-                    break;
-                case 1:
-                    MakeTextBox(1, "Medium");
-                    break;
-                case 2:
-                    MakeTextBox(2, "Large");
-                    break;
-                default:
-                    tst = 0;
-                    MakeTextBox(0, "Tiny");
-                    break;
-            }
-            tst++;
-        }
     }
 }

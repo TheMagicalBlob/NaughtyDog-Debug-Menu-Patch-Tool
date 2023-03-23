@@ -16,16 +16,17 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             InitializeComponent();
             if (!Dev.REL) {
                 PageInfo(Controls);
-                Console.WindowHeight = 36;
-                Console.WindowWidth = 130;
+                try { Console.WindowWidth = 75; Console.BufferWidth = 75; }
+                catch (Exception) {} // These Caused A Crash I Couldn't Recreate, So I Put Them In A Try/Catch
+                Dev.DebuggerInfo();
+                Dev.ReadCurrentKey();
             }
             else DebugLabel.Visible = false;
 
             Info.Text = "";
             Page = "Dobby";
             YellowInformationLabel = Info;
-            Common.Pages = new Form[] { this };
-            Dev.DebuggerInfo();
+            Common.Pages = new Form[] { this };//! no longer used
         }
 
         public static TcpClient me;
@@ -35,16 +36,13 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
         public static Point MouseDif;
         public static Point MousePos;
         public void PS4DebugPageBtn_Click(object sender, EventArgs e) {
-            //EbootPatchPageBtn_Click(sender, e);
-            //return; //!
-
             LastForm = MainForm = ActiveForm;
             LastPos = LastForm.Location;
             PS4DebugPage NewPage = new PS4DebugPage();
             NewPage.Show();
             LastForm.Hide();
         }
-        public void PS4DebugPageBtnMH(object sender, EventArgs e) => HoverStringAlt(Info, PS4DebugPageBtn, "Use A Lan Or Wifi Connection To Enable The Debug Mode", 9F);
+        public void PS4DebugPageBtnMH(object sender, EventArgs e) => HoverString(PS4DebugPageBtn, "Use A Lan Or Wifi Connection To Enable The Debug Mode");
         public void PS4DebugPageBtnML(object sender, EventArgs e) => HoverLeave(PS4DebugPageBtn, 1);
 
         public void EbootPatchPageBtn_Click(object sender, EventArgs e) {

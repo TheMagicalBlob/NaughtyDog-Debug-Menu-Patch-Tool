@@ -313,21 +313,16 @@ namespace Dobby {
         public void MinimizeBtn_Click(object sender, EventArgs e) => ActiveForm.WindowState = FormWindowState.Minimized;
         public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
-        void BackBtn_Click(object sender, EventArgs e) {//!!
-            Form f = ActiveForm;
-            LastPos = f.Location;
-            Dev.DebugOutStr($"Loading: {LastForm.Name}");
-            if (LastForm.Name == ActiveForm.Name) {
-                Dev.DebugOutStr("We're trying to boot the same form again. Showing Main Form Instead");
-                MainForm.Show();
-                Dobby.Page = MainForm.Name;
-                goto skip;
-            }
-            LastForm.Show();
-skip: ActiveForm.Location = LastPos;
-            f.Close();
+        void BackBtn_Click(object sender, EventArgs e) {
+            LabelShouldFlash = false;
+            Form ClosingForm = ActiveForm;
+            LastPos = ClosingForm.Location;
+            MainForm.Show();
+            ActiveForm.Location = LastPos;
+            ClosingForm.Close();
             Dobby.Page = ActiveForm.Name;
-            if (!Dev.REL) PageInfo(ActiveForm.Controls);
+            SetPageInfo(MainForm);
+            HoverLeave(BackBtn, 1);
         }
         public void BackBtnMH(object sender, EventArgs e) => HoverString(BackBtn, $"{(Dev.REL ? "" : LastForm.Name)}");
         public void BackBtnML(object sender, EventArgs e) => HoverLeave(BackBtn, 1);

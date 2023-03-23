@@ -33,7 +33,7 @@ namespace Dobby
         ///
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
-            this.MainBox = new System.Windows.Forms.GroupBox();
+            this.PopupBox = new System.Windows.Forms.GroupBox();
             this.DebugLabel = new System.Windows.Forms.Label();
             this.ExitBtn = new System.Windows.Forms.Button();
             this.MinimizeBtn = new System.Windows.Forms.Button();
@@ -63,11 +63,11 @@ namespace Dobby
             // 
             // MainBox
             // 
-            this.MainBox.Location = new System.Drawing.Point(0, 0);
-            this.MainBox.Name = "MainBox";
-            this.MainBox.Size = new System.Drawing.Size(200, 100);
-            this.MainBox.TabIndex = 0;
-            this.MainBox.TabStop = false;
+            this.PopupBox.Location = new System.Drawing.Point(0, 0);
+            this.PopupBox.Name = "MainBox";
+            this.PopupBox.Size = new System.Drawing.Size(200, 100);
+            this.PopupBox.TabIndex = 0;
+            this.PopupBox.TabStop = false;
             // 
             // DebugLabel
             // 
@@ -284,14 +284,13 @@ namespace Dobby
         public void MouseDownFunc(object sender, MouseEventArgs e) => Common.MouseDownFunc(sender, e);
 
         void InfoHelpBtn_Click(object sender, EventArgs e) {
-            if (MainForm == null && ActiveForm.Name == "Dobby")
+            if (ActiveForm.Name == "Dobby")
                 MainForm = ActiveForm;
             LastForm = ActiveForm;
             LastPos = LastForm.Location;
             InfoHelpPage NewPage = new InfoHelpPage();
             NewPage.Show();
             LastForm.Hide();
-            if (!Dev.REL) PageInfo(ActiveForm.Controls);
         }
         public void InfoHelpBtnMH(object sender, EventArgs e) => HoverString(InfoHelpBtn, "Additional Information On Verious Pages");
         public void InfoHelpBtnML(object sender, EventArgs e) => HoverLeave(InfoHelpBtn, 1);
@@ -350,7 +349,7 @@ namespace Dobby
         public static Button RestoredDebugBtn;
         public static Button PS4DebugHelpBtn;
         public Label MainLabel;
-        public GroupBox MainBox;
+        public GroupBox PopupBox;
         public Button PS4DebugPageBtn;
         public Button EbootPatchPageBtn;
         public Button MiscPatchesBtn;

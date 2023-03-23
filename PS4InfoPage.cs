@@ -222,7 +222,6 @@ namespace Dobby {
         void BackBtn_Click(object sender, EventArgs e) {//!!
             Form f = ActiveForm;
             LastPos = f.Location;
-            Dev.DebugOutStr($"Loading: {LastForm.Name}...");
             if (LastForm.Name == ActiveForm.Name) {
                 Dev.DebugOutStr("We're trying to boot the same form again. Showing Main Form Instead");
                 MainForm.Show();

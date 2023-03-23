@@ -272,20 +272,15 @@ namespace Dobby {
         void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
         void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
 
-        void BackBtn_Click(object sender, EventArgs e) {//!!
-            Form f = ActiveForm;
-            LastPos = f.Location;
-            if (LastForm.Name == MainForm.Name) {
-                MainForm.Show();
-                Dobby.Page = MainForm.Name;
-                LastForm = null;
-                goto skip;
-            }
-            LastForm.Show();
-skip: ActiveForm.Location = LastPos;
-            f.Close();
+        void BackBtn_Click(object sender, EventArgs e) {
+            Form ClosingForm = ActiveForm;
+            LastPos = ClosingForm.Location;
+            MainForm.Show();
+            ActiveForm.Location = LastPos;
+            ClosingForm.Close();
             Dobby.Page = ActiveForm.Name;
-            if (!Dev.REL) PageInfo(ActiveForm.Controls);
+            SetPageInfo(MainForm);
+            HoverLeave(BackBtn, 1);
         }
         public void BackBtnMH(object sender, EventArgs e) => HoverString(BackBtn, $"{(Dev.REL ? "" : LastForm.Name)}");
         public void BackBtnML(object sender, EventArgs e) => HoverLeave(BackBtn, 1);

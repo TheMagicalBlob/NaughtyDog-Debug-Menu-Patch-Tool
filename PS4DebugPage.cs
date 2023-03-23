@@ -558,16 +558,15 @@ namespace Dobby {
         public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
 
-        public void BackBtn_Click(object sender, EventArgs e) { // Making This Universal Is Too Much Trouble, Give Each Page Their Own
-            Form f = ActiveForm; //!
-            LastPos = f.Location;
+        public void BackBtn_Click(object sender, EventArgs e) {
+            Form ClosingForm = ActiveForm;
+            LastPos = ClosingForm.Location;
             MainForm.Show();
-            Dobby.Page = MainForm.Name;
             ActiveForm.Location = LastPos;
-            f.Close();
+            ClosingForm.Close();
             Dobby.Page = ActiveForm.Name;
             SetPageInfo(MainForm);
-            if (!Dev.REL) PageInfo(ActiveForm.Controls);
+            HoverLeave(BackBtn, 1);
         }
         public void BackBtnMH(object sender, EventArgs e) => HoverString(BackBtn, $"{(Dev.REL ? "" : LastForm.Name)}");
         public void BackBtnML(object sender, EventArgs e) => HoverLeave(BackBtn, 1);
@@ -925,7 +924,7 @@ namespace Dobby {
         public void DebugPayloadBtnML(object sender, EventArgs e) => HoverLeave(DebugPayloadBtn, 1);
 
         public void ManualConnectBtn_Click(object sender, EventArgs e) => Connect();
-        public void ManualConnectBtnMH(object sender, EventArgs e) => HoverStringAlt(Info, ManualConnectBtn, "Tool Also Auto-Connects When An Option's Selected", 9F);
+        public void ManualConnectBtnMH(object sender, EventArgs e) => HoverString(ManualConnectBtn, "Tool Also Auto-Connects When An Option's Selected");
         public void ManualConnectBtnML(object sender, EventArgs e) => HoverLeave(ManualConnectBtn, 1);
 
         public void T1RBtn_Click(object sender, EventArgs e) {
