@@ -183,7 +183,7 @@ namespace Dobby {
             this.ManualConnectBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ManualConnectBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.ManualConnectBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ManualConnectBtn.Location = new System.Drawing.Point(1, 293);
+            this.ManualConnectBtn.Location = new System.Drawing.Point(1, 291);
             this.ManualConnectBtn.Name = "ManualConnectBtn";
             this.ManualConnectBtn.Size = new System.Drawing.Size(164, 23);
             this.ManualConnectBtn.TabIndex = 6;

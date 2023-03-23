@@ -23,8 +23,6 @@ namespace Dobby {
         public Label label5;
         public Label label1;
         public Label label2;
-        const bool Release = Dev.REL; // Doing This Makes The Compiler Actually Skip Debug Code Instead Of Bloating The App For Some Reason. Not Sure Why Only Some Pages Need It...
-
         public void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InfoHelpPage));
             this.MainLabel = new System.Windows.Forms.Label();
@@ -370,9 +368,6 @@ namespace Dobby {
         void MiscPatchPageHelpBtnML(object sender, EventArgs e) => HoverLeave(MiscPatchPageHelpBtn, 1);
 
         private void EbootPatchPageHelpBtn_Click(object sender, EventArgs e) {
-            if (Release) {
-                return;
-            }
             LastForm = this;
             LastPos = LastForm.Location;
             EbootPatchHelpPage page = new EbootPatchHelpPage();

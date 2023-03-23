@@ -105,7 +105,9 @@ namespace Dobby {
            "* 2.19.52.112 | EbootPatchHelpPage Progress, Creation Of Local Function To Reduce Bloat When Checking If An Executable Is Debug Enabled Or Not, Debug Output And Other Misc Tweaks",
            "* 2.19.53.113 | Added A Couple Lines To Reset The EbootPatchHelpPage Question Array For Proper Functionality, Debug Output Tweak",
            "* 2.19.54.115 | More Debug Output Alterations, Other Misc Changes (That Means I Forgot What I've Done...)",
-           "* 2.19.54.118 | Fixed An Issue With The Yellow Label Not Upating"
+           "* 2.19.54.118 | Fixed An Issue With The Yellow Label Not Upating",
+           "* 2.19.55.120 | Re-enabled EbootPatchHelpPage In Release Mode, Temporarily Redirected MakeTextBox output to default windows text box until I finish centering the custom one, Further Debug Output Changes",
+           "* 2.19.55.121 | , Repositioned The ManualConnectButton, It Was Too Close To The Seperator Line Below"
 
             // TODO:
             // - Fix Messy Back Button Implementation
@@ -144,6 +146,12 @@ namespace Dobby {
         }
 
         public static void MakeTextBox(string Text) { //!
+
+            if (Dev.REL) {
+                MessageBox.Show(Text, "CSTM Text Box Not Centered Yet, Using WIN MessageBox For Now");
+                return;
+            }
+
             if (PopupBox != null) {
                 PopupBox.Close();
                 return;
@@ -323,7 +331,7 @@ namespace Dobby {
                 }
             }
 
-            public static string[] OutputStrings = new string[Console.WindowHeight - 13];
+            public static string[] OutputStrings;
 
 
             public static Thread DebuggerThread = new Thread(new ThreadStart(UpdateConsoleOutput));
@@ -333,17 +341,18 @@ namespace Dobby {
                 int Interval = 0;
 
 Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIIIIIIGHT
+                OutputStrings = new string[Console.WindowHeight - 11];
                 Console.CursorVisible = false;
                 Point OriginalConsoleScale = new Point(Console.WindowHeight, Console.WindowWidth);
                 while (OriginalConsoleScale == new Point(Console.WindowHeight, Console.WindowWidth)) {
                     int StartTime = TimerTicks;
                     Form frm = ActiveForm;
-                    Console.CursorTop = 0; Console.Write(BlankSpace($"Build: {Build} | ~{Interval}ms"));
+                    Console.CursorTop = 0; Console.Write(BlankSpace($"Build: {Build} | ~{Interval}ms | {OutputStrings.Length} ({OutputStringIndex})"));
                     Console.CursorTop = 2; Console.Write(BlankSpace($"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}"));
                     Console.CursorTop = 4; Console.Write(BlankSpace($"Page: {Page} | InfoHasImportantString: {InfoHasImportantStr}"));
                     Console.CursorTop = 5; Console.Write(BlankSpace($"Form: {(ActiveForm != null ? ActiveForm.Name : "Console")}"));
                     Console.CursorTop = 7; Console.Write(BlankSpace($"MousePos: {MousePosition}"));
-                    Console.CursorTop = 12; foreach (string msg in OutputStrings)
+                    Console.CursorTop = 10; foreach (string msg in OutputStrings)
                     Console.Write(BlankSpace(msg), Console.CursorTop = Console.CursorTop++);
 
                     Interval = TimerTicks - StartTime;
