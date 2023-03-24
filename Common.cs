@@ -107,7 +107,7 @@ namespace Dobby {
            "* 2.19.54.115 | More Debug Output Alterations, Other Misc Changes (That Means I Forgot What I've Done...)",
            "* 2.19.54.118 | Fixed An Issue With The Yellow Label Not Upating",
            "* 2.19.55.120 | Re-enabled EbootPatchHelpPage In Release Mode, Temporarily Redirected MakeTextBox output to default windows text box until I finish centering the custom one, Further Debug Output Changes",
-           "* 2.19.55.121 | , Repositioned The ManualConnectButton, It Was Too Close To The Seperator Line Below"
+           "* 2.19.55.123 | Replaced Border Background Images On Dobby And EbootPatchPage With A Group Box, For Obvious Reasons, Repositioned The ManualConnectButton, It Was Too Close To The Seperator Line Below"
 
             // TODO:
             // - Fix Messy Back Button Implementation
@@ -152,8 +152,9 @@ namespace Dobby {
                 return;
             }
 
-            if (PopupBox != null) {
+            if (PopupBox != null && PopupBox.Name != "") {
                 PopupBox.Close();
+                PopupBox.Name = "";
                 return;
             }
 
@@ -171,7 +172,7 @@ namespace Dobby {
                     PopupBox.Location = new Point(100, 300);
                     return;
                 case "EbootPatchHelpPage":
-                    PopupBox.Location = new Point(100, 300);
+                    PopupBox.Location = new Point(MainForm.Location.X + 50, MainForm.Location.Y + 300);
                     break;
             }
             PopupBox.Size = new Size(200, 110);

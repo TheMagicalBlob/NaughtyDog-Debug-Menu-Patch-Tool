@@ -107,6 +107,7 @@ namespace Dobby {
         private Button ExitBtn;
         private GroupBox MainBox;
         private Label MainLabel;
+        private GroupBox groupBox1;
         private Label label2;
 
         public void InitializeComponent() {
@@ -129,6 +130,7 @@ namespace Dobby {
             this.MainBox = new System.Windows.Forms.GroupBox();
             this.MainLabel = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.SuspendLayout();
             // 
             // GameInfoLabel
@@ -361,7 +363,7 @@ namespace Dobby {
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinimizeBtn.Location = new System.Drawing.Point(274, 1);
+            this.MinimizeBtn.Location = new System.Drawing.Point(273, 1);
             this.MinimizeBtn.Name = "MinimizeBtn";
             this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
             this.MinimizeBtn.TabIndex = 19;
@@ -380,7 +382,7 @@ namespace Dobby {
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ExitBtn.Location = new System.Drawing.Point(296, 1);
+            this.ExitBtn.Location = new System.Drawing.Point(295, 1);
             this.ExitBtn.Name = "ExitBtn";
             this.ExitBtn.Size = new System.Drawing.Size(23, 23);
             this.ExitBtn.TabIndex = 18;
@@ -420,18 +422,25 @@ namespace Dobby {
             // 
             this.label2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label2.Location = new System.Drawing.Point(3, 16);
+            this.label2.Location = new System.Drawing.Point(2, 16);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(316, 20);
             this.label2.TabIndex = 33;
             this.label2.Text = "____________________________________________";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Location = new System.Drawing.Point(0, -6);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(319, 339);
+            this.groupBox1.TabIndex = 34;
+            this.groupBox1.TabStop = false;
             // 
             // EbootPatchPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.BackgroundImage = global::Dobby.Properties.Resources.EbootPatchPageBorder_320x332;
             this.ClientSize = new System.Drawing.Size(320, 332);
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.MinimizeBtn);
@@ -451,6 +460,7 @@ namespace Dobby {
             this.Controls.Add(this.label1);
             this.Controls.Add(this.EnableDebugBtn);
             this.Controls.Add(this.label2);
+            this.Controls.Add(this.groupBox1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;

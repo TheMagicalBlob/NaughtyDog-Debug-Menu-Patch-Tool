@@ -45,6 +45,8 @@ namespace Dobby
             this.InfoHelpBtn = new System.Windows.Forms.Button();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.BorderBox = new System.Windows.Forms.GroupBox();
             this.SuspendLayout();
             // 
             // MainLabel
@@ -61,10 +63,10 @@ namespace Dobby
             this.MainLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             this.MainLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             // 
-            // MainBox
+            // PopupBox
             // 
             this.PopupBox.Location = new System.Drawing.Point(0, 0);
-            this.PopupBox.Name = "MainBox";
+            this.PopupBox.Name = "PopupBox";
             this.PopupBox.Size = new System.Drawing.Size(200, 100);
             this.PopupBox.TabIndex = 0;
             this.PopupBox.TabStop = false;
@@ -125,7 +127,7 @@ namespace Dobby
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(9, 178);
+            this.Info.Location = new System.Drawing.Point(9, 201);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
@@ -180,7 +182,7 @@ namespace Dobby
             this.MiscPatchesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MiscPatchesBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Strikeout))));
             this.MiscPatchesBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MiscPatchesBtn.Location = new System.Drawing.Point(1, 91);
+            this.MiscPatchesBtn.Location = new System.Drawing.Point(1, 113);
             this.MiscPatchesBtn.Name = "MiscPatchesBtn";
             this.MiscPatchesBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.MiscPatchesBtn.Size = new System.Drawing.Size(202, 23);
@@ -200,7 +202,7 @@ namespace Dobby
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 154);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 174);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
@@ -220,7 +222,7 @@ namespace Dobby
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 126);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 148);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.InfoHelpBtn.Size = new System.Drawing.Size(147, 23);
@@ -246,19 +248,43 @@ namespace Dobby
             // 
             this.label5.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label5.Location = new System.Drawing.Point(2, 104);
+            this.label5.Location = new System.Drawing.Point(2, 126);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(316, 16);
             this.label5.TabIndex = 32;
             this.label5.Text = "______________________________________________________________";
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.DimGray;
+            this.button1.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.button1.ForeColor = System.Drawing.SystemColors.Control;
+            this.button1.Location = new System.Drawing.Point(1, 88);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(82, 23);
+            this.button1.TabIndex = 33;
+            this.button1.Text = "Build PKG";
+            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button1.UseVisualStyleBackColor = false;
+            // 
+            // BorderBox
+            // 
+            this.BorderBox.Location = new System.Drawing.Point(0, -6);
+            this.BorderBox.Name = "BorderBox";
+            this.BorderBox.Size = new System.Drawing.Size(320, 231);
+            this.BorderBox.TabIndex = 34;
+            this.BorderBox.TabStop = false;
             // 
             // Dobby
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.BackgroundImage = global::Dobby.Properties.Resources.MainPageBorder_320x200;
-            this.ClientSize = new System.Drawing.Size(320, 200);
+            this.ClientSize = new System.Drawing.Size(320, 225);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.PS4DebugPageBtn);
             this.Controls.Add(this.EbootPatchPageBtn);
             this.Controls.Add(this.MiscPatchesBtn);
@@ -271,6 +297,7 @@ namespace Dobby
             this.Controls.Add(this.MainLabel);
             this.Controls.Add(this.SeperatorLine1);
             this.Controls.Add(this.label5);
+            this.Controls.Add(this.BorderBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Dobby";
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
@@ -361,6 +388,8 @@ namespace Dobby
         public Button MinimizeBtn;
         public Label SeperatorLine1;
         public Label label5;
+        public Button button1;
+        private GroupBox BorderBox;
     }
 }
 

@@ -319,7 +319,6 @@ namespace Dobby {
         void BackBtn_Click(object sender, EventArgs e) {//!!
             Form f = ActiveForm;
             LastPos = f.Location;
-            Dev.DebugOutStr($"Loading: {LastForm.Name}");
             if (LastForm.Name == ActiveForm.Name) {
                 Dev.DebugOutStr("We're trying to boot the same form again. Showing Main Form Instead");
                 MainForm.Show();
@@ -343,7 +342,6 @@ skip: ActiveForm.Location = LastPos;
             CreditsPage NewPage = new CreditsPage();
             NewPage.Show();
             LastForm.Hide();
-            if (!Dev.REL) PageInfo(ActiveForm.Controls);
         }
         public void CreditsBtnMH(object sender, EventArgs e) => HoverString(CreditsBtn, "View Credits For The Tool And Included Patches");
         public void CreditsBtnML(object sender, EventArgs e) => HoverLeave(CreditsBtn, 1);
