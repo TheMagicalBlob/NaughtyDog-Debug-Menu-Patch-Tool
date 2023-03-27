@@ -107,7 +107,8 @@ namespace Dobby {
            "* 2.19.54.115 | More Debug Output Alterations, Other Misc Changes (That Means I Forgot What I've Done...)",
            "* 2.19.54.118 | Fixed An Issue With The Yellow Label Not Upating",
            "* 2.19.55.120 | Re-enabled EbootPatchHelpPage In Release Mode, Temporarily Redirected MakeTextBox output to default windows text box until I finish centering the custom one, Further Debug Output Changes",
-           "* 2.19.55.123 | Replaced Border Background Images On Dobby And EbootPatchPage With A Group Box, For Obvious Reasons, Repositioned The ManualConnectButton, It Was Too Close To The Seperator Line Below"
+           "* 2.19.55.123 | Replaced Border Background Images On Dobby And EbootPatchPage With A Group Box, For Obvious Reasons, Repositioned The ManualConnectButton, It Was Too Close To The Seperator Line Below",
+           "* 2.20.56.127 | Overhauled The Page CHange Method; Now Remembers Pages Properly (Made And Forgot The Specifics Of Many Changes During The Same Time), Fixed an issue where the CreditsPage and InfoHelPage's back buttons were ignoring the last form and just loading the main one (my bad)"
 
             // TODO:
             // - Fix Messy Back Button Implementation
@@ -131,18 +132,87 @@ namespace Dobby {
         public static int game;
 
         public static Point LastPos;
-        public static Form LastForm;
+        public static int?[] Pages = new int?[5];
         public static Form MainForm;
         public static Form PopupBox;
-
-        public static Form[] Pages;
 
         public static bool LastDebugOutputWasInfoString = false, LabelShouldFlash = false, FlashThreadHasStarted = false;
 
         public static Font MainFont = new Font("Franklin Gothic Medium", 6.5F, System.Drawing.FontStyle.Bold);
         public static void SetPageInfo(Form f) {
-            f.Location = LastPos; Page = f.Name;
             YellowInformationLabel = f.Controls.Find("Info", true)[0];
+            f.Location = LastPos;
+        }
+
+        public static void ChangeForm(int Page, bool IsGoingBack) {
+            LastPos = ActiveForm.Location;
+            var ClosingForm = ActiveForm;
+            if (!IsGoingBack) {
+                for (int i = 0; i < 5; i++) {
+                    if (Pages[i] == null) {
+                        Pages[i] = Common.Page;
+                        break;
+                    }
+                }
+            }
+            Common.Page = Page;
+            switch (Page) {
+                default:
+                    Dev.DebugOutStr($"{Page} Is Not A Page!");
+                    break;
+                case 0:
+                    MainForm.Show();
+                    break;
+                case 1:
+                    PS4DebugPage PS4Debug = new PS4DebugPage();
+                    PS4Debug.Show();
+                    break;
+                case 2:
+                    EbootPatchPage EbootPatch = new EbootPatchPage();
+                    EbootPatch.Show();
+                    break;
+                case 3:
+                    // PKG Page
+                    break;
+                case 4:
+                    // Misc Patches Page
+                    break;
+                case 5:
+                    InfoHelpPage InfoHelp = new InfoHelpPage();
+                    InfoHelp.Show();
+                    break;
+                case 6:
+                    PS4DebugHelpPage PS4DebugHelp = new PS4DebugHelpPage();
+                    PS4DebugHelp.Show();
+                    break;
+                case 7:
+                    EbootPatchHelpPage EbootPatchHelp = new EbootPatchHelpPage();
+                    EbootPatchHelp.Show();
+                    break;
+                case 8:
+                    CreditsPage Credits = new CreditsPage();
+                    Credits.Show();
+                    break;
+            }
+            SetPageInfo(ActiveForm);
+            if (ClosingForm.Name != "Dobby") {
+                ClosingForm.Close();
+                return;
+            }
+            MainForm = ClosingForm;
+            ClosingForm.Hide();
+        }
+
+        public static void GoBackAPage() {
+
+            for (int i = 4; i >= 0; i--)
+
+            if (Pages[i] != null) {
+                ChangeForm((int)Pages[i], true);
+                Dev.DebugOutStr($"Pages[i]: {Pages[i]}");
+                Pages[i] = null;
+                break;
+            }
         }
 
         public static void MakeTextBox(string Text) { //!
@@ -249,6 +319,10 @@ namespace Dobby {
             }
         }
 
+        public class DummyClass {
+
+        }
+
         public class Dev {
 
             public const bool REL = false
@@ -350,9 +424,11 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                     Form frm = ActiveForm;
                     Console.CursorTop = 0; Console.Write(BlankSpace($"Build: {Build} | ~{Interval}ms | {OutputStrings.Length} ({OutputStringIndex})"));
                     Console.CursorTop = 2; Console.Write(BlankSpace($"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}"));
-                    Console.CursorTop = 4; Console.Write(BlankSpace($"Page: {Page} | InfoHasImportantString: {InfoHasImportantStr}"));
-                    Console.CursorTop = 5; Console.Write(BlankSpace($"Form: {(ActiveForm != null ? ActiveForm.Name : "Console")}"));
-                    Console.CursorTop = 7; Console.Write(BlankSpace($"MousePos: {MousePosition}"));
+                    Console.CursorTop = 4; Console.Write(BlankSpace($"Page STR: {Page} | InfoHasImportantString: {InfoHasImportantStr}"));
+                    Console.CursorTop = 5; Console.Write(BlankSpace($"Pages: {Pages[0]}, {Pages[1]}, {Pages[2]}, {Pages[3]}"));
+                    Console.CursorTop = 6; Console.Write(BlankSpace($"Form: {(ActiveForm != null ? ActiveForm.Name : "Console")}"));
+                  //Console.CursorTop = 8; Console.Write(BlankSpace($"MousePos: {MousePosition}"));
+                    Console.CursorTop = 8; Console.Write(BlankSpace($"FormPos: {(ActiveForm != null ? ActiveForm.Location : Point.Empty)}"));
                     Console.CursorTop = 10; foreach (string msg in OutputStrings)
                     Console.Write(BlankSpace(msg), Console.CursorTop = Console.CursorTop++);
 

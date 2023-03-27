@@ -13,7 +13,6 @@ namespace Dobby {
     public class EbootPatchHelpPage : Form {
         public EbootPatchHelpPage() {
             InitializeComponent();
-            SetPageInfo(this);
             Question1Btn.Text = "- How Do I Get My Game's eboot.bin?";
             Question2Btn.Text = "- How Do I Extract My Game's .pkg?";
             Question3Btn.Text = "- How Do I Make A New .pkg?";
@@ -317,32 +316,12 @@ namespace Dobby {
         public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
         void BackBtn_Click(object sender, EventArgs e) {//!!
-            Form f = ActiveForm;
-            LastPos = f.Location;
-            if (LastForm.Name == ActiveForm.Name) {
-                Dev.DebugOutStr("We're trying to boot the same form again. Showing Main Form Instead");
-                MainForm.Show();
-                Dobby.Page = MainForm.Name;
-                goto skip;
-            }
-            LastForm.Show();
-skip: ActiveForm.Location = LastPos;
-            f.Close();
-            Dobby.Page = ActiveForm.Name;
-            if (!Dev.REL) PageInfo(ActiveForm.Controls);
+            GoBackAPage();
         }
-        public void BackBtnMH(object sender, EventArgs e) => HoverString(BackBtn, $"{(Dev.REL ? "" : LastForm.Name)}");
+        public void BackBtnMH(object sender, EventArgs e) => HoverLeave(BackBtn, 0);
         public void BackBtnML(object sender, EventArgs e) => HoverLeave(BackBtn, 1);
 
-        public void CreditsBtn_Click(object sender, EventArgs e) {
-            if (MainForm == null && ActiveForm.Name == "Dobby")
-                MainForm = ActiveForm;
-            LastForm = ActiveForm;
-            LastPos = LastForm.Location;
-            CreditsPage NewPage = new CreditsPage();
-            NewPage.Show();
-            LastForm.Hide();
-        }
+        public void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
         public void CreditsBtnMH(object sender, EventArgs e) => HoverString(CreditsBtn, "View Credits For The Tool And Included Patches");
         public void CreditsBtnML(object sender, EventArgs e) => HoverLeave(CreditsBtn, 1);
 
@@ -375,7 +354,6 @@ skip: ActiveForm.Location = LastPos;
         private void Question4Btn_Click(object sender, EventArgs e) => LoadQuestions(4);
 
         private void WithSomeExceptionsLabel_Click(object sender, EventArgs e) => MakeTextBox("Some Misc. Patches Will Be Applied To Uncharted 4/Lost Legacy Multiplayer Eboots To Make The Game Playable");
-
         private void WithSomeExceptionsLabelMH(object sender, EventArgs e) => WithSomeExceptionsLabel.ForeColor = Color.Aqua;
         private void WithSomeExceptionsLabelML(object sender, EventArgs e) => WithSomeExceptionsLabel.ForeColor = Color.White;
 

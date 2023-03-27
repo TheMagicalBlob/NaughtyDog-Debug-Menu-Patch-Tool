@@ -16,7 +16,6 @@ namespace Dobby {
     public class InfoHelpPage : Form {
         public InfoHelpPage() {
             InitializeComponent();
-            SetPageInfo(this);
             BuildLabel.Text += Build;
         }
 
@@ -311,19 +310,11 @@ namespace Dobby {
         public void MinimizeBtn_Click(object sender, EventArgs e) => ActiveForm.WindowState = FormWindowState.Minimized;
         public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
-        void BackBtn_Click(object sender, EventArgs e) {
-            LabelShouldFlash = false;
-            Form ClosingForm = ActiveForm;
-            LastPos = ClosingForm.Location;
-            MainForm.Show();
-            ActiveForm.Location = LastPos;
-            ClosingForm.Close();
-            Dobby.Page = ActiveForm.Name;
-            SetPageInfo(MainForm);
-            HoverLeave(BackBtn, 1);
-        }
-        public void BackBtnMH(object sender, EventArgs e) => HoverString(BackBtn, $"{(Dev.REL ? "" : LastForm.Name)}");
+
+        void BackBtn_Click(object sender, EventArgs e) => GoBackAPage();
+        public void BackBtnMH(object sender, EventArgs e) => HoverLeave(BackBtn, 0);
         public void BackBtnML(object sender, EventArgs e) => HoverLeave(BackBtn, 1);
+
 
         public Button MinimizeBtn;
         public Label MainLabel;
@@ -339,14 +330,7 @@ namespace Dobby {
         public Button MiscPatchPageHelpBtn;
         public Label Info;
 
-        public void PS4DebugHelpBtn_Click(object sender, EventArgs e) {
-            LastForm = ActiveForm;
-            LastPos = LastForm.Location;
-            PS4InfoPage NewPage = new PS4InfoPage();
-            NewPage.Show();
-            LastForm.Hide();
-            if (!Dev.REL) PageInfo(ActiveForm.Controls);
-        }
+        public void PS4DebugHelpBtn_Click(object sender, EventArgs e) => ChangeForm(6, false);
         public void PS4DebugHelpBtnMH(object sender, EventArgs e) => HoverLeave(PS4DebugHelpBtn, 0);
         public void PS4DebugHelpBtnML(object sender, EventArgs e) => HoverLeave(PS4DebugHelpBtn, 1);
 
@@ -367,13 +351,7 @@ namespace Dobby {
 
         void MiscPatchPageHelpBtnML(object sender, EventArgs e) => HoverLeave(MiscPatchPageHelpBtn, 1);
 
-        private void EbootPatchPageHelpBtn_Click(object sender, EventArgs e) {
-            LastForm = this;
-            LastPos = LastForm.Location;
-            EbootPatchHelpPage page = new EbootPatchHelpPage();
-            page.Show();
-            LastForm.Hide();
-        }
+        private void EbootPatchPageHelpBtn_Click(object sender, EventArgs e) => ChangeForm(7, false);
     }
 }
 //fuck_yourself:

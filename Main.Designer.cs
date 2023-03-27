@@ -311,6 +311,9 @@ namespace Dobby
         public void MouseDownFunc(object sender, MouseEventArgs e) => Common.MouseDownFunc(sender, e);
 
         void InfoHelpBtn_Click(object sender, EventArgs e) {
+            ChangeForm(5, false); //!
+            
+            /*
             if (ActiveForm.Name == "Dobby")
                 MainForm = ActiveForm;
             LastForm = ActiveForm;
@@ -318,10 +321,14 @@ namespace Dobby
             InfoHelpPage NewPage = new InfoHelpPage();
             NewPage.Show();
             LastForm.Hide();
+            */
         }
         public void InfoHelpBtnMH(object sender, EventArgs e) => HoverString(InfoHelpBtn, "Additional Information On Verious Pages");
         public void InfoHelpBtnML(object sender, EventArgs e) => HoverLeave(InfoHelpBtn, 1);
         public void CreditsBtn_Click(object sender, EventArgs e) {
+            ChangeForm(8, false);
+            
+            /*
             if (MainForm == null && ActiveForm.Name == "Dobby")
                 MainForm = ActiveForm;
             LastForm = ActiveForm;
@@ -330,6 +337,7 @@ namespace Dobby
             NewPage.Show();
             LastForm.Hide();
             if (!Dev.REL) PageInfo(ActiveForm.Controls);
+            */
         }
         public void CreditsBtnMH(object sender, EventArgs e) => HoverString(CreditsBtn, "View Credits For The Tool And Included Patches");
         public void CreditsBtnML(object sender, EventArgs e) => HoverLeave(CreditsBtn, 1);

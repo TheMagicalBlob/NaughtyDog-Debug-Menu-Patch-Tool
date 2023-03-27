@@ -15,8 +15,6 @@ namespace Dobby {
 
         public EbootPatchPage() {
             InitializeComponent();
-            SetPageInfo(this);
-            if (!Dev.REL) PageInfo(Controls);
         }
 
         FileStream MainStream;
@@ -497,40 +495,17 @@ namespace Dobby {
 
         public void BackBtn_Click(object sender, EventArgs e) {
             LabelShouldFlash = false;
-            Form ClosingForm = ActiveForm;
-            LastPos = ClosingForm.Location;
-            MainForm.Show();
-            ActiveForm.Location = LastPos;
-            ClosingForm.Close();
-            Dobby.Page = ActiveForm.Name;
-            SetPageInfo(MainForm);
+
+            GoBackAPage();
         }
-        public void BackBtnMH(object sender, EventArgs e) => HoverString(BackBtn, $"{(Dev.REL ? "" : LastForm.Name)}");
+        public void BackBtnMH(object sender, EventArgs e) => HoverLeave(BackBtn, 0);
         public void BackBtnML(object sender, EventArgs e) => HoverLeave(BackBtn, 1);
 
-        public void InfoHelpBtn_Click(object sender, EventArgs e) {//!
-            if (MainForm == null && ActiveForm.Name == "Dobby")
-                MainForm = ActiveForm;
-            LastForm = ActiveForm;
-            LastPos = LastForm.Location;
-            InfoHelpPage NewPage = new InfoHelpPage();
-            NewPage.Show();
-            LastForm.Hide();
-            if (!Dev.REL) PageInfo(ActiveForm.Controls);
-        }
+        public void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
         public void InfoHelpBtnMH(object sender, EventArgs e) => HoverString(InfoHelpBtn, "Get Additional Information On Verious Pages");
         public void InfoHelpBtnML(object sender, EventArgs e) => HoverLeave(InfoHelpBtn, 1);
 
-        public void CreditsBtn_Click(object sender, EventArgs e) {
-            if (MainForm == null && ActiveForm.Name == "Dobby")
-                MainForm = ActiveForm;
-            LastForm = ActiveForm;
-            LastPos = LastForm.Location;
-            CreditsPage NewPage = new CreditsPage();
-            NewPage.Show();
-            LastForm.Hide();
-            if (!Dev.REL) PageInfo(ActiveForm.Controls);
-        }
+        public void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
         public void CreditsBtnMH(object sender, EventArgs e) => HoverString(CreditsBtn, "View Credits For The Tool And Included Patches");
         public void CreditsBtnML(object sender, EventArgs e) => HoverLeave(CreditsBtn, 1);
 

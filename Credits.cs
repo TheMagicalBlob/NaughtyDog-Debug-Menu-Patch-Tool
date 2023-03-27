@@ -8,7 +8,6 @@ namespace Dobby {
     internal class CreditsPage : Form {
         public CreditsPage() {
             InitializeComponent();
-            SetPageInfo(this);
         }
         public Button ExitBtn;
         public Button MinimizeBtn;
@@ -273,16 +272,10 @@ namespace Dobby {
         void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
 
         void BackBtn_Click(object sender, EventArgs e) {
-            Form ClosingForm = ActiveForm;
-            LastPos = ClosingForm.Location;
-            MainForm.Show();
-            ActiveForm.Location = LastPos;
-            ClosingForm.Close();
-            Dobby.Page = ActiveForm.Name;
-            SetPageInfo(MainForm);
+            GoBackAPage();
             HoverLeave(BackBtn, 1);
         }
-        public void BackBtnMH(object sender, EventArgs e) => HoverString(BackBtn, $"{(Dev.REL ? "" : LastForm.Name)}");
+        public void BackBtnMH(object sender, EventArgs e) => HoverLeave(BackBtn, 0);
         public void BackBtnML(object sender, EventArgs e) => HoverLeave(BackBtn, 1);
 
         public void BlobGithubBtn_Click(object sender, EventArgs e) => Process.Start("https://github.com/TheMagicalBlob");

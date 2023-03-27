@@ -14,7 +14,6 @@ namespace Dobby {
             Environment.Exit(0);
             if (Dev.REL) return;
             InitializeComponent();
-            Dobby.Page = "T2CustomOptionsDebug";
             if (!Dev.REL) PageInfo(Controls);
         }
 

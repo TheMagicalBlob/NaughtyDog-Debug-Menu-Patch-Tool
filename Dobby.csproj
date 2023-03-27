@@ -40,6 +40,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\libdebug.dll</HintPath>
     </Reference>
+    <Reference Include="LibOrbisPkg">
+      <HintPath>.\LibOrbisPkg.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

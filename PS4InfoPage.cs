@@ -8,13 +8,12 @@ using static Dobby.Common;
 using System.Drawing;
 
 namespace Dobby {
-    public class PS4InfoPage : Form {
-        public PS4InfoPage() {
+    public class PS4DebugHelpPage : Form {
+        public PS4DebugHelpPage() {
             InitializeComponent();
-            SetPageInfo(this);
         }
         public void InitializeComponent() {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PS4InfoPage));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PS4DebugHelpPage));
             this.ExitBtn = new System.Windows.Forms.Button();
             this.MinimizeBtn = new System.Windows.Forms.Button();
             this.MainLabel = new System.Windows.Forms.Label();
@@ -219,34 +218,11 @@ namespace Dobby {
         public void MinimizeBtn_Click(object sender, EventArgs e) => ActiveForm.WindowState = FormWindowState.Minimized;
         public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
-        void BackBtn_Click(object sender, EventArgs e) {//!!
-            Form f = ActiveForm;
-            LastPos = f.Location;
-            if (LastForm.Name == ActiveForm.Name) {
-                Dev.DebugOutStr("We're trying to boot the same form again. Showing Main Form Instead");
-                MainForm.Show();
-                Dobby.Page = MainForm.Name;
-                goto skip;
-            }
-            LastForm.Show();
-skip: ActiveForm.Location = LastPos;
-            f.Close();
-            Dobby.Page = ActiveForm.Name;
-            if (!Dev.REL) PageInfo(ActiveForm.Controls);
-        }
-        public void BackBtnMH(object sender, EventArgs e) => HoverString(BackBtn, $"{(Dev.REL ? "" : LastForm.Name)}");
+        void BackBtn_Click(object sender, EventArgs e) => GoBackAPage();
+        public void BackBtnMH(object sender, EventArgs e) => HoverLeave(BackBtn, 0);
         public void BackBtnML(object sender, EventArgs e) => HoverLeave(BackBtn, 1);
 
-        public void CreditsBtn_Click(object sender, EventArgs e) {
-            if (MainForm == null && ActiveForm.Name == "Dobby")
-                MainForm = ActiveForm;
-            LastForm = ActiveForm;
-            LastPos = LastForm.Location;
-            CreditsPage NewPage = new CreditsPage();
-            NewPage.Show();
-            LastForm.Hide();
-            if (!Dev.REL) PageInfo(ActiveForm.Controls);
-        }
+        public void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
         public void CreditsBtnMH(object sender, EventArgs e) => HoverString(CreditsBtn, "View Credits For The Tool And Included Patches");
         public void CreditsBtnML(object sender, EventArgs e) => HoverLeave(CreditsBtn, 1);
 
