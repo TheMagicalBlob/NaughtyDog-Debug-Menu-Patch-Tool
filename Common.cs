@@ -21,10 +21,7 @@ namespace Dobby {
     public class Common : Dobby {
 
 
-        /* Old Changelist
-         *
-         */
-
+        // MajorFeature.Feature.Minor.Patch
         public static string[] ChangeList = new string[] {
             "* ------------",
             "* |ChangeList|",
@@ -108,7 +105,9 @@ namespace Dobby {
            "* 2.19.54.118 | Fixed An Issue With The Yellow Label Not Upating",
            "* 2.19.55.120 | Re-enabled EbootPatchHelpPage In Release Mode, Temporarily Redirected MakeTextBox output to default windows text box until I finish centering the custom one, Further Debug Output Changes",
            "* 2.19.55.123 | Replaced Border Background Images On Dobby And EbootPatchPage With A Group Box, For Obvious Reasons, Repositioned The ManualConnectButton, It Was Too Close To The Seperator Line Below",
-           "* 2.20.56.127 | Overhauled The Page CHange Method; Now Remembers Pages Properly (Made And Forgot The Specifics Of Many Changes During The Same Time), Fixed an issue where the CreditsPage and InfoHelPage's back buttons were ignoring the last form and just loading the main one (my bad)"
+           "* 2.20.56.127 | Overhauled The Page Change Method; Now Remembers Pages Properly (Made And Forgot The Specifics Of Many Changes During The Same Time), Fixed an issue where the CreditsPage and InfoHelPage's back buttons were ignoring the last form and just loading the main one (my bad)",
+           "* 2.20.57.131 | Added The Ability To Right-Click The Links On The Credits Page To View And Copy Them, Removed Highlight From Build Label And Changed It's Info Text, Debug Output Changes",
+       "* 2.21-tmp.58.131 | Added Buttons For Still Uncreated PC-Specific Pages, Credits page text and spacing changes"
 
             // TODO:
             // - Fix Messy Back Button Implementation
@@ -122,12 +121,20 @@ namespace Dobby {
         public static string Build = ChangeList[ChangeList.Length - 1].Substring(2).Substring(0, ChangeList[ChangeList.Length - 1].IndexOf('|') - 3); // Trims The Last ChangeList String For Latest The Build Number
         public static string CurrentControl, tmp;
 
+        // PS4 / PC exe Patch Page Shared Variables
+
+        public static byte[]
+            chk = new byte[4],
+            E9Jump = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 }
+        ;
+
         public static byte
             MouseScrolled,
             MouseIsDown
         ;
 
         public static Control YellowInformationLabel;
+        public static FileStream MainStream;
 
         public static int game;
 
@@ -193,6 +200,14 @@ namespace Dobby {
                     CreditsPage Credits = new CreditsPage();
                     Credits.Show();
                     break;
+                case 9:
+                    PCDebugMenuPage PCDebugMenu = new PCDebugMenuPage();
+                    PCDebugMenu.Show();
+                    break;
+                case 10:
+                    PCQOLPatchesPage PCQOLPatches = new PCQOLPatchesPage();
+                    PCQOLPatches.Show();
+                    break;
             }
             SetPageInfo(ActiveForm);
             if (ClosingForm.Name != "Dobby") {
@@ -228,6 +243,8 @@ namespace Dobby {
                 return;
             }
 
+            Point ParentPos = ActiveForm.Location;
+
             PopupBox = new Form();
             Label Label = new Label();
             Label.ForeColor = PopupBox.ForeColor = Color.White;
@@ -252,6 +269,7 @@ namespace Dobby {
             PopupBox.Name = "PopupBox";
             PopupBox.FormBorderStyle = FormBorderStyle.None;
             PopupBox.Show();
+            PopupBox.Location = new Point(ParentPos.X + 75, ParentPos.Y + 150);
         }
         public static void Inf(string s) => YellowInformationLabel.Text = s;
         public static string BlankSpace(string String) {
@@ -407,6 +425,7 @@ namespace Dobby {
             }
 
             public static string[] OutputStrings;
+            public static int ShiftIndex = 0;
 
 
             public static Thread DebuggerThread = new Thread(new ThreadStart(UpdateConsoleOutput));
@@ -416,7 +435,7 @@ namespace Dobby {
                 int Interval = 0;
 
 Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIIIIIIGHT
-                OutputStrings = new string[Console.WindowHeight - 11];
+                OutputStrings = new string[Console.WindowHeight - 12];
                 Console.CursorVisible = false;
                 Point OriginalConsoleScale = new Point(Console.WindowHeight, Console.WindowWidth);
                 while (OriginalConsoleScale == new Point(Console.WindowHeight, Console.WindowWidth)) {
@@ -424,12 +443,12 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                     Form frm = ActiveForm;
                     Console.CursorTop = 0; Console.Write(BlankSpace($"Build: {Build} | ~{Interval}ms | {OutputStrings.Length} ({OutputStringIndex})"));
                     Console.CursorTop = 2; Console.Write(BlankSpace($"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}"));
-                    Console.CursorTop = 4; Console.Write(BlankSpace($"Page STR: {Page} | InfoHasImportantString: {InfoHasImportantStr}"));
-                    Console.CursorTop = 5; Console.Write(BlankSpace($"Pages: {Pages[0]}, {Pages[1]}, {Pages[2]}, {Pages[3]}"));
+                    Console.CursorTop = 4; Console.Write(BlankSpace($"Active Page ID: {Page} | InfoHasImportantString: {InfoHasImportantStr}"));
+                    Console.CursorTop = 5; Console.Write(BlankSpace($"Pages: {(Pages[0] == null ? "null" : $"{Pages[0]}")}, {(Pages[1] == null ? "null" : $"{Pages[1]}")}, {(Pages[2] == null ? "null" : $"{Pages[2]}")}, {(Pages[3] == null ? "null" : $"{Pages[3]}")}")); // gross
                     Console.CursorTop = 6; Console.Write(BlankSpace($"Form: {(ActiveForm != null ? ActiveForm.Name : "Console")}"));
-                  //Console.CursorTop = 8; Console.Write(BlankSpace($"MousePos: {MousePosition}"));
-                    Console.CursorTop = 8; Console.Write(BlankSpace($"FormPos: {(ActiveForm != null ? ActiveForm.Location : Point.Empty)}"));
-                    Console.CursorTop = 10; foreach (string msg in OutputStrings)
+                    Console.CursorTop = 8; Console.Write(BlankSpace($"MousePos: {MousePosition}"));
+                    Console.CursorTop = 9; Console.Write(BlankSpace($"FormPos: {(ActiveForm != null ? ActiveForm.Location : Point.Empty)}"));
+                    Console.CursorTop = 11; foreach (string msg in OutputStrings)
                     Console.Write(BlankSpace(msg), Console.CursorTop = Console.CursorTop++);
 
                     Interval = TimerTicks - StartTime;
@@ -440,13 +459,13 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                 goto Begin_Again;
             }
             public static void DebugOutStr(string s) { if (REL) return;
-                if (s.Contains("\n")) { // Line Breaks Fuck The Console Up lol
+                if (s.Contains("\n")) {
                     s = s.Replace("\n", "");
                     s += " (Use Seperate Calls For New Line!!!)";
                 }
 
                 if (OutputStringIndex != OutputStrings.Length - 1) {
-                    for (;OutputStringIndex < OutputStrings.Length - 1; OutputStringIndex++) {
+                    for (; OutputStringIndex < OutputStrings.Length - 1; OutputStringIndex++) {
                         if (OutputStrings[OutputStringIndex] == null) {
                             OutputStrings[OutputStringIndex] = s;
                             break;
@@ -454,8 +473,7 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                     }
                     return;
                 }
-                int ShiftIndex = 0;
-                for (; ShiftIndex < OutputStrings.Length - 1; ShiftIndex++)
+                for (ShiftIndex = 0; ShiftIndex < OutputStrings.Length - 1 ; ShiftIndex++)
                     OutputStrings[ShiftIndex] = OutputStrings[ShiftIndex + 1];
                 OutputStrings[ShiftIndex] = s;
             }

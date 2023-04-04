@@ -20,8 +20,8 @@ namespace Dobby {
         }
 
         public Label label5;
-        public Label label1;
-        public Label label2;
+        public Label SeperatorLabel2;
+        public Label SeperatorLabel1;
         public void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InfoHelpPage));
             this.MainLabel = new System.Windows.Forms.Label();
@@ -30,10 +30,10 @@ namespace Dobby {
             this.MinimizeBtn = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.MiscPatchPageHelpBtn = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.SeperatorLabel2 = new System.Windows.Forms.Label();
             this.BlobLabel = new System.Windows.Forms.Label();
             this.BuildLabel = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.SeperatorLabel1 = new System.Windows.Forms.Label();
             this.PS4DebugHelpBtn = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.EbootPatchPageHelpBtn = new System.Windows.Forms.Button();
@@ -64,10 +64,10 @@ namespace Dobby {
             this.MainBox.Controls.Add(this.MainLabel);
             this.MainBox.Controls.Add(this.label5);
             this.MainBox.Controls.Add(this.MiscPatchPageHelpBtn);
-            this.MainBox.Controls.Add(this.label1);
+            this.MainBox.Controls.Add(this.SeperatorLabel2);
             this.MainBox.Controls.Add(this.BlobLabel);
             this.MainBox.Controls.Add(this.BuildLabel);
-            this.MainBox.Controls.Add(this.label2);
+            this.MainBox.Controls.Add(this.SeperatorLabel1);
             this.MainBox.Controls.Add(this.PS4DebugHelpBtn);
             this.MainBox.Controls.Add(this.label4);
             this.MainBox.Controls.Add(this.EbootPatchPageHelpBtn);
@@ -148,15 +148,15 @@ namespace Dobby {
             this.MiscPatchPageHelpBtn.UseVisualStyleBackColor = false;
             this.MiscPatchPageHelpBtn.Click += new System.EventHandler(this.MiscPatchPageHelpBtn_Click);
             // 
-            // label1
+            // SeperatorLabel2
             // 
-            this.label1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label1.Location = new System.Drawing.Point(2, 296);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(316, 16);
-            this.label1.TabIndex = 37;
-            this.label1.Text = "______________________________________________________________";
+            this.SeperatorLabel2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLabel2.Location = new System.Drawing.Point(2, 296);
+            this.SeperatorLabel2.Name = "SeperatorLabel2";
+            this.SeperatorLabel2.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLabel2.TabIndex = 37;
+            this.SeperatorLabel2.Text = "______________________________________________________________";
             // 
             // BlobLabel
             // 
@@ -183,15 +183,15 @@ namespace Dobby {
             this.BuildLabel.MouseEnter += new System.EventHandler(this.BuildLabelMH);
             this.BuildLabel.MouseLeave += new System.EventHandler(this.BuildLabelML);
             // 
-            // label2
+            // SeperatorLabel1
             // 
-            this.label2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label2.Location = new System.Drawing.Point(2, 215);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(316, 16);
-            this.label2.TabIndex = 36;
-            this.label2.Text = "______________________________________________________________";
+            this.SeperatorLabel1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLabel1.Location = new System.Drawing.Point(2, 215);
+            this.SeperatorLabel1.Name = "SeperatorLabel1";
+            this.SeperatorLabel1.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLabel1.TabIndex = 36;
+            this.SeperatorLabel1.Text = "______________________________________________________________";
             // 
             // PS4DebugHelpBtn
             // 
@@ -306,7 +306,6 @@ namespace Dobby {
         public void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
         public void ExitBtnMH(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void ExitBtnML(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 255, 255);
-
         public void MinimizeBtn_Click(object sender, EventArgs e) => ActiveForm.WindowState = FormWindowState.Minimized;
         public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
@@ -340,15 +339,13 @@ namespace Dobby {
                 MessageBox.Show($"Changelist Dumped To {Directory.GetCurrentDirectory()}\\ChangeLog.txt");
             }
         }
-
-        void BuildLabelMH(object sender, EventArgs e) => HoverString(BuildLabel, "Display ChangeList");
-        void BuildLabelML(object sender, EventArgs e) => HoverLeave(BuildLabel, 1);
+        void BuildLabelMH(object sender, EventArgs e) { Inf("Right CLick To Dump ChangeList"); Dobby.InfoHasImportantStr = false; }
+        void BuildLabelML(object sender, EventArgs e) => Inf("");
 
         private void MiscPatchPageHelpBtn_Click(object sender, EventArgs e) {
 
         }
         void MiscPatchPageHelpBtnMH(object sender, EventArgs e) => HoverLeave(MiscPatchPageHelpBtn, 0);
-
         void MiscPatchPageHelpBtnML(object sender, EventArgs e) => HoverLeave(MiscPatchPageHelpBtn, 1);
 
         private void EbootPatchPageHelpBtn_Click(object sender, EventArgs e) => ChangeForm(7, false);

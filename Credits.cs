@@ -8,6 +8,9 @@ namespace Dobby {
     internal class CreditsPage : Form {
         public CreditsPage() {
             InitializeComponent();
+
+            foreach(Control control in Controls)
+                control.TabStop = false;
         }
         public Button ExitBtn;
         public Button MinimizeBtn;
@@ -22,24 +25,22 @@ namespace Dobby {
         public Label label2;
         public Label label1;
         public Label label3;
-        public Label Info;
 
         public void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreditsPage));
             this.MainLabel = new System.Windows.Forms.Label();
             this.BackBtn = new System.Windows.Forms.Button();
             this.MainBox = new System.Windows.Forms.GroupBox();
+            this.ExitBtn = new System.Windows.Forms.Button();
+            this.MinimizeBtn = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             this.IllusionBlogBtn = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.ContributorsLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.NarcissismLabel = new System.Windows.Forms.Label();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.ExitBtn = new System.Windows.Forms.Button();
-            this.MinimizeBtn = new System.Windows.Forms.Button();
             this.BlobGithubBtn = new System.Windows.Forms.Label();
-            this.Info = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.MainBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,7 +66,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 365);
+            this.BackBtn.Location = new System.Drawing.Point(1, 363);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(60, 22);
             this.BackBtn.TabIndex = 14;
@@ -89,88 +90,15 @@ namespace Dobby {
             this.MainBox.Controls.Add(this.NarcissismLabel);
             this.MainBox.Controls.Add(this.SeperatorLine1);
             this.MainBox.Controls.Add(this.BlobGithubBtn);
-            this.MainBox.Controls.Add(this.Info);
             this.MainBox.Controls.Add(this.BackBtn);
             this.MainBox.Location = new System.Drawing.Point(0, -6);
             this.MainBox.Name = "MainBox";
-            this.MainBox.Size = new System.Drawing.Size(320, 410);
+            this.MainBox.Size = new System.Drawing.Size(320, 398);
             this.MainBox.TabIndex = 5;
             this.MainBox.TabStop = false;
             this.MainBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MainBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             this.MainBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            // 
-            // IllusionBlogBtn
-            // 
-            this.IllusionBlogBtn.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.IllusionBlogBtn.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IllusionBlogBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.IllusionBlogBtn.Location = new System.Drawing.Point(2, 337);
-            this.IllusionBlogBtn.Name = "IllusionBlogBtn";
-            this.IllusionBlogBtn.Size = new System.Drawing.Size(100, 23);
-            this.IllusionBlogBtn.TabIndex = 32;
-            this.IllusionBlogBtn.Text = "illusion\'s Blog";
-            this.IllusionBlogBtn.Click += new System.EventHandler(this.IllusionBlogBtn_Click);
-            this.IllusionBlogBtn.MouseEnter += new System.EventHandler(this.IllusionBlogBtnMH);
-            this.IllusionBlogBtn.MouseLeave += new System.EventHandler(this.IllusionBlogBtnML);
-            // 
-            // label2
-            // 
-            this.label2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label2.Location = new System.Drawing.Point(2, 346);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(316, 16);
-            this.label2.TabIndex = 38;
-            this.label2.Text = "______________________________________________________________";
-            // 
-            // NarcissismLabel
-            // 
-            this.NarcissismLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.NarcissismLabel.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NarcissismLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.NarcissismLabel.Location = new System.Drawing.Point(1, 37);
-            this.NarcissismLabel.Name = "NarcissismLabel";
-            this.NarcissismLabel.Size = new System.Drawing.Size(318, 36);
-            this.NarcissismLabel.TabIndex = 20;
-            this.NarcissismLabel.Text = "App And Game Patches Developed By:\r\nTheMagicalBlob";
-            this.NarcissismLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.NarcissismLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.NarcissismLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            // 
-            // ContributorsLabel
-            // 
-            this.ContributorsLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ContributorsLabel.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ContributorsLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.ContributorsLabel.Location = new System.Drawing.Point(1, 80);
-            this.ContributorsLabel.Name = "ContributorsLabel";
-            this.ContributorsLabel.Size = new System.Drawing.Size(317, 229);
-            this.ContributorsLabel.TabIndex = 35;
-            this.ContributorsLabel.Text = resources.GetString("ContributorsLabel.Text");
-            this.ContributorsLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.ContributorsLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.ContributorsLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            // 
-            // label1
-            // 
-            this.label1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label1.Location = new System.Drawing.Point(2, 294);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(316, 16);
-            this.label1.TabIndex = 37;
-            this.label1.Text = "______________________________________________________________";
-            // 
-            // SeperatorLine1
-            // 
-            this.SeperatorLine1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 61);
-            this.SeperatorLine1.Name = "SeperatorLine1";
-            this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
-            this.SeperatorLine1.TabIndex = 36;
-            this.SeperatorLine1.Text = "______________________________________________________________";
+            this.MainBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             // 
             // ExitBtn
             // 
@@ -210,30 +138,6 @@ namespace Dobby {
             this.MinimizeBtn.MouseEnter += new System.EventHandler(this.MinimizeBtnMH);
             this.MinimizeBtn.MouseLeave += new System.EventHandler(this.MinimizeBtnML);
             // 
-            // BlobGithubBtn
-            // 
-            this.BlobGithubBtn.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.BlobGithubBtn.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BlobGithubBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BlobGithubBtn.Location = new System.Drawing.Point(1, 314);
-            this.BlobGithubBtn.Name = "BlobGithubBtn";
-            this.BlobGithubBtn.Size = new System.Drawing.Size(170, 23);
-            this.BlobGithubBtn.TabIndex = 31;
-            this.BlobGithubBtn.Text = "TheMagicalBlob\'s Github";
-            this.BlobGithubBtn.Click += new System.EventHandler(this.BlobGithubBtn_Click);
-            this.BlobGithubBtn.MouseEnter += new System.EventHandler(this.BlobGithubBtnMH);
-            this.BlobGithubBtn.MouseLeave += new System.EventHandler(this.BlobGithubBtnML);
-            // 
-            // Info
-            // 
-            this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(7, 386);
-            this.Info.Name = "Info";
-            this.Info.Size = new System.Drawing.Size(304, 17);
-            this.Info.TabIndex = 7;
-            this.Info.Text = "=====================================";
-            // 
             // label3
             // 
             this.label3.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
@@ -244,19 +148,105 @@ namespace Dobby {
             this.label3.TabIndex = 39;
             this.label3.Text = "______________________________________________________________";
             // 
+            // IllusionBlogBtn
+            // 
+            this.IllusionBlogBtn.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.IllusionBlogBtn.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IllusionBlogBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.IllusionBlogBtn.Location = new System.Drawing.Point(2, 329);
+            this.IllusionBlogBtn.Name = "IllusionBlogBtn";
+            this.IllusionBlogBtn.Size = new System.Drawing.Size(100, 23);
+            this.IllusionBlogBtn.TabIndex = 32;
+            this.IllusionBlogBtn.Text = "illusion\'s Blog";
+            this.IllusionBlogBtn.MouseClick += new System.Windows.Forms.MouseEventHandler(this.IllusionBlogBtn_RightClick);
+            this.IllusionBlogBtn.MouseEnter += new System.EventHandler(this.IllusionBlogBtnMH);
+            this.IllusionBlogBtn.MouseLeave += new System.EventHandler(this.IllusionBlogBtnML);
+            // 
+            // label2
+            // 
+            this.label2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.label2.Location = new System.Drawing.Point(2, 339);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(316, 16);
+            this.label2.TabIndex = 38;
+            this.label2.Text = "______________________________________________________________";
+            // 
+            // ContributorsLabel
+            // 
+            this.ContributorsLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ContributorsLabel.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ContributorsLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.ContributorsLabel.Location = new System.Drawing.Point(1, 80);
+            this.ContributorsLabel.Name = "ContributorsLabel";
+            this.ContributorsLabel.Size = new System.Drawing.Size(317, 216);
+            this.ContributorsLabel.TabIndex = 35;
+            this.ContributorsLabel.Text = resources.GetString("ContributorsLabel.Text");
+            this.ContributorsLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.ContributorsLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
+            this.ContributorsLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
+            // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.label1.Location = new System.Drawing.Point(2, 283);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(316, 16);
+            this.label1.TabIndex = 37;
+            this.label1.Text = "______________________________________________________________";
+            // 
+            // NarcissismLabel
+            // 
+            this.NarcissismLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.NarcissismLabel.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NarcissismLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.NarcissismLabel.Location = new System.Drawing.Point(1, 37);
+            this.NarcissismLabel.Name = "NarcissismLabel";
+            this.NarcissismLabel.Size = new System.Drawing.Size(318, 36);
+            this.NarcissismLabel.TabIndex = 20;
+            this.NarcissismLabel.Text = "App And Game Patches Developed By:\r\nTheMagicalBlob";
+            this.NarcissismLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.NarcissismLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
+            this.NarcissismLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
+            // 
+            // SeperatorLine1
+            // 
+            this.SeperatorLine1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 61);
+            this.SeperatorLine1.Name = "SeperatorLine1";
+            this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine1.TabIndex = 36;
+            this.SeperatorLine1.Text = "______________________________________________________________";
+            // 
+            // BlobGithubBtn
+            // 
+            this.BlobGithubBtn.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.BlobGithubBtn.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BlobGithubBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.BlobGithubBtn.Location = new System.Drawing.Point(1, 306);
+            this.BlobGithubBtn.Name = "BlobGithubBtn";
+            this.BlobGithubBtn.Size = new System.Drawing.Size(170, 23);
+            this.BlobGithubBtn.TabIndex = 31;
+            this.BlobGithubBtn.Text = "TheMagicalBlob\'s Github";
+            this.BlobGithubBtn.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BlobGithubBtn_RightClick);
+            this.BlobGithubBtn.MouseEnter += new System.EventHandler(this.BlobGithubBtnMH);
+            this.BlobGithubBtn.MouseLeave += new System.EventHandler(this.BlobGithubBtnML);
+            // 
             // CreditsPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 404);
+            this.ClientSize = new System.Drawing.Size(320, 391);
             this.Controls.Add(this.MainBox);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "CreditsPage";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.MainBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -277,12 +267,18 @@ namespace Dobby {
         }
         public void BackBtnMH(object sender, EventArgs e) => HoverLeave(BackBtn, 0);
         public void BackBtnML(object sender, EventArgs e) => HoverLeave(BackBtn, 1);
+        public void BlobGithubBtn_RightClick(object sender, MouseEventArgs e) {
+            if (e.Button == MouseButtons.Right) MessageBox.Show("https://github.com/TheMagicalBlob");
 
-        public void BlobGithubBtn_Click(object sender, EventArgs e) => Process.Start("https://github.com/TheMagicalBlob");
+            else Process.Start("https://github.com/TheMagicalBlob");
+        }
         public void BlobGithubBtnMH(object sender, EventArgs e) => BlobGithubBtn.ForeColor = Color.MediumBlue;
         public void BlobGithubBtnML(object sender, EventArgs e) => BlobGithubBtn.ForeColor = Color.White;
+        public void IllusionBlogBtn_RightClick(object sender, MouseEventArgs e) {
+            if (e.Button == MouseButtons.Right) MessageBox.Show("https://illusion0001.com/");
 
-        public void IllusionBlogBtn_Click(object sender, EventArgs e) => Process.Start("https://illusion0001.com/");
+            else Process.Start("https://illusion0001.com/");
+        }
         public void IllusionBlogBtnMH(object sender, EventArgs e) => IllusionBlogBtn.ForeColor = Color.MediumBlue;
         public void IllusionBlogBtnML(object sender, EventArgs e) => IllusionBlogBtn.ForeColor = Color.White;
     }

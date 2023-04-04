@@ -56,8 +56,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PCQOLPatchesPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PCDebugMenuPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="EbootPatchHelpPage.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="PS4InfoPage.cs">
       <SubType>Form</SubType>
@@ -110,16 +121,17 @@
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="PCDebugMenuPage.resx">
+      <DependentUpon>PCDebugMenuPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PCQOLPatchesPage.resx">
+      <DependentUpon>PCQOLPatchesPage.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="PS4DebugPage.resx">
       <DependentUpon>PS4DebugPage.cs</DependentUpon>
     </EmbeddedResource>
@@ -142,8 +154,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\blobwithgreybg.png" />
-    <Content Include="Resources\EbootPatchPageBorder_320x332.png" />
-    <Content Include="Resources\MainPageBorder_320x200.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

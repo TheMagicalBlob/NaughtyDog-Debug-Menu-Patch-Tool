@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -8,7 +9,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using static Dobby.Common;
 using Dobby.Properties;
-using System.Net;
 
 namespace Dobby {
     public class EbootPatchPage : Form {
@@ -16,8 +16,6 @@ namespace Dobby {
         public EbootPatchPage() {
             InitializeComponent();
         }
-
-        FileStream MainStream;
 
         public bool[] CDO = new bool[11]; // Custom Debug Options - 11th is For Eventually Keeping Track Of Whether The Options Were Left Default (true if changed)
 
@@ -291,7 +289,7 @@ namespace Dobby {
             this.CustomOptDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.CustomOptDebugBtn.FlatAppearance.BorderSize = 0;
             this.CustomOptDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CustomOptDebugBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.CustomOptDebugBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Strikeout))));
             this.CustomOptDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.CustomOptDebugBtn.Location = new System.Drawing.Point(1, 145);
             this.CustomOptDebugBtn.Name = "CustomOptDebugBtn";
@@ -541,7 +539,7 @@ namespace Dobby {
                 MainStream.WriteByte(data);
             }
         }
-        string UpdateGameInfoLabel(int game) { //!        
+        public string UpdateGameInfoLabel(int game) { //!        
             string NewString = string.Empty;
 
             var IsDebugChk = new bool[7];

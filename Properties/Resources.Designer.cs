@@ -61,26 +61,6 @@ namespace Dobby.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap EbootPatchPageBorder_320x332 {
-            get {
-                object obj = ResourceManager.GetObject("EbootPatchPageBorder_320x332", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap MainPageBorder_320x200 {
-            get {
-                object obj = ResourceManager.GetObject("MainPageBorder_320x200", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         public static byte[] PS4Debug1_1_15 {

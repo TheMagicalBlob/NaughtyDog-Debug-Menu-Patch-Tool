@@ -120,15 +120,14 @@
   <data name="ContributorsLabel.Text" xml:space="preserve">
     <value>Contributors:
 - illusion:
-&gt;Some Misc Help With UC4 Debug
-&gt;All Of The Weapon Menu Related Patches
-_____________ ADD THESE!!! _____________
+  Some Misc Help With UC4 Debug
 
 - ctn123:
-&gt;PS4Debug 1.1.15 Update
+  PS4Debug 1.1.15 Update
 
 - Golden
-&gt;Original PS4Debug Payload
+  Original PS4Debug Payload
+
 
 (U.I. Design Inspired By Naughty Dog's Debug Menus... Obviously)</value>
   </data>
