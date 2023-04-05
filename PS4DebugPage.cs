@@ -593,7 +593,7 @@ namespace Dobby {
                             exec = prc.pid;
                             processname = prc.name;
                             PS4DebugIsConnected = true;
-                            Inf($"Connected And Attached To {geo.GetProcessInfo(exec).titleid}");
+                            SetInfoString($"Connected And Attached To {geo.GetProcessInfo(exec).titleid}");
                             Dev.DebugOutStr($"{processname} | pid: {exec} | PS4DebugIsConnected == {PS4DebugIsConnected}");
                         }
                     }
@@ -605,7 +605,7 @@ namespace Dobby {
                     int tst = 420691337;
                     Dev.DebugOutStr($"{tabarnack.Message};{tabarnack.StackTrace}");
                 }
-                Inf($"Connection To {IPBOX_E.Text} Failed");
+                SetInfoString($"Connection To {IPBOX_E.Text} Failed");
                 return 1;
             }
         }
@@ -619,7 +619,7 @@ namespace Dobby {
                             exec = prc.pid;
                             processname = prc.name;
                             PS4DebugIsConnected = true;
-                            Inf($"Connected And Attached To {geo.GetProcessInfo(exec).titleid}");
+                            SetInfoString($"Connected And Attached To {geo.GetProcessInfo(exec).titleid}");
                             Dev.DebugOutStr($"{prc.name} | {exec} | PS4DebugIsConnected == {PS4DebugIsConnected}");
                         }
                     }
@@ -710,7 +710,7 @@ namespace Dobby {
                     if (attempts < 2) {
                         Connect(); Toggle(addr);
                     }
-                    else Inf("Connection Failed");
+                    else SetInfoString("Connection Failed");
                 }
             }
             catch (Exception tabarnack) {
@@ -889,7 +889,7 @@ namespace Dobby {
             Socket S = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             S.Connect(new IPEndPoint(IPAddress.Parse(IPBOX_E.Text), int.Parse(PortBox.Text)));
             S.Send(Properties.Resources.PS4Debug1_1_15);
-            Inf("Payload Injected Successfully");
+            SetInfoString("Payload Injected Successfully");
             S.Close();
             if (true)//Dev.REL) // Excessive Credits To Try Avoiding Beef
                 MessageBox.Show("PS4Debug Paylod Sent Without Issue\n\nPS4Debug Update 1.1.15 By ctn123\nPS4Debug Created By Golden", "Payload Injected Successfully, Here's Some Credits");

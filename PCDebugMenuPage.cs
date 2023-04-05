@@ -339,6 +339,58 @@ namespace Dobby {
         public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
 
+        public string UpdateGameInfoLabel(int game) { //!        
+            string NewString = string.Empty;
+
+            var IsDebugChk = new bool[7];
+            var GameString = "Unknown Game";
+            var AddString = "No Debug";
+
+            MainStream.Position = 0;
+            MainStream.Read(chk, 0, 4);
+            if (BitConverter.ToInt32(chk, 0) != 1179403647) {// Make Sure The File's Actually Even A .elf
+                GameString = "Executable Still Encrypted";
+                AddString = "Must Be Decrypted/Unsigned";
+                return $"{GameString} | {AddString}";
+            }
+
+            bool CheckDebugState(int[] offsets, byte[] Data) {
+                int i = 0; // Just Returns True If The Bytes Read At The Specified Address Match The Byte Given
+                foreach (int addr in offsets) {
+                    MainStream.Position = addr; Read:
+                    if ((byte)MainStream.ReadByte() == Data[i])
+                        return true;
+
+                    if (Data[i] == 0x75) {
+                        Data[i] = 0xEB;
+                        goto Read;
+                    }
+
+                    i++;
+                }
+                return false;
+            }
+
+            Common.game = game;
+            switch (game) {
+                default:
+                    MessageBox.Show($"Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported\n{game}");
+                    break;
+                case T1R100:
+                    CustomDebugBtn.Enabled = true;
+                    GameString = "The Last Of Us Remastered 1.00";
+                    break;
+                case UC3102:
+                    if (CheckDebugState(new int[] { 0x578226, 0x578227, 0x57824B }, new byte[] { 0x01, 0x75, 0x01 }) == true)
+                        AddString = "Debug";
+
+                    GameString = "Uncharted 3 1.02";
+                    break;
+            }
+            return $"{GameString} | {AddString}";
+        }
+
+
         private void BrowseButton_Click(object sender, EventArgs e) {
             if (e == null) {
                 GameInfoLabel.Text = "Select An Executable To Patch First.";
@@ -352,7 +404,7 @@ namespace Dobby {
                 ExecutablePathBox.Text = f.FileName;
                 MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite);
                 MainStream.Position = 0x60; MainStream.Read(chk, 0, 4);
-                GameInfoLabel.Text = EbootPatchPage.UpdateGameInfoLabel(BitConverter.ToInt32(chk, 0));
+                GameInfoLabel.Text = UpdateGameInfoLabel(BitConverter.ToInt32(chk, 0));
             }
         }
 

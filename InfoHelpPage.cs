@@ -339,8 +339,8 @@ namespace Dobby {
                 MessageBox.Show($"Changelist Dumped To {Directory.GetCurrentDirectory()}\\ChangeLog.txt");
             }
         }
-        void BuildLabelMH(object sender, EventArgs e) { Inf("Right CLick To Dump ChangeList"); Dobby.InfoHasImportantStr = false; }
-        void BuildLabelML(object sender, EventArgs e) => Inf("");
+        void BuildLabelMH(object sender, EventArgs e) { SetInfoString("Right CLick To Dump ChangeList"); Dobby.InfoHasImportantStr = false; }
+        void BuildLabelML(object sender, EventArgs e) => SetInfoString("");
 
         private void MiscPatchPageHelpBtn_Click(object sender, EventArgs e) {
 

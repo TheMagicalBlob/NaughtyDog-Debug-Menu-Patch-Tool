@@ -107,7 +107,8 @@ namespace Dobby {
            "* 2.19.55.123 | Replaced Border Background Images On Dobby And EbootPatchPage With A Group Box, For Obvious Reasons, Repositioned The ManualConnectButton, It Was Too Close To The Seperator Line Below",
            "* 2.20.56.127 | Overhauled The Page Change Method; Now Remembers Pages Properly (Made And Forgot The Specifics Of Many Changes During The Same Time), Fixed an issue where the CreditsPage and InfoHelPage's back buttons were ignoring the last form and just loading the main one (my bad)",
            "* 2.20.57.131 | Added The Ability To Right-Click The Links On The Credits Page To View And Copy Them, Removed Highlight From Build Label And Changed It's Info Text, Debug Output Changes",
-       "* 2.21-tmp.58.131 | Added Buttons For Still Uncreated PC-Specific Pages, Credits page text and spacing changes"
+       "* 2.21-tmp.58.131 | Added Buttons For Still Uncreated PC-Specific Pages, Credits page text and spacing changes",
+           "* 2.21.61.140 | Split main form in to seperate PS4 and PC sections, added two pages for the new pc section. Changed contact details line on the InfoHelpPage. Merged Main.Designer.cs with Main.cs, Moved MainStream variable EbootPatchPage.cs -> Common.cs for use with PC Patch Pages"
 
             // TODO:
             // - Fix Messy Back Button Implementation
@@ -121,7 +122,7 @@ namespace Dobby {
         public static string Build = ChangeList[ChangeList.Length - 1].Substring(2).Substring(0, ChangeList[ChangeList.Length - 1].IndexOf('|') - 3); // Trims The Last ChangeList String For Latest The Build Number
         public static string CurrentControl, tmp;
 
-        // PS4 / PC exe Patch Page Shared Variables
+#region PS4 / PC exe Patch Page Shared Variables And Functions
 
         public static byte[]
             chk = new byte[4],
@@ -132,6 +133,39 @@ namespace Dobby {
             MouseScrolled,
             MouseIsDown
         ;
+
+
+        public static void WriteBytes(int offset, byte[] data) {
+            MainStream.Position = offset;
+            MainStream.Write(data, 0, data.Length);
+        }
+        public static void WriteBytes(int[] offset, byte[] data) {
+            foreach (int ofs in offset) {
+                MainStream.Position = ofs;
+                MainStream.Write(data, 0, data.Length);
+            }
+        }
+        public static void WriteBytes(int[] offset, byte[][] data) {
+            int i = 0;
+            foreach (byte[] bytes in data) {
+                MainStream.Position = offset[i];
+                MainStream.Write(bytes, 0, data.Length);
+                i++;
+            }
+        }
+        public static void WriteByte(int offset, byte data) {
+            MainStream.Position = offset;
+            MainStream.WriteByte(data);
+        }
+        public static void WriteByte(int[] offset, byte data) {
+            foreach (int ofs in offset) {
+                MainStream.Position = ofs;
+                MainStream.WriteByte(data);
+            }
+        }
+
+        #endregion
+
 
         public static Control YellowInformationLabel;
         public static FileStream MainStream;
@@ -271,7 +305,9 @@ namespace Dobby {
             PopupBox.Show();
             PopupBox.Location = new Point(ParentPos.X + 75, ParentPos.Y + 150);
         }
-        public static void Inf(string s) => YellowInformationLabel.Text = s;
+
+        public static void SetInfoString(string s) => YellowInformationLabel.Text = s;
+        
         public static string BlankSpace(string String) {
             if (String == null) return "";
             string Blanks = string.Empty;
@@ -286,7 +322,7 @@ namespace Dobby {
             c.ForeColor = HoverOrLeave == 0 ? Color.FromArgb(255, 227, 0) : Color.FromArgb(255, 255, 255);
             c.Text = HoverOrLeave == 0 ? $">{c.Text}" : c.Text.Substring(c.Text.IndexOf('>') + 1);
             c.Size = new Size(HoverOrLeave == 0 ? c.Width + 9 : c.Width - 9, c.Height);
-            if (!InfoHasImportantStr) Inf("");
+            if (!InfoHasImportantStr) SetInfoString("");
             if (HoverOrLeave == 1) MouseScrolled = 0;
         }
 
@@ -294,7 +330,7 @@ namespace Dobby {
             CurrentControl = c.Name;
             c.ForeColor = Color.FromArgb(255, 227, 0);
             c.Text = $">{c.Text}";
-            Inf(InfoString);
+            SetInfoString(InfoString);
             c.Size = new Size(c.Width + 9, c.Size.Height);
             InfoHasImportantStr = false;
         }
@@ -303,7 +339,7 @@ namespace Dobby {
             Info.Font = new Font("Franklin Gothic Medium", FontScale); // Decrease Font Size To Fit String In Info Bar
             c.ForeColor = Color.FromArgb(255, 227, 0);
             c.Text = $">{c.Text}";
-            Inf(info);
+            SetInfoString(info);
             c.Size = new Size(c.Width + 9, c.Height);
             InfoHasImportantStr = false;
         }

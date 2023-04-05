@@ -19,7 +19,7 @@ namespace Dobby {
 
         public bool[] CDO = new bool[11]; // Custom Debug Options - 11th is For Eventually Keeping Track Of Whether The Options Were Left Default (true if changed)
 
-        const byte    // Simple Readability Addition
+        const byte    // Simple Readability Addition, I know it's silly
             on = 0x01,
             off = 0x00
         ;
@@ -27,11 +27,6 @@ namespace Dobby {
         public readonly byte[]
             T2Debug = new byte[] { 0xb2, 0x00, 0xb0, 0x01 }, // Turns "Disable Debug Rendering" Off (b2 00) & Debug Mode On (b0 01)
             T2DebugOff = new byte[] { 0xb2, 0x01, 0x31, 0xc0 }
-        ;
-
-        byte[]
-            chk    = new byte[4],
-            E9Jump = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 }
         ;
 
         public int
@@ -511,34 +506,6 @@ namespace Dobby {
 ============================================================================================================================================================================
         // Start Of PS4Debug Page Specific Functions                                                                                                                      */
 
-        public void WriteBytes(int offset, byte[] data) {
-            MainStream.Position = offset;
-            MainStream.Write(data, 0, data.Length);
-        }
-        public void WriteBytes(int[] offset, byte[] data) {
-            foreach (int ofs in offset) {
-                MainStream.Position = ofs;
-                MainStream.Write(data, 0, data.Length);
-            }
-        }
-        public void WriteBytes(int[] offset, byte[][] data) {
-            int i = 0;
-            foreach (byte[] bytes in data) {
-                MainStream.Position = offset[i];
-                MainStream.Write(bytes, 0, data.Length);
-                i++;
-            }
-        }
-        public void WriteByte(int offset, byte data) {
-            MainStream.Position = offset;
-            MainStream.WriteByte(data);
-        }
-        public void WriteByte(int[] offset, byte data) {
-            foreach (int ofs in offset) {
-                MainStream.Position = ofs;
-                MainStream.WriteByte(data);
-            }
-        }
         public string UpdateGameInfoLabel(int game) { //!        
             string NewString = string.Empty;
 
@@ -690,44 +657,44 @@ namespace Dobby {
                     break;
                 case T1R100:
                     T1R100_Patches(Type);
-                    Inf(GameInfoLabel.Text.Substring(GameInfoLabel.Text.LastIndexOf("/n")) + "\nDefault Debug Menus Enabled");
+                    SetInfoString(GameInfoLabel.Text.Substring(GameInfoLabel.Text.LastIndexOf("/n")) + "\nDefault Debug Menus Enabled");
                     break;
                 case T1R109:
                     T1R11X_Patches(Type);
-                    Inf("Patch Applied");
+                    SetInfoString("Patch Applied");
                     break;
                 case T1R11X:
                     T1R11X_Patches(Type);
-                    Inf("Patch Applied");
+                    SetInfoString("Patch Applied");
                     break;
                 case T2100:
                     T2100_Patches(Type);
-                    Inf("The Last Of Us Part II 1.00 Debug Enabled");
+                    SetInfoString("The Last Of Us Part II 1.00 Debug Enabled");
                     break;
                 case T2101:
-                    Inf("Sorry, This Old Version Isn't Supported Just Yet");
+                    SetInfoString("Sorry, This Old Version Isn't Supported Just Yet");
                     break;
                 case T2102:
-                    Inf("Sorry, This Old Version Isn't Supported Just Yet");
+                    SetInfoString("Sorry, This Old Version Isn't Supported Just Yet");
                     break;
                 case T2105:
-                    Inf("Sorry, This Old Version Isn't Supported Just Yet");
+                    SetInfoString("Sorry, This Old Version Isn't Supported Just Yet");
                     break;
                 case T2107:
                     T2107_Patches(Type);
-                    Inf("The Last Of Us Part II 1.07 Debug Enabled");
+                    SetInfoString("The Last Of Us Part II 1.07 Debug Enabled");
                     break;
                 case T2108:
                     T2109_Patches(Type);
-                    Inf("The Last Of Us Part II 1.08 Debug Enabled");
+                    SetInfoString("The Last Of Us Part II 1.08 Debug Enabled");
                     break;
                 case T2109:
                     T2109_Patches(Type);
-                    Inf("The Last Of Us Part II 1.09 Debug Enabled");
+                    SetInfoString("The Last Of Us Part II 1.09 Debug Enabled");
                     break;
                 case UC1100:
                     UC1100_Patches(Type);
-                    Inf("Uncharted 1 1.00 Default Debug Enabled");
+                    SetInfoString("Uncharted 1 1.00 Default Debug Enabled");
                     break;
                 case UC1102:
                     UC1102_Patches(Type);
@@ -735,37 +702,37 @@ namespace Dobby {
                     break;
                 case UC2100:
                     UC2100_Patches(Type);
-                    Inf("Uncharted 2 1.00 Default Debug Enabled");
+                    SetInfoString("Uncharted 2 1.00 Default Debug Enabled");
                     break;
                 case UC2102:
                     UC2102_Patches(Type);
                     break;
                 case UC3100:
                     UC3100_Patches(Type);
-                    Inf("Uncharted 3 1.00 Default Debug Enabled");
+                    SetInfoString("Uncharted 3 1.00 Default Debug Enabled");
                     break;
                 case UC3102:
                     UC3102_Patches(Type);
                     break;
                 case UC4100:
                     UC4100_Patches(Type);
-                    Inf("Uncharted 4: A Thief's End 1.00 Debug Enabled");
+                    SetInfoString("Uncharted 4: A Thief's End 1.00 Debug Enabled");
                     break;
                 case UC413X:
                     UC4133_Patches(Type);
-                    Inf("Uncharted 4: A Thief's End 1.32/1.33 Debug Enabled");
+                    SetInfoString("Uncharted 4: A Thief's End 1.32/1.33 Debug Enabled");
                     break;
                 case UC4133MP:
                     UC4MP133_Patches(Type);
-                    Inf("Uncharted 4: A Thief's End 1.32/1.33 MP Debug Enabled");
+                    SetInfoString("Uncharted 4: A Thief's End 1.32/1.33 MP Debug Enabled");
                     break;
                 case TLL100:
                     TLL100_Patches(Type);
-                    Inf("Uncharted: The Lost Legacy 1.00 Debug Enabled");
+                    SetInfoString("Uncharted: The Lost Legacy 1.00 Debug Enabled");
                     break;
                 case TLL10X:
                     TLL109_Patches(Type);
-                    Inf("Uncharted: The Lost Legacy 1.08/1.09 Debug Enabled");
+                    SetInfoString("Uncharted: The Lost Legacy 1.08/1.09 Debug Enabled");
                     break;
             }
         }
@@ -778,7 +745,7 @@ namespace Dobby {
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;
-                Inf("Please Select A Game's Executable First");
+                SetInfoString("Please Select A Game's Executable First");
                 Dobby.InfoHasImportantStr = true;
                 return;
             }
@@ -795,7 +762,7 @@ namespace Dobby {
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;
-                Inf("Please Select A Game's Executable First");
+                SetInfoString("Please Select A Game's Executable First");
                 Dobby.InfoHasImportantStr = true;
                 return;
             }
@@ -811,7 +778,7 @@ namespace Dobby {
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;
-                Inf("Please Select A Game's Executable First");
+                SetInfoString("Please Select A Game's Executable First");
                 Dobby.InfoHasImportantStr = true;
                 return;
             }
@@ -821,74 +788,74 @@ namespace Dobby {
                     MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported\n" + game);
                     break;
                 case T1R100:
-                    Inf("No Restored Menu Available Yet (I'm Workin' on It). Try 1.11");
+                    SetInfoString("No Restored Menu Available Yet (I'm Workin' on It). Try 1.11");
                     break;
                 case T1R109:
-                    Inf("No Restored Menu Available, Try 1.10/1.11");
+                    SetInfoString("No Restored Menu Available, Try 1.10/1.11");
                     break;
                 case T1R11X:
                     T1R11X_Patches("Restored");
-                    Inf($"The Last Of Us Remastered 1.1X Restored Menu Applied");
+                    SetInfoString($"The Last Of Us Remastered 1.1X Restored Menu Applied");
                     break;
                 case T2100:
-                    Inf("The Last Of Us Part II 1.00 Has Nothing To Restore");
+                    SetInfoString("The Last Of Us Part II 1.00 Has Nothing To Restore");
                     break;
                 case T2101:
-                    Inf("The Last Of Us Part II 1.01 Has Nothing To Restore");
+                    SetInfoString("The Last Of Us Part II 1.01 Has Nothing To Restore");
                     break;
                 case T2102:
-                    Inf("The Last Of Us Part II 1.02 Has Nothing To Restore");
+                    SetInfoString("The Last Of Us Part II 1.02 Has Nothing To Restore");
                     break;
                 case T2105:
-                    Inf("The Last Of Us Part II 1.05 Has Nothing To Restore");
+                    SetInfoString("The Last Of Us Part II 1.05 Has Nothing To Restore");
                     break;
                 case T2107:
-                    Inf("The Last Of Us Part II 1.07 Has Nothing To Restore");
+                    SetInfoString("The Last Of Us Part II 1.07 Has Nothing To Restore");
                     break;
                 case T2108:
-                    Inf("The Last Of Us Part II 1.08 Has Nothing To Restore");
+                    SetInfoString("The Last Of Us Part II 1.08 Has Nothing To Restore");
                     break;
                 case T2109:
-                    Inf("The Last Of Us Part II 1.09 Has Nothing To Restore");
+                    SetInfoString("The Last Of Us Part II 1.09 Has Nothing To Restore");
                     break;
                 case UC1100: // Uncharted 1 1.00 Restored Debug Ver. 2.6.1
                     UC1100_Patches("Restored");
-                    Inf("Restored Debug Menu Patch Applied");
+                    SetInfoString("Restored Debug Menu Patch Applied");
                     break;
                 case UC1102: // Uncharted 1 1.02 Restored Debug Ver. 2.7
                     UC1102_Patches("Restored");
-                    Inf("Restored Debug Menu Patch Applied");
+                    SetInfoString("Restored Debug Menu Patch Applied");
                     break;
                 case UC2100: // Uncharted 2 1.00 Restored Debug Ver. 1.0 (Diff 1.11) //!
                     UC2100_Patches("Restored");
-                    Inf("Restored Debug Menu Patch Applied");
+                    SetInfoString("Restored Debug Menu Patch Applied");
                     break;
                 case UC2102: // Uncharted 2 1.02 Restored Debug Ver. 1.0
                     UC2102_Patches("Restored");
-                    Inf("Restored Debug Menu Patch Applied");
+                    SetInfoString("Restored Debug Menu Patch Applied");
                     break;
                 case UC3100:
                     UC3100_Patches("Restored");
-                    Inf("Uncharted 3 1.00 Restored Debug Applied");
+                    SetInfoString("Uncharted 3 1.00 Restored Debug Applied");
                     break;
                 case UC3102:
-                    Inf("Uncharted 3 1.02 Restored Debug N/A Yet");
+                    SetInfoString("Uncharted 3 1.02 Restored Debug N/A Yet");
                     break;
                 case UC4100:
-                    Inf("Uncharted 4 1.00 Restoration Not Available (Try 1.33 MP)");
+                    SetInfoString("Uncharted 4 1.00 Restoration Not Available (Try 1.33 MP)");
                     break;
                 case UC413X:
-                    Inf("Uncharted 4 1.3X Restoration Not Available, Try MP");
+                    SetInfoString("Uncharted 4 1.3X Restoration Not Available, Try MP");
                     break;
                 case UC4133MP:
                     UC4MP133_Patches("Restored");
-                    Inf("Restored Multiplayer Debug Menu Patch Applied");
+                    SetInfoString("Restored Multiplayer Debug Menu Patch Applied");
                     break;
                 case TLL100:
-                    Inf("The Lost Legacy 1.00 Restoration Not Available");
+                    SetInfoString("The Lost Legacy 1.00 Restoration Not Available");
                     break;
                 case TLL10X:
-                    Inf("The Lost Legacy 1.0X Restoration Not Available");
+                    SetInfoString("The Lost Legacy 1.0X Restoration Not Available");
                     break;
             }
         }
@@ -903,7 +870,7 @@ namespace Dobby {
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;
-                Inf("Please Select A Game's Executable First");
+                SetInfoString("Please Select A Game's Executable First");
                 Dobby.InfoHasImportantStr = true;
                 return;
             }
@@ -918,29 +885,29 @@ namespace Dobby {
                     break;
                 case T1R11X:
                     T1R11X_Patches("Restored");
-                    Inf("\"Custom\" Menu Applied");
+                    SetInfoString("\"Custom\" Menu Applied");
                     break;
                 case T2100:
-                    Inf("Try 1.09");
+                    SetInfoString("Try 1.09");
                     break;
                 case T2101:
-                    Inf("Try 1.09");
+                    SetInfoString("Try 1.09");
                     break;
                 case T2102:
-                    Inf("Try 1.09");
+                    SetInfoString("Try 1.09");
                     break;
                 case T2105:
-                    Inf("Try 1.09");
+                    SetInfoString("Try 1.09");
                     break;
                 case T2107:
-                    Inf("Try 1.09");
+                    SetInfoString("Try 1.09");
                     break;
                 case T2108:
-                    Inf("Try 1.09");
+                    SetInfoString("Try 1.09");
                     break;
                 case T2109:
                     T2109_Patches("Custom");
-                    Inf("The Last Of Us Part II 1.09 Custom Debug Enabled");
+                    SetInfoString("The Last Of Us Part II 1.09 Custom Debug Enabled");
                     break;
 
                 case UC1100: // UC1 1.00
@@ -952,20 +919,20 @@ namespace Dobby {
                     WriteByte(0x1EB296, 0x01);
                     WriteByte(new int[] { 0x6C9C, 0x436CEE }, 0x1C);
                     WriteBytes(new int[] { 0x6D5E, 0x1C4708, 0x1C4C60, 0x436D71 }, new byte[][] { skip, new byte[] { 0x1C, 0x00, 0x00, 0x00 }, skip, skip });
-                    Inf("Uncharted 2 1.00 Restored Debug Applied");
+                    SetInfoString("Uncharted 2 1.00 Restored Debug Applied");
                     break;
                 case UC3100:
-                    Inf("Sorry, This Version Isn't Supported Just Yet");
+                    SetInfoString("Sorry, This Version Isn't Supported Just Yet");
                     break;
                 case UC4100:
-                    Inf("Sorry, Uncharted 4 1.00 Isn't Supported Just Yet");
+                    SetInfoString("Sorry, Uncharted 4 1.00 Isn't Supported Just Yet");
                     break;
                 case UC413X:
-                    Inf("Sorry, Uncharted 4 1.3X Isn't Supported Just Yet");
+                    SetInfoString("Sorry, Uncharted 4 1.3X Isn't Supported Just Yet");
                     break;
                 case UC4133MP: // UC4 1.33 MP
                     UC4MP133_Patches("Restored");
-                    Inf("Resto- I Mean Custom Menu Applied");
+                    SetInfoString("Resto- I Mean Custom Menu Applied");
                     break;
                 case TLL100:
                     break;
@@ -986,7 +953,7 @@ namespace Dobby {
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;
-                Inf("Please Select A Game's Executable First");
+                SetInfoString("Please Select A Game's Executable First");
                 Dobby.InfoHasImportantStr = true;
                 return;
             }
@@ -1000,66 +967,66 @@ namespace Dobby {
                     MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported");
                     break;
                 case T1R100:
-                    Inf("Sorry, The Last Of Us Remastered 1.00 Isn't Supported Just Yet");
+                    SetInfoString("Sorry, The Last Of Us Remastered 1.00 Isn't Supported Just Yet");
                     break;
                 case T1R109:
-                    Inf("Sorry, The Last Of Us Remastered 1.09 Isn't Supported Just Yet");
+                    SetInfoString("Sorry, The Last Of Us Remastered 1.09 Isn't Supported Just Yet");
                     break;
                 case T1R11X:
-                    Inf("Sorry, The Last Of Us Remastered 1.10/1.11 Isn't Supported Just Yet");
+                    SetInfoString("Sorry, The Last Of Us Remastered 1.10/1.11 Isn't Supported Just Yet");
                     break;
                 case T2100:
                     MessageBox.Show("Please Get The 1.00, 1.07, or 1.09 Version Of The Game For This I'm Not Doing It For 6 Versions, 3 is Enough");
-                    Inf("Sorry, The Last Of Us Part II 1.00 Isn't Supported Just Yet");
+                    SetInfoString("Sorry, The Last Of Us Part II 1.00 Isn't Supported Just Yet");
                     break;
                 case T2101:
                     MessageBox.Show("Please Get The 1.00, 1.07, or 1.09 Version Of The Game For This I'm Not Doing It For 6 Versions, 3 is Enough");
-                    Inf("Sorry, The Last Of Us Part II 1.01 Isn't Supported");
+                    SetInfoString("Sorry, The Last Of Us Part II 1.01 Isn't Supported");
                     break;
                 case T2102:
                     MessageBox.Show("Please Get The 1.00, 1.07, or 1.09 Version Of The Game For This I'm Not Doing It For 6 Versions, 3 is Enough");
-                    Inf("Sorry, The Last Of Us Part II 1.02 Isn't Supported");
+                    SetInfoString("Sorry, The Last Of Us Part II 1.02 Isn't Supported");
                     break;
                 case T2105:
                     MessageBox.Show("Please Get The 1.00, 1.07, or 1.09 Version Of The Game For This I'm Not Doing It For 6 Versions, 3 is Enough");
-                    Inf("Sorry, The Last Of Us Part II 1.05 Isn't Supported");
+                    SetInfoString("Sorry, The Last Of Us Part II 1.05 Isn't Supported");
                     break;
                 case T2107:
                     MessageBox.Show("Please Get The 1.00, 1.07, or 1.09 Version Of The Game For This I'm Not Doing It For 6 Versions, 3 is Enough");
-                    Inf("Sorry, The Last Of Us Part II 1.07 Isn't Supported Just Yet");
+                    SetInfoString("Sorry, The Last Of Us Part II 1.07 Isn't Supported Just Yet");
                     break;
                 case T2108:
                     MessageBox.Show("Please Get The 1.00, 1.07, or 1.09 Version Of The Game For This I'm Not Doing It For 6 Versions, 3 is Enough");
-                    Inf("Sorry, The Last Of Us Part II 1.08 Isn't Supported");
+                    SetInfoString("Sorry, The Last Of Us Part II 1.08 Isn't Supported");
                     break;
 
                 case T2109:
                     T2CustomOptionsDebug NewPage = new T2CustomOptionsDebug();
                     NewPage.ShowDialog();
                     //!
-                    Inf("The Last Of Us Part II 1.09 Custom Debug Enabled");
+                    SetInfoString("The Last Of Us Part II 1.09 Custom Debug Enabled");
                     break;
 
                 case UC1100: // UC1 1.00
-                    Inf("Sorry, Uncharted 1 1.00 Isn't Supported Yet. Use The Restored Debug");
+                    SetInfoString("Sorry, Uncharted 1 1.00 Isn't Supported Yet. Use The Restored Debug");
                     break;
                 case UC2100:
-                    Inf("Sorry, Uncharted 2 1.00 Debug Isn't Supported Yet");
+                    SetInfoString("Sorry, Uncharted 2 1.00 Debug Isn't Supported Yet");
                     break;
                 case UC3100:
-                    Inf("Sorry, Uncharted 3 1.00 Isn't Supported Just Yet. Use The Restored Debug");
+                    SetInfoString("Sorry, Uncharted 3 1.00 Isn't Supported Just Yet. Use The Restored Debug");
                     break;
                 case UC4100:
-                    Inf("Sorry, Uncharted 4 1.00 Isn't Supported Just Yet");
+                    SetInfoString("Sorry, Uncharted 4 1.00 Isn't Supported Just Yet");
                     break;
                 case UC413X:
-                    Inf("Sorry, Uncharted 4 1.3X Isn't Supported Just Yet");
+                    SetInfoString("Sorry, Uncharted 4 1.3X Isn't Supported Just Yet");
                     break;
                 case TLL100:
-                    Inf("Sorry, The Lost Legacy 1.00 Isn't Supported Just Yet");
+                    SetInfoString("Sorry, The Lost Legacy 1.00 Isn't Supported Just Yet");
                     break;
                 case TLL10X:
-                    Inf("Sorry, The Lost Legacy 1.08\\1.09 Isn't Supported Just Yet");
+                    SetInfoString("Sorry, The Lost Legacy 1.08\\1.09 Isn't Supported Just Yet");
                     break;
             }
         }
@@ -1224,7 +1191,7 @@ Custom:
             foreach (int Address in FunctionNops)
                 WriteBytes(Address, E9Jump);
 
-            Inf("\"Custom\" Debug Patch Applied");
+            SetInfoString("\"Custom\" Debug Patch Applied");
             return;
         }
 
@@ -1306,7 +1273,7 @@ Custom:
             foreach (int Address in FunctionNops)
                 WriteBytes(Address, E9Jump);
 
-            Inf("Restored Debug Patch Applied");
+            SetInfoString("Restored Debug Patch Applied");
         }
 
 
@@ -1426,7 +1393,7 @@ Restored:
             foreach (int address in Returns)
                 WriteByte(address, 0xC3);
 
-            Inf("Restored Debug Menu Patch Applied");
+            SetInfoString("Restored Debug Menu Patch Applied");
         }
 
         void UC2102_Patches(string type) {
