@@ -22,6 +22,7 @@ namespace Dobby {
         public Label ContributorsLabel;
         public Button BackBtn;
         public Label SeperatorLine1;
+        public Label Info;
         public Label label2;
         public Label label1;
         public Label label3;
@@ -41,6 +42,7 @@ namespace Dobby {
             this.NarcissismLabel = new System.Windows.Forms.Label();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.BlobGithubBtn = new System.Windows.Forms.Label();
+            this.Info = new System.Windows.Forms.Label();
             this.MainBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -79,9 +81,9 @@ namespace Dobby {
             // 
             // MainBox
             // 
+            this.MainBox.Controls.Add(this.MainLabel);
             this.MainBox.Controls.Add(this.ExitBtn);
             this.MainBox.Controls.Add(this.MinimizeBtn);
-            this.MainBox.Controls.Add(this.MainLabel);
             this.MainBox.Controls.Add(this.label3);
             this.MainBox.Controls.Add(this.IllusionBlogBtn);
             this.MainBox.Controls.Add(this.label2);
@@ -234,6 +236,13 @@ namespace Dobby {
             this.BlobGithubBtn.MouseEnter += new System.EventHandler(this.BlobGithubBtnMH);
             this.BlobGithubBtn.MouseLeave += new System.EventHandler(this.BlobGithubBtnML);
             // 
+            // Info
+            // 
+            this.Info.Location = new System.Drawing.Point(0, 0);
+            this.Info.Name = "Info";
+            this.Info.Size = new System.Drawing.Size(0, 0);
+            this.Info.TabIndex = 6;
+            // 
             // CreditsPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -241,6 +250,7 @@ namespace Dobby {
             this.BackColor = System.Drawing.Color.DimGray;
             this.ClientSize = new System.Drawing.Size(320, 391);
             this.Controls.Add(this.MainBox);
+            this.Controls.Add(this.Info);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "CreditsPage";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
@@ -262,7 +272,7 @@ namespace Dobby {
         void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
 
         void BackBtn_Click(object sender, EventArgs e) {
-            GoBackAPage();
+            BackFunc();
             HoverLeave(BackBtn, 1);
         }
         public void BackBtnMH(object sender, EventArgs e) => HoverLeave(BackBtn, 0);

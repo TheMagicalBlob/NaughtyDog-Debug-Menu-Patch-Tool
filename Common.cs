@@ -108,7 +108,8 @@ namespace Dobby {
        "* 2.21-tmp.58.131 | Added Buttons For Still Uncreated PC-Specific Pages, Credits page text and spacing changes",
            "* 2.21.61.140 | Split main form in to seperate PS4 and PC sections, added two pages for the new pc section. Changed contact details line on the InfoHelpPage. Merged Main.Designer.cs with Main.cs, Moved MainStream variable EbootPatchPage.cs -> Common.cs for use with PC Patch Pages",
            "* 2.21.61.142 | Fixed CheckDebugState bug; forgot to go back by one before checking for 0xEB, Added MainStream killswitch to debugger (ctrl k)",
-           "* 2.21.62.144 | Added Base Debug To PCPatchPage, Other Misc Changes"
+           "* 2.21.62.144 | Added Base Debug To PCPatchPage, Other Misc Changes",
+           "* 2.21.63.148 | Fixed Credits page crash caused by deleting unused info label (was still being called on page creation), Added Mouse Hover/Leave Event Handlers To Multiple Neglected Controls, Changed chk On PCPatchPage To Check Bot 0x1EC and 0x1F8 and add them together for the result"
 
             // TODO:
             // - Fix Messy Back Button Implementation
@@ -269,7 +270,7 @@ namespace Dobby {
             ClosingForm.Hide();
         }
 
-        public static void GoBackAPage() {
+        public static void BackFunc() {
 
             for (int i = 4; i >= 0; i--)
 

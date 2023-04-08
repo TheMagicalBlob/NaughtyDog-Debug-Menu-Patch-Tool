@@ -493,7 +493,7 @@ namespace Dobby {
         public void BackBtn_Click(object sender, EventArgs e) {
             LabelShouldFlash = false;
 
-            GoBackAPage();
+            BackFunc();
         }
         public void BackBtnMH(object sender, EventArgs e) => HoverLeave(BackBtn, 0);
         public void BackBtnML(object sender, EventArgs e) => HoverLeave(BackBtn, 1);

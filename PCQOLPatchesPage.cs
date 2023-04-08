@@ -380,6 +380,6 @@ namespace Dobby {
 
         }
 
-        private void BackBtn_Click(object sender, EventArgs e) => GoBackAPage();
+        private void BackBtn_Click(object sender, EventArgs e) => BackFunc();
     }
 }

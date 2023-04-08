@@ -557,7 +557,7 @@ namespace Dobby {
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
 
         public void BackBtn_Click(object sender, EventArgs e) {
-            GoBackAPage();
+            BackFunc();
             HoverLeave(BackBtn, 1);
         }
         public void BackBtnMH(object sender, EventArgs e) => HoverLeave(BackBtn, 0);

@@ -241,6 +241,8 @@ namespace Dobby {
             this.EbootPatchPageHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.EbootPatchPageHelpBtn.UseVisualStyleBackColor = false;
             this.EbootPatchPageHelpBtn.Click += new System.EventHandler(this.EbootPatchPageHelpBtn_Click);
+            this.EbootPatchPageHelpBtn.MouseEnter += new System.EventHandler(this.EbootPatchPageHelpBtnMH);
+            this.EbootPatchPageHelpBtn.MouseLeave += new System.EventHandler(this.EbootPatchPageHelpBtnML);
             // 
             // Info
             // 
@@ -312,7 +314,7 @@ namespace Dobby {
         public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
 
-        void BackBtn_Click(object sender, EventArgs e) => GoBackAPage();
+        void BackBtn_Click(object sender, EventArgs e) => BackFunc();
         public void BackBtnMH(object sender, EventArgs e) => HoverLeave(BackBtn, 0);
         public void BackBtnML(object sender, EventArgs e) => HoverLeave(BackBtn, 1);
 
@@ -351,6 +353,8 @@ namespace Dobby {
         void MiscPatchPageHelpBtnML(object sender, EventArgs e) => HoverLeave(MiscPatchPageHelpBtn, 1);
 
         private void EbootPatchPageHelpBtn_Click(object sender, EventArgs e) => ChangeForm(7, false);
+        void EbootPatchPageHelpBtnMH(object sender, EventArgs e) => HoverString(EbootPatchPageHelpBtn, "Page Not Yet Created");
+        void EbootPatchPageHelpBtnML(object sender, EventArgs e) => HoverLeave(EbootPatchPageHelpBtn, 1);
     }
 }
 //fuck_yourself:

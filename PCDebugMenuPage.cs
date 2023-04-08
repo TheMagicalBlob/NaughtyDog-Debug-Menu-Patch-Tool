@@ -52,8 +52,8 @@ namespace Dobby {
             T1XL101Debug = 0x3B64B9,
             T1X1015Debug = 0x3B68FD,
             T1XL1015Debug = 0x3B66E9,
-            T1X1016Debug = 0xBEEFBAD,
-            T1XL1016Debug = 0xBEEFBAD,
+            T1X1016Debug = 0x3B690D,
+            T1XL1016Debug = 0x3B66E9,
             T1X1017Debug = 0x3B6A2E,
             T1XL1017Debug = 0x03B680A,
             T1X102Debug = 0x3B6AA9,
@@ -164,6 +164,9 @@ namespace Dobby {
             this.CreditsBtn.Text = "Credits...";
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
+            this.CreditsBtn.Click += new System.EventHandler(this.CreditsBtn_Click);
+            this.CreditsBtn.MouseEnter += new System.EventHandler(this.CreditsBtnMH);
+            this.CreditsBtn.MouseLeave += new System.EventHandler(this.CreditsBtnML);
             // 
             // InfoHelpBtn
             // 
@@ -181,6 +184,9 @@ namespace Dobby {
             this.InfoHelpBtn.Text = "Information / Help...";
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
+            this.InfoHelpBtn.Click += new System.EventHandler(this.InfoHelpBtn_Click);
+            this.InfoHelpBtn.MouseEnter += new System.EventHandler(this.InfoHelpBtnMH);
+            this.InfoHelpBtn.MouseLeave += new System.EventHandler(this.InfoHelpBtnML);
             // 
             // SeperatorLine1
             // 
@@ -245,6 +251,8 @@ namespace Dobby {
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
             this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
+            this.BackBtn.MouseEnter += new System.EventHandler(this.BackBtnMH);
+            this.BackBtn.MouseLeave += new System.EventHandler(this.BackBtnML);
             // 
             // BrowseButton
             // 
@@ -300,6 +308,8 @@ namespace Dobby {
             this.BaseDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BaseDebugBtn.UseVisualStyleBackColor = false;
             this.BaseDebugBtn.Click += new System.EventHandler(this.BaseDebugBtn_Click);
+            this.BaseDebugBtn.MouseEnter += new System.EventHandler(this.BaseDebugBtnMH);
+            this.BaseDebugBtn.MouseLeave += new System.EventHandler(this.BaseDebugBtnML);
             // 
             // RestoredDebugBtn
             // 
@@ -316,6 +326,9 @@ namespace Dobby {
             this.RestoredDebugBtn.Text = "Enable Debug Menu And Restore Submenus";
             this.RestoredDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.RestoredDebugBtn.UseVisualStyleBackColor = false;
+            this.RestoredDebugBtn.Click += new System.EventHandler(this.RestoredDebugBtn_Click);
+            this.RestoredDebugBtn.MouseEnter += new System.EventHandler(this.RestoredDebugBtnMH);
+            this.RestoredDebugBtn.MouseLeave += new System.EventHandler(this.RestoredDebugBtnML);
             // 
             // DisableDebugBtn
             // 
@@ -332,6 +345,9 @@ namespace Dobby {
             this.DisableDebugBtn.Text = "Disable The Debug Menus";
             this.DisableDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisableDebugBtn.UseVisualStyleBackColor = false;
+            this.DisableDebugBtn.Click += new System.EventHandler(this.DisableDebugBtn_Click);
+            this.DisableDebugBtn.MouseEnter += new System.EventHandler(this.DisableDebugBtnMH);
+            this.DisableDebugBtn.MouseLeave += new System.EventHandler(this.DisableDebugBtnML);
             // 
             // PCDebugMenuPage
             // 
@@ -362,6 +378,7 @@ namespace Dobby {
         public void MoveForm(object sender, MouseEventArgs e) => Common.MoveForm(sender, e);
         public void MouseUpFunc(object sender, MouseEventArgs e) => Common.MouseUpFunc(sender, e);
         public void MouseDownFunc(object sender, MouseEventArgs e) => Common.MouseDownFunc(sender, e);
+
         public void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
         public void ExitBtnMH(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void ExitBtnML(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 255, 255);
@@ -407,7 +424,7 @@ Read:       MainStream.Position = TmpAddr;
                         VersionString += " | Debug Enabled";
                     break;
                 case T1XL101:
-                    VersionString = "Original Release Legacy";
+                    VersionString = "Original Release Non-AVX";
                     if (!ByteCmp(0x3B64A2, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
@@ -417,13 +434,18 @@ Read:       MainStream.Position = TmpAddr;
                         VersionString += " | Debug Enabled";
                     break;
                 case T1XL1015:
-                    VersionString = "1.01.5 Release Legacy";
+                    VersionString = "1.01.5 Release Non-AVX";
                     if (!ByteCmp(0x3B66D2, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1X1016:
                     VersionString = "1.01.6 Release";
-                    if (!ByteCmp(0x3B68E6, DebugDat))
+                    if (!ByteCmp(0x3B68F6, DebugDat))
+                        VersionString += " | Debug Enabled";
+                    break;
+                case T1XL1016:
+                    VersionString = "1.01.6 Release Non-AVX";
+                    if (!ByteCmp(0x3B66D2, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1X1017:
@@ -432,8 +454,18 @@ Read:       MainStream.Position = TmpAddr;
                         VersionString += " | Debug Enabled";
                     break;
                 case T1XL1017:
-                    VersionString = "1.01.7 Release Legacy";
+                    VersionString = "1.01.7 Release Non-AVX";
                     if (!ByteCmp(0x3B67F3, DebugDat))
+                        VersionString += " | Debug Enabled";
+                    break;
+                case T1X102:
+                    VersionString = "1.02 Release";
+                    if (!ByteCmp(0x3B6A92, DebugDat))
+                        VersionString += " | Debug Enabled";
+                    break;
+                case T1XL102:
+                    VersionString = "1.02 Release Non-AVX";
+                    if (!ByteCmp(0x3B686E, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
             }
@@ -453,15 +485,16 @@ Read:       MainStream.Position = TmpAddr;
             if (f.ShowDialog() == DialogResult.OK) {
                 ActiveFilePath = ExecutablePathBox.Text = f.FileName;
                 MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite);
-                MainStream.Position = 0x1F8; MainStream.Read(chk, 0, 4);
 
+                MainStream.Position = 0x1EC; MainStream.Read(chk, 0, 4);
                 Game = BitConverter.ToInt32(chk, 0);
+                MainStream.Position = 0x1F8; MainStream.Read(chk, 0, 4);
+                Game += BitConverter.ToInt32(chk, 0);
+
                 GameInfoLabel.Text = UpdateGameInfoLabel();
                 IsActiveFilePCExe = true;
             }
         }
-
-        private void BackBtn_Click(object sender, EventArgs e) => GoBackAPage();
 
         private void BaseDebugBtn_Click(object sender, EventArgs e) {
             if (Game == 0) {
@@ -511,5 +544,122 @@ Read:       MainStream.Position = TmpAddr;
             }
             WriteByte(DebugAddr, 0x8F);
         }
+        public void BaseDebugBtnMH(object sender, EventArgs e) => HoverLeave(BaseDebugBtn, 0);
+        public void BaseDebugBtnML(object sender, EventArgs e) => HoverLeave(BaseDebugBtn, 1);
+
+        private void RestoredDebugBtn_Click(object sender, EventArgs e) {
+            if (Game == 0) {
+                if (!FlashThreadHasStarted) {
+                    Dev.FlashThread.Start();
+                    FlashThreadHasStarted = true;
+                }
+                LabelShouldFlash = true;
+                SetInfoString("Please Select A Game's Executable First");
+                Dobby.InfoHasImportantStr = true;
+                return;
+            }
+
+            int DebugAddr = 0xBADBEEF;
+
+            switch (Game) {
+                case T1X101:
+                    DebugAddr = T1X101Debug;
+                    break;
+                case T1XL101:
+                    DebugAddr = T1XL101Debug;
+                    break;
+                case T1X1015:
+                    DebugAddr = T1X1015Debug;
+                    break;
+                case T1XL1015:
+                    DebugAddr = T1XL1015Debug;
+                    break;
+                case T1X1016:
+                    DebugAddr = T1X1016Debug;
+                    break;
+                case T1XL1016:
+                    DebugAddr = T1XL1016Debug;
+                    break;
+                case T1X1017:
+                    DebugAddr = T1X1017Debug;
+                    break;
+                case T1XL1017:
+                    DebugAddr = T1XL1017Debug;
+                    break;
+                case T1X102:
+                    DebugAddr = T1X102Debug;
+                    break;
+                case T1XL102:
+                    DebugAddr = T1XL102Debug;
+                    break;
+            }
+            WriteByte(DebugAddr, 0x8F);
+            SetInfoString("Heap Rederict By: "); //!
+        }
+        public void RestoredDebugBtnMH(object sender, EventArgs e) => HoverLeave(RestoredDebugBtn, 0);
+        public void RestoredDebugBtnML(object sender, EventArgs e) => HoverLeave(RestoredDebugBtn, 1);
+
+        private void DisableDebugBtn_Click(object sender, EventArgs e) {
+            if (Game == 0) {
+                if (!FlashThreadHasStarted) {
+                    Dev.FlashThread.Start();
+                    FlashThreadHasStarted = true;
+                }
+                LabelShouldFlash = true;
+                SetInfoString("Please Select A Game's Executable First");
+                Dobby.InfoHasImportantStr = true;
+                return;
+            }
+
+            int DebugAddr = 0xBADBEEF;
+
+            switch (Game) {
+                case T1X101:
+                    DebugAddr = T1X101Debug;
+                    break;
+                case T1XL101:
+                    DebugAddr = T1XL101Debug;
+                    break;
+                case T1X1015:
+                    DebugAddr = T1X1015Debug;
+                    break;
+                case T1XL1015:
+                    DebugAddr = T1XL1015Debug;
+                    break;
+                case T1X1016:
+                    DebugAddr = T1X1016Debug;
+                    break;
+                case T1XL1016:
+                    DebugAddr = T1XL1016Debug;
+                    break;
+                case T1X1017:
+                    DebugAddr = T1X1017Debug;
+                    break;
+                case T1XL1017:
+                    DebugAddr = T1XL1017Debug;
+                    break;
+                case T1X102:
+                    DebugAddr = T1X102Debug;
+                    break;
+                case T1XL102:
+                    DebugAddr = T1XL102Debug;
+                    break;
+            }
+            WriteByte(DebugAddr, 0x97);
+        }
+        public void DisableDebugBtnMH(object sender, EventArgs e) => HoverLeave(DisableDebugBtn, 0);
+        public void DisableDebugBtnML(object sender, EventArgs e) => HoverLeave(DisableDebugBtn, 1);
+
+        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
+        public void InfoHelpBtnMH(object sender, EventArgs e) => HoverLeave(InfoHelpBtn, 0);
+        public void InfoHelpBtnML(object sender, EventArgs e) => HoverLeave(InfoHelpBtn, 1);
+
+        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
+        public void CreditsBtnMH(object sender, EventArgs e) => HoverLeave(CreditsBtn, 0);
+        public void CreditsBtnML(object sender, EventArgs e) => HoverLeave(CreditsBtn, 1);
+
+        private void BackBtn_Click(object sender, EventArgs e) => BackFunc();
+        public void BackBtnMH(object sender, EventArgs e) => HoverLeave(BackBtn, 0);
+        public void BackBtnML(object sender, EventArgs e) => HoverLeave(BackBtn, 1);
     }
 }
