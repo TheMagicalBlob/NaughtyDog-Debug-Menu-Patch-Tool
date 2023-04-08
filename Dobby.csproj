@@ -56,6 +56,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PS4QOLPatchesPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="PCQOLPatchesPage.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -120,6 +123,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PS4QOLPatchesPage.resx">
+      <DependentUpon>PS4QOLPatchesPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PCDebugMenuPage.resx">
       <DependentUpon>PCDebugMenuPage.cs</DependentUpon>

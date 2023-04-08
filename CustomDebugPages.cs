@@ -11,30 +11,37 @@ namespace Dobby {
     /// </summary>
     public class T2CustomOptionsDebug : Form {
         public T2CustomOptionsDebug() {
-            Environment.Exit(0);
             if (Dev.REL) return;
             InitializeComponent();
-            if (!Dev.REL) PageInfo(Controls);
         }
 
-        public bool[] CDO = new bool[11]; //Custom Debug Options - 11th is For Eventually Keeping Track Of Whether The Options Were Left Default (true if changed)
+        public bool[] CustomDebugOptions = new bool[11]; //Custom Debug Options - 11th is For Eventually Keeping Track Of Whether The Options Were Left Default (true if changed)
         public byte FPSMode;
-        public FileStream fs;
         public static float f1, f2;
 
-        public byte[]
-            chk = new byte[4],
-            T2Debug = new byte[] { 0xb2, 0x00, 0xb0, 0x01 }, // Turns "Disable Debug Rendering" Off (b2 00) & Debug Mode On (b0 01)
-            T2DebugOff = new byte[] { 0xb2, 0x01, 0x31, 0xc0 }
-        ;
         public int
             MenuScale,
             MenuOpacity = 2
         ;
+        private Label SeperatorLabel2;
+        private Label SeperatorLabel1;
+        private Label SeperatorLabel0;
+
+        public void Invert(Control Control, int OptionIndex) {
+            if (MouseScrolled == 1 || MouseIsDown == 0 || CurrentControl != Control.Name) {
+                Dev.DebugOutStr($"MouseScrolled: {MouseScrolled}\nMouseIsDown: {MouseIsDown}\n CurrentControl: {CurrentControl}\nC.Name: {Control.Name}");
+                return;
+            }
+            tmp = Control.Text;
+            CustomDebugOptions[OptionIndex] = !CustomDebugOptions[OptionIndex];
+            tmp = $"{tmp.Remove(tmp.LastIndexOf(' '))} {(CustomDebugOptions[OptionIndex] ? "On" : "Off")}";
+            Control.Text = tmp;
+        }
+
         public void ConfirmBtn_Click(object sender, EventArgs e) {
 
-            using (FileStream fs = new FileStream(@"No Path, Fix.", FileMode.Open, FileAccess.ReadWrite)) {
-                fs.Read(chk, 0, 4);
+            using (FileStream MainStream = new FileStream(@"No Path, Fix.", FileMode.Open, FileAccess.ReadWrite)) {
+                MainStream.Read(chk, 0, 4);
                 switch (Game) {
 
                     case 48176456: // T2 1.09
@@ -64,18 +71,18 @@ namespace Dobby {
                         }
                         else break;
 
-                        if (CDO[0]) WriteBytes(0x25B0BB2, new byte[] { 0x41, 0xc6, 0x85, 0xed, 0x3e, 0x00, 0x00, 0x01 });
-                        if (CDO[1]) WriteBytes(0x25B0BBA, new byte[] { 0xc6, 0x05, 0x06, 0x3c, 0xf4, 0x01, 0x01 });
-                        if (CDO[2]) WriteBytes(0x25B0BC1, new byte[] { 0xc6, 0x05, 0x03, 0x3c, 0xf4, 0x01, 0x01 });
-                        if (CDO[3]) WriteBytes(0x25B0BC8, new byte[] { 0xc6, 0x05, 0x6f, 0xda, 0xca, 0x00, 0x01 });
-                        if (CDO[4]) WriteBytes(0x25B0BCF, new byte[] { 0xc6, 0x05, 0x67, 0xda, 0xca, 0x00, 0x01 });
-                        if (CDO[5]) WriteBytes(0x25B0BD6, new byte[] { 0xc6, 0x05, 0x5b, 0xda, 0xca, 0x00, 0x01 });
-                        if (CDO[6]) WriteBytes(0x25B0BDD, new byte[] { 0xc6, 0x05, 0x48, 0xd2, 0xa9, 0x00, 0x01 });
-                        if (!CDO[7]) WriteBytes(0x25B0BE4, new byte[] { 0xc6, 0x05, 0x4e, 0xda, 0xca, 0x00, 0x00 });
-                        if (!CDO[8]) WriteBytes(0x25B0BEB, new byte[] { 0xc6, 0x05, 0x48, 0xda, 0xca, 0x00, 0x00 });
+                        if (CustomDebugOptions[0]) WriteBytes(0x25B0BB2, new byte[] { 0x41, 0xc6, 0x85, 0xed, 0x3e, 0x00, 0x00, 0x01 });
+                        if (CustomDebugOptions[1]) WriteBytes(0x25B0BBA, new byte[] { 0xc6, 0x05, 0x06, 0x3c, 0xf4, 0x01, 0x01 });
+                        if (CustomDebugOptions[2]) WriteBytes(0x25B0BC1, new byte[] { 0xc6, 0x05, 0x03, 0x3c, 0xf4, 0x01, 0x01 });
+                        if (CustomDebugOptions[3]) WriteBytes(0x25B0BC8, new byte[] { 0xc6, 0x05, 0x6f, 0xda, 0xca, 0x00, 0x01 });
+                        if (CustomDebugOptions[4]) WriteBytes(0x25B0BCF, new byte[] { 0xc6, 0x05, 0x67, 0xda, 0xca, 0x00, 0x01 });
+                        if (CustomDebugOptions[5]) WriteBytes(0x25B0BD6, new byte[] { 0xc6, 0x05, 0x5b, 0xda, 0xca, 0x00, 0x01 });
+                        if (CustomDebugOptions[6]) WriteBytes(0x25B0BDD, new byte[] { 0xc6, 0x05, 0x48, 0xd2, 0xa9, 0x00, 0x01 });
+                        if (!CustomDebugOptions[7]) WriteBytes(0x25B0BE4, new byte[] { 0xc6, 0x05, 0x4e, 0xda, 0xca, 0x00, 0x00 });
+                        if (!CustomDebugOptions[8]) WriteBytes(0x25B0BEB, new byte[] { 0xc6, 0x05, 0x48, 0xda, 0xca, 0x00, 0x00 });
                         if (MenuScale != 0) { WriteBytes(0x25B0BF2, new byte[] { 0xc7, 0x05, 0x4c, 0xda, 0xca, 0x00 }); WriteBytes(0x25B0BF8, BitConverter.GetBytes(f1)); }
                         if (MenuOpacity != 2) { WriteBytes(0x25B0BFC, new byte[] { 0xc7, 0x05, 0x3e, 0xda, 0xca, 0x00 }); WriteBytes(0x25B0C02, BitConverter.GetBytes(f2)); }
-                        if (CDO[9]) WriteBytes(0x25B0C06, new byte[] { 0x41, 0xc6, 0x85, 0xb8, 0x3a, 0x00, 0x00, 0x01 });
+                        if (CustomDebugOptions[9]) WriteBytes(0x25B0C06, new byte[] { 0x41, 0xc6, 0x85, 0xb8, 0x3a, 0x00, 0x00, 0x01 });
                         if (FPSMode != 0) WriteBytes(0x25B0C0E, new byte[] { 0x41, 0xc7, 0x85, 0xb4, 0x3a, 0x00, 0x00, FPSMode, 0x00, 0x00, 0x00 });
                         if (true)//!!OptionsUnchanged)
                             WriteBytes(0x25B0C19, new byte[] { 0xEB, 0x1E });
@@ -83,47 +90,8 @@ namespace Dobby {
                 }
             }
         }
-        public void Invert(Control C, int f) {
-            if (MouseScrolled == 1 || MouseIsDown == 0 || CurrentControl != C.Name) {
-                Dev.DebugOutStr($"MouseScrolled: {MouseScrolled}\nMouseIsDown: {MouseIsDown}\n CurrentControl: {CurrentControl}\nC.Name: {C.Name}");
-                return;
-            }
-            tmp = C.Text;
-            CDO[f] = !CDO[f];
-            tmp = $"{tmp.Remove(tmp.LastIndexOf(' '))} {(CDO[f] ? "On" : "Off")}";
-            C.Text = tmp;
-        }
         public void ConfirmBtnMH(object sender, EventArgs e) => HoverLeave(ConfirmBtn, 0);
         public void ConfirmBtnML(object sender, EventArgs e) => HoverLeave(ConfirmBtn, 1);
-
-        public void WriteBytes(int offset, byte[] data) {
-            fs.Position = offset;
-            fs.Write(data, 0, data.Length);
-        }
-        public void WriteByte(int offset, byte data) {
-            fs.Position = offset;
-            fs.WriteByte(data);
-        }
-        public void WriteBytes(int[] offset, byte[][] data) {
-            int i = 0;
-            foreach (byte[] ar in data) {
-                fs.Position = offset[i];
-                fs.Write(ar, 0, data.Length);
-                i++;
-            }
-        }
-        public void WriteByte(int[] offset, byte data) {
-            foreach (int ofs in offset) {
-                fs.Position = ofs;
-                fs.WriteByte(data);
-            }
-        }
-        public void WriteBytes(int[] offset, byte[] data) {
-            foreach (int ofs in offset) {
-                fs.Position = ofs;
-                fs.Write(data, 0, data.Length);
-            }
-        }
 
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
@@ -145,7 +113,9 @@ namespace Dobby {
             this.Option12Btn = new System.Windows.Forms.Button();
             this.Option13Btn = new System.Windows.Forms.Button();
             this.ConfirmBtn = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.SeperatorLabel0 = new System.Windows.Forms.Label();
+            this.SeperatorLabel1 = new System.Windows.Forms.Label();
+            this.SeperatorLabel2 = new System.Windows.Forms.Label();
             this.MainBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -154,7 +124,7 @@ namespace Dobby {
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MainLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 12.25F, System.Drawing.FontStyle.Bold);
             this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.MainLabel.Location = new System.Drawing.Point(2, 7);
+            this.MainLabel.Location = new System.Drawing.Point(2, 10);
             this.MainLabel.Name = "MainLabel";
             this.MainLabel.Size = new System.Drawing.Size(314, 22);
             this.MainLabel.TabIndex = 0;
@@ -162,10 +132,13 @@ namespace Dobby {
             // 
             // MainBox
             // 
+            this.MainBox.Controls.Add(this.SeperatorLabel2);
+            this.MainBox.Controls.Add(this.SeperatorLabel1);
             this.MainBox.Controls.Add(this.MainLabel);
-            this.MainBox.Location = new System.Drawing.Point(1, -4);
+            this.MainBox.Controls.Add(this.SeperatorLabel0);
+            this.MainBox.Location = new System.Drawing.Point(0, -6);
             this.MainBox.Name = "MainBox";
-            this.MainBox.Size = new System.Drawing.Size(317, 32);
+            this.MainBox.Size = new System.Drawing.Size(319, 404);
             this.MainBox.TabIndex = 5;
             this.MainBox.TabStop = false;
             // 
@@ -173,7 +146,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(1, 377);
+            this.Info.Location = new System.Drawing.Point(1, 375);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
@@ -225,7 +198,7 @@ namespace Dobby {
             this.Option1Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Option1Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.Option1Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Option1Btn.Location = new System.Drawing.Point(-5, 32);
+            this.Option1Btn.Location = new System.Drawing.Point(1, 32);
             this.Option1Btn.Name = "Option1Btn";
             this.Option1Btn.Size = new System.Drawing.Size(170, 23);
             this.Option1Btn.TabIndex = 8;
@@ -233,11 +206,11 @@ namespace Dobby {
             this.Option1Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Option1Btn.UseVisualStyleBackColor = false;
             this.Option1Btn.Click += new System.EventHandler(this.Option1Btn_Click);
+            this.Option1Btn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.Option1Btn_SClick);
             this.Option1Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.Option1Btn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.Option1Btn.MouseEnter += new System.EventHandler(this.Option1BtnMH);
             this.Option1Btn.MouseLeave += new System.EventHandler(this.Option1BtnML);
-            this.Option1Btn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            this.Option1Btn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.Option1Btn_SClick);
             // 
             // Option2Btn
             // 
@@ -247,7 +220,7 @@ namespace Dobby {
             this.Option2Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Option2Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.Option2Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Option2Btn.Location = new System.Drawing.Point(-5, 56);
+            this.Option2Btn.Location = new System.Drawing.Point(1, 56);
             this.Option2Btn.Name = "Option2Btn";
             this.Option2Btn.Size = new System.Drawing.Size(210, 22);
             this.Option2Btn.TabIndex = 20;
@@ -269,7 +242,7 @@ namespace Dobby {
             this.Option3Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Option3Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.Option3Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Option3Btn.Location = new System.Drawing.Point(-5, 79);
+            this.Option3Btn.Location = new System.Drawing.Point(1, 79);
             this.Option3Btn.Name = "Option3Btn";
             this.Option3Btn.Size = new System.Drawing.Size(196, 22);
             this.Option3Btn.TabIndex = 21;
@@ -291,7 +264,7 @@ namespace Dobby {
             this.Option4Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Option4Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.Option4Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Option4Btn.Location = new System.Drawing.Point(-5, 103);
+            this.Option4Btn.Location = new System.Drawing.Point(1, 103);
             this.Option4Btn.Name = "Option4Btn";
             this.Option4Btn.Size = new System.Drawing.Size(206, 23);
             this.Option4Btn.TabIndex = 22;
@@ -313,7 +286,7 @@ namespace Dobby {
             this.Option5Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Option5Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.Option5Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Option5Btn.Location = new System.Drawing.Point(-5, 126);
+            this.Option5Btn.Location = new System.Drawing.Point(1, 126);
             this.Option5Btn.Name = "Option5Btn";
             this.Option5Btn.Size = new System.Drawing.Size(317, 24);
             this.Option5Btn.TabIndex = 23;
@@ -335,7 +308,7 @@ namespace Dobby {
             this.Option6Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Option6Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.Option6Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Option6Btn.Location = new System.Drawing.Point(-5, 149);
+            this.Option6Btn.Location = new System.Drawing.Point(1, 149);
             this.Option6Btn.Name = "Option6Btn";
             this.Option6Btn.Size = new System.Drawing.Size(224, 23);
             this.Option6Btn.TabIndex = 24;
@@ -357,7 +330,7 @@ namespace Dobby {
             this.Option7Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Option7Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.Option7Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Option7Btn.Location = new System.Drawing.Point(-5, 173);
+            this.Option7Btn.Location = new System.Drawing.Point(1, 173);
             this.Option7Btn.Name = "Option7Btn";
             this.Option7Btn.Size = new System.Drawing.Size(219, 23);
             this.Option7Btn.TabIndex = 25;
@@ -379,7 +352,7 @@ namespace Dobby {
             this.Option8Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Option8Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.Option8Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Option8Btn.Location = new System.Drawing.Point(-5, 197);
+            this.Option8Btn.Location = new System.Drawing.Point(1, 197);
             this.Option8Btn.Name = "Option8Btn";
             this.Option8Btn.Size = new System.Drawing.Size(267, 23);
             this.Option8Btn.TabIndex = 26;
@@ -401,7 +374,7 @@ namespace Dobby {
             this.Option9Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Option9Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.Option9Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Option9Btn.Location = new System.Drawing.Point(-5, 221);
+            this.Option9Btn.Location = new System.Drawing.Point(1, 221);
             this.Option9Btn.Name = "Option9Btn";
             this.Option9Btn.Size = new System.Drawing.Size(270, 23);
             this.Option9Btn.TabIndex = 27;
@@ -423,7 +396,7 @@ namespace Dobby {
             this.Option10Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Option10Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.Option10Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Option10Btn.Location = new System.Drawing.Point(-5, 245);
+            this.Option10Btn.Location = new System.Drawing.Point(1, 245);
             this.Option10Btn.Name = "Option10Btn";
             this.Option10Btn.Size = new System.Drawing.Size(228, 23);
             this.Option10Btn.TabIndex = 28;
@@ -445,7 +418,7 @@ namespace Dobby {
             this.Option11Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Option11Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.Option11Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Option11Btn.Location = new System.Drawing.Point(-5, 269);
+            this.Option11Btn.Location = new System.Drawing.Point(1, 269);
             this.Option11Btn.Name = "Option11Btn";
             this.Option11Btn.Size = new System.Drawing.Size(284, 23);
             this.Option11Btn.TabIndex = 29;
@@ -467,7 +440,7 @@ namespace Dobby {
             this.Option12Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Option12Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.Option12Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Option12Btn.Location = new System.Drawing.Point(-5, 293);
+            this.Option12Btn.Location = new System.Drawing.Point(1, 292);
             this.Option12Btn.Name = "Option12Btn";
             this.Option12Btn.Size = new System.Drawing.Size(249, 23);
             this.Option12Btn.TabIndex = 30;
@@ -489,7 +462,7 @@ namespace Dobby {
             this.Option13Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Option13Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.Option13Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Option13Btn.Location = new System.Drawing.Point(-4, 317);
+            this.Option13Btn.Location = new System.Drawing.Point(2, 315);
             this.Option13Btn.Name = "Option13Btn";
             this.Option13Btn.Size = new System.Drawing.Size(245, 23);
             this.Option13Btn.TabIndex = 31;
@@ -511,7 +484,7 @@ namespace Dobby {
             this.ConfirmBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ConfirmBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 10.25F, System.Drawing.FontStyle.Bold);
             this.ConfirmBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ConfirmBtn.Location = new System.Drawing.Point(-5, 350);
+            this.ConfirmBtn.Location = new System.Drawing.Point(1, 343);
             this.ConfirmBtn.Name = "ConfirmBtn";
             this.ConfirmBtn.Size = new System.Drawing.Size(216, 24);
             this.ConfirmBtn.TabIndex = 32;
@@ -522,23 +495,42 @@ namespace Dobby {
             this.ConfirmBtn.MouseEnter += new System.EventHandler(this.ConfirmBtnMH);
             this.ConfirmBtn.MouseLeave += new System.EventHandler(this.ConfirmBtnML);
             // 
-            // label1
+            // SeperatorLabel0
             // 
-            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10.25F);
-            this.label1.ForeColor = System.Drawing.SystemColors.Control;
-            this.label1.Location = new System.Drawing.Point(-4, 329);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(324, 22);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "________________________________________________________________";
+            this.SeperatorLabel0.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLabel0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLabel0.Location = new System.Drawing.Point(2, 21);
+            this.SeperatorLabel0.Name = "SeperatorLabel0";
+            this.SeperatorLabel0.Size = new System.Drawing.Size(316, 20);
+            this.SeperatorLabel0.TabIndex = 34;
+            this.SeperatorLabel0.Text = "____________________________________________";
+            // 
+            // SeperatorLabel1
+            // 
+            this.SeperatorLabel1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLabel1.Location = new System.Drawing.Point(2, 333);
+            this.SeperatorLabel1.Name = "SeperatorLabel1";
+            this.SeperatorLabel1.Size = new System.Drawing.Size(316, 20);
+            this.SeperatorLabel1.TabIndex = 35;
+            this.SeperatorLabel1.Text = "____________________________________________";
+            // 
+            // SeperatorLabel2
+            // 
+            this.SeperatorLabel2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLabel2.Location = new System.Drawing.Point(2, 361);
+            this.SeperatorLabel2.Name = "SeperatorLabel2";
+            this.SeperatorLabel2.Size = new System.Drawing.Size(316, 20);
+            this.SeperatorLabel2.TabIndex = 36;
+            this.SeperatorLabel2.Text = "____________________________________________";
             // 
             // T2CustomOptionsDebug
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 400);
+            this.ClientSize = new System.Drawing.Size(319, 397);
             this.Controls.Add(this.ConfirmBtn);
             this.Controls.Add(this.Option13Btn);
             this.Controls.Add(this.Option12Btn);
@@ -557,7 +549,6 @@ namespace Dobby {
             this.Controls.Add(this.Option1Btn);
             this.Controls.Add(this.Info);
             this.Controls.Add(this.MainBox);
-            this.Controls.Add(this.label1);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "T2CustomOptionsDebug";
@@ -898,7 +889,6 @@ namespace Dobby {
         Button ConfirmBtn;
         GroupBox MainBox;
         Label Info;
-        Label label1;
         Label label4;
         Label MainLabel;
         Button BackBtn;

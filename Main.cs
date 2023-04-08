@@ -42,7 +42,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
         public Label MainLabel;
         public Button PS4DebugPageBtn;
         public Button EbootPatchPageBtn;
-        public Button MiscPatchesBtn;
+        public Button PS4QOLPageBtn;
         public Button CreditsBtn;
         public Button InfoHelpBtn;
         public Label DebugLabel;
@@ -68,15 +68,15 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             this.Info = new System.Windows.Forms.Label();
             this.PS4DebugPageBtn = new System.Windows.Forms.Button();
             this.EbootPatchPageBtn = new System.Windows.Forms.Button();
-            this.MiscPatchesBtn = new System.Windows.Forms.Button();
+            this.PS4QOLPageBtn = new System.Windows.Forms.Button();
             this.CreditsBtn = new System.Windows.Forms.Button();
             this.InfoHelpBtn = new System.Windows.Forms.Button();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.SeperatorLabel2 = new System.Windows.Forms.Label();
             this.BorderBox = new System.Windows.Forms.GroupBox();
+            this.DownloadSourceBtn = new System.Windows.Forms.Button();
             this.PCLabel = new System.Windows.Forms.Label();
             this.Playstation4Label = new System.Windows.Forms.Label();
-            this.DownloadSourceBtn = new System.Windows.Forms.Button();
             this.PkgPageBtn = new System.Windows.Forms.Button();
             this.SeperatorLabel1 = new System.Windows.Forms.Label();
             this.PCDebugMenuPageBtn = new System.Windows.Forms.Button();
@@ -201,25 +201,25 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             this.EbootPatchPageBtn.MouseEnter += new System.EventHandler(this.EbootPatchPageBtnMH);
             this.EbootPatchPageBtn.MouseLeave += new System.EventHandler(this.EbootPatchPageBtnML);
             // 
-            // MiscPatchesBtn
+            // PS4QOLPageBtn
             // 
-            this.MiscPatchesBtn.BackColor = System.Drawing.Color.DimGray;
-            this.MiscPatchesBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.MiscPatchesBtn.FlatAppearance.BorderSize = 0;
-            this.MiscPatchesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MiscPatchesBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Strikeout))));
-            this.MiscPatchesBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MiscPatchesBtn.Location = new System.Drawing.Point(1, 102);
-            this.MiscPatchesBtn.Name = "MiscPatchesBtn";
-            this.MiscPatchesBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.MiscPatchesBtn.Size = new System.Drawing.Size(202, 23);
-            this.MiscPatchesBtn.TabIndex = 27;
-            this.MiscPatchesBtn.Text = "Misc. Debug Menu Patches...";
-            this.MiscPatchesBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.MiscPatchesBtn.UseVisualStyleBackColor = false;
-            this.MiscPatchesBtn.Click += new System.EventHandler(this.MiscPatchesBtn_Click);
-            this.MiscPatchesBtn.MouseEnter += new System.EventHandler(this.MiscPatchesBtnMH);
-            this.MiscPatchesBtn.MouseLeave += new System.EventHandler(this.MiscPatchesBtnML);
+            this.PS4QOLPageBtn.BackColor = System.Drawing.Color.DimGray;
+            this.PS4QOLPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.PS4QOLPageBtn.FlatAppearance.BorderSize = 0;
+            this.PS4QOLPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PS4QOLPageBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.PS4QOLPageBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.PS4QOLPageBtn.Location = new System.Drawing.Point(1, 102);
+            this.PS4QOLPageBtn.Name = "PS4QOLPageBtn";
+            this.PS4QOLPageBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.PS4QOLPageBtn.Size = new System.Drawing.Size(202, 23);
+            this.PS4QOLPageBtn.TabIndex = 27;
+            this.PS4QOLPageBtn.Text = "Misc. Debug Menu Patches...";
+            this.PS4QOLPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.PS4QOLPageBtn.UseVisualStyleBackColor = false;
+            this.PS4QOLPageBtn.Click += new System.EventHandler(this.MiscPatchesBtn_Click);
+            this.PS4QOLPageBtn.MouseEnter += new System.EventHandler(this.MiscPatchesBtnMH);
+            this.PS4QOLPageBtn.MouseLeave += new System.EventHandler(this.MiscPatchesBtnML);
             // 
             // CreditsBtn
             // 
@@ -294,6 +294,26 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             this.BorderBox.TabIndex = 34;
             this.BorderBox.TabStop = false;
             // 
+            // DownloadSourceBtn
+            // 
+            this.DownloadSourceBtn.BackColor = System.Drawing.Color.DimGray;
+            this.DownloadSourceBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.DownloadSourceBtn.FlatAppearance.BorderSize = 0;
+            this.DownloadSourceBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DownloadSourceBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
+            this.DownloadSourceBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.DownloadSourceBtn.Location = new System.Drawing.Point(1, 295);
+            this.DownloadSourceBtn.Name = "DownloadSourceBtn";
+            this.DownloadSourceBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.DownloadSourceBtn.Size = new System.Drawing.Size(292, 23);
+            this.DownloadSourceBtn.TabIndex = 30;
+            this.DownloadSourceBtn.Text = "Download Latest Source Code (Download Link)";
+            this.DownloadSourceBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.DownloadSourceBtn.UseVisualStyleBackColor = false;
+            this.DownloadSourceBtn.Click += new System.EventHandler(this.DownloadSourceBtn_Click);
+            this.DownloadSourceBtn.MouseEnter += new System.EventHandler(this.DownloadSourceBtnMH);
+            this.DownloadSourceBtn.MouseLeave += new System.EventHandler(this.DownloadSourceBtnML);
+            // 
             // PCLabel
             // 
             this.PCLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -316,26 +336,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             this.Playstation4Label.TabIndex = 36;
             this.Playstation4Label.Text = "Playstation 4";
             // 
-            // DownloadSourceBtn
-            // 
-            this.DownloadSourceBtn.BackColor = System.Drawing.Color.DimGray;
-            this.DownloadSourceBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.DownloadSourceBtn.FlatAppearance.BorderSize = 0;
-            this.DownloadSourceBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DownloadSourceBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
-            this.DownloadSourceBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.DownloadSourceBtn.Location = new System.Drawing.Point(1, 295);
-            this.DownloadSourceBtn.Name = "DownloadSourceBtn";
-            this.DownloadSourceBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.DownloadSourceBtn.Size = new System.Drawing.Size(292, 23);
-            this.DownloadSourceBtn.TabIndex = 30;
-            this.DownloadSourceBtn.Text = "Download Latest Source Code (Download Link)";
-            this.DownloadSourceBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.DownloadSourceBtn.UseVisualStyleBackColor = false;
-            this.DownloadSourceBtn.Click += new System.EventHandler(this.DownloadSourceBtn_Click);
-            this.DownloadSourceBtn.MouseEnter += new System.EventHandler(this.DownloadSourceBtnMH);
-            this.DownloadSourceBtn.MouseLeave += new System.EventHandler(this.DownloadSourceBtnML);
-            // 
             // PkgPageBtn
             // 
             this.PkgPageBtn.BackColor = System.Drawing.Color.DimGray;
@@ -351,6 +351,9 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             this.PkgPageBtn.Text = "Build New Patch Or Base Game .pkg...";
             this.PkgPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PkgPageBtn.UseVisualStyleBackColor = false;
+            this.PkgPageBtn.Click += new System.EventHandler(this.PkgPageBtn_Click);
+            this.PkgPageBtn.MouseEnter += new System.EventHandler(this.PkgPageBtnMH);
+            this.PkgPageBtn.MouseLeave += new System.EventHandler(this.PkgPageBtnML);
             // 
             // SeperatorLabel1
             // 
@@ -412,7 +415,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             this.Controls.Add(this.SeperatorLabel1);
             this.Controls.Add(this.PS4DebugPageBtn);
             this.Controls.Add(this.EbootPatchPageBtn);
-            this.Controls.Add(this.MiscPatchesBtn);
+            this.Controls.Add(this.PS4QOLPageBtn);
             this.Controls.Add(this.Info);
             this.Controls.Add(this.DebugLabel);
             this.Controls.Add(this.ExitBtn);
@@ -458,21 +461,28 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
         public void EbootPatchPageBtnMH(object sender, EventArgs e) => HoverString(EbootPatchPageBtn, "Patch An Executable To Be Added To A .pkg");
         public void EbootPatchPageBtnML(object sender, EventArgs e) => HoverLeave(EbootPatchPageBtn, 1);
 
-        private void MiscPatchesBtn_Click(object sender, EventArgs e) { }
-        public void MiscPatchesBtnMH(object sender, EventArgs e) => HoverString(MiscPatchesBtn, "Not Yet Implemented");
-        public void MiscPatchesBtnML(object sender, EventArgs e) => HoverLeave(MiscPatchesBtn, 1);
+        private void MiscPatchesBtn_Click(object sender, EventArgs e) {
+            if (Dev.REL) return;
+            ChangeForm(4, false);
+        }
+        public void MiscPatchesBtnMH(object sender, EventArgs e) => HoverString(PS4QOLPageBtn, "Not Yet Implemented");
+        public void MiscPatchesBtnML(object sender, EventArgs e) => HoverLeave(PS4QOLPageBtn, 1);
+
+        private void PkgPageBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
+        public void PkgPageBtnMH(object sender, EventArgs e) => HoverString(PkgPageBtn, "Not Yet Implemented");
+        public void PkgPageBtnML(object sender, EventArgs e) => HoverLeave(PkgPageBtn, 1);
 
         private void DownloadSourceBtn_Click(object sender, EventArgs e) => System.Diagnostics.Process.Start(@"https://github.com/TheMagicalBlob/NaughtyDog-Debug-Menu-Patch-Tool/archive/refs/heads/master.zip");
-
         public void DownloadSourceBtnMH(object sender, EventArgs e) => HoverString(DownloadSourceBtn, "This Opens An External Link");
         public void DownloadSourceBtnML(object sender, EventArgs e) => HoverLeave(DownloadSourceBtn, 1);
 
         private void PCDebugMenuPageBtn_Click(object sender, EventArgs e) => ChangeForm(9, false);
-        public void PCDebugMenuPageBtnMH(object sender, EventArgs e) => HoverString(PCDebugMenuPageBtn, "This Opens An External Link");
+        public void PCDebugMenuPageBtnMH(object sender, EventArgs e) => HoverString(PCDebugMenuPageBtn, "Enable The Default Or Restored Debug Menu");
         public void PCDebugMenuPageBtnML(object sender, EventArgs e) => HoverLeave(PCDebugMenuPageBtn, 1);
 
         private void PCQOLPageBtn_Click(object sender, EventArgs e) => ChangeForm(10, false);
-        public void PCQOLPageBtnMH(object sender, EventArgs e) => HoverString(PCQOLPageBtn, "This Opens An External Link");
+        public void PCQOLPageBtnMH(object sender, EventArgs e) => HoverString(PCQOLPageBtn, "Not Yet Implemented");
         public void PCQOLPageBtnML(object sender, EventArgs e) => HoverLeave(PCQOLPageBtn, 1);
+
     }
 }

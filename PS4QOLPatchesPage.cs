@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Drawing;
 using static Dobby.Common;
+using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace Dobby {
-    internal class PCQOLPatchesPage : Form {
-        public PCQOLPatchesPage() {
+    internal class PS4QOLPatchesPage : Form {
+        public PS4QOLPatchesPage() {
             InitializeComponent();
         }
 
@@ -27,14 +28,13 @@ namespace Dobby {
         public Label GameInfoLabel;
         private Button BrowseButton;
         private TextBox ExecutablePathBox;
-        public Button BackBtn;
+        public Button DisableDebugTextBtn;
+        public Button ProgPauseBtn;
         public Button RightMarginBtn;
         public Button MenuRightAlignBtn;
         public Button MenuScaleBtn;
         public Button MenuAlphaBtn;
-        public Button ProgPauseBtn;
-        private Button ApplyBtn;
-        public Button DisableDebugTextBtn;
+        public Button BackBtn;
 
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
@@ -47,17 +47,16 @@ namespace Dobby {
             this.label5 = new System.Windows.Forms.Label();
             this.BorderBox = new System.Windows.Forms.GroupBox();
             this.ProgPauseBtn = new System.Windows.Forms.Button();
-            this.RightMarginBtn = new System.Windows.Forms.Button();
-            this.MenuRightAlignBtn = new System.Windows.Forms.Button();
-            this.MenuScaleBtn = new System.Windows.Forms.Button();
-            this.MenuAlphaBtn = new System.Windows.Forms.Button();
-            this.BackBtn = new System.Windows.Forms.Button();
-            this.GameInfoLabel = new System.Windows.Forms.Label();
-            this.BrowseButton = new System.Windows.Forms.Button();
-            this.ExecutablePathBox = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.DisableDebugTextBtn = new System.Windows.Forms.Button();
-            this.ApplyBtn = new System.Windows.Forms.Button();
+            this.GameInfoLabel = new System.Windows.Forms.Label();
+            this.RightMarginBtn = new System.Windows.Forms.Button();
+            this.BackBtn = new System.Windows.Forms.Button();
+            this.MenuRightAlignBtn = new System.Windows.Forms.Button();
+            this.BrowseButton = new System.Windows.Forms.Button();
+            this.MenuScaleBtn = new System.Windows.Forms.Button();
+            this.ExecutablePathBox = new System.Windows.Forms.TextBox();
+            this.MenuAlphaBtn = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
             this.BorderBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -70,7 +69,7 @@ namespace Dobby {
             this.MainLabel.Name = "MainLabel";
             this.MainLabel.Size = new System.Drawing.Size(314, 22);
             this.MainLabel.TabIndex = 0;
-            this.MainLabel.Text = "Quality Of Life Patches Page";
+            this.MainLabel.Text = "PC Debug Menu Page";
             this.MainLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
             this.MainLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             this.MainLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
@@ -117,11 +116,11 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(9, 436);
+            this.Info.Location = new System.Drawing.Point(9, 388);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
-            this.Info.Text = "      This Page Assumes .cfg\'s Still Don\'t Work";
+            this.Info.Text = "=====================================";
             this.Info.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
             this.Info.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             this.Info.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
@@ -134,7 +133,7 @@ namespace Dobby {
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 387);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 339);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
@@ -154,7 +153,7 @@ namespace Dobby {
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 362);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 314);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.InfoHelpBtn.Size = new System.Drawing.Size(147, 23);
@@ -180,7 +179,7 @@ namespace Dobby {
             // 
             this.label5.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label5.Location = new System.Drawing.Point(2, 342);
+            this.label5.Location = new System.Drawing.Point(3, 288);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(316, 16);
             this.label5.TabIndex = 32;
@@ -188,23 +187,22 @@ namespace Dobby {
             // 
             // BorderBox
             // 
-            this.BorderBox.Controls.Add(this.ApplyBtn);
-            this.BorderBox.Controls.Add(this.GameInfoLabel);
-            this.BorderBox.Controls.Add(this.label5);
-            this.BorderBox.Controls.Add(this.BrowseButton);
-            this.BorderBox.Controls.Add(this.ExecutablePathBox);
             this.BorderBox.Controls.Add(this.ProgPauseBtn);
+            this.BorderBox.Controls.Add(this.DisableDebugTextBtn);
+            this.BorderBox.Controls.Add(this.GameInfoLabel);
             this.BorderBox.Controls.Add(this.RightMarginBtn);
-            this.BorderBox.Controls.Add(this.MenuRightAlignBtn);
-            this.BorderBox.Controls.Add(this.MenuScaleBtn);
-            this.BorderBox.Controls.Add(this.MenuAlphaBtn);
             this.BorderBox.Controls.Add(this.BackBtn);
+            this.BorderBox.Controls.Add(this.MenuRightAlignBtn);
+            this.BorderBox.Controls.Add(this.BrowseButton);
+            this.BorderBox.Controls.Add(this.MenuScaleBtn);
+            this.BorderBox.Controls.Add(this.ExecutablePathBox);
+            this.BorderBox.Controls.Add(this.MenuAlphaBtn);
             this.BorderBox.Controls.Add(this.Info);
             this.BorderBox.Controls.Add(this.InfoHelpBtn);
             this.BorderBox.Controls.Add(this.CreditsBtn);
             this.BorderBox.Location = new System.Drawing.Point(0, -6);
             this.BorderBox.Name = "BorderBox";
-            this.BorderBox.Size = new System.Drawing.Size(320, 472);
+            this.BorderBox.Size = new System.Drawing.Size(320, 410);
             this.BorderBox.TabIndex = 34;
             this.BorderBox.TabStop = false;
             // 
@@ -216,14 +214,46 @@ namespace Dobby {
             this.ProgPauseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ProgPauseBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.ProgPauseBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ProgPauseBtn.Location = new System.Drawing.Point(1, 185);
+            this.ProgPauseBtn.Location = new System.Drawing.Point(1, 184);
             this.ProgPauseBtn.Name = "ProgPauseBtn";
-            this.ProgPauseBtn.Size = new System.Drawing.Size(281, 23);
-            this.ProgPauseBtn.TabIndex = 45;
-            this.ProgPauseBtn.Text = "Disable Debug Pause On Menu Open: Off";
+            this.ProgPauseBtn.Size = new System.Drawing.Size(301, 23);
+            this.ProgPauseBtn.TabIndex = 51;
+            this.ProgPauseBtn.Text = "Disable Debug Pause On Menu Open:";
             this.ProgPauseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ProgPauseBtn.UseVisualStyleBackColor = false;
-            this.ProgPauseBtn.Click += new System.EventHandler(this.ProgPauseBtn_Click);
+            // 
+            // DisableDebugTextBtn
+            // 
+            this.DisableDebugTextBtn.BackColor = System.Drawing.Color.DimGray;
+            this.DisableDebugTextBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.DisableDebugTextBtn.FlatAppearance.BorderSize = 0;
+            this.DisableDebugTextBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DisableDebugTextBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.DisableDebugTextBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.DisableDebugTextBtn.Location = new System.Drawing.Point(1, 39);
+            this.DisableDebugTextBtn.Name = "DisableDebugTextBtn";
+            this.DisableDebugTextBtn.Size = new System.Drawing.Size(269, 23);
+            this.DisableDebugTextBtn.TabIndex = 46;
+            this.DisableDebugTextBtn.Text = "Disable 2D Debug Text On Startup: ";
+            this.DisableDebugTextBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.DisableDebugTextBtn.UseVisualStyleBackColor = false;
+            this.DisableDebugTextBtn.Click += new System.EventHandler(this.DisableDebugTextBtn_Click);
+            this.DisableDebugTextBtn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.DisableDebugTextBtn.MouseEnter += new System.EventHandler(this.DisableDebugTextBtnMH);
+            this.DisableDebugTextBtn.MouseLeave += new System.EventHandler(this.DisableDebugTextBtnML);
+            this.DisableDebugTextBtn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
+            this.DisableDebugTextBtn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.DisableDebugTextBtn_SClick);
+            // 
+            // GameInfoLabel
+            // 
+            this.GameInfoLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.GameInfoLabel.Location = new System.Drawing.Point(2, 279);
+            this.GameInfoLabel.Name = "GameInfoLabel";
+            this.GameInfoLabel.Size = new System.Drawing.Size(316, 19);
+            this.GameInfoLabel.TabIndex = 40;
+            this.GameInfoLabel.Text = "No File Selected";
+            this.GameInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // RightMarginBtn
             // 
@@ -233,65 +263,13 @@ namespace Dobby {
             this.RightMarginBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RightMarginBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.RightMarginBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.RightMarginBtn.Location = new System.Drawing.Point(1, 157);
+            this.RightMarginBtn.Location = new System.Drawing.Point(1, 153);
             this.RightMarginBtn.Name = "RightMarginBtn";
             this.RightMarginBtn.Size = new System.Drawing.Size(231, 23);
-            this.RightMarginBtn.TabIndex = 44;
-            this.RightMarginBtn.Text = "Distance From Right SIde: ?";
+            this.RightMarginBtn.TabIndex = 50;
+            this.RightMarginBtn.Text = "Distance From Right Side:";
             this.RightMarginBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.RightMarginBtn.UseVisualStyleBackColor = false;
-            this.RightMarginBtn.Click += new System.EventHandler(this.RightMarginBtn_Click);
-            // 
-            // MenuRightAlignBtn
-            // 
-            this.MenuRightAlignBtn.BackColor = System.Drawing.Color.DimGray;
-            this.MenuRightAlignBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.MenuRightAlignBtn.FlatAppearance.BorderSize = 0;
-            this.MenuRightAlignBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MenuRightAlignBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.MenuRightAlignBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MenuRightAlignBtn.Location = new System.Drawing.Point(1, 128);
-            this.MenuRightAlignBtn.Name = "MenuRightAlignBtn";
-            this.MenuRightAlignBtn.Size = new System.Drawing.Size(301, 23);
-            this.MenuRightAlignBtn.TabIndex = 43;
-            this.MenuRightAlignBtn.Text = "Alight Menu\'s To Right Side Of Screen: Off";
-            this.MenuRightAlignBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.MenuRightAlignBtn.UseVisualStyleBackColor = false;
-            this.MenuRightAlignBtn.Click += new System.EventHandler(this.MenuRightAlignBtn_Click);
-            // 
-            // MenuScaleBtn
-            // 
-            this.MenuScaleBtn.BackColor = System.Drawing.Color.DimGray;
-            this.MenuScaleBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.MenuScaleBtn.FlatAppearance.BorderSize = 0;
-            this.MenuScaleBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MenuScaleBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.MenuScaleBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MenuScaleBtn.Location = new System.Drawing.Point(1, 99);
-            this.MenuScaleBtn.Name = "MenuScaleBtn";
-            this.MenuScaleBtn.Size = new System.Drawing.Size(207, 23);
-            this.MenuScaleBtn.TabIndex = 42;
-            this.MenuScaleBtn.Text = "Set Dev Menu Scale: 0.6F";
-            this.MenuScaleBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.MenuScaleBtn.UseVisualStyleBackColor = false;
-            this.MenuScaleBtn.Click += new System.EventHandler(this.MenuScaleBtn_Click);
-            // 
-            // MenuAlphaBtn
-            // 
-            this.MenuAlphaBtn.BackColor = System.Drawing.Color.DimGray;
-            this.MenuAlphaBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.MenuAlphaBtn.FlatAppearance.BorderSize = 0;
-            this.MenuAlphaBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MenuAlphaBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.MenuAlphaBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MenuAlphaBtn.Location = new System.Drawing.Point(1, 70);
-            this.MenuAlphaBtn.Name = "MenuAlphaBtn";
-            this.MenuAlphaBtn.Size = new System.Drawing.Size(301, 23);
-            this.MenuAlphaBtn.TabIndex = 37;
-            this.MenuAlphaBtn.Text = "Set Dev Menu Background Opacity: 1F";
-            this.MenuAlphaBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.MenuAlphaBtn.UseVisualStyleBackColor = false;
-            this.MenuAlphaBtn.Click += new System.EventHandler(this.MenuAlphaBtn_Click);
             // 
             // BackBtn
             // 
@@ -301,7 +279,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 412);
+            this.BackBtn.Location = new System.Drawing.Point(1, 364);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.BackBtn.Size = new System.Drawing.Size(75, 23);
@@ -313,16 +291,22 @@ namespace Dobby {
             this.BackBtn.MouseEnter += new System.EventHandler(this.BackBtnMH);
             this.BackBtn.MouseLeave += new System.EventHandler(this.BackBtnML);
             // 
-            // GameInfoLabel
+            // MenuRightAlignBtn
             // 
-            this.GameInfoLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.GameInfoLabel.Location = new System.Drawing.Point(2, 334);
-            this.GameInfoLabel.Name = "GameInfoLabel";
-            this.GameInfoLabel.Size = new System.Drawing.Size(316, 19);
-            this.GameInfoLabel.TabIndex = 40;
-            this.GameInfoLabel.Text = "No File Selected";
-            this.GameInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.MenuRightAlignBtn.BackColor = System.Drawing.Color.DimGray;
+            this.MenuRightAlignBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.MenuRightAlignBtn.FlatAppearance.BorderSize = 0;
+            this.MenuRightAlignBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.MenuRightAlignBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.MenuRightAlignBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.MenuRightAlignBtn.Location = new System.Drawing.Point(1, 124);
+            this.MenuRightAlignBtn.Name = "MenuRightAlignBtn";
+            this.MenuRightAlignBtn.Size = new System.Drawing.Size(301, 23);
+            this.MenuRightAlignBtn.TabIndex = 49;
+            this.MenuRightAlignBtn.Text = "Align Menu\'s To Right Side Of Screen: ";
+            this.MenuRightAlignBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.MenuRightAlignBtn.UseVisualStyleBackColor = false;
+            this.MenuRightAlignBtn.Click += new System.EventHandler(this.MenuRightAlignBtn_Click);
             // 
             // BrowseButton
             // 
@@ -332,7 +316,7 @@ namespace Dobby {
             this.BrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BrowseButton.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BrowseButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.BrowseButton.Location = new System.Drawing.Point(239, 308);
+            this.BrowseButton.Location = new System.Drawing.Point(239, 253);
             this.BrowseButton.Name = "BrowseButton";
             this.BrowseButton.Size = new System.Drawing.Size(75, 23);
             this.BrowseButton.TabIndex = 39;
@@ -341,83 +325,74 @@ namespace Dobby {
             this.BrowseButton.UseVisualStyleBackColor = false;
             this.BrowseButton.Click += new System.EventHandler(this.BrowseButton_Click);
             // 
+            // MenuScaleBtn
+            // 
+            this.MenuScaleBtn.BackColor = System.Drawing.Color.DimGray;
+            this.MenuScaleBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.MenuScaleBtn.FlatAppearance.BorderSize = 0;
+            this.MenuScaleBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.MenuScaleBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.MenuScaleBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.MenuScaleBtn.Location = new System.Drawing.Point(1, 95);
+            this.MenuScaleBtn.Name = "MenuScaleBtn";
+            this.MenuScaleBtn.Size = new System.Drawing.Size(192, 23);
+            this.MenuScaleBtn.TabIndex = 48;
+            this.MenuScaleBtn.Text = "Set Dev Menu Scale: 0.6F";
+            this.MenuScaleBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.MenuScaleBtn.UseVisualStyleBackColor = false;
+            // 
             // ExecutablePathBox
             // 
             this.ExecutablePathBox.BackColor = System.Drawing.Color.Gray;
             this.ExecutablePathBox.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.ExecutablePathBox.ForeColor = System.Drawing.SystemColors.Window;
-            this.ExecutablePathBox.Location = new System.Drawing.Point(7, 308);
+            this.ExecutablePathBox.Location = new System.Drawing.Point(7, 253);
             this.ExecutablePathBox.Name = "ExecutablePathBox";
             this.ExecutablePathBox.Size = new System.Drawing.Size(233, 23);
             this.ExecutablePathBox.TabIndex = 38;
             this.ExecutablePathBox.Text = " Select An exe To Modify";
             // 
+            // MenuAlphaBtn
+            // 
+            this.MenuAlphaBtn.BackColor = System.Drawing.Color.DimGray;
+            this.MenuAlphaBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.MenuAlphaBtn.FlatAppearance.BorderSize = 0;
+            this.MenuAlphaBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.MenuAlphaBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.MenuAlphaBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.MenuAlphaBtn.Location = new System.Drawing.Point(1, 66);
+            this.MenuAlphaBtn.Name = "MenuAlphaBtn";
+            this.MenuAlphaBtn.Size = new System.Drawing.Size(301, 23);
+            this.MenuAlphaBtn.TabIndex = 47;
+            this.MenuAlphaBtn.Text = "Set Dev Menu Background Opacity: ";
+            this.MenuAlphaBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.MenuAlphaBtn.UseVisualStyleBackColor = false;
+            // 
             // label6
             // 
             this.label6.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label6.Location = new System.Drawing.Point(2, 277);
+            this.label6.Location = new System.Drawing.Point(2, 217);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(316, 16);
             this.label6.TabIndex = 36;
             this.label6.Text = "______________________________________________________________";
             // 
-            // DisableDebugTextBtn
-            // 
-            this.DisableDebugTextBtn.BackColor = System.Drawing.Color.DimGray;
-            this.DisableDebugTextBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.DisableDebugTextBtn.FlatAppearance.BorderSize = 0;
-            this.DisableDebugTextBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DisableDebugTextBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.DisableDebugTextBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.DisableDebugTextBtn.Location = new System.Drawing.Point(1, 35);
-            this.DisableDebugTextBtn.Name = "DisableDebugTextBtn";
-            this.DisableDebugTextBtn.Size = new System.Drawing.Size(316, 23);
-            this.DisableDebugTextBtn.TabIndex = 20;
-            this.DisableDebugTextBtn.Text = "Disable 2D Debug Text On Startup: Off";
-            this.DisableDebugTextBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.DisableDebugTextBtn.UseVisualStyleBackColor = false;
-            this.DisableDebugTextBtn.Click += new System.EventHandler(this.DisableDebugTextBtn_Click);
-            this.DisableDebugTextBtn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.DisableDebugTextBtn.MouseEnter += new System.EventHandler(this.DisableDebugTextBtnMH);
-            this.DisableDebugTextBtn.MouseLeave += new System.EventHandler(this.DisableDebugTextBtnML);
-            this.DisableDebugTextBtn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            this.DisableDebugTextBtn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.DisableDebugTextBtn_SClick);
-            // 
-            // ApplyBtn
-            // 
-            this.ApplyBtn.BackColor = System.Drawing.Color.DimGray;
-            this.ApplyBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.ApplyBtn.FlatAppearance.BorderSize = 0;
-            this.ApplyBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ApplyBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.ApplyBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ApplyBtn.Location = new System.Drawing.Point(101, 262);
-            this.ApplyBtn.Name = "ApplyBtn";
-            this.ApplyBtn.Size = new System.Drawing.Size(107, 23);
-            this.ApplyBtn.TabIndex = 46;
-            this.ApplyBtn.Text = "Apply Patches";
-            this.ApplyBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ApplyBtn.UseVisualStyleBackColor = false;
-            this.ApplyBtn.Click += new System.EventHandler(this.ApplyBtn_Click);
-            this.ApplyBtn.MouseEnter += new System.EventHandler(this.ApplyBtnMH);
-            this.ApplyBtn.MouseLeave += new System.EventHandler(this.ApplyBtnML);
-            // 
-            // PCQOLPatchesPage
+            // PS4QOLPatchesPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 466);
+            this.ClientSize = new System.Drawing.Size(320, 403);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.DisableDebugTextBtn);
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.MinimizeBtn);
             this.Controls.Add(this.MainLabel);
             this.Controls.Add(this.SeperatorLine1);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.BorderBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "PCQOLPatchesPage";
+            this.Name = "PS4QOLPatchesPage";
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
@@ -429,22 +404,17 @@ namespace Dobby {
         public void MoveForm(object sender, MouseEventArgs e) => Common.MoveForm(sender, e);
         public void MouseUpFunc(object sender, MouseEventArgs e) => Common.MouseUpFunc(sender, e);
         public void MouseDownFunc(object sender, MouseEventArgs e) => Common.MouseDownFunc(sender, e);
+
         public void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
         public void ExitBtnMH(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void ExitBtnML(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 255, 255);
+
         public void MinimizeBtn_Click(object sender, EventArgs e) => ActiveForm.WindowState = FormWindowState.Minimized;
         public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
 
 
-
-
-
-        bool[] CustomDebugBooleans = new bool[3];
-
-        float[] CustomDebugFloats = new float[] { 0.85f, 0.6f };
-
-        int RightMargin = 10;
+        bool[] CustomDebugOptions = new bool[3];
 
 
         public void Invert(Control Control, int OptionIndex) {
@@ -452,50 +422,28 @@ namespace Dobby {
                 Dev.DebugOutStr($"MouseScrolled: {MouseScrolled}\nMouseIsDown: {MouseIsDown}\n CurrentControl: {CurrentControl}\nC.Name: {Control.Name}");
                 return;
             }
-            if (Game == 0) {
-                if (!FlashThreadHasStarted) {
-                    Dev.FlashThread.Start();
-                    FlashThreadHasStarted = true;
-                }
-                LabelShouldFlash = true;
-                SetInfoString("Please Select A Game's Executable First");
-                Dobby.InfoHasImportantStr = true;
-                return;
-            }
-
             tmp = Control.Text;
-            CustomDebugBooleans[OptionIndex] = !CustomDebugBooleans[OptionIndex];
-            tmp = $"{tmp.Remove(tmp.LastIndexOf(' '))} {(CustomDebugBooleans[OptionIndex] ? "On" : "Off")}";
+            CustomDebugOptions[OptionIndex] = !CustomDebugOptions[OptionIndex];
+            tmp = $"{tmp.Remove(tmp.LastIndexOf(' '))} {(CustomDebugOptions[OptionIndex] ? "On" : "Off")}";
             Control.Text = tmp;
         }
 
-        public void FloatFunc() {
-            if (Game == 0) {
-                if (!FlashThreadHasStarted) {
-                    Dev.FlashThread.Start();
-                    FlashThreadHasStarted = true;
-                }
-                LabelShouldFlash = true;
-                SetInfoString("Please Select A Game's Executable First");
-                Dobby.InfoHasImportantStr = true;
-                return;
-            }
 
-        }
 
-        public void IntFunc() {
-            if (Game == 0) {
-                if (!FlashThreadHasStarted) {
-                    Dev.FlashThread.Start();
-                    FlashThreadHasStarted = true;
-                }
-                LabelShouldFlash = true;
-                SetInfoString("Please Select A Game's Executable First");
-                Dobby.InfoHasImportantStr = true;
-                return;
-            }
 
-        }
+
+        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
+        public void InfoHelpBtnMH(object sender, EventArgs e) => HoverLeave(InfoHelpBtn, 0);
+        public void InfoHelpBtnML(object sender, EventArgs e) => HoverLeave(InfoHelpBtn, 1);
+
+        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
+        public void CreditsBtnMH(object sender, EventArgs e) => HoverLeave(CreditsBtn, 0);
+        public void CreditsBtnML(object sender, EventArgs e) => HoverLeave(CreditsBtn, 1);
+
+        private void BackBtn_Click(object sender, EventArgs e) => BackFunc();
+        public void BackBtnMH(object sender, EventArgs e) => HoverLeave(BackBtn, 0);
+        public void BackBtnML(object sender, EventArgs e) => HoverLeave(BackBtn, 1);
+
 
         public string UpdateGameInfoLabel() { //!
             var VersionString = $"Unknown Version {BitConverter.ToString(chk):X}";
@@ -558,7 +506,6 @@ namespace Dobby {
             return VersionString;
         }
 
-
         private void BrowseButton_Click(object sender, EventArgs e) {
             if (e == null) {
                 GameInfoLabel.Text = "Select An Executable To Patch First.";
@@ -588,40 +535,8 @@ namespace Dobby {
         public void DisableDebugTextBtnMH(object sender, EventArgs e) => HoverLeave(DisableDebugTextBtn, 0);
         public void DisableDebugTextBtnML(object sender, EventArgs e) => HoverLeave(DisableDebugTextBtn, 1);
 
-        private void MenuAlphaBtn_Click(object sender, EventArgs e) {
-
-        }
-
-        private void MenuScaleBtn_Click(object sender, EventArgs e) {
-
-        }
-
         private void MenuRightAlignBtn_Click(object sender, EventArgs e) {
 
         }
-
-        private void RightMarginBtn_Click(object sender, EventArgs e) {
-
-        }
-
-        private void ProgPauseBtn_Click(object sender, EventArgs e) => Invert(ProgPauseBtn, 3);
-
-        private void ApplyBtn_Click(object sender, EventArgs e) {
-
-        }
-        public void ApplyBtnMH(object sender, EventArgs e) => HoverLeave(ApplyBtn, 0);
-        public void ApplyBtnML(object sender, EventArgs e) => HoverLeave(ApplyBtn, 1);
-
-        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
-        public void InfoHelpBtnMH(object sender, EventArgs e) => HoverLeave(InfoHelpBtn, 0);
-        public void InfoHelpBtnML(object sender, EventArgs e) => HoverLeave(InfoHelpBtn, 1);
-
-        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
-        public void CreditsBtnMH(object sender, EventArgs e) => HoverLeave(CreditsBtn, 0);
-        public void CreditsBtnML(object sender, EventArgs e) => HoverLeave(CreditsBtn, 1);
-
-        private void BackBtn_Click(object sender, EventArgs e) => BackFunc();
-        public void BackBtnMH(object sender, EventArgs e) => HoverLeave(BackBtn, 0);
-        public void BackBtnML(object sender, EventArgs e) => HoverLeave(BackBtn, 1);
     }
 }

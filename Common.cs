@@ -109,7 +109,8 @@ namespace Dobby {
            "* 2.21.61.140 | Split main form in to seperate PS4 and PC sections, added two pages for the new pc section. Changed contact details line on the InfoHelpPage. Merged Main.Designer.cs with Main.cs, Moved MainStream variable EbootPatchPage.cs -> Common.cs for use with PC Patch Pages",
            "* 2.21.61.142 | Fixed CheckDebugState bug; forgot to go back by one before checking for 0xEB, Added MainStream killswitch to debugger (ctrl k)",
            "* 2.21.62.144 | Added Base Debug To PCPatchPage, Other Misc Changes",
-           "* 2.21.63.148 | Fixed Credits page crash caused by deleting unused info label (was still being called on page creation), Added Mouse Hover/Leave Event Handlers To Multiple Neglected Controls, Changed chk On PCPatchPage To Check Bot 0x1EC and 0x1F8 and add them together for the result"
+           "* 2.21.63.148 | Fixed Credits page crash caused by deleting unused info label (was still being called on page creation), Added Mouse Hover/Leave Event Handlers To Multiple Neglected Controls, Changed chk On PCPatchPage To Check Bot 0x1EC and 0x1F8 and add them together for the result",
+           "* 2.21.65.158 | PCQOLPatchesPAge Work, Changed Hover Info For Multiple Controls, Other Changes I've Made But forgot the specifics of"
 
             // TODO:
             // - Fix Messy Back Button Implementation
@@ -123,11 +124,86 @@ namespace Dobby {
         public static string Build = ChangeList[ChangeList.Length - 1].Substring(2).Substring(0, ChangeList[ChangeList.Length - 1].IndexOf('|') - 3); // Trims The Last ChangeList String For Latest The Build Number
         public static string CurrentControl, tmp;
 
-#region PS4 / PC exe Patch Page Shared Variables And Functions
+        #region PS4 / PC exe Patch Page Shared Variables And Functions
+
+
+        public const int // Games. Read 4 bytes at 0x60 as an integer to get it
+            T1R100 = 22033680,
+            T1R109 = 21444016,
+            T1R11X = 21446072,
+            T2100 = 46552012,
+            T2101 = 46785692,
+            T2102 = 46718028,
+            T2105 = 46826436,
+            T2107 = 46832260,
+            T2108 = 48176392,
+            T2109 = 48176456,
+            UC1100 = 9818208,
+            UC1102 = 9568920,
+            UC2100 = 14655236,
+            UC2102 = 16663728,
+            UC3100 = 20277852,
+            UC3102 = 23365872,
+            UC4100 = 36229424,
+            UC413X = 33886256,
+            UC4133MP = 35877432,
+            TLL100 = 35178432,
+            TLL10X = 35227448,
+            // End Of Checks, Start Of Debug Offsets
+            T1R100Debug = 0x579F
+        /* T1R109Debug = ,
+           T1R11XDebug = ,
+           T2100Debug = ,
+           T2101Debug = ,
+           T2102Debug = ,
+           T2105Debug = ,
+           T2107Debug = ,
+           T2108Debug = ,
+           T2109Debug = ,
+           UC1100Debug = ,
+           UC1102Debug = ,
+           UC2100Debug = ,
+           UC2102Debug = ,
+           UC3100Debug = 0x168EB7, // 0xEB
+           UC3102Debug = ,
+           UC4100Debug = ,
+           UC413XDebug = ,
+           UC4133MPDebug = ,
+           TLL100Debug = ,
+           TLL10XDebug =
+        */
+        ;
+
+        public const int // 0x1EC + 0x1F8, Yes, I was too lazy to add them together. for now
+            T1X101 = 42695168 + 16007532,
+            T1XL101 = 42670080 + 16010844,
+            T1X1015 = 2228464 + 95625728,
+            T1XL1015 = 2228464 + 95627776,
+            T1X1016 = 42698752 + 16007532,
+            T1XL1016 = 42673664 + 16010828,
+            T1X1017 = 42702336 + 16007852,
+            T1XL1017 = 42677248 + 16011148,
+            T1X102 = 2228464 + 95631360,
+            T1XL102 = 2228464 + 95634432,
+            // End Of Checks, Start Of Debug Offsets (0x97 -> 0x8F)
+            T1X101Debug = 0x3B66CD,
+            T1XL101Debug = 0x3B64B9,
+            T1X1015Debug = 0x3B68FD,
+            T1XL1015Debug = 0x3B66E9,
+            T1X1016Debug = 0x3B690D,
+            T1XL1016Debug = 0x3B66E9,
+            T1X1017Debug = 0x3B6A2E,
+            T1XL1017Debug = 0x03B680A,
+            T1X102Debug = 0x3B6AA9,
+            T1XL102Debug = 0x3B6885
+        ;
 
         public static byte[]
             chk = new byte[4],
-            E9Jump = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 }
+            E9Jump = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 },
+            DebugDat = new byte[] { 0x8a, 0x8f, 0xf2, 0x3e, 0x00, 0x00, 0x84, 0xc9, 0x0f, 0x94, 0xc2, 0x84, 0xc9, 0x0f, 0x95, 0xc1, 0x88, 0x8f, 0x3d, 0x3f, 0x00, 0x00, 0x88, 0x97, 0x2f, 0x3f, 0x00, 0x00 },
+            T2Debug = new byte[] { 0xb2, 0x00, 0xb0, 0x01 }, // Turns "Disable Debug Rendering" Off (b2 00) & Debug Mode On (b0 01)
+            T2DebugOff = new byte[] { 0xb2, 0x01, 0x31, 0xc0 }
         ;
 
         public static byte
@@ -231,10 +307,12 @@ namespace Dobby {
                     EbootPatch.Show();
                     break;
                 case 3:
-                    // PKG Page
+                    PS4QOLPatchesPage PS4QOLPage = new PS4QOLPatchesPage();
+                    PS4QOLPage.Show();
                     break;
                 case 4:
-                    // Misc Patches Page
+                    PS4QOLPatchesPage tmp = new PS4QOLPatchesPage();
+                    tmp.Show();
                     break;
                 case 5:
                     InfoHelpPage InfoHelp = new InfoHelpPage();

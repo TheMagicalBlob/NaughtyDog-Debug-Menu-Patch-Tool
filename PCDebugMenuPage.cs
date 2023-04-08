@@ -36,30 +36,6 @@ namespace Dobby {
         public Button DisableDebugBtn;
         public Button BaseDebugBtn;
 
-        public const int // 0x1EC + 0x1F8, Yes, I was too lazy to add them together. for now
-            T1X101 = 42695168 + 16007532,
-            T1XL101 = 42670080 + 16010844,
-            T1X1015 = 2228464 + 95625728,
-            T1XL1015 = 2228464 + 95627776,
-            T1X1016 = 42698752 + 16007532,
-            T1XL1016 = 42673664 + 16010828,
-            T1X1017 = 42702336 + 16007852,
-            T1XL1017 = 42677248 + 16011148,
-            T1X102 = 2228464 + 95631360,
-            T1XL102 = 2228464 + 95634432,
-            // End Of Checks, Start Of Debug Offsets (0x97 -> 0x8F)
-            T1X101Debug = 0x3B66CD,
-            T1XL101Debug = 0x3B64B9,
-            T1X1015Debug = 0x3B68FD,
-            T1XL1015Debug = 0x3B66E9,
-            T1X1016Debug = 0x3B690D,
-            T1XL1016Debug = 0x3B66E9,
-            T1X1017Debug = 0x3B6A2E,
-            T1XL1017Debug = 0x03B680A,
-            T1X102Debug = 0x3B6AA9,
-            T1XL102Debug = 0x3B6885
-        ;
-
         public static int GuessedDebug;
 
         public void InitializeComponent() {
@@ -389,8 +365,6 @@ namespace Dobby {
 
         public static Thread DebugScanThread = new Thread(new ThreadStart(ScanForDebugAddr));
         public static void ScanForDebugAddr() { 
-            byte[] DebugDat = new byte[] { 0x8a, 0x8f, 0xf2, 0x3e, 0x00, 0x00, 0x84, 0xc9, 0x0f, 0x94, 0xc2, 0x84, 0xc9, 0x0f, 0x95, 0xc1, 0x88, 0x8f, 0x3d, 0x3f, 0x00, 0x00, 0x88, 0x97, 0x2f, 0x3f, 0x00, 0x00 };
-
             int TmpAddr = 0;
             chk = new byte[28];
             string StartTime = DateTime.Now.ToString();
@@ -410,7 +384,6 @@ Read:       MainStream.Position = TmpAddr;
         public string UpdateGameInfoLabel() { //!
             var VersionString = $"Unknown Version {BitConverter.ToString(chk):X}";
 
-            byte[] DebugDat = new byte[] { 0x8a, 0x8f, 0xf2, 0x3e, 0x00, 0x00, 0x84, 0xc9, 0x0f, 0x94, 0xc2, 0x84, 0xc9, 0x0f, 0x95, 0xc1, 0x88, 0x8f, 0x3d, 0x3f, 0x00, 0x00, 0x88, 0x97, 0x2f, 0x3f, 0x00, 0x00 };
             switch (Game) {
                 default:
                     MessageBoxButtons MBB = MessageBoxButtons.YesNo;
@@ -471,7 +444,6 @@ Read:       MainStream.Position = TmpAddr;
             }
             return VersionString;
         }
-
 
         private void BrowseButton_Click(object sender, EventArgs e) {
             if (e == null) {
