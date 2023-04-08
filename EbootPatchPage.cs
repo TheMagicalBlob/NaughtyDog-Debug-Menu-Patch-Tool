@@ -15,6 +15,9 @@ namespace Dobby {
 
         public EbootPatchPage() {
             InitializeComponent();
+
+            if (ActiveFilePath != null && !IsActiveFilePCExe)
+                ExecutablePathBox.Text = ActiveFilePath;
         }
 
         public bool[] CDO = new bool[11]; // Custom Debug Options - 11th is For Eventually Keeping Track Of Whether The Options Were Left Default (true if changed)
@@ -58,26 +61,27 @@ namespace Dobby {
             TLL10X = 35227448,
             // End Of Checks, Start Of Debug Offsets
             T1R100Debug = 0x579F
-        /* T1R109Debug = ,
-         T1R11XDebug = ,
-         T2100Debug = ,
-         T2101Debug = ,
-         T2102Debug = ,
-         T2105Debug = ,
-         T2107Debug = ,
-         T2108Debug = ,
-         T2109Debug = ,
-         UC1100Debug = ,
-         UC1102Debug = ,
-         UC2100Debug = ,
-         UC2102Debug = ,
-         UC3100Debug = 0x168EB7, // 0xEB
-         UC3102Debug = ,
-         UC4100Debug = ,
-         UC413XDebug = ,
-         UC4133MPDebug = ,
-         TLL100Debug = ,
-         TLL10XDebug = */
+         /* T1R109Debug = ,
+            T1R11XDebug = ,
+            T2100Debug = ,
+            T2101Debug = ,
+            T2102Debug = ,
+            T2105Debug = ,
+            T2107Debug = ,
+            T2108Debug = ,
+            T2109Debug = ,
+            UC1100Debug = ,
+            UC1102Debug = ,
+            UC2100Debug = ,
+            UC2102Debug = ,
+            UC3100Debug = 0x168EB7, // 0xEB
+            UC3102Debug = ,
+            UC4100Debug = ,
+            UC413XDebug = ,
+            UC4133MPDebug = ,
+            TLL100Debug = ,
+            TLL10XDebug =
+         */
         ;
 
         public Label GameInfoLabel;
@@ -477,10 +481,10 @@ namespace Dobby {
             
             else { // For Tests
                 {
-                    Dev.DebugOutStr($"Test String: {TestInt}");
-                    TestInt++;
+
+                    Dev.DebugOutStr($"{TestInt - 1} {TestInt++} {TestInt}");
+                
                 }
-                //ActiveForm.WindowState = FormWindowState.Minimized;
             }
         }
         public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
@@ -506,10 +510,8 @@ namespace Dobby {
 ============================================================================================================================================================================
         // Start Of PS4Debug Page Specific Functions                                                                                                                      */
 
-        public string UpdateGameInfoLabel(int game) { //!        
-            string NewString = string.Empty;
+        public string UpdateGameInfoLabel(int game) { //!
 
-            var IsDebugChk = new bool[7];
             var GameString = "Unknown Game";
             var AddString = "No Debug";
 
@@ -528,7 +530,8 @@ namespace Dobby {
                     if ((byte)MainStream.ReadByte() == Data[i])
                         return true;
 
-                    if (Data[i] == 0x75) {
+                    if (Data[i] == 0x75) { // Go back and check for an unconditional jump
+                        MainStream.Position--;
                         Data[i] = 0xEB;
                         goto Read;
                     }
@@ -538,8 +541,8 @@ namespace Dobby {
                 return false;
             }
 
-            Common.game = game;
-            switch (game) {
+            Common.Game = game;
+            switch (Game) {
                 default:
                     MessageBox.Show($"Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported\n{game}");
                     break;
@@ -641,17 +644,18 @@ namespace Dobby {
                 Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned / Decrypted (The First 4 Bytes Will Be .elf If It Is)"
             };
             if (f.ShowDialog() == DialogResult.OK) {
-                ExecutablePathBox.Text = f.FileName;
+                ActiveFilePath = ExecutablePathBox.Text = f.FileName;
                 MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite);
                 MainStream.Position = 0x60; MainStream.Read(chk, 0, 4);
                 GameInfoLabel.Text = UpdateGameInfoLabel(BitConverter.ToInt32(chk, 0));
+                IsActiveFilePCExe = false;
             }
         }
 
 
         void BaseDebugFunction(byte OnOrOff) {
             var Type = OnOrOff == on ? "Enable" : "Disable";
-            switch (game) {
+            switch (Game) {
                 default:
                     MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported");
                     break;
@@ -739,7 +743,7 @@ namespace Dobby {
 
 
         public void EnableDebugBtn_Click(object sender, EventArgs e) {
-            if (game == 0) {
+            if (Game == 0) {
                 if (!FlashThreadHasStarted) {
                     Dev.FlashThread.Start();
                     FlashThreadHasStarted = true;
@@ -756,7 +760,7 @@ namespace Dobby {
 
 
         public void DisableDebugBtn_Click(object sender, EventArgs e) {
-            if (game == 0) {
+            if (Game == 0) {
                 if (!FlashThreadHasStarted) {
                     Dev.FlashThread.Start();
                     FlashThreadHasStarted = true;
@@ -772,7 +776,7 @@ namespace Dobby {
         public void DisableDebugBtnML(object sender, EventArgs e) => HoverLeave(DisableDebugBtn, 1);
 
         public void RestoredDebugBtn_Click(object sender, EventArgs e) {
-            if (game == 0) {
+            if (Game == 0) {
                 if (!FlashThreadHasStarted) {
                     Dev.FlashThread.Start();
                     FlashThreadHasStarted = true;
@@ -783,9 +787,9 @@ namespace Dobby {
                 return;
             }
 
-            switch (game) {
+            switch (Game) {
                 default:
-                    MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported\n" + game);
+                    MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported\n" + Game);
                     break;
                 case T1R100:
                     SetInfoString("No Restored Menu Available Yet (I'm Workin' on It). Try 1.11");
@@ -864,7 +868,7 @@ namespace Dobby {
         public void RestoredDebugBtnML(object sender, EventArgs e) => HoverLeave(RestoredDebugBtn, 1);
 
         public void CustomDebugBtn_Click(object sender, EventArgs e) { // Just Edited Debug Menus, Some Things May Be Replaced
-            if (game == 0) {
+            if (Game == 0) {
                 if (!FlashThreadHasStarted) {
                     Dev.FlashThread.Start();
                     FlashThreadHasStarted = true;
@@ -875,7 +879,7 @@ namespace Dobby {
                 return;
             }
 
-            switch (game) {
+            switch (Game) {
                 default:
                     MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported");
                     break;
@@ -947,7 +951,7 @@ namespace Dobby {
 
         public void CustomOptDebugBtn_Click(object sender, EventArgs e) {
             if (Dev.REL) return;
-            if (game == 0) {
+            if (Game == 0) {
                 if (!FlashThreadHasStarted) {
                     Dev.FlashThread.Start();
                     FlashThreadHasStarted = true;
@@ -962,7 +966,7 @@ namespace Dobby {
 
             MessageBox.Show("This Page Is Hardly Even Added, It Only Supports Tlou2 1.08/1.09 At The Moment", "Note:");
             
-            switch (game) {
+            switch (Game) {
                 default:
                     MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported");
                     break;

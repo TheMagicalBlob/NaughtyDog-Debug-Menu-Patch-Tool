@@ -137,7 +137,7 @@ namespace Dobby {
             this.MiscPatchPageHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MiscPatchPageHelpBtn.FlatAppearance.BorderSize = 0;
             this.MiscPatchPageHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MiscPatchPageHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.MiscPatchPageHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Strikeout))));
             this.MiscPatchPageHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.MiscPatchPageHelpBtn.Location = new System.Drawing.Point(1, 283);
             this.MiscPatchPageHelpBtn.Name = "MiscPatchPageHelpBtn";
@@ -147,6 +147,8 @@ namespace Dobby {
             this.MiscPatchPageHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.MiscPatchPageHelpBtn.UseVisualStyleBackColor = false;
             this.MiscPatchPageHelpBtn.Click += new System.EventHandler(this.MiscPatchPageHelpBtn_Click);
+            this.MiscPatchPageHelpBtn.MouseEnter += new System.EventHandler(this.MiscPatchPageHelpBtnMH);
+            this.MiscPatchPageHelpBtn.MouseLeave += new System.EventHandler(this.MiscPatchPageHelpBtnML);
             // 
             // SeperatorLabel2
             // 
@@ -339,13 +341,13 @@ namespace Dobby {
                 MessageBox.Show($"Changelist Dumped To {Directory.GetCurrentDirectory()}\\ChangeLog.txt");
             }
         }
-        void BuildLabelMH(object sender, EventArgs e) { SetInfoString("Right CLick To Dump ChangeList"); Dobby.InfoHasImportantStr = false; }
+        void BuildLabelMH(object sender, EventArgs e) { SetInfoString("Right Click To Dump ChangeList"); Dobby.InfoHasImportantStr = false; }
         void BuildLabelML(object sender, EventArgs e) => SetInfoString("");
 
         private void MiscPatchPageHelpBtn_Click(object sender, EventArgs e) {
-
+            Dev.DebugOutStr("Stop that :|");
         }
-        void MiscPatchPageHelpBtnMH(object sender, EventArgs e) => HoverLeave(MiscPatchPageHelpBtn, 0);
+        void MiscPatchPageHelpBtnMH(object sender, EventArgs e) => HoverString(MiscPatchPageHelpBtn, "Page Not Yet Created");
         void MiscPatchPageHelpBtnML(object sender, EventArgs e) => HoverLeave(MiscPatchPageHelpBtn, 1);
 
         private void EbootPatchPageHelpBtn_Click(object sender, EventArgs e) => ChangeForm(7, false);

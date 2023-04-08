@@ -7,11 +7,15 @@ using System.Threading.Tasks;
 using System.Drawing;
 using static Dobby.Common;
 using System.IO;
+using System.Threading;
 
 namespace Dobby {
     internal class PCDebugMenuPage : Form {
         public PCDebugMenuPage() {
             InitializeComponent();
+
+            if (ActiveFilePath != null && IsActiveFilePCExe)
+                ExecutablePathBox.Text = ActiveFilePath;
         }
 
         public Label MainLabel;
@@ -31,6 +35,32 @@ namespace Dobby {
         public Button BackBtn;
         public Button DisableDebugBtn;
         public Button BaseDebugBtn;
+
+        public const int // 0x1EC + 0x1F8, Yes, I was too lazy to add them together. for now
+            T1X101 = 42695168 + 16007532,
+            T1XL101 = 42670080 + 16010844,
+            T1X1015 = 2228464 + 95625728,
+            T1XL1015 = 2228464 + 95627776,
+            T1X1016 = 42698752 + 16007532,
+            T1XL1016 = 42673664 + 16010828,
+            T1X1017 = 42702336 + 16007852,
+            T1XL1017 = 42677248 + 16011148,
+            T1X102 = 2228464 + 95631360,
+            T1XL102 = 2228464 + 95634432,
+            // End Of Checks, Start Of Debug Offsets (0x97 -> 0x8F)
+            T1X101Debug = 0x3B66CD,
+            T1XL101Debug = 0x3B64B9,
+            T1X1015Debug = 0x3B68FD,
+            T1XL1015Debug = 0x3B66E9,
+            T1X1016Debug = 0xBEEFBAD,
+            T1XL1016Debug = 0xBEEFBAD,
+            T1X1017Debug = 0x3B6A2E,
+            T1XL1017Debug = 0x03B680A,
+            T1X102Debug = 0x3B6AA9,
+            T1XL102Debug = 0x3B6885
+        ;
+
+        public static int GuessedDebug;
 
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
@@ -269,6 +299,7 @@ namespace Dobby {
             this.BaseDebugBtn.Text = "Enable The Default Debug Menus";
             this.BaseDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BaseDebugBtn.UseVisualStyleBackColor = false;
+            this.BaseDebugBtn.Click += new System.EventHandler(this.BaseDebugBtn_Click);
             // 
             // RestoredDebugBtn
             // 
@@ -339,55 +370,74 @@ namespace Dobby {
         public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
 
-        public string UpdateGameInfoLabel(int game) { //!        
-            string NewString = string.Empty;
+        public static Thread DebugScanThread = new Thread(new ThreadStart(ScanForDebugAddr));
+        public static void ScanForDebugAddr() { 
+            byte[] DebugDat = new byte[] { 0x8a, 0x8f, 0xf2, 0x3e, 0x00, 0x00, 0x84, 0xc9, 0x0f, 0x94, 0xc2, 0x84, 0xc9, 0x0f, 0x95, 0xc1, 0x88, 0x8f, 0x3d, 0x3f, 0x00, 0x00, 0x88, 0x97, 0x2f, 0x3f, 0x00, 0x00 };
 
-            var IsDebugChk = new bool[7];
-            var GameString = "Unknown Game";
-            var AddString = "No Debug";
-
-            MainStream.Position = 0;
-            MainStream.Read(chk, 0, 4);
-            if (BitConverter.ToInt32(chk, 0) != 1179403647) {// Make Sure The File's Actually Even A .elf
-                GameString = "Executable Still Encrypted";
-                AddString = "Must Be Decrypted/Unsigned";
-                return $"{GameString} | {AddString}";
+            int TmpAddr = 0;
+            chk = new byte[28];
+            string StartTime = DateTime.Now.ToString();
+Read:       MainStream.Position = TmpAddr;
+            MainStream.Read(chk, 0, 28);
+            TmpAddr++;
+            if (chk.SequenceEqual(DebugDat)) {
+                GuessedDebug = (int)MainStream.Position - 5;
+                MainStream.Position = GuessedDebug;
+                MainStream.WriteByte(0x8F);
+                MessageBox.Show($"0x8F Written At {GuessedDebug:X}\nStart Time: {StartTime} -> End Time: {DateTime.Now}");
+                return;
             }
+            else goto Read;
+        }
 
-            bool CheckDebugState(int[] offsets, byte[] Data) {
-                int i = 0; // Just Returns True If The Bytes Read At The Specified Address Match The Byte Given
-                foreach (int addr in offsets) {
-                    MainStream.Position = addr; Read:
-                    if ((byte)MainStream.ReadByte() == Data[i])
-                        return true;
+        public string UpdateGameInfoLabel() { //!
+            var VersionString = $"Unknown Version {BitConverter.ToString(chk):X}";
 
-                    if (Data[i] == 0x75) {
-                        Data[i] = 0xEB;
-                        goto Read;
-                    }
-
-                    i++;
-                }
-                return false;
-            }
-
-            Common.game = game;
-            switch (game) {
+            byte[] DebugDat = new byte[] { 0x8a, 0x8f, 0xf2, 0x3e, 0x00, 0x00, 0x84, 0xc9, 0x0f, 0x94, 0xc2, 0x84, 0xc9, 0x0f, 0x95, 0xc1, 0x88, 0x8f, 0x3d, 0x3f, 0x00, 0x00, 0x88, 0x97, 0x2f, 0x3f, 0x00, 0x00 };
+            switch (Game) {
                 default:
-                    MessageBox.Show($"Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported\n{game}");
-                    break;
-                case T1R100:
-                    CustomDebugBtn.Enabled = true;
-                    GameString = "The Last Of Us Remastered 1.00";
-                    break;
-                case UC3102:
-                    if (CheckDebugState(new int[] { 0x578226, 0x578227, 0x57824B }, new byte[] { 0x01, 0x75, 0x01 }) == true)
-                        AddString = "Debug";
+                    MessageBoxButtons MBB = MessageBoxButtons.YesNo;
+                    if (MessageBox.Show("Couldn't Determine The Version You Selected, So The Debug Offset Can't Be Guessed.\nScan Exe For Dev Menu Offset Instead?\n\n(If nothing's found after ~5 minutes, it probably never will.)", "This Might Take A Couple Minutes", MBB) == DialogResult.Yes)
+                        DebugScanThread.Start();
 
-                    GameString = "Uncharted 3 1.02";
+                    break;
+                case T1X101:
+                    VersionString = "Original Release";
+                     if (!ByteCmp(0x3B66B6, DebugDat))
+                        VersionString += " | Debug Enabled";
+                    break;
+                case T1XL101:
+                    VersionString = "Original Release Legacy";
+                    if (!ByteCmp(0x3B64A2, DebugDat))
+                        VersionString += " | Debug Enabled";
+                    break;
+                case T1X1015:
+                    VersionString = "1.01.5 Release";
+                    if (!ByteCmp(0x3B68E6, DebugDat))
+                        VersionString += " | Debug Enabled";
+                    break;
+                case T1XL1015:
+                    VersionString = "1.01.5 Release Legacy";
+                    if (!ByteCmp(0x3B66D2, DebugDat))
+                        VersionString += " | Debug Enabled";
+                    break;
+                case T1X1016:
+                    VersionString = "1.01.6 Release";
+                    if (!ByteCmp(0x3B68E6, DebugDat))
+                        VersionString += " | Debug Enabled";
+                    break;
+                case T1X1017:
+                    VersionString = "1.01.7 Release";
+                    if (!ByteCmp(0x3B6A17, DebugDat))
+                        VersionString += " | Debug Enabled";
+                    break;
+                case T1XL1017:
+                    VersionString = "1.01.7 Release Legacy";
+                    if (!ByteCmp(0x3B67F3, DebugDat))
+                        VersionString += " | Debug Enabled";
                     break;
             }
-            return $"{GameString} | {AddString}";
+            return VersionString;
         }
 
 
@@ -397,17 +447,69 @@ namespace Dobby {
                 Refresh();
             }
             FileDialog f = new OpenFileDialog {
-                Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
-                Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned / Decrypted (The First 4 Bytes Will Be .elf If It Is)"
+                Filter = "Executable|*.exe",
+                Title = "Select Either Of The Game's Executables"
             };
             if (f.ShowDialog() == DialogResult.OK) {
-                ExecutablePathBox.Text = f.FileName;
+                ActiveFilePath = ExecutablePathBox.Text = f.FileName;
                 MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite);
-                MainStream.Position = 0x60; MainStream.Read(chk, 0, 4);
-                GameInfoLabel.Text = UpdateGameInfoLabel(BitConverter.ToInt32(chk, 0));
+                MainStream.Position = 0x1F8; MainStream.Read(chk, 0, 4);
+
+                Game = BitConverter.ToInt32(chk, 0);
+                GameInfoLabel.Text = UpdateGameInfoLabel();
+                IsActiveFilePCExe = true;
             }
         }
 
         private void BackBtn_Click(object sender, EventArgs e) => GoBackAPage();
+
+        private void BaseDebugBtn_Click(object sender, EventArgs e) {
+            if (Game == 0) {
+                if (!FlashThreadHasStarted) {
+                    Dev.FlashThread.Start();
+                    FlashThreadHasStarted = true;
+                }
+                LabelShouldFlash = true;
+                SetInfoString("Please Select A Game's Executable First");
+                Dobby.InfoHasImportantStr = true;
+                return;
+            }
+
+            int DebugAddr = 0xBADBEEF;
+
+            switch (Game) {
+                case T1X101:
+                    DebugAddr = T1X101Debug;
+                    break;
+                case T1XL101:
+                    DebugAddr = T1XL101Debug;
+                    break;
+                case T1X1015:
+                    DebugAddr = T1X1015Debug;
+                    break;
+                case T1XL1015:
+                    DebugAddr = T1XL1015Debug;
+                    break;
+                case T1X1016:
+                    DebugAddr = T1X1016Debug;
+                    break;
+                case T1XL1016:
+                    DebugAddr = T1XL1016Debug;
+                    break;
+                case T1X1017:
+                    DebugAddr = T1X1017Debug;
+                    break;
+                case T1XL1017:
+                    DebugAddr = T1XL1017Debug;
+                    break;
+                case T1X102:
+                    DebugAddr = T1X102Debug;
+                    break;
+                case T1XL102:
+                    DebugAddr = T1XL102Debug;
+                    break;
+            }
+            WriteByte(DebugAddr, 0x8F);
+        }
     }
 }

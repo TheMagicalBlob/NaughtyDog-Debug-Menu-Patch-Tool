@@ -154,7 +154,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(12, 312);
+            this.Info.Location = new System.Drawing.Point(7, 313);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
@@ -229,7 +229,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 272);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 271);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
@@ -283,9 +283,9 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             // 
             // BorderBox
             // 
+            this.BorderBox.Controls.Add(this.DownloadSourceBtn);
             this.BorderBox.Controls.Add(this.PCLabel);
             this.BorderBox.Controls.Add(this.Playstation4Label);
-            this.BorderBox.Controls.Add(this.DownloadSourceBtn);
             this.BorderBox.Controls.Add(this.InfoHelpBtn);
             this.BorderBox.Controls.Add(this.CreditsBtn);
             this.BorderBox.Location = new System.Drawing.Point(0, -6);
@@ -324,10 +324,10 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             this.DownloadSourceBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DownloadSourceBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
             this.DownloadSourceBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.DownloadSourceBtn.Location = new System.Drawing.Point(1, 297);
+            this.DownloadSourceBtn.Location = new System.Drawing.Point(1, 295);
             this.DownloadSourceBtn.Name = "DownloadSourceBtn";
             this.DownloadSourceBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.DownloadSourceBtn.Size = new System.Drawing.Size(291, 23);
+            this.DownloadSourceBtn.Size = new System.Drawing.Size(292, 23);
             this.DownloadSourceBtn.TabIndex = 30;
             this.DownloadSourceBtn.Text = "Download Latest Source Code (Download Link)";
             this.DownloadSourceBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;

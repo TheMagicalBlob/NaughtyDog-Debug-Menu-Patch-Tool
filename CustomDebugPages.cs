@@ -35,7 +35,7 @@ namespace Dobby {
 
             using (FileStream fs = new FileStream(@"No Path, Fix.", FileMode.Open, FileAccess.ReadWrite)) {
                 fs.Read(chk, 0, 4);
-                switch (game) {
+                switch (Game) {
 
                     case 48176456: // T2 1.09
 

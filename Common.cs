@@ -8,8 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Net.Configuration;
 using System.Net.Sockets;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -108,7 +106,9 @@ namespace Dobby {
            "* 2.20.56.127 | Overhauled The Page Change Method; Now Remembers Pages Properly (Made And Forgot The Specifics Of Many Changes During The Same Time), Fixed an issue where the CreditsPage and InfoHelPage's back buttons were ignoring the last form and just loading the main one (my bad)",
            "* 2.20.57.131 | Added The Ability To Right-Click The Links On The Credits Page To View And Copy Them, Removed Highlight From Build Label And Changed It's Info Text, Debug Output Changes",
        "* 2.21-tmp.58.131 | Added Buttons For Still Uncreated PC-Specific Pages, Credits page text and spacing changes",
-           "* 2.21.61.140 | Split main form in to seperate PS4 and PC sections, added two pages for the new pc section. Changed contact details line on the InfoHelpPage. Merged Main.Designer.cs with Main.cs, Moved MainStream variable EbootPatchPage.cs -> Common.cs for use with PC Patch Pages"
+           "* 2.21.61.140 | Split main form in to seperate PS4 and PC sections, added two pages for the new pc section. Changed contact details line on the InfoHelpPage. Merged Main.Designer.cs with Main.cs, Moved MainStream variable EbootPatchPage.cs -> Common.cs for use with PC Patch Pages",
+           "* 2.21.61.142 | Fixed CheckDebugState bug; forgot to go back by one before checking for 0xEB, Added MainStream killswitch to debugger (ctrl k)",
+           "* 2.21.62.144 | Added Base Debug To PCPatchPage, Other Misc Changes"
 
             // TODO:
             // - Fix Messy Back Button Implementation
@@ -134,6 +134,13 @@ namespace Dobby {
             MouseIsDown
         ;
 
+        public static FileStream MainStream;
+
+        public static string ActiveFilePath;
+
+        public static bool IsActiveFilePCExe;
+
+        public static int Game;
 
         public static void WriteBytes(int offset, byte[] data) {
             MainStream.Position = offset;
@@ -163,14 +170,24 @@ namespace Dobby {
                 MainStream.WriteByte(data);
             }
         }
-
+        public static byte ReadByte(int offset) {
+            MainStream.Position = offset;
+            return (byte)MainStream.ReadByte();
+        }
+        public static bool ByteCmp(int addr, byte dat) {
+            MainStream.Position = addr;
+            return (byte)MainStream.ReadByte() == dat;
+        }
+        public static bool ByteCmp(int addr, byte[] dat) {
+            MainStream.Position = addr;
+            byte[] DataPresent = new byte[dat.Length];
+            MainStream.Read(DataPresent, 0, dat.Length);
+            return DataPresent.SequenceEqual<byte>(dat);
+        }
         #endregion
 
 
         public static Control YellowInformationLabel;
-        public static FileStream MainStream;
-
-        public static int game;
 
         public static Point LastPos;
         public static int?[] Pages = new int?[5];
@@ -455,6 +472,10 @@ namespace Dobby {
                             OutputStrings = new string[OutputStrings.Length];
                             OutputStringIndex = 0;
                             Console.Clear(); Thread.Sleep(42); Console.Clear(); // First Clear Doesn't Get It All
+                            break;
+                        case ConsoleKey.K:
+                            MainStream.Close();
+                            DebugOutStr("MainStream Closed");
                             break;
                     }                        
                 }
