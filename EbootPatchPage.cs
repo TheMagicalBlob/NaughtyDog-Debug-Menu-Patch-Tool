@@ -510,7 +510,7 @@ namespace Dobby {
 ============================================================================================================================================================================
         // Start Of PS4Debug Page Specific Functions                                                                                                                      */
 
-        public string UpdateGameInfoLabel(int game) { //!
+        public string UpdateGameInfoLabel() { //!
 
             var GameString = "Unknown Game";
             var AddString = "No Debug";
@@ -541,10 +541,9 @@ namespace Dobby {
                 return false;
             }
 
-            Common.Game = game;
             switch (Game) {
                 default:
-                    MessageBox.Show($"Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported\n{game}");
+                    MessageBox.Show($"Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported\n{Game}");
                     break;
                 case T1R100:
                     CustomDebugBtn.Enabled = true;
@@ -645,9 +644,12 @@ namespace Dobby {
             };
             if (f.ShowDialog() == DialogResult.OK) {
                 ActiveFilePath = ExecutablePathBox.Text = f.FileName;
+
                 MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite);
                 MainStream.Position = 0x60; MainStream.Read(chk, 0, 4);
-                GameInfoLabel.Text = UpdateGameInfoLabel(BitConverter.ToInt32(chk, 0));
+                Game = BitConverter.ToInt32(chk, 0);
+                GameInfoLabel.Text = UpdateGameInfoLabel();
+                MainStreamIsOpen = true;
                 IsActiveFilePCExe = false;
             }
         }

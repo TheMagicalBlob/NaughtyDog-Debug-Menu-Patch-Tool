@@ -465,6 +465,7 @@ Read:       MainStream.Position = TmpAddr;
 
                 GameInfoLabel.Text = UpdateGameInfoLabel();
                 IsActiveFilePCExe = true;
+                MainStreamIsOpen = true;
             }
         }
 

@@ -317,22 +317,22 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             // PCLabel
             // 
             this.PCLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.PCLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F, System.Drawing.FontStyle.Bold);
+            this.PCLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.PCLabel.ForeColor = System.Drawing.SystemColors.Control;
             this.PCLabel.Location = new System.Drawing.Point(146, 169);
             this.PCLabel.Name = "PCLabel";
-            this.PCLabel.Size = new System.Drawing.Size(23, 19);
+            this.PCLabel.Size = new System.Drawing.Size(24, 19);
             this.PCLabel.TabIndex = 37;
             this.PCLabel.Text = "PC";
             // 
             // Playstation4Label
             // 
             this.Playstation4Label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Playstation4Label.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F, System.Drawing.FontStyle.Bold);
+            this.Playstation4Label.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.Playstation4Label.ForeColor = System.Drawing.SystemColors.Control;
-            this.Playstation4Label.Location = new System.Drawing.Point(116, 37);
+            this.Playstation4Label.Location = new System.Drawing.Point(116, 38);
             this.Playstation4Label.Name = "Playstation4Label";
-            this.Playstation4Label.Size = new System.Drawing.Size(76, 19);
+            this.Playstation4Label.Size = new System.Drawing.Size(86, 19);
             this.Playstation4Label.TabIndex = 36;
             this.Playstation4Label.Text = "Playstation 4";
             // 
@@ -463,7 +463,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
 
         private void MiscPatchesBtn_Click(object sender, EventArgs e) {
             if (Dev.REL) return;
-            ChangeForm(4, false);
+            ChangeForm(3, false);
         }
         public void MiscPatchesBtnMH(object sender, EventArgs e) => HoverString(PS4QOLPageBtn, "Not Yet Implemented");
         public void MiscPatchesBtnML(object sender, EventArgs e) => HoverLeave(PS4QOLPageBtn, 1);

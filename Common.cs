@@ -110,7 +110,9 @@ namespace Dobby {
            "* 2.21.61.142 | Fixed CheckDebugState bug; forgot to go back by one before checking for 0xEB, Added MainStream killswitch to debugger (ctrl k)",
            "* 2.21.62.144 | Added Base Debug To PCPatchPage, Other Misc Changes",
            "* 2.21.63.148 | Fixed Credits page crash caused by deleting unused info label (was still being called on page creation), Added Mouse Hover/Leave Event Handlers To Multiple Neglected Controls, Changed chk On PCPatchPage To Check Bot 0x1EC and 0x1F8 and add them together for the result",
-           "* 2.21.65.158 | PCQOLPatchesPAge Work, Changed Hover Info For Multiple Controls, Other Changes I've Made But forgot the specifics of"
+           "* 2.21.65.158 | PCQOLPatchesPAge Work, Changed Hover Info For Multiple Controls, Other Changes I've Made But forgot the specifics of",
+           "* 2.21.67.160 | Page Sizing Changes, Clarification MEssages, Additional Debug Info (MainStream)",
+           "* 2.21.67.161 | Made PS4 and PC labels larger"
 
             // TODO:
             // - Fix Messy Back Button Implementation
@@ -124,20 +126,19 @@ namespace Dobby {
         public static string Build = ChangeList[ChangeList.Length - 1].Substring(2).Substring(0, ChangeList[ChangeList.Length - 1].IndexOf('|') - 3); // Trims The Last ChangeList String For Latest The Build Number
         public static string CurrentControl, tmp;
 
+
         #region PS4 / PC exe Patch Page Shared Variables And Functions
-
-
         public const int // Games. Read 4 bytes at 0x60 as an integer to get it
             T1R100 = 22033680,
             T1R109 = 21444016,
             T1R11X = 21446072,
-            T2100 = 46552012,
-            T2101 = 46785692,
-            T2102 = 46718028,
-            T2105 = 46826436,
-            T2107 = 46832260,
-            T2108 = 48176392,
-            T2109 = 48176456,
+            T2100  = 46552012,
+            T2101  = 46785692,
+            T2102  = 46718028,
+            T2105  = 46826436,
+            T2107  = 46832260,
+            T2108  = 48176392,
+            T2109  = 48176456,
             UC1100 = 9818208,
             UC1102 = 9568920,
             UC2100 = 14655236,
@@ -164,7 +165,7 @@ namespace Dobby {
            UC1102Debug = ,
            UC2100Debug = ,
            UC2102Debug = ,
-           UC3100Debug = 0x168EB7, // 0xEB
+           UC3100Debug = ,
            UC3102Debug = ,
            UC4100Debug = ,
            UC413XDebug = ,
@@ -215,7 +216,7 @@ namespace Dobby {
 
         public static string ActiveFilePath;
 
-        public static bool IsActiveFilePCExe;
+        public static bool IsActiveFilePCExe, MainStreamIsOpen;
 
         public static int Game;
 
@@ -333,10 +334,12 @@ namespace Dobby {
                 case 9:
                     PCDebugMenuPage PCDebugMenu = new PCDebugMenuPage();
                     PCDebugMenu.Show();
+                    MessageBox.Show("Important Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
                     break;
                 case 10:
                     PCQOLPatchesPage PCQOLPatches = new PCQOLPatchesPage();
                     PCQOLPatches.Show();
+                    MessageBox.Show("Important Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
                     break;
             }
             SetPageInfo(ActiveForm);
@@ -552,9 +555,12 @@ namespace Dobby {
                             OutputStringIndex = 0;
                             Console.Clear(); Thread.Sleep(42); Console.Clear(); // First Clear Doesn't Get It All
                             break;
-                        case ConsoleKey.K:
-                            MainStream.Close();
-                            DebugOutStr("MainStream Closed");
+                        case ConsoleKey.M:
+                            if (MainStreamIsOpen) {
+                                MainStream.Dispose();
+                                MainStreamIsOpen = false;
+                                DebugOutStr("MainStream Closed");
+                            }
                             break;
                     }                        
                 }
@@ -574,6 +580,7 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                 OutputStrings = new string[Console.WindowHeight - 12];
                 Console.CursorVisible = false;
                 Point OriginalConsoleScale = new Point(Console.WindowHeight, Console.WindowWidth);
+                try {
                 while (OriginalConsoleScale == new Point(Console.WindowHeight, Console.WindowWidth)) {
                     int StartTime = TimerTicks;
                     Form frm = ActiveForm;
@@ -584,13 +591,16 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                     Console.CursorTop = 6; Console.Write(BlankSpace($"Form: {(ActiveForm != null ? ActiveForm.Name : "Console")}"));
                     Console.CursorTop = 8; Console.Write(BlankSpace($"MousePos: {MousePosition}"));
                     Console.CursorTop = 9; Console.Write(BlankSpace($"FormPos: {(ActiveForm != null ? ActiveForm.Location : Point.Empty)}"));
-                    Console.CursorTop = 11; foreach (string msg in OutputStrings)
+                    Console.CursorTop = 10; Console.Write(BlankSpace($"MainStream: {(MainStreamIsOpen ? MainStream.Name : "null")}"));
+                    Console.CursorTop = 11; Console.Write(BlankSpace(MainStreamIsOpen ? $"Length: {(MainStream.Length.ToString().Length > 6 ? $"{MainStream.Length.ToString().Remove(2)}MB" : $"{MainStream.Length} bytes")} | Read: {MainStream.CanRead} | Write: {MainStream.CanWrite}" : string.Empty));
+                    Console.CursorTop = 13; foreach (string msg in OutputStrings)
                     Console.Write(BlankSpace(msg), Console.CursorTop = Console.CursorTop++);
 
                     Interval = TimerTicks - StartTime;
 
                     if (frm != null && !TimerThreadStarted) { frm.Invoke(TimerThread); TimerThreadStarted = true; }
-                }
+                }}
+                catch (System.ObjectDisposedException) { }
                 Console.Clear();
                 goto Begin_Again;
             }
