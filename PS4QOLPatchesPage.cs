@@ -48,9 +48,12 @@ namespace Dobby {
             this.InfoHelpBtn = new System.Windows.Forms.Button();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.BorderBox = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.Playstation4Label = new System.Windows.Forms.Label();
             this.ProgPauseBtn = new System.Windows.Forms.Button();
-            this.DisableDebugTextBtn = new System.Windows.Forms.Button();
             this.GameInfoLabel = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.DisableDebugTextBtn = new System.Windows.Forms.Button();
             this.RightMarginBtn = new System.Windows.Forms.Button();
             this.BackBtn = new System.Windows.Forms.Button();
             this.MenuRightAlignBtn = new System.Windows.Forms.Button();
@@ -58,11 +61,8 @@ namespace Dobby {
             this.MenuScaleBtn = new System.Windows.Forms.Button();
             this.ExecutablePathBox = new System.Windows.Forms.TextBox();
             this.MenuAlphaBtn = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.Playstation4Label = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.BorderBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -206,6 +206,28 @@ namespace Dobby {
             this.BorderBox.TabIndex = 34;
             this.BorderBox.TabStop = false;
             // 
+            // label2
+            // 
+            this.label2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label2.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F, System.Drawing.FontStyle.Bold);
+            this.label2.ForeColor = System.Drawing.SystemColors.Control;
+            this.label2.Location = new System.Drawing.Point(105, 36);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(102, 19);
+            this.label2.TabIndex = 53;
+            this.label2.Text = "Universal Patches";
+            // 
+            // Playstation4Label
+            // 
+            this.Playstation4Label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Playstation4Label.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F, System.Drawing.FontStyle.Bold);
+            this.Playstation4Label.ForeColor = System.Drawing.SystemColors.Control;
+            this.Playstation4Label.Location = new System.Drawing.Point(96, 169);
+            this.Playstation4Label.Name = "Playstation4Label";
+            this.Playstation4Label.Size = new System.Drawing.Size(127, 19);
+            this.Playstation4Label.TabIndex = 52;
+            this.Playstation4Label.Text = "Game-Specific Patches";
+            // 
             // ProgPauseBtn
             // 
             this.ProgPauseBtn.BackColor = System.Drawing.Color.DimGray;
@@ -221,6 +243,27 @@ namespace Dobby {
             this.ProgPauseBtn.Text = "Disable Debug Pause On Menu Open:";
             this.ProgPauseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ProgPauseBtn.UseVisualStyleBackColor = false;
+            // 
+            // GameInfoLabel
+            // 
+            this.GameInfoLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.GameInfoLabel.Location = new System.Drawing.Point(2, 285);
+            this.GameInfoLabel.Name = "GameInfoLabel";
+            this.GameInfoLabel.Size = new System.Drawing.Size(316, 19);
+            this.GameInfoLabel.TabIndex = 40;
+            this.GameInfoLabel.Text = "No File Selected";
+            this.GameInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label5
+            // 
+            this.label5.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.label5.Location = new System.Drawing.Point(2, 295);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(316, 16);
+            this.label5.TabIndex = 32;
+            this.label5.Text = "______________________________________________________________";
             // 
             // DisableDebugTextBtn
             // 
@@ -243,17 +286,6 @@ namespace Dobby {
             this.DisableDebugTextBtn.MouseLeave += new System.EventHandler(this.DisableDebugTextBtnML);
             this.DisableDebugTextBtn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.DisableDebugTextBtn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.DisableDebugTextBtn_SClick);
-            // 
-            // GameInfoLabel
-            // 
-            this.GameInfoLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.GameInfoLabel.Location = new System.Drawing.Point(2, 285);
-            this.GameInfoLabel.Name = "GameInfoLabel";
-            this.GameInfoLabel.Size = new System.Drawing.Size(316, 19);
-            this.GameInfoLabel.TabIndex = 40;
-            this.GameInfoLabel.Text = "No File Selected";
-            this.GameInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // RightMarginBtn
             // 
@@ -368,6 +400,16 @@ namespace Dobby {
             this.MenuAlphaBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.MenuAlphaBtn.UseVisualStyleBackColor = false;
             // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.label1.Location = new System.Drawing.Point(1, 152);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(316, 16);
+            this.label1.TabIndex = 37;
+            this.label1.Text = "______________________________________________________________";
+            // 
             // label6
             // 
             this.label6.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
@@ -377,48 +419,6 @@ namespace Dobby {
             this.label6.Size = new System.Drawing.Size(316, 16);
             this.label6.TabIndex = 36;
             this.label6.Text = "______________________________________________________________";
-            // 
-            // label5
-            // 
-            this.label5.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label5.Location = new System.Drawing.Point(2, 295);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(316, 16);
-            this.label5.TabIndex = 32;
-            this.label5.Text = "______________________________________________________________";
-            // 
-            // label1
-            // 
-            this.label1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label1.Location = new System.Drawing.Point(0, 152);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(316, 16);
-            this.label1.TabIndex = 37;
-            this.label1.Text = "______________________________________________________________";
-            // 
-            // Playstation4Label
-            // 
-            this.Playstation4Label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Playstation4Label.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F, System.Drawing.FontStyle.Bold);
-            this.Playstation4Label.ForeColor = System.Drawing.SystemColors.Control;
-            this.Playstation4Label.Location = new System.Drawing.Point(96, 169);
-            this.Playstation4Label.Name = "Playstation4Label";
-            this.Playstation4Label.Size = new System.Drawing.Size(127, 19);
-            this.Playstation4Label.TabIndex = 52;
-            this.Playstation4Label.Text = "Game-Specific Patches";
-            // 
-            // label2
-            // 
-            this.label2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label2.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F, System.Drawing.FontStyle.Bold);
-            this.label2.ForeColor = System.Drawing.SystemColors.Control;
-            this.label2.Location = new System.Drawing.Point(105, 36);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(102, 19);
-            this.label2.TabIndex = 53;
-            this.label2.Text = "Universal Patches";
             // 
             // PS4QOLPatchesPage
             // 

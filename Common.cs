@@ -112,7 +112,9 @@ namespace Dobby {
            "* 2.21.63.148 | Fixed Credits page crash caused by deleting unused info label (was still being called on page creation), Added Mouse Hover/Leave Event Handlers To Multiple Neglected Controls, Changed chk On PCPatchPage To Check Bot 0x1EC and 0x1F8 and add them together for the result",
            "* 2.21.65.158 | PCQOLPatchesPAge Work, Changed Hover Info For Multiple Controls, Other Changes I've Made But forgot the specifics of",
            "* 2.21.67.160 | Page Sizing Changes, Clarification MEssages, Additional Debug Info (MainStream)",
-           "* 2.21.67.161 | Made PS4 and PC labels larger"
+           "* 2.21.67.161 | Made PS4 and PC labels larger",
+           "* 2.21.67.164 | Added Debug Offsets",
+           "* 2.21.67.165 | Seperator Label Border Overlap Fix"
 
             // TODO:
             // - Fix Messy Back Button Implementation
