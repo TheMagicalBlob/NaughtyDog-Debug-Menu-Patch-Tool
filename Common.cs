@@ -151,10 +151,11 @@ namespace Dobby {
             TLL100 = 35178432,
             TLL10X = 35227448,
             // End Of Checks, Start Of Debug Offsets
-            T1R100Debug = 0x579F
-        /* T1R109Debug = ,
-           T1R11XDebug = ,
-           T2100Debug = ,
+            T1R100Debug = 0x579F,
+            T1R109Debug = 0x61A4,
+            T1R110Debug = 0x61A4,
+            T1R111Debug = 0x61A4
+         /*T2100Debug = ,
            T2101Debug = ,
            T2102Debug = ,
            T2105Debug = ,
