@@ -37,53 +37,6 @@ namespace Dobby {
             MenuOpacity = 2
         ;
 
-        public const int // Games. Read 4 bytes at 0x60 as an integer to get it
-            T1R100 = 22033680,
-            T1R109 = 21444016,
-            T1R11X = 21446072,
-            T2100 = 46552012,
-            T2101 = 46785692,
-            T2102 = 46718028,
-            T2105 = 46826436,
-            T2107 = 46832260,
-            T2108 = 48176392,
-            T2109 = 48176456,
-            UC1100 = 9818208,
-            UC1102 = 9568920,
-            UC2100 = 14655236,
-            UC2102 = 16663728,
-            UC3100 = 20277852,
-            UC3102 = 23365872,
-            UC4100 = 36229424,
-            UC413X = 33886256,
-            UC4133MP = 35877432,
-            TLL100 = 35178432,
-            TLL10X = 35227448,
-            // End Of Checks, Start Of Debug Offsets
-            T1R100Debug = 0x579F
-         /* T1R109Debug = ,
-            T1R11XDebug = ,
-            T2100Debug = ,
-            T2101Debug = ,
-            T2102Debug = ,
-            T2105Debug = ,
-            T2107Debug = ,
-            T2108Debug = ,
-            T2109Debug = ,
-            UC1100Debug = ,
-            UC1102Debug = ,
-            UC2100Debug = ,
-            UC2102Debug = ,
-            UC3100Debug = 0x168EB7, // 0xEB
-            UC3102Debug = ,
-            UC4100Debug = ,
-            UC413XDebug = ,
-            UC4133MPDebug = ,
-            TLL100Debug = ,
-            TLL10XDebug =
-         */
-        ;
-
         public Label GameInfoLabel;
         private Button BrowseButton;
         private TextBox ExecutablePathBox;
@@ -1744,9 +1697,12 @@ Restored:
             WriteByte(0x1CD02D, (byte)(type == "Disable" ? off : on));
         }
 
-
+        /*
+=================================================================================================================================================
+=================================================================================================================================================
+        */
         void T1R100_Patches(string type) {
-            WriteByte(T1R100Debug, (byte)(type == "Disable" ? off : on));
+            WriteByte(T1R100Debug, (byte)(type == "Disable" ? 0x75 : 0x74));
             switch (type) {
                 default: return;
                 case "Restored":
@@ -1771,7 +1727,7 @@ Custom:
 
 
         void T1R11X_Patches(string type) {
-            WriteByte(0x61B3, (byte)(type == "Disable" ? off : on));
+            WriteByte(T1R111Debug, (byte)(type == "Disable" ? 0x75 : 0x74));
             switch (type) {
                 default: return;
                 case "Restored":

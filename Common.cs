@@ -114,10 +114,9 @@ namespace Dobby {
            "* 2.21.67.160 | Page Sizing Changes, Clarification MEssages, Additional Debug Info (MainStream)",
            "* 2.21.67.161 | Made PS4 and PC labels larger",
            "* 2.21.67.164 | Added Debug Offsets",
-           "* 2.21.67.165 | Seperator Label Border Overlap Fix"
+           "* 2.21.67.170 | Added Most offsets, Replaced T1R 1.00 Debug Offset, Added All T2 JNZ Debug Offsets, Seperator Label Border Overlap Fix"
 
             // TODO:
-            // - Fix Messy Back Button Implementation
             // - Finish EbootPatchHelpPage
             // - Finish EbootPatchPage GameInfoLabel Functionality
             
@@ -153,29 +152,28 @@ namespace Dobby {
             TLL100 = 35178432,
             TLL10X = 35227448,
             // End Of Checks, Start Of Debug Offsets
-            T1R100Debug = 0x579F,
+            T1R100Debug = 0x5C5A,// (0x579F <- 00 to 01)
             T1R109Debug = 0x61A4,
             T1R110Debug = 0x61A4,
-            T1R111Debug = 0x61A4
-         /*T2100Debug = ,
-           T2101Debug = ,
-           T2102Debug = ,
-           T2105Debug = ,
-           T2107Debug = ,
-           T2108Debug = ,
-           T2109Debug = ,
-           UC1100Debug = ,
-           UC1102Debug = ,
-           UC2100Debug = ,
-           UC2102Debug = ,
-           UC3100Debug = ,
-           UC3102Debug = ,
-           UC4100Debug = ,
-           UC413XDebug = ,
-           UC4133MPDebug = ,
-           TLL100Debug = ,
-           TLL10XDebug =
-        */
+            T1R111Debug = 0x61A4,
+            T2100Debug = 0x1D6398,
+            T2101Debug = 0x1D6418,
+            T2102Debug = 0x1D6468,
+            T2105Debug = 0x1D66A8,
+            T2107Debug = 0x1D66B8,
+            T2108Debug = 0x6181F8,
+            T2109Debug = 0x6181F8,
+            UC1100Debug = 0x102057,
+            UC1102Debug = 0x102187,
+            UC2100Debug = 0x1EB297,
+            UC2102Debug = 0x3F7A26,
+            UC3100Debug = 0x168EB7,
+            UC3102Debug = 0x578227,
+            UC4100Debug = 0x1297DE,   //! TEST ME
+            UC413XDebug = 0x0,        //!
+            UC4133MPDebug = 0x1CCEA9, //! TEST ME
+            TLL100Debug = 0x1CCFDE,   //! TEST ME
+            TLL10XDebug = 0x1CD01E    //! TEST ME
         ;
 
         public const int // 0x1EC + 0x1F8, Yes, I was too lazy to add them together. for now
@@ -381,14 +379,15 @@ namespace Dobby {
 
             Point ParentPos = ActiveForm.Location;
 
+            Label Label = new Label {
+                ForeColor = PopupBox.ForeColor = Color.White,
+                BackColor = Color.Gray,
+                Font = MainFont,
+                TextAlign = ContentAlignment.MiddleCenter
+            };
             PopupBox = new Form();
-            Label Label = new Label();
-            Label.ForeColor = PopupBox.ForeColor = Color.White;
-            Label.BackColor = Color.Gray;
             PopupBox.BackColor = Color.Gray;
             PopupBox.Controls.Add(Label);
-            Label.Font = MainFont;
-            Label.TextAlign = ContentAlignment.MiddleCenter;
             switch (ActiveForm.Name) { // Center Based On Active Form
                 default:
                     Dev.DebugOutStr("Page Unknown, Default Location Used");
@@ -580,7 +579,8 @@ namespace Dobby {
                 int Interval = 0;
 
 Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIIIIIIGHT
-                OutputStrings = new string[Console.WindowHeight - 12];
+                Console.WindowHeight = 35; Console.SetWindowPosition(0,0);
+                OutputStrings = new string[Console.WindowHeight - 14];
                 Console.CursorVisible = false;
                 Point OriginalConsoleScale = new Point(Console.WindowHeight, Console.WindowWidth);
                 try {
@@ -593,7 +593,7 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                     Console.CursorTop = 5; Console.Write(BlankSpace($"Pages: {(Pages[0] == null ? "null" : $"{Pages[0]}")}, {(Pages[1] == null ? "null" : $"{Pages[1]}")}, {(Pages[2] == null ? "null" : $"{Pages[2]}")}, {(Pages[3] == null ? "null" : $"{Pages[3]}")}")); // gross
                     Console.CursorTop = 6; Console.Write(BlankSpace($"Form: {(ActiveForm != null ? ActiveForm.Name : "Console")}"));
                     Console.CursorTop = 8; Console.Write(BlankSpace($"MousePos: {MousePosition}"));
-                    Console.CursorTop = 9; Console.Write(BlankSpace($"FormPos: {(ActiveForm != null ? ActiveForm.Location : Point.Empty)}"));
+                    Console.CursorTop = 9; Console.Write(BlankSpace($"FormPos: {(ActiveForm != null ? $"App {ActiveForm.Location}" : "Form Out Of Focus, ActiveForm null")}"));
                     Console.CursorTop = 10; Console.Write(BlankSpace($"MainStream: {(MainStreamIsOpen ? MainStream.Name : "null")}"));
                     Console.CursorTop = 11; Console.Write(BlankSpace(MainStreamIsOpen ? $"Length: {(MainStream.Length.ToString().Length > 6 ? $"{MainStream.Length.ToString().Remove(2)}MB" : $"{MainStream.Length} bytes")} | Read: {MainStream.CanRead} | Write: {MainStream.CanWrite}" : string.Empty));
                     Console.CursorTop = 13; foreach (string msg in OutputStrings)

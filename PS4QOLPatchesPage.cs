@@ -21,9 +21,9 @@ namespace Dobby {
         public Label Info;
         public Button ExitBtn;
         public Button MinimizeBtn;
-        public Label SeperatorLine1;
+        public Label SeperatorLabel0;
         private GroupBox BorderBox;
-        public Label label6;
+        public Label SeperatorLabel2;
         public Label GameInfoLabel;
         private Button BrowseButton;
         private TextBox ExecutablePathBox;
@@ -33,10 +33,11 @@ namespace Dobby {
         public Button MenuRightAlignBtn;
         public Button MenuScaleBtn;
         public Button MenuAlphaBtn;
-        public Label label2;
-        public Label Playstation4Label;
-        public Label label5;
-        public Label label1;
+        public Label UniversalPatchesLabel;
+        public Label GameSpecificPatchesLabel;
+        public Label SeperatorLabel3;
+        public Label SeperatorLabel1;
+        public Label LoadExecutableForOptionsLabel;
         public Button BackBtn;
 
         public void InitializeComponent() {
@@ -46,23 +47,24 @@ namespace Dobby {
             this.Info = new System.Windows.Forms.Label();
             this.CreditsBtn = new System.Windows.Forms.Button();
             this.InfoHelpBtn = new System.Windows.Forms.Button();
-            this.SeperatorLine1 = new System.Windows.Forms.Label();
+            this.SeperatorLabel0 = new System.Windows.Forms.Label();
             this.BorderBox = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.Playstation4Label = new System.Windows.Forms.Label();
+            this.LoadExecutableForOptionsLabel = new System.Windows.Forms.Label();
+            this.UniversalPatchesLabel = new System.Windows.Forms.Label();
+            this.GameSpecificPatchesLabel = new System.Windows.Forms.Label();
             this.ProgPauseBtn = new System.Windows.Forms.Button();
             this.GameInfoLabel = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.SeperatorLabel3 = new System.Windows.Forms.Label();
             this.DisableDebugTextBtn = new System.Windows.Forms.Button();
             this.RightMarginBtn = new System.Windows.Forms.Button();
             this.BackBtn = new System.Windows.Forms.Button();
             this.MenuRightAlignBtn = new System.Windows.Forms.Button();
             this.BrowseButton = new System.Windows.Forms.Button();
-            this.MenuScaleBtn = new System.Windows.Forms.Button();
             this.ExecutablePathBox = new System.Windows.Forms.TextBox();
+            this.SeperatorLabel1 = new System.Windows.Forms.Label();
+            this.SeperatorLabel2 = new System.Windows.Forms.Label();
+            this.MenuScaleBtn = new System.Windows.Forms.Button();
             this.MenuAlphaBtn = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.BorderBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,7 +73,7 @@ namespace Dobby {
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MainLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 12.25F, System.Drawing.FontStyle.Bold);
             this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.MainLabel.Location = new System.Drawing.Point(2, 4);
+            this.MainLabel.Location = new System.Drawing.Point(2, 7);
             this.MainLabel.Name = "MainLabel";
             this.MainLabel.Size = new System.Drawing.Size(314, 22);
             this.MainLabel.TabIndex = 0;
@@ -88,7 +90,7 @@ namespace Dobby {
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ExitBtn.Location = new System.Drawing.Point(293, 1);
+            this.ExitBtn.Location = new System.Drawing.Point(293, 7);
             this.ExitBtn.Name = "ExitBtn";
             this.ExitBtn.Size = new System.Drawing.Size(23, 23);
             this.ExitBtn.TabIndex = 18;
@@ -107,7 +109,7 @@ namespace Dobby {
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinimizeBtn.Location = new System.Drawing.Point(270, 1);
+            this.MinimizeBtn.Location = new System.Drawing.Point(270, 7);
             this.MinimizeBtn.Name = "MinimizeBtn";
             this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
             this.MinimizeBtn.TabIndex = 19;
@@ -122,7 +124,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(9, 388);
+            this.Info.Location = new System.Drawing.Point(9, 359);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
@@ -139,7 +141,7 @@ namespace Dobby {
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 339);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 310);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
@@ -159,7 +161,7 @@ namespace Dobby {
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 314);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 285);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.InfoHelpBtn.Size = new System.Drawing.Size(147, 23);
@@ -171,62 +173,77 @@ namespace Dobby {
             this.InfoHelpBtn.MouseEnter += new System.EventHandler(this.InfoHelpBtnMH);
             this.InfoHelpBtn.MouseLeave += new System.EventHandler(this.InfoHelpBtnML);
             // 
-            // SeperatorLine1
+            // SeperatorLabel0
             // 
-            this.SeperatorLine1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 14);
-            this.SeperatorLine1.Name = "SeperatorLine1";
-            this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
-            this.SeperatorLine1.TabIndex = 31;
-            this.SeperatorLine1.Text = "______________________________________________________________";
+            this.SeperatorLabel0.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLabel0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLabel0.Location = new System.Drawing.Point(2, 15);
+            this.SeperatorLabel0.Name = "SeperatorLabel0";
+            this.SeperatorLabel0.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLabel0.TabIndex = 31;
+            this.SeperatorLabel0.Text = "______________________________________________________________";
             // 
             // BorderBox
             // 
-            this.BorderBox.Controls.Add(this.label2);
-            this.BorderBox.Controls.Add(this.Playstation4Label);
+            this.BorderBox.Controls.Add(this.LoadExecutableForOptionsLabel);
+            this.BorderBox.Controls.Add(this.UniversalPatchesLabel);
+            this.BorderBox.Controls.Add(this.GameSpecificPatchesLabel);
             this.BorderBox.Controls.Add(this.ProgPauseBtn);
             this.BorderBox.Controls.Add(this.GameInfoLabel);
-            this.BorderBox.Controls.Add(this.label5);
+            this.BorderBox.Controls.Add(this.SeperatorLabel3);
             this.BorderBox.Controls.Add(this.DisableDebugTextBtn);
             this.BorderBox.Controls.Add(this.RightMarginBtn);
             this.BorderBox.Controls.Add(this.BackBtn);
             this.BorderBox.Controls.Add(this.MenuRightAlignBtn);
             this.BorderBox.Controls.Add(this.BrowseButton);
-            this.BorderBox.Controls.Add(this.MenuScaleBtn);
             this.BorderBox.Controls.Add(this.ExecutablePathBox);
-            this.BorderBox.Controls.Add(this.MenuAlphaBtn);
             this.BorderBox.Controls.Add(this.Info);
             this.BorderBox.Controls.Add(this.InfoHelpBtn);
             this.BorderBox.Controls.Add(this.CreditsBtn);
-            this.BorderBox.Controls.Add(this.label1);
+            this.BorderBox.Controls.Add(this.SeperatorLabel1);
+            this.BorderBox.Controls.Add(this.SeperatorLabel2);
+            this.BorderBox.Controls.Add(this.ExitBtn);
+            this.BorderBox.Controls.Add(this.MinimizeBtn);
+            this.BorderBox.Controls.Add(this.MainLabel);
+            this.BorderBox.Controls.Add(this.SeperatorLabel0);
             this.BorderBox.Location = new System.Drawing.Point(0, -6);
             this.BorderBox.Name = "BorderBox";
-            this.BorderBox.Size = new System.Drawing.Size(320, 410);
+            this.BorderBox.Size = new System.Drawing.Size(320, 379);
             this.BorderBox.TabIndex = 34;
             this.BorderBox.TabStop = false;
             // 
-            // label2
+            // LoadExecutableForOptionsLabel
             // 
-            this.label2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label2.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F, System.Drawing.FontStyle.Bold);
-            this.label2.ForeColor = System.Drawing.SystemColors.Control;
-            this.label2.Location = new System.Drawing.Point(105, 36);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(102, 19);
-            this.label2.TabIndex = 53;
-            this.label2.Text = "Universal Patches";
+            this.LoadExecutableForOptionsLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LoadExecutableForOptionsLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoadExecutableForOptionsLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.LoadExecutableForOptionsLabel.Location = new System.Drawing.Point(3, 190);
+            this.LoadExecutableForOptionsLabel.Name = "LoadExecutableForOptionsLabel";
+            this.LoadExecutableForOptionsLabel.Size = new System.Drawing.Size(316, 19);
+            this.LoadExecutableForOptionsLabel.TabIndex = 54;
+            this.LoadExecutableForOptionsLabel.Text = "(Load An Executable To Show Game-Specific Options)";
             // 
-            // Playstation4Label
+            // UniversalPatchesLabel
             // 
-            this.Playstation4Label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Playstation4Label.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F, System.Drawing.FontStyle.Bold);
-            this.Playstation4Label.ForeColor = System.Drawing.SystemColors.Control;
-            this.Playstation4Label.Location = new System.Drawing.Point(96, 169);
-            this.Playstation4Label.Name = "Playstation4Label";
-            this.Playstation4Label.Size = new System.Drawing.Size(127, 19);
-            this.Playstation4Label.TabIndex = 52;
-            this.Playstation4Label.Text = "Game-Specific Patches";
+            this.UniversalPatchesLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.UniversalPatchesLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F, System.Drawing.FontStyle.Bold);
+            this.UniversalPatchesLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.UniversalPatchesLabel.Location = new System.Drawing.Point(105, 35);
+            this.UniversalPatchesLabel.Name = "UniversalPatchesLabel";
+            this.UniversalPatchesLabel.Size = new System.Drawing.Size(102, 19);
+            this.UniversalPatchesLabel.TabIndex = 53;
+            this.UniversalPatchesLabel.Text = "Universal Patches";
+            // 
+            // GameSpecificPatchesLabel
+            // 
+            this.GameSpecificPatchesLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.GameSpecificPatchesLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F, System.Drawing.FontStyle.Bold);
+            this.GameSpecificPatchesLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.GameSpecificPatchesLabel.Location = new System.Drawing.Point(96, 166);
+            this.GameSpecificPatchesLabel.Name = "GameSpecificPatchesLabel";
+            this.GameSpecificPatchesLabel.Size = new System.Drawing.Size(127, 19);
+            this.GameSpecificPatchesLabel.TabIndex = 52;
+            this.GameSpecificPatchesLabel.Text = "Game-Specific Patches";
             // 
             // ProgPauseBtn
             // 
@@ -236,7 +253,7 @@ namespace Dobby {
             this.ProgPauseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ProgPauseBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.ProgPauseBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ProgPauseBtn.Location = new System.Drawing.Point(1, 136);
+            this.ProgPauseBtn.Location = new System.Drawing.Point(1, 130);
             this.ProgPauseBtn.Name = "ProgPauseBtn";
             this.ProgPauseBtn.Size = new System.Drawing.Size(301, 23);
             this.ProgPauseBtn.TabIndex = 51;
@@ -248,22 +265,22 @@ namespace Dobby {
             // 
             this.GameInfoLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.GameInfoLabel.Location = new System.Drawing.Point(2, 285);
+            this.GameInfoLabel.Location = new System.Drawing.Point(2, 256);
             this.GameInfoLabel.Name = "GameInfoLabel";
             this.GameInfoLabel.Size = new System.Drawing.Size(316, 19);
             this.GameInfoLabel.TabIndex = 40;
             this.GameInfoLabel.Text = "No File Selected";
             this.GameInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label5
+            // SeperatorLabel3
             // 
-            this.label5.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label5.Location = new System.Drawing.Point(2, 295);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(316, 16);
-            this.label5.TabIndex = 32;
-            this.label5.Text = "______________________________________________________________";
+            this.SeperatorLabel3.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLabel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLabel3.Location = new System.Drawing.Point(2, 266);
+            this.SeperatorLabel3.Name = "SeperatorLabel3";
+            this.SeperatorLabel3.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLabel3.TabIndex = 32;
+            this.SeperatorLabel3.Text = "______________________________________________________________";
             // 
             // DisableDebugTextBtn
             // 
@@ -273,7 +290,7 @@ namespace Dobby {
             this.DisableDebugTextBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DisableDebugTextBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.DisableDebugTextBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.DisableDebugTextBtn.Location = new System.Drawing.Point(1, 61);
+            this.DisableDebugTextBtn.Location = new System.Drawing.Point(1, 55);
             this.DisableDebugTextBtn.Name = "DisableDebugTextBtn";
             this.DisableDebugTextBtn.Size = new System.Drawing.Size(269, 23);
             this.DisableDebugTextBtn.TabIndex = 46;
@@ -295,7 +312,7 @@ namespace Dobby {
             this.RightMarginBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RightMarginBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.RightMarginBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.RightMarginBtn.Location = new System.Drawing.Point(1, 108);
+            this.RightMarginBtn.Location = new System.Drawing.Point(1, 105);
             this.RightMarginBtn.Name = "RightMarginBtn";
             this.RightMarginBtn.Size = new System.Drawing.Size(231, 23);
             this.RightMarginBtn.TabIndex = 50;
@@ -311,7 +328,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 364);
+            this.BackBtn.Location = new System.Drawing.Point(1, 335);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.BackBtn.Size = new System.Drawing.Size(75, 23);
@@ -331,7 +348,7 @@ namespace Dobby {
             this.MenuRightAlignBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MenuRightAlignBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.MenuRightAlignBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MenuRightAlignBtn.Location = new System.Drawing.Point(1, 84);
+            this.MenuRightAlignBtn.Location = new System.Drawing.Point(1, 80);
             this.MenuRightAlignBtn.Name = "MenuRightAlignBtn";
             this.MenuRightAlignBtn.Size = new System.Drawing.Size(301, 23);
             this.MenuRightAlignBtn.TabIndex = 49;
@@ -348,7 +365,7 @@ namespace Dobby {
             this.BrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BrowseButton.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BrowseButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.BrowseButton.Location = new System.Drawing.Point(239, 259);
+            this.BrowseButton.Location = new System.Drawing.Point(239, 230);
             this.BrowseButton.Name = "BrowseButton";
             this.BrowseButton.Size = new System.Drawing.Size(75, 23);
             this.BrowseButton.TabIndex = 39;
@@ -357,80 +374,57 @@ namespace Dobby {
             this.BrowseButton.UseVisualStyleBackColor = false;
             this.BrowseButton.Click += new System.EventHandler(this.BrowseButton_Click);
             // 
-            // MenuScaleBtn
-            // 
-            this.MenuScaleBtn.BackColor = System.Drawing.Color.DimGray;
-            this.MenuScaleBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.MenuScaleBtn.FlatAppearance.BorderSize = 0;
-            this.MenuScaleBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MenuScaleBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.MenuScaleBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MenuScaleBtn.Location = new System.Drawing.Point(1, 217);
-            this.MenuScaleBtn.Name = "MenuScaleBtn";
-            this.MenuScaleBtn.Size = new System.Drawing.Size(192, 23);
-            this.MenuScaleBtn.TabIndex = 48;
-            this.MenuScaleBtn.Text = "Set Dev Menu Scale: 0.6F";
-            this.MenuScaleBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.MenuScaleBtn.UseVisualStyleBackColor = false;
-            // 
             // ExecutablePathBox
             // 
             this.ExecutablePathBox.BackColor = System.Drawing.Color.Gray;
             this.ExecutablePathBox.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.ExecutablePathBox.ForeColor = System.Drawing.SystemColors.Window;
-            this.ExecutablePathBox.Location = new System.Drawing.Point(7, 259);
+            this.ExecutablePathBox.Location = new System.Drawing.Point(7, 230);
             this.ExecutablePathBox.Name = "ExecutablePathBox";
             this.ExecutablePathBox.Size = new System.Drawing.Size(233, 23);
             this.ExecutablePathBox.TabIndex = 38;
             this.ExecutablePathBox.Text = " Select An exe To Modify";
             // 
+            // SeperatorLabel1
+            // 
+            this.SeperatorLabel1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLabel1.Location = new System.Drawing.Point(2, 145);
+            this.SeperatorLabel1.Name = "SeperatorLabel1";
+            this.SeperatorLabel1.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLabel1.TabIndex = 37;
+            this.SeperatorLabel1.Text = "______________________________________________________________";
+            // 
+            // SeperatorLabel2
+            // 
+            this.SeperatorLabel2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLabel2.Location = new System.Drawing.Point(2, 203);
+            this.SeperatorLabel2.Name = "SeperatorLabel2";
+            this.SeperatorLabel2.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLabel2.TabIndex = 36;
+            this.SeperatorLabel2.Text = "______________________________________________________________";
+            // 
+            // MenuScaleBtn
+            // 
+            this.MenuScaleBtn.Location = new System.Drawing.Point(0, 0);
+            this.MenuScaleBtn.Name = "MenuScaleBtn";
+            this.MenuScaleBtn.Size = new System.Drawing.Size(75, 23);
+            this.MenuScaleBtn.TabIndex = 0;
+            // 
             // MenuAlphaBtn
             // 
-            this.MenuAlphaBtn.BackColor = System.Drawing.Color.DimGray;
-            this.MenuAlphaBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.MenuAlphaBtn.FlatAppearance.BorderSize = 0;
-            this.MenuAlphaBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MenuAlphaBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.MenuAlphaBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MenuAlphaBtn.Location = new System.Drawing.Point(1, 191);
+            this.MenuAlphaBtn.Location = new System.Drawing.Point(0, 0);
             this.MenuAlphaBtn.Name = "MenuAlphaBtn";
-            this.MenuAlphaBtn.Size = new System.Drawing.Size(301, 23);
-            this.MenuAlphaBtn.TabIndex = 47;
-            this.MenuAlphaBtn.Text = "Set Dev Menu Background Opacity: ";
-            this.MenuAlphaBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.MenuAlphaBtn.UseVisualStyleBackColor = false;
-            // 
-            // label1
-            // 
-            this.label1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label1.Location = new System.Drawing.Point(1, 152);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(316, 16);
-            this.label1.TabIndex = 37;
-            this.label1.Text = "______________________________________________________________";
-            // 
-            // label6
-            // 
-            this.label6.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label6.Location = new System.Drawing.Point(2, 228);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(316, 16);
-            this.label6.TabIndex = 36;
-            this.label6.Text = "______________________________________________________________";
+            this.MenuAlphaBtn.Size = new System.Drawing.Size(75, 23);
+            this.MenuAlphaBtn.TabIndex = 0;
             // 
             // PS4QOLPatchesPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 403);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.ExitBtn);
-            this.Controls.Add(this.MinimizeBtn);
-            this.Controls.Add(this.MainLabel);
-            this.Controls.Add(this.SeperatorLine1);
+            this.ClientSize = new System.Drawing.Size(320, 372);
             this.Controls.Add(this.BorderBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PS4QOLPatchesPage";
@@ -455,7 +449,12 @@ namespace Dobby {
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
 
 
+
+
         bool[] CustomDebugOptions = new bool[3];
+        Button[] ExtraOptions = new Button[5]; // Menu Alpha, Menu Scale, others...
+
+
 
 
         public void Invert(Control Control, int OptionIndex) {
@@ -468,7 +467,6 @@ namespace Dobby {
             tmp = $"{tmp.Remove(tmp.LastIndexOf(' '))} {(CustomDebugOptions[OptionIndex] ? "On" : "Off")}";
             Control.Text = tmp;
         }
-
 
         public void LoadGameSpecificMenuOptions() {
             switch (Game) {
@@ -491,12 +489,70 @@ namespace Dobby {
                 case T1R11X:
                     break;
                 case T2100:
+                    ExtraOptions[0] = ExtraOptions[1] = new Button();
+                    // 
+                    // MenuScaleBtn
+                    // 
+                    this.MenuScaleBtn.BackColor = System.Drawing.Color.DimGray;
+                    this.MenuScaleBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+                    this.MenuScaleBtn.FlatAppearance.BorderSize = 0;
+                    this.MenuScaleBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+                    this.MenuScaleBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+                    this.MenuScaleBtn.ForeColor = System.Drawing.SystemColors.Control;
+                    this.MenuScaleBtn.Location = new System.Drawing.Point(1, 217);
+                    this.MenuScaleBtn.Name = "MenuScaleBtn";
+                    this.MenuScaleBtn.Size = new System.Drawing.Size(192, 23);
+                    this.MenuScaleBtn.TabIndex = 48;
+                    this.MenuScaleBtn.Text = "Set Dev Menu Scale: 0.6F";
+                    this.MenuScaleBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+                    this.MenuScaleBtn.UseVisualStyleBackColor = false;
+                    // 
+                    // MenuAlphaBtn
+                    // 
+                    this.MenuAlphaBtn.BackColor = System.Drawing.Color.DimGray;
+                    this.MenuAlphaBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+                    this.MenuAlphaBtn.FlatAppearance.BorderSize = 0;
+                    this.MenuAlphaBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+                    this.MenuAlphaBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+                    this.MenuAlphaBtn.ForeColor = System.Drawing.SystemColors.Control;
+                    this.MenuAlphaBtn.Location = new System.Drawing.Point(1, 191);
+                    this.MenuAlphaBtn.Name = "MenuAlphaBtn";
+                    this.MenuAlphaBtn.Size = new System.Drawing.Size(301, 23);
+                    this.MenuAlphaBtn.TabIndex = 47;
+                    this.MenuAlphaBtn.Text = "Set Dev Menu Background Opacity: ";
+                    this.MenuAlphaBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+                    this.MenuAlphaBtn.UseVisualStyleBackColor = false;
+                    //
+                    // Button Parent Assignments
+                    //
+                    this.BorderBox.Controls.Add(this.MenuAlphaBtn);
+                    this.BorderBox.Controls.Add(this.MenuScaleBtn);
                     break;
                 case T2107:
                     break;
                 case T2109:
                     break;
             }
+            int ButtonIndex = 0, Y_Pos = GameSpecificPatchesLabel.Location.Y + 20;
+            CreateButton:
+
+            ExtraOptions[ButtonIndex].BackColor = System.Drawing.Color.DimGray;
+            ExtraOptions[ButtonIndex].Cursor = System.Windows.Forms.Cursors.Cross;
+            ExtraOptions[ButtonIndex].FlatAppearance.BorderSize = 0;
+            ExtraOptions[ButtonIndex].FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            ExtraOptions[ButtonIndex].Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            ExtraOptions[ButtonIndex].ForeColor = System.Drawing.SystemColors.Control;
+            ExtraOptions[ButtonIndex].Location = new System.Drawing.Point(1, Y_Pos);
+            ExtraOptions[ButtonIndex].Name = "MenuScaleBtn";
+            ExtraOptions[ButtonIndex].Size = new System.Drawing.Size(192, 23);
+            ExtraOptions[ButtonIndex].TabIndex = 48;
+            ExtraOptions[ButtonIndex].Text = "Set Dev Menu Scale: 0.6F";
+            ExtraOptions[ButtonIndex].TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            ExtraOptions[ButtonIndex].UseVisualStyleBackColor = false;
+
+            ButtonIndex++;
+            Y_Pos += 23;
+            goto CreateButton;
         }
 
 

@@ -778,8 +778,8 @@ namespace Dobby {
         public string CheckGame(int Game) { // the fuck!?
             try {
                 if (PS4DebugIsConnected && geo.GetProcessInfo(exec).name == processname || Connect() == 0)
-                    switch (Game) { // T1R
-                        case 0:
+                    switch (Game) {
+                        case 0: // T1R
                             Int16 chk = BitConverter.ToInt16(geo.ReadMemory(exec, 0x4000F4, 2), 0);
                             //BeginDebug
                             if (!Dev.REL) {
@@ -850,7 +850,7 @@ namespace Dobby {
                             }//EndDebug
 
                             string T2Err() {
-                                Dev.DebugOutStr($"Error 1 (T2)\n{T2Check}");
+                                Dev.DebugOutStr($"Error 1 (T2)||{T2Check}");
                                 return "UnknownGame";
                             }
                             return
