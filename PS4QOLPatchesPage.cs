@@ -452,8 +452,8 @@ namespace Dobby {
 
 
         bool[] CustomDebugOptions = new bool[3];
-        Button[] ExtraOptions = new Button[5]; // Menu Alpha, Menu Scale, others...
-
+        public static Button[] ExtraOptions = new Button[5]; // Menu Alpha, Menu Scale, others...
+        public static Control HoveredItem;
 
 
 
@@ -469,6 +469,23 @@ namespace Dobby {
         }
 
         public void LoadGameSpecificMenuOptions() {
+            string[] ButtonTextArray = new string[] {
+                "Set Dev Menu Scale: 0.6F",
+                "Set Dev Menu Background Opacity: 0.85F",
+
+            };
+            var Border = ActiveForm.Controls.Find("BorderBox", false)[0];
+
+            Control[] cnts = new Control[] {
+                Border.Controls.Find("SeperatorLabel2", false)[0],
+                Border.Controls.Find("SeperatorLabel3", false)[0],
+                Border.Controls.Find("BrowseButton", false)[0],
+                Border.Controls.Find("ExecutablePathBox", false)[0],
+                Border.Controls.Find("GameInfoLabel", false)[0],
+                Border.Controls.Find("InfoHelpBtn", false)[0],
+                Border.Controls.Find("CreditsBtn", false)[0],
+                Border.Controls.Find("BackBtn", false)[0]
+            };
             switch (Game) {
                 case UC1100:
                     break;
@@ -489,52 +506,28 @@ namespace Dobby {
                 case T1R11X:
                     break;
                 case T2100:
-                    ExtraOptions[0] = ExtraOptions[1] = new Button();
-                    // 
-                    // MenuScaleBtn
-                    // 
-                    this.MenuScaleBtn.BackColor = System.Drawing.Color.DimGray;
-                    this.MenuScaleBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-                    this.MenuScaleBtn.FlatAppearance.BorderSize = 0;
-                    this.MenuScaleBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-                    this.MenuScaleBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-                    this.MenuScaleBtn.ForeColor = System.Drawing.SystemColors.Control;
-                    this.MenuScaleBtn.Location = new System.Drawing.Point(1, 217);
-                    this.MenuScaleBtn.Name = "MenuScaleBtn";
-                    this.MenuScaleBtn.Size = new System.Drawing.Size(192, 23);
-                    this.MenuScaleBtn.TabIndex = 48;
-                    this.MenuScaleBtn.Text = "Set Dev Menu Scale: 0.6F";
-                    this.MenuScaleBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-                    this.MenuScaleBtn.UseVisualStyleBackColor = false;
-                    // 
-                    // MenuAlphaBtn
-                    // 
-                    this.MenuAlphaBtn.BackColor = System.Drawing.Color.DimGray;
-                    this.MenuAlphaBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-                    this.MenuAlphaBtn.FlatAppearance.BorderSize = 0;
-                    this.MenuAlphaBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-                    this.MenuAlphaBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-                    this.MenuAlphaBtn.ForeColor = System.Drawing.SystemColors.Control;
-                    this.MenuAlphaBtn.Location = new System.Drawing.Point(1, 191);
-                    this.MenuAlphaBtn.Name = "MenuAlphaBtn";
-                    this.MenuAlphaBtn.Size = new System.Drawing.Size(301, 23);
-                    this.MenuAlphaBtn.TabIndex = 47;
-                    this.MenuAlphaBtn.Text = "Set Dev Menu Background Opacity: ";
-                    this.MenuAlphaBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-                    this.MenuAlphaBtn.UseVisualStyleBackColor = false;
+                    ExtraOptions[0] = new Button();
+                    ExtraOptions[1] = new Button();
+                    Dev.DebugOutStr("SSS");
                     //
                     // Button Parent Assignments
                     //
-                    this.BorderBox.Controls.Add(this.MenuAlphaBtn);
-                    this.BorderBox.Controls.Add(this.MenuScaleBtn);
+                    BorderBox.Controls.Add(ExtraOptions[0]);
+                    BorderBox.Controls.Add(ExtraOptions[1]);
                     break;
                 case T2107:
                     break;
                 case T2109:
                     break;
             }
+
             int ButtonIndex = 0, Y_Pos = GameSpecificPatchesLabel.Location.Y + 20;
-            CreateButton:
+            LoadExecutableForOptionsLabel.Visible = false;
+            foreach (Control A in cnts)
+                A.Location = new Point(A.Location.X, A.Location.Y + 25);
+
+CreateButton:
+            if (ExtraOptions[ButtonIndex] == null) return;
 
             ExtraOptions[ButtonIndex].BackColor = System.Drawing.Color.DimGray;
             ExtraOptions[ButtonIndex].Cursor = System.Windows.Forms.Cursors.Cross;
@@ -544,17 +537,24 @@ namespace Dobby {
             ExtraOptions[ButtonIndex].ForeColor = System.Drawing.SystemColors.Control;
             ExtraOptions[ButtonIndex].Location = new System.Drawing.Point(1, Y_Pos);
             ExtraOptions[ButtonIndex].Name = "MenuScaleBtn";
-            ExtraOptions[ButtonIndex].Size = new System.Drawing.Size(192, 23);
+            ExtraOptions[ButtonIndex].AutoSize = true;
             ExtraOptions[ButtonIndex].TabIndex = 48;
-            ExtraOptions[ButtonIndex].Text = "Set Dev Menu Scale: 0.6F";
+            ExtraOptions[ButtonIndex].Text = ButtonTextArray[ButtonIndex];
             ExtraOptions[ButtonIndex].TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             ExtraOptions[ButtonIndex].UseVisualStyleBackColor = false;
+            ExtraOptions[ButtonIndex].BringToFront();
+            ExtraOptions[ButtonIndex].MouseMove += HoverFunc;
+
 
             ButtonIndex++;
             Y_Pos += 23;
             goto CreateButton;
         }
-
+        public void HoverFunc(object sender, MouseEventArgs e) {
+            HoveredItem = ActiveControl;
+        }
+        public void ExtraBtnMH(object sender, EventArgs e) => HoverLeave(HoveredItem, 0);
+        public void ExtraBtnML(object sender, EventArgs e) => HoverLeave(HoveredItem, 1);
 
         private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
         public void InfoHelpBtnMH(object sender, EventArgs e) => HoverLeave(InfoHelpBtn, 0);
@@ -574,7 +574,7 @@ namespace Dobby {
 
             switch (Game) {
                 default:
-                    MessageBox.Show($"Unknown Game Verson: {Game} / {Game:X} (:X)");
+                    Dev.DebugOutStr($"Unknown Game Verson: {Game} / {Game:X}");
                     break;
                 case T1X101:
                     VersionString = "Original Release";
@@ -636,7 +636,7 @@ namespace Dobby {
                 Refresh();
             }
             FileDialog f = new OpenFileDialog {
-                Filter = "Executable|*.exe",
+                Filter = "Executable|*.elf;*.bin",
                 Title = "Select Either Of The Game's Executables"
             };
             if (f.ShowDialog() == DialogResult.OK) {
@@ -649,6 +649,8 @@ namespace Dobby {
                 GameInfoLabel.Text = UpdateGameInfoLabel();
                 MainStreamIsOpen = true;
                 IsActiveFilePCExe = false;
+                LoadGameSpecificMenuOptions();
+                if (!Dev.REL) Console.Clear();
             }
         }
         private void DisableDebugTextBtn_SClick(object sender, EventArgs e) {

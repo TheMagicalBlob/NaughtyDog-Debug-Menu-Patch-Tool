@@ -473,7 +473,7 @@ namespace Dobby {
             }
             if (Game == 0) {
                 if (!FlashThreadHasStarted) {
-                    Dev.FlashThread.Start();
+                    FlashThread.Start();
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;
@@ -491,7 +491,7 @@ namespace Dobby {
         public void FloatFunc() {
             if (Game == 0) {
                 if (!FlashThreadHasStarted) {
-                    Dev.FlashThread.Start();
+                    FlashThread.Start();
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;
@@ -505,7 +505,7 @@ namespace Dobby {
         public void IntFunc() {
             if (Game == 0) {
                 if (!FlashThreadHasStarted) {
-                    Dev.FlashThread.Start();
+                    FlashThread.Start();
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;
@@ -602,6 +602,7 @@ namespace Dobby {
                 GameInfoLabel.Text = UpdateGameInfoLabel();
                 IsActiveFilePCExe = true;
                 MainStreamIsOpen = true;
+                if (!Dev.REL) Console.Clear();
             }
         }
         private void DisableDebugTextBtn_SClick(object sender, EventArgs e) {

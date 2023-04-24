@@ -15,23 +15,24 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
     public partial class Dobby : Form {
         public Dobby() {
             InitializeComponent();
-            if (!Dev.REL && Pages[0] == null) {
-                PageInfo(Controls);
+            YellowInformationLabel = Info;
+            Info.Text = "";
+
+            #if DEBUG
+            if (Pages[0] == null) {
                 try { Console.WindowWidth = 75; Console.BufferWidth = 75; }
                 catch (Exception) {} // These Caused A Crash I Couldn't Recreate, So I Got Lazy Put Them In A Try/Catch
                 Dev.DebuggerInfo();
                 Dev.ReadCurrentKey();
             }
-            else DebugLabel.Visible = false;
-
-            Info.Text = "";
-            Page = 0;
-            YellowInformationLabel = Info;
+            #elif !DEBUG
+            DebugLabel.Visible = false;
+            #endif
         }
 
         public static TcpClient me;
         public static NetworkStream stream;
-        public static int Page;
+        public static int Page = 0;
         public static bool InfoHasImportantStr;
         public static Point MouseDif;
         public static Point MousePos;

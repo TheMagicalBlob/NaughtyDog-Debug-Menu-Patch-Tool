@@ -10,8 +10,7 @@ namespace Dobby {
     /// This Class File Contains All The Custom Debug Options Pages
     /// </summary>
     public class T2CustomOptionsDebug : Form {
-        public T2CustomOptionsDebug() {
-            if (Dev.REL) return;
+        public T2CustomOptionsDebug() { if (Dev.REL) return;
             InitializeComponent();
         }
 

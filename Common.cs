@@ -13,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Forms;
+using static System.Console;
 using static Dobby.Common.Dev;
 
 namespace Dobby {
@@ -114,7 +115,9 @@ namespace Dobby {
            "* 2.21.67.160 | Page Sizing Changes, Clarification MEssages, Additional Debug Info (MainStream)",
            "* 2.21.67.161 | Made PS4 and PC labels larger",
            "* 2.21.67.164 | Added Debug Offsets",
-           "* 2.21.67.170 | Added Most offsets, Replaced T1R 1.00 Debug Offset, Added All T2 JNZ Debug Offsets, Seperator Label Border Overlap Fix"
+           "* 2.21.67.170 | Added Most offsets, Replaced T1R 1.00 Debug Offset, Added All T2 JNZ Debug Offsets, Seperator Label Border Overlap Fix",
+           "* 2.22.67.170 | Overhauled Output Code, Old Method Was Cumbersome To Edit",
+           "* 2.22.68.170 | Added Preprocessor Directives To Avoid Compilation of Debug Code"
 
             // TODO:
             // - Finish EbootPatchHelpPage
@@ -125,6 +128,7 @@ namespace Dobby {
 
         };
         public static string Build = ChangeList[ChangeList.Length - 1].Substring(2).Substring(0, ChangeList[ChangeList.Length - 1].IndexOf('|') - 3); // Trims The Last ChangeList String For Latest The Build Number
+        
         public static string CurrentControl, tmp;
 
 
@@ -263,9 +267,12 @@ namespace Dobby {
             MainStream.Read(DataPresent, 0, dat.Length);
             return DataPresent.SequenceEqual<byte>(dat);
         }
+        /// <summary>
+        /// ///////////////////////////////////////////////////////////////////////////////
+        /// </summary>
         #endregion
 
-
+        #region Application-Wide Functions And Variable Declarations
         public static Control YellowInformationLabel;
 
         public static Point LastPos;
@@ -408,15 +415,7 @@ namespace Dobby {
         }
 
         public static void SetInfoString(string s) => YellowInformationLabel.Text = s;
-        
-        public static string BlankSpace(string String) {
-            if (String == null) return "";
-            string Blanks = string.Empty;
-            for (int i = Console.BufferWidth - String.Length; i > 0; i--)
-                Blanks += " ";
-            String += Blanks;
-            return String;
-        }
+     
         public static void HoverLeave(Control c, byte HoverOrLeave) { //! Fix Readability
             YellowInformationLabel.Font = new Font("Franklin Gothic Medium", 10F); // Reset Font Size To Default
             CurrentControl = c.Name;
@@ -444,19 +443,6 @@ namespace Dobby {
             c.Size = new Size(c.Width + 9, c.Height);
             InfoHasImportantStr = false;
         }
-        public static void PageInfo(Control.ControlCollection cunts) { // Might use it again so it stays
-            //if (Dev.REL)
-                return;
-            
-            DebugOutStr("-------------------------------------------------------------------");
-            int id = 1;
-            foreach (Control C in cunts) {
-                DebugOutStr($"Control #{id} - {C.Name} | Text = [{C.Text}]\nVisible = {C.Visible} | Enabled = {C.Enabled}\n");
-                id++;
-            }
-            DebugOutStr($"Page: {Page}\n");
-            DebugOutStr("-------------------------------------------------------------------");
-        }
 
 
         public static new void MouseDownFunc(object sender, MouseEventArgs e) {
@@ -474,60 +460,55 @@ namespace Dobby {
             }
         }
 
-        public class DummyClass {
-
+        delegate void LabelFlashDelegate();
+        static LabelFlashDelegate Yellow = new LabelFlashDelegate(FlashYellow);
+        static LabelFlashDelegate White = new LabelFlashDelegate(FlashWhite);
+        public static Thread FlashThread = new Thread(new ThreadStart(FlashLabel));
+        static void FlashLabel() {
+            while (!LabelShouldFlash) { Thread.Sleep(7); }
+            try {
+                for (int Flashes = 0; Flashes < 8; Flashes++) {
+                    while (ActiveForm == null) { } // Just Chill Here 'Till The Form Gets Focus Again
+                    ActiveForm.Invoke(White);
+                    Thread.Sleep(135);
+                    while (ActiveForm == null) { }
+                    ActiveForm.Invoke(Yellow);
+                    Thread.Sleep(135);
+                }
+            }
+            catch (Exception) {
+                DebugOutStr("Killing Label Flash");
+            }
+            LabelShouldFlash = false;
+            FlashLabel();
         }
+        static void FlashWhite() {
+            try {
+                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.White;
+                ActiveForm.Refresh();
+            }
+            catch (Exception) {
+                DebugOutStr("Killing Label Flash WH");
+            }
+        }
+        static void FlashYellow() {
+            try {
+                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.FromArgb(255, 227, 0);
+                ActiveForm.Refresh();
+            }
+            catch (Exception) {
+                DebugOutStr("Killing Label Flash YL");
+            }
+        }
+        #endregion
 
         public class Dev {
+#if !DEBUG
+            public const bool REL = true;
 
-            public const bool REL = false
-                                        ;
-
+#elif DEBUG
+            public const bool REL = false;
             static int TimerTicks = 0, OutputStringIndex = 0;
-
-
-            delegate void LabelFlashDelegate();
-            static LabelFlashDelegate Yellow = new LabelFlashDelegate(FlashYellow);
-            static LabelFlashDelegate White = new LabelFlashDelegate(FlashWhite);
-            public static Thread FlashThread = new Thread(new ThreadStart(FlashLabel));
-
-            static void FlashLabel() {
-                while (!LabelShouldFlash) { Thread.Sleep(7); }
-                try {
-                    for (int Flashes = 0; Flashes < 8; Flashes++) {
-                        while (ActiveForm == null) { } // Just Chill Here 'Till The Form Gets Focus Again
-                        ActiveForm.Invoke(White);
-                        Thread.Sleep(135);
-                        while (ActiveForm == null) { }
-                        ActiveForm.Invoke(Yellow);
-                        Thread.Sleep(135);
-                    }
-                }
-                catch (Exception) {
-                    DebugOutStr("Killing Label Flash");
-                }
-                LabelShouldFlash = false;
-                FlashLabel();
-            }
-            static void FlashWhite() {
-                try {
-                    ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.White;
-                    ActiveForm.Refresh();
-                }
-                catch (Exception) {
-                    DebugOutStr("Killing Label Flash WH");
-                }
-            }
-            static void FlashYellow() {
-                try {
-                    ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.FromArgb(255, 227, 0);
-                    ActiveForm.Refresh();
-                }
-                catch (Exception) {
-                    DebugOutStr("Killing Label Flash YL");
-                }
-            }
-
 
             public delegate void TimerDelegate();
             public static TimerDelegate TimerThread = new TimerDelegate(StartTimer);
@@ -548,14 +529,14 @@ namespace Dobby {
             public static void ReadCurrentKey() => InputThread.Start();
             static void ReadInput() {
                 while (true) {
-                    switch (Console.ReadKey(true).Key) {
+                    switch (ReadKey(true).Key) {
                         case ConsoleKey.R:
-                            Console.Clear();
+                            Clear();
                             break;
                         case ConsoleKey.C:
                             OutputStrings = new string[OutputStrings.Length];
                             OutputStringIndex = 0;
-                            Console.Clear(); Thread.Sleep(42); Console.Clear(); // First Clear Doesn't Get It All
+                            Clear(); Thread.Sleep(42); Clear(); // First Clear Doesn't Get It All
                             break;
                         case ConsoleKey.M:
                             if (MainStreamIsOpen) {
@@ -574,40 +555,52 @@ namespace Dobby {
 
             public static Thread DebuggerThread = new Thread(new ThreadStart(UpdateConsoleOutput));
             public static void DebuggerInfo() => DebuggerThread.Start();
+#endif
+
             public static void UpdateConsoleOutput() { if (REL) return;
+            #if DEBUG
                 bool TimerThreadStarted = false;
                 int Interval = 0;
 
 Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIIIIIIGHT
-                Console.WindowHeight = 35; Console.SetWindowPosition(0,0);
-                OutputStrings = new string[Console.WindowHeight - 14];
-                Console.CursorVisible = false;
-                Point OriginalConsoleScale = new Point(Console.WindowHeight, Console.WindowWidth);
+                WindowHeight = 35; SetWindowPosition(0,0);
+                OutputStrings = new string[WindowHeight - 14];
+                CursorVisible = false;
+                Point OriginalConsoleScale = new Point(WindowHeight, WindowWidth);
+                if (ActiveForm != null && !TimerThreadStarted) { ActiveForm.Invoke(TimerThread); TimerThreadStarted = true; }
                 try {
-                while (OriginalConsoleScale == new Point(Console.WindowHeight, Console.WindowWidth)) {
-                    int StartTime = TimerTicks;
-                    Form frm = ActiveForm;
-                    Console.CursorTop = 0; Console.Write(BlankSpace($"Build: {Build} | ~{Interval}ms | {OutputStrings.Length} ({OutputStringIndex})"));
-                    Console.CursorTop = 2; Console.Write(BlankSpace($"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}"));
-                    Console.CursorTop = 4; Console.Write(BlankSpace($"Active Page ID: {Page} | InfoHasImportantString: {InfoHasImportantStr}"));
-                    Console.CursorTop = 5; Console.Write(BlankSpace($"Pages: {(Pages[0] == null ? "null" : $"{Pages[0]}")}, {(Pages[1] == null ? "null" : $"{Pages[1]}")}, {(Pages[2] == null ? "null" : $"{Pages[2]}")}, {(Pages[3] == null ? "null" : $"{Pages[3]}")}")); // gross
-                    Console.CursorTop = 6; Console.Write(BlankSpace($"Form: {(ActiveForm != null ? ActiveForm.Name : "Console")}"));
-                    Console.CursorTop = 8; Console.Write(BlankSpace($"MousePos: {MousePosition}"));
-                    Console.CursorTop = 9; Console.Write(BlankSpace($"FormPos: {(ActiveForm != null ? $"App {ActiveForm.Location}" : "Form Out Of Focus, ActiveForm null")}"));
-                    Console.CursorTop = 10; Console.Write(BlankSpace($"MainStream: {(MainStreamIsOpen ? MainStream.Name : "null")}"));
-                    Console.CursorTop = 11; Console.Write(BlankSpace(MainStreamIsOpen ? $"Length: {(MainStream.Length.ToString().Length > 6 ? $"{MainStream.Length.ToString().Remove(2)}MB" : $"{MainStream.Length} bytes")} | Read: {MainStream.CanRead} | Write: {MainStream.CanWrite}" : string.Empty));
-                    Console.CursorTop = 13; foreach (string msg in OutputStrings)
-                    Console.Write(BlankSpace(msg), Console.CursorTop = Console.CursorTop++);
+                    while (OriginalConsoleScale == new Point(WindowHeight, WindowWidth)) {
+                        int StartTime = TimerTicks, Cursor = 0, String = 0; Form frm = ActiveForm;
 
-                    Interval = TimerTicks - StartTime;
+                        string[] Output = new string[] {
+                            $"Build: {Build} | ~{Interval}ms | {OutputStrings.Length} ({OutputStringIndex})",
+                            $"Form: {(ActiveForm != null ? ActiveForm.Name : "Console")}",
+                            "",
+                            $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}",
+                            $"MousePos: {MousePosition}",
+                            "",
+                            $"Pages: {(Pages[0] == null ? "null" : $"{Pages[0]}")}, {(Pages[1] == null ? "null" : $"{Pages[1]}")}, {(Pages[2] == null ? "null" : $"{Pages[2]}")}, {(Pages[3] == null ? "null" : $"{Pages[3]}")}",
+                            $"Active Page ID: {Page} | InfoHasImportantString: {InfoHasImportantStr}",
+                            $"MainStream: {(MainStreamIsOpen ? MainStream.Name : "null")}",
+                            $"{(MainStreamIsOpen ? $"Length: {(MainStream.Length.ToString().Length > 6 ? $"{MainStream.Length.ToString().Remove(2)}MB" : $"{MainStream.Length} bytes")} | Read: {MainStream.CanRead} | Write: {MainStream.CanWrite}" : null)}"
+                        };
 
-                    if (frm != null && !TimerThreadStarted) { frm.Invoke(TimerThread); TimerThreadStarted = true; }
-                }}
+                        for (; String < Output.Length ; String++) { CursorTop = Cursor++; Write(BlankSpace(Output[String])); }
+
+                        CursorTop = MainStreamIsOpen? Cursor+=1: Cursor;
+                        foreach (string msg in OutputStrings)
+                        Write(BlankSpace(msg), Cursor++);
+
+                        Interval = TimerTicks - StartTime;
+                        }
+                    }
                 catch (System.ObjectDisposedException) { }
-                Console.Clear();
+                Clear();
                 goto Begin_Again;
+                #endif
             }
             public static void DebugOutStr(string s) { if (REL) return;
+            #if DEBUG
                 if (s.Contains("\n")) {
                     s = s.Replace("\n", "");
                     s += " (Use Seperate Calls For New Line!!!)";
@@ -625,6 +618,20 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                 for (ShiftIndex = 0; ShiftIndex < OutputStrings.Length - 1 ; ShiftIndex++)
                     OutputStrings[ShiftIndex] = OutputStrings[ShiftIndex + 1];
                 OutputStrings[ShiftIndex] = s;
+                #endif
+            }
+            public static string BlankSpace(string String) {
+                #if !DEBUG
+                return string.Empty;
+
+                #elif DEBUG
+                if (String == null) return "";
+                string Blanks = string.Empty;
+                for (int i = BufferWidth - String.Length; i > 0; i--)
+                    Blanks += " ";
+                String += Blanks;
+                return String;
+                #endif
             }
         }
     }

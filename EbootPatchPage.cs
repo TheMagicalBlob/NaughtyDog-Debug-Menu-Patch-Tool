@@ -604,6 +604,7 @@ namespace Dobby {
                 GameInfoLabel.Text = UpdateGameInfoLabel();
                 MainStreamIsOpen = true;
                 IsActiveFilePCExe = false;
+                if (!Dev.REL) Console.Clear();
             }
         }
 
@@ -700,7 +701,7 @@ namespace Dobby {
         public void EnableDebugBtn_Click(object sender, EventArgs e) {
             if (Game == 0) {
                 if (!FlashThreadHasStarted) {
-                    Dev.FlashThread.Start();
+                    FlashThread.Start();
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;
@@ -717,7 +718,7 @@ namespace Dobby {
         public void DisableDebugBtn_Click(object sender, EventArgs e) {
             if (Game == 0) {
                 if (!FlashThreadHasStarted) {
-                    Dev.FlashThread.Start();
+                    FlashThread.Start();
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;
@@ -733,7 +734,7 @@ namespace Dobby {
         public void RestoredDebugBtn_Click(object sender, EventArgs e) {
             if (Game == 0) {
                 if (!FlashThreadHasStarted) {
-                    Dev.FlashThread.Start();
+                    FlashThread.Start();
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;
@@ -825,7 +826,7 @@ namespace Dobby {
         public void CustomDebugBtn_Click(object sender, EventArgs e) { // Just Edited Debug Menus, Some Things May Be Replaced
             if (Game == 0) {
                 if (!FlashThreadHasStarted) {
-                    Dev.FlashThread.Start();
+                    FlashThread.Start();
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;
@@ -904,11 +905,10 @@ namespace Dobby {
         public void CustomDebugBtnML(object sender, EventArgs e) => HoverLeave(CustomDebugBtn, 1);
 
 
-        public void CustomOptDebugBtn_Click(object sender, EventArgs e) {
-            if (Dev.REL) return;
+        public void CustomOptDebugBtn_Click(object sender, EventArgs e) { if (Dev.REL) return;
             if (Game == 0) {
                 if (!FlashThreadHasStarted) {
-                    Dev.FlashThread.Start();
+                    FlashThread.Start();
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;

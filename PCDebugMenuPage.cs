@@ -466,13 +466,14 @@ Read:       MainStream.Position = TmpAddr;
                 GameInfoLabel.Text = UpdateGameInfoLabel();
                 IsActiveFilePCExe = true;
                 MainStreamIsOpen = true;
+                if (!Dev.REL) Console.Clear();
             }
         }
 
         private void BaseDebugBtn_Click(object sender, EventArgs e) {
             if (Game == 0) {
                 if (!FlashThreadHasStarted) {
-                    Dev.FlashThread.Start();
+                    FlashThread.Start();
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;
@@ -523,7 +524,7 @@ Read:       MainStream.Position = TmpAddr;
         private void RestoredDebugBtn_Click(object sender, EventArgs e) {
             if (Game == 0) {
                 if (!FlashThreadHasStarted) {
-                    Dev.FlashThread.Start();
+                    FlashThread.Start();
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;
@@ -575,7 +576,7 @@ Read:       MainStream.Position = TmpAddr;
         private void DisableDebugBtn_Click(object sender, EventArgs e) {
             if (Game == 0) {
                 if (!FlashThreadHasStarted) {
-                    Dev.FlashThread.Start();
+                    FlashThread.Start();
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;
