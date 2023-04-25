@@ -124,7 +124,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(9, 359);
+            this.Info.Location = new System.Drawing.Point(5, 355);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
@@ -141,7 +141,7 @@ namespace Dobby {
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 310);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 308);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
@@ -328,7 +328,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 335);
+            this.BackBtn.Location = new System.Drawing.Point(1, 331);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.BackBtn.Size = new System.Drawing.Size(75, 23);
@@ -439,6 +439,8 @@ namespace Dobby {
         public void MoveForm(object sender, MouseEventArgs e) => Common.MoveForm(sender, e);
         public void MouseUpFunc(object sender, MouseEventArgs e) => Common.MouseUpFunc(sender, e);
         public void MouseDownFunc(object sender, MouseEventArgs e) => Common.MouseDownFunc(sender, e);
+        public static void ControlHover(object sender, EventArgs e) => HoverLeave((Control)sender, 0);
+        public static void ControlLeave(object sender, EventArgs e) => HoverLeave((Control)sender, 1);
 
         public void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
         public void ExitBtnMH(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 227, 0);
@@ -452,14 +454,13 @@ namespace Dobby {
 
 
         bool[] CustomDebugOptions = new bool[3];
-        public static Button[] ExtraOptions = new Button[5]; // Menu Alpha, Menu Scale, others...
-        public static Control HoveredItem;
+        public static Button[] ExtraOptions = new Button[4]; // Menu Alpha, Menu Scale, others...
 
 
 
         public void Invert(Control Control, int OptionIndex) {
             if (MouseScrolled == 1 || MouseIsDown == 0 || CurrentControl != Control.Name) {
-                Dev.DebugOutStr($"MouseScrolled: {MouseScrolled}\nMouseIsDown: {MouseIsDown}\n CurrentControl: {CurrentControl}\nC.Name: {Control.Name}");
+                Dev.DebugOut($"MouseScrolled: {MouseScrolled}\nMouseIsDown: {MouseIsDown}\n CurrentControl: {CurrentControl}\nC.Name: {Control.Name}");
                 return;
             }
             tmp = Control.Text;
@@ -470,11 +471,13 @@ namespace Dobby {
 
         public void LoadGameSpecificMenuOptions() {
             string[] ButtonTextArray = new string[] {
-                "Set Dev Menu Scale: 0.6F",
-                "Set Dev Menu Background Opacity: 0.85F",
-
+                "MenuScaleBtn;Set Dev Menu Scale: 0.6F;Hint",
+                "MenuAlphaBtn;Set Dev Menu Background Opacity: 0.85F;Hint",
+                "TestName;TestText;TestHint",
+                "MenuShadowTextBtn;Enable Debug Menu Text Shadow: Off;Hint"
             };
             var Border = ActiveForm.Controls.Find("BorderBox", false)[0];
+            int Y_Axis_Addative = 0;
 
             Control[] cnts = new Control[] {
                 Border.Controls.Find("SeperatorLabel2", false)[0],
@@ -484,7 +487,8 @@ namespace Dobby {
                 Border.Controls.Find("GameInfoLabel", false)[0],
                 Border.Controls.Find("InfoHelpBtn", false)[0],
                 Border.Controls.Find("CreditsBtn", false)[0],
-                Border.Controls.Find("BackBtn", false)[0]
+                Border.Controls.Find("BackBtn", false)[0],
+                Border.Controls.Find("Info", false)[0]
             };
             switch (Game) {
                 case UC1100:
@@ -506,28 +510,58 @@ namespace Dobby {
                 case T1R11X:
                     break;
                 case T2100:
+                    Dev.DebugOut("Tlou 2 1.00");
                     ExtraOptions[0] = new Button();
                     ExtraOptions[1] = new Button();
-                    Dev.DebugOutStr("SSS");
-                    //
-                    // Button Parent Assignments
-                    //
+                    ExtraOptions[3] = new Button();
                     BorderBox.Controls.Add(ExtraOptions[0]);
                     BorderBox.Controls.Add(ExtraOptions[1]);
+                    BorderBox.Controls.Add(ExtraOptions[3]);
                     break;
                 case T2107:
                     break;
                 case T2109:
                     break;
             }
+            int ButtonIndex = 0, RealSize = 0, Y_Pos = GameSpecificPatchesLabel.Location.Y + 20;
+            foreach (Control _ in ExtraOptions){
+            if (_ != null) RealSize++; Dev.DebugOut($"{RealSize}"); }
 
-            int ButtonIndex = 0, Y_Pos = GameSpecificPatchesLabel.Location.Y + 20;
+            switch (RealSize) {
+                case 0:
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    Y_Axis_Addative = 11;
+                    break;
+                case 3:
+                    Y_Axis_Addative = 16;
+                    break;
+            }
+
             LoadExecutableForOptionsLabel.Visible = false;
-            foreach (Control A in cnts)
-                A.Location = new Point(A.Location.X, A.Location.Y + 25);
+
+            foreach (Control A in cnts) {
+                A.Location = new Point(A.Location.X, A.Location.Y + Y_Axis_Addative * RealSize);
+            }
+            this.BorderBox.Size = new Size(this.BorderBox.Size.Width, this.BorderBox.Size.Height + (Y_Axis_Addative * RealSize));
+            this.Size = new Size(this.Size.Width, this.Size.Height + (Y_Axis_Addative * RealSize));
+            
+#if DEBUG
+            SetInfoString(this.Size.ToString());//!
+#endif
+
+
+            void BtnHoverString(object sender, EventArgs e) => SetInfoString(ButtonTextArray[((Control)sender).TabIndex].Substring(ButtonTextArray[((Control)sender).TabIndex].LastIndexOf(';') + 1));
 
 CreateButton:
-            if (ExtraOptions[ButtonIndex] == null) return;
+            if (ExtraOptions[ButtonIndex] == null) {
+                ButtonIndex++;
+                if (ButtonIndex != ExtraOptions.Length)
+                goto CreateButton;
+                return;
+            }
 
             ExtraOptions[ButtonIndex].BackColor = System.Drawing.Color.DimGray;
             ExtraOptions[ButtonIndex].Cursor = System.Windows.Forms.Cursors.Cross;
@@ -536,25 +570,25 @@ CreateButton:
             ExtraOptions[ButtonIndex].Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             ExtraOptions[ButtonIndex].ForeColor = System.Drawing.SystemColors.Control;
             ExtraOptions[ButtonIndex].Location = new System.Drawing.Point(1, Y_Pos);
-            ExtraOptions[ButtonIndex].Name = "MenuScaleBtn";
-            ExtraOptions[ButtonIndex].AutoSize = true;
-            ExtraOptions[ButtonIndex].TabIndex = 48;
-            ExtraOptions[ButtonIndex].Text = ButtonTextArray[ButtonIndex];
+            ExtraOptions[ButtonIndex].Size = new Size(ActiveForm.Width - 11, 23);
+            ExtraOptions[ButtonIndex].Name = ButtonTextArray[ButtonIndex].Remove(ButtonTextArray[ButtonIndex].IndexOf(';'));
+            ExtraOptions[ButtonIndex].TabIndex = ButtonIndex;
+            ExtraOptions[ButtonIndex].Text = (ButtonTextArray[ButtonIndex].Remove(ButtonTextArray[ButtonIndex].LastIndexOf(';'))).Substring(ButtonTextArray[ButtonIndex].IndexOf(';') + 1);
             ExtraOptions[ButtonIndex].TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             ExtraOptions[ButtonIndex].UseVisualStyleBackColor = false;
             ExtraOptions[ButtonIndex].BringToFront();
-            ExtraOptions[ButtonIndex].MouseMove += HoverFunc;
+            ExtraOptions[ButtonIndex].MouseEnter += ControlHover;
+            ExtraOptions[ButtonIndex].MouseEnter += BtnHoverString;
+            ExtraOptions[ButtonIndex].MouseLeave += ControlLeave;
 
 
             ButtonIndex++;
+            if (ButtonIndex == ExtraOptions.Length) return;
             Y_Pos += 23;
             goto CreateButton;
         }
-        public void HoverFunc(object sender, MouseEventArgs e) {
-            HoveredItem = ActiveControl;
-        }
-        public void ExtraBtnMH(object sender, EventArgs e) => HoverLeave(HoveredItem, 0);
-        public void ExtraBtnML(object sender, EventArgs e) => HoverLeave(HoveredItem, 1);
+        public void ExtraBtnMH(object sender, EventArgs e) => HoverLeave((Control)sender, 0);
+        public void ExtraBtnML(object sender, EventArgs e) => HoverLeave((Control)sender, 1);
 
         private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
         public void InfoHelpBtnMH(object sender, EventArgs e) => HoverLeave(InfoHelpBtn, 0);
@@ -574,7 +608,7 @@ CreateButton:
 
             switch (Game) {
                 default:
-                    Dev.DebugOutStr($"Unknown Game Verson: {Game} / {Game:X}");
+                    Dev.DebugOut($"Unknown Game Verson: {Game} / {Game:X}");
                     break;
                 case T1X101:
                     VersionString = "Original Release";

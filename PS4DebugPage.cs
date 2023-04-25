@@ -586,7 +586,7 @@ namespace Dobby {
                             {
                                 string title = geo.GetProcessInfo(prc.pid).titleid;
                                 if (title == "FLTZ00003" || title == "ITEM00003") {
-                                    Dev.DebugOutStr($"Skipping Lightning's Stuff {title}");
+                                    Dev.DebugOut($"Skipping Lightning's Stuff {title}");
                                     break;
                                 }
                             } // Code To Avoid Connecting To HB Store Stuff
@@ -594,7 +594,7 @@ namespace Dobby {
                             processname = prc.name;
                             PS4DebugIsConnected = true;
                             SetInfoString($"Connected And Attached To {geo.GetProcessInfo(exec).titleid}");
-                            Dev.DebugOutStr($"{processname} | pid: {exec} | PS4DebugIsConnected == {PS4DebugIsConnected}");
+                            Dev.DebugOut($"{processname} | pid: {exec} | PS4DebugIsConnected == {PS4DebugIsConnected}");
                         }
                     }
                 }
@@ -603,7 +603,7 @@ namespace Dobby {
             catch (Exception tabarnack) {
                 if (Dev.REL) {
                     int tst = 420691337;
-                    Dev.DebugOutStr($"{tabarnack.Message};{tabarnack.StackTrace}");
+                    Dev.DebugOut($"{tabarnack.Message};{tabarnack.StackTrace}");
                 }
                 SetInfoString($"Connection To {IPBOX_E.Text} Failed");
                 return 1;
@@ -620,7 +620,7 @@ namespace Dobby {
                             processname = prc.name;
                             PS4DebugIsConnected = true;
                             SetInfoString($"Connected And Attached To {geo.GetProcessInfo(exec).titleid}");
-                            Dev.DebugOutStr($"{prc.name} | {exec} | PS4DebugIsConnected == {PS4DebugIsConnected}");
+                            Dev.DebugOut($"{prc.name} | {exec} | PS4DebugIsConnected == {PS4DebugIsConnected}");
                         }
                     }
                 }
@@ -628,7 +628,7 @@ namespace Dobby {
                 return 0;
             }
             catch (Exception tabarnack) {
-                if (!Dev.REL) Dev.DebugOutStr($"{tabarnack.Message};{tabarnack.StackTrace}");
+                if (!Dev.REL) Dev.DebugOut($"{tabarnack.Message};{tabarnack.StackTrace}");
                 return 1;
             }
         }
@@ -636,12 +636,12 @@ namespace Dobby {
             try {
                 var file = File.OpenText(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB");
                 string v = file.ReadToEnd(); file.Dispose();
-                Dev.DebugOutStr(v.Remove(v.IndexOf(";")));
+                Dev.DebugOut(v.Remove(v.IndexOf(";")));
                 return v.Remove(v.IndexOf(";"));
             }
             catch (FileNotFoundException) {
                 using (FileStream f = new FileStream(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB", FileMode.Create, FileAccess.Write)) {
-                    Dev.DebugOutStr($"IP(); No Settings File Was Found, Made A New One At:\n{f.Name}");
+                    Dev.DebugOut($"IP(); No Settings File Was Found, Made A New One At:\n{f.Name}");
                     f.Position = 0; f.Write(Encoding.UTF8.GetBytes("192.168.137."), 0, 12);
                     f.Position = 15; f.WriteByte(0x3B); f.Write(BitConverter.GetBytes(9020), 0, 4);
                     return "192.168.137.";
@@ -653,11 +653,11 @@ namespace Dobby {
             try {
                 using (FileStream f = new FileStream(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB", FileMode.Open, FileAccess.Write)) {
                     f.Write(Encoding.UTF8.GetBytes(IPBOX_E.Text + ";"), 0, IPBOX_E.Text.Length + 1);
-                    if (IPBOX_E.Text.Length > 12) Dev.DebugOutStr($"Saved {IPBOX_E.Text} As I.P.");
+                    if (IPBOX_E.Text.Length > 12) Dev.DebugOut($"Saved {IPBOX_E.Text} As I.P.");
                 }
             }
             catch (FileNotFoundException) { IP(); }
-            catch (Exception tabarnack) { Dev.DebugOutStr(tabarnack.Message + $"\n{tabarnack.StackTrace}"); }
+            catch (Exception tabarnack) { Dev.DebugOut(tabarnack.Message + $"\n{tabarnack.StackTrace}"); }
         }
 
         public int Port() {
@@ -669,7 +669,7 @@ namespace Dobby {
             }
             catch (FileNotFoundException) {
                 using (FileStream f = new FileStream(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB", FileMode.Open, FileAccess.Write)) {
-                    Dev.DebugOutStr($"Port(); No Settings File Was Found, Made A New One At:\n{f.Name}");
+                    Dev.DebugOut($"Port(); No Settings File Was Found, Made A New One At:\n{f.Name}");
                     f.Write(Encoding.UTF8.GetBytes("192.168.137."), 0, 12);
                     f.Position = 15; f.WriteByte(0x3B); f.Write(BitConverter.GetBytes(9020), 0, 4);
                     return 9020;
@@ -682,30 +682,30 @@ namespace Dobby {
             try {
                 using (FileStream f = new FileStream(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB", FileMode.Open, FileAccess.Write)) {
                     f.Position = 16; f.Write(BitConverter.GetBytes(int.Parse(PortBox.Text)), 0, 4);
-                    Dev.DebugOutStr($"Saved {PortBox.Text} As Port");
+                    Dev.DebugOut($"Saved {PortBox.Text} As Port");
                 }
             }
             catch (Exception tabarnack) {
-                Dev.DebugOutStr($"{tabarnack.Message};{tabarnack.StackTrace}");
+                Dev.DebugOut($"{tabarnack.Message};{tabarnack.StackTrace}");
                 Port();
             }
         }
 
         public void Toggle(ulong addr) {
             if (addr == 0) {
-                Dev.DebugOutStr("addr was 0, this is caused when CheckGame(int) returns UnknownGame");
+                Dev.DebugOut("addr was 0, this is caused when CheckGame(int) returns UnknownGame");
                 MessageBox.Show("The Current Game Couldn't Be Determined");
                 return;
             }
-            Dev.DebugOutStr($"About To Toggle Byte At 0x{addr:X}");
+            Dev.DebugOut($"About To Toggle Byte At 0x{addr:X}");
             try {
                 if (PS4DebugIsConnected && geo.GetProcessInfo(exec).name == processname) {
                     geo.WriteMemory(exec, addr, geo.ReadMemory(exec, addr, 1)[0] == 0x00 ? on : off);
-                    Dev.DebugOutStr($"Wrote To {geo.GetProcessInfo(exec).name}/{exec} At 0x{addr:X}");
+                    Dev.DebugOut($"Wrote To {geo.GetProcessInfo(exec).name}/{exec} At 0x{addr:X}");
                     attempts = 0;
                 }
                 else {
-                    Dev.DebugOutStr($"{(PS4DebugIsConnected ? $"geo.GetProcessInfo(exec).name ({geo.GetProcessInfo(exec).name}) != processname ({processname})" : "PS4Debug Isn't Connected, Connecting Now...")}");
+                    Dev.DebugOut($"{(PS4DebugIsConnected ? $"geo.GetProcessInfo(exec).name ({geo.GetProcessInfo(exec).name}) != processname ({processname})" : "PS4Debug Isn't Connected, Connecting Now...")}");
                     attempts++;
                     if (attempts < 2) {
                         Connect(); Toggle(addr);
@@ -725,15 +725,15 @@ namespace Dobby {
         }
         public void ToggleAlt(ulong addr) {
             if (addr == 0) {
-                Dev.DebugOutStr("addr was 0, this is caused when CheckGame(int) returns UnknownGame");
+                Dev.DebugOut("addr was 0, this is caused when CheckGame(int) returns UnknownGame");
                 MessageBox.Show("The Current Game Couldn't Be Determined");
                 return;
             }
-            Dev.DebugOutStr($"About To Toggle Byte At 0x{addr:X}");
+            Dev.DebugOut($"About To Toggle Byte At 0x{addr:X}");
             try {
                 if (PS4DebugIsConnected && geo.GetProcessInfo(exec).name == processname) {
                     geo.WriteMemory(exec, addr, geo.ReadMemory(exec, addr, 1)[0] == 0x00 ? on : off);
-                    Dev.DebugOutStr($"Wrote To {geo.GetProcessInfo(exec).name}/{exec} At 0x{addr:X}");
+                    Dev.DebugOut($"Wrote To {geo.GetProcessInfo(exec).name}/{exec} At 0x{addr:X}");
                     attempts = 0;
                 }
             }
@@ -756,12 +756,12 @@ namespace Dobby {
                         attempts = 0;
                     }
                 else {
-                    Dev.DebugOutStr("Game Changed (Or Was Never Connected?), Reconnecting...");
+                    Dev.DebugOut("Game Changed (Or Was Never Connected?), Reconnecting...");
                     attempts++; if (attempts < 2) {
                         Connect(); Toggle(array);
                     }
                     else {
-                        Dev.DebugOutStr("Failed To Re-Connect");
+                        Dev.DebugOut("Failed To Re-Connect");
                     }
                 }
             }
@@ -801,11 +801,11 @@ namespace Dobby {
                                         additive = "1.11 Patch (Final Patch)";
                                         break;
                                 }
-                                Dev.DebugOutStr($"CheckGame chk == {chk} ({additive})");
+                                Dev.DebugOut($"CheckGame chk == {chk} ({additive})");
                             }//EndDebug
 
                             string T1RErr() {
-                                Dev.DebugOutStr($"Error 1 (T1R)\n{chk}");
+                                Dev.DebugOut($"Error 1 (T1R)\n{chk}");
                                 return "UnknownGame";
                             }
                             return
@@ -846,11 +846,11 @@ namespace Dobby {
                                         additive = "1.09 Patch (Final Patch)";
                                         break;
                                 }
-                                Dev.DebugOutStr($"CheckGame chk == {T2Check} ({additive})");
+                                Dev.DebugOut($"CheckGame chk == {T2Check} ({additive})");
                             }//EndDebug
 
                             string T2Err() {
-                                Dev.DebugOutStr($"Error 1 (T2)||{T2Check}");
+                                Dev.DebugOut($"Error 1 (T2)||{T2Check}");
                                 return "UnknownGame";
                             }
                             return
@@ -878,7 +878,7 @@ namespace Dobby {
                 return "Error 2";
             }
             catch (Exception Tabarnack) {
-                Dev.DebugOutStr($"{Tabarnack.Message};{Tabarnack.StackTrace}");
+                Dev.DebugOut($"{Tabarnack.Message};{Tabarnack.StackTrace}");
                 return Tabarnack.StackTrace;
             }
         }

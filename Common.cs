@@ -15,6 +15,7 @@ using System.Web;
 using System.Windows.Forms;
 using static System.Console;
 using static Dobby.Common.Dev;
+using System.Runtime.CompilerServices;
 
 namespace Dobby {
     public class Common : Dobby {
@@ -117,7 +118,8 @@ namespace Dobby {
            "* 2.21.67.164 | Added Debug Offsets",
            "* 2.21.67.170 | Added Most offsets, Replaced T1R 1.00 Debug Offset, Added All T2 JNZ Debug Offsets, Seperator Label Border Overlap Fix",
            "* 2.22.67.170 | Overhauled Output Code, Old Method Was Cumbersome To Edit",
-           "* 2.22.68.170 | Added Preprocessor Directives To Avoid Compilation of Debug Code"
+           "* 2.22.68.170 | Added Preprocessor Directives To Avoid Compilation of Debug Code",
+           "* 2.22.69.171 | Just Realized I Can Cast sender to a control ptr... Overhauled Mouse Hover/Leave Functionality, Merged PC and PS4 arrays"
 
             // TODO:
             // - Finish EbootPatchHelpPage
@@ -155,6 +157,16 @@ namespace Dobby {
             UC4133MP = 35877432,
             TLL100 = 35178432,
             TLL10X = 35227448,
+            T1X101 = 42695168 + 16007532,  // 0x1EC + 0x1F8, Yes, I was too lazy to add them together. for now
+            T1XL101 = 42670080 + 16010844,
+            T1X1015 = 2228464 + 95625728,
+            T1XL1015 = 2228464 + 95627776,
+            T1X1016 = 42698752 + 16007532,
+            T1XL1016 = 42673664 + 16010828,
+            T1X1017 = 42702336 + 16007852,
+            T1XL1017 = 42677248 + 16011148,
+            T1X102 = 2228464 + 95631360,
+            T1XL102 = 2228464 + 95634432, //
             // End Of Checks, Start Of Debug Offsets
             T1R100Debug = 0x5C5A,// (0x579F <- 00 to 01)
             T1R109Debug = 0x61A4,
@@ -174,25 +186,11 @@ namespace Dobby {
             UC3100Debug = 0x168EB7,
             UC3102Debug = 0x578227,
             UC4100Debug = 0x1297DE,   //! TEST ME
-            UC413XDebug = 0x0,        //!
+            UC413XDebug = 0x1CCDEE,   //! TEST ME
             UC4133MPDebug = 0x1CCEA9, //! TEST ME
             TLL100Debug = 0x1CCFDE,   //! TEST ME
-            TLL10XDebug = 0x1CD01E    //! TEST ME
-        ;
-
-        public const int // 0x1EC + 0x1F8, Yes, I was too lazy to add them together. for now
-            T1X101 = 42695168 + 16007532,
-            T1XL101 = 42670080 + 16010844,
-            T1X1015 = 2228464 + 95625728,
-            T1XL1015 = 2228464 + 95627776,
-            T1X1016 = 42698752 + 16007532,
-            T1XL1016 = 42673664 + 16010828,
-            T1X1017 = 42702336 + 16007852,
-            T1XL1017 = 42677248 + 16011148,
-            T1X102 = 2228464 + 95631360,
-            T1XL102 = 2228464 + 95634432,
-            // End Of Checks, Start Of Debug Offsets (0x97 -> 0x8F)
-            T1X101Debug = 0x3B66CD,
+            TLL10XDebug = 0x1CD01E,   //! TEST ME
+            T1X101Debug = 0x3B66CD,   // PC Debug Offsets (0x97 -> 0x8F)
             T1XL101Debug = 0x3B64B9,
             T1X1015Debug = 0x3B68FD,
             T1XL1015Debug = 0x3B66E9,
@@ -302,7 +300,7 @@ namespace Dobby {
             Common.Page = Page;
             switch (Page) {
                 default:
-                    Dev.DebugOutStr($"{Page} Is Not A Page!");
+                    Dev.DebugOut($"{Page} Is Not A Page!");
                     break;
                 case 0:
                     MainForm.Show();
@@ -365,7 +363,7 @@ namespace Dobby {
 
             if (Pages[i] != null) {
                 ChangeForm((int)Pages[i], true);
-                Dev.DebugOutStr($"Pages[i]: {Pages[i]}");
+                Dev.DebugOut($"Pages[i]: {Pages[i]}");
                 Pages[i] = null;
                 break;
             }
@@ -397,7 +395,7 @@ namespace Dobby {
             PopupBox.Controls.Add(Label);
             switch (ActiveForm.Name) { // Center Based On Active Form
                 default:
-                    Dev.DebugOutStr("Page Unknown, Default Location Used");
+                    Dev.DebugOut("Page Unknown, Default Location Used");
                     PopupBox.Location = new Point(100, 300);
                     return;
                 case "EbootPatchHelpPage":
@@ -414,34 +412,33 @@ namespace Dobby {
             PopupBox.Location = new Point(ParentPos.X + 75, ParentPos.Y + 150);
         }
 
+
+        /// <summary>Set The Text of The Yellow Label At The Bottom Of The Form</summary>
         public static void SetInfoString(string s) => YellowInformationLabel.Text = s;
-     
-        public static void HoverLeave(Control c, byte HoverOrLeave) { //! Fix Readability
-            YellowInformationLabel.Font = new Font("Franklin Gothic Medium", 10F); // Reset Font Size To Default
-            CurrentControl = c.Name;
-            c.ForeColor = HoverOrLeave == 0 ? Color.FromArgb(255, 227, 0) : Color.FromArgb(255, 255, 255);
-            c.Text = HoverOrLeave == 0 ? $">{c.Text}" : c.Text.Substring(c.Text.IndexOf('>') + 1);
-            c.Size = new Size(HoverOrLeave == 0 ? c.Width + 9 : c.Width - 9, c.Height);
+
+        /// <summary>Highlights A Control In Yellow With A > Preceeding It When Hovered Over</summary>
+        /// <param name="PassedControl">The Control To Highlight</param>
+        /// <param name="HoverOrLeave">0 If Hovering</param>
+        public static void HoverLeave(Control PassedControl, byte HoverOrLeave) { //! Fix Readability
+            CurrentControl = PassedControl.Name;
+            PassedControl.ForeColor     = HoverOrLeave == 0 ? Color.FromArgb(255, 227, 0) : Color.FromArgb(255, 255, 255);
+            PassedControl.Text          = HoverOrLeave == 0 ? $">{PassedControl.Text}"    : PassedControl.Text.Substring(PassedControl.Text.IndexOf('>') + 1);
+            PassedControl.Size = new Size(HoverOrLeave == 0 ? PassedControl.Width + 9     : PassedControl.Width - 9, PassedControl.Height);
+
             if (!InfoHasImportantStr) SetInfoString("");
             if (HoverOrLeave == 1) MouseScrolled = 0;
         }
 
-        public static void HoverString(Control c, string InfoString) { //! Fix Readability
-            CurrentControl = c.Name;
-            c.ForeColor = Color.FromArgb(255, 227, 0);
-            c.Text = $">{c.Text}";
+        /// <summary>Highlights A Control In Yellow With A > Preceeding It When Hovered Over, And Changes The Infno Label Text</summary>
+        /// <param name="PassedControl">The Control To Highlight</param>
+        /// <param name="InfoString">The String To Send If Hovered Over</param>
+        public static void HoverString(Control PassedControl, string InfoString) {
+            CurrentControl = PassedControl.Name;
+            PassedControl.ForeColor = Color.FromArgb(255, 227, 0);
+            PassedControl.Text = $">{PassedControl.Text}";
+            PassedControl.Size = new Size(PassedControl.Width + 9, PassedControl.Size.Height);
+            InfoHasImportantStr = false;
             SetInfoString(InfoString);
-            c.Size = new Size(c.Width + 9, c.Size.Height);
-            InfoHasImportantStr = false;
-        }
-        public static void HoverStringAlt(Control Info, Control c, string info, float FontScale) { //! Fix Readability
-            CurrentControl = c.Name;
-            Info.Font = new Font("Franklin Gothic Medium", FontScale); // Decrease Font Size To Fit String In Info Bar
-            c.ForeColor = Color.FromArgb(255, 227, 0);
-            c.Text = $">{c.Text}";
-            SetInfoString(info);
-            c.Size = new Size(c.Width + 9, c.Height);
-            InfoHasImportantStr = false;
         }
 
 
@@ -477,7 +474,7 @@ namespace Dobby {
                 }
             }
             catch (Exception) {
-                DebugOutStr("Killing Label Flash");
+                DebugOut("Killing Label Flash");
             }
             LabelShouldFlash = false;
             FlashLabel();
@@ -488,7 +485,7 @@ namespace Dobby {
                 ActiveForm.Refresh();
             }
             catch (Exception) {
-                DebugOutStr("Killing Label Flash WH");
+                DebugOut("Killing Label Flash WH");
             }
         }
         static void FlashYellow() {
@@ -497,7 +494,7 @@ namespace Dobby {
                 ActiveForm.Refresh();
             }
             catch (Exception) {
-                DebugOutStr("Killing Label Flash YL");
+                DebugOut("Killing Label Flash YL");
             }
         }
         #endregion
@@ -509,6 +506,7 @@ namespace Dobby {
 #elif DEBUG
             public const bool REL = false;
             static int TimerTicks = 0, OutputStringIndex = 0;
+
 
             public delegate void TimerDelegate();
             public static TimerDelegate TimerThread = new TimerDelegate(StartTimer);
@@ -542,7 +540,7 @@ namespace Dobby {
                             if (MainStreamIsOpen) {
                                 MainStream.Dispose();
                                 MainStreamIsOpen = false;
-                                DebugOutStr("MainStream Closed");
+                                DebugOut("MainStream Closed");
                             }
                             break;
                     }                        
@@ -599,7 +597,7 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                 goto Begin_Again;
                 #endif
             }
-            public static void DebugOutStr(string s) { if (REL) return;
+            public static void DebugOut(string s) { if (REL) return;
             #if DEBUG
                 if (s.Contains("\n")) {
                     s = s.Replace("\n", "");

@@ -435,7 +435,7 @@ namespace Dobby {
             else { // For Tests
                 {
 
-                    Dev.DebugOutStr($"{TestInt - 1} {TestInt++} {TestInt}");
+                    Dev.DebugOut($"{TestInt - 1} {TestInt++} {TestInt}");
                 
                 }
             }

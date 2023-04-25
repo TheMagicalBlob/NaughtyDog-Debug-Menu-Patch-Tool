@@ -28,7 +28,7 @@ namespace Dobby {
 
         public void Invert(Control Control, int OptionIndex) {
             if (MouseScrolled == 1 || MouseIsDown == 0 || CurrentControl != Control.Name) {
-                Dev.DebugOutStr($"MouseScrolled: {MouseScrolled}\nMouseIsDown: {MouseIsDown}\n CurrentControl: {CurrentControl}\nC.Name: {Control.Name}");
+                Dev.DebugOut($"MouseScrolled: {MouseScrolled}\nMouseIsDown: {MouseIsDown}\n CurrentControl: {CurrentControl}\nC.Name: {Control.Name}");
                 return;
             }
             tmp = Control.Text;
@@ -89,8 +89,6 @@ namespace Dobby {
                 }
             }
         }
-        public void ConfirmBtnMH(object sender, EventArgs e) => HoverLeave(ConfirmBtn, 0);
-        public void ConfirmBtnML(object sender, EventArgs e) => HoverLeave(ConfirmBtn, 1);
 
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
@@ -208,8 +206,6 @@ namespace Dobby {
             this.Option1Btn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.Option1Btn_SClick);
             this.Option1Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
             this.Option1Btn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            this.Option1Btn.MouseEnter += new System.EventHandler(this.Option1BtnMH);
-            this.Option1Btn.MouseLeave += new System.EventHandler(this.Option1BtnML);
             // 
             // Option2Btn
             // 
@@ -228,8 +224,6 @@ namespace Dobby {
             this.Option2Btn.UseVisualStyleBackColor = false;
             this.Option2Btn.Click += new System.EventHandler(this.Option2Btn_Click);
             this.Option2Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.Option2Btn.MouseEnter += new System.EventHandler(this.Option2BtnMH);
-            this.Option2Btn.MouseLeave += new System.EventHandler(this.Option2BtnML);
             this.Option2Btn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.Option2Btn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.Option2Btn_SClick);
             // 
@@ -250,8 +244,6 @@ namespace Dobby {
             this.Option3Btn.UseVisualStyleBackColor = false;
             this.Option3Btn.Click += new System.EventHandler(this.Option3Btn_Click);
             this.Option3Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.Option3Btn.MouseEnter += new System.EventHandler(this.Option3BtnMH);
-            this.Option3Btn.MouseLeave += new System.EventHandler(this.Option3BtnML);
             this.Option3Btn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.Option3Btn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.Option3Btn_SClick);
             // 
@@ -272,8 +264,6 @@ namespace Dobby {
             this.Option4Btn.UseVisualStyleBackColor = false;
             this.Option4Btn.Click += new System.EventHandler(this.Option4Btn_Click);
             this.Option4Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.Option4Btn.MouseEnter += new System.EventHandler(this.Option4BtnMH);
-            this.Option4Btn.MouseLeave += new System.EventHandler(this.Option4BtnML);
             this.Option4Btn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.Option4Btn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.Option4Btn_SClick);
             // 
@@ -294,8 +284,6 @@ namespace Dobby {
             this.Option5Btn.UseVisualStyleBackColor = false;
             this.Option5Btn.Click += new System.EventHandler(this.Option5Btn_Click);
             this.Option5Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.Option5Btn.MouseEnter += new System.EventHandler(this.Option5BtnMH);
-            this.Option5Btn.MouseLeave += new System.EventHandler(this.Option5BtnML);
             this.Option5Btn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.Option5Btn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.Option5Btn_SClick);
             // 
@@ -316,8 +304,6 @@ namespace Dobby {
             this.Option6Btn.UseVisualStyleBackColor = false;
             this.Option6Btn.Click += new System.EventHandler(this.Option6Btn_Click);
             this.Option6Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.Option6Btn.MouseEnter += new System.EventHandler(this.Option6BtnMH);
-            this.Option6Btn.MouseLeave += new System.EventHandler(this.Option6BtnML);
             this.Option6Btn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.Option6Btn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.Option6Btn_SClick);
             // 
@@ -338,8 +324,6 @@ namespace Dobby {
             this.Option7Btn.UseVisualStyleBackColor = false;
             this.Option7Btn.Click += new System.EventHandler(this.Option7Btn_Click);
             this.Option7Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.Option7Btn.MouseEnter += new System.EventHandler(this.Option7BtnMH);
-            this.Option7Btn.MouseLeave += new System.EventHandler(this.Option7BtnML);
             this.Option7Btn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.Option7Btn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.Option7Btn_SClick);
             // 
@@ -360,8 +344,6 @@ namespace Dobby {
             this.Option8Btn.UseVisualStyleBackColor = false;
             this.Option8Btn.Click += new System.EventHandler(this.Option8Btn_Click);
             this.Option8Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.Option8Btn.MouseEnter += new System.EventHandler(this.Option8BtnMH);
-            this.Option8Btn.MouseLeave += new System.EventHandler(this.Option8BtnML);
             this.Option8Btn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.Option8Btn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.Option8Btn_SClick);
             // 
@@ -382,8 +364,6 @@ namespace Dobby {
             this.Option9Btn.UseVisualStyleBackColor = false;
             this.Option9Btn.Click += new System.EventHandler(this.Option9Btn_Click);
             this.Option9Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.Option9Btn.MouseEnter += new System.EventHandler(this.Option9BtnMH);
-            this.Option9Btn.MouseLeave += new System.EventHandler(this.Option9BtnML);
             this.Option9Btn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.Option9Btn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.Option9Btn_SClick);
             // 
@@ -491,8 +471,6 @@ namespace Dobby {
             this.ConfirmBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ConfirmBtn.UseVisualStyleBackColor = false;
             this.ConfirmBtn.Click += new System.EventHandler(this.ConfirmBtn_Click);
-            this.ConfirmBtn.MouseEnter += new System.EventHandler(this.ConfirmBtnMH);
-            this.ConfirmBtn.MouseLeave += new System.EventHandler(this.ConfirmBtnML);
             // 
             // SeperatorLabel0
             // 
@@ -574,65 +552,46 @@ namespace Dobby {
             Option1Btn_Click(sender, e); MouseScrolled = 1;
         }
         public void Option1Btn_Click(object sender, EventArgs e) => Invert(Option1Btn, 0);
-        public void Option1BtnMH(object sender, EventArgs e) => HoverLeave(Option1Btn, 0);
-        public void Option1BtnML(object sender, EventArgs e) => HoverLeave(Option1Btn, 1);
 
         public void Option2Btn_SClick(object sender, EventArgs e) {
             Option2Btn_Click(sender, e); MouseScrolled = 1;
         }
         public void Option2Btn_Click(object sender, EventArgs e) => Invert(Option2Btn, 1);
-        public void Option2BtnMH(object sender, EventArgs e) => HoverLeave(Option2Btn, 0);
-        public void Option2BtnML(object sender, EventArgs e) => HoverLeave(Option2Btn, 1);
 
         public void Option3Btn_SClick(object sender, EventArgs e) {
             Option3Btn_Click(sender, e); MouseScrolled = 1;
         }
         public void Option3Btn_Click(object sender, EventArgs e) => Invert(Option3Btn, 2);
-        public void Option3BtnMH(object sender, EventArgs e) => HoverLeave(Option3Btn, 0);
-        public void Option3BtnML(object sender, EventArgs e) => HoverLeave(Option3Btn, 1);
 
         public void Option4Btn_SClick(object sender, EventArgs e) {
             Option4Btn_Click(sender, e); MouseScrolled = 1;
         }
         public void Option4Btn_Click(object sender, EventArgs e) => Invert(Option4Btn, 3);
-        public void Option4BtnMH(object sender, EventArgs e) => HoverLeave(Option4Btn, 0);
-        public void Option4BtnML(object sender, EventArgs e) => HoverLeave(Option4Btn, 1);
 
         public void Option5Btn_SClick(object sender, EventArgs e) {
             Option5Btn_Click(sender, e); MouseScrolled = 1;
         }
         public void Option5Btn_Click(object sender, EventArgs e) => Invert(Option5Btn, 4);
-        public void Option5BtnMH(object sender, EventArgs e) => HoverLeave(Option5Btn, 0);
-        public void Option5BtnML(object sender, EventArgs e) => HoverLeave(Option5Btn, 1);
 
         public void Option6Btn_SClick(object sender, EventArgs e) {
             Option6Btn_Click(sender, e); MouseScrolled = 1;
         }
         public void Option6Btn_Click(object sender, EventArgs e) => Invert(Option6Btn, 5);
-        public void Option6BtnMH(object sender, EventArgs e) => HoverLeave(Option6Btn, 0);
-        public void Option6BtnML(object sender, EventArgs e) => HoverLeave(Option6Btn, 1);
 
         public void Option7Btn_SClick(object sender, EventArgs e) {
             Option7Btn_Click(sender, e); MouseScrolled = 1;
         }
         public void Option7Btn_Click(object sender, EventArgs e) => Invert(Option7Btn, 6);
-        public void Option7BtnMH(object sender, EventArgs e) => HoverLeave(Option7Btn, 0);
-        public void Option7BtnML(object sender, EventArgs e) => HoverLeave(Option7Btn, 1);
 
         public void Option8Btn_SClick(object sender, EventArgs e) {
             Option8Btn_Click(sender, e); MouseScrolled = 1;
         }
         public void Option8Btn_Click(object sender, EventArgs e) => Invert(Option8Btn, 7);
-        public void Option8BtnMH(object sender, EventArgs e) => HoverLeave(Option8Btn, 0);
-        public void Option8BtnML(object sender, EventArgs e) => HoverLeave(Option8Btn, 1);
 
         public void Option9Btn_SClick(object sender, EventArgs e) {
             Option9Btn_Click(sender, e); MouseScrolled = 1;
         }
         public void Option9Btn_Click(object sender, EventArgs e) => Invert(Option9Btn, 8);
-
-        public void Option9BtnMH(object sender, EventArgs e) => HoverLeave(Option9Btn, 0);
-        public void Option9BtnML(object sender, EventArgs e) => HoverLeave(Option9Btn, 1);
 
         public void Option10Btn_Click(object sender, EventArgs e) {
             if (MouseScrolled == 1) return;

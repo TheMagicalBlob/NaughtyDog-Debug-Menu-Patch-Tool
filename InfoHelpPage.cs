@@ -347,7 +347,7 @@ namespace Dobby {
         void BuildLabelML(object sender, EventArgs e) => SetInfoString("");
 
         private void MiscPatchPageHelpBtn_Click(object sender, EventArgs e) {
-            Dev.DebugOutStr("Stop that :|");
+            Dev.DebugOut("Stop that :|");
         }
         void MiscPatchPageHelpBtnMH(object sender, EventArgs e) => HoverString(MiscPatchPageHelpBtn, "Page Not Yet Created");
         void MiscPatchPageHelpBtnML(object sender, EventArgs e) => HoverLeave(MiscPatchPageHelpBtn, 1);

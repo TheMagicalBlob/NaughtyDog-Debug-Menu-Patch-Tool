@@ -468,7 +468,7 @@ namespace Dobby {
 
         public void Invert(Control Control, int OptionIndex) {
             if (MouseScrolled == 1 || MouseIsDown == 0 || CurrentControl != Control.Name) {
-                Dev.DebugOutStr($"MouseScrolled: {MouseScrolled}\nMouseIsDown: {MouseIsDown}\n CurrentControl: {CurrentControl}\nC.Name: {Control.Name}");
+                Dev.DebugOut($"MouseScrolled: {MouseScrolled}\nMouseIsDown: {MouseIsDown}\n CurrentControl: {CurrentControl}\nC.Name: {Control.Name}");
                 return;
             }
             if (Game == 0) {

@@ -4,7 +4,6 @@ using System.IO;
 using System.Net;
 using System.Linq;
 using System.Text;
-using LibOrbisPkg;
 using System.Drawing;
 using System.Threading;
 using System.Net.Sockets;
@@ -127,8 +126,8 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             this.ExitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ExitBtn.UseVisualStyleBackColor = false;
             this.ExitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
-            this.ExitBtn.MouseEnter += new System.EventHandler(this.ExitBtnMH);
-            this.ExitBtn.MouseLeave += new System.EventHandler(this.ExitBtnML);
+            this.ExitBtn.MouseEnter += new System.EventHandler(ExitBtnMH);
+            this.ExitBtn.MouseLeave += new System.EventHandler(ExitBtnML);
             // 
             // MinimizeBtn
             // 
@@ -146,8 +145,8 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             this.MinimizeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.MinimizeBtn.UseVisualStyleBackColor = false;
             this.MinimizeBtn.Click += new System.EventHandler(this.MinimizeBtn_Click);
-            this.MinimizeBtn.MouseEnter += new System.EventHandler(this.MinimizeBtnMH);
-            this.MinimizeBtn.MouseLeave += new System.EventHandler(this.MinimizeBtnML);
+            this.MinimizeBtn.MouseEnter += new System.EventHandler(MinimizeBtnMH);
+            this.MinimizeBtn.MouseLeave += new System.EventHandler(MinimizeBtnML);
             // 
             // Info
             // 
@@ -178,8 +177,8 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             this.PS4DebugPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PS4DebugPageBtn.UseVisualStyleBackColor = false;
             this.PS4DebugPageBtn.Click += new System.EventHandler(this.PS4DebugPageBtn_Click);
-            this.PS4DebugPageBtn.MouseEnter += new System.EventHandler(this.PS4DebugPageBtnMH);
-            this.PS4DebugPageBtn.MouseLeave += new System.EventHandler(this.PS4DebugPageBtnML);
+            this.PS4DebugPageBtn.MouseEnter += new System.EventHandler(ControlHover);
+            this.PS4DebugPageBtn.MouseLeave += new System.EventHandler(ControlLeave);
             // 
             // EbootPatchPageBtn
             // 
@@ -197,8 +196,8 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             this.EbootPatchPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.EbootPatchPageBtn.UseVisualStyleBackColor = false;
             this.EbootPatchPageBtn.Click += new System.EventHandler(this.EbootPatchPageBtn_Click);
-            this.EbootPatchPageBtn.MouseEnter += new System.EventHandler(this.EbootPatchPageBtnMH);
-            this.EbootPatchPageBtn.MouseLeave += new System.EventHandler(this.EbootPatchPageBtnML);
+            this.EbootPatchPageBtn.MouseEnter += new System.EventHandler(ControlHover);
+            this.EbootPatchPageBtn.MouseLeave += new System.EventHandler(ControlLeave);
             // 
             // PS4QOLPageBtn
             // 
@@ -217,8 +216,8 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             this.PS4QOLPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PS4QOLPageBtn.UseVisualStyleBackColor = false;
             this.PS4QOLPageBtn.Click += new System.EventHandler(this.MiscPatchesBtn_Click);
-            this.PS4QOLPageBtn.MouseEnter += new System.EventHandler(this.MiscPatchesBtnMH);
-            this.PS4QOLPageBtn.MouseLeave += new System.EventHandler(this.MiscPatchesBtnML);
+            this.PS4QOLPageBtn.MouseEnter += new System.EventHandler(ControlHover);
+            this.PS4QOLPageBtn.MouseLeave += new System.EventHandler(ControlLeave);
             // 
             // CreditsBtn
             // 
@@ -237,8 +236,8 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
             this.CreditsBtn.Click += new System.EventHandler(this.CreditsBtn_Click);
-            this.CreditsBtn.MouseEnter += new System.EventHandler(this.CreditsBtnMH);
-            this.CreditsBtn.MouseLeave += new System.EventHandler(this.CreditsBtnML);
+            this.CreditsBtn.MouseEnter += new System.EventHandler(ControlHover);
+            this.CreditsBtn.MouseLeave += new System.EventHandler(ControlLeave);
             // 
             // InfoHelpBtn
             // 
@@ -257,8 +256,8 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
             this.InfoHelpBtn.Click += new System.EventHandler(this.InfoHelpBtn_Click);
-            this.InfoHelpBtn.MouseEnter += new System.EventHandler(this.InfoHelpBtnMH);
-            this.InfoHelpBtn.MouseLeave += new System.EventHandler(this.InfoHelpBtnML);
+            this.InfoHelpBtn.MouseEnter += new System.EventHandler(ControlHover);
+            this.InfoHelpBtn.MouseLeave += new System.EventHandler(ControlLeave);
             // 
             // SeperatorLine1
             // 
@@ -310,8 +309,8 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             this.DownloadSourceBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DownloadSourceBtn.UseVisualStyleBackColor = false;
             this.DownloadSourceBtn.Click += new System.EventHandler(this.DownloadSourceBtn_Click);
-            this.DownloadSourceBtn.MouseEnter += new System.EventHandler(this.DownloadSourceBtnMH);
-            this.DownloadSourceBtn.MouseLeave += new System.EventHandler(this.DownloadSourceBtnML);
+            this.DownloadSourceBtn.MouseEnter += new System.EventHandler(ControlHover);
+            this.DownloadSourceBtn.MouseLeave += new System.EventHandler(ControlLeave);
             // 
             // PCLabel
             // 
@@ -351,8 +350,8 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             this.PkgPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PkgPageBtn.UseVisualStyleBackColor = false;
             this.PkgPageBtn.Click += new System.EventHandler(this.PkgPageBtn_Click);
-            this.PkgPageBtn.MouseEnter += new System.EventHandler(this.PkgPageBtnMH);
-            this.PkgPageBtn.MouseLeave += new System.EventHandler(this.PkgPageBtnML);
+            this.PkgPageBtn.MouseEnter += new System.EventHandler(ControlHover);
+            this.PkgPageBtn.MouseLeave += new System.EventHandler(ControlLeave);
             // 
             // SeperatorLabel1
             // 
@@ -380,8 +379,8 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             this.PCDebugMenuPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PCDebugMenuPageBtn.UseVisualStyleBackColor = false;
             this.PCDebugMenuPageBtn.Click += new System.EventHandler(this.PCDebugMenuPageBtn_Click);
-            this.PCDebugMenuPageBtn.MouseEnter += new System.EventHandler(this.PCDebugMenuPageBtnMH);
-            this.PCDebugMenuPageBtn.MouseLeave += new System.EventHandler(this.PCDebugMenuPageBtnML);
+            this.PCDebugMenuPageBtn.MouseEnter += new System.EventHandler(ControlHover);
+            this.PCDebugMenuPageBtn.MouseLeave += new System.EventHandler(ControlLeave);
             // 
             // PCQOLPageBtn
             // 
@@ -399,8 +398,8 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             this.PCQOLPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PCQOLPageBtn.UseVisualStyleBackColor = false;
             this.PCQOLPageBtn.Click += new System.EventHandler(this.PCQOLPageBtn_Click);
-            this.PCQOLPageBtn.MouseEnter += new System.EventHandler(this.PCQOLPageBtnMH);
-            this.PCQOLPageBtn.MouseLeave += new System.EventHandler(this.PCQOLPageBtnML);
+            this.PCQOLPageBtn.MouseEnter += new System.EventHandler(ControlHover);
+            this.PCQOLPageBtn.MouseLeave += new System.EventHandler(ControlLeave);
             // 
             // Dobby
             // 
@@ -435,6 +434,8 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
         public void MoveForm(object sender, MouseEventArgs e) => Common.MoveForm(sender, e);
         public void MouseUpFunc(object sender, MouseEventArgs e) => Common.MouseUpFunc(sender, e);
         public void MouseDownFunc(object sender, MouseEventArgs e) => Common.MouseDownFunc(sender, e);
+        public static void ControlHover(object sender, EventArgs e) => HoverLeave((Control)sender, 0);
+        public static void ControlLeave(object sender, EventArgs e) => HoverLeave((Control)sender, 1);
 
         public void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
         public void InfoHelpBtnMH(object sender, EventArgs e) => HoverString(InfoHelpBtn, "Additional Information On Verious Pages");
