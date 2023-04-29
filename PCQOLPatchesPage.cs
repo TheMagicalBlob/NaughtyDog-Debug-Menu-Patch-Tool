@@ -457,9 +457,13 @@ namespace Dobby {
 
 
 
+        public static Size OriginalFormScale = Size.Empty;
+        public static Size OriginalBorderScale;
+        public static Point[] OriginalControlPositions;
 
-
-        bool[] CustomDebugBooleans = new bool[3];
+        public bool[] CustomDebugBooleans = new bool[3];
+        public static Button[] CustomDebugOptions = new Button[5]; // Menu Alpha, Menu Scale, others...
+        public static Control[] ControlsToMove;
 
         float[] CustomDebugFloats = new float[] { 0.85f, 0.6f };
 
@@ -525,52 +529,52 @@ namespace Dobby {
                     break;
                 case T1X101:
                     VersionString = "Original Release";
-                    if (!ByteCmp(0x3B66B6, DebugDat))
+                    if (!ArrayCmp(0x3B66B6, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1XL101:
                     VersionString = "Original Release Non-AVX";
-                    if (!ByteCmp(0x3B64A2, DebugDat))
+                    if (!ArrayCmp(0x3B64A2, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1X1015:
                     VersionString = "1.01.5 Release";
-                    if (!ByteCmp(0x3B68E6, DebugDat))
+                    if (!ArrayCmp(0x3B68E6, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1XL1015:
                     VersionString = "1.01.5 Release Non-AVX";
-                    if (!ByteCmp(0x3B66D2, DebugDat))
+                    if (!ArrayCmp(0x3B66D2, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1X1016:
                     VersionString = "1.01.6 Release";
-                    if (!ByteCmp(0x3B68F6, DebugDat))
+                    if (!ArrayCmp(0x3B68F6, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1XL1016:
                     VersionString = "1.01.6 Release Non-AVX";
-                    if (!ByteCmp(0x3B66D2, DebugDat))
+                    if (!ArrayCmp(0x3B66D2, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1X1017:
                     VersionString = "1.01.7 Release";
-                    if (!ByteCmp(0x3B6A17, DebugDat))
+                    if (!ArrayCmp(0x3B6A17, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1XL1017:
                     VersionString = "1.01.7 Release Non-AVX";
-                    if (!ByteCmp(0x3B67F3, DebugDat))
+                    if (!ArrayCmp(0x3B67F3, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1X102:
                     VersionString = "1.02 Release";
-                    if (!ByteCmp(0x3B6A92, DebugDat))
+                    if (!ArrayCmp(0x3B6A92, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1XL102:
                     VersionString = "1.02 Release Non-AVX";
-                    if (!ByteCmp(0x3B686E, DebugDat))
+                    if (!ArrayCmp(0x3B686E, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
             }
@@ -647,5 +651,25 @@ namespace Dobby {
         private void BackBtn_Click(object sender, EventArgs e) => BackFunc();
         public void BackBtnMH(object sender, EventArgs e) => HoverLeave(BackBtn, 0);
         public void BackBtnML(object sender, EventArgs e) => HoverLeave(BackBtn, 1);
+
+
+#if DEBUG
+        public static void ResetCustomOptions() {
+            ActiveForm.Controls.Find("BorderBox", true)[0].Size = OriginalBorderScale;
+            ActiveForm.Size = OriginalFormScale;
+
+            Dev.DebugOut("                X | Y");
+            for (int index = 0; index < ControlsToMove.Length - 1; index++) {
+                ControlsToMove[index].Location = OriginalControlPositions[index];
+                Dev.DebugOut($"Moved {ControlsToMove[index].Name} to {{{ControlsToMove[index].Location.X}, {ControlsToMove[index].Location.Y}}}");
+            }
+            foreach (Control C in CustomDebugOptions) {
+                if (ActiveForm.Controls.Contains(C))
+                    Dev.DebugOut($"Removing: {C.Name}");
+                ActiveForm.Controls.Remove(C);
+            }
+            Dev.DebugOut($"Form Size: {ActiveForm.Size}");
+        }
+#endif
     }
 }

@@ -393,52 +393,52 @@ Read:       MainStream.Position = TmpAddr;
                     break;
                 case T1X101:
                     VersionString = "Original Release";
-                     if (!ByteCmp(0x3B66B6, DebugDat))
+                     if (!ArrayCmp(0x3B66B6, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1XL101:
                     VersionString = "Original Release Non-AVX";
-                    if (!ByteCmp(0x3B64A2, DebugDat))
+                    if (!ArrayCmp(0x3B64A2, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1X1015:
                     VersionString = "1.01.5 Release";
-                    if (!ByteCmp(0x3B68E6, DebugDat))
+                    if (!ArrayCmp(0x3B68E6, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1XL1015:
                     VersionString = "1.01.5 Release Non-AVX";
-                    if (!ByteCmp(0x3B66D2, DebugDat))
+                    if (!ArrayCmp(0x3B66D2, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1X1016:
                     VersionString = "1.01.6 Release";
-                    if (!ByteCmp(0x3B68F6, DebugDat))
+                    if (!ArrayCmp(0x3B68F6, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1XL1016:
                     VersionString = "1.01.6 Release Non-AVX";
-                    if (!ByteCmp(0x3B66D2, DebugDat))
+                    if (!ArrayCmp(0x3B66D2, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1X1017:
                     VersionString = "1.01.7 Release";
-                    if (!ByteCmp(0x3B6A17, DebugDat))
+                    if (!ArrayCmp(0x3B6A17, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1XL1017:
                     VersionString = "1.01.7 Release Non-AVX";
-                    if (!ByteCmp(0x3B67F3, DebugDat))
+                    if (!ArrayCmp(0x3B67F3, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1X102:
                     VersionString = "1.02 Release";
-                    if (!ByteCmp(0x3B6A92, DebugDat))
+                    if (!ArrayCmp(0x3B6A92, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1XL102:
                     VersionString = "1.02 Release Non-AVX";
-                    if (!ByteCmp(0x3B686E, DebugDat))
+                    if (!ArrayCmp(0x3B686E, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
             }

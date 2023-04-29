@@ -17,16 +17,16 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             YellowInformationLabel = Info;
             Info.Text = "";
 
-            #if DEBUG
-            if (Pages[0] == null) {
+#if DEBUG
+            if (Pages[1] == null) {
                 try { Console.WindowWidth = 75; Console.BufferWidth = 75; }
-                catch (Exception) {} // These Caused A Crash I Couldn't Recreate, So I Got Lazy Put Them In A Try/Catch
+                catch (Exception) { } // These Caused A Crash I Couldn't Recreate, So I Got Lazy Put Them In A Try/Catch
                 Dev.DebuggerInfo();
                 Dev.ReadCurrentKey();
             }
-            #elif !DEBUG
+#elif !DEBUG
             DebugLabel.Visible = false;
-            #endif
+#endif
         }
 
         public static TcpClient me;

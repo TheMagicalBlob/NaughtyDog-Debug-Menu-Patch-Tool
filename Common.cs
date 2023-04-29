@@ -15,7 +15,6 @@ using System.Web;
 using System.Windows.Forms;
 using static System.Console;
 using static Dobby.Common.Dev;
-using System.Runtime.CompilerServices;
 
 namespace Dobby {
     public class Common : Dobby {
@@ -255,19 +254,23 @@ namespace Dobby {
             MainStream.Position = offset;
             return (byte)MainStream.ReadByte();
         }
-        public static bool ByteCmp(int addr, byte dat) {
-            MainStream.Position = addr;
-            return (byte)MainStream.ReadByte() == dat;
-        }
-        public static bool ByteCmp(int addr, byte[] dat) {
-            MainStream.Position = addr;
-            byte[] DataPresent = new byte[dat.Length];
-            MainStream.Read(DataPresent, 0, dat.Length);
-            return DataPresent.SequenceEqual<byte>(dat);
+        public static bool ByteCmp(int Address, byte ByteToCompare) {
+            MainStream.Position = Address;
+            return (byte)MainStream.ReadByte() == ByteToCompare;
         }
         /// <summary>
-        /// ///////////////////////////////////////////////////////////////////////////////
+        /// Compare Data Read At The Given Address
         /// </summary>
+        /// <returns>True If The Data Read Matches The Array Given</returns>
+        public static bool ArrayCmp(int Address, byte[] DataToCompare) {
+            MainStream.Position = Address;
+            byte[] DataPresent = new byte[DataToCompare.Length];
+            MainStream.Read(DataPresent, 0, DataToCompare.Length);
+            return DataPresent.SequenceEqual<byte>(DataToCompare);
+        }
+        //
+        /////////////////////////////////////////////////////////////////////////////////
+        //
         #endregion
 
         #region Application-Wide Functions And Variable Declarations
@@ -541,6 +544,12 @@ namespace Dobby {
                                 MainStream.Dispose();
                                 MainStreamIsOpen = false;
                                 DebugOut("MainStream Closed");
+                                if (Page == 3) {
+                                    Wait:
+                                    if (ActiveForm == null) goto Wait;
+                                    DebugOut("FormShouldReset = true");
+                                    PS4QOLPatchesPage.FormShouldReset = true;
+                                }
                             }
                             break;
                     }                        
@@ -586,8 +595,10 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                         for (; String < Output.Length ; String++) { CursorTop = Cursor++; Write(BlankSpace(Output[String])); }
 
                         CursorTop = MainStreamIsOpen? Cursor+=1: Cursor;
-                        foreach (string msg in OutputStrings)
-                        Write(BlankSpace(msg), Cursor++);
+                        foreach (string msg in OutputStrings) {
+                            Write(BlankSpace(msg));
+                            Cursor++;
+                        }
 
                         Interval = TimerTicks - StartTime;
                         }
@@ -598,7 +609,7 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                 #endif
             }
             public static void DebugOut(string s) { if (REL) return;
-            #if DEBUG
+#if DEBUG
                 if (s.Contains("\n")) {
                     s = s.Replace("\n", "");
                     s += " (Use Seperate Calls For New Line!!!)";
@@ -616,7 +627,7 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                 for (ShiftIndex = 0; ShiftIndex < OutputStrings.Length - 1 ; ShiftIndex++)
                     OutputStrings[ShiftIndex] = OutputStrings[ShiftIndex + 1];
                 OutputStrings[ShiftIndex] = s;
-                #endif
+#endif
             }
             public static string BlankSpace(string String) {
                 #if !DEBUG
