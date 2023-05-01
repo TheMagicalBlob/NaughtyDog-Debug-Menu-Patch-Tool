@@ -482,7 +482,7 @@ namespace Dobby {
                 }
                 LabelShouldFlash = true;
                 SetInfoString("Please Select A Game's Executable First");
-                Dobby.InfoHasImportantStr = true;
+                Common.InfoHasImportantStr = true;
                 return;
             }
 
@@ -500,7 +500,7 @@ namespace Dobby {
                 }
                 LabelShouldFlash = true;
                 SetInfoString("Please Select A Game's Executable First");
-                Dobby.InfoHasImportantStr = true;
+                Common.InfoHasImportantStr = true;
                 return;
             }
 
@@ -514,7 +514,7 @@ namespace Dobby {
                 }
                 LabelShouldFlash = true;
                 SetInfoString("Please Select A Game's Executable First");
-                Dobby.InfoHasImportantStr = true;
+                Common.InfoHasImportantStr = true;
                 return;
             }
 

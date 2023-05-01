@@ -123,6 +123,7 @@ namespace Dobby {
             // TODO:
             // - Finish EbootPatchHelpPage
             // - Finish EbootPatchPage GameInfoLabel Functionality
+            // - Implement New Info Label String Method, Prob A Thread idk
             
             // KNOWN BUGS:
             // - Occasional String Duplication In Debug Output (DebugOutputStr / UpdateConsoleOutput)
@@ -130,8 +131,263 @@ namespace Dobby {
         };
         public static string Build = ChangeList[ChangeList.Length - 1].Substring(2).Substring(0, ChangeList[ChangeList.Length - 1].IndexOf('|') - 3); // Trims The Last ChangeList String For Latest The Build Number
         
+
+        #region Application-Wide Functions And Variable Declarations
         public static string CurrentControl, tmp;
 
+        public static int Page;
+        public static int?[] Pages = new int?[5];
+        public static Form MainForm, PopupBox;
+        public static Control YellowInformationLabel;
+
+        public static bool InfoHasImportantStr;
+        public static Point LastPos, MousePos, MouseDif;
+
+        public static TcpClient tcp_client;
+        public static NetworkStream net_stream;
+
+        public static bool LastDebugOutputWasInfoString = false, LabelShouldFlash = false, FlashThreadHasStarted = false;
+
+        public static Font MainFont = new Font("Franklin Gothic Medium", 6.5F, FontStyle.Bold);
+
+        /// <summary> Sets The Info Label String Based On The Currently Hovered Control </summary>
+        /// <param name="Sender">The Hovered Control</param>
+        public static void SetInfoLabelString(Control Sender) { // 
+            string InfoLabelString;
+            switch (Sender.Name) {
+                default: return;
+                case "CreditsBtn":
+                    InfoLabelString = "View Credits For The Tool And Included Patches";
+                    break;
+                case "InfoHelpBtn":
+                    YellowInformationLabel.Font = new Font(YellowInformationLabel.Font.FontFamily, 9.5F);
+                    InfoLabelString = "View Help For Each Page As Well As The App Itself";
+                    break;
+                case "BackBtn":
+                    InfoLabelString = "Return To The Previous Page";
+                    break;
+                case "PS4DebugPageBtn":
+                    YellowInformationLabel.Font = new Font(YellowInformationLabel.Font.FontFamily, 9F);
+                    InfoLabelString = "Use A Lan Or Wifi Connection To Enable The Debug Mode";
+                    break;
+            }
+            SetInfoString(InfoLabelString);
+        }
+
+        public static void ChangeForm(int Page, bool IsGoingBack) {
+            LastPos = ActiveForm.Location;
+            var ClosingForm = ActiveForm;
+            if (!IsGoingBack) {
+                for (int i = 0; i < 5; i++) {
+                    if (Pages[i] == null) {
+                        Pages[i] = Common.Page;
+                        break;
+                    }
+                }
+            }
+            Common.Page = Page;
+            switch (Page) {
+                default:
+                    Dev.DebugOut($"{Page} Is Not A Page!");
+                    break;
+                case 0:
+                    MainForm.Show();
+                    break;
+                case 1:
+                    PS4DebugPage PS4Debug = new PS4DebugPage();
+                    PS4Debug.Show();
+                    break;
+                case 2:
+                    EbootPatchPage EbootPatch = new EbootPatchPage();
+                    EbootPatch.Show();
+                    break;
+                case 3:
+                    PS4QOLPatchesPage PS4QOLPage = new PS4QOLPatchesPage();
+                    PS4QOLPage.Show();
+                    break;
+                case 4:
+                    PS4QOLPatchesPage tmp = new PS4QOLPatchesPage();
+                    tmp.Show();
+                    break;
+                case 5:
+                    InfoHelpPage InfoHelp = new InfoHelpPage();
+                    InfoHelp.Show();
+                    break;
+                case 6:
+                    PS4DebugHelpPage PS4DebugHelp = new PS4DebugHelpPage();
+                    PS4DebugHelp.Show();
+                    break;
+                case 7:
+                    EbootPatchHelpPage EbootPatchHelp = new EbootPatchHelpPage();
+                    EbootPatchHelp.Show();
+                    break;
+                case 8:
+                    CreditsPage Credits = new CreditsPage();
+                    Credits.Show();
+                    break;
+                case 9:
+                    PCDebugMenuPage PCDebugMenu = new PCDebugMenuPage();
+                    PCDebugMenu.Show();
+                    MessageBox.Show("Important Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
+                    break;
+                case 10:
+                    PCQOLPatchesPage PCQOLPatches = new PCQOLPatchesPage();
+                    PCQOLPatches.Show();
+                    MessageBox.Show("Important Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
+                    break;
+            }
+            YellowInformationLabel = ActiveForm.Controls.Find("Info", true)[0];
+            ActiveForm.Location = LastPos;
+            if (ClosingForm.Name != "Dobby") {
+                ClosingForm.Close();
+                return;
+            }
+            MainForm = ClosingForm;
+            ClosingForm.Hide();
+        }
+
+        public static void BackFunc() {
+
+            for (int i = 4; i >= 0; i--)
+
+            if (Pages[i] != null) {
+                ChangeForm((int)Pages[i], true);
+                Dev.DebugOut($"Pages[i]: {Pages[i]}");
+                Pages[i] = null;
+                break;
+            }
+        }
+
+        public static void MakeTextBox(string Text) { //!
+
+            if (Dev.REL) {
+                MessageBox.Show(Text, "CSTM Text Box Not Centered Yet, Using WIN MessageBox For Now");
+                return;
+            }
+
+            if (PopupBox != null && PopupBox.Name != "") {
+                PopupBox.Close();
+                PopupBox.Name = "";
+                return;
+            }
+
+            Point ParentPos = ActiveForm.Location;
+
+            Label Label = new Label {
+                ForeColor = PopupBox.ForeColor = Color.White,
+                BackColor = Color.Gray,
+                Font = MainFont,
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+            PopupBox = new Form();
+            PopupBox.BackColor = Color.Gray;
+            PopupBox.Controls.Add(Label);
+            switch (ActiveForm.Name) { // Center Based On Active Form
+                default:
+                    Dev.DebugOut("Page Unknown, Default Location Used");
+                    PopupBox.Location = new Point(100, 300);
+                    return;
+                case "EbootPatchHelpPage":
+                    PopupBox.Location = new Point(MainForm.Location.X + 50, MainForm.Location.Y + 300);
+                    break;
+            }
+            PopupBox.Size = new Size(200, 110);
+            Label.Location = new Point(1, 1);
+            Label.Size = new Size(PopupBox.Size.Width - 2 , PopupBox.Size.Height - 3);
+            Label.Text = Text;
+            PopupBox.Name = "PopupBox";
+            PopupBox.FormBorderStyle = FormBorderStyle.None;
+            PopupBox.Show();
+            PopupBox.Location = new Point(ParentPos.X + 75, ParentPos.Y + 150);
+        }
+
+
+        /// <summary>Set The Text of The Yellow Label At The Bottom Of The Form</summary>
+        public static void SetInfoString(string s) => YellowInformationLabel.Text = s;
+
+        /// <summary>Highlights A Control In Yellow With A > Preceeding It When Hovered Over</summary>
+        /// <param name="PassedControl">The Control To Highlight</param>
+        /// <param name="HoverOrLeave">0 If Hovering</param>
+        public static void HoverLeave(Control PassedControl, byte HoverOrLeave) {
+            CurrentControl = PassedControl.Name;
+            PassedControl.ForeColor     = HoverOrLeave == 0 ? Color.FromArgb(255, 227, 0) : Color.FromArgb(255, 255, 255);
+            PassedControl.Text          = HoverOrLeave == 0 ? $">{PassedControl.Text}"    : PassedControl.Text.Substring(PassedControl.Text.IndexOf('>') + 1);
+            PassedControl.Size = new Size(HoverOrLeave == 0 ? PassedControl.Width + 9     : PassedControl.Width - 9, PassedControl.Height);
+
+            if (!InfoHasImportantStr & HoverOrLeave == 1) SetInfoString("");
+            if (HoverOrLeave == 1) MouseScrolled = 0;
+            else SetInfoLabelString(PassedControl);
+        }
+
+        /// <summary>Highlights A Control In Yellow With A > Preceeding It When Hovered Over, And Changes The Infno Label Text</summary>
+        /// <param name="PassedControl">The Control To Highlight</param>
+        /// <param name="InfoString">The String To Send If Hovered Over</param>
+        public static void HoverString(Control PassedControl, string InfoString) {
+            CurrentControl = PassedControl.Name;
+            PassedControl.ForeColor = Color.FromArgb(255, 227, 0);
+            PassedControl.Text = $">{PassedControl.Text}";
+            PassedControl.Size = new Size(PassedControl.Width + 9, PassedControl.Size.Height);
+            InfoHasImportantStr = false;
+            SetInfoString(InfoString);
+        }
+
+
+        public static new void MouseDownFunc(object sender, MouseEventArgs e) {
+            MouseIsDown = 1; LastPos = ActiveForm.Location;
+            MouseDif = new Point(MousePosition.X - ActiveForm.Location.X, MousePosition.Y - ActiveForm.Location.Y);
+        }
+        public static new void MouseUpFunc(object sender, MouseEventArgs e) {
+            MouseScrolled = MouseIsDown = 0;
+        }
+
+        public static new void MoveForm(object sender, MouseEventArgs e) {
+            if (MouseIsDown != 0) {
+                ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
+                ActiveForm.Update();
+            }
+        }
+
+        delegate void LabelFlashDelegate();
+        static LabelFlashDelegate Yellow = new LabelFlashDelegate(FlashYellow);
+        static LabelFlashDelegate White = new LabelFlashDelegate(FlashWhite);
+        public static Thread FlashThread = new Thread(new ThreadStart(FlashLabel));
+        static void FlashLabel() {
+            while (!LabelShouldFlash) { Thread.Sleep(7); }
+            try {
+                for (int Flashes = 0; Flashes < 8; Flashes++) {
+                    while (ActiveForm == null) { } // Just Chill Here 'Till The Form Gets Focus Again
+                    ActiveForm.Invoke(White);
+                    Thread.Sleep(135);
+                    while (ActiveForm == null) { }
+                    ActiveForm.Invoke(Yellow);
+                    Thread.Sleep(135);
+                }
+            }
+            catch (Exception) {
+                DebugOut("Killing Label Flash");
+            }
+            LabelShouldFlash = false;
+            FlashLabel();
+        }
+        static void FlashWhite() {
+            try {
+                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.White;
+                ActiveForm.Refresh();
+            }
+            catch (Exception) {
+                DebugOut("Killing Label Flash WH");
+            }
+        }
+        static void FlashYellow() {
+            try {
+                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.FromArgb(255, 227, 0);
+                ActiveForm.Refresh();
+            }
+            catch (Exception) {
+                DebugOut("Killing Label Flash YL");
+            }
+        }
+        #endregion
 
         #region PS4 / PC exe Patch Page Shared Variables And Functions
         public const int // Games. Read 4 bytes at 0x60 as an integer to get it
@@ -273,234 +529,6 @@ namespace Dobby {
         //
         #endregion
 
-        #region Application-Wide Functions And Variable Declarations
-        public static Control YellowInformationLabel;
-
-        public static Point LastPos;
-        public static int?[] Pages = new int?[5];
-        public static Form MainForm;
-        public static Form PopupBox;
-
-        public static bool LastDebugOutputWasInfoString = false, LabelShouldFlash = false, FlashThreadHasStarted = false;
-
-        public static Font MainFont = new Font("Franklin Gothic Medium", 6.5F, System.Drawing.FontStyle.Bold);
-        public static void SetPageInfo(Form f) {
-            YellowInformationLabel = f.Controls.Find("Info", true)[0];
-            f.Location = LastPos;
-        }
-
-        public static void ChangeForm(int Page, bool IsGoingBack) {
-            LastPos = ActiveForm.Location;
-            var ClosingForm = ActiveForm;
-            if (!IsGoingBack) {
-                for (int i = 0; i < 5; i++) {
-                    if (Pages[i] == null) {
-                        Pages[i] = Common.Page;
-                        break;
-                    }
-                }
-            }
-            Common.Page = Page;
-            switch (Page) {
-                default:
-                    Dev.DebugOut($"{Page} Is Not A Page!");
-                    break;
-                case 0:
-                    MainForm.Show();
-                    break;
-                case 1:
-                    PS4DebugPage PS4Debug = new PS4DebugPage();
-                    PS4Debug.Show();
-                    break;
-                case 2:
-                    EbootPatchPage EbootPatch = new EbootPatchPage();
-                    EbootPatch.Show();
-                    break;
-                case 3:
-                    PS4QOLPatchesPage PS4QOLPage = new PS4QOLPatchesPage();
-                    PS4QOLPage.Show();
-                    break;
-                case 4:
-                    PS4QOLPatchesPage tmp = new PS4QOLPatchesPage();
-                    tmp.Show();
-                    break;
-                case 5:
-                    InfoHelpPage InfoHelp = new InfoHelpPage();
-                    InfoHelp.Show();
-                    break;
-                case 6:
-                    PS4DebugHelpPage PS4DebugHelp = new PS4DebugHelpPage();
-                    PS4DebugHelp.Show();
-                    break;
-                case 7:
-                    EbootPatchHelpPage EbootPatchHelp = new EbootPatchHelpPage();
-                    EbootPatchHelp.Show();
-                    break;
-                case 8:
-                    CreditsPage Credits = new CreditsPage();
-                    Credits.Show();
-                    break;
-                case 9:
-                    PCDebugMenuPage PCDebugMenu = new PCDebugMenuPage();
-                    PCDebugMenu.Show();
-                    MessageBox.Show("Important Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
-                    break;
-                case 10:
-                    PCQOLPatchesPage PCQOLPatches = new PCQOLPatchesPage();
-                    PCQOLPatches.Show();
-                    MessageBox.Show("Important Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
-                    break;
-            }
-            SetPageInfo(ActiveForm);
-            if (ClosingForm.Name != "Dobby") {
-                ClosingForm.Close();
-                return;
-            }
-            MainForm = ClosingForm;
-            ClosingForm.Hide();
-        }
-
-        public static void BackFunc() {
-
-            for (int i = 4; i >= 0; i--)
-
-            if (Pages[i] != null) {
-                ChangeForm((int)Pages[i], true);
-                Dev.DebugOut($"Pages[i]: {Pages[i]}");
-                Pages[i] = null;
-                break;
-            }
-        }
-
-        public static void MakeTextBox(string Text) { //!
-
-            if (Dev.REL) {
-                MessageBox.Show(Text, "CSTM Text Box Not Centered Yet, Using WIN MessageBox For Now");
-                return;
-            }
-
-            if (PopupBox != null && PopupBox.Name != "") {
-                PopupBox.Close();
-                PopupBox.Name = "";
-                return;
-            }
-
-            Point ParentPos = ActiveForm.Location;
-
-            Label Label = new Label {
-                ForeColor = PopupBox.ForeColor = Color.White,
-                BackColor = Color.Gray,
-                Font = MainFont,
-                TextAlign = ContentAlignment.MiddleCenter
-            };
-            PopupBox = new Form();
-            PopupBox.BackColor = Color.Gray;
-            PopupBox.Controls.Add(Label);
-            switch (ActiveForm.Name) { // Center Based On Active Form
-                default:
-                    Dev.DebugOut("Page Unknown, Default Location Used");
-                    PopupBox.Location = new Point(100, 300);
-                    return;
-                case "EbootPatchHelpPage":
-                    PopupBox.Location = new Point(MainForm.Location.X + 50, MainForm.Location.Y + 300);
-                    break;
-            }
-            PopupBox.Size = new Size(200, 110);
-            Label.Location = new Point(1, 1);
-            Label.Size = new Size(PopupBox.Size.Width - 2 , PopupBox.Size.Height - 3);
-            Label.Text = Text;
-            PopupBox.Name = "PopupBox";
-            PopupBox.FormBorderStyle = FormBorderStyle.None;
-            PopupBox.Show();
-            PopupBox.Location = new Point(ParentPos.X + 75, ParentPos.Y + 150);
-        }
-
-
-        /// <summary>Set The Text of The Yellow Label At The Bottom Of The Form</summary>
-        public static void SetInfoString(string s) => YellowInformationLabel.Text = s;
-
-        /// <summary>Highlights A Control In Yellow With A > Preceeding It When Hovered Over</summary>
-        /// <param name="PassedControl">The Control To Highlight</param>
-        /// <param name="HoverOrLeave">0 If Hovering</param>
-        public static void HoverLeave(Control PassedControl, byte HoverOrLeave) { //! Fix Readability
-            CurrentControl = PassedControl.Name;
-            PassedControl.ForeColor     = HoverOrLeave == 0 ? Color.FromArgb(255, 227, 0) : Color.FromArgb(255, 255, 255);
-            PassedControl.Text          = HoverOrLeave == 0 ? $">{PassedControl.Text}"    : PassedControl.Text.Substring(PassedControl.Text.IndexOf('>') + 1);
-            PassedControl.Size = new Size(HoverOrLeave == 0 ? PassedControl.Width + 9     : PassedControl.Width - 9, PassedControl.Height);
-
-            if (!InfoHasImportantStr) SetInfoString("");
-            if (HoverOrLeave == 1) MouseScrolled = 0;
-        }
-
-        /// <summary>Highlights A Control In Yellow With A > Preceeding It When Hovered Over, And Changes The Infno Label Text</summary>
-        /// <param name="PassedControl">The Control To Highlight</param>
-        /// <param name="InfoString">The String To Send If Hovered Over</param>
-        public static void HoverString(Control PassedControl, string InfoString) {
-            CurrentControl = PassedControl.Name;
-            PassedControl.ForeColor = Color.FromArgb(255, 227, 0);
-            PassedControl.Text = $">{PassedControl.Text}";
-            PassedControl.Size = new Size(PassedControl.Width + 9, PassedControl.Size.Height);
-            InfoHasImportantStr = false;
-            SetInfoString(InfoString);
-        }
-
-
-        public static new void MouseDownFunc(object sender, MouseEventArgs e) {
-            MouseIsDown = 1; LastPos = ActiveForm.Location;
-            MouseDif = new Point(MousePosition.X - ActiveForm.Location.X, MousePosition.Y - ActiveForm.Location.Y);
-        }
-        public static new void MouseUpFunc(object sender, MouseEventArgs e) {
-            MouseScrolled = MouseIsDown = 0;
-        }
-
-        public static new void MoveForm(object sender, MouseEventArgs e) {
-            if (MouseIsDown != 0) {
-                ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
-                ActiveForm.Update();
-            }
-        }
-
-        delegate void LabelFlashDelegate();
-        static LabelFlashDelegate Yellow = new LabelFlashDelegate(FlashYellow);
-        static LabelFlashDelegate White = new LabelFlashDelegate(FlashWhite);
-        public static Thread FlashThread = new Thread(new ThreadStart(FlashLabel));
-        static void FlashLabel() {
-            while (!LabelShouldFlash) { Thread.Sleep(7); }
-            try {
-                for (int Flashes = 0; Flashes < 8; Flashes++) {
-                    while (ActiveForm == null) { } // Just Chill Here 'Till The Form Gets Focus Again
-                    ActiveForm.Invoke(White);
-                    Thread.Sleep(135);
-                    while (ActiveForm == null) { }
-                    ActiveForm.Invoke(Yellow);
-                    Thread.Sleep(135);
-                }
-            }
-            catch (Exception) {
-                DebugOut("Killing Label Flash");
-            }
-            LabelShouldFlash = false;
-            FlashLabel();
-        }
-        static void FlashWhite() {
-            try {
-                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.White;
-                ActiveForm.Refresh();
-            }
-            catch (Exception) {
-                DebugOut("Killing Label Flash WH");
-            }
-        }
-        static void FlashYellow() {
-            try {
-                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.FromArgb(255, 227, 0);
-                ActiveForm.Refresh();
-            }
-            catch (Exception) {
-                DebugOut("Killing Label Flash YL");
-            }
-        }
-        #endregion
 
         public class Dev {
 #if !DEBUG

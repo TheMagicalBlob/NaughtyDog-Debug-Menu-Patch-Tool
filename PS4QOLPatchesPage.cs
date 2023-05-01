@@ -159,8 +159,8 @@ namespace Dobby {
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
             this.CreditsBtn.Click += new System.EventHandler(this.CreditsBtn_Click);
-            this.CreditsBtn.MouseEnter += new System.EventHandler(this.CreditsBtnMH);
-            this.CreditsBtn.MouseLeave += new System.EventHandler(this.CreditsBtnML);
+            this.CreditsBtn.MouseEnter += new System.EventHandler(this.ControlHover);
+            this.CreditsBtn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // InfoHelpBtn
             // 
@@ -179,8 +179,8 @@ namespace Dobby {
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
             this.InfoHelpBtn.Click += new System.EventHandler(this.InfoHelpBtn_Click);
-            this.InfoHelpBtn.MouseEnter += new System.EventHandler(this.InfoHelpBtnMH);
-            this.InfoHelpBtn.MouseLeave += new System.EventHandler(this.InfoHelpBtnML);
+            this.InfoHelpBtn.MouseEnter += new System.EventHandler(this.ControlHover);
+            this.InfoHelpBtn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // SeperatorLabel0
             // 
@@ -345,8 +345,8 @@ namespace Dobby {
             this.DisableDebugTextBtn.UseVisualStyleBackColor = false;
             this.DisableDebugTextBtn.Click += new System.EventHandler(this.DisableDebugTextBtn_Click);
             this.DisableDebugTextBtn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.DisableDebugTextBtn.MouseEnter += new System.EventHandler(this.DisableDebugTextBtnMH);
-            this.DisableDebugTextBtn.MouseLeave += new System.EventHandler(this.DisableDebugTextBtnML);
+            this.DisableDebugTextBtn.MouseEnter += new System.EventHandler(this.ControlHover);
+            this.DisableDebugTextBtn.MouseLeave += new System.EventHandler(this.ControlLeave);
             this.DisableDebugTextBtn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.DisableDebugTextBtn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.DisableDebugTextBtn_SClick);
             // 
@@ -383,8 +383,8 @@ namespace Dobby {
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
             this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
-            this.BackBtn.MouseEnter += new System.EventHandler(this.BackBtnMH);
-            this.BackBtn.MouseLeave += new System.EventHandler(this.BackBtnML);
+            this.BackBtn.MouseEnter += new System.EventHandler(this.ControlHover);
+            this.BackBtn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // MenuRightAlignBtn
             // 
@@ -485,8 +485,11 @@ namespace Dobby {
         public void MoveForm(object sender, MouseEventArgs e) => Common.MoveForm(sender, e);
         public void MouseUpFunc(object sender, MouseEventArgs e) => Common.MouseUpFunc(sender, e);
         public void MouseDownFunc(object sender, MouseEventArgs e) => Common.MouseDownFunc(sender, e);
-        public static void ControlHover(object sender, EventArgs e) => HoverLeave((Control)sender, 0);
-        public static void ControlLeave(object sender, EventArgs e) => HoverLeave((Control)sender, 1);
+        public void ControlHover(object sender, EventArgs e) => HoverLeave((Control)sender, 0);
+        public void ControlLeave(object sender, EventArgs e) => HoverLeave((Control)sender, 1);
+        public void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
+        public void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
+        public void BackBtn_Click(object sender, EventArgs e) => BackFunc();
 
         public static Size OriginalFormScale = Size.Empty;
         public static Size OriginalBorderScale;
@@ -636,34 +639,29 @@ namespace Dobby {
             Size = new Size(Size.Width, Size.Height + (Y_Axis_Addative * RealSize));
 
 CreateButton:
-            try {
-                if (GSDebugOptions[ButtonIndex] == null) {
-                    ButtonIndex++;
-                    if (ButtonIndex != GSDebugOptions.Length)
-                        goto CreateButton;
-                    RealSize = ButtonIndex = 0;
-                    return;
-                }
+            if (GSDebugOptions[ButtonIndex] == null) {
+                ButtonIndex++;
+                if (ButtonIndex != GSDebugOptions.Length)
+                    goto CreateButton;
+                RealSize = ButtonIndex = 0;
+                return;
             }
-            catch(IndexOutOfRangeException) { Dev.DebugOut("!!!"); }
-
-            GSDebugOptions[ButtonIndex].BackColor = System.Drawing.Color.DimGray;
-            GSDebugOptions[ButtonIndex].Cursor = System.Windows.Forms.Cursors.Cross;
-            GSDebugOptions[ButtonIndex].FlatAppearance.BorderSize = 0;
-            GSDebugOptions[ButtonIndex].FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            GSDebugOptions[ButtonIndex].Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            GSDebugOptions[ButtonIndex].ForeColor = System.Drawing.SystemColors.Control;
-            GSDebugOptions[ButtonIndex].Location = new System.Drawing.Point(1, Y_Pos);
-            GSDebugOptions[ButtonIndex].Size = new Size(ActiveForm.Width - 11, 23);
-            GSDebugOptions[ButtonIndex].Name = ButtonTextArray[ButtonIndex].Remove(ButtonTextArray[ButtonIndex].IndexOf(';'));
             GSDebugOptions[ButtonIndex].TabIndex = ButtonIndex;
+            GSDebugOptions[ButtonIndex].Name = ButtonTextArray[ButtonIndex].Remove(ButtonTextArray[ButtonIndex].IndexOf(';'));
+            GSDebugOptions[ButtonIndex].Location = new Point(1, Y_Pos);
+            GSDebugOptions[ButtonIndex].Size = new Size(ActiveForm.Width - 11, 23);
+            GSDebugOptions[ButtonIndex].Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
             GSDebugOptions[ButtonIndex].Text = (ButtonTextArray[ButtonIndex].Remove(ButtonTextArray[ButtonIndex].LastIndexOf(';'))).Substring(ButtonTextArray[ButtonIndex].IndexOf(';') + 1);
-            GSDebugOptions[ButtonIndex].TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            GSDebugOptions[ButtonIndex].UseVisualStyleBackColor = false;
-            GSDebugOptions[ButtonIndex].BringToFront();
+            GSDebugOptions[ButtonIndex].TextAlign = ContentAlignment.MiddleLeft;
+            GSDebugOptions[ButtonIndex].FlatAppearance.BorderSize = 0;
+            GSDebugOptions[ButtonIndex].FlatStyle = FlatStyle.Flat;
+            GSDebugOptions[ButtonIndex].ForeColor = SystemColors.Control;
+            GSDebugOptions[ButtonIndex].BackColor = Color.DimGray;
+            GSDebugOptions[ButtonIndex].Cursor = Cursors.Cross;
             GSDebugOptions[ButtonIndex].MouseEnter += ControlHover;
             GSDebugOptions[ButtonIndex].MouseEnter += BtnHoverString;
             GSDebugOptions[ButtonIndex].MouseLeave += ControlLeave;
+            GSDebugOptions[ButtonIndex].BringToFront();
 
 
             ButtonIndex++;
@@ -674,20 +672,6 @@ CreateButton:
             Y_Pos += 23;
             goto CreateButton;
         }
-        public void ExtraBtnMH(object sender, EventArgs e) => HoverLeave((Control)sender, 0);
-        public void ExtraBtnML(object sender, EventArgs e) => HoverLeave((Control)sender, 1);
-
-        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
-        public void InfoHelpBtnMH(object sender, EventArgs e) => HoverLeave(InfoHelpBtn, 0);
-        public void InfoHelpBtnML(object sender, EventArgs e) => HoverLeave(InfoHelpBtn, 1);
-
-        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
-        public void CreditsBtnMH(object sender, EventArgs e) => HoverLeave(CreditsBtn, 0);
-        public void CreditsBtnML(object sender, EventArgs e) => HoverLeave(CreditsBtn, 1);
-
-        private void BackBtn_Click(object sender, EventArgs e) => BackFunc();
-        public void BackBtnMH(object sender, EventArgs e) => HoverLeave(BackBtn, 0);
-        public void BackBtnML(object sender, EventArgs e) => HoverLeave(BackBtn, 1);
 
         public string UpdateGameInfoLabel() { //!
 
@@ -829,8 +813,6 @@ CreateButton:
             DisableDebugTextBtn_Click(sender, e); MouseScrolled = 1;
         }
         private void DisableDebugTextBtn_Click(object sender, EventArgs e) => Invert(DisableDebugTextBtn, 0);
-        public void DisableDebugTextBtnMH(object sender, EventArgs e) => HoverLeave(DisableDebugTextBtn, 0);
-        public void DisableDebugTextBtnML(object sender, EventArgs e) => HoverLeave(DisableDebugTextBtn, 1);
 
         private void MenuRightAlignBtn_Click(object sender, EventArgs e) {
 

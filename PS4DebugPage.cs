@@ -17,7 +17,7 @@ namespace Dobby {
             PortBox.Text = Port().ToString();
         }
 
-        PS4DBG geo = new PS4DBG(IPAddress.Parse("127.0.0.1"));//!
+        PS4DBG geo;
 
         readonly byte
             on = 0x01,
@@ -77,6 +77,21 @@ namespace Dobby {
             this.MainBox.SuspendLayout();
             this.SuspendLayout();
             // 
+            // MainBox
+            // 
+            this.MainBox.Controls.Add(this.MinimizeBtn);
+            this.MainBox.Controls.Add(this.ExitBtn);
+            this.MainBox.Controls.Add(this.MainLabel);
+            this.MainBox.Controls.Add(this.SeperatorLine1);
+            this.MainBox.Location = new System.Drawing.Point(0, -6);
+            this.MainBox.Name = "MainBox";
+            this.MainBox.Size = new System.Drawing.Size(320, 420);
+            this.MainBox.TabIndex = 5;
+            this.MainBox.TabStop = false;
+            this.MainBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.MainBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
+            this.MainBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
+            // 
             // MainLabel
             // 
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -107,23 +122,8 @@ namespace Dobby {
             this.TLL100Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.TLL100Btn.UseVisualStyleBackColor = false;
             this.TLL100Btn.Click += new System.EventHandler(this.TLL100);
-            this.TLL100Btn.MouseEnter += new System.EventHandler(this.TLL100MH);
-            this.TLL100Btn.MouseLeave += new System.EventHandler(this.TLL100ML);
-            // 
-            // MainBox
-            // 
-            this.MainBox.Controls.Add(this.MinimizeBtn);
-            this.MainBox.Controls.Add(this.ExitBtn);
-            this.MainBox.Controls.Add(this.MainLabel);
-            this.MainBox.Controls.Add(this.SeperatorLine1);
-            this.MainBox.Location = new System.Drawing.Point(0, -6);
-            this.MainBox.Name = "MainBox";
-            this.MainBox.Size = new System.Drawing.Size(320, 420);
-            this.MainBox.TabIndex = 5;
-            this.MainBox.TabStop = false;
-            this.MainBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MainBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            this.MainBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
+            this.TLL100Btn.MouseEnter += new System.EventHandler(this.ControlHover);
+            this.TLL100Btn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // MinimizeBtn
             // 
@@ -190,7 +190,7 @@ namespace Dobby {
             this.ManualConnectBtn.UseVisualStyleBackColor = false;
             this.ManualConnectBtn.Click += new System.EventHandler(this.ManualConnectBtn_Click);
             this.ManualConnectBtn.MouseEnter += new System.EventHandler(this.ManualConnectBtnMH);
-            this.ManualConnectBtn.MouseLeave += new System.EventHandler(this.ManualConnectBtnML);
+            this.ManualConnectBtn.MouseLeave += new System.EventHandler(this.ControlLeave);
             this.ManualConnectBtn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.ManualConnectBtn_Click);
             // 
             // IPBOX_E
@@ -237,7 +237,7 @@ namespace Dobby {
             this.T1RBtn.UseVisualStyleBackColor = false;
             this.T1RBtn.Click += new System.EventHandler(this.T1RBtn_Click);
             this.T1RBtn.MouseEnter += new System.EventHandler(this.T1R100MH);
-            this.T1RBtn.MouseLeave += new System.EventHandler(this.T1R100ML);
+            this.T1RBtn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // T2100Btn
             // 
@@ -256,7 +256,7 @@ namespace Dobby {
             this.T2100Btn.UseVisualStyleBackColor = false;
             this.T2100Btn.Click += new System.EventHandler(this.T2100Btn_Click);
             this.T2100Btn.MouseEnter += new System.EventHandler(this.T2100MH);
-            this.T2100Btn.MouseLeave += new System.EventHandler(this.T2100ML);
+            this.T2100Btn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // UC4100Btn
             // 
@@ -275,7 +275,7 @@ namespace Dobby {
             this.UC4100Btn.UseVisualStyleBackColor = false;
             this.UC4100Btn.Click += new System.EventHandler(this.UC4100Btn_Click);
             this.UC4100Btn.MouseEnter += new System.EventHandler(this.UC4100MH);
-            this.UC4100Btn.MouseLeave += new System.EventHandler(this.UC4100ML);
+            this.UC4100Btn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // BackBtn
             // 
@@ -294,7 +294,7 @@ namespace Dobby {
             this.BackBtn.UseVisualStyleBackColor = false;
             this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
             this.BackBtn.MouseEnter += new System.EventHandler(this.BackBtnMH);
-            this.BackBtn.MouseLeave += new System.EventHandler(this.BackBtnML);
+            this.BackBtn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // UC1Btn
             // 
@@ -313,7 +313,7 @@ namespace Dobby {
             this.UC1Btn.UseVisualStyleBackColor = false;
             this.UC1Btn.Click += new System.EventHandler(this.UC1Btn_Click);
             this.UC1Btn.MouseEnter += new System.EventHandler(this.UC1BtnMH);
-            this.UC1Btn.MouseLeave += new System.EventHandler(this.UC1BtnML);
+            this.UC1Btn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // UC2Btn
             // 
@@ -332,7 +332,7 @@ namespace Dobby {
             this.UC2Btn.UseVisualStyleBackColor = false;
             this.UC2Btn.Click += new System.EventHandler(this.UC2Btn_Click);
             this.UC2Btn.MouseEnter += new System.EventHandler(this.UC2BtnMH);
-            this.UC2Btn.MouseLeave += new System.EventHandler(this.UC2BtnML);
+            this.UC2Btn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // UC3Btn
             // 
@@ -351,7 +351,7 @@ namespace Dobby {
             this.UC3Btn.UseVisualStyleBackColor = false;
             this.UC3Btn.Click += new System.EventHandler(this.UC3Btn_Click);
             this.UC3Btn.MouseEnter += new System.EventHandler(this.UC3BtnMH);
-            this.UC3Btn.MouseLeave += new System.EventHandler(this.UC3BtnML);
+            this.UC3Btn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // SeperatorLine2
             // 
@@ -383,7 +383,7 @@ namespace Dobby {
             this.DebugPayloadBtn.UseVisualStyleBackColor = false;
             this.DebugPayloadBtn.Click += new System.EventHandler(this.DebugPayloadBtn_Click);
             this.DebugPayloadBtn.MouseEnter += new System.EventHandler(this.DebugPayloadBtnMH);
-            this.DebugPayloadBtn.MouseLeave += new System.EventHandler(this.DebugPayloadBtnML);
+            this.DebugPayloadBtn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // PortBox
             // 
@@ -463,7 +463,7 @@ namespace Dobby {
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
             this.InfoHelpBtn.Click += new System.EventHandler(this.InfoHelpBtn_Click);
             this.InfoHelpBtn.MouseEnter += new System.EventHandler(this.InfoHelpBtnMH);
-            this.InfoHelpBtn.MouseLeave += new System.EventHandler(this.InfoHelpBtnML);
+            this.InfoHelpBtn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // CreditsBtn
             // 
@@ -483,7 +483,7 @@ namespace Dobby {
             this.CreditsBtn.UseVisualStyleBackColor = false;
             this.CreditsBtn.Click += new System.EventHandler(this.CreditsBtn_Click);
             this.CreditsBtn.MouseEnter += new System.EventHandler(this.CreditsBtnMH);
-            this.CreditsBtn.MouseLeave += new System.EventHandler(this.CreditsBtnML);
+            this.CreditsBtn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // UC4MPBetaBtn
             // 
@@ -502,7 +502,7 @@ namespace Dobby {
             this.UC4MPBetaBtn.UseVisualStyleBackColor = false;
             this.UC4MPBetaBtn.Click += new System.EventHandler(this.UC4MPBetaBtn_Click);
             this.UC4MPBetaBtn.MouseEnter += new System.EventHandler(this.UC4MPBetaBtnMH);
-            this.UC4MPBetaBtn.MouseLeave += new System.EventHandler(this.UC4MPBetaBtnML);
+            this.UC4MPBetaBtn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // PS4DebugPage
             // 
@@ -555,6 +555,8 @@ namespace Dobby {
         public void MinimizeBtn_Click(object sender, EventArgs e) => ActiveForm.WindowState = FormWindowState.Minimized;
         public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
+        public void ControlHover(object sender, EventArgs e) => HoverLeave((Control)sender, 0);
+        public void ControlLeave(object sender, EventArgs e) => HoverLeave((Control)sender, 1);
 
         public void BackBtn_Click(object sender, EventArgs e) {
             BackFunc();
@@ -565,11 +567,9 @@ namespace Dobby {
 
         public void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
         public void InfoHelpBtnMH(object sender, EventArgs e) => HoverString(InfoHelpBtn, "Additional Information On Verious Pages");
-        public void InfoHelpBtnML(object sender, EventArgs e) => HoverLeave(InfoHelpBtn, 1);
 
         public void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
         public void CreditsBtnMH(object sender, EventArgs e) => HoverString(CreditsBtn, "View Credits For The Tool And Included Patches");
-        public void CreditsBtnML(object sender, EventArgs e) => HoverLeave(CreditsBtn, 1);
 
 
         /* End Of Repeated Functions
@@ -895,22 +895,18 @@ namespace Dobby {
                 MessageBox.Show("PS4Debug Paylod Sent Without Issue\n\nPS4Debug Update 1.1.15 By ctn123\nPS4Debug Created By Golden", "Payload Injected Successfully, Here's Some Credits");
         }
         public void DebugPayloadBtnMH(object sender, EventArgs e) => HoverString(DebugPayloadBtn, "Sends ctn123's Port Of PS4Debug");
-        public void DebugPayloadBtnML(object sender, EventArgs e) => HoverLeave(DebugPayloadBtn, 1);
 
         public void ManualConnectBtn_Click(object sender, EventArgs e) => Connect();
         public void ManualConnectBtnMH(object sender, EventArgs e) => HoverString(ManualConnectBtn, "Tool Also Auto-Connects When An Option's Selected");
-        public void ManualConnectBtnML(object sender, EventArgs e) => HoverLeave(ManualConnectBtn, 1);
 
         public void T1RBtn_Click(object sender, EventArgs e) {
             string Game = CheckGame(0); // The Fuck?
             Toggle(Game == "1.00" ? 0x114ED32E81 : Game == "UnknownGame" ? (ulong)0x0 : 0x114F536E81);
         }
         public void T1R100MH(object sender, EventArgs e) => HoverString(T1RBtn, "Supports: 1.00 | 1.09 | 1.10 | 1.11");
-        public void T1R100ML(object sender, EventArgs e) => HoverLeave(T1RBtn, 1);
 
         public void T2100Btn_Click(object sender, EventArgs e) => ToggleAlt(CheckGame(1) == "1.00" ? (ulong)0x110693FAA1 : 0x11069DFAA1);
         public void T2100MH(object sender, EventArgs e) => HoverString(T2100Btn, "Supports: 1.00 | 1.07 | 1.08 | 1.09");
-        public void T2100ML(object sender, EventArgs e) => HoverLeave(T2100Btn, 1);
 
         public void UC1Btn_Click(object sender, EventArgs e) {
             if (!PS4DebugIsConnected) Connect(); // Temporary debug code to get it working for Chandler
@@ -921,29 +917,22 @@ namespace Dobby {
             Toggle(new ulong[] { 0xD989CC, 0xD97B41, 0xD98970 }); // 1.00
         }
         public void UC1BtnMH(object sender, EventArgs e) => HoverString(UC1Btn, "Supports: 1.00 | 1.02");
-        public void UC1BtnML(object sender, EventArgs e) => HoverLeave(UC1Btn, 1);
 
         public void UC2Btn_Click(object sender, EventArgs e) => Toggle(new ulong[] { 0x127149C, 0x12705C9 });
         public void UC2BtnMH(object sender, EventArgs e) => HoverString(UC2Btn, "Supports: 1.00");
-        public void UC2BtnML(object sender, EventArgs e) => HoverLeave(UC2Btn, 1);
 
         public void UC3Btn_Click(object sender, EventArgs e) => Toggle(new ulong[] { 0x18366C4, 0x1835481 });
         public void UC3BtnMH(object sender, EventArgs e) => HoverString(UC3Btn, "Supports: 1.00");
-        public void UC3BtnML(object sender, EventArgs e) => HoverLeave(UC3Btn, 1);
 
         public void UC4100Btn_Click(object sender, EventArgs e) => Toggle(0x1104FC2E95);
         public void UC4100MH(object sender, EventArgs e) => HoverString(UC4100Btn, "Supports: 1.00 | 1.32 | 1.33");
-        public void UC4100ML(object sender, EventArgs e) => HoverLeave(UC4100Btn, 1);
 
         public void UC4133_Click(object sender, EventArgs e) => Toggle(PS4DebugIsConnected ? geo.GetProcessInfo(exec).name != "eboot.bin" ? (ulong)0x1104B1AE79 : 0x110491AE79 : Connect(sender, e));
 
         private void UC4MPBetaBtn_Click(object sender, EventArgs e) => Toggle(0x113408AE83);
         public void UC4MPBetaBtnMH(object sender, EventArgs e) => HoverString(UC4MPBetaBtn, "Supports: 1.09 - Use .bin Patch For 1.00");
-        public void UC4MPBetaBtnML(object sender, EventArgs e) => HoverLeave(UC4MPBetaBtn, 1);
 
         public void TLL100(object sender, EventArgs e) => Toggle(0x1105D1AEF9);
-        public void TLL100MH(object sender, EventArgs e) => HoverLeave(TLL100Btn, 0);
-        public void TLL100ML(object sender, EventArgs e) => HoverLeave(TLL100Btn, 1);
 
         public void TLL109(object sender, EventArgs e) => Toggle(0x1105D1AEF9);
 
@@ -974,11 +963,6 @@ namespace Dobby {
         public Button button2;
         public Button InfoHelpBtn;
         public Button CreditsBtn;
-
-        private void ManualConnectBtn_Click(object sender, MouseEventArgs e) {
-
-        }
-
         public Button BackBtn;
         public Label Info;
 

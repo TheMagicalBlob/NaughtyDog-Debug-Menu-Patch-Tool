@@ -10,13 +10,9 @@ using System.Net.Sockets;
 using System.Windows.Forms;
 using static Dobby.Common;
 
-namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
+namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
     public partial class Dobby : Form {
         public Dobby() {
-            InitializeComponent();
-            YellowInformationLabel = Info;
-            Info.Text = "";
-
 #if DEBUG
             if (Pages[1] == null) {
                 try { Console.WindowWidth = 75; Console.BufferWidth = 75; }
@@ -27,14 +23,12 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
 #elif !DEBUG
             DebugLabel.Visible = false;
 #endif
+            InitializeComponent();
+            YellowInformationLabel = Info;
+            Info.Text = "";
+            Page = 0;
+            Dev.DebugOut("Test PS4DebugPage Changes!!!");
         }
-
-        public static TcpClient me;
-        public static NetworkStream stream;
-        public static int Page = 0;
-        public static bool InfoHasImportantStr;
-        public static Point MouseDif;
-        public static Point MousePos;
 
         #region ControlDeclarations
         public Label MainLabel;
@@ -255,7 +249,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
             this.InfoHelpBtn.Text = "Information / Help...";
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
-            this.InfoHelpBtn.Click += new System.EventHandler(this.InfoHelpBtn_Click);
+            this.InfoHelpBtn.Click += new System.EventHandler(this.InfoHelpBtn_Click); //"Additional Information On Verious Pages"
             this.InfoHelpBtn.MouseEnter += new System.EventHandler(ControlHover);
             this.InfoHelpBtn.MouseLeave += new System.EventHandler(ControlLeave);
             // 
@@ -438,12 +432,8 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
         public static void ControlLeave(object sender, EventArgs e) => HoverLeave((Control)sender, 1);
 
         public void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
-        public void InfoHelpBtnMH(object sender, EventArgs e) => HoverString(InfoHelpBtn, "Additional Information On Verious Pages");
-        public void InfoHelpBtnML(object sender, EventArgs e) => HoverLeave(InfoHelpBtn, 1);
-
+        
         public void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
-        public void CreditsBtnMH(object sender, EventArgs e) => HoverString(CreditsBtn, "View Credits For The Tool And Included Patches");
-        public void CreditsBtnML(object sender, EventArgs e) => HoverLeave(CreditsBtn, 1);
 
         public void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
         public void ExitBtnMH(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 227, 0);
@@ -454,35 +444,26 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before rel"
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
 
         public void PS4DebugPageBtn_Click(object sender, EventArgs e) => ChangeForm(1, false);
-        public void PS4DebugPageBtnMH(object sender, EventArgs e) => HoverString(PS4DebugPageBtn, "Use A Lan Or Wifi Connection To Enable The Debug Mode");
-        public void PS4DebugPageBtnML(object sender, EventArgs e) => HoverLeave(PS4DebugPageBtn, 1);
 
         public void EbootPatchPageBtn_Click(object sender, EventArgs e) => ChangeForm(2, false);
         public void EbootPatchPageBtnMH(object sender, EventArgs e) => HoverString(EbootPatchPageBtn, "Patch An Executable To Be Added To A .pkg");
-        public void EbootPatchPageBtnML(object sender, EventArgs e) => HoverLeave(EbootPatchPageBtn, 1);
 
         private void MiscPatchesBtn_Click(object sender, EventArgs e) {
             if (Dev.REL) return;
             ChangeForm(3, false);
         }
         public void MiscPatchesBtnMH(object sender, EventArgs e) => HoverString(PS4QOLPageBtn, "Not Yet Implemented");
-        public void MiscPatchesBtnML(object sender, EventArgs e) => HoverLeave(PS4QOLPageBtn, 1);
 
         private void PkgPageBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
         public void PkgPageBtnMH(object sender, EventArgs e) => HoverString(PkgPageBtn, "Not Yet Implemented");
-        public void PkgPageBtnML(object sender, EventArgs e) => HoverLeave(PkgPageBtn, 1);
 
         private void DownloadSourceBtn_Click(object sender, EventArgs e) => System.Diagnostics.Process.Start(@"https://github.com/TheMagicalBlob/NaughtyDog-Debug-Menu-Patch-Tool/archive/refs/heads/master.zip");
         public void DownloadSourceBtnMH(object sender, EventArgs e) => HoverString(DownloadSourceBtn, "This Opens An External Link");
-        public void DownloadSourceBtnML(object sender, EventArgs e) => HoverLeave(DownloadSourceBtn, 1);
 
         private void PCDebugMenuPageBtn_Click(object sender, EventArgs e) => ChangeForm(9, false);
         public void PCDebugMenuPageBtnMH(object sender, EventArgs e) => HoverString(PCDebugMenuPageBtn, "Enable The Default Or Restored Debug Menu");
-        public void PCDebugMenuPageBtnML(object sender, EventArgs e) => HoverLeave(PCDebugMenuPageBtn, 1);
 
         private void PCQOLPageBtn_Click(object sender, EventArgs e) => ChangeForm(10, false);
         public void PCQOLPageBtnMH(object sender, EventArgs e) => HoverString(PCQOLPageBtn, "Not Yet Implemented");
-        public void PCQOLPageBtnML(object sender, EventArgs e) => HoverLeave(PCQOLPageBtn, 1);
-
     }
 }

@@ -478,7 +478,7 @@ Read:       MainStream.Position = TmpAddr;
                 }
                 LabelShouldFlash = true;
                 SetInfoString("Please Select A Game's Executable First");
-                Dobby.InfoHasImportantStr = true;
+                Common.InfoHasImportantStr = true;
                 return;
             }
 
@@ -529,7 +529,7 @@ Read:       MainStream.Position = TmpAddr;
                 }
                 LabelShouldFlash = true;
                 SetInfoString("Please Select A Game's Executable First");
-                Dobby.InfoHasImportantStr = true;
+                Common.InfoHasImportantStr = true;
                 return;
             }
 
@@ -581,7 +581,7 @@ Read:       MainStream.Position = TmpAddr;
                 }
                 LabelShouldFlash = true;
                 SetInfoString("Please Select A Game's Executable First");
-                Dobby.InfoHasImportantStr = true;
+                Common.InfoHasImportantStr = true;
                 return;
             }
 
