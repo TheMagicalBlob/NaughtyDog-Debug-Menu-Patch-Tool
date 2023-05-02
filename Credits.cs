@@ -8,8 +8,8 @@ namespace Dobby {
     internal class CreditsPage : Form {
         public CreditsPage() {
             InitializeComponent();
-
-            foreach(Control control in Controls)
+            AddControlEventHandlers(Controls);
+            foreach (Control control in Controls)
                 control.TabStop = false;
         }
         public Button ExitBtn;
@@ -264,8 +264,8 @@ namespace Dobby {
         public void MoveForm(object sender, MouseEventArgs e) => Common.MoveForm(sender, e);
         public void MouseUpFunc(object sender, MouseEventArgs e) => Common.MouseUpFunc(sender, e);
         public void MouseDownFunc(object sender, MouseEventArgs e) => Common.MouseDownFunc(sender, e);
-        public static void ControlHover(object sender, EventArgs e) => HoverLeave((Control)sender, 0);
-        public static void ControlLeave(object sender, EventArgs e) => HoverLeave((Control)sender, 1);
+        public static void ControlHover(object sender, EventArgs e) => HoverLeave((Control)sender, true);
+        public static void ControlLeave(object sender, EventArgs e) => HoverLeave((Control)sender, false);
         void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
         void ExitBtnMH(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 227, 0);
         void ExitBtnML(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 255, 255);
@@ -275,7 +275,7 @@ namespace Dobby {
 
         void BackBtn_Click(object sender, EventArgs e) {
             BackFunc();
-            HoverLeave((Control)sender, 1);
+            HoverLeave((Control)sender, false);
         }
         public void BlobGithubBtn_RightClick(object sender, MouseEventArgs e) {
             if (e.Button == MouseButtons.Right) MessageBox.Show("https://github.com/TheMagicalBlob");

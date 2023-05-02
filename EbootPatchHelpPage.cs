@@ -13,6 +13,7 @@ namespace Dobby {
     public class EbootPatchHelpPage : Form {
         public EbootPatchHelpPage() {
             InitializeComponent();
+            AddControlEventHandlers(Controls);
             Question1Btn.Text = "- How Do I Get My Game's eboot.bin?";
             Question2Btn.Text = "- How Do I Extract My Game's .pkg?";
             Question3Btn.Text = "- How Do I Make A New .pkg?";
@@ -233,8 +234,6 @@ namespace Dobby {
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
             this.CreditsBtn.Click += new System.EventHandler(this.CreditsBtn_Click);
-            this.CreditsBtn.MouseEnter += new System.EventHandler(this.CreditsBtnMH);
-            this.CreditsBtn.MouseLeave += new System.EventHandler(this.CreditsBtnML);
             // 
             // BackBtn
             // 
@@ -252,8 +251,6 @@ namespace Dobby {
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
             this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
-            this.BackBtn.MouseEnter += new System.EventHandler(this.BackBtnMH);
-            this.BackBtn.MouseLeave += new System.EventHandler(this.BackBtnML);
             // 
             // Question0Btn
             // 
@@ -318,12 +315,8 @@ namespace Dobby {
         void BackBtn_Click(object sender, EventArgs e) {//!!
             BackFunc();
         }
-        public void BackBtnMH(object sender, EventArgs e) => HoverLeave(BackBtn, 0);
-        public void BackBtnML(object sender, EventArgs e) => HoverLeave(BackBtn, 1);
 
         public void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
-        public void CreditsBtnMH(object sender, EventArgs e) => HoverString(CreditsBtn, "View Credits For The Tool And Included Patches");
-        public void CreditsBtnML(object sender, EventArgs e) => HoverLeave(CreditsBtn, 1);
 
         public Button MinimizeBtn;
         public Label Info;
@@ -353,7 +346,7 @@ namespace Dobby {
         private void Question3Btn_Click(object sender, EventArgs e) => LoadQuestions(3);
         private void Question4Btn_Click(object sender, EventArgs e) => LoadQuestions(4);
 
-        private void WithSomeExceptionsLabel_Click(object sender, EventArgs e) => MakeTextBox("Some Misc. Patches Will Be Applied To Uncharted 4/Lost Legacy Multiplayer Eboots To Make The Game Playable");
+        private void WithSomeExceptionsLabel_Click(object sender, EventArgs e) => MessageBox.Show("Some Misc. Patches Will Be Applied To Uncharted 4/Lost Legacy Multiplayer Eboots To Make The Game Playable");
         private void WithSomeExceptionsLabelMH(object sender, EventArgs e) => WithSomeExceptionsLabel.ForeColor = Color.Aqua;
         private void WithSomeExceptionsLabelML(object sender, EventArgs e) => WithSomeExceptionsLabel.ForeColor = Color.White;
 

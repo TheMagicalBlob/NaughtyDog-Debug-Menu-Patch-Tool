@@ -12,6 +12,7 @@ namespace Dobby {
     internal class PCQOLPatchesPage : Form {
         public PCQOLPatchesPage() {
             InitializeComponent();
+            AddControlEventHandlers(Controls);
         }
 
         public Label MainLabel;
@@ -145,8 +146,6 @@ namespace Dobby {
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
             this.CreditsBtn.Click += new System.EventHandler(this.CreditsBtn_Click);
-            this.CreditsBtn.MouseEnter += new System.EventHandler(this.CreditsBtnMH);
-            this.CreditsBtn.MouseLeave += new System.EventHandler(this.CreditsBtnML);
             // 
             // InfoHelpBtn
             // 
@@ -165,8 +164,6 @@ namespace Dobby {
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
             this.InfoHelpBtn.Click += new System.EventHandler(this.InfoHelpBtn_Click);
-            this.InfoHelpBtn.MouseEnter += new System.EventHandler(this.InfoHelpBtnMH);
-            this.InfoHelpBtn.MouseLeave += new System.EventHandler(this.InfoHelpBtnML);
             // 
             // SeperatorLabel0
             // 
@@ -228,8 +225,6 @@ namespace Dobby {
             this.ApplyBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ApplyBtn.UseVisualStyleBackColor = false;
             this.ApplyBtn.Click += new System.EventHandler(this.ApplyBtn_Click);
-            this.ApplyBtn.MouseEnter += new System.EventHandler(this.ApplyBtnMH);
-            this.ApplyBtn.MouseLeave += new System.EventHandler(this.ApplyBtnML);
             // 
             // GameInfoLabel
             // 
@@ -372,8 +367,6 @@ namespace Dobby {
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
             this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
-            this.BackBtn.MouseEnter += new System.EventHandler(this.BackBtnMH);
-            this.BackBtn.MouseLeave += new System.EventHandler(this.BackBtnML);
             // 
             // SeperatorLabel1
             // 
@@ -402,8 +395,6 @@ namespace Dobby {
             this.DisableDebugTextBtn.UseVisualStyleBackColor = false;
             this.DisableDebugTextBtn.Click += new System.EventHandler(this.DisableDebugTextBtn_Click);
             this.DisableDebugTextBtn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.DisableDebugTextBtn.MouseEnter += new System.EventHandler(this.DisableDebugTextBtnMH);
-            this.DisableDebugTextBtn.MouseLeave += new System.EventHandler(this.DisableDebugTextBtnML);
             this.DisableDebugTextBtn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.DisableDebugTextBtn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.DisableDebugTextBtn_SClick);
             // 
@@ -481,7 +472,7 @@ namespace Dobby {
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;
-                SetInfoString("Please Select A Game's Executable First");
+                SetInfoLabelText("Please Select A Game's Executable First");
                 Common.InfoHasImportantStr = true;
                 return;
             }
@@ -499,7 +490,7 @@ namespace Dobby {
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;
-                SetInfoString("Please Select A Game's Executable First");
+                SetInfoLabelText("Please Select A Game's Executable First");
                 Common.InfoHasImportantStr = true;
                 return;
             }
@@ -513,7 +504,7 @@ namespace Dobby {
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;
-                SetInfoString("Please Select A Game's Executable First");
+                SetInfoLabelText("Please Select A Game's Executable First");
                 Common.InfoHasImportantStr = true;
                 return;
             }
@@ -613,8 +604,6 @@ namespace Dobby {
             DisableDebugTextBtn_Click(sender, e); MouseScrolled = 1;
         }
         private void DisableDebugTextBtn_Click(object sender, EventArgs e) => Invert(DisableDebugTextBtn, 0);
-        public void DisableDebugTextBtnMH(object sender, EventArgs e) => HoverLeave(DisableDebugTextBtn, 0);
-        public void DisableDebugTextBtnML(object sender, EventArgs e) => HoverLeave(DisableDebugTextBtn, 1);
 
         private void MenuAlphaBtn_Click(object sender, EventArgs e) {
 
@@ -637,20 +626,12 @@ namespace Dobby {
         private void ApplyBtn_Click(object sender, EventArgs e) {
 
         }
-        public void ApplyBtnMH(object sender, EventArgs e) => HoverLeave(ApplyBtn, 0);
-        public void ApplyBtnML(object sender, EventArgs e) => HoverLeave(ApplyBtn, 1);
 
         private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
-        public void InfoHelpBtnMH(object sender, EventArgs e) => HoverLeave(InfoHelpBtn, 0);
-        public void InfoHelpBtnML(object sender, EventArgs e) => HoverLeave(InfoHelpBtn, 1);
 
         private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
-        public void CreditsBtnMH(object sender, EventArgs e) => HoverLeave(CreditsBtn, 0);
-        public void CreditsBtnML(object sender, EventArgs e) => HoverLeave(CreditsBtn, 1);
 
         private void BackBtn_Click(object sender, EventArgs e) => BackFunc();
-        public void BackBtnMH(object sender, EventArgs e) => HoverLeave(BackBtn, 0);
-        public void BackBtnML(object sender, EventArgs e) => HoverLeave(BackBtn, 1);
 
 
 #if DEBUG

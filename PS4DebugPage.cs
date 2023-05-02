@@ -15,6 +15,7 @@ namespace Dobby {
             InitializeComponent();
             IPBOX_E.Text = IP();
             PortBox.Text = Port().ToString();
+            AddControlEventHandlers(Controls);
         }
 
         PS4DBG geo;
@@ -50,7 +51,7 @@ namespace Dobby {
 
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
-            this.TLL100Btn = new System.Windows.Forms.Button();
+            this.TLLBtn = new System.Windows.Forms.Button();
             this.MainBox = new System.Windows.Forms.GroupBox();
             this.MinimizeBtn = new System.Windows.Forms.Button();
             this.ExitBtn = new System.Windows.Forms.Button();
@@ -59,8 +60,8 @@ namespace Dobby {
             this.IPBOX_E = new System.Windows.Forms.TextBox();
             this.Info = new System.Windows.Forms.Label();
             this.T1RBtn = new System.Windows.Forms.Button();
-            this.T2100Btn = new System.Windows.Forms.Button();
-            this.UC4100Btn = new System.Windows.Forms.Button();
+            this.T2Btn = new System.Windows.Forms.Button();
+            this.UC4Btn = new System.Windows.Forms.Button();
             this.BackBtn = new System.Windows.Forms.Button();
             this.UC1Btn = new System.Windows.Forms.Button();
             this.UC2Btn = new System.Windows.Forms.Button();
@@ -74,56 +75,43 @@ namespace Dobby {
             this.InfoHelpBtn = new System.Windows.Forms.Button();
             this.CreditsBtn = new System.Windows.Forms.Button();
             this.UC4MPBetaBtn = new System.Windows.Forms.Button();
-            this.MainBox.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // MainBox
-            // 
-            this.MainBox.Controls.Add(this.MinimizeBtn);
-            this.MainBox.Controls.Add(this.ExitBtn);
-            this.MainBox.Controls.Add(this.MainLabel);
-            this.MainBox.Controls.Add(this.SeperatorLine1);
-            this.MainBox.Location = new System.Drawing.Point(0, -6);
-            this.MainBox.Name = "MainBox";
-            this.MainBox.Size = new System.Drawing.Size(320, 420);
-            this.MainBox.TabIndex = 5;
-            this.MainBox.TabStop = false;
-            this.MainBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MainBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            this.MainBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             // 
             // MainLabel
             // 
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MainLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 12.25F, System.Drawing.FontStyle.Bold);
             this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.MainLabel.Location = new System.Drawing.Point(1, 9);
+            this.MainLabel.Location = new System.Drawing.Point(1, 2);
             this.MainLabel.Name = "MainLabel";
-            this.MainLabel.Size = new System.Drawing.Size(314, 22);
+            this.MainLabel.Size = new System.Drawing.Size(318, 22);
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "PS4Debug Menu";
-            this.MainLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MainLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.MainLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             // 
-            // TLL100Btn
+            // TLLBtn
             // 
-            this.TLL100Btn.BackColor = System.Drawing.Color.DimGray;
-            this.TLL100Btn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.TLL100Btn.FlatAppearance.BorderSize = 0;
-            this.TLL100Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.TLL100Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.TLL100Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.TLL100Btn.Location = new System.Drawing.Point(1, 192);
-            this.TLL100Btn.Name = "TLL100Btn";
-            this.TLL100Btn.Size = new System.Drawing.Size(192, 23);
-            this.TLL100Btn.TabIndex = 0;
-            this.TLL100Btn.Text = "Uncharted: The Lost Legacy";
-            this.TLL100Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.TLL100Btn.UseVisualStyleBackColor = false;
-            this.TLL100Btn.Click += new System.EventHandler(this.TLL100);
-            this.TLL100Btn.MouseEnter += new System.EventHandler(this.ControlHover);
-            this.TLL100Btn.MouseLeave += new System.EventHandler(this.ControlLeave);
+            this.TLLBtn.BackColor = System.Drawing.Color.DimGray;
+            this.TLLBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.TLLBtn.FlatAppearance.BorderSize = 0;
+            this.TLLBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.TLLBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.TLLBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.TLLBtn.Location = new System.Drawing.Point(1, 192);
+            this.TLLBtn.Name = "TLLBtn";
+            this.TLLBtn.Size = new System.Drawing.Size(192, 23);
+            this.TLLBtn.TabIndex = 0;
+            this.TLLBtn.Text = "Uncharted: The Lost Legacy";
+            this.TLLBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.TLLBtn.UseVisualStyleBackColor = false;
+            this.TLLBtn.Click += new System.EventHandler(this.TLL100);
+            // 
+            // MainBox
+            // 
+            this.MainBox.Location = new System.Drawing.Point(0, -6);
+            this.MainBox.Name = "MainBox";
+            this.MainBox.Size = new System.Drawing.Size(320, 420);
+            this.MainBox.TabIndex = 5;
+            this.MainBox.TabStop = false;
             // 
             // MinimizeBtn
             // 
@@ -133,16 +121,13 @@ namespace Dobby {
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinimizeBtn.Location = new System.Drawing.Point(273, 7);
+            this.MinimizeBtn.Location = new System.Drawing.Point(273, 1);
             this.MinimizeBtn.Name = "MinimizeBtn";
             this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
             this.MinimizeBtn.TabIndex = 19;
             this.MinimizeBtn.Text = "--";
             this.MinimizeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.MinimizeBtn.UseVisualStyleBackColor = false;
-            this.MinimizeBtn.Click += new System.EventHandler(this.MinimizeBtn_Click);
-            this.MinimizeBtn.MouseEnter += new System.EventHandler(this.MinimizeBtnMH);
-            this.MinimizeBtn.MouseLeave += new System.EventHandler(this.MinimizeBtnML);
             // 
             // ExitBtn
             // 
@@ -152,22 +137,19 @@ namespace Dobby {
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ExitBtn.Location = new System.Drawing.Point(296, 7);
+            this.ExitBtn.Location = new System.Drawing.Point(296, 1);
             this.ExitBtn.Name = "ExitBtn";
             this.ExitBtn.Size = new System.Drawing.Size(23, 23);
             this.ExitBtn.TabIndex = 18;
             this.ExitBtn.Text = "X";
             this.ExitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ExitBtn.UseVisualStyleBackColor = false;
-            this.ExitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
-            this.ExitBtn.MouseEnter += new System.EventHandler(this.ExitBtnMH);
-            this.ExitBtn.MouseLeave += new System.EventHandler(this.ExitBtnML);
             // 
             // SeperatorLine1
             // 
             this.SeperatorLine1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 19);
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 11);
             this.SeperatorLine1.Name = "SeperatorLine1";
             this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
             this.SeperatorLine1.TabIndex = 30;
@@ -189,8 +171,6 @@ namespace Dobby {
             this.ManualConnectBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ManualConnectBtn.UseVisualStyleBackColor = false;
             this.ManualConnectBtn.Click += new System.EventHandler(this.ManualConnectBtn_Click);
-            this.ManualConnectBtn.MouseEnter += new System.EventHandler(this.ManualConnectBtnMH);
-            this.ManualConnectBtn.MouseLeave += new System.EventHandler(this.ControlLeave);
             this.ManualConnectBtn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.ManualConnectBtn_Click);
             // 
             // IPBOX_E
@@ -216,9 +196,6 @@ namespace Dobby {
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
             this.Info.Text = "=======================================";
-            this.Info.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.Info.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.Info.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             // 
             // T1RBtn
             // 
@@ -236,46 +213,40 @@ namespace Dobby {
             this.T1RBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.T1RBtn.UseVisualStyleBackColor = false;
             this.T1RBtn.Click += new System.EventHandler(this.T1RBtn_Click);
-            this.T1RBtn.MouseEnter += new System.EventHandler(this.T1R100MH);
-            this.T1RBtn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
-            // T2100Btn
+            // T2Btn
             // 
-            this.T2100Btn.BackColor = System.Drawing.Color.DimGray;
-            this.T2100Btn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.T2100Btn.FlatAppearance.BorderSize = 0;
-            this.T2100Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.T2100Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.T2100Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.T2100Btn.Location = new System.Drawing.Point(1, 53);
-            this.T2100Btn.Name = "T2100Btn";
-            this.T2100Btn.Size = new System.Drawing.Size(150, 22);
-            this.T2100Btn.TabIndex = 9;
-            this.T2100Btn.Text = "The Last of Us Part II";
-            this.T2100Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.T2100Btn.UseVisualStyleBackColor = false;
-            this.T2100Btn.Click += new System.EventHandler(this.T2100Btn_Click);
-            this.T2100Btn.MouseEnter += new System.EventHandler(this.T2100MH);
-            this.T2100Btn.MouseLeave += new System.EventHandler(this.ControlLeave);
+            this.T2Btn.BackColor = System.Drawing.Color.DimGray;
+            this.T2Btn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.T2Btn.FlatAppearance.BorderSize = 0;
+            this.T2Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.T2Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.T2Btn.ForeColor = System.Drawing.SystemColors.Control;
+            this.T2Btn.Location = new System.Drawing.Point(1, 53);
+            this.T2Btn.Name = "T2Btn";
+            this.T2Btn.Size = new System.Drawing.Size(150, 22);
+            this.T2Btn.TabIndex = 9;
+            this.T2Btn.Text = "The Last of Us Part II";
+            this.T2Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.T2Btn.UseVisualStyleBackColor = false;
+            this.T2Btn.Click += new System.EventHandler(this.T2Btn_Click);
             // 
-            // UC4100Btn
+            // UC4Btn
             // 
-            this.UC4100Btn.BackColor = System.Drawing.Color.DimGray;
-            this.UC4100Btn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.UC4100Btn.FlatAppearance.BorderSize = 0;
-            this.UC4100Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.UC4100Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.UC4100Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.UC4100Btn.Location = new System.Drawing.Point(1, 146);
-            this.UC4100Btn.Name = "UC4100Btn";
-            this.UC4100Btn.Size = new System.Drawing.Size(95, 22);
-            this.UC4100Btn.TabIndex = 12;
-            this.UC4100Btn.Text = "Uncharted 4";
-            this.UC4100Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.UC4100Btn.UseVisualStyleBackColor = false;
-            this.UC4100Btn.Click += new System.EventHandler(this.UC4100Btn_Click);
-            this.UC4100Btn.MouseEnter += new System.EventHandler(this.UC4100MH);
-            this.UC4100Btn.MouseLeave += new System.EventHandler(this.ControlLeave);
+            this.UC4Btn.BackColor = System.Drawing.Color.DimGray;
+            this.UC4Btn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.UC4Btn.FlatAppearance.BorderSize = 0;
+            this.UC4Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.UC4Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.UC4Btn.ForeColor = System.Drawing.SystemColors.Control;
+            this.UC4Btn.Location = new System.Drawing.Point(1, 146);
+            this.UC4Btn.Name = "UC4Btn";
+            this.UC4Btn.Size = new System.Drawing.Size(95, 22);
+            this.UC4Btn.TabIndex = 12;
+            this.UC4Btn.Text = "Uncharted 4";
+            this.UC4Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.UC4Btn.UseVisualStyleBackColor = false;
+            this.UC4Btn.Click += new System.EventHandler(this.UC4100Btn_Click);
             // 
             // BackBtn
             // 
@@ -293,8 +264,6 @@ namespace Dobby {
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
             this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
-            this.BackBtn.MouseEnter += new System.EventHandler(this.BackBtnMH);
-            this.BackBtn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // UC1Btn
             // 
@@ -312,8 +281,6 @@ namespace Dobby {
             this.UC1Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.UC1Btn.UseVisualStyleBackColor = false;
             this.UC1Btn.Click += new System.EventHandler(this.UC1Btn_Click);
-            this.UC1Btn.MouseEnter += new System.EventHandler(this.UC1BtnMH);
-            this.UC1Btn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // UC2Btn
             // 
@@ -331,8 +298,6 @@ namespace Dobby {
             this.UC2Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.UC2Btn.UseVisualStyleBackColor = false;
             this.UC2Btn.Click += new System.EventHandler(this.UC2Btn_Click);
-            this.UC2Btn.MouseEnter += new System.EventHandler(this.UC2BtnMH);
-            this.UC2Btn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // UC3Btn
             // 
@@ -350,8 +315,6 @@ namespace Dobby {
             this.UC3Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.UC3Btn.UseVisualStyleBackColor = false;
             this.UC3Btn.Click += new System.EventHandler(this.UC3Btn_Click);
-            this.UC3Btn.MouseEnter += new System.EventHandler(this.UC3BtnMH);
-            this.UC3Btn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // SeperatorLine2
             // 
@@ -362,9 +325,6 @@ namespace Dobby {
             this.SeperatorLine2.Size = new System.Drawing.Size(316, 16);
             this.SeperatorLine2.TabIndex = 20;
             this.SeperatorLine2.Text = "______________________________________________________________";
-            this.SeperatorLine2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.SeperatorLine2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.SeperatorLine2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             // 
             // DebugPayloadBtn
             // 
@@ -382,8 +342,6 @@ namespace Dobby {
             this.DebugPayloadBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DebugPayloadBtn.UseVisualStyleBackColor = false;
             this.DebugPayloadBtn.Click += new System.EventHandler(this.DebugPayloadBtn_Click);
-            this.DebugPayloadBtn.MouseEnter += new System.EventHandler(this.DebugPayloadBtnMH);
-            this.DebugPayloadBtn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // PortBox
             // 
@@ -442,9 +400,6 @@ namespace Dobby {
             this.SeperatorLine3.Size = new System.Drawing.Size(316, 16);
             this.SeperatorLine3.TabIndex = 26;
             this.SeperatorLine3.Text = "_______________________________________________________________";
-            this.SeperatorLine3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.SeperatorLine3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.SeperatorLine3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             // 
             // InfoHelpBtn
             // 
@@ -462,8 +417,6 @@ namespace Dobby {
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
             this.InfoHelpBtn.Click += new System.EventHandler(this.InfoHelpBtn_Click);
-            this.InfoHelpBtn.MouseEnter += new System.EventHandler(this.InfoHelpBtnMH);
-            this.InfoHelpBtn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // CreditsBtn
             // 
@@ -482,8 +435,6 @@ namespace Dobby {
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
             this.CreditsBtn.Click += new System.EventHandler(this.CreditsBtn_Click);
-            this.CreditsBtn.MouseEnter += new System.EventHandler(this.CreditsBtnMH);
-            this.CreditsBtn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // UC4MPBetaBtn
             // 
@@ -501,8 +452,6 @@ namespace Dobby {
             this.UC4MPBetaBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.UC4MPBetaBtn.UseVisualStyleBackColor = false;
             this.UC4MPBetaBtn.Click += new System.EventHandler(this.UC4MPBetaBtn_Click);
-            this.UC4MPBetaBtn.MouseEnter += new System.EventHandler(this.UC4MPBetaBtnMH);
-            this.UC4MPBetaBtn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // PS4DebugPage
             // 
@@ -510,6 +459,8 @@ namespace Dobby {
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
             this.ClientSize = new System.Drawing.Size(320, 413);
+            this.Controls.Add(this.ExitBtn);
+            this.Controls.Add(this.MinimizeBtn);
             this.Controls.Add(this.PortBox);
             this.Controls.Add(this.IPBOX_E);
             this.Controls.Add(this.UC4MPBetaBtn);
@@ -520,56 +471,37 @@ namespace Dobby {
             this.Controls.Add(this.DebugPayloadBtn);
             this.Controls.Add(this.UC3Btn);
             this.Controls.Add(this.UC1Btn);
-            this.Controls.Add(this.UC4100Btn);
-            this.Controls.Add(this.TLL100Btn);
+            this.Controls.Add(this.UC4Btn);
+            this.Controls.Add(this.TLLBtn);
             this.Controls.Add(this.T1RBtn);
-            this.Controls.Add(this.T2100Btn);
+            this.Controls.Add(this.T2Btn);
             this.Controls.Add(this.Info);
             this.Controls.Add(this.UC2Btn);
             this.Controls.Add(this.SeperatorLine2);
             this.Controls.Add(this.SeperatorLine3);
             this.Controls.Add(this.BackBtn);
             this.Controls.Add(this.CreditsBtn);
+            this.Controls.Add(this.MainLabel);
+            this.Controls.Add(this.SeperatorLine1);
             this.Controls.Add(this.MainBox);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PS4DebugPage";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Main";
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            this.MainBox.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
-        public void MoveForm(object sender, MouseEventArgs e) => Common.MoveForm(sender, e);
-        public void MouseUpFunc(object sender, MouseEventArgs e) => Common.MouseUpFunc(sender, e);
-        public void MouseDownFunc(object sender, MouseEventArgs e) => Common.MouseDownFunc(sender, e);
-
-        public void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
-        public void ExitBtnMH(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 227, 0);
-        public void ExitBtnML(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 255, 255);
-
-        public void MinimizeBtn_Click(object sender, EventArgs e) => ActiveForm.WindowState = FormWindowState.Minimized;
-        public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
-        public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
-        public void ControlHover(object sender, EventArgs e) => HoverLeave((Control)sender, 0);
-        public void ControlLeave(object sender, EventArgs e) => HoverLeave((Control)sender, 1);
 
         public void BackBtn_Click(object sender, EventArgs e) {
             BackFunc();
-            HoverLeave(BackBtn, 1);
+            HoverLeave(BackBtn, false);
         }
-        public void BackBtnMH(object sender, EventArgs e) => HoverLeave(BackBtn, 0);
-        public void BackBtnML(object sender, EventArgs e) => HoverLeave(BackBtn, 1);
 
         public void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
-        public void InfoHelpBtnMH(object sender, EventArgs e) => HoverString(InfoHelpBtn, "Additional Information On Verious Pages");
 
         public void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
-        public void CreditsBtnMH(object sender, EventArgs e) => HoverString(CreditsBtn, "View Credits For The Tool And Included Patches");
 
 
         /* End Of Repeated Functions
@@ -593,7 +525,7 @@ namespace Dobby {
                             exec = prc.pid;
                             processname = prc.name;
                             PS4DebugIsConnected = true;
-                            SetInfoString($"Connected And Attached To {geo.GetProcessInfo(exec).titleid}");
+                            SetInfoLabelText($"Connected And Attached To {geo.GetProcessInfo(exec).titleid}");
                             Dev.DebugOut($"{processname} | pid: {exec} | PS4DebugIsConnected == {PS4DebugIsConnected}");
                         }
                     }
@@ -605,7 +537,7 @@ namespace Dobby {
                     int tst = 420691337;
                     Dev.DebugOut($"{tabarnack.Message};{tabarnack.StackTrace}");
                 }
-                SetInfoString($"Connection To {IPBOX_E.Text} Failed");
+                SetInfoLabelText($"Connection To {IPBOX_E.Text} Failed");
                 return 1;
             }
         }
@@ -619,7 +551,7 @@ namespace Dobby {
                             exec = prc.pid;
                             processname = prc.name;
                             PS4DebugIsConnected = true;
-                            SetInfoString($"Connected And Attached To {geo.GetProcessInfo(exec).titleid}");
+                            SetInfoLabelText($"Connected And Attached To {geo.GetProcessInfo(exec).titleid}");
                             Dev.DebugOut($"{prc.name} | {exec} | PS4DebugIsConnected == {PS4DebugIsConnected}");
                         }
                     }
@@ -710,7 +642,7 @@ namespace Dobby {
                     if (attempts < 2) {
                         Connect(); Toggle(addr);
                     }
-                    else SetInfoString("Connection Failed");
+                    else SetInfoLabelText("Connection Failed");
                 }
             }
             catch (Exception tabarnack) {
@@ -889,24 +821,20 @@ namespace Dobby {
             Socket S = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             S.Connect(new IPEndPoint(IPAddress.Parse(IPBOX_E.Text), int.Parse(PortBox.Text)));
             S.Send(Properties.Resources.PS4Debug1_1_15);
-            SetInfoString("Payload Injected Successfully");
+            SetInfoLabelText("Payload Injected Successfully");
             S.Close();
             if (true)//Dev.REL) // Excessive Credits To Try Avoiding Beef
                 MessageBox.Show("PS4Debug Paylod Sent Without Issue\n\nPS4Debug Update 1.1.15 By ctn123\nPS4Debug Created By Golden", "Payload Injected Successfully, Here's Some Credits");
         }
-        public void DebugPayloadBtnMH(object sender, EventArgs e) => HoverString(DebugPayloadBtn, "Sends ctn123's Port Of PS4Debug");
 
         public void ManualConnectBtn_Click(object sender, EventArgs e) => Connect();
-        public void ManualConnectBtnMH(object sender, EventArgs e) => HoverString(ManualConnectBtn, "Tool Also Auto-Connects When An Option's Selected");
 
         public void T1RBtn_Click(object sender, EventArgs e) {
             string Game = CheckGame(0); // The Fuck?
             Toggle(Game == "1.00" ? 0x114ED32E81 : Game == "UnknownGame" ? (ulong)0x0 : 0x114F536E81);
         }
-        public void T1R100MH(object sender, EventArgs e) => HoverString(T1RBtn, "Supports: 1.00 | 1.09 | 1.10 | 1.11");
 
-        public void T2100Btn_Click(object sender, EventArgs e) => ToggleAlt(CheckGame(1) == "1.00" ? (ulong)0x110693FAA1 : 0x11069DFAA1);
-        public void T2100MH(object sender, EventArgs e) => HoverString(T2100Btn, "Supports: 1.00 | 1.07 | 1.08 | 1.09");
+        public void T2Btn_Click(object sender, EventArgs e) => ToggleAlt(CheckGame(1) == "1.00" ? (ulong)0x110693FAA1 : 0x11069DFAA1);
 
         public void UC1Btn_Click(object sender, EventArgs e) {
             if (!PS4DebugIsConnected) Connect(); // Temporary debug code to get it working for Chandler
@@ -916,21 +844,16 @@ namespace Dobby {
             }
             Toggle(new ulong[] { 0xD989CC, 0xD97B41, 0xD98970 }); // 1.00
         }
-        public void UC1BtnMH(object sender, EventArgs e) => HoverString(UC1Btn, "Supports: 1.00 | 1.02");
 
         public void UC2Btn_Click(object sender, EventArgs e) => Toggle(new ulong[] { 0x127149C, 0x12705C9 });
-        public void UC2BtnMH(object sender, EventArgs e) => HoverString(UC2Btn, "Supports: 1.00");
 
         public void UC3Btn_Click(object sender, EventArgs e) => Toggle(new ulong[] { 0x18366C4, 0x1835481 });
-        public void UC3BtnMH(object sender, EventArgs e) => HoverString(UC3Btn, "Supports: 1.00");
 
         public void UC4100Btn_Click(object sender, EventArgs e) => Toggle(0x1104FC2E95);
-        public void UC4100MH(object sender, EventArgs e) => HoverString(UC4100Btn, "Supports: 1.00 | 1.32 | 1.33");
 
-        public void UC4133_Click(object sender, EventArgs e) => Toggle(PS4DebugIsConnected ? geo.GetProcessInfo(exec).name != "eboot.bin" ? (ulong)0x1104B1AE79 : 0x110491AE79 : Connect(sender, e));
+        public void UC4133_Click(object sender, EventArgs e) => Toggle(PS4DebugIsConnected ? geo.GetProcessInfo(exec).name != "eboot.bin" ? (ulong)0x1104B1AE79 : 0x110491AE79 : Connect(sender, e));//! ???
 
         private void UC4MPBetaBtn_Click(object sender, EventArgs e) => Toggle(0x113408AE83);
-        public void UC4MPBetaBtnMH(object sender, EventArgs e) => HoverString(UC4MPBetaBtn, "Supports: 1.09 - Use .bin Patch For 1.00");
 
         public void TLL100(object sender, EventArgs e) => Toggle(0x1105D1AEF9);
 
@@ -943,12 +866,12 @@ namespace Dobby {
         public GroupBox MainBox;
         public Label MainLabel;
         public Button T1RBtn;
-        public Button T2100Btn;
+        public Button T2Btn;
         public Button UC1Btn;
         public Button UC2Btn;
         public Button UC3Btn;
-        public Button UC4100Btn;
-        public Button TLL100Btn;
+        public Button UC4Btn;
+        public Button TLLBtn;
         public Label label1;
         public Button IPLabelBtn;
         public TextBox IPBOX_E;
@@ -965,7 +888,5 @@ namespace Dobby {
         public Button CreditsBtn;
         public Button BackBtn;
         public Label Info;
-
-
     }
 }

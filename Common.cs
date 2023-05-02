@@ -118,7 +118,8 @@ namespace Dobby {
            "* 2.21.67.170 | Added Most offsets, Replaced T1R 1.00 Debug Offset, Added All T2 JNZ Debug Offsets, Seperator Label Border Overlap Fix",
            "* 2.22.67.170 | Overhauled Output Code, Old Method Was Cumbersome To Edit",
            "* 2.22.68.170 | Added Preprocessor Directives To Avoid Compilation of Debug Code",
-           "* 2.22.69.171 | Just Realized I Can Cast sender to a control ptr... Overhauled Mouse Hover/Leave Functionality, Merged PC and PS4 arrays"
+           "* 2.22.69.171 | Just Realized I Can Cast sender to a control ptr... Overhauled Mouse Hover/Leave Functionality, Merged PC and PS4 arrays",
+      "* 3-beta.22.65.163 | Removed Redundant Custom W/ Options Button From Eboot Patch Page, Many Other Forgotten Changes, Don't code drunk for your changelog's sake..."
 
             // TODO:
             // - Finish EbootPatchHelpPage
@@ -150,28 +151,147 @@ namespace Dobby {
 
         public static Font MainFont = new Font("Franklin Gothic Medium", 6.5F, FontStyle.Bold);
 
+        public static void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
+        public static void ExitBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
+        public static void ExitBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
+        public static void MinimizeBtn_Click(object sender, EventArgs e) => ((Control)sender).FindForm().WindowState = FormWindowState.Minimized;
+        public static void MinimizeBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
+        public static void MinimizeBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
+        public static void ControlHover(object sender, EventArgs e) => HoverLeave((Control)sender, true);
+        public static void ControlLeave(object sender, EventArgs e) => HoverLeave((Control)sender, false);
+        public static void MouseDownFunc(object sender, MouseEventArgs e) {
+            MouseIsDown = 1; LastPos = ActiveForm.Location;
+            MouseDif = new Point(MousePosition.X - ActiveForm.Location.X, MousePosition.Y - ActiveForm.Location.Y);
+        }
+        public static void MouseUpFunc(object sender, MouseEventArgs e) {
+            MouseScrolled = MouseIsDown = 0;
+        }
+        public static void MoveForm(object sender, MouseEventArgs e) {
+            if (MouseIsDown != 0) {
+                ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
+                ActiveForm.Update();
+            }
+        }
+
         /// <summary> Sets The Info Label String Based On The Currently Hovered Control </summary>
         /// <param name="Sender">The Hovered Control</param>
-        public static void SetInfoLabelString(Control Sender) { // 
-            string InfoLabelString;
+        public static void SetInfoLabelStringOnControlHover(Control Sender) { // 
+            string InfoLabelString = "Unknown Label Error";
             switch (Sender.Name) {
                 default: return;
+                //
+                // Const
+                //
                 case "CreditsBtn":
                     InfoLabelString = "View Credits For The Tool And Included Patches";
                     break;
                 case "InfoHelpBtn":
                     YellowInformationLabel.Font = new Font(YellowInformationLabel.Font.FontFamily, 9.5F);
                     InfoLabelString = "View Help For Each Page As Well As The App Itself";
-                    break;
+                    break; 
                 case "BackBtn":
                     InfoLabelString = "Return To The Previous Page";
                     break;
+                //
+                // Main
+                //
                 case "PS4DebugPageBtn":
                     YellowInformationLabel.Font = new Font(YellowInformationLabel.Font.FontFamily, 9F);
                     InfoLabelString = "Use A Lan Or Wifi Connection To Enable The Debug Mode";
                     break;
+                case "EbootPatchPageBtn":
+                    InfoLabelString = "Patch An Executable To Be Added To A .pkg";
+                    break;
+                case "DownloadSourceBtn":
+                    InfoLabelString = "This Opens An External Link";
+                    break;
+                case "PCDebugMenuPageBtn":
+                    InfoLabelString = "Enable The Default Or Restored Debug Menu";
+                    break;
+                case "PCQOLPageBtn":
+                    InfoLabelString = "Enable The Default Or Restored Debug Menu";
+                    break;
+                //
+                // PS4DebugPage
+                //
+                case "UC1Btn":
+                    InfoLabelString = "Supports: 1.00 | 1.02";
+                    break;
+                case "UC2Btn":
+                    InfoLabelString = "Supports: 1.00";
+                    break;
+                case "UC3Btn":
+                    InfoLabelString = "Supports: 1.00";
+                    break;
+                case "UC4Btn":
+                    InfoLabelString = "Supports: 1.00 | 1.32 | 1.33";
+                    break;
+                case "UC4MPBetaBtn":
+                    InfoLabelString = "Supports: 1.09 - Use .bin Patch For 1.00";
+                    break;
+                case "T1RBtn":
+                    InfoLabelString = "Supports: 1.00 | 1.09 | 1.10 | 1.11";
+                    break;
+                case "T2Btn":
+                    InfoLabelString = "Supports: 1.00 | 1.07 | 1.08 | 1.09";
+                    break;
+                case "DebugPayloadBtn":
+                    InfoLabelString = "Sends ctn123's Port Of PS4Debug";
+                    break;
+                case "ManualConnectBtn":
+                    InfoLabelString = "Tool Also Auto-Connects When An Option's Selected";
+                    break;
+                //
+                // EbootPatchPage
+                //
+                case "EnableDebugBtn":
+                    InfoLabelString = "Enable Debug Mode As-Is With No Edits";
+                    break;
+                case "DisableDebugBtn":
+                    InfoLabelString = "Disable Debug Mode. Doesn't Undo Other Patches";
+                    break;
+                case "RestoredDebugBtn":
+                    InfoLabelString = "Restores The Menu As Authentically As Possible";
+                    break;
+                case "CustomDebugBtn":
+                    InfoLabelString = "Patches In My Customized Version Of The Debug Menu";
+                    break;
+                case "CustomOptDebugBtn":
+                    InfoLabelString = REL ? "Temporarily Disabled" : "change me //!";
+                    break;
+                //
+                // PS4QOLPatchesPage
+                //
+                case "2":
+                    break;
+                //
+                // PCExePatchPage
+                //
+                case "3":
+                    break;
+                //
+                // PCQOLPatchPage
+                //
+                case "4":
+                    break;
+                //
+                // InfoHelpPage
+                //
+                case "5":
+                    break;
+                //
+                // CreditsPage
+                //
+                case "6":
+                    break;
+                //
+                // PCQOLPatchPage
+                //
+                case "7":
+                    break;
+
             }
-            SetInfoString(InfoLabelString);
+            SetInfoLabelText(InfoLabelString);
         }
 
         public static void ChangeForm(int Page, bool IsGoingBack) {
@@ -252,99 +372,77 @@ namespace Dobby {
 
             if (Pages[i] != null) {
                 ChangeForm((int)Pages[i], true);
-                Dev.DebugOut($"Pages[i]: {Pages[i]}");
+                DebugOut($"Pages[i]: {Pages[i]}");
                 Pages[i] = null;
                 break;
             }
         }
 
-        public static void MakeTextBox(string Text) { //!
+        public static void AddControlEventHandlers(Control.ControlCollection Controls) { // Got Sick of Manually Editing InitializeComponent()
+            
+            string[] Blacklist = new string[] { "ExitBtn", "MinimizeBtn", "IPLabelBtn", "PortLabelBtn" };
 
-            if (Dev.REL) {
-                MessageBox.Show(Text, "CSTM Text Box Not Centered Yet, Using WIN MessageBox For Now");
-                return;
+            foreach(Control Item in Controls) {
+                if (Item.HasChildren) { // Designer Adds Some Things To The Form, And Some To The Group Box Used To Make The Border
+                    foreach (Control Child in Item.Controls) {
+                        Child.MouseDown += new MouseEventHandler(MouseDownFunc);
+                        Child.MouseMove += new MouseEventHandler(MoveForm);
+                        Child.MouseUp += new MouseEventHandler(MouseUpFunc);
+                        if ($"{Child.GetType()}" == "System.Windows.Forms.Button" && !Blacklist.Contains(Child.Name)) {
+                            Child.MouseEnter += new EventHandler(ControlHover);
+                            Child.MouseLeave += new EventHandler(ControlLeave);
+                        }
+                    }
+                    goto ItemWasGroupBox;
+                }
+                Item.MouseDown += new MouseEventHandler(MouseDownFunc);
+                Item.MouseMove += new MouseEventHandler(MoveForm);
+                Item.MouseUp += new MouseEventHandler(MouseUpFunc);
+                if ($"{Item.GetType()}" == "System.Windows.Forms.Button" && !Blacklist.Contains(Item.Name)) {
+                    Item.MouseEnter += new EventHandler(ControlHover);
+                    Item.MouseLeave += new EventHandler(ControlLeave);
+                }
             }
-
-            if (PopupBox != null && PopupBox.Name != "") {
-                PopupBox.Close();
-                PopupBox.Name = "";
-                return;
+            ItemWasGroupBox:
+            try {
+                Controls.Find("MinimizeBtn", true)[0].Click += new EventHandler(MinimizeBtn_Click);
+                Controls.Find("MinimizeBtn", true)[0].MouseEnter += new EventHandler(MinimizeBtnMH);
+                Controls.Find("MinimizeBtn", true)[0].MouseLeave += new EventHandler(MinimizeBtnML);
+                Controls.Find("ExitBtn", true)[0].Click += new EventHandler(ExitBtn_Click);
+                Controls.Find("ExitBtn", true)[0].MouseEnter += new EventHandler(ExitBtnMH);
+                Controls.Find("ExitBtn", true)[0].MouseLeave += new EventHandler(ExitBtnML);
             }
-
-            Point ParentPos = ActiveForm.Location;
-
-            Label Label = new Label {
-                ForeColor = PopupBox.ForeColor = Color.White,
-                BackColor = Color.Gray,
-                Font = MainFont,
-                TextAlign = ContentAlignment.MiddleCenter
-            };
-            PopupBox = new Form();
-            PopupBox.BackColor = Color.Gray;
-            PopupBox.Controls.Add(Label);
-            switch (ActiveForm.Name) { // Center Based On Active Form
-                default:
-                    Dev.DebugOut("Page Unknown, Default Location Used");
-                    PopupBox.Location = new Point(100, 300);
-                    return;
-                case "EbootPatchHelpPage":
-                    PopupBox.Location = new Point(MainForm.Location.X + 50, MainForm.Location.Y + 300);
-                    break;
-            }
-            PopupBox.Size = new Size(200, 110);
-            Label.Location = new Point(1, 1);
-            Label.Size = new Size(PopupBox.Size.Width - 2 , PopupBox.Size.Height - 3);
-            Label.Text = Text;
-            PopupBox.Name = "PopupBox";
-            PopupBox.FormBorderStyle = FormBorderStyle.None;
-            PopupBox.Show();
-            PopupBox.Location = new Point(ParentPos.X + 75, ParentPos.Y + 150);
+            catch (IndexOutOfRangeException) { DebugOut("Form Lacks MinimizeBtn And / Or ExitBtn"); }
+#if DEBUG
+            Label DebugLabel = new Label();
+            DebugLabel.Name = "DebugLabel";
+            DebugLabel.Size = new Size(36, 19);
+            DebugLabel.Location = new Point(230, 1);
+            DebugLabel.ForeColor = SystemColors.Control;
+            DebugLabel.BorderStyle = BorderStyle.FixedSingle;
+            DebugLabel.Font = new Font("Franklin Gothic Medium", 7F, FontStyle.Bold);
+            DebugLabel.Text = "(Dev)";
+            DebugLabel.TabIndex = 0xFFFFFFF;
+            Controls.Add(DebugLabel);
+            DebugLabel.BringToFront();
+#endif
         }
 
+        /// <summary> Set The Text of The Yellow Label At The Bottom Of The Form </summary>
+        public static void SetInfoLabelText(string s) => YellowInformationLabel.Text = s; // I used to have this output to the debugger as well, hence the presence of function call as opposed to just the text change itself
 
-        /// <summary>Set The Text of The Yellow Label At The Bottom Of The Form</summary>
-        public static void SetInfoString(string s) => YellowInformationLabel.Text = s;
-
-        /// <summary>Highlights A Control In Yellow With A > Preceeding It When Hovered Over</summary>
+        /// <summary> Highlights A Control In Yellow With A > Preceeding It When Hovered Over </summary>
         /// <param name="PassedControl">The Control To Highlight</param>
-        /// <param name="HoverOrLeave">0 If Hovering</param>
-        public static void HoverLeave(Control PassedControl, byte HoverOrLeave) {
+        /// <param name="EventIsMouseEnter">Highlight If True</param>
+        public static void HoverLeave(Control PassedControl, bool EventIsMouseEnter) {
             CurrentControl = PassedControl.Name;
-            PassedControl.ForeColor     = HoverOrLeave == 0 ? Color.FromArgb(255, 227, 0) : Color.FromArgb(255, 255, 255);
-            PassedControl.Text          = HoverOrLeave == 0 ? $">{PassedControl.Text}"    : PassedControl.Text.Substring(PassedControl.Text.IndexOf('>') + 1);
-            PassedControl.Size = new Size(HoverOrLeave == 0 ? PassedControl.Width + 9     : PassedControl.Width - 9, PassedControl.Height);
+            PassedControl.ForeColor     = EventIsMouseEnter ? Color.FromArgb(255, 227, 0) : Color.FromArgb(255, 255, 255);
+            PassedControl.Text          = EventIsMouseEnter ? $">{PassedControl.Text}"    : PassedControl.Text.Substring(PassedControl.Text.IndexOf('>') + 1);
+            PassedControl.Size = new Size(EventIsMouseEnter ? PassedControl.Width + 9     : PassedControl.Width - 9, PassedControl.Height);
 
-            if (!InfoHasImportantStr & HoverOrLeave == 1) SetInfoString("");
-            if (HoverOrLeave == 1) MouseScrolled = 0;
-            else SetInfoLabelString(PassedControl);
-        }
-
-        /// <summary>Highlights A Control In Yellow With A > Preceeding It When Hovered Over, And Changes The Infno Label Text</summary>
-        /// <param name="PassedControl">The Control To Highlight</param>
-        /// <param name="InfoString">The String To Send If Hovered Over</param>
-        public static void HoverString(Control PassedControl, string InfoString) {
-            CurrentControl = PassedControl.Name;
-            PassedControl.ForeColor = Color.FromArgb(255, 227, 0);
-            PassedControl.Text = $">{PassedControl.Text}";
-            PassedControl.Size = new Size(PassedControl.Width + 9, PassedControl.Size.Height);
-            InfoHasImportantStr = false;
-            SetInfoString(InfoString);
-        }
-
-
-        public static new void MouseDownFunc(object sender, MouseEventArgs e) {
-            MouseIsDown = 1; LastPos = ActiveForm.Location;
-            MouseDif = new Point(MousePosition.X - ActiveForm.Location.X, MousePosition.Y - ActiveForm.Location.Y);
-        }
-        public static new void MouseUpFunc(object sender, MouseEventArgs e) {
-            MouseScrolled = MouseIsDown = 0;
-        }
-
-        public static new void MoveForm(object sender, MouseEventArgs e) {
-            if (MouseIsDown != 0) {
-                ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
-                ActiveForm.Update();
-            }
+            if (!InfoHasImportantStr & !EventIsMouseEnter) SetInfoLabelText("");
+            if (!EventIsMouseEnter) MouseScrolled = 0;
+            else SetInfoLabelStringOnControlHover(PassedControl);
         }
 
         delegate void LabelFlashDelegate();
@@ -541,9 +639,9 @@ namespace Dobby {
 
             public delegate void TimerDelegate();
             public static TimerDelegate TimerThread = new TimerDelegate(StartTimer);
-            static System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+            public static System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
 
-            private static void Timer_Tick(object sender, EventArgs e) => TimerTicks++;
+            public static void Timer_Tick(object sender, EventArgs e) => TimerTicks++;
             static void StartTimer() {
                 if (ActiveForm != null) ActiveForm.Location = new Point(10, 10);
                 if (!timer.Enabled) {

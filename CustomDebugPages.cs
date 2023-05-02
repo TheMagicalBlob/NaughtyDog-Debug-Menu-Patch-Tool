@@ -12,6 +12,7 @@ namespace Dobby {
     public class T2CustomOptionsDebug : Form {
         public T2CustomOptionsDebug() { if (Dev.REL) return;
             InitializeComponent();
+            AddControlEventHandlers(Controls);
         }
 
         public bool[] CustomDebugOptions = new bool[11]; //Custom Debug Options - 11th is For Eventually Keeping Track Of Whether The Options Were Left Default (true if changed)
@@ -384,8 +385,6 @@ namespace Dobby {
             this.Option10Btn.UseVisualStyleBackColor = false;
             this.Option10Btn.Click += new System.EventHandler(this.Option10Btn_Click);
             this.Option10Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.Option10Btn.MouseEnter += new System.EventHandler(this.Option10BtnMH);
-            this.Option10Btn.MouseLeave += new System.EventHandler(this.Option10BtnML);
             this.Option10Btn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.Option10Btn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.Option10Btn_Scroll);
             // 
@@ -406,8 +405,6 @@ namespace Dobby {
             this.Option11Btn.UseVisualStyleBackColor = false;
             this.Option11Btn.Click += new System.EventHandler(this.Option11Btn_Click);
             this.Option11Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.Option11Btn.MouseEnter += new System.EventHandler(this.Option11BtnMH);
-            this.Option11Btn.MouseLeave += new System.EventHandler(this.Option11BtnML);
             this.Option11Btn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.Option11Btn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.Option11Btn_Scroll);
             // 
@@ -428,8 +425,6 @@ namespace Dobby {
             this.Option12Btn.UseVisualStyleBackColor = false;
             this.Option12Btn.Click += new System.EventHandler(this.Option12Btn_Click);
             this.Option12Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.Option12Btn.MouseEnter += new System.EventHandler(this.Option12BtnMH);
-            this.Option12Btn.MouseLeave += new System.EventHandler(this.Option12BtnML);
             this.Option12Btn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.Option12Btn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.Option12Btn_SClick);
             // 
@@ -450,8 +445,6 @@ namespace Dobby {
             this.Option13Btn.UseVisualStyleBackColor = false;
             this.Option13Btn.Click += new System.EventHandler(this.Option13Btn_Click);
             this.Option13Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.Option13Btn.MouseEnter += new System.EventHandler(this.Option13BtnMH);
-            this.Option13Btn.MouseLeave += new System.EventHandler(this.Option13BtnML);
             this.Option13Btn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.Option13Btn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.Option13Btn_Scroll);
             // 
@@ -666,10 +659,6 @@ namespace Dobby {
             }
         }
 
-
-        public void Option10BtnMH(object sender, EventArgs e) => HoverLeave(Option10Btn, 0);
-
-        public void Option10BtnML(object sender, EventArgs e) => HoverLeave(Option10Btn, 1);
         public void Option11Btn_Click(object sender, EventArgs e) {
             if (MouseScrolled == 1 || CurrentControl != "Option11Btn") return;
 
@@ -756,15 +745,11 @@ namespace Dobby {
                 }
             }
         }
-        public void Option11BtnMH(object sender, EventArgs e) => HoverLeave(Option11Btn, 0);
-        public void Option11BtnML(object sender, EventArgs e) => HoverLeave(Option11Btn, 1);
 
         public void Option12Btn_SClick(object sender, EventArgs e) {
             Option12Btn_Click(sender, e); MouseScrolled = 1; // Can Ya Tell I Don't Know What The Hell I'm Doing Yet?
         }
         public void Option12Btn_Click(object sender, EventArgs e) => Invert(Option12Btn, 9);
-        public void Option12BtnMH(object sender, EventArgs e) => HoverLeave(Option12Btn, 0);
-        public void Option12BtnML(object sender, EventArgs e) => HoverLeave(Option12Btn, 1);
 
         public void Option13Btn_Click(object sender, EventArgs e) {
             if (MouseScrolled == 1 || CurrentControl != "Option13Btn") return;
@@ -840,8 +825,6 @@ namespace Dobby {
                 }
             }
         }
-        public void Option13BtnMH(object sender, EventArgs e) => HoverLeave(Option13Btn, 0);
-        public void Option13BtnML(object sender, EventArgs e) => HoverLeave(Option13Btn, 1);
 
 
         Button ConfirmBtn;

@@ -17,6 +17,7 @@ namespace Dobby {
         public InfoHelpPage() {
             InitializeComponent();
             BuildLabel.Text += Build;
+            AddControlEventHandlers(Controls);
         }
 
         public Label label5;
@@ -147,8 +148,6 @@ namespace Dobby {
             this.MiscPatchPageHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.MiscPatchPageHelpBtn.UseVisualStyleBackColor = false;
             this.MiscPatchPageHelpBtn.Click += new System.EventHandler(this.MiscPatchPageHelpBtn_Click);
-            this.MiscPatchPageHelpBtn.MouseEnter += new System.EventHandler(this.MiscPatchPageHelpBtnMH);
-            this.MiscPatchPageHelpBtn.MouseLeave += new System.EventHandler(this.MiscPatchPageHelpBtnML);
             // 
             // SeperatorLabel2
             // 
@@ -211,8 +210,6 @@ namespace Dobby {
             this.PS4DebugHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PS4DebugHelpBtn.UseVisualStyleBackColor = false;
             this.PS4DebugHelpBtn.Click += new System.EventHandler(this.PS4DebugHelpBtn_Click);
-            this.PS4DebugHelpBtn.MouseEnter += new System.EventHandler(this.PS4DebugHelpBtnMH);
-            this.PS4DebugHelpBtn.MouseLeave += new System.EventHandler(this.PS4DebugHelpBtnML);
             // 
             // label4
             // 
@@ -241,8 +238,6 @@ namespace Dobby {
             this.EbootPatchPageHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.EbootPatchPageHelpBtn.UseVisualStyleBackColor = false;
             this.EbootPatchPageHelpBtn.Click += new System.EventHandler(this.EbootPatchPageHelpBtn_Click);
-            this.EbootPatchPageHelpBtn.MouseEnter += new System.EventHandler(this.EbootPatchPageHelpBtnMH);
-            this.EbootPatchPageHelpBtn.MouseLeave += new System.EventHandler(this.EbootPatchPageHelpBtnML);
             // 
             // Info
             // 
@@ -270,8 +265,6 @@ namespace Dobby {
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
             this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
-            this.BackBtn.MouseEnter += new System.EventHandler(this.BackBtnMH);
-            this.BackBtn.MouseLeave += new System.EventHandler(this.BackBtnML);
             // 
             // GeneralInfoLabel
             // 
@@ -315,8 +308,6 @@ namespace Dobby {
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
 
         void BackBtn_Click(object sender, EventArgs e) => BackFunc();
-        public void BackBtnMH(object sender, EventArgs e) => HoverLeave(BackBtn, 0);
-        public void BackBtnML(object sender, EventArgs e) => HoverLeave(BackBtn, 1);
 
 
         public Button MinimizeBtn;
@@ -334,8 +325,6 @@ namespace Dobby {
         public Label Info;
 
         public void PS4DebugHelpBtn_Click(object sender, EventArgs e) => ChangeForm(6, false);
-        public void PS4DebugHelpBtnMH(object sender, EventArgs e) => HoverLeave(PS4DebugHelpBtn, 0);
-        public void PS4DebugHelpBtnML(object sender, EventArgs e) => HoverLeave(PS4DebugHelpBtn, 1);
 
         private void BuildLabel_Click(object sender, MouseEventArgs e) {
             if (e.Button == MouseButtons.Right) {
@@ -343,18 +332,14 @@ namespace Dobby {
                 MessageBox.Show($"Changelist Dumped To {Directory.GetCurrentDirectory()}\\ChangeLog.txt");
             }
         }
-        void BuildLabelMH(object sender, EventArgs e) { SetInfoString("Right Click To Dump ChangeList"); Common.InfoHasImportantStr = false; }
-        void BuildLabelML(object sender, EventArgs e) => SetInfoString("");
+        void BuildLabelMH(object sender, EventArgs e) { SetInfoLabelText("Right Click To Dump ChangeList"); Common.InfoHasImportantStr = false; }
+        void BuildLabelML(object sender, EventArgs e) => SetInfoLabelText("");
 
         private void MiscPatchPageHelpBtn_Click(object sender, EventArgs e) {
             Dev.DebugOut("Stop that :|");
         }
-        void MiscPatchPageHelpBtnMH(object sender, EventArgs e) => HoverString(MiscPatchPageHelpBtn, "Page Not Yet Created");
-        void MiscPatchPageHelpBtnML(object sender, EventArgs e) => HoverLeave(MiscPatchPageHelpBtn, 1);
 
         private void EbootPatchPageHelpBtn_Click(object sender, EventArgs e) => ChangeForm(7, false);
-        void EbootPatchPageHelpBtnMH(object sender, EventArgs e) => HoverString(EbootPatchPageHelpBtn, "Page Not Yet Created");
-        void EbootPatchPageHelpBtnML(object sender, EventArgs e) => HoverLeave(EbootPatchPageHelpBtn, 1);
     }
 }
 //fuck_yourself:

@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 using static Dobby.Common;
 using System.Drawing;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace Dobby {
     internal class PS4QOLPatchesPage : Form {
         public PS4QOLPatchesPage() {
             InitializeComponent();
+            AddControlEventHandlers(Controls);
 #if DEBUG
             if (FormResetThread.ThreadState != ThreadState.Running)
             FormResetThread.Start();
@@ -74,7 +74,6 @@ namespace Dobby {
             this.SeperatorLabel2 = new System.Windows.Forms.Label();
             this.MenuScaleBtn = new System.Windows.Forms.Button();
             this.MenuAlphaBtn = new System.Windows.Forms.Button();
-            this.BorderBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainLabel
@@ -82,14 +81,11 @@ namespace Dobby {
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MainLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 12.25F, System.Drawing.FontStyle.Bold);
             this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.MainLabel.Location = new System.Drawing.Point(2, 7);
+            this.MainLabel.Location = new System.Drawing.Point(2, 3);
             this.MainLabel.Name = "MainLabel";
             this.MainLabel.Size = new System.Drawing.Size(314, 22);
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "Misc. PS4  Patches Page";
-            this.MainLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MainLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.MainLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             // 
             // ExitBtn
             // 
@@ -99,16 +95,13 @@ namespace Dobby {
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ExitBtn.Location = new System.Drawing.Point(293, 7);
+            this.ExitBtn.Location = new System.Drawing.Point(293, 1);
             this.ExitBtn.Name = "ExitBtn";
             this.ExitBtn.Size = new System.Drawing.Size(23, 23);
             this.ExitBtn.TabIndex = 18;
             this.ExitBtn.Text = "X";
             this.ExitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ExitBtn.UseVisualStyleBackColor = false;
-            this.ExitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
-            this.ExitBtn.MouseEnter += new System.EventHandler(this.ExitBtnMH);
-            this.ExitBtn.MouseLeave += new System.EventHandler(this.ExitBtnML);
             // 
             // MinimizeBtn
             // 
@@ -118,16 +111,13 @@ namespace Dobby {
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinimizeBtn.Location = new System.Drawing.Point(270, 7);
+            this.MinimizeBtn.Location = new System.Drawing.Point(270, 1);
             this.MinimizeBtn.Name = "MinimizeBtn";
             this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
             this.MinimizeBtn.TabIndex = 19;
             this.MinimizeBtn.Text = "--";
             this.MinimizeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.MinimizeBtn.UseVisualStyleBackColor = false;
-            this.MinimizeBtn.Click += new System.EventHandler(this.MinimizeBtn_Click);
-            this.MinimizeBtn.MouseEnter += new System.EventHandler(this.MinimizeBtnMH);
-            this.MinimizeBtn.MouseLeave += new System.EventHandler(this.MinimizeBtnML);
             // 
             // Info
             // 
@@ -138,9 +128,6 @@ namespace Dobby {
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
             this.Info.Text = "=====================================";
-            this.Info.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.Info.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.Info.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             // 
             // CreditsBtn
             // 
@@ -159,8 +146,6 @@ namespace Dobby {
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
             this.CreditsBtn.Click += new System.EventHandler(this.CreditsBtn_Click);
-            this.CreditsBtn.MouseEnter += new System.EventHandler(this.ControlHover);
-            this.CreditsBtn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // InfoHelpBtn
             // 
@@ -179,14 +164,12 @@ namespace Dobby {
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
             this.InfoHelpBtn.Click += new System.EventHandler(this.InfoHelpBtn_Click);
-            this.InfoHelpBtn.MouseEnter += new System.EventHandler(this.ControlHover);
-            this.InfoHelpBtn.MouseLeave += new System.EventHandler(this.ControlLeave);
             // 
             // SeperatorLabel0
             // 
             this.SeperatorLabel0.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.SeperatorLabel0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLabel0.Location = new System.Drawing.Point(2, 15);
+            this.SeperatorLabel0.Location = new System.Drawing.Point(2, 13);
             this.SeperatorLabel0.Name = "SeperatorLabel0";
             this.SeperatorLabel0.Size = new System.Drawing.Size(316, 16);
             this.SeperatorLabel0.TabIndex = 31;
@@ -194,29 +177,6 @@ namespace Dobby {
             // 
             // BorderBox
             // 
-            this.BorderBox.Controls.Add(this.ProgPauseOnCloseBtn);
-            this.BorderBox.Controls.Add(this.MinimizeBtn);
-            this.BorderBox.Controls.Add(this.ResetBtn);
-            this.BorderBox.Controls.Add(this.CustomDebugOptionsLabel);
-            this.BorderBox.Controls.Add(this.UniversalPatchesLabel);
-            this.BorderBox.Controls.Add(this.GameSpecificPatchesLabel);
-            this.BorderBox.Controls.Add(this.ProgPauseOnOpenBtn);
-            this.BorderBox.Controls.Add(this.GameInfoLabel);
-            this.BorderBox.Controls.Add(this.SeperatorLabel3);
-            this.BorderBox.Controls.Add(this.DisableDebugTextBtn);
-            this.BorderBox.Controls.Add(this.RightMarginBtn);
-            this.BorderBox.Controls.Add(this.BackBtn);
-            this.BorderBox.Controls.Add(this.MenuRightAlignBtn);
-            this.BorderBox.Controls.Add(this.BrowseButton);
-            this.BorderBox.Controls.Add(this.ExecutablePathBox);
-            this.BorderBox.Controls.Add(this.Info);
-            this.BorderBox.Controls.Add(this.InfoHelpBtn);
-            this.BorderBox.Controls.Add(this.CreditsBtn);
-            this.BorderBox.Controls.Add(this.SeperatorLabel1);
-            this.BorderBox.Controls.Add(this.SeperatorLabel2);
-            this.BorderBox.Controls.Add(this.ExitBtn);
-            this.BorderBox.Controls.Add(this.MainLabel);
-            this.BorderBox.Controls.Add(this.SeperatorLabel0);
             this.BorderBox.Location = new System.Drawing.Point(0, -6);
             this.BorderBox.Name = "BorderBox";
             this.BorderBox.Size = new System.Drawing.Size(320, 401);
@@ -248,7 +208,7 @@ namespace Dobby {
             this.ResetBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 7.5F);
             this.ResetBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.ResetBtn.ImageAlign = System.Drawing.ContentAlignment.TopRight;
-            this.ResetBtn.Location = new System.Drawing.Point(227, 7);
+            this.ResetBtn.Location = new System.Drawing.Point(227, 1);
             this.ResetBtn.Name = "ResetBtn";
             this.ResetBtn.Size = new System.Drawing.Size(39, 22);
             this.ResetBtn.TabIndex = 55;
@@ -344,10 +304,6 @@ namespace Dobby {
             this.DisableDebugTextBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisableDebugTextBtn.UseVisualStyleBackColor = false;
             this.DisableDebugTextBtn.Click += new System.EventHandler(this.DisableDebugTextBtn_Click);
-            this.DisableDebugTextBtn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.DisableDebugTextBtn.MouseEnter += new System.EventHandler(this.ControlHover);
-            this.DisableDebugTextBtn.MouseLeave += new System.EventHandler(this.ControlLeave);
-            this.DisableDebugTextBtn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.DisableDebugTextBtn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.DisableDebugTextBtn_SClick);
             // 
             // RightMarginBtn
@@ -471,22 +427,38 @@ namespace Dobby {
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
             this.ClientSize = new System.Drawing.Size(320, 394);
+            this.Controls.Add(this.ProgPauseOnCloseBtn);
+            this.Controls.Add(this.MinimizeBtn);
+            this.Controls.Add(this.ResetBtn);
+            this.Controls.Add(this.CustomDebugOptionsLabel);
+            this.Controls.Add(this.UniversalPatchesLabel);
+            this.Controls.Add(this.GameSpecificPatchesLabel);
+            this.Controls.Add(this.ProgPauseOnOpenBtn);
+            this.Controls.Add(this.GameInfoLabel);
+            this.Controls.Add(this.SeperatorLabel3);
+            this.Controls.Add(this.DisableDebugTextBtn);
+            this.Controls.Add(this.RightMarginBtn);
+            this.Controls.Add(this.BackBtn);
+            this.Controls.Add(this.MenuRightAlignBtn);
+            this.Controls.Add(this.BrowseButton);
+            this.Controls.Add(this.ExecutablePathBox);
+            this.Controls.Add(this.Info);
+            this.Controls.Add(this.InfoHelpBtn);
+            this.Controls.Add(this.CreditsBtn);
+            this.Controls.Add(this.SeperatorLabel1);
+            this.Controls.Add(this.SeperatorLabel2);
+            this.Controls.Add(this.ExitBtn);
+            this.Controls.Add(this.MainLabel);
+            this.Controls.Add(this.SeperatorLabel0);
             this.Controls.Add(this.BorderBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PS4QOLPatchesPage";
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            this.BorderBox.ResumeLayout(false);
-            this.BorderBox.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
-        public void MoveForm(object sender, MouseEventArgs e) => Common.MoveForm(sender, e);
-        public void MouseUpFunc(object sender, MouseEventArgs e) => Common.MouseUpFunc(sender, e);
-        public void MouseDownFunc(object sender, MouseEventArgs e) => Common.MouseDownFunc(sender, e);
-        public void ControlHover(object sender, EventArgs e) => HoverLeave((Control)sender, 0);
-        public void ControlLeave(object sender, EventArgs e) => HoverLeave((Control)sender, 1);
+        public void ControlHover(object sender, EventArgs e) => HoverLeave((Control)sender, true);
+        public void ControlLeave(object sender, EventArgs e) => HoverLeave((Control)sender, false);
         public void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
         public void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
         public void BackBtn_Click(object sender, EventArgs e) => BackFunc();
@@ -520,18 +492,10 @@ namespace Dobby {
         public static Control[] ControlsToMove;
 
 
-        public void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
-        public void ExitBtnMH(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 227, 0);
-        public void ExitBtnML(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 255, 255);
-
-        public void MinimizeBtn_Click(object sender, EventArgs e) => ActiveForm.WindowState = FormWindowState.Minimized;
-        public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
-        public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
-
         public void ResetBtn_Click(object sender, EventArgs e) => ResetCustomOptions(true);
         public void ResetBtnMH(object sender, EventArgs e) {
             ResetBtn.ForeColor = Color.FromArgb(255, 227, 0);
-            SetInfoString("Reset Page To It's Default State");
+            SetInfoLabelText("Reset Page To It's Default State");
         }
         public void ResetBtnML(object sender, EventArgs e) => ResetBtn.ForeColor = Color.FromArgb(255, 255, 255);
 
@@ -549,7 +513,7 @@ namespace Dobby {
 
         public void LoadGameSpecificMenuOptions() {
             
-            void BtnHoverString(object sender, EventArgs e) => SetInfoString(ButtonTextArray[((Control)sender).TabIndex].Substring(ButtonTextArray[((Control)sender).TabIndex].LastIndexOf(';') + 1));
+            void BtnHoverString(object sender, EventArgs e) => SetInfoLabelText(ButtonTextArray[((Control)sender).TabIndex].Substring(ButtonTextArray[((Control)sender).TabIndex].LastIndexOf(';') + 1));
 
             if (OriginalFormScale == Size.Empty) { // Assign values to variables made to keep track of the default form size/control postions. Going it on page init is annoying 'cause designer memes
                 Dev.DebugOut("Setting Original Scale Variables");
@@ -835,7 +799,11 @@ CreateButton:
         }
 #endif
         public static void ResetCustomOptions(bool ToggleLabelVisibility) {
-            Dev.DebugOut("Resetting Form");
+            #if DEBUG
+            FormShouldReset = false;
+            Dev.DebugOut("Resetting Form And Main Stream");
+            #endif
+
             ActiveForm.Controls.Find("BorderBox", true)[0].Size = OriginalBorderScale;
             ActiveForm.Size = OriginalFormScale;
 
@@ -848,10 +816,6 @@ CreateButton:
             
             MainStream.Dispose();
             MainStreamIsOpen = false;
-            Dev.DebugOut("MainStream Closed");
-            
-            FormShouldReset ^= FormShouldReset;
-            
             if (!ToggleLabelVisibility) return;
             ActiveForm.Controls.Find("CustomDebugOptionsLabel", true)[0].Visible ^= ActiveForm.Controls.Find("ResetBtn", true)[0].Visible;
             ActiveForm.Controls.Find("ResetBtn", true)[0].Visible ^= ActiveForm.Controls.Find("CustomDebugOptionsLabel", true)[0].Visible;

@@ -13,6 +13,7 @@ namespace Dobby {
     internal class PCDebugMenuPage : Form {
         public PCDebugMenuPage() {
             InitializeComponent();
+            AddControlEventHandlers(Controls);
 
             if (ActiveFilePath != null && IsActiveFilePCExe)
                 ExecutablePathBox.Text = ActiveFilePath;
@@ -141,8 +142,6 @@ namespace Dobby {
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
             this.CreditsBtn.Click += new System.EventHandler(this.CreditsBtn_Click);
-            this.CreditsBtn.MouseEnter += new System.EventHandler(this.CreditsBtnMH);
-            this.CreditsBtn.MouseLeave += new System.EventHandler(this.CreditsBtnML);
             // 
             // InfoHelpBtn
             // 
@@ -161,8 +160,6 @@ namespace Dobby {
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
             this.InfoHelpBtn.Click += new System.EventHandler(this.InfoHelpBtn_Click);
-            this.InfoHelpBtn.MouseEnter += new System.EventHandler(this.InfoHelpBtnMH);
-            this.InfoHelpBtn.MouseLeave += new System.EventHandler(this.InfoHelpBtnML);
             // 
             // SeperatorLine1
             // 
@@ -227,8 +224,6 @@ namespace Dobby {
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
             this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
-            this.BackBtn.MouseEnter += new System.EventHandler(this.BackBtnMH);
-            this.BackBtn.MouseLeave += new System.EventHandler(this.BackBtnML);
             // 
             // BrowseButton
             // 
@@ -284,8 +279,6 @@ namespace Dobby {
             this.BaseDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BaseDebugBtn.UseVisualStyleBackColor = false;
             this.BaseDebugBtn.Click += new System.EventHandler(this.BaseDebugBtn_Click);
-            this.BaseDebugBtn.MouseEnter += new System.EventHandler(this.BaseDebugBtnMH);
-            this.BaseDebugBtn.MouseLeave += new System.EventHandler(this.BaseDebugBtnML);
             // 
             // RestoredDebugBtn
             // 
@@ -303,8 +296,6 @@ namespace Dobby {
             this.RestoredDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.RestoredDebugBtn.UseVisualStyleBackColor = false;
             this.RestoredDebugBtn.Click += new System.EventHandler(this.RestoredDebugBtn_Click);
-            this.RestoredDebugBtn.MouseEnter += new System.EventHandler(this.RestoredDebugBtnMH);
-            this.RestoredDebugBtn.MouseLeave += new System.EventHandler(this.RestoredDebugBtnML);
             // 
             // DisableDebugBtn
             // 
@@ -322,8 +313,6 @@ namespace Dobby {
             this.DisableDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisableDebugBtn.UseVisualStyleBackColor = false;
             this.DisableDebugBtn.Click += new System.EventHandler(this.DisableDebugBtn_Click);
-            this.DisableDebugBtn.MouseEnter += new System.EventHandler(this.DisableDebugBtnMH);
-            this.DisableDebugBtn.MouseLeave += new System.EventHandler(this.DisableDebugBtnML);
             // 
             // PCDebugMenuPage
             // 
@@ -477,7 +466,7 @@ Read:       MainStream.Position = TmpAddr;
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;
-                SetInfoString("Please Select A Game's Executable First");
+                SetInfoLabelText("Please Select A Game's Executable First");
                 Common.InfoHasImportantStr = true;
                 return;
             }
@@ -518,8 +507,6 @@ Read:       MainStream.Position = TmpAddr;
             }
             WriteByte(DebugAddr, 0x8F);
         }
-        public void BaseDebugBtnMH(object sender, EventArgs e) => HoverLeave(BaseDebugBtn, 0);
-        public void BaseDebugBtnML(object sender, EventArgs e) => HoverLeave(BaseDebugBtn, 1);
 
         private void RestoredDebugBtn_Click(object sender, EventArgs e) {
             if (Game == 0) {
@@ -528,7 +515,7 @@ Read:       MainStream.Position = TmpAddr;
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;
-                SetInfoString("Please Select A Game's Executable First");
+                SetInfoLabelText("Please Select A Game's Executable First");
                 Common.InfoHasImportantStr = true;
                 return;
             }
@@ -568,10 +555,8 @@ Read:       MainStream.Position = TmpAddr;
                     break;
             }
             WriteByte(DebugAddr, 0x8F);
-            SetInfoString("Heap Rederict By: "); //!
+            SetInfoLabelText("Heap Rederict By: "); //!
         }
-        public void RestoredDebugBtnMH(object sender, EventArgs e) => HoverLeave(RestoredDebugBtn, 0);
-        public void RestoredDebugBtnML(object sender, EventArgs e) => HoverLeave(RestoredDebugBtn, 1);
 
         private void DisableDebugBtn_Click(object sender, EventArgs e) {
             if (Game == 0) {
@@ -580,7 +565,7 @@ Read:       MainStream.Position = TmpAddr;
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;
-                SetInfoString("Please Select A Game's Executable First");
+                SetInfoLabelText("Please Select A Game's Executable First");
                 Common.InfoHasImportantStr = true;
                 return;
             }
@@ -621,19 +606,11 @@ Read:       MainStream.Position = TmpAddr;
             }
             WriteByte(DebugAddr, 0x97);
         }
-        public void DisableDebugBtnMH(object sender, EventArgs e) => HoverLeave(DisableDebugBtn, 0);
-        public void DisableDebugBtnML(object sender, EventArgs e) => HoverLeave(DisableDebugBtn, 1);
 
         private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
-        public void InfoHelpBtnMH(object sender, EventArgs e) => HoverLeave(InfoHelpBtn, 0);
-        public void InfoHelpBtnML(object sender, EventArgs e) => HoverLeave(InfoHelpBtn, 1);
 
         private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
-        public void CreditsBtnMH(object sender, EventArgs e) => HoverLeave(CreditsBtn, 0);
-        public void CreditsBtnML(object sender, EventArgs e) => HoverLeave(CreditsBtn, 1);
 
         private void BackBtn_Click(object sender, EventArgs e) => BackFunc();
-        public void BackBtnMH(object sender, EventArgs e) => HoverLeave(BackBtn, 0);
-        public void BackBtnML(object sender, EventArgs e) => HoverLeave(BackBtn, 1);
     }
 }

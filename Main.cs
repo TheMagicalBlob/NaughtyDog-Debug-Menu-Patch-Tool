@@ -20,14 +20,13 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
                 Dev.DebuggerInfo();
                 Dev.ReadCurrentKey();
             }
-#elif !DEBUG
-            DebugLabel.Visible = false;
 #endif
             InitializeComponent();
             YellowInformationLabel = Info;
             Info.Text = "";
             Page = 0;
             Dev.DebugOut("Test PS4DebugPage Changes!!!");
+            AddControlEventHandlers(Controls);
         }
 
         #region ControlDeclarations
@@ -37,7 +36,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
         public Button PS4QOLPageBtn;
         public Button CreditsBtn;
         public Button InfoHelpBtn;
-        public Label DebugLabel;
         public Label Info;
         public Button ExitBtn;
         public Button MinimizeBtn;
@@ -54,7 +52,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
         #endregion
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
-            this.DebugLabel = new System.Windows.Forms.Label();
             this.ExitBtn = new System.Windows.Forms.Button();
             this.MinimizeBtn = new System.Windows.Forms.Button();
             this.Info = new System.Windows.Forms.Label();
@@ -86,23 +83,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.MainLabel.Size = new System.Drawing.Size(314, 22);
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "Naughty Dog Debug Tool";
-            this.MainLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MainLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.MainLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            // 
-            // DebugLabel
-            // 
-            this.DebugLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.DebugLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F, System.Drawing.FontStyle.Bold);
-            this.DebugLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.DebugLabel.Location = new System.Drawing.Point(207, 7);
-            this.DebugLabel.Name = "DebugLabel";
-            this.DebugLabel.Size = new System.Drawing.Size(36, 19);
-            this.DebugLabel.TabIndex = 20;
-            this.DebugLabel.Text = "(Dev)";
-            this.DebugLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.DebugLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.DebugLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             // 
             // ExitBtn
             // 
@@ -119,9 +99,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.ExitBtn.Text = "X";
             this.ExitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ExitBtn.UseVisualStyleBackColor = false;
-            this.ExitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
-            this.ExitBtn.MouseEnter += new System.EventHandler(ExitBtnMH);
-            this.ExitBtn.MouseLeave += new System.EventHandler(ExitBtnML);
             // 
             // MinimizeBtn
             // 
@@ -138,9 +115,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.MinimizeBtn.Text = "--";
             this.MinimizeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.MinimizeBtn.UseVisualStyleBackColor = false;
-            this.MinimizeBtn.Click += new System.EventHandler(this.MinimizeBtn_Click);
-            this.MinimizeBtn.MouseEnter += new System.EventHandler(MinimizeBtnMH);
-            this.MinimizeBtn.MouseLeave += new System.EventHandler(MinimizeBtnML);
             // 
             // Info
             // 
@@ -151,9 +125,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
             this.Info.Text = "=====================================";
-            this.Info.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.Info.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.Info.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             // 
             // PS4DebugPageBtn
             // 
@@ -171,8 +142,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.PS4DebugPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PS4DebugPageBtn.UseVisualStyleBackColor = false;
             this.PS4DebugPageBtn.Click += new System.EventHandler(this.PS4DebugPageBtn_Click);
-            this.PS4DebugPageBtn.MouseEnter += new System.EventHandler(ControlHover);
-            this.PS4DebugPageBtn.MouseLeave += new System.EventHandler(ControlLeave);
             // 
             // EbootPatchPageBtn
             // 
@@ -190,8 +159,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.EbootPatchPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.EbootPatchPageBtn.UseVisualStyleBackColor = false;
             this.EbootPatchPageBtn.Click += new System.EventHandler(this.EbootPatchPageBtn_Click);
-            this.EbootPatchPageBtn.MouseEnter += new System.EventHandler(ControlHover);
-            this.EbootPatchPageBtn.MouseLeave += new System.EventHandler(ControlLeave);
             // 
             // PS4QOLPageBtn
             // 
@@ -210,8 +177,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.PS4QOLPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PS4QOLPageBtn.UseVisualStyleBackColor = false;
             this.PS4QOLPageBtn.Click += new System.EventHandler(this.MiscPatchesBtn_Click);
-            this.PS4QOLPageBtn.MouseEnter += new System.EventHandler(ControlHover);
-            this.PS4QOLPageBtn.MouseLeave += new System.EventHandler(ControlLeave);
             // 
             // CreditsBtn
             // 
@@ -230,8 +195,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
             this.CreditsBtn.Click += new System.EventHandler(this.CreditsBtn_Click);
-            this.CreditsBtn.MouseEnter += new System.EventHandler(ControlHover);
-            this.CreditsBtn.MouseLeave += new System.EventHandler(ControlLeave);
             // 
             // InfoHelpBtn
             // 
@@ -249,9 +212,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.InfoHelpBtn.Text = "Information / Help...";
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
-            this.InfoHelpBtn.Click += new System.EventHandler(this.InfoHelpBtn_Click); //"Additional Information On Verious Pages"
-            this.InfoHelpBtn.MouseEnter += new System.EventHandler(ControlHover);
-            this.InfoHelpBtn.MouseLeave += new System.EventHandler(ControlLeave);
+            this.InfoHelpBtn.Click += new System.EventHandler(this.InfoHelpBtn_Click);
             // 
             // SeperatorLine1
             // 
@@ -303,8 +264,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.DownloadSourceBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DownloadSourceBtn.UseVisualStyleBackColor = false;
             this.DownloadSourceBtn.Click += new System.EventHandler(this.DownloadSourceBtn_Click);
-            this.DownloadSourceBtn.MouseEnter += new System.EventHandler(ControlHover);
-            this.DownloadSourceBtn.MouseLeave += new System.EventHandler(ControlLeave);
             // 
             // PCLabel
             // 
@@ -344,8 +303,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.PkgPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PkgPageBtn.UseVisualStyleBackColor = false;
             this.PkgPageBtn.Click += new System.EventHandler(this.PkgPageBtn_Click);
-            this.PkgPageBtn.MouseEnter += new System.EventHandler(ControlHover);
-            this.PkgPageBtn.MouseLeave += new System.EventHandler(ControlLeave);
             // 
             // SeperatorLabel1
             // 
@@ -373,8 +330,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.PCDebugMenuPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PCDebugMenuPageBtn.UseVisualStyleBackColor = false;
             this.PCDebugMenuPageBtn.Click += new System.EventHandler(this.PCDebugMenuPageBtn_Click);
-            this.PCDebugMenuPageBtn.MouseEnter += new System.EventHandler(ControlHover);
-            this.PCDebugMenuPageBtn.MouseLeave += new System.EventHandler(ControlLeave);
             // 
             // PCQOLPageBtn
             // 
@@ -392,8 +347,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.PCQOLPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PCQOLPageBtn.UseVisualStyleBackColor = false;
             this.PCQOLPageBtn.Click += new System.EventHandler(this.PCQOLPageBtn_Click);
-            this.PCQOLPageBtn.MouseEnter += new System.EventHandler(ControlHover);
-            this.PCQOLPageBtn.MouseLeave += new System.EventHandler(ControlLeave);
             // 
             // Dobby
             // 
@@ -409,7 +362,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.Controls.Add(this.EbootPatchPageBtn);
             this.Controls.Add(this.PS4QOLPageBtn);
             this.Controls.Add(this.Info);
-            this.Controls.Add(this.DebugLabel);
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.MinimizeBtn);
             this.Controls.Add(this.MainLabel);
@@ -418,52 +370,31 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.Controls.Add(this.BorderBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Dobby";
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.BorderBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
-        public void MoveForm(object sender, MouseEventArgs e) => Common.MoveForm(sender, e);
-        public void MouseUpFunc(object sender, MouseEventArgs e) => Common.MouseUpFunc(sender, e);
-        public void MouseDownFunc(object sender, MouseEventArgs e) => Common.MouseDownFunc(sender, e);
-        public static void ControlHover(object sender, EventArgs e) => HoverLeave((Control)sender, 0);
-        public static void ControlLeave(object sender, EventArgs e) => HoverLeave((Control)sender, 1);
 
         public void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
-        
         public void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
-
-        public void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
-        public void ExitBtnMH(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 227, 0);
-        public void ExitBtnML(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 255, 255);
-
-        public void MinimizeBtn_Click(object sender, EventArgs e) => ActiveForm.WindowState = FormWindowState.Minimized;
-        public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
-        public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
-
         public void PS4DebugPageBtn_Click(object sender, EventArgs e) => ChangeForm(1, false);
-
         public void EbootPatchPageBtn_Click(object sender, EventArgs e) => ChangeForm(2, false);
-        public void EbootPatchPageBtnMH(object sender, EventArgs e) => HoverString(EbootPatchPageBtn, "Patch An Executable To Be Added To A .pkg");
 
         private void MiscPatchesBtn_Click(object sender, EventArgs e) {
             if (Dev.REL) return;
             ChangeForm(3, false);
         }
-        public void MiscPatchesBtnMH(object sender, EventArgs e) => HoverString(PS4QOLPageBtn, "Not Yet Implemented");
 
-        private void PkgPageBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
-        public void PkgPageBtnMH(object sender, EventArgs e) => HoverString(PkgPageBtn, "Not Yet Implemented");
+        public void PkgPageBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
 
         private void DownloadSourceBtn_Click(object sender, EventArgs e) => System.Diagnostics.Process.Start(@"https://github.com/TheMagicalBlob/NaughtyDog-Debug-Menu-Patch-Tool/archive/refs/heads/master.zip");
-        public void DownloadSourceBtnMH(object sender, EventArgs e) => HoverString(DownloadSourceBtn, "This Opens An External Link");
 
         private void PCDebugMenuPageBtn_Click(object sender, EventArgs e) => ChangeForm(9, false);
-        public void PCDebugMenuPageBtnMH(object sender, EventArgs e) => HoverString(PCDebugMenuPageBtn, "Enable The Default Or Restored Debug Menu");
 
         private void PCQOLPageBtn_Click(object sender, EventArgs e) => ChangeForm(10, false);
-        public void PCQOLPageBtnMH(object sender, EventArgs e) => HoverString(PCQOLPageBtn, "Not Yet Implemented");
+
+        private void MinimizeBtn_Click_1(object sender, EventArgs e) {
+
+        }
     }
 }
