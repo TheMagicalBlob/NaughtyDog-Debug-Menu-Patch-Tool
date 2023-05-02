@@ -119,7 +119,7 @@ namespace Dobby {
            "* 2.22.67.170 | Overhauled Output Code, Old Method Was Cumbersome To Edit",
            "* 2.22.68.170 | Added Preprocessor Directives To Avoid Compilation of Debug Code",
            "* 2.22.69.171 | Just Realized I Can Cast sender to a control ptr... Overhauled Mouse Hover/Leave Functionality, Merged PC and PS4 arrays",
-      "* 3-beta.22.65.163 | Removed Redundant Custom W/ Options Button From Eboot Patch Page, Many Other Forgotten Changes, Don't code drunk for your changelog's sake..."
+      "* 3-beta.22.65.163 | Removed Redundant Custom W/ Options Button From Eboot Patch Page, Many, MANY Other Forgotten Changes. Don't code drunk for your changelog's sake..."
 
             // TODO:
             // - Finish EbootPatchHelpPage
