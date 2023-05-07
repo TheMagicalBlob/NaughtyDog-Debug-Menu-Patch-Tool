@@ -20,6 +20,19 @@ namespace Dobby {
             AddControlEventHandlers(Controls);
         }
 
+        public Button MinimizeBtn;
+        public Label MainLabel;
+        public GroupBox MainBox;
+        public Button BackBtn;
+        public Button ExitBtn;
+        public Button PS4DebugHelpBtn;
+        public Button EbootPatchPageHelpBtn;
+        public Label BuildLabel;
+        public Label BlobLabel;
+        public Label GeneralInfoLabel;
+        public Label label4;
+        public Button MiscPatchPageHelpBtn;
+        public Label Info;
         public Label label5;
         public Label SeperatorLabel2;
         public Label SeperatorLabel1;
@@ -47,11 +60,11 @@ namespace Dobby {
             // MainLabel
             // 
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MainLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 12.25F, System.Drawing.FontStyle.Bold);
-            this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.MainLabel.Location = new System.Drawing.Point(2, 7);
+            this.MainLabel.Font = new Font("Franklin Gothic Medium", 12.25F, FontStyle.Bold);
+            this.MainLabel.ForeColor = SystemColors.Control;
+            this.MainLabel.Location = new Point(2, 7);
             this.MainLabel.Name = "MainLabel";
-            this.MainLabel.Size = new System.Drawing.Size(266, 22);
+            this.MainLabel.Size = new Size(266, 22);
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "Information / Help";
             this.MainLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
@@ -75,9 +88,9 @@ namespace Dobby {
             this.MainBox.Controls.Add(this.Info);
             this.MainBox.Controls.Add(this.BackBtn);
             this.MainBox.Controls.Add(this.GeneralInfoLabel);
-            this.MainBox.Location = new System.Drawing.Point(0, -6);
+            this.MainBox.Location = new Point(0, -6);
             this.MainBox.Name = "MainBox";
-            this.MainBox.Size = new System.Drawing.Size(320, 366);
+            this.MainBox.Size = new Size(320, 366);
             this.MainBox.TabIndex = 5;
             this.MainBox.TabStop = false;
             this.MainBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
@@ -86,18 +99,18 @@ namespace Dobby {
             // 
             // ExitBtn
             // 
-            this.ExitBtn.BackColor = System.Drawing.Color.DimGray;
+            this.ExitBtn.BackColor = Color.DimGray;
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ExitBtn.Location = new System.Drawing.Point(293, 7);
+            this.ExitBtn.Font = new Font("Franklin Gothic Medium", 9F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+            this.ExitBtn.ForeColor = SystemColors.Control;
+            this.ExitBtn.Location = new Point(293, 7);
             this.ExitBtn.Name = "ExitBtn";
-            this.ExitBtn.Size = new System.Drawing.Size(23, 23);
+            this.ExitBtn.Size = new Size(23, 23);
             this.ExitBtn.TabIndex = 18;
             this.ExitBtn.Text = "X";
-            this.ExitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ExitBtn.TextAlign = ContentAlignment.MiddleLeft;
             this.ExitBtn.UseVisualStyleBackColor = false;
             this.ExitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
             this.ExitBtn.MouseEnter += new System.EventHandler(this.ExitBtnMH);
@@ -105,18 +118,18 @@ namespace Dobby {
             // 
             // MinimizeBtn
             // 
-            this.MinimizeBtn.BackColor = System.Drawing.Color.DimGray;
+            this.MinimizeBtn.BackColor = Color.DimGray;
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinimizeBtn.Location = new System.Drawing.Point(270, 7);
+            this.MinimizeBtn.Font = new Font("Franklin Gothic Medium", 8F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+            this.MinimizeBtn.ForeColor = SystemColors.Control;
+            this.MinimizeBtn.Location = new Point(270, 7);
             this.MinimizeBtn.Name = "MinimizeBtn";
-            this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
+            this.MinimizeBtn.Size = new Size(23, 23);
             this.MinimizeBtn.TabIndex = 19;
             this.MinimizeBtn.Text = "--";
-            this.MinimizeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.MinimizeBtn.TextAlign = ContentAlignment.MiddleLeft;
             this.MinimizeBtn.UseVisualStyleBackColor = false;
             this.MinimizeBtn.Click += new System.EventHandler(this.MinimizeBtn_Click);
             this.MinimizeBtn.MouseEnter += new System.EventHandler(this.MinimizeBtnMH);
@@ -124,60 +137,60 @@ namespace Dobby {
             // 
             // label5
             // 
-            this.label5.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label5.Location = new System.Drawing.Point(2, 15);
+            this.label5.Font = new Font("Franklin Gothic Medium", 10F);
+            this.label5.ForeColor = Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.label5.Location = new Point(2, 15);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(316, 16);
+            this.label5.Size = new Size(316, 16);
             this.label5.TabIndex = 38;
             this.label5.Text = "______________________________________________________________";
             // 
             // MiscPatchPageHelpBtn
             // 
-            this.MiscPatchPageHelpBtn.BackColor = System.Drawing.Color.DimGray;
+            this.MiscPatchPageHelpBtn.BackColor = Color.DimGray;
             this.MiscPatchPageHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MiscPatchPageHelpBtn.FlatAppearance.BorderSize = 0;
             this.MiscPatchPageHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MiscPatchPageHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Strikeout))));
-            this.MiscPatchPageHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MiscPatchPageHelpBtn.Location = new System.Drawing.Point(1, 283);
+            this.MiscPatchPageHelpBtn.Font = new Font("Franklin Gothic Medium", 9.25F, ((FontStyle)((FontStyle.Bold | FontStyle.Strikeout))));
+            this.MiscPatchPageHelpBtn.ForeColor = SystemColors.Control;
+            this.MiscPatchPageHelpBtn.Location = new Point(1, 283);
             this.MiscPatchPageHelpBtn.Name = "MiscPatchPageHelpBtn";
-            this.MiscPatchPageHelpBtn.Size = new System.Drawing.Size(172, 23);
+            this.MiscPatchPageHelpBtn.Size = new Size(172, 23);
             this.MiscPatchPageHelpBtn.TabIndex = 35;
             this.MiscPatchPageHelpBtn.Text = "Misc. Patch Page Help...";
-            this.MiscPatchPageHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.MiscPatchPageHelpBtn.TextAlign = ContentAlignment.MiddleLeft;
             this.MiscPatchPageHelpBtn.UseVisualStyleBackColor = false;
             this.MiscPatchPageHelpBtn.Click += new System.EventHandler(this.MiscPatchPageHelpBtn_Click);
             // 
             // SeperatorLabel2
             // 
-            this.SeperatorLabel2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.SeperatorLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLabel2.Location = new System.Drawing.Point(2, 296);
+            this.SeperatorLabel2.Font = new Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLabel2.ForeColor = Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLabel2.Location = new Point(2, 296);
             this.SeperatorLabel2.Name = "SeperatorLabel2";
-            this.SeperatorLabel2.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLabel2.Size = new Size(316, 16);
             this.SeperatorLabel2.TabIndex = 37;
             this.SeperatorLabel2.Text = "______________________________________________________________";
             // 
             // BlobLabel
             // 
             this.BlobLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.BlobLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
-            this.BlobLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.BlobLabel.Location = new System.Drawing.Point(149, 207);
+            this.BlobLabel.Font = new Font("Franklin Gothic Medium", 8F, FontStyle.Bold);
+            this.BlobLabel.ForeColor = SystemColors.Control;
+            this.BlobLabel.Location = new Point(149, 207);
             this.BlobLabel.Name = "BlobLabel";
-            this.BlobLabel.Size = new System.Drawing.Size(170, 22);
+            this.BlobLabel.Size = new Size(170, 22);
             this.BlobLabel.TabIndex = 32;
             this.BlobLabel.Text = "Created By TheMagicalBlob";
             // 
             // BuildLabel
             // 
             this.BuildLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.BuildLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
-            this.BuildLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.BuildLabel.Location = new System.Drawing.Point(1, 208);
+            this.BuildLabel.Font = new Font("Franklin Gothic Medium", 10F, FontStyle.Bold);
+            this.BuildLabel.ForeColor = SystemColors.Control;
+            this.BuildLabel.Location = new Point(1, 208);
             this.BuildLabel.Name = "BuildLabel";
-            this.BuildLabel.Size = new System.Drawing.Size(304, 22);
+            this.BuildLabel.Size = new Size(304, 22);
             this.BuildLabel.TabIndex = 20;
             this.BuildLabel.Text = "Build: ";
             this.BuildLabel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BuildLabel_Click);
@@ -186,94 +199,94 @@ namespace Dobby {
             // 
             // SeperatorLabel1
             // 
-            this.SeperatorLabel1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.SeperatorLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLabel1.Location = new System.Drawing.Point(2, 215);
+            this.SeperatorLabel1.Font = new Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLabel1.ForeColor = Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLabel1.Location = new Point(2, 215);
             this.SeperatorLabel1.Name = "SeperatorLabel1";
-            this.SeperatorLabel1.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLabel1.Size = new Size(316, 16);
             this.SeperatorLabel1.TabIndex = 36;
             this.SeperatorLabel1.Text = "______________________________________________________________";
             // 
             // PS4DebugHelpBtn
             // 
-            this.PS4DebugHelpBtn.BackColor = System.Drawing.Color.DimGray;
+            this.PS4DebugHelpBtn.BackColor = Color.DimGray;
             this.PS4DebugHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PS4DebugHelpBtn.FlatAppearance.BorderSize = 0;
             this.PS4DebugHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PS4DebugHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.PS4DebugHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.PS4DebugHelpBtn.Location = new System.Drawing.Point(1, 235);
+            this.PS4DebugHelpBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
+            this.PS4DebugHelpBtn.ForeColor = SystemColors.Control;
+            this.PS4DebugHelpBtn.Location = new Point(1, 235);
             this.PS4DebugHelpBtn.Name = "PS4DebugHelpBtn";
-            this.PS4DebugHelpBtn.Size = new System.Drawing.Size(166, 23);
+            this.PS4DebugHelpBtn.Size = new Size(166, 23);
             this.PS4DebugHelpBtn.TabIndex = 14;
             this.PS4DebugHelpBtn.Text = "PS4Debug Page Help...";
-            this.PS4DebugHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.PS4DebugHelpBtn.TextAlign = ContentAlignment.MiddleLeft;
             this.PS4DebugHelpBtn.UseVisualStyleBackColor = false;
             this.PS4DebugHelpBtn.Click += new System.EventHandler(this.PS4DebugHelpBtn_Click);
             // 
             // label4
             // 
             this.label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label4.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
-            this.label4.ForeColor = System.Drawing.SystemColors.Control;
-            this.label4.Location = new System.Drawing.Point(84, 32);
+            this.label4.Font = new Font("Franklin Gothic Medium", 10F, FontStyle.Bold);
+            this.label4.ForeColor = SystemColors.Control;
+            this.label4.Location = new Point(84, 32);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(128, 22);
+            this.label4.Size = new Size(128, 22);
             this.label4.TabIndex = 34;
             this.label4.Text = "General App Info";
             // 
             // EbootPatchPageHelpBtn
             // 
-            this.EbootPatchPageHelpBtn.BackColor = System.Drawing.Color.DimGray;
+            this.EbootPatchPageHelpBtn.BackColor = Color.DimGray;
             this.EbootPatchPageHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.EbootPatchPageHelpBtn.FlatAppearance.BorderSize = 0;
             this.EbootPatchPageHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.EbootPatchPageHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.EbootPatchPageHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.EbootPatchPageHelpBtn.Location = new System.Drawing.Point(1, 259);
+            this.EbootPatchPageHelpBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
+            this.EbootPatchPageHelpBtn.ForeColor = SystemColors.Control;
+            this.EbootPatchPageHelpBtn.Location = new Point(1, 259);
             this.EbootPatchPageHelpBtn.Name = "EbootPatchPageHelpBtn";
-            this.EbootPatchPageHelpBtn.Size = new System.Drawing.Size(253, 23);
+            this.EbootPatchPageHelpBtn.Size = new Size(253, 23);
             this.EbootPatchPageHelpBtn.TabIndex = 29;
             this.EbootPatchPageHelpBtn.Text = "Eboot\\Executable Patch Page Help...";
-            this.EbootPatchPageHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.EbootPatchPageHelpBtn.TextAlign = ContentAlignment.MiddleLeft;
             this.EbootPatchPageHelpBtn.UseVisualStyleBackColor = false;
             this.EbootPatchPageHelpBtn.Click += new System.EventHandler(this.EbootPatchPageHelpBtn_Click);
             // 
             // Info
             // 
-            this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(8, 342);
+            this.Info.Font = new Font("Franklin Gothic Medium", 10F);
+            this.Info.ForeColor = Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.Info.Location = new Point(8, 342);
             this.Info.Name = "Info";
-            this.Info.Size = new System.Drawing.Size(304, 17);
+            this.Info.Size = new Size(304, 17);
             this.Info.TabIndex = 7;
             this.Info.Text = "=====================================";
             // 
             // BackBtn
             // 
-            this.BackBtn.BackColor = System.Drawing.Color.DimGray;
+            this.BackBtn.BackColor = Color.DimGray;
             this.BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.BackBtn.FlatAppearance.BorderSize = 0;
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 317);
+            this.BackBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
+            this.BackBtn.ForeColor = SystemColors.Control;
+            this.BackBtn.Location = new Point(1, 317);
             this.BackBtn.Name = "BackBtn";
-            this.BackBtn.Size = new System.Drawing.Size(60, 23);
+            this.BackBtn.Size = new Size(60, 23);
             this.BackBtn.TabIndex = 13;
             this.BackBtn.Text = "Back...";
-            this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BackBtn.TextAlign = ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
             this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
             // 
             // GeneralInfoLabel
             // 
             this.GeneralInfoLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.GeneralInfoLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
-            this.GeneralInfoLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.GeneralInfoLabel.Location = new System.Drawing.Point(3, 54);
+            this.GeneralInfoLabel.Font = new Font("Franklin Gothic Medium", 9F, FontStyle.Bold);
+            this.GeneralInfoLabel.ForeColor = SystemColors.Control;
+            this.GeneralInfoLabel.Location = new Point(3, 54);
             this.GeneralInfoLabel.Name = "GeneralInfoLabel";
-            this.GeneralInfoLabel.Size = new System.Drawing.Size(302, 171);
+            this.GeneralInfoLabel.Size = new Size(302, 171);
             this.GeneralInfoLabel.TabIndex = 33;
             this.GeneralInfoLabel.Text = resources.GetString("GeneralInfoLabel.Text");
             this.GeneralInfoLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
@@ -282,10 +295,10 @@ namespace Dobby {
             // 
             // InfoHelpPage
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 359);
+            this.BackColor = Color.DimGray;
+            this.ClientSize = new Size(320, 359);
             this.Controls.Add(this.MainBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "InfoHelpPage";
@@ -308,21 +321,6 @@ namespace Dobby {
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
 
         void BackBtn_Click(object sender, EventArgs e) => BackFunc();
-
-
-        public Button MinimizeBtn;
-        public Label MainLabel;
-        public GroupBox MainBox;
-        public Button BackBtn;
-        public Button ExitBtn;
-        public Button PS4DebugHelpBtn;
-        public Button EbootPatchPageHelpBtn;
-        public Label BuildLabel;
-        public Label BlobLabel;
-        public Label GeneralInfoLabel;
-        public Label label4;
-        public Button MiscPatchPageHelpBtn;
-        public Label Info;
 
         public void PS4DebugHelpBtn_Click(object sender, EventArgs e) => ChangeForm(6, false);
 

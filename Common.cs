@@ -134,24 +134,29 @@ namespace Dobby {
         
 
         #region Application-Wide Functions And Variable Declarations
+
         public static string CurrentControl, tmp;
 
         public static int Page;
         public static int?[] Pages = new int?[5];
+        public static bool InfoHasImportantStr, LastDebugOutputWasInfoString = false, LabelShouldFlash = false, FlashThreadHasStarted = false;
+
+        public static Point LastPos, MousePos, MouseDif;
+        public static Point[] OriginalControlPositions;
+
+        public static Size OriginalFormScale = Size.Empty;
+        public static Size OriginalBorderScale;
+
         public static Form MainForm, PopupBox;
         public static Control YellowInformationLabel;
-
-        public static bool InfoHasImportantStr;
-        public static Point LastPos, MousePos, MouseDif;
 
         public static TcpClient tcp_client;
         public static NetworkStream net_stream;
 
-        public static bool LastDebugOutputWasInfoString = false, LabelShouldFlash = false, FlashThreadHasStarted = false;
-
         public static Font MainFont = new Font("Franklin Gothic Medium", 6.5F, FontStyle.Bold);
 
-        public static void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
+
+        public static void ExitBtn_Click(object sender, EventArgs e) { MainStream?.Dispose(); Environment.Exit(0); }
         public static void ExitBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
         public static void ExitBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
         public static void MinimizeBtn_Click(object sender, EventArgs e) => ((Control)sender).FindForm().WindowState = FormWindowState.Minimized;
@@ -171,6 +176,124 @@ namespace Dobby {
                 ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
                 ActiveForm.Update();
             }
+        }
+
+
+        public static string UpdateGameInfoLabel() {
+
+            var GameString = "Unknown Game";
+            var AddString = "No Debug";
+
+            MainStream.Position = 0;
+            MainStream.Read(chk, 0, 4);
+            if (BitConverter.ToInt32(chk, 0) != 1179403647) {// Make Sure The File's Actually Even A .elf
+                GameString = "Executable Still Encrypted";
+                AddString = "Must Be Decrypted/Unsigned";
+                return $"{GameString} | {AddString}";
+            }
+
+            bool CheckDebugState(int[] offsets, byte[] Data) {
+                int i = 0; // Just Returns True If The Bytes Read At The Specified Address Match The Byte Given
+                foreach (int addr in offsets) {
+                    Read:if (ReadByte(addr) == Data[i]) return true;
+
+                    if (Data[i] == 0x75) { // Go back and check for an unconditional jump
+                        Data[i] = 0xEB;
+                        goto Read;
+                    }
+                    i++;
+                }
+                return false;
+            }
+
+            switch (Game) {
+                default:
+                    MessageBox.Show($"Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported\n{Game}");
+                    break;
+                case T1R100:
+                    GameString = "The Last Of Us Remastered 1.00";
+                    break;
+                case T1R109:
+                    GameString = "The Last Of Us Remastered 1.09";
+                    break;
+                case T1R11X:
+                    MainStream.Position = 0x18;
+                    GameString = $"The Last Of Us Remastered 1.1{((byte)MainStream.ReadByte() == 0x10 ? 1 : 0)}";
+                    break;
+                case T2100:
+                    GameString = "The Last Of Us Part II 1.00";
+                    break;
+                case T2101:
+                    GameString = "The Last Of Us Part II 1.01";
+                    break;
+                case T2102:
+                    GameString = "The Last Of Us Part II 1.02";
+                    break;
+                case T2105:
+                    GameString = "The Last Of Us Part II 1.05";
+                    break;
+                case T2107:
+                    GameString = "The Last Of Us Part II 1.07";
+                    break;
+                case T2108:
+                    GameString = "The Last Of Us Part II 1.08";
+                    break;
+                case T2109:
+                    GameString = "The Last Of Us Part II 1.09";
+                    break;
+                case UC1100:
+                    if (CheckDebugState(new int[] { 0x102056, 0x102057, 0x10207B }, new byte[] { 0x01, 0x75, 0x01 }) == true)
+                        AddString = "Debug";
+
+                    GameString = "Uncharted 1 1.00";
+                    break;
+                case UC1102:
+                    if (CheckDebugState(new int[] { 0x102186, 0x102187, 0x1021AB }, new byte[] { 0x01, 0x75, 0x01 }) == true)
+                        AddString = "Debug";
+
+                    GameString = "Uncharted 1 1.02";
+                    break;
+                case UC2100:
+                    if (CheckDebugState(new int[] { 0x1EB296, 0x1EB297, 0x1EB2BB }, new byte[] { 0x01, 0x75, 0x01 }) == true)
+                        AddString = "Debug";
+
+                    GameString = "Uncharted 2 1.00";
+                    break;
+                case UC2102:
+                    if (CheckDebugState(new int[] { 0x3F7A25, 0x3F7A26, 0x3F7A4A }, new byte[] { 0x01, 0x75, 0x01 }) == true)
+                        AddString = "Debug";
+
+                    GameString = "Uncharted 2 1.02";
+                    break;
+                case UC3100:
+                    if (CheckDebugState(new int[] { 0x168EB6, 0x168EB7, 0x168EDB }, new byte[] { 0x01, 0x75, 0x01 }) == true)
+                        AddString = "Debug";
+
+                    GameString = "Uncharted 3 1.00";
+                    break;
+                case UC3102:
+                    if (CheckDebugState(new int[] { 0x578226, 0x578227, 0x57824B }, new byte[] { 0x01, 0x75, 0x01 }) == true)
+                        AddString = "Debug";
+
+                    GameString = "Uncharted 3 1.02";
+                    break;
+                case UC4100:
+                    GameString = "Uncharted 4: A Thief's End 1.00";
+                    break;
+                case UC413X:
+                    GameString = "Uncharted 4: A Thief's End 1.32/1.33";
+                    break;
+                case UC4133MP:
+                    GameString = "Uncharted 4: A Thief's End 1.33 Multiplayer";
+                    break;
+                case TLL100:
+                    GameString = "Uncharted: The Lost Legacy 1.00";
+                    break;
+                case TLL10X:
+                    GameString = "Uncharted: The Lost Legacy 1.08/1.09";
+                    break;
+            }
+            return $"{GameString} | {AddString}";
         }
 
         /// <summary> Sets The Info Label String Based On The Currently Hovered Control </summary>
@@ -379,11 +502,24 @@ namespace Dobby {
         }
 
         public static void AddControlEventHandlers(Control.ControlCollection Controls) { // Got Sick of Manually Editing InitializeComponent()
-            
+            #region DebugLabel
+#if DEBUG
+            Label DebugLabel = new Label();
+            DebugLabel.Size = new Size(36, 19);
+            DebugLabel.Location = new Point(230, 1);
+            DebugLabel.ForeColor = SystemColors.Control;
+            DebugLabel.BorderStyle = BorderStyle.FixedSingle;
+            DebugLabel.Font = new Font("Franklin Gothic Medium", 7F, FontStyle.Bold);
+            DebugLabel.Text = "(Dev)";
+            DebugLabel.Click += new EventHandler(MiscDebugFunc);
+            Controls.Add(DebugLabel);
+            DebugLabel.BringToFront();
+#endif
+            #endregion
             string[] Blacklist = new string[] { "ExitBtn", "MinimizeBtn", "IPLabelBtn", "PortLabelBtn" };
 
-            foreach(Control Item in Controls) {
-                if (Item.HasChildren) { // Designer Adds Some Things To The Form, And Some To The Group Box Used To Make The Border
+            foreach (Control Item in Controls) {
+                if (Item.HasChildren) { // Designer Added Some Things To The Form, And Some To The Group Box Used To Make The Border. This is me bing lazy. as long as it's not noticably slower
                     foreach (Control Child in Item.Controls) {
                         Child.MouseDown += new MouseEventHandler(MouseDownFunc);
                         Child.MouseMove += new MouseEventHandler(MoveForm);
@@ -392,18 +528,22 @@ namespace Dobby {
                             Child.MouseEnter += new EventHandler(ControlHover);
                             Child.MouseLeave += new EventHandler(ControlLeave);
                         }
+#if DEBUG
+                        else Child.MouseEnter += new EventHandler(DebugControlHover);
+#endif
                     }
-                    goto ItemWasGroupBox;
                 }
-                Item.MouseDown += new MouseEventHandler(MouseDownFunc);
-                Item.MouseMove += new MouseEventHandler(MoveForm);
-                Item.MouseUp += new MouseEventHandler(MouseUpFunc);
                 if ($"{Item.GetType()}" == "System.Windows.Forms.Button" && !Blacklist.Contains(Item.Name)) {
                     Item.MouseEnter += new EventHandler(ControlHover);
                     Item.MouseLeave += new EventHandler(ControlLeave);
                 }
+#if DEBUG
+                else Item.MouseEnter += new EventHandler(DebugControlHover);
+#endif
+                Item.MouseDown += new MouseEventHandler(MouseDownFunc);
+                Item.MouseMove += new MouseEventHandler(MoveForm);
+                Item.MouseUp += new MouseEventHandler(MouseUpFunc);
             }
-            ItemWasGroupBox:
             try {
                 Controls.Find("MinimizeBtn", true)[0].Click += new EventHandler(MinimizeBtn_Click);
                 Controls.Find("MinimizeBtn", true)[0].MouseEnter += new EventHandler(MinimizeBtnMH);
@@ -413,19 +553,6 @@ namespace Dobby {
                 Controls.Find("ExitBtn", true)[0].MouseLeave += new EventHandler(ExitBtnML);
             }
             catch (IndexOutOfRangeException) { DebugOut("Form Lacks MinimizeBtn And / Or ExitBtn"); }
-#if DEBUG
-            Label DebugLabel = new Label();
-            DebugLabel.Name = "DebugLabel";
-            DebugLabel.Size = new Size(36, 19);
-            DebugLabel.Location = new Point(230, 1);
-            DebugLabel.ForeColor = SystemColors.Control;
-            DebugLabel.BorderStyle = BorderStyle.FixedSingle;
-            DebugLabel.Font = new Font("Franklin Gothic Medium", 7F, FontStyle.Bold);
-            DebugLabel.Text = "(Dev)";
-            DebugLabel.TabIndex = 0xFFFFFFF;
-            Controls.Add(DebugLabel);
-            DebugLabel.BringToFront();
-#endif
         }
 
         /// <summary> Set The Text of The Yellow Label At The Bottom Of The Form </summary>
@@ -441,8 +568,11 @@ namespace Dobby {
             PassedControl.Size = new Size(EventIsMouseEnter ? PassedControl.Width + 9     : PassedControl.Width - 9, PassedControl.Height);
 
             if (!InfoHasImportantStr & !EventIsMouseEnter) SetInfoLabelText("");
-            if (!EventIsMouseEnter) MouseScrolled = 0;
+            if (!EventIsMouseEnter)  { MouseScrolled = 0; return; }
             else SetInfoLabelStringOnControlHover(PassedControl);
+            #if DEBUG
+            HoveredControl = PassedControl;
+            #endif
         }
 
         delegate void LabelFlashDelegate();
@@ -597,11 +727,14 @@ namespace Dobby {
         public static void WriteByte(int offset, byte data) {
             MainStream.Position = offset;
             MainStream.WriteByte(data);
+            MainStream.Flush();
+            DebugOut($"Wrote {data:X} at {offset:X}");
         }
         public static void WriteByte(int[] offset, byte data) {
             foreach (int ofs in offset) {
                 MainStream.Position = ofs;
                 MainStream.WriteByte(data);
+                DebugOut($"Wrote {data:X} at {offset:X}");
             }
         }
         public static byte ReadByte(int offset) {
@@ -634,8 +767,12 @@ namespace Dobby {
 
 #elif DEBUG
             public const bool REL = false;
-            static int TimerTicks = 0, OutputStringIndex = 0;
+            public static void MiscDebugFunc(object sender, EventArgs e) => DebugOut($"{tst_int++}");
+            public static void DebugControlHover(object sender, EventArgs e) => HoveredControl = (Control)sender;
 
+            static int tst_int = 0;
+
+            static int TimerTicks = 0, OutputStringIndex = 0;
 
             public delegate void TimerDelegate();
             public static TimerDelegate TimerThread = new TimerDelegate(StartTimer);
@@ -688,9 +825,9 @@ namespace Dobby {
 
             public static Thread DebuggerThread = new Thread(new ThreadStart(UpdateConsoleOutput));
             public static void DebuggerInfo() => DebuggerThread.Start();
-#endif
+            public static Control HoveredControl = new Label(); // Just so the debugger doesn't bitch
 
-            public static void UpdateConsoleOutput() { if (REL) return;
+            public static void UpdateConsoleOutput() {
             #if DEBUG
                 bool TimerThreadStarted = false;
                 int Interval = 0;
@@ -704,16 +841,20 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                 try {
                     while (OriginalConsoleScale == new Point(WindowHeight, WindowWidth)) {
                         int StartTime = TimerTicks, Cursor = 0, String = 0; Form frm = ActiveForm;
-
+                        string ControlType = HoveredControl.GetType().ToString();
                         string[] Output = new string[] {
                             $"Build: {Build} | ~{Interval}ms | {OutputStrings.Length} ({OutputStringIndex})",
-                            $"Form: {(ActiveForm != null ? ActiveForm.Name : "Console")}",
                             "",
-                            $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}",
-                            $"MousePos: {MousePosition}",
-                            "",
-                            $"Pages: {(Pages[0] == null ? "null" : $"{Pages[0]}")}, {(Pages[1] == null ? "null" : $"{Pages[1]}")}, {(Pages[2] == null ? "null" : $"{Pages[2]}")}, {(Pages[3] == null ? "null" : $"{Pages[3]}")}",
+                            $"Form: {(ActiveForm != null ? $"{ActiveForm.Name} | Form Position: {ActiveForm.Location}" : "Console")}",
+                            $"Pages: {Pages?[0]}, {Pages?[1]}, {Pages?[2]}, {Pages?[3]}",
                             $"Active Page ID: {Page} | InfoHasImportantString: {InfoHasImportantStr}",
+                            $"Game: {Game}",
+                            "",
+                            $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled} | MousePos: {MousePosition}",
+                            $"Control: {HoveredControl.Name} | {ControlType.Substring(ControlType.LastIndexOf('.') + 1)}",
+                            $" Size: {HoveredControl.Size} | Pos: {HoveredControl.Location}",
+                            $" Parent {HoveredControl.Parent?.Name}",
+                            "",
                             $"MainStream: {(MainStreamIsOpen ? MainStream.Name : "null")}",
                             $"{(MainStreamIsOpen ? $"Length: {(MainStream.Length.ToString().Length > 6 ? $"{MainStream.Length.ToString().Remove(2)}MB" : $"{MainStream.Length} bytes")} | Read: {MainStream.CanRead} | Write: {MainStream.CanWrite}" : null)}"
                         };
@@ -734,7 +875,8 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                 goto Begin_Again;
                 #endif
             }
-            public static void DebugOut(string s) { if (REL) return;
+#endif
+            public static void DebugOut(object obj) { string s = obj.ToString();
 #if DEBUG
                 if (s.Contains("\n")) {
                     s = s.Replace("\n", "");
@@ -755,19 +897,32 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                 OutputStrings[ShiftIndex] = s;
 #endif
             }
-            public static string BlankSpace(string String) {
-                #if !DEBUG
-                return string.Empty;
+#if DEBUG      
 
-                #elif DEBUG
+            public static string BlankSpace(string String) {
                 if (String == null) return "";
                 string Blanks = string.Empty;
                 for (int i = BufferWidth - String.Length; i > 0; i--)
                     Blanks += " ";
                 String += Blanks;
                 return String;
-                #endif
             }
+
+            public static void DebugForceOpenFile(string FilePath) {
+                ActiveFilePath = FilePath;
+                MainStream = new FileStream(FilePath, FileMode.Open, FileAccess.ReadWrite);
+                MainStream.Position = 0x60; MainStream.Read(chk, 0, 4);
+                Game = BitConverter.ToInt32(chk, 0);
+                try {
+                    ActiveForm.Controls.Find("GameInfoLabel", true)[0].Text = UpdateGameInfoLabel();
+                    ActiveForm.Controls.Find("ResetBtn", true)[0].Visible = MainStreamIsOpen = true;
+                    ActiveForm.Controls.Find("CustomDebugOptionsLabel", true)[0].Visible = IsActiveFilePCExe = false;
+                }
+                catch (IndexOutOfRangeException) { }
+                MainStreamIsOpen = true;
+                Clear();
+            }
+#endif
         }
     }
 }

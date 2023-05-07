@@ -57,15 +57,15 @@ namespace Dobby {
             // 
             // ExitBtn
             // 
-            this.ExitBtn.BackColor = System.Drawing.Color.DimGray;
+            this.ExitBtn.BackColor = Color.DimGray;
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ExitBtn.Location = new System.Drawing.Point(293, 7);
+            this.ExitBtn.Font = new Font("Franklin Gothic Medium", 9F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+            this.ExitBtn.ForeColor = SystemColors.Control;
+            this.ExitBtn.Location = new Point(293, 7);
             this.ExitBtn.Name = "ExitBtn";
-            this.ExitBtn.Size = new System.Drawing.Size(23, 23);
+            this.ExitBtn.Size = new Size(23, 23);
             this.ExitBtn.TabIndex = 18;
             this.ExitBtn.Text = "X";
             this.ExitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -76,15 +76,15 @@ namespace Dobby {
             // 
             // MinimizeBtn
             // 
-            this.MinimizeBtn.BackColor = System.Drawing.Color.DimGray;
+            this.MinimizeBtn.BackColor = Color.DimGray;
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinimizeBtn.Location = new System.Drawing.Point(270, 7);
+            this.MinimizeBtn.Font = new Font("Franklin Gothic Medium", 8F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+            this.MinimizeBtn.ForeColor = SystemColors.Control;
+            this.MinimizeBtn.Location = new Point(270, 7);
             this.MinimizeBtn.Name = "MinimizeBtn";
-            this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
+            this.MinimizeBtn.Size = new Size(23, 23);
             this.MinimizeBtn.TabIndex = 19;
             this.MinimizeBtn.Text = "--";
             this.MinimizeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -96,11 +96,11 @@ namespace Dobby {
             // MainLabel
             // 
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MainLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 12.25F, System.Drawing.FontStyle.Bold);
-            this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.MainLabel.Location = new System.Drawing.Point(2, 7);
+            this.MainLabel.Font = new Font("Franklin Gothic Medium", 12.25F, FontStyle.Bold);
+            this.MainLabel.ForeColor = SystemColors.Control;
+            this.MainLabel.Location = new Point(2, 7);
             this.MainLabel.Name = "MainLabel";
-            this.MainLabel.Size = new System.Drawing.Size(265, 22);
+            this.MainLabel.Size = new Size(265, 22);
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "Eboot Patch Page Information";
             this.MainLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
@@ -124,9 +124,9 @@ namespace Dobby {
             this.MainBox.Controls.Add(this.Question0Btn);
             this.MainBox.Controls.Add(this.SeperatorLine2);
             this.MainBox.Controls.Add(this.Question1Btn);
-            this.MainBox.Location = new System.Drawing.Point(0, -6);
+            this.MainBox.Location = new Point(0, -6);
             this.MainBox.Name = "MainBox";
-            this.MainBox.Size = new System.Drawing.Size(320, 448);
+            this.MainBox.Size = new Size(320, 448);
             this.MainBox.TabIndex = 5;
             this.MainBox.TabStop = false;
             this.MainBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
@@ -137,11 +137,11 @@ namespace Dobby {
             // 
             this.Question4Btn.FlatAppearance.BorderSize = 0;
             this.Question4Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Question4Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
-            this.Question4Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Question4Btn.Location = new System.Drawing.Point(1, 350);
+            this.Question4Btn.Font = new Font("Franklin Gothic Medium", 9F, FontStyle.Bold);
+            this.Question4Btn.ForeColor = SystemColors.Control;
+            this.Question4Btn.Location = new Point(1, 350);
             this.Question4Btn.Name = "Question4Btn";
-            this.Question4Btn.Size = new System.Drawing.Size(154, 22);
+            this.Question4Btn.Size = new Size(154, 22);
             this.Question4Btn.TabIndex = 33;
             this.Question4Btn.Text = "- The First Way Is With The Official PS4 SDK Tools,Get Em Urself\r\n\r\n- The Second " +
     "Way Is With The Patch Builder App From ModdedWarfrare\r\n (Add A Link)";
@@ -149,31 +149,31 @@ namespace Dobby {
             // 
             // SeperatorLine3
             // 
-            this.SeperatorLine3.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine3.Location = new System.Drawing.Point(2, 362);
+            this.SeperatorLine3.Font = new Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine3.ForeColor = Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine3.Location = new Point(2, 362);
             this.SeperatorLine3.Name = "SeperatorLine3";
-            this.SeperatorLine3.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine3.Size = new Size(316, 16);
             this.SeperatorLine3.TabIndex = 40;
             this.SeperatorLine3.Text = "______________________________________________________________";
             // 
             // SeperatorLine1
             // 
-            this.SeperatorLine1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 15);
+            this.SeperatorLine1.Font = new Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine1.ForeColor = Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine1.Location = new Point(2, 15);
             this.SeperatorLine1.Name = "SeperatorLine1";
-            this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine1.Size = new Size(316, 16);
             this.SeperatorLine1.TabIndex = 39;
             this.SeperatorLine1.Text = "______________________________________________________________";
             // 
             // WithSomeExceptionsLabel
             // 
-            this.WithSomeExceptionsLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
-            this.WithSomeExceptionsLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.WithSomeExceptionsLabel.Location = new System.Drawing.Point(7, 86);
+            this.WithSomeExceptionsLabel.Font = new Font("Franklin Gothic Medium", 9F, FontStyle.Bold);
+            this.WithSomeExceptionsLabel.ForeColor = SystemColors.Control;
+            this.WithSomeExceptionsLabel.Location = new Point(7, 86);
             this.WithSomeExceptionsLabel.Name = "WithSomeExceptionsLabel";
-            this.WithSomeExceptionsLabel.Size = new System.Drawing.Size(157, 17);
+            this.WithSomeExceptionsLabel.Size = new Size(157, 17);
             this.WithSomeExceptionsLabel.TabIndex = 36;
             this.WithSomeExceptionsLabel.Text = "*(With Some Exceptions)";
             this.WithSomeExceptionsLabel.Click += new System.EventHandler(this.WithSomeExceptionsLabel_Click);
@@ -184,11 +184,11 @@ namespace Dobby {
             // 
             this.Question3Btn.FlatAppearance.BorderSize = 0;
             this.Question3Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Question3Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
-            this.Question3Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Question3Btn.Location = new System.Drawing.Point(1, 328);
+            this.Question3Btn.Font = new Font("Franklin Gothic Medium", 9F, FontStyle.Bold);
+            this.Question3Btn.ForeColor = SystemColors.Control;
+            this.Question3Btn.Location = new Point(1, 328);
             this.Question3Btn.Name = "Question3Btn";
-            this.Question3Btn.Size = new System.Drawing.Size(189, 22);
+            this.Question3Btn.Size = new Size(189, 22);
             this.Question3Btn.TabIndex = 32;
             this.Question3Btn.Text = resources.GetString("Question3Btn.Text");
             this.Question3Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
@@ -198,37 +198,37 @@ namespace Dobby {
             // 
             this.Question2Btn.FlatAppearance.BorderSize = 0;
             this.Question2Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Question2Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
-            this.Question2Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Question2Btn.Location = new System.Drawing.Point(1, 307);
+            this.Question2Btn.Font = new Font("Franklin Gothic Medium", 9F, FontStyle.Bold);
+            this.Question2Btn.ForeColor = SystemColors.Control;
+            this.Question2Btn.Location = new Point(1, 307);
             this.Question2Btn.Name = "Question2Btn";
-            this.Question2Btn.Size = new System.Drawing.Size(227, 22);
+            this.Question2Btn.Size = new Size(227, 22);
             this.Question2Btn.TabIndex = 29;
             this.Question2Btn.Text = resources.GetString("Question2Btn.Text");
             this.Question2Btn.Click += new System.EventHandler(this.Question2Btn_Click);
             // 
             // Info
             // 
-            this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(9, 427);
+            this.Info.Font = new Font("Franklin Gothic Medium", 10F);
+            this.Info.ForeColor = Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.Info.Location = new Point(9, 427);
             this.Info.Name = "Info";
-            this.Info.Size = new System.Drawing.Size(304, 17);
+            this.Info.Size = new Size(304, 17);
             this.Info.TabIndex = 7;
             this.Info.Text = "=====================================";
             // 
             // CreditsBtn
             // 
-            this.CreditsBtn.BackColor = System.Drawing.Color.DimGray;
+            this.CreditsBtn.BackColor = Color.DimGray;
             this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.CreditsBtn.FlatAppearance.BorderSize = 0;
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 381);
+            this.CreditsBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
+            this.CreditsBtn.ForeColor = SystemColors.Control;
+            this.CreditsBtn.Location = new Point(1, 381);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
+            this.CreditsBtn.Size = new Size(75, 23);
             this.CreditsBtn.TabIndex = 28;
             this.CreditsBtn.Text = "Credits...";
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -237,15 +237,15 @@ namespace Dobby {
             // 
             // BackBtn
             // 
-            this.BackBtn.BackColor = System.Drawing.Color.DimGray;
+            this.BackBtn.BackColor = Color.DimGray;
             this.BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.BackBtn.FlatAppearance.BorderSize = 0;
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 403);
+            this.BackBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
+            this.BackBtn.ForeColor = SystemColors.Control;
+            this.BackBtn.Location = new Point(1, 403);
             this.BackBtn.Name = "BackBtn";
-            this.BackBtn.Size = new System.Drawing.Size(60, 23);
+            this.BackBtn.Size = new Size(60, 23);
             this.BackBtn.TabIndex = 13;
             this.BackBtn.Text = "Back...";
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -254,21 +254,21 @@ namespace Dobby {
             // 
             // Question0Btn
             // 
-            this.Question0Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
-            this.Question0Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Question0Btn.Location = new System.Drawing.Point(3, 36);
+            this.Question0Btn.Font = new Font("Franklin Gothic Medium", 9F, FontStyle.Bold);
+            this.Question0Btn.ForeColor = SystemColors.Control;
+            this.Question0Btn.Location = new Point(3, 36);
             this.Question0Btn.Name = "Question0Btn";
-            this.Question0Btn.Size = new System.Drawing.Size(316, 244);
+            this.Question0Btn.Size = new Size(316, 244);
             this.Question0Btn.TabIndex = 34;
             this.Question0Btn.Text = resources.GetString("Question0Btn.Text");
             // 
             // SeperatorLine2
             // 
-            this.SeperatorLine2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(2, 268);
+            this.SeperatorLine2.Font = new Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine2.ForeColor = Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine2.Location = new Point(2, 268);
             this.SeperatorLine2.Name = "SeperatorLine2";
-            this.SeperatorLine2.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine2.Size = new Size(316, 16);
             this.SeperatorLine2.TabIndex = 38;
             this.SeperatorLine2.Text = "______________________________________________________________";
             // 
@@ -276,21 +276,21 @@ namespace Dobby {
             // 
             this.Question1Btn.FlatAppearance.BorderSize = 0;
             this.Question1Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Question1Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
-            this.Question1Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Question1Btn.Location = new System.Drawing.Point(1, 287);
+            this.Question1Btn.Font = new Font("Franklin Gothic Medium", 9F, FontStyle.Bold);
+            this.Question1Btn.ForeColor = SystemColors.Control;
+            this.Question1Btn.Location = new Point(1, 287);
             this.Question1Btn.Name = "Question1Btn";
-            this.Question1Btn.Size = new System.Drawing.Size(236, 21);
+            this.Question1Btn.Size = new Size(236, 21);
             this.Question1Btn.TabIndex = 30;
             this.Question1Btn.Text = resources.GetString("Question1Btn.Text");
             this.Question1Btn.Click += new System.EventHandler(this.Question1Btn_Click);
             // 
             // EbootPatchHelpPage
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 442);
+            this.BackColor = Color.DimGray;
+            this.ClientSize = new Size(320, 442);
             this.Controls.Add(this.MainBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "EbootPatchHelpPage";

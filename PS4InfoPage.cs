@@ -31,18 +31,18 @@ namespace Dobby {
             // 
             // ExitBtn
             // 
-            this.ExitBtn.BackColor = System.Drawing.Color.DimGray;
+            this.ExitBtn.BackColor = Color.DimGray;
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ExitBtn.Location = new System.Drawing.Point(293, 7);
+            this.ExitBtn.Font = new Font("Franklin Gothic Medium", 9F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+            this.ExitBtn.ForeColor = SystemColors.Control;
+            this.ExitBtn.Location = new Point(293, 7);
             this.ExitBtn.Name = "ExitBtn";
-            this.ExitBtn.Size = new System.Drawing.Size(23, 23);
+            this.ExitBtn.Size = new Size(23, 23);
             this.ExitBtn.TabIndex = 18;
             this.ExitBtn.Text = "X";
-            this.ExitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ExitBtn.TextAlign = ContentAlignment.MiddleLeft;
             this.ExitBtn.UseVisualStyleBackColor = false;
             this.ExitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
             this.ExitBtn.MouseEnter += new System.EventHandler(this.ExitBtnMH);
@@ -50,18 +50,18 @@ namespace Dobby {
             // 
             // MinimizeBtn
             // 
-            this.MinimizeBtn.BackColor = System.Drawing.Color.DimGray;
+            this.MinimizeBtn.BackColor = Color.DimGray;
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinimizeBtn.Location = new System.Drawing.Point(270, 7);
+            this.MinimizeBtn.Font = new Font("Franklin Gothic Medium", 8F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+            this.MinimizeBtn.ForeColor = SystemColors.Control;
+            this.MinimizeBtn.Location = new Point(270, 7);
             this.MinimizeBtn.Name = "MinimizeBtn";
-            this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
+            this.MinimizeBtn.Size = new Size(23, 23);
             this.MinimizeBtn.TabIndex = 19;
             this.MinimizeBtn.Text = "--";
-            this.MinimizeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.MinimizeBtn.TextAlign = ContentAlignment.MiddleLeft;
             this.MinimizeBtn.UseVisualStyleBackColor = false;
             this.MinimizeBtn.Click += new System.EventHandler(this.MinimizeBtn_Click);
             this.MinimizeBtn.MouseEnter += new System.EventHandler(this.MinimizeBtnMH);
@@ -70,11 +70,11 @@ namespace Dobby {
             // MainLabel
             // 
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MainLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 12.25F, System.Drawing.FontStyle.Bold);
-            this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.MainLabel.Location = new System.Drawing.Point(2, 7);
+            this.MainLabel.Font = new Font("Franklin Gothic Medium", 12.25F, FontStyle.Bold);
+            this.MainLabel.ForeColor = SystemColors.Control;
+            this.MainLabel.Location = new Point(2, 7);
             this.MainLabel.Name = "MainLabel";
-            this.MainLabel.Size = new System.Drawing.Size(259, 22);
+            this.MainLabel.Size = new Size(259, 22);
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "PS4Debug Page Information";
             // 
@@ -91,114 +91,114 @@ namespace Dobby {
             this.MainBox.Controls.Add(this.Info);
             this.MainBox.Controls.Add(this.CreditsBtn);
             this.MainBox.Controls.Add(this.BackBtn);
-            this.MainBox.Location = new System.Drawing.Point(0, -6);
+            this.MainBox.Location = new Point(0, -6);
             this.MainBox.Name = "MainBox";
-            this.MainBox.Size = new System.Drawing.Size(320, 463);
+            this.MainBox.Size = new Size(320, 463);
             this.MainBox.TabIndex = 5;
             this.MainBox.TabStop = false;
             // 
             // PS4DebugQuestionLabel
             // 
-            this.PS4DebugQuestionLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
-            this.PS4DebugQuestionLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.PS4DebugQuestionLabel.Location = new System.Drawing.Point(1, 34);
+            this.PS4DebugQuestionLabel.Font = new Font("Franklin Gothic Medium", 9.25F, ((FontStyle)((FontStyle.Bold | FontStyle.Italic))));
+            this.PS4DebugQuestionLabel.ForeColor = SystemColors.Control;
+            this.PS4DebugQuestionLabel.Location = new Point(1, 34);
             this.PS4DebugQuestionLabel.Name = "PS4DebugQuestionLabel";
-            this.PS4DebugQuestionLabel.Size = new System.Drawing.Size(313, 18);
+            this.PS4DebugQuestionLabel.Size = new Size(313, 18);
             this.PS4DebugQuestionLabel.TabIndex = 29;
             this.PS4DebugQuestionLabel.Text = "\"How Do I Enable The Debug Mode With This?\"\r\n";
             // 
             // Info
             // 
-            this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(8, 440);
+            this.Info.Font = new Font("Franklin Gothic Medium", 10F);
+            this.Info.ForeColor = Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.Info.Location = new Point(8, 440);
             this.Info.Name = "Info";
-            this.Info.Size = new System.Drawing.Size(304, 17);
+            this.Info.Size = new Size(304, 17);
             this.Info.TabIndex = 7;
             this.Info.Text = "=====================================";
             // 
             // CreditsBtn
             // 
-            this.CreditsBtn.BackColor = System.Drawing.Color.DimGray;
+            this.CreditsBtn.BackColor = Color.DimGray;
             this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.CreditsBtn.FlatAppearance.BorderSize = 0;
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 392);
+            this.CreditsBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
+            this.CreditsBtn.ForeColor = SystemColors.Control;
+            this.CreditsBtn.Location = new Point(1, 392);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
+            this.CreditsBtn.Size = new Size(75, 23);
             this.CreditsBtn.TabIndex = 28;
             this.CreditsBtn.Text = "Credits...";
-            this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.CreditsBtn.TextAlign = ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
             this.CreditsBtn.Click += new System.EventHandler(this.CreditsBtn_Click);
             // 
             // BackBtn
             // 
-            this.BackBtn.BackColor = System.Drawing.Color.DimGray;
+            this.BackBtn.BackColor = Color.DimGray;
             this.BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.BackBtn.FlatAppearance.BorderSize = 0;
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 415);
+            this.BackBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
+            this.BackBtn.ForeColor = SystemColors.Control;
+            this.BackBtn.Location = new Point(1, 415);
             this.BackBtn.Name = "BackBtn";
-            this.BackBtn.Size = new System.Drawing.Size(60, 23);
+            this.BackBtn.Size = new Size(60, 23);
             this.BackBtn.TabIndex = 13;
             this.BackBtn.Text = "Back...";
-            this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BackBtn.TextAlign = ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
             this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
             // 
             // PS4DebugAnswerLabel
             // 
-            this.PS4DebugAnswerLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
-            this.PS4DebugAnswerLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.PS4DebugAnswerLabel.Location = new System.Drawing.Point(1, 57);
+            this.PS4DebugAnswerLabel.Font = new Font("Franklin Gothic Medium", 9F, FontStyle.Bold);
+            this.PS4DebugAnswerLabel.ForeColor = SystemColors.Control;
+            this.PS4DebugAnswerLabel.Location = new Point(1, 57);
             this.PS4DebugAnswerLabel.Name = "PS4DebugAnswerLabel";
             this.PS4DebugAnswerLabel.Padding = new System.Windows.Forms.Padding(0, 0, 25, 0);
-            this.PS4DebugAnswerLabel.Size = new System.Drawing.Size(317, 323);
+            this.PS4DebugAnswerLabel.Size = new Size(317, 323);
             this.PS4DebugAnswerLabel.TabIndex = 30;
             this.PS4DebugAnswerLabel.Text = resources.GetString("PS4DebugAnswerLabel.Text");
             // 
             // SeperatorLine3
             // 
-            this.SeperatorLine3.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine3.Location = new System.Drawing.Point(2, 15);
+            this.SeperatorLine3.Font = new Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine3.ForeColor = Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine3.Location = new Point(2, 15);
             this.SeperatorLine3.Name = "SeperatorLine3";
-            this.SeperatorLine3.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine3.Size = new Size(316, 16);
             this.SeperatorLine3.TabIndex = 31;
             this.SeperatorLine3.Text = "_______________________________________________________________";
             // 
             // label1
             // 
-            this.label1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label1.Location = new System.Drawing.Point(1, 375);
+            this.label1.Font = new Font("Franklin Gothic Medium", 10F);
+            this.label1.ForeColor = Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.label1.Location = new Point(1, 375);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(316, 16);
+            this.label1.Size = new Size(316, 16);
             this.label1.TabIndex = 32;
             this.label1.Text = "_______________________________________________________________";
             // 
             // label2
             // 
-            this.label2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label2.Location = new System.Drawing.Point(2, 297);
+            this.label2.Font = new Font("Franklin Gothic Medium", 10F);
+            this.label2.ForeColor = Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.label2.Location = new Point(2, 297);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(316, 16);
+            this.label2.Size = new Size(316, 16);
             this.label2.TabIndex = 33;
             this.label2.Text = "_______________________________________________________________";
             // 
             // PS4InfoPage
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 456);
+            this.BackColor = Color.DimGray;
+            this.ClientSize = new Size(320, 456);
             this.Controls.Add(this.MainBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PS4InfoPage";
