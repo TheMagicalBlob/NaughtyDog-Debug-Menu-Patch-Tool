@@ -15,6 +15,7 @@ using System.Web;
 using System.Windows.Forms;
 using static System.Console;
 using static Dobby.Common.Dev;
+using System.Data;
 
 namespace Dobby {
     public class Common : Dobby {
@@ -119,7 +120,8 @@ namespace Dobby {
            "* 2.22.67.170 | Overhauled Output Code, Old Method Was Cumbersome To Edit",
            "* 2.22.68.170 | Added Preprocessor Directives To Avoid Compilation of Debug Code",
            "* 2.22.69.171 | Just Realized I Can Cast sender to a control ptr... Overhauled Mouse Hover/Leave Functionality, Merged PC and PS4 arrays",
-      "* 3-beta.22.65.163 | Removed Redundant Custom W/ Options Button From Eboot Patch Page, Many, MANY Other Forgotten Changes. Don't code drunk for your changelog's sake..."
+      "* 3-beta.22.69.163 | Removed Redundant Custom W/ Options Button From Eboot Patch Page, Many, MANY Other Forgotten Changes. Don't code drunk for your changelog's sake...",
+      "* 3-beta.24.74.175 | I have no idea anymore"
 
             // TODO:
             // - Finish EbootPatchHelpPage
@@ -618,7 +620,12 @@ namespace Dobby {
         #endregion
 
         #region PS4 / PC exe Patch Page Shared Variables And Functions
-        public const int // Games. Read 4 bytes at 0x60 as an integer to get it
+
+        // Yes, I know an array would be easier to deal with in code, but I want them all labeled individually so bite me
+
+        public const int
+            
+            // Game Identifiers. Read 4 bytes at 0x60 as an integer to get it
             T1R100 = 22033680,
             T1R109 = 21444016,
             T1R11X = 21446072,
@@ -649,8 +656,11 @@ namespace Dobby {
             T1X1017 = 42702336 + 16007852,
             T1XL1017 = 42677248 + 16011148,
             T1X102 = 2228464 + 95631360,
-            T1XL102 = 2228464 + 95634432, //
-            // End Of Checks, Start Of Debug Offsets
+            T1XL102 = 2228464 + 95634432
+            ;
+
+        public const int 
+            // Start Of Debug Offsets
             T1R100Debug = 0x5C5A,// (0x579F <- 00 to 01)
             T1R109Debug = 0x61A4,
             T1R110Debug = 0x61A4,
@@ -672,8 +682,13 @@ namespace Dobby {
             UC413XDebug = 0x1CCDEE,   //! TEST ME
             UC4133MPDebug = 0x1CCEA9, //! TEST ME
             TLL100Debug = 0x1CCFDE,   //! TEST ME
-            TLL10XDebug = 0x1CD01E,   //! TEST ME
-            T1X101Debug = 0x3B66CD,   // PC Debug Offsets (0x97 -> 0x8F)
+            TLL10XDebug = 0x1CD01E    //! TEST ME
+        ;
+
+        /// <summary> Offsets To Enable The Debug Mode in the pc version of the game </summary>
+        public const int
+            // PC Debug Offsets (0x97 -> 0x8F)
+            T1X101Debug = 0x3B66CD,
             T1XL101Debug = 0x3B64B9,
             T1X1015Debug = 0x3B68FD,
             T1XL1015Debug = 0x3B66E9,
@@ -684,6 +699,122 @@ namespace Dobby {
             T1X102Debug = 0x3B6AA9,
             T1XL102Debug = 0x3B6885
         ;
+
+        ///<summary> byte arrays to be used as pointers with the BootSettings custom function </summary>
+        public static readonly byte[]
+            UC1100DisableFPS = new byte[] { 0x70, 0x89, 0x99 },
+            UC1102DisableFPS = new byte[] {},
+            UC2100DisableFPS = new byte[] {},
+            UC2102DisableFPS = new byte[] {},
+            UC3100DisableFPS = new byte[] {},
+            UC3102DisableFPS = new byte[] {},
+            UC4100DisableFPS = new byte[] {},
+            UC4133DisableFPS = new byte[] {},
+            UC4133MPDisableFPS = new byte[] {},
+            TLL100DisableFPS = new byte[] {},
+            TLL107DisableFPS = new byte[] {},
+            TLL108DisableFPS = new byte[] {},
+            TLL109DisableFPS = new byte[] {},
+            T1R100DisableFPS = new byte[] {},
+            T1R109DisableFPS = new byte[] {},
+            T1R110DisableFPS = new byte[] {},
+            T1R111DisableFPS = new byte[] {},
+            T2100DisableFPS = new byte[] {},
+            T2101DisableFPS = new byte[] { },
+            T2102DisableFPS = new byte[] {},
+            T2105DisableFPS = new byte[] {},
+            T2107DisableFPS = new byte[] {},
+            T2108DisableFPS = new byte[] {},
+            T2109DisableFPS = new byte[] {}
+        ;
+        ///<summary> Swap Circle And Square Offsets </summary>
+        public static readonly byte[]
+            // Swap Circle And Square Offsets
+            UC1100SwapCircle = new byte[] {},
+            UC1102SwapCircle = new byte[] {},
+            UC2100SwapCircle = new byte[] {},
+            UC2102SwapCircle = new byte[] {},
+            UC3100SwapCircle = new byte[] {},
+            UC3102SwapCircle = new byte[] {},
+            UC4100SwapCircle = new byte[] {},
+            UC4133SwapCircle = new byte[] {},
+            UC4133MPSwapCircle = new byte[] {},
+            TLL100SwapCircle = new byte[] {},
+            TLL107SwapCircle = new byte[] {},
+            TLL108SwapCircle = new byte[] {},
+            TLL109SwapCircle = new byte[] {},
+            T1R100SwapCircle = new byte[] {},
+            T1R109SwapCircle = new byte[] {},
+            T1R110SwapCircle = new byte[] {},
+            T1R111SwapCircle = new byte[] {},
+            T2100SwapCircle = new byte[] {},
+            T2101SwapCircle = new byte[] {},
+            T2102SwapCircle = new byte[] {},
+            T2105SwapCircle = new byte[] {},
+            T2107SwapCircle = new byte[] {},
+            T2108SwapCircle = new byte[] {},
+            T2109SwapCircle = new byte[] {}
+            ;
+
+        ///<summary> ProgPauseOffsets (Prog Pause On Open, +1 for on Close) </summary>
+        public static readonly byte[]
+
+            // ProgPauseOffsets (Prog Pause On Open, +1 for on Close)
+            UC1100ProgPause = new byte[] {},
+            UC1102ProgPause = new byte[] {},
+            UC2100ProgPause = new byte[] {},
+            UC2102ProgPause = new byte[] {},
+            UC3100ProgPause = new byte[] {},
+            UC3102ProgPause = new byte[] {},
+            UC4100ProgPause = new byte[] {},
+            UC4133ProgPause = new byte[] {},
+            UC4133MPProgPause = new byte[] {},
+            TLL100ProgPause = new byte[] {},
+            TLL107ProgPause = new byte[] {},
+            TLL108ProgPause = new byte[] {},
+            TLL109ProgPause = new byte[] {},
+            T1R100ProgPause = new byte[] {},
+            T1R109ProgPause = new byte[] {},
+            T1R110ProgPause = new byte[] {},
+            T1R111ProgPause = new byte[] {},
+            T2100ProgPause = new byte[] {},
+            T2101ProgPause = new byte[] {},
+            T2102ProgPause = new byte[] {},
+            T2105ProgPause = new byte[] {},
+            T2107ProgPause = new byte[] {},
+            T2108ProgPause = new byte[] {},
+            T2109ProgPause = new byte[] {}
+        ;
+        
+        public static readonly byte[]
+
+            // ProgPauseOffsets (Prog Pause On Open, +1/-1 for on Close CHECK)
+            UC1100RightAlign = new byte[] {},
+            UC1102RightAlign = new byte[] {},
+            UC2100RightAlign = new byte[] {},
+            UC2102RightAlign = new byte[] {},
+            UC3100RightAlign = new byte[] {},
+            UC3102RightAlign = new byte[] {},
+            UC4100RightAlign = new byte[] {},
+            UC4133RightAlign = new byte[] {},
+            UC4133MPRightAlign = new byte[] {},
+            TLL100RightAlign = new byte[] {},
+            TLL107RightAlign = new byte[] {},
+            TLL108RightAlign = new byte[] {},
+            TLL109RightAlign = new byte[] {},
+            T1R100RightAlign = new byte[] {},
+            T1R109RightAlign = new byte[] {},
+            T1R110RightAlign = new byte[] {},
+            T1R111RightAlign = new byte[] {},
+            T2100RightAlign = new byte[] {},
+            T2101RightAlign = new byte[] {},
+            T2102RightAlign = new byte[] {},
+            T2105RightAlign = new byte[] {},
+            T2107RightAlign = new byte[] {},
+            T2108RightAlign = new byte[] {},
+            T2109RightAlign = new byte[] {}
+        ;
+
 
         public static byte[]
             chk = new byte[4],
@@ -815,6 +946,11 @@ namespace Dobby {
                                 }
                             }
                             break;
+                        case ConsoleKey.Z:
+                            if (OutputStringIndex < 0)
+                            OutputStringIndex--;
+                            Clear();
+                            break;
                     }                        
                 }
             }
@@ -862,8 +998,8 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                         for (; String < Output.Length ; String++) { CursorTop = Cursor++; Write(BlankSpace(Output[String])); }
 
                         CursorTop = MainStreamIsOpen? Cursor+=1: Cursor;
-                        foreach (string msg in OutputStrings) {
-                            Write(BlankSpace(msg));
+                        for (int i = 0; i <= OutputStringIndex; ) {
+                            Write(BlankSpace(OutputStrings[i++]));
                             Cursor++;
                         }
 
@@ -876,6 +1012,7 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                 #endif
             }
 #endif
+            public static void DebugOut() => DebugOut(" ");
             public static void DebugOut(object obj) { string s = obj.ToString();
 #if DEBUG
                 if (s.Contains("\n")) {
@@ -908,7 +1045,7 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                 return String;
             }
 
-            public static void DebugForceOpenFile(string FilePath) {
+            public static void DebugForceOpenFile(string FilePath) { if (MainStreamIsOpen) { MainStream.Dispose(); }
                 ActiveFilePath = FilePath;
                 MainStream = new FileStream(FilePath, FileMode.Open, FileAccess.ReadWrite);
                 MainStream.Position = 0x60; MainStream.Read(chk, 0, 4);
