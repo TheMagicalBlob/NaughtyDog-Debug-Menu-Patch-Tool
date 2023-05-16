@@ -6,16 +6,13 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net.Configuration;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 using System.Windows.Forms;
 using static System.Console;
 using static Dobby.Common.Dev;
-using System.Data;
 
 namespace Dobby {
     public class Common : Dobby {
@@ -702,10 +699,10 @@ namespace Dobby {
 
         ///<summary> byte arrays to be used as pointers with the BootSettings custom function </summary>
         public static readonly byte[]
-            UC1100DisableFPS = new byte[] { 0x70, 0x89, 0x99 },
+            UC1100DisableFPS = new byte[] { 0x70, 0x89, 0x99, 0x00 }, // fill null bytes just in case of repeat uses with alternate options
             UC1102DisableFPS = new byte[] {},
             UC2100DisableFPS = new byte[] {},
-            UC2102DisableFPS = new byte[] {},
+            UC2102DisableFPS = new byte[] { 0x61, 0xde, 0x05, 0x01 },
             UC3100DisableFPS = new byte[] {},
             UC3102DisableFPS = new byte[] {},
             UC4100DisableFPS = new byte[] {},
@@ -756,19 +753,19 @@ namespace Dobby {
             T2109SwapCircle = new byte[] {}
             ;
 
-        ///<summary> ProgPauseOffsets (Prog Pause On Open, +1 for on Close) </summary>
+        ///<summary> ProgPauseOffsets (Prog Pause On Open, +0x04 for on Close//!) </summary>
         public static readonly byte[]
 
-            // ProgPauseOffsets (Prog Pause On Open, +1 for on Close)
+            // ProgPauseOffsets (Prog Pause On Open, +0x04 for on Close//!)
             UC1100ProgPause = new byte[] {},
             UC1102ProgPause = new byte[] {},
             UC2100ProgPause = new byte[] {},
-            UC2102ProgPause = new byte[] {},
+            UC2102ProgPause = new byte[] { 0xe0, 0x95, 0x05, 0x01 },
             UC3100ProgPause = new byte[] {},
             UC3102ProgPause = new byte[] {},
             UC4100ProgPause = new byte[] {},
             UC4133ProgPause = new byte[] {},
-            UC4133MPProgPause = new byte[] {},
+          UC4133MPProgPause = new byte[] {},
             TLL100ProgPause = new byte[] {},
             TLL107ProgPause = new byte[] {},
             TLL108ProgPause = new byte[] {},
@@ -785,10 +782,40 @@ namespace Dobby {
             T2108ProgPause = new byte[] {},
             T2109ProgPause = new byte[] {}
         ;
+
+        ///<summary> ProgPauseOffsets  </summary>
+        public static readonly byte[]
+
+            // HideTaskInfoOffsets
+            UC1100HideTaskInfo = new byte[] {},
+            UC1102HideTaskInfo = new byte[] {},
+            UC2100HideTaskInfo = new byte[] {},
+            UC2102HideTaskInfo = new byte[] { 0xf9, 0xcf, 0x05, 0x01 },
+            UC3100HideTaskInfo = new byte[] {},
+            UC3102HideTaskInfo = new byte[] {},
+            UC4100HideTaskInfo = new byte[] {},
+            UC4133HideTaskInfo = new byte[] {},
+          UC4133MPHideTaskInfo = new byte[] {},
+            TLL100HideTaskInfo = new byte[] {},
+            TLL107HideTaskInfo = new byte[] {},
+            TLL108HideTaskInfo = new byte[] {},
+            TLL109HideTaskInfo = new byte[] {},
+            T1R100HideTaskInfo = new byte[] {},
+            T1R109HideTaskInfo = new byte[] {},
+            T1R110HideTaskInfo = new byte[] {},
+            T1R111HideTaskInfo = new byte[] {},
+            T2100HideTaskInfo = new byte[] {},
+            T2101HideTaskInfo = new byte[] {},
+            T2102HideTaskInfo = new byte[] {},
+            T2105HideTaskInfo = new byte[] {},
+            T2107HideTaskInfo = new byte[] {},
+            T2108HideTaskInfo = new byte[] {},
+            T2109HideTaskInfo = new byte[] {}
+        ;
         
         public static readonly byte[]
 
-            // ProgPauseOffsets (Prog Pause On Open, +1/-1 for on Close CHECK)
+            // Right Align Offsets (Prog Pause On Open, +1/-1 for on Close CHECK)
             UC1100RightAlign = new byte[] {},
             UC1102RightAlign = new byte[] {},
             UC2100RightAlign = new byte[] {},
@@ -797,7 +824,7 @@ namespace Dobby {
             UC3102RightAlign = new byte[] {},
             UC4100RightAlign = new byte[] {},
             UC4133RightAlign = new byte[] {},
-            UC4133MPRightAlign = new byte[] {},
+          UC4133MPRightAlign = new byte[] {},
             TLL100RightAlign = new byte[] {},
             TLL107RightAlign = new byte[] {},
             TLL108RightAlign = new byte[] {},
@@ -979,12 +1006,12 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                         int StartTime = TimerTicks, Cursor = 0, String = 0; Form frm = ActiveForm;
                         string ControlType = HoveredControl.GetType().ToString();
                         string[] Output = new string[] {
-                            $"Build: {Build} | ~{Interval}ms | {OutputStrings.Length} ({OutputStringIndex})",
+                            /*$"Build: {Build} | ~{Interval}ms | {OutputStrings.Length} ({OutputStringIndex})",
                             "",
                             $"Form: {(ActiveForm != null ? $"{ActiveForm.Name} | Form Position: {ActiveForm.Location}" : "Console")}",
                             $"Pages: {Pages?[0]}, {Pages?[1]}, {Pages?[2]}, {Pages?[3]}",
                             $"Active Page ID: {Page} | InfoHasImportantString: {InfoHasImportantStr}",
-                            $"Game: {Game}",
+                            */$"Game: {Game}",
                             "",
                             $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled} | MousePos: {MousePosition}",
                             $"Control: {HoveredControl.Name} | {ControlType.Substring(ControlType.LastIndexOf('.') + 1)}",
