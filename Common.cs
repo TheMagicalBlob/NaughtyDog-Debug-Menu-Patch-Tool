@@ -713,7 +713,9 @@ namespace Dobby {
         ///-- QUALITY OF LIFE/BOOTSETTINGS OFFSET POINTERS--\\\
         //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-        ///<summary> byte arrays to be used as pointers with the BootSettings custom function </summary>
+        /// <summary>
+        ///  Byte arrays to be used as pointers with the BootSettings custom function
+        /// </summary>
         public static readonly byte[]
             UC1100DisableFPS = new byte[] { 0x70, 0x89, 0x99, 0x00 }, // fill null bytes just in case of repeat uses with alternate options
             UC1102DisableFPS = new byte[] {},
@@ -741,11 +743,11 @@ namespace Dobby {
             T2109DisableFPS = new byte[] {}
         ;
 
-        ///<summary> ProgPauseOnOpen Offsets </summary>
+        /// <summary>
+        ///  ProgPauseOnOpen Offsets
+        /// </summary>
         public static readonly byte[]
-
-            // ProgPauseOffsets (Prog Pause On Open)
-            UC1100ProgPause = new byte[] { 0x88, 0xF9, 0xA9, 0x00 },
+            UC1100ProgPause = new byte[] { 0x88, 0xF9, 0xA9, 0x00 }, 
             UC1102ProgPause = new byte[] {},
             UC2100ProgPause = new byte[] { 0x78, 0xC7, 0xEB, 0x00 },
             UC2102ProgPause = new byte[] { 0xe0, 0x95, 0x05, 0x01 },
@@ -770,10 +772,11 @@ namespace Dobby {
             T2108ProgPause = new byte[] {},
             T2109ProgPause = new byte[] {}
         ;
-        ///<summary> ProgPauseOnExitOffsets </summary>
-        public static readonly byte[]
 
-            // ProgPauseOffsets
+        /// <summary>
+        ///  ProgPauseOnExitOffsets
+        /// </summary>
+        public static readonly byte[]
             UC1100ProgPauseOnExit = new byte[] { 0x8C, 0xF9, 0xA9, 0x00 },
             UC1102ProgPauseOnExit = new byte[] { },
             UC2100ProgPauseOnExit = new byte[] { 0x79, 0xC7, 0xEB, 0x00 },
@@ -799,7 +802,10 @@ namespace Dobby {
             T2108ProgPauseOnExit = new byte[] { },
             T2109ProgPauseOnExit = new byte[] { }
         ;
-        ///<summary> Swap Circle And Square Offsets </summary>
+
+        /// <summary>
+        ///  Swap Circle And Square Offsets
+        /// </summary>
         public static readonly byte[]
             UC1100PausedIcon = new byte[] { 0x8A, 0xF9, 0xA9, 0x00 }, // CHECK, TOOL WAS BROKEN
             UC1102PausedIcon = new byte[] { 0x8A, 0x38, 0xA6, 0x00 }, // CHECK, TOOL WAS BROKEN
@@ -826,9 +832,11 @@ namespace Dobby {
             T2108PausedIcon = new byte[] { },
             T2109PausedIcon = new byte[] { }
         ;
-        ///<summary> Swap Circle And Square Offsets </summary>
+
+        /// <summary>
+        ///  Swap Circle And Square Offsets
+        /// </summary>
         public static readonly byte[]
-            // Swap Circle And Square Offsets
             UC4100SwapCircle = new byte[] {},
             UC4133SwapCircle = new byte[] {},
             UC4133MPSwapCircle = new byte[] {},
@@ -847,13 +855,13 @@ namespace Dobby {
             T2107SwapCircle = new byte[] {},
             T2108SwapCircle = new byte[] {},
             T2109SwapCircle = new byte[] {}
-            ;
+        ;
 
 
-        ///<summary> Hide Task / Build Info Display  </summary>
+        /// <summary>
+        ///  Hide Task / Build Info Display
+        /// </summary>
         public static readonly byte[]
-
-            // HideTaskInfoOffsets
             UC1100HideTaskInfo = new byte[] { 0x41, 0x7B, 0x99, 0x00},
             UC1102HideTaskInfo = new byte[] {},
             UC2100HideTaskInfo = new byte[] {},
@@ -900,9 +908,11 @@ namespace Dobby {
             T2108RightAlign = new byte[] {},
             T2109RightAlign = new byte[] {}
         ;
-        public static readonly byte[]
 
-            // Right Align Offsets (Prog Pause On Open, +1/-1 for on Close CHECK)
+        /// <summary>
+        ///  Right Align Offsets
+        /// </summary>
+        public static readonly byte[]
             UC3100RightMargin = new byte[] { 0x38, 0xFA, 0x42, 0x01 },
             UC3102RightMargin = new byte[] {},
             UC4100RightMargin = new byte[] {},
@@ -926,10 +936,10 @@ namespace Dobby {
         ;
 
 
-        ///<summary> Invincible Player Offsets </summary>
+        /// <summary>
+        ///  Invincible Player Offsets
+        /// </summary>
         public static readonly byte[]
-
-            // InvinciblePlayerOffsets (Prog Pause On Open)
             UC1100InvinciblePlayer = new byte[] { 0xF8, 0x20, 0xAE, 0x00 },
             UC1102InvinciblePlayer = new byte[] { },
             UC2100InvinciblePlayer = new byte[] { },
