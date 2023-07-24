@@ -122,7 +122,7 @@ namespace Dobby {
       "* 3-beta.24.74.175 | I have no idea anymore",
       "* 3-beta.25.76.177 | I have no idea anymore",
            "* 3.26.77.180 | Arbitrarily Increased Build Number As I've Forgotten Everything I've Done. Changed More Than The Increase Might Imply",
-           "* 3.26.77.180 | "
+           "* 3.26.77.190 | , Added Uncharted Pointers, Seperated Debug Offsets & Pointers A Bit More"
 
             // TODO:
             // - Finish EbootPatchHelpPage
@@ -619,13 +619,16 @@ namespace Dobby {
             }
         }
         #endregion
-
-
-
         #region PS4 / PC exe Patch Page Shared Variables And Functions
 
-        // Yes, I know an array would be easier to deal with in code, but I want them all labeled individually so bite me
 
+
+
+        /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///-- DEBUG MODE OFFSETS AND GAME INDENTIFIERS --\\\
+        /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        
+        // Yes, I know an array could be easier to deal with in code, but I want them all labeled individually so bite me
         public const int
             
             // Game Identifiers. Read 4 bytes at 0x60 as an integer to get it
@@ -702,6 +705,13 @@ namespace Dobby {
             T1X102Debug = 0x3B6AA9,
             T1XL102Debug = 0x3B6885
         ;
+
+
+
+
+        //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///-- QUALITY OF LIFE/BOOTSETTINGS OFFSET POINTERS--\\\
+        //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
         ///<summary> byte arrays to be used as pointers with the BootSettings custom function </summary>
         public static readonly byte[]
