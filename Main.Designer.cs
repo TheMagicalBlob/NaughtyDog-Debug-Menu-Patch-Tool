@@ -26,6 +26,8 @@ namespace Dobby
         #region Windows Form Designer generated code
 
         #endregion
+
+        public Button InfogramsIllusionLinkBtn;
     }
 }
 

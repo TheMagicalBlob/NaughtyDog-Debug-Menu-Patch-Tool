@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Console;
 using static Dobby.Common.Dev;
+using System.Runtime.ConstrainedExecution;
 
 namespace Dobby {
     public class Common : Dobby {
@@ -118,7 +119,10 @@ namespace Dobby {
            "* 2.22.68.170 | Added Preprocessor Directives To Avoid Compilation of Debug Code",
            "* 2.22.69.171 | Just Realized I Can Cast sender to a control ptr... Overhauled Mouse Hover/Leave Functionality, Merged PC and PS4 arrays",
       "* 3-beta.22.69.163 | Removed Redundant Custom W/ Options Button From Eboot Patch Page, Many, MANY Other Forgotten Changes. Don't code drunk for your changelog's sake...",
-      "* 3-beta.24.74.175 | I have no idea anymore"
+      "* 3-beta.24.74.175 | I have no idea anymore",
+      "* 3-beta.25.76.177 | I have no idea anymore",
+           "* 3.26.77.180 | Arbitrarily Increased Build Number As I've Forgotten Everything I've Done. Changed More Than The Increase Might Imply",
+           "* 3.26.77.180 | "
 
             // TODO:
             // - Finish EbootPatchHelpPage
@@ -616,6 +620,8 @@ namespace Dobby {
         }
         #endregion
 
+
+
         #region PS4 / PC exe Patch Page Shared Variables And Functions
 
         // Yes, I know an array would be easier to deal with in code, but I want them all labeled individually so bite me
@@ -644,7 +650,7 @@ namespace Dobby {
             UC4133MP = 35877432,
             TLL100 = 35178432,
             TLL10X = 35227448,
-            T1X101 = 42695168 + 16007532,  // 0x1EC + 0x1F8, Yes, I was too lazy to add them together. for now
+            T1X101 = 42695168 + 16007532,  // 0x1EC + 0x1F8 | Fuck you, I'm keeping them seperate
             T1XL101 = 42670080 + 16010844,
             T1X1015 = 2228464 + 95625728,
             T1XL1015 = 2228464 + 95627776,
@@ -657,8 +663,8 @@ namespace Dobby {
             ;
 
         public const int 
-            // Start Of Debug Offsets
-            T1R100Debug = 0x5C5A,// (0x579F <- 00 to 01)
+            // Debug Offsets (0xEB)
+            T1R100Debug = 0x5C5A,
             T1R109Debug = 0x61A4,
             T1R110Debug = 0x61A4,
             T1R111Debug = 0x61A4,
@@ -701,7 +707,7 @@ namespace Dobby {
         public static readonly byte[]
             UC1100DisableFPS = new byte[] { 0x70, 0x89, 0x99, 0x00 }, // fill null bytes just in case of repeat uses with alternate options
             UC1102DisableFPS = new byte[] {},
-            UC2100DisableFPS = new byte[] {},
+            UC2100DisableFPS = new byte[] { 0x31, 0x14, 0xE7, 0x00 },
             UC2102DisableFPS = new byte[] { 0x61, 0xde, 0x05, 0x01 },
             UC3100DisableFPS = new byte[] {},
             UC3102DisableFPS = new byte[] {},
@@ -724,42 +730,14 @@ namespace Dobby {
             T2108DisableFPS = new byte[] {},
             T2109DisableFPS = new byte[] {}
         ;
-        ///<summary> Swap Circle And Square Offsets </summary>
-        public static readonly byte[]
-            // Swap Circle And Square Offsets
-            UC1100SwapCircle = new byte[] {},
-            UC1102SwapCircle = new byte[] {},
-            UC2100SwapCircle = new byte[] {},
-            UC2102SwapCircle = new byte[] {},
-            UC3100SwapCircle = new byte[] {},
-            UC3102SwapCircle = new byte[] {},
-            UC4100SwapCircle = new byte[] {},
-            UC4133SwapCircle = new byte[] {},
-            UC4133MPSwapCircle = new byte[] {},
-            TLL100SwapCircle = new byte[] {},
-            TLL107SwapCircle = new byte[] {},
-            TLL108SwapCircle = new byte[] {},
-            TLL109SwapCircle = new byte[] {},
-            T1R100SwapCircle = new byte[] {},
-            T1R109SwapCircle = new byte[] {},
-            T1R110SwapCircle = new byte[] {},
-            T1R111SwapCircle = new byte[] {},
-            T2100SwapCircle = new byte[] {},
-            T2101SwapCircle = new byte[] {},
-            T2102SwapCircle = new byte[] {},
-            T2105SwapCircle = new byte[] {},
-            T2107SwapCircle = new byte[] {},
-            T2108SwapCircle = new byte[] {},
-            T2109SwapCircle = new byte[] {}
-            ;
 
-        ///<summary> ProgPauseOffsets (Prog Pause On Open, +0x04 for on Close//!) </summary>
+        ///<summary> ProgPauseOnOpen Offsets </summary>
         public static readonly byte[]
 
-            // ProgPauseOffsets (Prog Pause On Open, +0x04 for on Close//!)
-            UC1100ProgPause = new byte[] {},
+            // ProgPauseOffsets (Prog Pause On Open)
+            UC1100ProgPause = new byte[] { 0x88, 0xF9, 0xA9, 0x00 },
             UC1102ProgPause = new byte[] {},
-            UC2100ProgPause = new byte[] {},
+            UC2100ProgPause = new byte[] { 0x78, 0xC7, 0xEB, 0x00 },
             UC2102ProgPause = new byte[] { 0xe0, 0x95, 0x05, 0x01 },
             UC3100ProgPause = new byte[] {},
             UC3102ProgPause = new byte[] {},
@@ -782,12 +760,91 @@ namespace Dobby {
             T2108ProgPause = new byte[] {},
             T2109ProgPause = new byte[] {}
         ;
+        ///<summary> ProgPauseOnExitOffsets </summary>
+        public static readonly byte[]
 
-        ///<summary> ProgPauseOffsets  </summary>
+            // ProgPauseOffsets
+            UC1100ProgPauseOnExit = new byte[] { 0x8C, 0xF9, 0xA9, 0x00 },
+            UC1102ProgPauseOnExit = new byte[] { },
+            UC2100ProgPauseOnExit = new byte[] { 0x79, 0xC7, 0xEB, 0x00 },
+            UC2102ProgPauseOnExit = new byte[] { },
+            UC3100ProgPauseOnExit = new byte[] { },
+            UC3102ProgPauseOnExit = new byte[] { },
+            UC4100ProgPauseOnExit = new byte[] { },
+            UC4133ProgPauseOnExit = new byte[] { },
+          UC4133MPProgPauseOnExit = new byte[] { },
+            TLL100ProgPauseOnExit = new byte[] { },
+            TLL107ProgPauseOnExit = new byte[] { },
+            TLL108ProgPauseOnExit = new byte[] { },
+            TLL109ProgPauseOnExit = new byte[] { },
+            T1R100ProgPauseOnExit = new byte[] { },
+            T1R109ProgPauseOnExit = new byte[] { },
+            T1R110ProgPauseOnExit = new byte[] { },
+            T1R111ProgPauseOnExit = new byte[] { },
+            T2100ProgPauseOnExit = new byte[] { },
+            T2101ProgPauseOnExit = new byte[] { },
+            T2102ProgPauseOnExit = new byte[] { },
+            T2105ProgPauseOnExit = new byte[] { },
+            T2107ProgPauseOnExit = new byte[] { },
+            T2108ProgPauseOnExit = new byte[] { },
+            T2109ProgPauseOnExit = new byte[] { }
+        ;
+        ///<summary> Swap Circle And Square Offsets </summary>
+        public static readonly byte[]
+            UC1100PausedIcon = new byte[] { 0x8A, 0xF9, 0xA9, 0x00 }, // CHECK, TOOL WAS BROKEN
+            UC1102PausedIcon = new byte[] { 0x8A, 0x38, 0xA6, 0x00 }, // CHECK, TOOL WAS BROKEN
+            UC2100PausedIcon = new byte[] { 0x7A, 0xC7, 0xEB, 0x00 }, // Test Me!!
+            UC2102PausedIcon = new byte[] { 0xE2, 0x95, 0x05, 0x00 }, // CHECK, TOOL WAS BROKEN
+            UC3100PausedIcon = new byte[] { 0x32, 0xFA, 0x42, 0x00 }, // CHECK, TOOL WAS BROKEN
+            UC3102PausedIcon = new byte[] { 0x52, 0x4A, 0x7B, 0x00 }, // CHECK, TOOL WAS BROKEN
+            UC4100PausedIcon = new byte[] { },
+            UC4133PausedIcon = new byte[] { },
+          UC4133MPPausedIcon = new byte[] { },
+            TLL100PausedIcon = new byte[] { },
+            TLL107PausedIcon = new byte[] { },
+            TLL108PausedIcon = new byte[] { },
+            TLL109PausedIcon = new byte[] { },
+            T1R100PausedIcon = new byte[] { },
+            T1R109PausedIcon = new byte[] { },
+            T1R110PausedIcon = new byte[] { },
+            T1R111PausedIcon = new byte[] { },
+            T2100PausedIcon = new byte[] { },
+            T2101PausedIcon = new byte[] { },
+            T2102PausedIcon = new byte[] { },
+            T2105PausedIcon = new byte[] { },
+            T2107PausedIcon = new byte[] { },
+            T2108PausedIcon = new byte[] { },
+            T2109PausedIcon = new byte[] { }
+        ;
+        ///<summary> Swap Circle And Square Offsets </summary>
+        public static readonly byte[]
+            // Swap Circle And Square Offsets
+            UC4100SwapCircle = new byte[] {},
+            UC4133SwapCircle = new byte[] {},
+            UC4133MPSwapCircle = new byte[] {},
+            TLL100SwapCircle = new byte[] {},
+            TLL107SwapCircle = new byte[] {},
+            TLL108SwapCircle = new byte[] {},
+            TLL109SwapCircle = new byte[] {},
+            T1R100SwapCircle = new byte[] {},
+            T1R109SwapCircle = new byte[] {},
+            T1R110SwapCircle = new byte[] {},
+            T1R111SwapCircle = new byte[] {},
+            T2100SwapCircle = new byte[] {},
+            T2101SwapCircle = new byte[] {},
+            T2102SwapCircle = new byte[] {},
+            T2105SwapCircle = new byte[] {},
+            T2107SwapCircle = new byte[] {},
+            T2108SwapCircle = new byte[] {},
+            T2109SwapCircle = new byte[] {}
+            ;
+
+
+        ///<summary> Hide Task / Build Info Display  </summary>
         public static readonly byte[]
 
             // HideTaskInfoOffsets
-            UC1100HideTaskInfo = new byte[] {},
+            UC1100HideTaskInfo = new byte[] { 0x41, 0x7B, 0x99, 0x00},
             UC1102HideTaskInfo = new byte[] {},
             UC2100HideTaskInfo = new byte[] {},
             UC2102HideTaskInfo = new byte[] { 0xf9, 0xcf, 0x05, 0x01 },
@@ -800,10 +857,6 @@ namespace Dobby {
             TLL107HideTaskInfo = new byte[] {},
             TLL108HideTaskInfo = new byte[] {},
             TLL109HideTaskInfo = new byte[] {},
-            T1R100HideTaskInfo = new byte[] {},
-            T1R109HideTaskInfo = new byte[] {},
-            T1R110HideTaskInfo = new byte[] {},
-            T1R111HideTaskInfo = new byte[] {},
             T2100HideTaskInfo = new byte[] {},
             T2101HideTaskInfo = new byte[] {},
             T2102HideTaskInfo = new byte[] {},
@@ -815,12 +868,8 @@ namespace Dobby {
         
         public static readonly byte[]
 
-            // Right Align Offsets (Prog Pause On Open, +1/-1 for on Close CHECK)
-            UC1100RightAlign = new byte[] {},
-            UC1102RightAlign = new byte[] {},
-            UC2100RightAlign = new byte[] {},
-            UC2102RightAlign = new byte[] {},
-            UC3100RightAlign = new byte[] {},
+            // Right Align Offsets
+            UC3100RightAlign = new byte[] { 0x34, 0xFA, 0x42, 0x01 },
             UC3102RightAlign = new byte[] {},
             UC4100RightAlign = new byte[] {},
             UC4133RightAlign = new byte[] {},
@@ -841,7 +890,61 @@ namespace Dobby {
             T2108RightAlign = new byte[] {},
             T2109RightAlign = new byte[] {}
         ;
+        public static readonly byte[]
 
+            // Right Align Offsets (Prog Pause On Open, +1/-1 for on Close CHECK)
+            UC3100RightMargin = new byte[] { 0x38, 0xFA, 0x42, 0x01 },
+            UC3102RightMargin = new byte[] {},
+            UC4100RightMargin = new byte[] {},
+            UC4133RightMargin = new byte[] {},
+          UC4133MPRightMargin = new byte[] {},
+            TLL100RightMargin = new byte[] {},
+            TLL107RightMargin = new byte[] {},
+            TLL108RightMargin = new byte[] {},
+            TLL109RightMargin = new byte[] {},
+            T1R100RightMargin = new byte[] {},
+            T1R109RightMargin = new byte[] {},
+            T1R110RightMargin = new byte[] {},
+            T1R111RightMargin = new byte[] {},
+            T2100RightMargin = new byte[] {},
+            T2101RightMargin = new byte[] {},
+            T2102RightMargin = new byte[] {},
+            T2105RightMargin = new byte[] {},
+            T2107RightMargin = new byte[] {},
+            T2108RightMargin = new byte[] {},
+            T2109RightMargin = new byte[] {}
+        ;
+
+
+        ///<summary> Invincible Player Offsets </summary>
+        public static readonly byte[]
+
+            // InvinciblePlayerOffsets (Prog Pause On Open)
+            UC1100InvinciblePlayer = new byte[] { 0xF8, 0x20, 0xAE, 0x00 },
+            UC1102InvinciblePlayer = new byte[] { },
+            UC2100InvinciblePlayer = new byte[] { },
+            UC2102InvinciblePlayer = new byte[] { },
+            UC3100InvinciblePlayer = new byte[] { },
+            UC3102InvinciblePlayer = new byte[] { },
+            UC4100InvinciblePlayer = new byte[] { },
+            UC4133InvinciblePlayer = new byte[] { },
+          UC4133MPInvinciblePlayer = new byte[] { },
+            TLL100InvinciblePlayer = new byte[] { },
+            TLL107InvinciblePlayer = new byte[] { },
+            TLL108InvinciblePlayer = new byte[] { },
+            TLL109InvinciblePlayer = new byte[] { },
+            T1R100InvinciblePlayer = new byte[] { },
+            T1R109InvinciblePlayer = new byte[] { },
+            T1R110InvinciblePlayer = new byte[] { },
+            T1R111InvinciblePlayer = new byte[] { },
+            T2100InvinciblePlayer = new byte[] { },
+            T2101InvinciblePlayer = new byte[] { },
+            T2102InvinciblePlayer = new byte[] { },
+            T2105InvinciblePlayer = new byte[] { },
+            T2107InvinciblePlayer = new byte[] { },
+            T2108InvinciblePlayer = new byte[] { },
+            T2109InvinciblePlayer = new byte[] { }
+        ;
 
         public static byte[]
             chk = new byte[4],
@@ -928,6 +1031,8 @@ namespace Dobby {
             public static void MiscDebugFunc(object sender, EventArgs e) => DebugOut($"{tst_int++}");
             public static void DebugControlHover(object sender, EventArgs e) => HoveredControl = (Control)sender;
 
+            public static bool OverrideDebugOut;
+
             static int tst_int = 0;
 
             static int TimerTicks = 0, OutputStringIndex = 0;
@@ -990,8 +1095,8 @@ namespace Dobby {
             public static void DebuggerInfo() => DebuggerThread.Start();
             public static Control HoveredControl = new Label(); // Just so the debugger doesn't bitch
 
-            public static void UpdateConsoleOutput() {
-            #if DEBUG
+            public static void UpdateConsoleOutput() { if (OverrideDebugOut) return;
+#if DEBUG
                 bool TimerThreadStarted = false;
                 int Interval = 0;
 
@@ -1002,16 +1107,17 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                 Point OriginalConsoleScale = new Point(WindowHeight, WindowWidth);
                 if (ActiveForm != null && !TimerThreadStarted) { ActiveForm.Invoke(TimerThread); TimerThreadStarted = true; }
                 try {
-                    while (OriginalConsoleScale == new Point(WindowHeight, WindowWidth)) {
+                    while (OriginalConsoleScale == new Point(WindowHeight, WindowWidth) & !OverrideDebugOut) {
+                        CursorLeft = 0; // Lazy Fix
                         int StartTime = TimerTicks, Cursor = 0, String = 0; Form frm = ActiveForm;
                         string ControlType = HoveredControl.GetType().ToString();
                         string[] Output = new string[] {
-                            /*$"Build: {Build} | ~{Interval}ms | {OutputStrings.Length} ({OutputStringIndex})",
+                            $"Build: {Build} | ~{Interval}ms | {OutputStrings.Length} ({OutputStringIndex})",
                             "",
                             $"Form: {(ActiveForm != null ? $"{ActiveForm.Name} | Form Position: {ActiveForm.Location}" : "Console")}",
                             $"Pages: {Pages?[0]}, {Pages?[1]}, {Pages?[2]}, {Pages?[3]}",
                             $"Active Page ID: {Page} | InfoHasImportantString: {InfoHasImportantStr}",
-                            */$"Game: {Game}",
+                            $"Game: {Game}",
                             "",
                             $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled} | MousePos: {MousePosition}",
                             $"Control: {HoveredControl.Name} | {ControlType.Substring(ControlType.LastIndexOf('.') + 1)}",
@@ -1035,13 +1141,19 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                     }
                 catch (System.ObjectDisposedException) { }
                 Clear();
+                if (OverrideDebugOut) return;
                 goto Begin_Again;
                 #endif
             }
 #endif
             public static void DebugOut() => DebugOut(" ");
-            public static void DebugOut(object obj) { string s = obj.ToString();
+            public static void DebugOut(object obj, int NewCursorTop) {
+                CursorTop = NewCursorTop;
+                WriteLine(obj);
+            }
+            public static void DebugOut(object obj) {
 #if DEBUG
+                if (OverrideDebugOut) return; string s = obj.ToString();
                 if (s.Contains("\n")) {
                     s = s.Replace("\n", "");
                     s += " (Use Seperate Calls For New Line!!!)";
@@ -1064,11 +1176,9 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
 #if DEBUG      
 
             public static string BlankSpace(string String) {
-                if (String == null) return "";
-                string Blanks = string.Empty;
+                if (String == null) return " ";
                 for (int i = BufferWidth - String.Length; i > 0; i--)
-                    Blanks += " ";
-                String += Blanks;
+                String += " ";
                 return String;
             }
 

@@ -47,7 +47,6 @@ namespace Dobby {
         private Label label4;
         private Button BackBtn;
         private Button DisableDebugBtn;
-        private Button CustomOptDebugBtn;
         private Button EnableDebugBtn;
         private Label Info;
         private Button CreditsBtn;
@@ -69,7 +68,6 @@ namespace Dobby {
             this.label4 = new System.Windows.Forms.Label();
             this.BackBtn = new System.Windows.Forms.Button();
             this.DisableDebugBtn = new System.Windows.Forms.Button();
-            this.CustomOptDebugBtn = new System.Windows.Forms.Button();
             this.EnableDebugBtn = new System.Windows.Forms.Button();
             this.Info = new System.Windows.Forms.Label();
             this.CreditsBtn = new System.Windows.Forms.Button();
@@ -83,285 +81,268 @@ namespace Dobby {
             // 
             // GameInfoLabel
             // 
-            this.GameInfoLabel.Font = new Font("Franklin Gothic Medium", 10F);
-            this.GameInfoLabel.ForeColor = Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.GameInfoLabel.Location = new Point(1, 205);
+            this.GameInfoLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.GameInfoLabel.Location = new System.Drawing.Point(1, 174);
             this.GameInfoLabel.Name = "GameInfoLabel";
-            this.GameInfoLabel.Size = new Size(316, 19);
+            this.GameInfoLabel.Size = new System.Drawing.Size(316, 19);
             this.GameInfoLabel.TabIndex = 32;
             this.GameInfoLabel.Text = "No File Selected";
-            this.GameInfoLabel.TextAlign = ContentAlignment.MiddleCenter;
+            this.GameInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // BrowseButton
             // 
-            this.BrowseButton.BackColor = Color.DimGray;
+            this.BrowseButton.BackColor = System.Drawing.Color.DimGray;
             this.BrowseButton.Cursor = System.Windows.Forms.Cursors.Cross;
             this.BrowseButton.FlatAppearance.BorderSize = 0;
             this.BrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BrowseButton.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
-            this.BrowseButton.ForeColor = SystemColors.Control;
-            this.BrowseButton.Location = new Point(238, 179);
+            this.BrowseButton.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.BrowseButton.ForeColor = System.Drawing.SystemColors.Control;
+            this.BrowseButton.Location = new System.Drawing.Point(238, 148);
             this.BrowseButton.Name = "BrowseButton";
-            this.BrowseButton.Size = new Size(75, 23);
+            this.BrowseButton.Size = new System.Drawing.Size(75, 23);
             this.BrowseButton.TabIndex = 31;
             this.BrowseButton.Text = "Browse...";
-            this.BrowseButton.TextAlign = ContentAlignment.MiddleLeft;
+            this.BrowseButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BrowseButton.UseVisualStyleBackColor = false;
             this.BrowseButton.Click += new System.EventHandler(this.BrowseButton_Click);
             // 
             // ExecutablePathBox
             // 
-            this.ExecutablePathBox.BackColor = Color.Gray;
-            this.ExecutablePathBox.Font = new Font("Franklin Gothic Medium", 10F);
-            this.ExecutablePathBox.ForeColor = SystemColors.Window;
-            this.ExecutablePathBox.Location = new Point(6, 179);
+            this.ExecutablePathBox.BackColor = System.Drawing.Color.Gray;
+            this.ExecutablePathBox.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.ExecutablePathBox.ForeColor = System.Drawing.SystemColors.Window;
+            this.ExecutablePathBox.Location = new System.Drawing.Point(6, 148);
             this.ExecutablePathBox.Name = "ExecutablePathBox";
-            this.ExecutablePathBox.Size = new Size(233, 23);
+            this.ExecutablePathBox.Size = new System.Drawing.Size(233, 23);
             this.ExecutablePathBox.TabIndex = 30;
             this.ExecutablePathBox.Text = " Select A .bin/.elf To Modify";
             // 
             // label1
             // 
-            this.label1.Font = new Font("Franklin Gothic Medium", 10F);
-            this.label1.ForeColor = Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label1.Location = new Point(2, 158);
+            this.label1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.label1.Location = new System.Drawing.Point(2, 127);
             this.label1.Name = "label1";
-            this.label1.Size = new Size(316, 20);
+            this.label1.Size = new System.Drawing.Size(316, 20);
             this.label1.TabIndex = 29;
             this.label1.Text = "____________________________________________";
             // 
             // RestoredDebugBtn
             // 
-            this.RestoredDebugBtn.BackColor = Color.DimGray;
+            this.RestoredDebugBtn.BackColor = System.Drawing.Color.DimGray;
             this.RestoredDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.RestoredDebugBtn.FlatAppearance.BorderSize = 0;
             this.RestoredDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.RestoredDebugBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
-            this.RestoredDebugBtn.ForeColor = SystemColors.Control;
-            this.RestoredDebugBtn.Location = new Point(1, 88);
+            this.RestoredDebugBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.RestoredDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.RestoredDebugBtn.Location = new System.Drawing.Point(1, 88);
             this.RestoredDebugBtn.Name = "RestoredDebugBtn";
-            this.RestoredDebugBtn.Size = new Size(215, 23);
+            this.RestoredDebugBtn.Size = new System.Drawing.Size(215, 23);
             this.RestoredDebugBtn.TabIndex = 23;
             this.RestoredDebugBtn.Text = "Enable Debug Mode - Restored";
-            this.RestoredDebugBtn.TextAlign = ContentAlignment.MiddleLeft;
+            this.RestoredDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.RestoredDebugBtn.UseVisualStyleBackColor = false;
             this.RestoredDebugBtn.Click += new System.EventHandler(this.RestoredDebugBtn_Click);
             // 
             // CustomDebugBtn
             // 
-            this.CustomDebugBtn.BackColor = Color.DimGray;
+            this.CustomDebugBtn.BackColor = System.Drawing.Color.DimGray;
             this.CustomDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.CustomDebugBtn.FlatAppearance.BorderSize = 0;
             this.CustomDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CustomDebugBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
-            this.CustomDebugBtn.ForeColor = SystemColors.Control;
-            this.CustomDebugBtn.Location = new Point(1, 117);
+            this.CustomDebugBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.CustomDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.CustomDebugBtn.Location = new System.Drawing.Point(1, 114);
             this.CustomDebugBtn.Name = "CustomDebugBtn";
-            this.CustomDebugBtn.Size = new Size(206, 23);
+            this.CustomDebugBtn.Size = new System.Drawing.Size(206, 23);
             this.CustomDebugBtn.TabIndex = 22;
             this.CustomDebugBtn.Text = "Enable Debug Mode - Custom";
-            this.CustomDebugBtn.TextAlign = ContentAlignment.MiddleLeft;
+            this.CustomDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CustomDebugBtn.UseVisualStyleBackColor = false;
             this.CustomDebugBtn.Click += new System.EventHandler(this.CustomDebugBtn_Click);
             // 
             // InfoHelpBtn
             // 
-            this.InfoHelpBtn.BackColor = Color.DimGray;
+            this.InfoHelpBtn.BackColor = System.Drawing.Color.DimGray;
             this.InfoHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.InfoHelpBtn.FlatAppearance.BorderSize = 0;
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InfoHelpBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
-            this.InfoHelpBtn.ForeColor = SystemColors.Control;
-            this.InfoHelpBtn.Location = new Point(1, 237);
+            this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 206);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
-            this.InfoHelpBtn.Size = new Size(147, 23);
+            this.InfoHelpBtn.Size = new System.Drawing.Size(147, 23);
             this.InfoHelpBtn.TabIndex = 15;
             this.InfoHelpBtn.Text = "Information / Help...";
-            this.InfoHelpBtn.TextAlign = ContentAlignment.MiddleLeft;
+            this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
             this.InfoHelpBtn.Click += new System.EventHandler(this.InfoHelpBtn_Click);
             // 
             // label4
             // 
-            this.label4.Font = new Font("Franklin Gothic Medium", 10F);
-            this.label4.ForeColor = Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label4.Location = new Point(2, 215);
+            this.label4.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.label4.Location = new System.Drawing.Point(2, 184);
             this.label4.Name = "label4";
-            this.label4.Size = new Size(316, 20);
+            this.label4.Size = new System.Drawing.Size(316, 20);
             this.label4.TabIndex = 14;
             this.label4.Text = "____________________________________________";
             // 
             // BackBtn
             // 
-            this.BackBtn.BackColor = Color.DimGray;
+            this.BackBtn.BackColor = System.Drawing.Color.DimGray;
             this.BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.BackBtn.FlatAppearance.BorderSize = 0;
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BackBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
-            this.BackBtn.ForeColor = SystemColors.Control;
-            this.BackBtn.Location = new Point(1, 287);
+            this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.BackBtn.Location = new System.Drawing.Point(1, 256);
             this.BackBtn.Name = "BackBtn";
-            this.BackBtn.Size = new Size(60, 23);
+            this.BackBtn.Size = new System.Drawing.Size(60, 23);
             this.BackBtn.TabIndex = 13;
             this.BackBtn.Text = "Back...";
-            this.BackBtn.TextAlign = ContentAlignment.MiddleLeft;
+            this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
             this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
             // 
             // DisableDebugBtn
             // 
-            this.DisableDebugBtn.BackColor = Color.DimGray;
+            this.DisableDebugBtn.BackColor = System.Drawing.Color.DimGray;
             this.DisableDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.DisableDebugBtn.FlatAppearance.BorderSize = 0;
             this.DisableDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DisableDebugBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
-            this.DisableDebugBtn.ForeColor = SystemColors.Control;
-            this.DisableDebugBtn.Location = new Point(1, 33);
+            this.DisableDebugBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.DisableDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.DisableDebugBtn.Location = new System.Drawing.Point(1, 36);
             this.DisableDebugBtn.Name = "DisableDebugBtn";
-            this.DisableDebugBtn.Size = new Size(150, 23);
+            this.DisableDebugBtn.Size = new System.Drawing.Size(150, 23);
             this.DisableDebugBtn.TabIndex = 12;
             this.DisableDebugBtn.Text = "Disable Debug Mode";
-            this.DisableDebugBtn.TextAlign = ContentAlignment.MiddleLeft;
+            this.DisableDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisableDebugBtn.UseVisualStyleBackColor = false;
             this.DisableDebugBtn.Click += new System.EventHandler(this.DisableDebugBtn_Click);
             // 
-            // CustomOptDebugBtn
-            // 
-            this.CustomOptDebugBtn.BackColor = Color.DimGray;
-            this.CustomOptDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.CustomOptDebugBtn.FlatAppearance.BorderSize = 0;
-            this.CustomOptDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CustomOptDebugBtn.Font = new Font("Franklin Gothic Medium", 9.25F, ((FontStyle)((FontStyle.Bold | FontStyle.Strikeout))));
-            this.CustomOptDebugBtn.ForeColor = SystemColors.Control;
-            this.CustomOptDebugBtn.Location = new Point(1, 145);
-            this.CustomOptDebugBtn.Name = "CustomOptDebugBtn";
-            this.CustomOptDebugBtn.Size = new Size(309, 23);
-            this.CustomOptDebugBtn.TabIndex = 21;
-            this.CustomOptDebugBtn.Text = "Enable Debug Mode - Custom + User Settings";
-            this.CustomOptDebugBtn.TextAlign = ContentAlignment.MiddleLeft;
-            this.CustomOptDebugBtn.UseVisualStyleBackColor = false;
-            this.CustomOptDebugBtn.Click += new System.EventHandler(this.CustomOptDebugBtn_Click);
-            // 
             // EnableDebugBtn
             // 
-            this.EnableDebugBtn.BackColor = Color.DimGray;
+            this.EnableDebugBtn.BackColor = System.Drawing.Color.DimGray;
             this.EnableDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.EnableDebugBtn.FlatAppearance.BorderSize = 0;
             this.EnableDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.EnableDebugBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
-            this.EnableDebugBtn.ForeColor = SystemColors.Control;
-            this.EnableDebugBtn.Location = new Point(1, 61);
+            this.EnableDebugBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.EnableDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.EnableDebugBtn.Location = new System.Drawing.Point(1, 61);
             this.EnableDebugBtn.Name = "EnableDebugBtn";
-            this.EnableDebugBtn.Size = new Size(205, 23);
+            this.EnableDebugBtn.Size = new System.Drawing.Size(205, 23);
             this.EnableDebugBtn.TabIndex = 9;
             this.EnableDebugBtn.Text = "Enable Debug Mode - Default";
-            this.EnableDebugBtn.TextAlign = ContentAlignment.MiddleLeft;
+            this.EnableDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.EnableDebugBtn.UseVisualStyleBackColor = false;
             this.EnableDebugBtn.Click += new System.EventHandler(this.EnableDebugBtn_Click);
             // 
             // Info
             // 
-            this.Info.Font = new Font("Franklin Gothic Medium", 10F);
-            this.Info.ForeColor = Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new Point(3, 310);
+            this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.Info.Location = new System.Drawing.Point(3, 279);
             this.Info.Name = "Info";
-            this.Info.Size = new Size(313, 19);
+            this.Info.Size = new System.Drawing.Size(313, 19);
             this.Info.TabIndex = 7;
             this.Info.Text = "======================================";
             // 
             // CreditsBtn
             // 
-            this.CreditsBtn.BackColor = Color.DimGray;
+            this.CreditsBtn.BackColor = System.Drawing.Color.DimGray;
             this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.CreditsBtn.FlatAppearance.BorderSize = 0;
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CreditsBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
-            this.CreditsBtn.ForeColor = SystemColors.Control;
-            this.CreditsBtn.Location = new Point(1, 261);
+            this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 230);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.CreditsBtn.Size = new Size(74, 23);
+            this.CreditsBtn.Size = new System.Drawing.Size(74, 23);
             this.CreditsBtn.TabIndex = 28;
             this.CreditsBtn.Text = "Credits...";
-            this.CreditsBtn.TextAlign = ContentAlignment.MiddleLeft;
+            this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
             this.CreditsBtn.Click += new System.EventHandler(this.CreditsBtn_Click);
             // 
             // MinimizeBtn
             // 
-            this.MinimizeBtn.BackColor = Color.DimGray;
+            this.MinimizeBtn.BackColor = System.Drawing.Color.DimGray;
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeBtn.Font = new Font("Franklin Gothic Medium", 8F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
-            this.MinimizeBtn.ForeColor = SystemColors.Control;
-            this.MinimizeBtn.Location = new Point(273, 1);
+            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.MinimizeBtn.Location = new System.Drawing.Point(273, 2);
             this.MinimizeBtn.Name = "MinimizeBtn";
-            this.MinimizeBtn.Size = new Size(23, 23);
+            this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
             this.MinimizeBtn.TabIndex = 19;
             this.MinimizeBtn.Text = "--";
-            this.MinimizeBtn.TextAlign = ContentAlignment.MiddleLeft;
+            this.MinimizeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.MinimizeBtn.UseVisualStyleBackColor = false;
             // 
             // ExitBtn
             // 
-            this.ExitBtn.BackColor = Color.DimGray;
+            this.ExitBtn.BackColor = System.Drawing.Color.DimGray;
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new Font("Franklin Gothic Medium", 9F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
-            this.ExitBtn.ForeColor = SystemColors.Control;
-            this.ExitBtn.Location = new Point(295, 1);
+            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.ExitBtn.Location = new System.Drawing.Point(295, 2);
             this.ExitBtn.Name = "ExitBtn";
-            this.ExitBtn.Size = new Size(23, 23);
+            this.ExitBtn.Size = new System.Drawing.Size(23, 23);
             this.ExitBtn.TabIndex = 18;
             this.ExitBtn.Text = "X";
-            this.ExitBtn.TextAlign = ContentAlignment.MiddleLeft;
+            this.ExitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ExitBtn.UseVisualStyleBackColor = false;
             // 
             // MainBox
             // 
-            this.MainBox.Location = new Point(1, -4);
+            this.MainBox.Location = new System.Drawing.Point(1, -4);
             this.MainBox.Name = "MainBox";
-            this.MainBox.Size = new Size(318, 32);
+            this.MainBox.Size = new System.Drawing.Size(318, 32);
             this.MainBox.TabIndex = 5;
             this.MainBox.TabStop = false;
             // 
             // MainLabel
             // 
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MainLabel.Font = new Font("Franklin Gothic Medium", 12.25F, FontStyle.Bold);
-            this.MainLabel.ForeColor = SystemColors.Control;
-            this.MainLabel.Location = new Point(2, 5);
+            this.MainLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 12.25F, System.Drawing.FontStyle.Bold);
+            this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.MainLabel.Location = new System.Drawing.Point(2, 5);
             this.MainLabel.Name = "MainLabel";
-            this.MainLabel.Size = new Size(314, 22);
+            this.MainLabel.Size = new System.Drawing.Size(314, 22);
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "Eboot Patch Page";
             // 
             // label2
             // 
-            this.label2.Font = new Font("Franklin Gothic Medium", 10F);
-            this.label2.ForeColor = Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label2.Location = new Point(2, 16);
+            this.label2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.label2.Location = new System.Drawing.Point(2, 16);
             this.label2.Name = "label2";
-            this.label2.Size = new Size(316, 20);
+            this.label2.Size = new System.Drawing.Size(316, 20);
             this.label2.TabIndex = 33;
             this.label2.Text = "____________________________________________";
             // 
             // groupBox1
             // 
-            this.groupBox1.Location = new Point(0, -6);
+            this.groupBox1.Location = new System.Drawing.Point(0, -5);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new Size(319, 339);
+            this.groupBox1.Size = new System.Drawing.Size(319, 310);
             this.groupBox1.TabIndex = 34;
             this.groupBox1.TabStop = false;
             // 
             // EbootPatchPage
             // 
-            this.AutoScaleDimensions = new SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = Color.DimGray;
-            this.ClientSize = new Size(320, 332);
+            this.BackColor = System.Drawing.Color.DimGray;
+            this.ClientSize = new System.Drawing.Size(320, 304);
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.MinimizeBtn);
             this.Controls.Add(this.MainLabel);
@@ -373,7 +354,6 @@ namespace Dobby {
             this.Controls.Add(this.InfoHelpBtn);
             this.Controls.Add(this.BackBtn);
             this.Controls.Add(this.DisableDebugBtn);
-            this.Controls.Add(this.CustomOptDebugBtn);
             this.Controls.Add(this.CreditsBtn);
             this.Controls.Add(this.Info);
             this.Controls.Add(this.label4);
