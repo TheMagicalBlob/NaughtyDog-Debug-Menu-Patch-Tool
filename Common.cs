@@ -777,7 +777,7 @@ namespace Dobby {
         ///  ProgPauseOnExitOffsets
         /// </summary>
         public static readonly byte[]
-            UC1100ProgPauseOnExit = new byte[] { 0x8C, 0xF9, 0xA9, 0x00 },
+            UC1100ProgPauseOnExit = new byte[] { 0x89, 0xF9, 0xA9, 0x00 },
             UC1102ProgPauseOnExit = new byte[] { },
             UC2100ProgPauseOnExit = new byte[] { 0x79, 0xC7, 0xEB, 0x00 },
             UC2102ProgPauseOnExit = new byte[] { },
@@ -807,7 +807,7 @@ namespace Dobby {
         ///  Swap Circle And Square Offsets
         /// </summary>
         public static readonly byte[]
-            UC1100PausedIcon = new byte[] { 0x8A, 0xF9, 0xA9, 0x00 }, // CHECK, TOOL WAS BROKEN
+            UC1100PausedIcon = new byte[] { 0x8A, 0xF9, 0xA9, 0x00 }, // Test Me!!
             UC1102PausedIcon = new byte[] { 0x8A, 0x38, 0xA6, 0x00 }, // CHECK, TOOL WAS BROKEN
             UC2100PausedIcon = new byte[] { 0x7A, 0xC7, 0xEB, 0x00 }, // Test Me!!
             UC2102PausedIcon = new byte[] { 0xE2, 0x95, 0x05, 0x00 }, // CHECK, TOOL WAS BROKEN
@@ -862,7 +862,7 @@ namespace Dobby {
         ///  Hide Task / Build Info Display
         /// </summary>
         public static readonly byte[]
-            UC1100HideTaskInfo = new byte[] { 0x41, 0x7B, 0x99, 0x00},
+            UC1100HideTaskInfo = new byte[] { 0x41, 0x3F, 0xBE, 0x00 },
             UC1102HideTaskInfo = new byte[] {},
             UC2100HideTaskInfo = new byte[] {},
             UC2102HideTaskInfo = new byte[] { 0xf9, 0xcf, 0x05, 0x01 },
