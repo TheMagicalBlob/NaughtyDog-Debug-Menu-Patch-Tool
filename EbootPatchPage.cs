@@ -331,7 +331,7 @@ namespace Dobby {
             // 
             // groupBox1
             // 
-            this.groupBox1.Location = new System.Drawing.Point(0, -5);
+            this.groupBox1.Location = new System.Drawing.Point(0, -6);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(319, 310);
             this.groupBox1.TabIndex = 34;
@@ -342,7 +342,7 @@ namespace Dobby {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 304);
+            this.ClientSize = new System.Drawing.Size(320, 303);
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.MinimizeBtn);
             this.Controls.Add(this.MainLabel);

@@ -20,7 +20,7 @@ namespace Dobby {
 
         PS4DBG geo;
 
-        readonly byte
+        readonly byte // BECAUSE I FUCKING CAN, YOU TWAT
             on = 0x01,
             off = 0x00
         ;
@@ -32,7 +32,7 @@ namespace Dobby {
             attempts = 0
         ;
 
-        readonly string[] executables = new string[] {
+        readonly string[] ExecutablesNames = new string[] {
             "eboot.bin",
             "t2.elf",
             "t2-rtm.elf",
@@ -41,7 +41,7 @@ namespace Dobby {
             "big2-ps4_Shipping.elf",
             "big3-ps4_Shipping.elf",
             "big4.elf",
-            "big4-",
+            "big4-final.elf",
             "big4-mp.elf",
             "big4-final-pgo-lto.elf",
             "eboot-mp.elf",
@@ -513,7 +513,7 @@ namespace Dobby {
                 geo = new PS4DBG(IPBOX_E.Text);
                 geo.Connect();
                 foreach (libdebug.Process prc in geo.GetProcessList().processes) {
-                    foreach (string id in executables) {
+                    foreach (string id in ExecutablesNames) {
                         if (prc.name == id) {
                             {
                                 string title = geo.GetProcessInfo(prc.pid).titleid;
@@ -546,7 +546,7 @@ namespace Dobby {
                 geo = new PS4DBG(IPBOX_E.Text);
                 geo.Connect();
                 foreach (libdebug.Process prc in geo.GetProcessList().processes) {
-                    foreach (string id in executables) {
+                    foreach (string id in ExecutablesNames) {
                         if (prc.name == id) {
                             exec = prc.pid;
                             processname = prc.name;

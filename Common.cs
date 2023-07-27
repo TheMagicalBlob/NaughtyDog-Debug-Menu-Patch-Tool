@@ -122,7 +122,7 @@ namespace Dobby {
       "* 3-beta.24.74.175 | I have no idea anymore",
       "* 3-beta.25.76.177 | I have no idea anymore",
            "* 3.26.77.180 | Arbitrarily Increased Build Number As I've Forgotten Everything I've Done. Changed More Than The Increase Might Imply",
-           "* 3.26.77.190 | , Added Uncharted Pointers, Seperated Debug Offsets & Pointers A Bit More"
+           "* 3.26.77.191 | EbootPatchPage GroupBox Adjust, Added Uncharted Pointers, Seperated Debug Offsets & Pointers A Bit More"
 
             // TODO:
             // - Finish EbootPatchHelpPage
