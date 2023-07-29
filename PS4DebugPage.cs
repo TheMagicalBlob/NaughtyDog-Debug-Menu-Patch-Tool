@@ -20,35 +20,6 @@ namespace Dobby {
 
         PS4DBG geo;
 
-        readonly byte // BECAUSE I FUCKING CAN, YOU TWAT
-            on = 0x01,
-            off = 0x00
-        ;
-
-        bool PS4DebugIsConnected;
-
-        int
-            exec,
-            attempts = 0
-        ;
-
-        readonly string[] ExecutablesNames = new string[] {
-            "eboot.bin",
-            "t2.elf",
-            "t2-rtm.elf",
-            "t2-final.elf",
-            "t2-final-pgo-lto.elf",
-            "big2-ps4_Shipping.elf",
-            "big3-ps4_Shipping.elf",
-            "big4.elf",
-            "big4-final.elf",
-            "big4-mp.elf",
-            "big4-final-pgo-lto.elf",
-            "eboot-mp.elf",
-        };
-        public Label SeperatorLine1;
-        public static string processname = "Jack Shit";
-
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
             this.TLLBtn = new System.Windows.Forms.Button();
@@ -515,55 +486,149 @@ namespace Dobby {
                 foreach (libdebug.Process prc in geo.GetProcessList().processes) {
                     foreach (string id in ExecutablesNames) {
                         if (prc.name == id) {
-                            {
-                                string title = geo.GetProcessInfo(prc.pid).titleid;
-                                if (title == "FLTZ00003" || title == "ITEM00003") {
-                                    Dev.DebugOut($"Skipping Lightning's Stuff {title}");
-                                    break;
-                                }
+                            string title = geo.GetProcessInfo(prc.pid).titleid;
+                            if (title == "FLTZ00003" || title == "ITEM00003") {
+                                Dev.DebugOut($"Skipping Lightning's Stuff {title}");
+                                break;
                             } // Code To Avoid Connecting To HB Store Stuff
-                            exec = prc.pid;
-                            processname = prc.name;
+
+                            Executable = prc.pid;
+                            ProcessName = prc.name;
+                            TitleID = geo.GetProcessInfo(prc.pid).titleid;
                             PS4DebugIsConnected = true;
-                            SetInfoLabelText($"Connected And Attached To {geo.GetProcessInfo(exec).titleid}");
-                            Dev.DebugOut($"{processname} | pid: {exec} | PS4DebugIsConnected == {PS4DebugIsConnected}");
+                            SetInfoLabelText($"Connected And Attached To {geo.GetProcessInfo(Executable).titleid}");
+                            Dev.DebugOut($"{ProcessName} | pid: {Executable} | PS4DebugIsConnected == {PS4DebugIsConnected}");
                         }
                     }
                 }
+                GameVersion = CheckGame();
                 return 0;
             }
             catch (Exception tabarnack) {
-                if (Dev.REL) {
-                    int tst = 420691337;
+                if (!Dev.REL) {
                     Dev.DebugOut($"{tabarnack.Message};{tabarnack.StackTrace}");
                 }
                 SetInfoLabelText($"Connection To {IPBOX_E.Text} Failed");
                 return 1;
             }
         }
-        public byte Connect(object sender, EventArgs e) {
+
+        public string CheckGame() { // An ugly sack of why that determines the patch version of a specified game by just checking the int32 value of 2 bytes at a game-specific address because I have no idea how or if I can check the .sfo
             try {
-                geo = new PS4DBG(IPBOX_E.Text);
-                geo.Connect();
-                foreach (libdebug.Process prc in geo.GetProcessList().processes) {
-                    foreach (string id in ExecutablesNames) {
-                        if (prc.name == id) {
-                            exec = prc.pid;
-                            processname = prc.name;
-                            PS4DebugIsConnected = true;
-                            SetInfoLabelText($"Connected And Attached To {geo.GetProcessInfo(exec).titleid}");
-                            Dev.DebugOut($"{prc.name} | {exec} | PS4DebugIsConnected == {PS4DebugIsConnected}");
-                        }
+                if(PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName || Connect() == 0)
+                    switch(Game) {
+                        case 0: // T1R
+                            Int16 chk = BitConverter.ToInt16(geo.ReadMemory(Executable, 0x4000F4, 2), 0);
+                            if(!Dev.REL) {
+                                string additive;
+                                switch(chk) {
+                                    default:
+                                        additive = "Unknown Game Or Patch";
+                                        break;
+                                    case 18432:
+                                        additive = "Base Game";
+                                        break;
+                                    case 3480:
+                                        additive = "1.09 Patch";
+                                        break;
+                                    case 4488:
+                                        additive = "1.10 Patch";
+                                        break;
+                                    case 4472:
+                                        additive = "1.11 Patch (Final Patch)";
+                                        break;
+                                }
+                                Dev.DebugOut($"CheckGame chk == {chk} ({additive})");
+                            }//EndDebug
+
+                            string T1RErr() {
+                                Dev.DebugOut($"Error 1 (T1R)\n{chk}");
+                                return "UnknownGame";
+                            }
+                            return
+                                chk == 18432 ? "1.00"
+                                : chk == 3480 ? "1.XX"
+                                : chk == 4488 ? "1.XX"
+                                : chk == 4472 ? "1.XX"
+                                : T1RErr();
+
+                        case 9: // T2
+                            int T2Check = BitConverter.ToInt32(geo.ReadMemory(Executable, 0x40009A, 4), 0);
+
+                            //BeginDebug
+                            if(!Dev.REL) {
+                                string additive;
+                                switch(T2Check) {
+                                    default:
+                                        additive = "Unknown Game Or Patch";
+                                        break;
+                                    case 25384434:
+                                        additive = "Base Game";
+                                        break;
+                                    case 25548706:
+                                        additive = "1.01 Patch";
+                                        break;
+                                    case 25502882:
+                                        additive = "1.02 Patch";
+                                        break;
+                                    case 25588450:
+                                        additive = "1.05 Patch";
+                                        break;
+                                    case 25593522:
+                                        additive = "1.07 Patch";
+                                        break;
+                                    case 30024882:
+                                        additive = "1.08 Patch";
+                                        break;
+                                    case 30024914:
+                                        additive = "1.09 Patch (Final Patch)";
+                                        break;
+                                }
+                                Dev.DebugOut($"CheckGame chk == {T2Check} ({additive})");
+                            }//EndDebug
+
+                            string T2Err() {
+                                Dev.DebugOut($"Error 1 (T2)||{T2Check}");
+                                return "UnknownGame";
+                            }
+                            return
+                                T2Check == 25384434 ? "1.00"
+                                : T2Check == 25548706 ? "1.01"
+                                : T2Check == 25502882 ? "1.02"
+                                : T2Check == 25588450 ? "1.05"
+                                : T2Check == 25593522 ? "1.07"
+                                : T2Check == 30024882 ? "1.08"
+                                : T2Check == 30024914 ? "1.09"
+                                : T2Err();
+                            return "UnknownGame";
+
+                        case 2: // UC1
+                            if(geo.ReadMemory(Executable, 0x4DE188, 1)[0] == 0x61) return "1.00";
+                            else if(geo.ReadMemory(Executable, 0x4DE188, 1)[0] == 0x61) return "1.00";
+
+                            return "UnknownGame";
+
+                        case 3: // UC2
+                            if(geo.ReadMemory(Executable, 0x4DE188, 1)[0] == 0x0) return "1.00";
+                            else if(geo.ReadMemory(Executable, 0x4DE188, 1)[0] == 0x0F) return "1.00";
+
+                            return "UnknownGame";
+                        case 4: // UC3
+                            return "UnknownGame";
+                        case 5: // UC4
+                            return "UnknownGame";
+                        case 6: // TLL
+                            return "UnknownGame";
+
                     }
-                }
-                UC4133_Click(sender, e);
-                return 0;
+                return "Error 2";
             }
-            catch (Exception tabarnack) {
-                if (!Dev.REL) Dev.DebugOut($"{tabarnack.Message};{tabarnack.StackTrace}");
-                return 1;
+            catch(Exception Tabarnack) {
+                Dev.DebugOut($"{Tabarnack.Message};{Tabarnack.StackTrace}");
+                return Tabarnack.StackTrace;
             }
         }
+
         public static string IP() {
             try {
                 var file = File.OpenText(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB");
@@ -631,21 +696,22 @@ namespace Dobby {
             }
             Dev.DebugOut($"About To Toggle Byte At 0x{addr:X}");
             try {
-                if (PS4DebugIsConnected && geo.GetProcessInfo(exec).name == processname) {
-                    geo.WriteMemory(exec, addr, geo.ReadMemory(exec, addr, 1)[0] == 0x00 ? on : off);
-                    Dev.DebugOut($"Wrote To {geo.GetProcessInfo(exec).name}/{exec} At 0x{addr:X}");
+                if (PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName) {
+                    geo.WriteMemory(Executable, addr, geo.ReadMemory(Executable, addr, 1)[0] == 0x00 ? on : off);
+                    Dev.DebugOut($"Wrote To {geo.GetProcessInfo(Executable).name}/{Executable} At 0x{addr:X}");
                     attempts = 0;
                 }
                 else {
-                    Dev.DebugOut($"{(PS4DebugIsConnected ? $"geo.GetProcessInfo(exec).name ({geo.GetProcessInfo(exec).name}) != processname ({processname})" : "PS4Debug Isn't Connected, Connecting Now...")}");
+                    Dev.DebugOut($"{(PS4DebugIsConnected ? $"geo.GetProcessInfo(exec).name ({geo.GetProcessInfo(Executable).name}) != processname ({ProcessName})" : "PS4Debug Isn't Connected, Connecting Now...")}");
                     attempts++;
                     if (attempts < 2) {
                         Connect(); Toggle(addr);
                     }
-                    else SetInfoLabelText("Connection Failed");
+                    else if (ActiveForm != null) SetInfoLabelText("Connection Failed");
                 }
             }
             catch (Exception tabarnack) {
+                Dev.DebugOut(tabarnack.Message);
                 attempts++;
                 if (attempts < 2) {
                     Connect(); Toggle(addr);
@@ -663,9 +729,9 @@ namespace Dobby {
             }
             Dev.DebugOut($"About To Toggle Byte At 0x{addr:X}");
             try {
-                if (PS4DebugIsConnected && geo.GetProcessInfo(exec).name == processname) {
-                    geo.WriteMemory(exec, addr, geo.ReadMemory(exec, addr, 1)[0] == 0x00 ? on : off);
-                    Dev.DebugOut($"Wrote To {geo.GetProcessInfo(exec).name}/{exec} At 0x{addr:X}");
+                if (PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName) {
+                    geo.WriteMemory(Executable, addr, geo.ReadMemory(Executable, addr, 1)[0] == 0x00 ? on : off);
+                    Dev.DebugOut($"Wrote To {geo.GetProcessInfo(Executable).name}/{Executable} At 0x{addr:X}");
                     attempts = 0;
                 }
             }
@@ -682,9 +748,9 @@ namespace Dobby {
 
         public void Toggle(ulong[] array) { // Just For The Uncharted Collection
             try {
-                if (PS4DebugIsConnected && geo.GetProcessInfo(exec).name == processname)
+                if (PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName)
                     foreach (ulong addr in array) {
-                        geo.WriteMemory(exec, addr, geo.ReadMemory(exec, addr, 1)[0] == 0x00 ? on : off);
+                        geo.WriteMemory(Executable, addr, geo.ReadMemory(Executable, addr, 1)[0] == 0x00 ? on : off);
                         attempts = 0;
                     }
                 else {
@@ -707,113 +773,8 @@ namespace Dobby {
             }
         }
 
-        public string CheckGame(int Game) { // the fuck!?
-            try {
-                if (PS4DebugIsConnected && geo.GetProcessInfo(exec).name == processname || Connect() == 0)
-                    switch (Game) {
-                        case 0: // T1R
-                            Int16 chk = BitConverter.ToInt16(geo.ReadMemory(exec, 0x4000F4, 2), 0);
-                            //BeginDebug
-                            if (!Dev.REL) {
-                                string additive;
-                                switch (chk) {
-                                    default:
-                                        additive = "Unknown Game Or Patch";
-                                        break;
-                                    case 18432:
-                                        additive = "Base Game";
-                                        break;
-                                    case 3480:
-                                        additive = "1.09 Patch";
-                                        break;
-                                    case 4488:
-                                        additive = "1.10 Patch";
-                                        break;
-                                    case 4472:
-                                        additive = "1.11 Patch (Final Patch)";
-                                        break;
-                                }
-                                Dev.DebugOut($"CheckGame chk == {chk} ({additive})");
-                            }//EndDebug
 
-                            string T1RErr() {
-                                Dev.DebugOut($"Error 1 (T1R)\n{chk}");
-                                return "UnknownGame";
-                            }
-                            return
-                                chk == 18432 ? "1.00"
-                                : chk == 3480 ? "1.XX"
-                                : chk == 4488 ? "1.XX"
-                                : chk == 4472 ? "1.XX"
-                                : T1RErr();
-                        case 1: // T2
-                            int T2Check = BitConverter.ToInt32(geo.ReadMemory(exec, 0x40009A, 4), 0);
 
-                            //BeginDebug
-                            if (!Dev.REL) {
-                                string additive;
-                                switch (T2Check) {
-                                    default:
-                                        additive = "Unknown Game Or Patch";
-                                        break;
-                                    case 25384434:
-                                        additive = "Base Game";
-                                        break;
-                                    case 25548706:
-                                        additive = "1.01 Patch";
-                                        break;
-                                    case 25502882:
-                                        additive = "1.02 Patch";
-                                        break;
-                                    case 25588450:
-                                        additive = "1.05 Patch";
-                                        break;
-                                    case 25593522:
-                                        additive = "1.07 Patch";
-                                        break;
-                                    case 30024882:
-                                        additive = "1.08 Patch";
-                                        break;
-                                    case 30024914:
-                                        additive = "1.09 Patch (Final Patch)";
-                                        break;
-                                }
-                                Dev.DebugOut($"CheckGame chk == {T2Check} ({additive})");
-                            }//EndDebug
-
-                            string T2Err() {
-                                Dev.DebugOut($"Error 1 (T2)||{T2Check}");
-                                return "UnknownGame";
-                            }
-                            return
-                                T2Check == 25384434 ? "1.00"
-                                : T2Check == 25548706 ? "1.01"
-                                : T2Check == 25502882 ? "1.02"
-                                : T2Check == 25588450 ? "1.05"
-                                : T2Check == 25593522 ? "1.07"
-                                : T2Check == 30024882 ? "1.08"
-                                : T2Check == 30024914 ? "1.09"
-                                : T2Err();
-                            return "UnknownGame";
-                        case 2: // UC1
-                            return "UnknownGame";
-                        case 3: // UC2
-                            return "UnknownGame";
-                        case 4: // UC3
-                            return "UnknownGame";
-                        case 5: // UC4
-                            return "UnknownGame";
-                        case 6: // TLL
-                            return "UnknownGame";
-
-                    }
-                return "Error 2";
-            }
-            catch (Exception Tabarnack) {
-                Dev.DebugOut($"{Tabarnack.Message};{Tabarnack.StackTrace}");
-                return Tabarnack.StackTrace;
-            }
-        }
         public void IPLabelBtn_Click(object sender, EventArgs e) => IPBOX_E.Focus();
         public void PortLabelBtn_Click(object sender, EventArgs e) => PortBox.Focus();
 
@@ -823,35 +784,35 @@ namespace Dobby {
             S.Send(Properties.Resources.PS4Debug1_1_15);
             SetInfoLabelText("Payload Injected Successfully");
             S.Close();
-            if (true)//Dev.REL) // Excessive Credits To Try Avoiding Beef
-                MessageBox.Show("PS4Debug Paylod Sent Without Issue\n\nPS4Debug Update 1.1.15 By ctn123\nPS4Debug Created By Golden", "Payload Injected Successfully, Here's Some Credits");
+            // Excessive Credits To Try Avoiding Beef lol
+            MessageBox.Show("PS4Debug Paylod Sent Without Issue\n\nPS4Debug Update 1.1.15 By ctn123\nPS4Debug Created By Golden", "Payload Injected Successfully, Here's Some Credits");
         }
 
         public void ManualConnectBtn_Click(object sender, EventArgs e) => Connect();
 
         public void T1RBtn_Click(object sender, EventArgs e) {
-            string Game = CheckGame(0); // The Fuck?
-            Toggle(Game == "1.00" ? 0x114ED32E81 : Game == "UnknownGame" ? (ulong)0x0 : 0x114F536E81);
+            Toggle(GameVersion == "1.00" ? 0x114ED32E81 : GameVersion == "UnknownGame" ? (ulong)0x0 : 0x114F536E81);
         }
 
-        public void T2Btn_Click(object sender, EventArgs e) => ToggleAlt(CheckGame(1) == "1.00" ? (ulong)0x110693FAA1 : 0x11069DFAA1);
+        public void T2Btn_Click(object sender, EventArgs e) => ToggleAlt(CheckGame() == "1.00" ? (ulong)0x110693FAA1 : 0x11069DFAA1);
 
         public void UC1Btn_Click(object sender, EventArgs e) {
-            if (!PS4DebugIsConnected) Connect(); // Temporary debug code to get it working for Chandler
-            if (geo.ReadMemory(exec, 0x4DE188, 1)[0] == 0x61) {
-                Toggle(new ulong[] { 0xD5CA4C, 0xD5C9F0, 0xD5BBC1 }); // 1.02
-                return;
-            }
-            Toggle(new ulong[] { 0xD989CC, 0xD97B41, 0xD98970 }); // 1.00
+            if(GameVersion == "UnkownGame") return;
+            Toggle(GameVersion == "1.00" ? new ulong[] { 0xD989CC, 0xD97B41, 0xD98970 } : new ulong[] { 0xD5CA4C, 0xD5C9F0, 0xD5BBC1 });
         }
 
-        public void UC2Btn_Click(object sender, EventArgs e) => Toggle(new ulong[] { 0x127149C, 0x12705C9 });
+        public void UC2Btn_Click(object sender, EventArgs e) {
+            if(GameVersion == "UnkownGame") return;
+            Toggle(GameVersion == "1.00" ? new ulong[] { 0x127149C, 0x12705C9 } : new ulong[] { 0x145decc, 0x145cff9, 0x145de61 });
+        }
 
         public void UC3Btn_Click(object sender, EventArgs e) => Toggle(new ulong[] { 0x18366C4, 0x1835481 });
 
-        public void UC4100Btn_Click(object sender, EventArgs e) => Toggle(0x1104FC2E95);
+        public void UC4100Btn_Click(object sender, EventArgs e) {
+            //Toggle(0x1104FC2E95);
+        }
 
-        public void UC4133_Click(object sender, EventArgs e) => Toggle(PS4DebugIsConnected ? geo.GetProcessInfo(exec).name != "eboot.bin" ? (ulong)0x1104B1AE79 : 0x110491AE79 : Connect(sender, e));//! ???
+        public void UC4133_Click(object sender, EventArgs e) => Toggle(PS4DebugIsConnected ? geo.GetProcessInfo(Executable).name != "eboot.bin" ? (ulong)0x1104B1AE79 : 0x110491AE79 : Connect());//! ???
 
         private void UC4MPBetaBtn_Click(object sender, EventArgs e) => Toggle(0x113408AE83);
 
@@ -859,6 +820,39 @@ namespace Dobby {
 
         public void TLL109(object sender, EventArgs e) => Toggle(0x1105D1AEF9);
 
+
+#if DEBUG
+
+        public byte DebugConnect() {
+            try {
+                geo = new PS4DBG(IPBOX_E.Text);
+                geo.Connect();
+                foreach(libdebug.Process prc in geo.GetProcessList().processes) {
+                    foreach(string id in ExecutablesNames) {
+                        if(prc.name == id) {
+                            string title = geo.GetProcessInfo(prc.pid).titleid;
+                            if(title == "FLTZ00003" || title == "ITEM00003") {
+                                Dev.DebugOut($"Skipping Lightning's Stuff {title}");
+                                break;
+                            } // Code To Avoid Connecting To HB Store Stuff
+
+                            Executable = prc.pid;
+                            ProcessName = prc.name;
+                            TitleID = geo.GetProcessInfo(prc.pid).titleid;
+                            PS4DebugIsConnected = true;
+                            Dev.DebugOut($"{ProcessName} | pid: {Executable} | PS4DebugIsConnected == {PS4DebugIsConnected}");
+                        }
+                    }
+                }
+                GameVersion = CheckGame();
+                return 0;
+            }
+            catch(Exception tabarnack) {
+                MessageBox.Show(tabarnack.Message);
+                return 1;
+            }
+        }
+#endif
 
 
         public Button ExitBtn;
@@ -879,6 +873,7 @@ namespace Dobby {
         public Button PortLabelBtn;
         public TextBox PortBox;
         public Button DebugPayloadBtn;
+        public Label SeperatorLine1;
         public Label SeperatorLine2;
         public Label SeperatorLine3;
         public Button EPPBackBtn;

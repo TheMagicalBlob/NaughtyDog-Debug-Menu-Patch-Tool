@@ -122,7 +122,8 @@ namespace Dobby {
       "* 3-beta.24.74.175 | I have no idea anymore",
       "* 3-beta.25.76.177 | I have no idea anymore",
            "* 3.26.77.180 | Arbitrarily Increased Build Number As I've Forgotten Everything I've Done. Changed More Than The Increase Might Imply",
-           "* 3.26.77.191 | EbootPatchPage GroupBox Adjust, Added Uncharted Pointers, Seperated Debug Offsets & Pointers A Bit More"
+           "* 3.26.77.192 | Fixed A String In ExecutableNames Array that I for some reason stopped typing mid-way, EbootPatchPage GroupBox Adjust, Added Uncharted Pointers, Seperated Debug Offsets & Pointers A Bit More",
+           "* 3.26.78.204 | Added A DebugMemoryWrite Function TO TOggle Shit Quickly, Added InfiniteAmmo As A QOL Option, And More UC4 identifiers up to 1.12"
 
             // TODO:
             // - Finish EbootPatchHelpPage
@@ -157,6 +158,35 @@ namespace Dobby {
         public static NetworkStream net_stream;
 
         public static Font MainFont = new Font("Franklin Gothic Medium", 6.5F, FontStyle.Bold);
+
+        public static readonly byte // BECAUSE I FUCKING CAN, YOU TWAT
+            on = 0x01,
+            off = 0x00
+        ;
+
+        public static bool PS4DebugIsConnected;
+
+        public static int
+            Executable,  // Active PS4DBG Process ID
+            attempts = 0 // Connect() retries
+        ;
+
+        public static readonly string[] ExecutablesNames = new string[] {
+            "eboot.bin",
+            "t2.elf",
+            "t2-rtm.elf",
+            "t2-final.elf",
+            "t2-final-pgo-lto.elf",
+            "big2-ps4_Shipping.elf",
+            "big3-ps4_Shipping.elf",
+            "big4.elf",
+            "big4-final.elf",
+            "big4-mp.elf",
+            "big4-final-pgo-lto.elf",
+            "eboot-mp.elf",
+        };
+        public static string ProcessName = "Jack Shit", GameVersion = string.Empty, TitleID;
+
 
 
         public static void ExitBtn_Click(object sender, EventArgs e) { MainStream?.Dispose(); Environment.Exit(0); }
@@ -420,6 +450,13 @@ namespace Dobby {
             SetInfoLabelText(InfoLabelString);
         }
 
+
+        /// <summary>
+        /// Loads The Specified Page.<br/>
+        /// 0: Main Form <br/>1: PS4DebugPage 2: EbootPatchPage 3: PS4QOLPatchPage 4:  PKG Build Page <br/>5: InfoHelpPage 6: PS4DebugHelpPage 7: EbootPatchHelpPage  8: Credits Page <br/>9: PCDebugMenuPage 10: PCQOLPatchesPage
+        /// </summary>
+        /// <param name="Page"> Page To Change To </param>
+        /// <param name="IsGoingBack"> Whether We're Returning Or Loading A New Page </param>
         public static void ChangeForm(int Page, bool IsGoingBack) {
             LastPos = ActiveForm.Location;
             var ClosingForm = ActiveForm;
@@ -434,7 +471,7 @@ namespace Dobby {
             Common.Page = Page;
             switch (Page) {
                 default:
-                    Dev.DebugOut($"{Page} Is Not A Page!");
+                    DebugOut($"{Page} Is Not A Page!");
                     break;
                 case 0:
                     MainForm.Show();
@@ -559,7 +596,7 @@ namespace Dobby {
         }
 
         /// <summary> Set The Text of The Yellow Label At The Bottom Of The Form </summary>
-        public static void SetInfoLabelText(string s) => YellowInformationLabel.Text = s; // I used to have this output to the debugger as well, hence the presence of function call as opposed to just the text change itself
+        public static void SetInfoLabelText(string s) { if(ActiveForm != null) YellowInformationLabel.Text = s; }
 
         /// <summary> Highlights A Control In Yellow With A > Preceeding It When Hovered Over </summary>
         /// <param name="PassedControl">The Control To Highlight</param>
@@ -649,7 +686,18 @@ namespace Dobby {
             UC3100 = 20277852,
             UC3102 = 23365872,
             UC4100 = 36229424,
-            UC413X = 33886256,
+            UC4101 = 37122024,
+            UC4102 = 37136552,
+            UC4103 = 37137792,
+            UC4104 = 37144904,
+            UC4105 = 37145288,
+            UC4106 = 37150008,
+            UC4108 = 33453704,
+            UC4110 = 33454632,
+            UC4111 = 33460888,
+            UC4112 = 33515840,
+            UC413X = 33886256, // UC4 1.32 & 1.33 SP are identical
+            UC4132MP = 35875608,
             UC4133MP = 35877432,
             TLL100 = 35178432,
             TLL10X = 35227448,
@@ -966,6 +1014,36 @@ namespace Dobby {
             T2109InvinciblePlayer = new byte[] { }
         ;
 
+        /// <summary>
+        ///  Infinite Ammo Offsets
+        /// </summary>
+        public static readonly byte[]
+            UC1100InfiniteAmmo = new byte[] { 0x01, 0x5D, 0xAF, 0x00 },
+            UC1102InfiniteAmmo = new byte[] {  },
+            UC2100InfiniteAmmo = new byte[] {  },
+            UC2102InfiniteAmmo = new byte[] {  },
+            UC3100InfiniteAmmo = new byte[] {  },
+            UC3102InfiniteAmmo = new byte[] {  },
+            UC4100InfiniteAmmo = new byte[] {  },
+            UC4133InfiniteAmmo = new byte[] {  },
+          UC4133MPInfiniteAmmo = new byte[] {  },
+            TLL100InfiniteAmmo = new byte[] {  },
+            TLL107InfiniteAmmo = new byte[] {  },
+            TLL108InfiniteAmmo = new byte[] {  },
+            TLL109InfiniteAmmo = new byte[] {  },
+            T1R100InfiniteAmmo = new byte[] {  },
+            T1R109InfiniteAmmo = new byte[] {  },
+            T1R110InfiniteAmmo = new byte[] {  },
+            T1R111InfiniteAmmo = new byte[] {  },
+            T2100InfiniteAmmo  = new byte[] {  },
+            T2101InfiniteAmmo  = new byte[] {  },
+            T2102InfiniteAmmo  = new byte[] {  },
+            T2105InfiniteAmmo  = new byte[] {  },
+            T2107InfiniteAmmo  = new byte[] {  },
+            T2108InfiniteAmmo  = new byte[] {  },
+            T2109InfiniteAmmo  = new byte[] {  }
+        ;
+
         public static byte[]
             chk = new byte[4],
             E9Jump = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 },
@@ -1057,6 +1135,8 @@ namespace Dobby {
 
             static int TimerTicks = 0, OutputStringIndex = 0;
 
+            static string PS4DebugDev = "";
+
             public delegate void TimerDelegate();
             public static TimerDelegate TimerThread = new TimerDelegate(StartTimer);
             public static System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
@@ -1103,6 +1183,10 @@ namespace Dobby {
                             OutputStringIndex--;
                             Clear();
                             break;
+                        case ConsoleKey.W:
+                            PS4DebugDev = "Waiting For Address";
+                            DebugMemoryWrite(ulong.Parse(ReadLine(), System.Globalization.NumberStyles.HexNumber));
+                            break;
                     }                        
                 }
             }
@@ -1132,7 +1216,7 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                         int StartTime = TimerTicks, Cursor = 0, String = 0; Form frm = ActiveForm;
                         string ControlType = HoveredControl.GetType().ToString();
                         string[] Output = new string[] {
-                            $"Build: {Build} | ~{Interval}ms | {OutputStrings.Length} ({OutputStringIndex})",
+                            $"Build: {Build} | ~{Interval}ms | {OutputStrings.Length} ({OutputStringIndex})  {PS4DebugDev}",
                             "",
                             $"Form: {(ActiveForm != null ? $"{ActiveForm.Name} | Form Position: {ActiveForm.Location}" : "Console")}",
                             $"Pages: {Pages?[0]}, {Pages?[1]}, {Pages?[2]}, {Pages?[3]}",
@@ -1216,6 +1300,14 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                 MainStreamIsOpen = true;
                 Clear();
             }
+
+            public static void DebugMemoryWrite(ulong address) {
+                PS4DebugPage tmp = new PS4DebugPage();
+                if(PS4DebugIsConnected || tmp.DebugConnect() == 0)
+                tmp.Toggle((ulong)address);
+                PS4DebugDev = "";
+            }
+
 #endif
         }
     }
