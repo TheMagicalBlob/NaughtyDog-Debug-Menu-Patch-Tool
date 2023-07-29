@@ -123,7 +123,8 @@ namespace Dobby {
       "* 3-beta.25.76.177 | I have no idea anymore",
            "* 3.26.77.180 | Arbitrarily Increased Build Number As I've Forgotten Everything I've Done. Changed More Than The Increase Might Imply",
            "* 3.26.77.192 | Fixed A String In ExecutableNames Array that I for some reason stopped typing mid-way, EbootPatchPage GroupBox Adjust, Added Uncharted Pointers, Seperated Debug Offsets & Pointers A Bit More",
-           "* 3.26.78.204 | Added A DebugMemoryWrite Function TO TOggle Shit Quickly, Added InfiniteAmmo As A QOL Option, And More UC4 identifiers up to 1.12"
+           "* 3.26.78.204 | Added A DebugMemoryWrite Function TO TOggle Shit Quickly, Added InfiniteAmmo As A QOL Option, And More UC4 identifiers up to 1.12",
+           "* 3.26.78.205 | Removed Infinite Ammo And Invincible Player As PS4QOLPage Options, 'cause Natives go brr"
 
             // TODO:
             // - Finish EbootPatchHelpPage
@@ -983,66 +984,6 @@ namespace Dobby {
             T2109RightMargin = new byte[] {}
         ;
 
-
-        /// <summary>
-        ///  Invincible Player Offsets
-        /// </summary>
-        public static readonly byte[]
-            UC1100InvinciblePlayer = new byte[] { 0xF8, 0x20, 0xAE, 0x00 },
-            UC1102InvinciblePlayer = new byte[] { },
-            UC2100InvinciblePlayer = new byte[] { },
-            UC2102InvinciblePlayer = new byte[] { },
-            UC3100InvinciblePlayer = new byte[] { },
-            UC3102InvinciblePlayer = new byte[] { },
-            UC4100InvinciblePlayer = new byte[] { },
-            UC4133InvinciblePlayer = new byte[] { },
-          UC4133MPInvinciblePlayer = new byte[] { },
-            TLL100InvinciblePlayer = new byte[] { },
-            TLL107InvinciblePlayer = new byte[] { },
-            TLL108InvinciblePlayer = new byte[] { },
-            TLL109InvinciblePlayer = new byte[] { },
-            T1R100InvinciblePlayer = new byte[] { },
-            T1R109InvinciblePlayer = new byte[] { },
-            T1R110InvinciblePlayer = new byte[] { },
-            T1R111InvinciblePlayer = new byte[] { },
-            T2100InvinciblePlayer = new byte[] { },
-            T2101InvinciblePlayer = new byte[] { },
-            T2102InvinciblePlayer = new byte[] { },
-            T2105InvinciblePlayer = new byte[] { },
-            T2107InvinciblePlayer = new byte[] { },
-            T2108InvinciblePlayer = new byte[] { },
-            T2109InvinciblePlayer = new byte[] { }
-        ;
-
-        /// <summary>
-        ///  Infinite Ammo Offsets
-        /// </summary>
-        public static readonly byte[]
-            UC1100InfiniteAmmo = new byte[] { 0x01, 0x5D, 0xAF, 0x00 },
-            UC1102InfiniteAmmo = new byte[] {  },
-            UC2100InfiniteAmmo = new byte[] {  },
-            UC2102InfiniteAmmo = new byte[] {  },
-            UC3100InfiniteAmmo = new byte[] {  },
-            UC3102InfiniteAmmo = new byte[] {  },
-            UC4100InfiniteAmmo = new byte[] {  },
-            UC4133InfiniteAmmo = new byte[] {  },
-          UC4133MPInfiniteAmmo = new byte[] {  },
-            TLL100InfiniteAmmo = new byte[] {  },
-            TLL107InfiniteAmmo = new byte[] {  },
-            TLL108InfiniteAmmo = new byte[] {  },
-            TLL109InfiniteAmmo = new byte[] {  },
-            T1R100InfiniteAmmo = new byte[] {  },
-            T1R109InfiniteAmmo = new byte[] {  },
-            T1R110InfiniteAmmo = new byte[] {  },
-            T1R111InfiniteAmmo = new byte[] {  },
-            T2100InfiniteAmmo  = new byte[] {  },
-            T2101InfiniteAmmo  = new byte[] {  },
-            T2102InfiniteAmmo  = new byte[] {  },
-            T2105InfiniteAmmo  = new byte[] {  },
-            T2107InfiniteAmmo  = new byte[] {  },
-            T2108InfiniteAmmo  = new byte[] {  },
-            T2109InfiniteAmmo  = new byte[] {  }
-        ;
 
         public static byte[]
             chk = new byte[4],
