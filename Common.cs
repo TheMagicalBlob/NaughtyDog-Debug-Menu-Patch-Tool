@@ -14,6 +14,7 @@ using System.Windows.Forms;
 using static System.Console;
 using static Dobby.Common.Dev;
 using System.Runtime.ConstrainedExecution;
+using System.Net;
 
 namespace Dobby {
     public class Common : Dobby {
@@ -124,7 +125,7 @@ namespace Dobby {
            "* 3.26.77.180 | Arbitrarily Increased Build Number As I've Forgotten Everything I've Done. Changed More Than The Increase Might Imply",
            "* 3.26.77.192 | Fixed A String In ExecutableNames Array that I for some reason stopped typing mid-way, EbootPatchPage GroupBox Adjust, Added Uncharted Pointers, Seperated Debug Offsets & Pointers A Bit More",
            "* 3.26.78.204 | Added A DebugMemoryWrite Function TO TOggle Shit Quickly, Added InfiniteAmmo As A QOL Option, And More UC4 identifiers up to 1.12",
-           "* 3.26.78.205 | Removed Infinite Ammo And Invincible Player As PS4QOLPage Options, 'cause Natives go brr"
+           "* 3.26.79.205 | Added the ability to send the ps4debug oayload with W then S, Removed Infinite Ammo And Invincible Player As PS4QOLPage Options, 'cause Natives go brr"
 
             // TODO:
             // - Finish EbootPatchHelpPage
@@ -984,6 +985,36 @@ namespace Dobby {
             T2109RightMargin = new byte[] {}
         ;
 
+        /// <summary>
+        ///  novis (Disable All Visibility) Offsets, with the memory addresses as comments 
+        /// </summary>
+        public static readonly byte[]
+            UC1100Novis = new byte[] { 0x6B, 0xF9, 0x98, 0x00 }, // 0xd8f96b
+            UC1102Novis = new byte[] { 0x9B, 0x59, 0x95, 0x00 }, // 0xD5599B
+            UC2100Novis = new byte[] { 0xFB, 0x61, 0xE6, 0x00 }, // 0x12661fb 
+            UC2102Novis = new byte[] { 0xCB, 0x0D, 0x05, 0x01 }, // 0x1450dcb
+            UC3100Novis = new byte[] { 0x34, 0xFA, 0x42, 0x01 }, // 0x182FA34
+            UC3102Novis = new byte[] { }, // 
+            UC4100Novis = new byte[] { }, // 
+            UC4133Novis = new byte[] { }, // 
+          UC4133MPNovis = new byte[] { }, // 
+            TLL100Novis = new byte[] { }, // 
+            TLL107Novis = new byte[] { }, // 
+            TLL108Novis = new byte[] { }, // 
+            TLL109Novis = new byte[] { }, // 
+            T1R100Novis = new byte[] { }, // 
+            T1R109Novis = new byte[] { }, // 
+            T1R110Novis = new byte[] { }, // 
+            T1R111Novis = new byte[] { }, // 
+            T2100Novis  = new byte[] { }, // 
+            T2101Novis  = new byte[] { }, // 
+            T2102Novis  = new byte[] { }, // 
+            T2105Novis  = new byte[] { }, // 
+            T2107Novis  = new byte[] { }, // 
+            T2108Novis  = new byte[] { }, // 
+            T2109Novis  = new byte[] { }  // 
+        ;
+
 
         public static byte[]
             chk = new byte[4],
@@ -1126,7 +1157,18 @@ namespace Dobby {
                             break;
                         case ConsoleKey.W:
                             PS4DebugDev = "Waiting For Address";
-                            DebugMemoryWrite(ulong.Parse(ReadLine(), System.Globalization.NumberStyles.HexNumber));
+                            var Line = ReadLine();
+                            if(Line == "S" || Line == "s") {
+                                Socket S = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                                var file = File.OpenText(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB");
+                                string v = file.ReadToEnd(); file.Dispose();
+                                S.Connect(new IPEndPoint(IPAddress.Parse(v.Remove(v.IndexOf(";"))), 9090));
+                                S.Send(Resources.PS4Debug1_1_15);
+                                SetInfoLabelText("");
+                                S.Close();
+                                break;
+                            }
+                            DebugMemoryWrite(ulong.Parse(Line, System.Globalization.NumberStyles.HexNumber));
                             break;
                     }                        
                 }
