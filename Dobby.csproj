@@ -163,6 +163,7 @@
     <Content Include="Resources\Address List.txt" />
     <Content Include="Resources\blobwithgreybg.png" />
     <Content Include="Resources\Code List.txt" />
+    <Content Include="Resources\InvertBytes.exe" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
