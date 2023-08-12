@@ -160,7 +160,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Address List.txt" />
     <Content Include="Resources\blobwithgreybg.png" />
+    <Content Include="Resources\Code List.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
