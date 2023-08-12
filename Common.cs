@@ -125,7 +125,8 @@ namespace Dobby {
            "* 3.26.77.180 | Arbitrarily Increased Build Number As I've Forgotten Everything I've Done. Changed More Than The Increase Might Imply",
            "* 3.26.77.192 | Fixed A String In ExecutableNames Array that I for some reason stopped typing mid-way, EbootPatchPage GroupBox Adjust, Added Uncharted Pointers, Seperated Debug Offsets & Pointers A Bit More",
            "* 3.26.78.204 | Added A DebugMemoryWrite Function TO TOggle Shit Quickly, Added InfiniteAmmo As A QOL Option, And More UC4 identifiers up to 1.12",
-           "* 3.26.79.205 | Added the ability to send the ps4debug oayload with W then S, Removed Infinite Ammo And Invincible Player As PS4QOLPage Options, 'cause Natives go brr"
+           "* 3.26.79.205 | Added the ability to send the ps4debug oayload with W then S, Removed Infinite Ammo And Invincible Player As PS4QOLPage Options, 'cause Natives go brr",
+           "* 3.26.79.208 | Reordered UC1 Debug Offsets To Make It Appear To Work Slightly faster (Enables FPS First Now lol), Misc tweaks to debug functions"
 
             // TODO:
             // - Finish EbootPatchHelpPage
@@ -831,7 +832,7 @@ namespace Dobby {
             UC1102ProgPauseOnExit = new byte[] { },
             UC2100ProgPauseOnExit = new byte[] { 0x79, 0xC7, 0xEB, 0x00 },
             UC2102ProgPauseOnExit = new byte[] { },
-            UC3100ProgPauseOnExit = new byte[] { },
+            UC3100ProgPauseOnExit = new byte[] { 0x51, 0x4A, 0x7B, 0x01 },
             UC3102ProgPauseOnExit = new byte[] { },
             UC4100ProgPauseOnExit = new byte[] { },
             UC4133ProgPauseOnExit = new byte[] { },
@@ -1103,7 +1104,7 @@ namespace Dobby {
 
             public static bool OverrideDebugOut;
 
-            static int tst_int = 0;
+            static int tst_int = 0, DebugMemoryWrites;
 
             static int TimerTicks = 0, OutputStringIndex = 0;
 
@@ -1158,17 +1159,32 @@ namespace Dobby {
                         case ConsoleKey.W:
                             PS4DebugDev = "Waiting For Address";
                             var Line = ReadLine();
+                            PS4DebugDev = $"Writing To: {Line:X}";
+                            if(DebugMemoryWrites > 1) {
+                                OutputStrings = new string[OutputStrings.Length];
+                                OutputStringIndex = 0;
+                                Clear(); Thread.Sleep(42); Clear(); // First Clear Doesn't Get It All
+                                DebugMemoryWrites = 0;
+                            }
                             if(Line == "S" || Line == "s") {
+                                PS4DebugDev = "Sending Payload";
                                 Socket S = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                                 var file = File.OpenText(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB");
                                 string v = file.ReadToEnd(); file.Dispose();
-                                S.Connect(new IPEndPoint(IPAddress.Parse(v.Remove(v.IndexOf(";"))), 9090));
+                                try {
+                                    S.Connect(new IPEndPoint(IPAddress.Parse(v.Remove(v.IndexOf(";"))), 9090));
+                                }
+                                catch(Exception) {
+                                    S.Connect(new IPEndPoint(IPAddress.Parse(v.Remove(v.IndexOf(";"))), 9020));
+                                }
                                 S.Send(Resources.PS4Debug1_1_15);
-                                SetInfoLabelText("");
                                 S.Close();
+                                PS4DebugDev = "";
                                 break;
                             }
                             DebugMemoryWrite(ulong.Parse(Line, System.Globalization.NumberStyles.HexNumber));
+                            DebugMemoryWrites++;
+                            PS4DebugDev = "";
                             break;
                     }                        
                 }

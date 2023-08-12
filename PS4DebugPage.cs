@@ -798,7 +798,7 @@ namespace Dobby {
 
         public void UC1Btn_Click(object sender, EventArgs e) {
             if(GameVersion == "UnkownGame") return;
-            Toggle(GameVersion == "1.00" ? new ulong[] { 0xD989CC, 0xD97B41, 0xD98970 } : new ulong[] { 0xD5CA4C, 0xD5C9F0, 0xD5BBC1 });
+            Toggle(GameVersion == "1.00" ? new ulong[] { 0xD97B41, 0xD989CC, 0xD98970 } : new ulong[] { 0xD5C9F0, 0xD5CA4C, 0xD5BBC1 });
         }
 
         public void UC2Btn_Click(object sender, EventArgs e) {
