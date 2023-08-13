@@ -18,7 +18,7 @@ namespace Dobby {
             AddControlEventHandlers(Controls);
         }
 
-        PS4DBG geo;
+        public PS4DBG geo;
 
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
@@ -217,7 +217,7 @@ namespace Dobby {
             this.UC4Btn.Text = "Uncharted 4";
             this.UC4Btn.TextAlign = ContentAlignment.MiddleLeft;
             this.UC4Btn.UseVisualStyleBackColor = false;
-            this.UC4Btn.Click += new System.EventHandler(this.UC4100Btn_Click);
+            this.UC4Btn.Click += new System.EventHandler(this.UC4Btn_Click);
             // 
             // BackBtn
             // 
@@ -501,7 +501,7 @@ namespace Dobby {
                         }
                     }
                 }
-                GameVersion = CheckGame();
+                GameVersion = GetGameVersion();
                 return 0;
             }
             catch (Exception tabarnack) {
@@ -513,10 +513,10 @@ namespace Dobby {
             }
         }
 
-        public string CheckGame() { // An ugly sack of why that determines the patch version of a specified game by just checking the int32 value of 2 bytes at a game-specific address because I have no idea how or if I can check the .sfo
+        public string GetGameVersion() { // An ugly sack of WHY which determines the patch version of a specified game by just checking the int32 value of 2 bytes at a game-specific address because I have no idea how or if I can check the .sfo
             try {
                 if(PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName || Connect() == 0)
-                    switch(Game) {
+                    switch(Game) { // Not Checking Title Id, different regions of these games are all the same so it would be redundant
                         case 0: // T1R
                             Int16 chk = BitConverter.ToInt16(geo.ReadMemory(Executable, 0x4000F4, 2), 0);
                             if(!Dev.REL) {
@@ -794,7 +794,7 @@ namespace Dobby {
             Toggle(GameVersion == "1.00" ? 0x114ED32E81 : GameVersion == "UnknownGame" ? (ulong)0x0 : 0x114F536E81);
         }
 
-        public void T2Btn_Click(object sender, EventArgs e) => ToggleAlt(CheckGame() == "1.00" ? (ulong)0x110693FAA1 : 0x11069DFAA1);
+        public void T2Btn_Click(object sender, EventArgs e) => ToggleAlt(GetGameVersion() == "1.00" ? (ulong)0x110693FAA1 : 0x11069DFAA1);
 
         public void UC1Btn_Click(object sender, EventArgs e) {
             if(GameVersion == "UnkownGame") return;
@@ -806,13 +806,12 @@ namespace Dobby {
             Toggle(GameVersion == "1.00" ? new ulong[] { 0x127149C, 0x12705C9 } : new ulong[] { 0x145decc, 0x145cff9, 0x145de61 });
         }
 
-        public void UC3Btn_Click(object sender, EventArgs e) => Toggle(new ulong[] { 0x18366C4, 0x1835481 });
+        public void UC3Btn_Click(object sender, EventArgs e) => Toggle(new ulong[] { 0x18366c9, 0x1e21f90, 0x18366C4 });
 
-        public void UC4100Btn_Click(object sender, EventArgs e) {
-            //Toggle(0x1104FC2E95);
+        public void UC4Btn_Click(object sender, EventArgs e) {
+            if(GameVersion == "UnkownGame") return;
+            Toggle(GameVersion == "1.00" ? (ulong)0x1104FC2E95 : 0x0);
         }
-
-        public void UC4133_Click(object sender, EventArgs e) => Toggle(PS4DebugIsConnected ? geo.GetProcessInfo(Executable).name != "eboot.bin" ? (ulong)0x1104B1AE79 : 0x110491AE79 : Connect());//! ???
 
         private void UC4MPBetaBtn_Click(object sender, EventArgs e) => Toggle(0x113408AE83);
 
@@ -827,7 +826,7 @@ namespace Dobby {
             try {
                 geo = new PS4DBG(IPBOX_E.Text);
                 geo.Connect();
-                foreach(libdebug.Process prc in geo.GetProcessList().processes) {
+                foreach(Process prc in geo.GetProcessList().processes) {
                     foreach(string id in ExecutablesNames) {
                         if(prc.name == id) {
                             string title = geo.GetProcessInfo(prc.pid).titleid;
@@ -844,7 +843,7 @@ namespace Dobby {
                         }
                     }
                 }
-                GameVersion = CheckGame();
+                GameVersion = GetGameVersion();
                 return 0;
             }
             catch(Exception tabarnack) {

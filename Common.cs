@@ -126,7 +126,7 @@ namespace Dobby {
            "* 3.26.77.192 | Fixed A String In ExecutableNames Array that I for some reason stopped typing mid-way, EbootPatchPage GroupBox Adjust, Added Uncharted Pointers, Seperated Debug Offsets & Pointers A Bit More",
            "* 3.26.78.204 | Added A DebugMemoryWrite Function TO TOggle Shit Quickly, Added InfiniteAmmo As A QOL Option, And More UC4 identifiers up to 1.12",
            "* 3.26.79.205 | Added the ability to send the ps4debug oayload with W then S, Removed Infinite Ammo And Invincible Player As PS4QOLPage Options, 'cause Natives go brr",
-           "* 3.26.79.208 | Reordered UC1 Debug Offsets To Make It Appear To Work Slightly faster (Enables FPS First Now lol), Misc tweaks to debug functions"
+           "* 3.26.80.208 | Fixed UC3 1.00 Debug Offsets, One Was Wrong And The Other Was Missing (how did I manage that? only the dev menu bool was right) Reordered UC1 Debug Offsets To Make It Appear To Work Slightly faster (Enables FPS First Now lol), Misc tweaks to debug functions"
 
             // TODO:
             // - Finish EbootPatchHelpPage
@@ -995,8 +995,8 @@ namespace Dobby {
             UC2100Novis = new byte[] { 0xFB, 0x61, 0xE6, 0x00 }, // 0x12661fb 
             UC2102Novis = new byte[] { 0xCB, 0x0D, 0x05, 0x01 }, // 0x1450dcb
             UC3100Novis = new byte[] { 0x34, 0xFA, 0x42, 0x01 }, // 0x182FA34
-            UC3102Novis = new byte[] { }, // 
-            UC4100Novis = new byte[] { }, // 
+            UC3102Novis = new byte[] { 0x8B, 0x80, 0x6E, 0x01 }, // 0x1ae808b
+            UC4101Novis = new byte[] { }, // 
             UC4133Novis = new byte[] { }, // 
           UC4133MPNovis = new byte[] { }, // 
             TLL100Novis = new byte[] { }, // 
@@ -1186,6 +1186,9 @@ namespace Dobby {
                             DebugMemoryWrites++;
                             PS4DebugDev = "";
                             break;
+                        case ConsoleKey.X:
+                            DebugFuunctionCall();
+                            break;
                     }                        
                 }
             }
@@ -1305,6 +1308,12 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                 if(PS4DebugIsConnected || tmp.DebugConnect() == 0)
                 tmp.Toggle((ulong)address);
                 PS4DebugDev = "";
+            }
+
+            public static void DebugFuunctionCall() {
+                PS4DebugPage tmp = new PS4DebugPage(); tmp.DebugConnect();
+                DebugOut(tmp.geo.Call(Executable, tmp.geo.InstallRPC(Executable), 0x52e060, new object[] { 0x105f83d240, 4 })); // 0x105f83d240
+                return;
             }
 
 #endif
