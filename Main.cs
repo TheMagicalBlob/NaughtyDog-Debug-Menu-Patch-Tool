@@ -70,7 +70,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.PkgPageBtn = new System.Windows.Forms.Button();
             this.SeperatorLabel1 = new System.Windows.Forms.Label();
             this.PCDebugMenuPageBtn = new System.Windows.Forms.Button();
-            this.InfogramsIllusionLinkBtn = new System.Windows.Forms.Button();
             this.BorderBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -121,7 +120,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(7, 313);
+            this.Info.Location = new System.Drawing.Point(7, 282);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
@@ -187,7 +186,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 271);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 240);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
@@ -205,7 +204,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 247);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 216);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.InfoHelpBtn.Size = new System.Drawing.Size(147, 23);
@@ -229,7 +228,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             // 
             this.SeperatorLabel2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.SeperatorLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLabel2.Location = new System.Drawing.Point(3, 223);
+            this.SeperatorLabel2.Location = new System.Drawing.Point(3, 192);
             this.SeperatorLabel2.Name = "SeperatorLabel2";
             this.SeperatorLabel2.Size = new System.Drawing.Size(316, 16);
             this.SeperatorLabel2.TabIndex = 32;
@@ -244,7 +243,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.BorderBox.Controls.Add(this.CreditsBtn);
             this.BorderBox.Location = new System.Drawing.Point(0, -6);
             this.BorderBox.Name = "BorderBox";
-            this.BorderBox.Size = new System.Drawing.Size(320, 341);
+            this.BorderBox.Size = new System.Drawing.Size(320, 309);
             this.BorderBox.TabIndex = 34;
             this.BorderBox.TabStop = false;
             // 
@@ -256,7 +255,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.DownloadSourceBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DownloadSourceBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
             this.DownloadSourceBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.DownloadSourceBtn.Location = new System.Drawing.Point(1, 295);
+            this.DownloadSourceBtn.Location = new System.Drawing.Point(1, 264);
             this.DownloadSourceBtn.Name = "DownloadSourceBtn";
             this.DownloadSourceBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.DownloadSourceBtn.Size = new System.Drawing.Size(292, 23);
@@ -332,30 +331,12 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.PCDebugMenuPageBtn.UseVisualStyleBackColor = false;
             this.PCDebugMenuPageBtn.Click += new System.EventHandler(this.PCDebugMenuPageBtn_Click);
             // 
-            // InfogramsIllusionLinkBtn
-            // 
-            this.InfogramsIllusionLinkBtn.BackColor = System.Drawing.Color.DimGray;
-            this.InfogramsIllusionLinkBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.InfogramsIllusionLinkBtn.FlatAppearance.BorderSize = 0;
-            this.InfogramsIllusionLinkBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InfogramsIllusionLinkBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.InfogramsIllusionLinkBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfogramsIllusionLinkBtn.Location = new System.Drawing.Point(1, 207);
-            this.InfogramsIllusionLinkBtn.Name = "InfogramsIllusionLinkBtn";
-            this.InfogramsIllusionLinkBtn.Size = new System.Drawing.Size(298, 23);
-            this.InfogramsIllusionLinkBtn.TabIndex = 38;
-            this.InfogramsIllusionLinkBtn.Text = "Download Plugin For Latest Patch...";
-            this.InfogramsIllusionLinkBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.InfogramsIllusionLinkBtn.UseVisualStyleBackColor = false;
-            this.InfogramsIllusionLinkBtn.Click += new System.EventHandler(this.PCQOLPageBtn_Click);
-            // 
             // Dobby
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 334);
-            this.Controls.Add(this.InfogramsIllusionLinkBtn);
+            this.ClientSize = new System.Drawing.Size(320, 302);
             this.Controls.Add(this.PCDebugMenuPageBtn);
             this.Controls.Add(this.PkgPageBtn);
             this.Controls.Add(this.SeperatorLabel1);
@@ -392,10 +373,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
 
         private void PCDebugMenuPageBtn_Click(object sender, EventArgs e) => ChangeForm(9, false);
 
-        private void PCQOLPageBtn_Click(object sender, EventArgs e) => ChangeForm(10, false);
-
-        private void MinimizeBtn_Click_1(object sender, EventArgs e) {
-
-        }
+        private void InfogramsIllusionLinkBtn_Click(object sender, EventArgs e) { }
     }
 }
