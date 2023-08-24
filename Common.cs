@@ -1,20 +1,15 @@
 ﻿using Dobby.Properties;
 using libdebug;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Console;
-using static Dobby.Common.Dev;
-using System.Runtime.ConstrainedExecution;
 using System.Net;
+using System.Net.Sockets;
+using System.Threading;
+using System.Windows.Forms;
+using static Dobby.Common.Dev;
+using static System.Console;
 
 namespace Dobby {
     public class Common : Dobby {
@@ -129,7 +124,7 @@ namespace Dobby {
            "* 3.26.80.208 | Fixed UC3 1.00 Debug Offsets, One Was Wrong And The Other Was Missing (how did I manage that? only the dev menu bool was right) Reordered UC1 Debug Offsets To Make It Appear To Work Slightly faster (Enables FPS First Now lol), Misc tweaks to debug functions",
            "* 3.26.80.208 | Formatting ",
            "* 3.27.80.208 | Deleted Second PC Button On Main Form.",
-           "* 3.27.82.210 | , Fleshed Out CheckGameVersion code, Fixed ToggleAlt function and related code"
+           "* 3.27.84.210 | Reworking Connect(), Fleshed Out CheckGameVersion code, Fixed ToggleAlt function and related code"
 
             // TODO:
             // - Finish EbootPatchHelpPage
@@ -141,7 +136,7 @@ namespace Dobby {
 
         };
         public static string Build = ChangeList[ChangeList.Length - 1].Substring(2).Substring(0, ChangeList[ChangeList.Length - 1].IndexOf('|') - 3); // Trims The Last ChangeList String For Latest The Build Number
-        
+
 
         #region Application-Wide Functions And Variable Declarations
 
@@ -165,16 +160,21 @@ namespace Dobby {
 
         public static Font MainFont = new Font("Franklin Gothic Medium", 6.5F, FontStyle.Bold);
 
+        #region PS4DBG_Variables
+        /* End Of Repeated Functions
+        ============================================================================================================================================================================
+        // Start Of PS4Debug Page Specific Functions                                                                                                                      */
+        
         public static readonly byte // BECAUSE I FUCKING CAN, YOU TWAT
             on = 0x01,
             off = 0x00
         ;
-
         public static bool PS4DebugIsConnected;
 
         public static int
-            Executable,  // Active PS4DBG Process ID
-            attempts = 0 // Connect() retries
+            Executable,   // Active PS4DBG Process ID
+            attempts = 0, // Connect() retries
+            ProcessCount = 0
         ;
 
         public static readonly string[] ExecutablesNames = new string[] {
@@ -193,6 +193,7 @@ namespace Dobby {
         };
         public static string ProcessName = "Jack Shit", GameVersion = string.Empty, TitleID;
 
+        #endregion
 
 
         public static void ExitBtn_Click(object sender, EventArgs e) { MainStream?.Dispose(); Environment.Exit(0); }
@@ -211,7 +212,7 @@ namespace Dobby {
             MouseScrolled = MouseIsDown = 0;
         }
         public static void MoveForm(object sender, MouseEventArgs e) {
-            if (MouseIsDown != 0) {
+            if(MouseIsDown != 0) {
                 ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
                 ActiveForm.Update();
             }
@@ -225,7 +226,7 @@ namespace Dobby {
 
             MainStream.Position = 0;
             MainStream.Read(chk, 0, 4);
-            if (BitConverter.ToInt32(chk, 0) != 1179403647) {// Make Sure The File's Actually Even A .elf
+            if(BitConverter.ToInt32(chk, 0) != 1179403647) {// Make Sure The File's Actually Even A .elf
                 GameString = "Executable Still Encrypted";
                 AddString = "Must Be Decrypted/Unsigned";
                 return $"{GameString} | {AddString}";
@@ -233,10 +234,10 @@ namespace Dobby {
 
             bool CheckDebugState(int[] offsets, byte[] Data) {
                 int i = 0; // Just Returns True If The Bytes Read At The Specified Address Match The Byte Given
-                foreach (int addr in offsets) {
-                    Read:if (ReadByte(addr) == Data[i]) return true;
+                foreach(int addr in offsets) {
+                Read: if(ReadByte(addr) == Data[i]) return true;
 
-                    if (Data[i] == 0x75) { // Go back and check for an unconditional jump
+                    if(Data[i] == 0x75) { // Go back and check for an unconditional jump
                         Data[i] = 0xEB;
                         goto Read;
                     }
@@ -245,7 +246,7 @@ namespace Dobby {
                 return false;
             }
 
-            switch (Game) {
+            switch(Game) {
                 default:
                     MessageBox.Show($"Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported\n{Game}");
                     break;
@@ -281,37 +282,37 @@ namespace Dobby {
                     GameString = "The Last Of Us Part II 1.09";
                     break;
                 case UC1100:
-                    if (CheckDebugState(new int[] { 0x102056, 0x102057, 0x10207B }, new byte[] { 0x01, 0x75, 0x01 }) == true)
+                    if(CheckDebugState(new int[] { 0x102056, 0x102057, 0x10207B }, new byte[] { 0x01, 0x75, 0x01 }) == true)
                         AddString = "Debug";
 
                     GameString = "Uncharted 1 1.00";
                     break;
                 case UC1102:
-                    if (CheckDebugState(new int[] { 0x102186, 0x102187, 0x1021AB }, new byte[] { 0x01, 0x75, 0x01 }) == true)
+                    if(CheckDebugState(new int[] { 0x102186, 0x102187, 0x1021AB }, new byte[] { 0x01, 0x75, 0x01 }) == true)
                         AddString = "Debug";
 
                     GameString = "Uncharted 1 1.02";
                     break;
                 case UC2100:
-                    if (CheckDebugState(new int[] { 0x1EB296, 0x1EB297, 0x1EB2BB }, new byte[] { 0x01, 0x75, 0x01 }) == true)
+                    if(CheckDebugState(new int[] { 0x1EB296, 0x1EB297, 0x1EB2BB }, new byte[] { 0x01, 0x75, 0x01 }) == true)
                         AddString = "Debug";
 
                     GameString = "Uncharted 2 1.00";
                     break;
                 case UC2102:
-                    if (CheckDebugState(new int[] { 0x3F7A25, 0x3F7A26, 0x3F7A4A }, new byte[] { 0x01, 0x75, 0x01 }) == true)
+                    if(CheckDebugState(new int[] { 0x3F7A25, 0x3F7A26, 0x3F7A4A }, new byte[] { 0x01, 0x75, 0x01 }) == true)
                         AddString = "Debug";
 
                     GameString = "Uncharted 2 1.02";
                     break;
                 case UC3100:
-                    if (CheckDebugState(new int[] { 0x168EB6, 0x168EB7, 0x168EDB }, new byte[] { 0x01, 0x75, 0x01 }) == true)
+                    if(CheckDebugState(new int[] { 0x168EB6, 0x168EB7, 0x168EDB }, new byte[] { 0x01, 0x75, 0x01 }) == true)
                         AddString = "Debug";
 
                     GameString = "Uncharted 3 1.00";
                     break;
                 case UC3102:
-                    if (CheckDebugState(new int[] { 0x578226, 0x578227, 0x57824B }, new byte[] { 0x01, 0x75, 0x01 }) == true)
+                    if(CheckDebugState(new int[] { 0x578226, 0x578227, 0x57824B }, new byte[] { 0x01, 0x75, 0x01 }) == true)
                         AddString = "Debug";
 
                     GameString = "Uncharted 3 1.02";
@@ -339,7 +340,7 @@ namespace Dobby {
         /// <param name="Sender">The Hovered Control</param>
         public static void SetInfoLabelStringOnControlHover(Control Sender) { // 
             string InfoLabelString = "Unknown Label Error";
-            switch (Sender.Name) {
+            switch(Sender.Name) {
                 default: return;
                 //
                 // Const
@@ -350,7 +351,7 @@ namespace Dobby {
                 case "InfoHelpBtn":
                     YellowInformationLabel.Font = new Font(YellowInformationLabel.Font.FontFamily, 9.5F);
                     InfoLabelString = "View Help For Each Page As Well As The App Itself";
-                    break; 
+                    break;
                 case "BackBtn":
                     InfoLabelString = "Return To The Previous Page";
                     break;
@@ -466,16 +467,16 @@ namespace Dobby {
         public static void ChangeForm(int Page, bool IsGoingBack) {
             LastPos = ActiveForm.Location;
             var ClosingForm = ActiveForm;
-            if (!IsGoingBack) {
-                for (int i = 0; i < 5; i++) {
-                    if (Pages[i] == null) {
+            if(!IsGoingBack) {
+                for(int i = 0; i < 5; i++) {
+                    if(Pages[i] == null) {
                         Pages[i] = Common.Page;
                         break;
                     }
                 }
             }
             Common.Page = Page;
-            switch (Page) {
+            switch(Page) {
                 default:
                     DebugOut($"{Page} Is Not A Page!");
                     break;
@@ -527,7 +528,7 @@ namespace Dobby {
             }
             YellowInformationLabel = ActiveForm.Controls.Find("Info", true)[0];
             ActiveForm.Location = LastPos;
-            if (ClosingForm.Name != "Dobby") {
+            if(ClosingForm.Name != "Dobby") {
                 ClosingForm.Close();
                 return;
             }
@@ -537,14 +538,14 @@ namespace Dobby {
 
         public static void BackFunc() {
 
-            for (int i = 4; i >= 0; i--)
+            for(int i = 4; i >= 0; i--)
 
-            if (Pages[i] != null) {
-                ChangeForm((int)Pages[i], true);
-                DebugOut($"Pages[i]: {Pages[i]}");
-                Pages[i] = null;
-                break;
-            }
+                if(Pages[i] != null) {
+                    ChangeForm((int)Pages[i], true);
+                    DebugOut($"Pages[i]: {Pages[i]}");
+                    Pages[i] = null;
+                    break;
+                }
         }
 
         public static void AddControlEventHandlers(Control.ControlCollection Controls) { // Got Sick of Manually Editing InitializeComponent()
@@ -564,13 +565,13 @@ namespace Dobby {
             #endregion
             string[] Blacklist = new string[] { "ExitBtn", "MinimizeBtn", "IPLabelBtn", "PortLabelBtn" };
 
-            foreach (Control Item in Controls) {
-                if (Item.HasChildren) { // Designer Added Some Things To The Form, And Some To The Group Box Used To Make The Border. This is me bing lazy. as long as it's not noticably slower
-                    foreach (Control Child in Item.Controls) {
+            foreach(Control Item in Controls) {
+                if(Item.HasChildren) { // Designer Added Some Things To The Form, And Some To The Group Box Used To Make The Border. This is me bing lazy. as long as it's not noticably slower
+                    foreach(Control Child in Item.Controls) {
                         Child.MouseDown += new MouseEventHandler(MouseDownFunc);
                         Child.MouseMove += new MouseEventHandler(MoveForm);
                         Child.MouseUp += new MouseEventHandler(MouseUpFunc);
-                        if ($"{Child.GetType()}" == "System.Windows.Forms.Button" && !Blacklist.Contains(Child.Name)) {
+                        if($"{Child.GetType()}" == "System.Windows.Forms.Button" && !Blacklist.Contains(Child.Name)) {
                             Child.MouseEnter += new EventHandler(ControlHover);
                             Child.MouseLeave += new EventHandler(ControlLeave);
                         }
@@ -579,7 +580,7 @@ namespace Dobby {
 #endif
                     }
                 }
-                if ($"{Item.GetType()}" == "System.Windows.Forms.Button" && !Blacklist.Contains(Item.Name)) {
+                if($"{Item.GetType()}" == "System.Windows.Forms.Button" && !Blacklist.Contains(Item.Name)) {
                     Item.MouseEnter += new EventHandler(ControlHover);
                     Item.MouseLeave += new EventHandler(ControlLeave);
                 }
@@ -598,7 +599,7 @@ namespace Dobby {
                 Controls.Find("ExitBtn", true)[0].MouseEnter += new EventHandler(ExitBtnMH);
                 Controls.Find("ExitBtn", true)[0].MouseLeave += new EventHandler(ExitBtnML);
             }
-            catch (IndexOutOfRangeException) { DebugOut("Form Lacks MinimizeBtn And / Or ExitBtn"); }
+            catch(IndexOutOfRangeException) { DebugOut("Form Lacks MinimizeBtn And / Or ExitBtn"); }
         }
 
         /// <summary> Set The Text of The Yellow Label At The Bottom Of The Form </summary>
@@ -609,16 +610,16 @@ namespace Dobby {
         /// <param name="EventIsMouseEnter">Highlight If True</param>
         public static void HoverLeave(Control PassedControl, bool EventIsMouseEnter) {
             CurrentControl = PassedControl.Name;
-            PassedControl.ForeColor     = EventIsMouseEnter ? Color.FromArgb(255, 227, 0) : Color.FromArgb(255, 255, 255);
-            PassedControl.Text          = EventIsMouseEnter ? $">{PassedControl.Text}"    : PassedControl.Text.Substring(PassedControl.Text.IndexOf('>') + 1);
-            PassedControl.Size = new Size(EventIsMouseEnter ? PassedControl.Width + 9     : PassedControl.Width - 9, PassedControl.Height);
+            PassedControl.ForeColor = EventIsMouseEnter ? Color.FromArgb(255, 227, 0) : Color.FromArgb(255, 255, 255);
+            PassedControl.Text = EventIsMouseEnter ? $">{PassedControl.Text}" : PassedControl.Text.Substring(PassedControl.Text.IndexOf('>') + 1);
+            PassedControl.Size = new Size(EventIsMouseEnter ? PassedControl.Width + 9 : PassedControl.Width - 9, PassedControl.Height);
 
-            if (!InfoHasImportantStr & !EventIsMouseEnter) SetInfoLabelText("");
-            if (!EventIsMouseEnter)  { MouseScrolled = 0; return; }
+            if(!InfoHasImportantStr & !EventIsMouseEnter) SetInfoLabelText("");
+            if(!EventIsMouseEnter) { MouseScrolled = 0; return; }
             else SetInfoLabelStringOnControlHover(PassedControl);
-            #if DEBUG
+#if DEBUG
             HoveredControl = PassedControl;
-            #endif
+#endif
         }
 
         delegate void LabelFlashDelegate();
@@ -626,18 +627,18 @@ namespace Dobby {
         static LabelFlashDelegate White = new LabelFlashDelegate(FlashWhite);
         public static Thread FlashThread = new Thread(new ThreadStart(FlashLabel));
         static void FlashLabel() {
-            while (!LabelShouldFlash) { Thread.Sleep(7); }
+            while(!LabelShouldFlash) { Thread.Sleep(7); }
             try {
-                for (int Flashes = 0; Flashes < 8; Flashes++) {
-                    while (ActiveForm == null) { } // Just Chill Here 'Till The Form Gets Focus Again
+                for(int Flashes = 0; Flashes < 8; Flashes++) {
+                    while(ActiveForm == null) { } // Just Chill Here 'Till The Form Gets Focus Again
                     ActiveForm.Invoke(White);
                     Thread.Sleep(135);
-                    while (ActiveForm == null) { }
+                    while(ActiveForm == null) { }
                     ActiveForm.Invoke(Yellow);
                     Thread.Sleep(135);
                 }
             }
-            catch (Exception) {
+            catch(Exception) {
                 DebugOut("Killing Label Flash");
             }
             LabelShouldFlash = false;
@@ -648,7 +649,7 @@ namespace Dobby {
                 ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.White;
                 ActiveForm.Refresh();
             }
-            catch (Exception) {
+            catch(Exception) {
                 DebugOut("Killing Label Flash WH");
             }
         }
@@ -657,7 +658,7 @@ namespace Dobby {
                 ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.FromArgb(255, 227, 0);
                 ActiveForm.Refresh();
             }
-            catch (Exception) {
+            catch(Exception) {
                 DebugOut("Killing Label Flash YL");
             }
         }
@@ -670,21 +671,21 @@ namespace Dobby {
         /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///-- DEBUG MODE OFFSETS AND GAME INDENTIFIERS --\\\
         /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        
+
         // Yes, I know an array could be easier to deal with in code, but I want them all labeled individually so bite me
         public const int
-            
+
             // Game Identifiers. Read 4 bytes at 0x60 as an integer to get it
             T1R100 = 22033680,
             T1R109 = 21444016,
             T1R11X = 21446072,
-            T2100  = 46552012,
-            T2101  = 46785692,
-            T2102  = 46718028,
-            T2105  = 46826436,
-            T2107  = 46832260,
-            T2108  = 48176392,
-            T2109  = 48176456,
+            T2100 = 46552012,
+            T2101 = 46785692,
+            T2102 = 46718028,
+            T2105 = 46826436,
+            T2107 = 46832260,
+            T2108 = 48176392,
+            T2109 = 48176456,
             UC1100 = 9818208,
             UC1102 = 9568920,
             UC2100 = 14655236,
@@ -719,7 +720,7 @@ namespace Dobby {
             T1XL102 = 2228464 + 95634432
             ;
 
-        public const int 
+        public const int
             // Debug Offsets (0xEB)
             T1R100Debug = 0x5C5A,
             T1R109Debug = 0x61A4,
@@ -777,24 +778,24 @@ namespace Dobby {
             UC2102DisableFPS = new byte[] { 0x61, 0xDE, 0x05, 0x01 }, // 
             UC3100DisableFPS = new byte[] { 0xC9, 0x66, 0x43, 0x01 }, // 
             UC3102DisableFPS = new byte[] { 0x69, 0xAF, 0x7B, 0x01 }, // 
-            UC4100DisableFPS = new byte[] {}, // 
-            UC4133DisableFPS = new byte[] {}, // 
-          UC4133MPDisableFPS = new byte[] {}, // 
-            TLL100DisableFPS = new byte[] {}, // 
-            TLL107DisableFPS = new byte[] {}, // 
-            TLL108DisableFPS = new byte[] {}, // 
-            TLL109DisableFPS = new byte[] {}, // 
-            T1R100DisableFPS = new byte[] {}, // 
-            T1R109DisableFPS = new byte[] {}, // 
-            T1R110DisableFPS = new byte[] {}, // 
-            T1R111DisableFPS = new byte[] {}, // 
-            T2100DisableFPS  = new byte[] {}, // 
-            T2101DisableFPS  = new byte[] {}, // 
-            T2102DisableFPS  = new byte[] {}, // 
-            T2105DisableFPS  = new byte[] {}, // 
-            T2107DisableFPS  = new byte[] {}, // 
-            T2108DisableFPS  = new byte[] {}, // 
-            T2109DisableFPS  = new byte[] {}  // 
+            UC4100DisableFPS = new byte[] { }, // 
+            UC4133DisableFPS = new byte[] { }, // 
+          UC4133MPDisableFPS = new byte[] { }, // 
+            TLL100DisableFPS = new byte[] { }, // 
+            TLL107DisableFPS = new byte[] { }, // 
+            TLL108DisableFPS = new byte[] { }, // 
+            TLL109DisableFPS = new byte[] { }, // 
+            T1R100DisableFPS = new byte[] { }, // 
+            T1R109DisableFPS = new byte[] { }, // 
+            T1R110DisableFPS = new byte[] { }, // 
+            T1R111DisableFPS = new byte[] { }, // 
+            T2100DisableFPS = new byte[] { }, // 
+            T2101DisableFPS = new byte[] { }, // 
+            T2102DisableFPS = new byte[] { }, // 
+            T2105DisableFPS = new byte[] { }, // 
+            T2107DisableFPS = new byte[] { }, // 
+            T2108DisableFPS = new byte[] { }, // 
+            T2109DisableFPS = new byte[] { }  // 
         ;
 
         /// <summary>
@@ -807,24 +808,24 @@ namespace Dobby {
             UC2102ProgPause = new byte[] { 0xE0, 0x95, 0x05, 0x01 }, // 0x14595e0
             UC3100ProgPause = new byte[] { 0x30, 0xFA, 0x42, 0x01 }, // 0x182fa30
             UC3102ProgPause = new byte[] { 0x50, 0x4A, 0x7B, 0x01 }, // 0x1bb4a50
-            UC4100ProgPause = new byte[] {}, // 
-            UC4133ProgPause = new byte[] {}, // 
-          UC4133MPProgPause = new byte[] {}, // 
-            TLL100ProgPause = new byte[] {}, // 
-            TLL107ProgPause = new byte[] {}, // 
-            TLL108ProgPause = new byte[] {}, // 
-            TLL109ProgPause = new byte[] {}, // 
-            T1R100ProgPause = new byte[] {}, // 
-            T1R109ProgPause = new byte[] {}, // 
-            T1R110ProgPause = new byte[] {}, // 
-            T1R111ProgPause = new byte[] {}, // 
-            T2100ProgPause  = new byte[] {}, // 
-            T2101ProgPause  = new byte[] {}, // 
-            T2102ProgPause  = new byte[] {}, // 
-            T2105ProgPause  = new byte[] {}, // 
-            T2107ProgPause  = new byte[] {}, // 
-            T2108ProgPause  = new byte[] {}, // 
-            T2109ProgPause  = new byte[] {}  // 
+            UC4100ProgPause = new byte[] { }, // 
+            UC4133ProgPause = new byte[] { }, // 
+          UC4133MPProgPause = new byte[] { }, // 
+            TLL100ProgPause = new byte[] { }, // 
+            TLL107ProgPause = new byte[] { }, // 
+            TLL108ProgPause = new byte[] { }, // 
+            TLL109ProgPause = new byte[] { }, // 
+            T1R100ProgPause = new byte[] { }, // 
+            T1R109ProgPause = new byte[] { }, // 
+            T1R110ProgPause = new byte[] { }, // 
+            T1R111ProgPause = new byte[] { }, // 
+            T2100ProgPause = new byte[] { }, // 
+            T2101ProgPause = new byte[] { }, // 
+            T2102ProgPause = new byte[] { }, // 
+            T2105ProgPause = new byte[] { }, // 
+            T2107ProgPause = new byte[] { }, // 
+            T2108ProgPause = new byte[] { }, // 
+            T2109ProgPause = new byte[] { }  // 
         ;
 
         /// <summary>
@@ -848,13 +849,13 @@ namespace Dobby {
             T1R109ProgPauseOnExit = new byte[] { }, // 
             T1R110ProgPauseOnExit = new byte[] { }, // 
             T1R111ProgPauseOnExit = new byte[] { }, // 
-            T2100ProgPauseOnExit  = new byte[] { }, // 
-            T2101ProgPauseOnExit  = new byte[] { }, // 
-            T2102ProgPauseOnExit  = new byte[] { }, // 
-            T2105ProgPauseOnExit  = new byte[] { }, // 
-            T2107ProgPauseOnExit  = new byte[] { }, // 
-            T2108ProgPauseOnExit  = new byte[] { }, // 
-            T2109ProgPauseOnExit  = new byte[] { } // 
+            T2100ProgPauseOnExit = new byte[] { }, // 
+            T2101ProgPauseOnExit = new byte[] { }, // 
+            T2102ProgPauseOnExit = new byte[] { }, // 
+            T2105ProgPauseOnExit = new byte[] { }, // 
+            T2107ProgPauseOnExit = new byte[] { }, // 
+            T2108ProgPauseOnExit = new byte[] { }, // 
+            T2109ProgPauseOnExit = new byte[] { } // 
         ;
 
         /// <summary>
@@ -878,37 +879,37 @@ namespace Dobby {
             T1R109PausedIcon = new byte[] { }, // 
             T1R110PausedIcon = new byte[] { }, // 
             T1R111PausedIcon = new byte[] { }, // 
-            T2100PausedIcon  = new byte[] { }, // 
-            T2101PausedIcon  = new byte[] { }, // 
-            T2102PausedIcon  = new byte[] { }, // 
-            T2105PausedIcon  = new byte[] { }, // 
-            T2107PausedIcon  = new byte[] { }, // 
-            T2108PausedIcon  = new byte[] { }, // 
-            T2109PausedIcon  = new byte[] { }  // 
+            T2100PausedIcon = new byte[] { }, // 
+            T2101PausedIcon = new byte[] { }, // 
+            T2102PausedIcon = new byte[] { }, // 
+            T2105PausedIcon = new byte[] { }, // 
+            T2107PausedIcon = new byte[] { }, // 
+            T2108PausedIcon = new byte[] { }, // 
+            T2109PausedIcon = new byte[] { }  // 
         ;
 
         /// <summary>
         ///  Swap Circle And Square Offsets
         /// </summary>
         public static readonly byte[]
-            UC4100SwapCircle = new byte[] {}, // 
-            UC4133SwapCircle = new byte[] {}, // 
-          UC4133MPSwapCircle = new byte[] {}, // 
-            TLL100SwapCircle = new byte[] {}, // 
-            TLL107SwapCircle = new byte[] {}, // 
-            TLL108SwapCircle = new byte[] {}, // 
-            TLL109SwapCircle = new byte[] {}, // 
-            T1R100SwapCircle = new byte[] {}, // 
-            T1R109SwapCircle = new byte[] {}, // 
-            T1R110SwapCircle = new byte[] {}, // 
-            T1R111SwapCircle = new byte[] {}, // 
-            T2100SwapCircle  = new byte[] {}, // 
-            T2101SwapCircle  = new byte[] {}, // 
-            T2102SwapCircle  = new byte[] {}, // 
-            T2105SwapCircle  = new byte[] {}, // 
-            T2107SwapCircle  = new byte[] {}, // 
-            T2108SwapCircle  = new byte[] {}, // 
-            T2109SwapCircle  = new byte[] {}  // 
+            UC4100SwapCircle = new byte[] { }, // 
+            UC4133SwapCircle = new byte[] { }, // 
+          UC4133MPSwapCircle = new byte[] { }, // 
+            TLL100SwapCircle = new byte[] { }, // 
+            TLL107SwapCircle = new byte[] { }, // 
+            TLL108SwapCircle = new byte[] { }, // 
+            TLL109SwapCircle = new byte[] { }, // 
+            T1R100SwapCircle = new byte[] { }, // 
+            T1R109SwapCircle = new byte[] { }, // 
+            T1R110SwapCircle = new byte[] { }, // 
+            T1R111SwapCircle = new byte[] { }, // 
+            T2100SwapCircle = new byte[] { }, // 
+            T2101SwapCircle = new byte[] { }, // 
+            T2102SwapCircle = new byte[] { }, // 
+            T2105SwapCircle = new byte[] { }, // 
+            T2107SwapCircle = new byte[] { }, // 
+            T2108SwapCircle = new byte[] { }, // 
+            T2109SwapCircle = new byte[] { }  // 
         ;
 
 
@@ -922,45 +923,45 @@ namespace Dobby {
             UC2102HideTaskInfo = new byte[] { 0xF9, 0xCF, 0x05, 0x01 }, // 0x145cff9
             UC3100HideTaskInfo = new byte[] { 0x90, 0x1F, 0xA2, 0x01 }, // 0x1e21f90
             UC3102HideTaskInfo = new byte[] { 0x60, 0xEE, 0xB3, 0x01 }, // 0x1f3ee60
-            UC4100HideTaskInfo = new byte[] {}, // 
-            UC4133HideTaskInfo = new byte[] {}, // 
-          UC4133MPHideTaskInfo = new byte[] {}, // 
-            TLL100HideTaskInfo = new byte[] {}, // 
-            TLL107HideTaskInfo = new byte[] {}, // 
-            TLL108HideTaskInfo = new byte[] {}, // 
-            TLL109HideTaskInfo = new byte[] {}, // 
-            T2100HideTaskInfo  = new byte[] {}, // 
-            T2101HideTaskInfo  = new byte[] {}, // 
-            T2102HideTaskInfo  = new byte[] {}, // 
-            T2105HideTaskInfo  = new byte[] {}, // 
-            T2107HideTaskInfo  = new byte[] {}, // 
-            T2108HideTaskInfo  = new byte[] {}, // 
-            T2109HideTaskInfo  = new byte[] {}  // 
+            UC4100HideTaskInfo = new byte[] { }, // 
+            UC4133HideTaskInfo = new byte[] { }, // 
+          UC4133MPHideTaskInfo = new byte[] { }, // 
+            TLL100HideTaskInfo = new byte[] { }, // 
+            TLL107HideTaskInfo = new byte[] { }, // 
+            TLL108HideTaskInfo = new byte[] { }, // 
+            TLL109HideTaskInfo = new byte[] { }, // 
+            T2100HideTaskInfo = new byte[] { }, // 
+            T2101HideTaskInfo = new byte[] { }, // 
+            T2102HideTaskInfo = new byte[] { }, // 
+            T2105HideTaskInfo = new byte[] { }, // 
+            T2107HideTaskInfo = new byte[] { }, // 
+            T2108HideTaskInfo = new byte[] { }, // 
+            T2109HideTaskInfo = new byte[] { }  // 
         ;
-        
+
         public static readonly byte[]
 
             // Right Align Offsets
             UC3100RightAlign = new byte[] { 0x34, 0xFA, 0x42, 0x01 }, // 0x182FA34
             UC3102RightAlign = new byte[] { 0x54, 0x4A, 0x7B, 0x01 }, // 0x1bb4a54
-            UC4100RightAlign = new byte[] {}, // 
-            UC4133RightAlign = new byte[] {}, // 
-          UC4133MPRightAlign = new byte[] {}, // 
-            TLL100RightAlign = new byte[] {}, // 
-            TLL107RightAlign = new byte[] {}, // 
-            TLL108RightAlign = new byte[] {}, // 
-            TLL109RightAlign = new byte[] {}, // 
-            T1R100RightAlign = new byte[] {}, // 
-            T1R109RightAlign = new byte[] {}, // 
-            T1R110RightAlign = new byte[] {}, // 
-            T1R111RightAlign = new byte[] {}, // 
-            T2100RightAlign  = new byte[] {}, // 
-            T2101RightAlign  = new byte[] {}, // 
-            T2102RightAlign  = new byte[] {}, // 
-            T2105RightAlign  = new byte[] {}, // 
-            T2107RightAlign  = new byte[] {}, // 
-            T2108RightAlign  = new byte[] {}, // 
-            T2109RightAlign  = new byte[] {}  // 
+            UC4100RightAlign = new byte[] { }, // 
+            UC4133RightAlign = new byte[] { }, // 
+          UC4133MPRightAlign = new byte[] { }, // 
+            TLL100RightAlign = new byte[] { }, // 
+            TLL107RightAlign = new byte[] { }, // 
+            TLL108RightAlign = new byte[] { }, // 
+            TLL109RightAlign = new byte[] { }, // 
+            T1R100RightAlign = new byte[] { }, // 
+            T1R109RightAlign = new byte[] { }, // 
+            T1R110RightAlign = new byte[] { }, // 
+            T1R111RightAlign = new byte[] { }, // 
+            T2100RightAlign = new byte[] { }, // 
+            T2101RightAlign = new byte[] { }, // 
+            T2102RightAlign = new byte[] { }, // 
+            T2105RightAlign = new byte[] { }, // 
+            T2107RightAlign = new byte[] { }, // 
+            T2108RightAlign = new byte[] { }, // 
+            T2109RightAlign = new byte[] { }  // 
         ;
 
         /// <summary>
@@ -969,24 +970,24 @@ namespace Dobby {
         public static readonly byte[]
             UC3100RightMargin = new byte[] { 0x38, 0xFA, 0x42, 0x01 }, // 0x182FA38
             UC3102RightMargin = new byte[] { 0x58, 0x4A, 0x7B, 0x01 }, // 0x1bb4a58
-            UC4100RightMargin = new byte[] {}, // 
-            UC4133RightMargin = new byte[] {}, // 
-          UC4133MPRightMargin = new byte[] {}, // 
-            TLL100RightMargin = new byte[] {}, // 
-            TLL107RightMargin = new byte[] {}, // 
-            TLL108RightMargin = new byte[] {}, // 
-            TLL109RightMargin = new byte[] {}, // 
-            T1R100RightMargin = new byte[] {}, // 
-            T1R109RightMargin = new byte[] {}, // 
-            T1R110RightMargin = new byte[] {}, // 
-            T1R111RightMargin = new byte[] {}, // 
-            T2100RightMargin  = new byte[] {}, // 
-            T2101RightMargin  = new byte[] {}, // 
-            T2102RightMargin  = new byte[] {}, // 
-            T2105RightMargin  = new byte[] {}, // 
-            T2107RightMargin  = new byte[] {}, // 
-            T2108RightMargin  = new byte[] {}, // 
-            T2109RightMargin  = new byte[] {}  // 
+            UC4100RightMargin = new byte[] { }, // 
+            UC4133RightMargin = new byte[] { }, // 
+          UC4133MPRightMargin = new byte[] { }, // 
+            TLL100RightMargin = new byte[] { }, // 
+            TLL107RightMargin = new byte[] { }, // 
+            TLL108RightMargin = new byte[] { }, // 
+            TLL109RightMargin = new byte[] { }, // 
+            T1R100RightMargin = new byte[] { }, // 
+            T1R109RightMargin = new byte[] { }, // 
+            T1R110RightMargin = new byte[] { }, // 
+            T1R111RightMargin = new byte[] { }, // 
+            T2100RightMargin = new byte[] { }, // 
+            T2101RightMargin = new byte[] { }, // 
+            T2102RightMargin = new byte[] { }, // 
+            T2105RightMargin = new byte[] { }, // 
+            T2107RightMargin = new byte[] { }, // 
+            T2108RightMargin = new byte[] { }, // 
+            T2109RightMargin = new byte[] { }  // 
         ;
 
         /// <summary>
@@ -1010,13 +1011,13 @@ namespace Dobby {
             T1R109Novis = new byte[] { }, // 
             T1R110Novis = new byte[] { }, // 
             T1R111Novis = new byte[] { }, // 
-            T2100Novis  = new byte[] { 0x2C, 0x62, 0x01, 0x03 }, // 0x341622c
-            T2101Novis  = new byte[] { }, // 
-            T2102Novis  = new byte[] { }, // 
-            T2105Novis  = new byte[] { }, // 
-            T2107Novis  = new byte[] { 0x2C, 0x60, 0x01, 0x03 }, // 0x341602c
-            T2108Novis  = new byte[] { }, // 
-            T2109Novis  = new byte[] { 0x2C, 0x9E, 0x04, 0x03 }  // 0x3449e2c
+            T2100Novis = new byte[] { 0x2C, 0x62, 0x01, 0x03 }, // 0x341622c
+            T2101Novis = new byte[] { }, // 
+            T2102Novis = new byte[] { }, // 
+            T2105Novis = new byte[] { }, // 
+            T2107Novis = new byte[] { 0x2C, 0x60, 0x01, 0x03 }, // 0x341602c
+            T2108Novis = new byte[] { }, // 
+            T2109Novis = new byte[] { 0x2C, 0x9E, 0x04, 0x03 }  // 0x3449e2c
         ;
 
 
@@ -1046,14 +1047,14 @@ namespace Dobby {
             MainStream.Write(data, 0, data.Length);
         }
         public static void WriteBytes(int[] offset, byte[] data) {
-            foreach (int ofs in offset) {
+            foreach(int ofs in offset) {
                 MainStream.Position = ofs;
                 MainStream.Write(data, 0, data.Length);
             }
         }
         public static void WriteBytes(int[] offset, byte[][] data) {
             int i = 0;
-            foreach (byte[] bytes in data) {
+            foreach(byte[] bytes in data) {
                 MainStream.Position = offset[i];
                 MainStream.Write(bytes, 0, data.Length);
                 i++;
@@ -1066,7 +1067,7 @@ namespace Dobby {
             DebugOut($"Wrote {data:X} at {offset:X}");
         }
         public static void WriteByte(int[] offset, byte data) {
-            foreach (int ofs in offset) {
+            foreach(int ofs in offset) {
                 MainStream.Position = ofs;
                 MainStream.WriteByte(data);
                 DebugOut($"Wrote {data:X} at {offset:X}");
@@ -1119,8 +1120,8 @@ namespace Dobby {
 
             public static void Timer_Tick(object sender, EventArgs e) => TimerTicks++;
             static void StartTimer() {
-                if (ActiveForm != null) ActiveForm.Location = new Point(10, 10);
-                if (!timer.Enabled) {
+                if(ActiveForm != null) ActiveForm.Location = new Point(10, 10);
+                if(!timer.Enabled) {
                     timer.Interval = 1;
                     timer.Tick += Timer_Tick;
                     timer.Start();
@@ -1131,8 +1132,8 @@ namespace Dobby {
             public static Thread InputThread = new Thread(new ThreadStart(ReadInput));
             public static void ReadCurrentKey() => InputThread.Start();
             static void ReadInput() {
-                while (true) {
-                    switch (ReadKey(true).Key) {
+                while(true) {
+                    switch(ReadKey(true).Key) {
                         case ConsoleKey.R:
                             Clear();
                             break;
@@ -1142,21 +1143,21 @@ namespace Dobby {
                             Clear(); Thread.Sleep(42); Clear(); // First Clear Doesn't Get It All
                             break;
                         case ConsoleKey.M:
-                            if (MainStreamIsOpen) {
+                            if(MainStreamIsOpen) {
                                 MainStream.Dispose();
                                 MainStreamIsOpen = false;
                                 DebugOut("MainStream Closed");
-                                if (Page == 3) {
-                                    Wait:
-                                    if (ActiveForm == null) goto Wait;
+                                if(Page == 3) {
+                                Wait:
+                                    if(ActiveForm == null) goto Wait;
                                     DebugOut("FormShouldReset = true");
                                     PS4QOLPatchesPage.FormShouldReset = true;
                                 }
                             }
                             break;
                         case ConsoleKey.Z:
-                            if (OutputStringIndex < 0)
-                            OutputStringIndex--;
+                            if(OutputStringIndex < 0)
+                                OutputStringIndex--;
                             Clear();
                             break;
                         case ConsoleKey.W:
@@ -1190,9 +1191,9 @@ namespace Dobby {
                             PS4DebugDev = "";
                             break;
                         case ConsoleKey.X:
-                            DebugFuunctionCall();
+                            DebugFunctionCall();
                             break;
-                    }                        
+                    }
                 }
             }
 
@@ -1204,19 +1205,20 @@ namespace Dobby {
             public static void DebuggerInfo() => DebuggerThread.Start();
             public static Control HoveredControl = new Label(); // Just so the debugger doesn't bitch
 
-            public static void UpdateConsoleOutput() { if (OverrideDebugOut) return;
+            public static void UpdateConsoleOutput() {
+                if(OverrideDebugOut) return;
 #if DEBUG
                 bool TimerThreadStarted = false;
                 int Interval = 0;
 
-Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIIIIIIGHT
-                WindowHeight = 35; SetWindowPosition(0,0);
+            Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIIIIIIGHT
+                WindowHeight = 35; SetWindowPosition(0, 0);
                 OutputStrings = new string[WindowHeight - 14];
                 CursorVisible = false;
                 Point OriginalConsoleScale = new Point(WindowHeight, WindowWidth);
-                if (ActiveForm != null && !TimerThreadStarted) { ActiveForm.Invoke(TimerThread); TimerThreadStarted = true; }
+                if(ActiveForm != null && !TimerThreadStarted) { ActiveForm.Invoke(TimerThread); TimerThreadStarted = true; }
                 try {
-                    while (OriginalConsoleScale == new Point(WindowHeight, WindowWidth) & !OverrideDebugOut) {
+                    while(OriginalConsoleScale == new Point(WindowHeight, WindowWidth) & !OverrideDebugOut) {
                         CursorLeft = 0; // Lazy Fix
                         int StartTime = TimerTicks, Cursor = 0, String = 0; Form frm = ActiveForm;
                         string ControlType = HoveredControl.GetType().ToString();
@@ -1237,22 +1239,22 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                             $"{(MainStreamIsOpen ? $"Length: {(MainStream.Length.ToString().Length > 6 ? $"{MainStream.Length.ToString().Remove(2)}MB" : $"{MainStream.Length} bytes")} | Read: {MainStream.CanRead} | Write: {MainStream.CanWrite}" : null)}"
                         };
 
-                        for (; String < Output.Length ; String++) { CursorTop = Cursor++; Write(BlankSpace(Output[String])); }
+                        for(; String < Output.Length; String++) { CursorTop = Cursor++; Write(BlankSpace(Output[String])); }
 
-                        CursorTop = MainStreamIsOpen? Cursor+=1: Cursor;
-                        for (int i = 0; i <= OutputStringIndex; ) {
+                        CursorTop = MainStreamIsOpen ? Cursor += 1 : Cursor;
+                        for(int i = 0; i <= OutputStringIndex;) {
                             Write(BlankSpace(OutputStrings[i++]));
                             Cursor++;
                         }
 
                         Interval = TimerTicks - StartTime;
-                        }
                     }
-                catch (System.ObjectDisposedException) { }
+                }
+                catch(System.ObjectDisposedException) { }
                 Clear();
-                if (OverrideDebugOut) return;
+                if(OverrideDebugOut) return;
                 goto Begin_Again;
-                #endif
+#endif
             }
 #endif
             public static void DebugOut() => DebugOut(" ");
@@ -1262,22 +1264,22 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
             }
             public static void DebugOut(object obj) {
 #if DEBUG
-                if (OverrideDebugOut) return; string s = obj.ToString();
-                if (s.Contains("\n")) {
+                if(OverrideDebugOut) return; string s = obj.ToString();
+                if(s.Contains("\n")) {
                     s = s.Replace("\n", "");
                     s += " (Use Seperate Calls For New Line!!!)";
                 }
 
-                if (OutputStringIndex != OutputStrings.Length - 1) {
-                    for (; OutputStringIndex < OutputStrings.Length - 1; OutputStringIndex++) {
-                        if (OutputStrings[OutputStringIndex] == null) {
+                if(OutputStringIndex != OutputStrings.Length - 1) {
+                    for(; OutputStringIndex < OutputStrings.Length - 1; OutputStringIndex++) {
+                        if(OutputStrings[OutputStringIndex] == null) {
                             OutputStrings[OutputStringIndex] = s;
                             break;
                         }
                     }
                     return;
                 }
-                for (ShiftIndex = 0; ShiftIndex < OutputStrings.Length - 1 ; ShiftIndex++)
+                for(ShiftIndex = 0; ShiftIndex < OutputStrings.Length - 1; ShiftIndex++)
                     OutputStrings[ShiftIndex] = OutputStrings[ShiftIndex + 1];
                 OutputStrings[ShiftIndex] = s;
 #endif
@@ -1285,13 +1287,14 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
 #if DEBUG      
 
             public static string BlankSpace(string String) {
-                if (String == null) return " ";
-                for (int i = BufferWidth - String.Length; i > 0; i--)
-                String += " ";
+                if(String == null) return " ";
+                for(int i = BufferWidth - String.Length; i > 0; i--)
+                    String += " ";
                 return String;
             }
 
-            public static void DebugForceOpenFile(string FilePath) { if (MainStreamIsOpen) { MainStream.Dispose(); }
+            public static void DebugForceOpenFile(string FilePath) {
+                if(MainStreamIsOpen) { MainStream.Dispose(); }
                 ActiveFilePath = FilePath;
                 MainStream = new FileStream(FilePath, FileMode.Open, FileAccess.ReadWrite);
                 MainStream.Position = 0x60; MainStream.Read(chk, 0, 4);
@@ -1301,22 +1304,21 @@ Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIII
                     ActiveForm.Controls.Find("ResetBtn", true)[0].Visible = MainStreamIsOpen = true;
                     ActiveForm.Controls.Find("CustomDebugOptionsLabel", true)[0].Visible = IsActiveFilePCExe = false;
                 }
-                catch (IndexOutOfRangeException) { }
+                catch(IndexOutOfRangeException) { }
                 MainStreamIsOpen = true;
                 Clear();
             }
 
             public static void DebugMemoryWrite(ulong address) {
-                PS4DebugPage tmp = new PS4DebugPage();
-                if(PS4DebugIsConnected || tmp.DebugConnect() == 0)
-                tmp.Toggle((ulong)address);
+                if(PS4DebugIsConnected || PS4DebugPage.DebugConnect() == 0)
+                    PS4DebugPage.Toggle((ulong)address);
                 PS4DebugDev = "";
             }
 
-            public static void DebugFuunctionCall() {
+            public static void DebugFunctionCall() {
                 return;
-                PS4DebugPage tmp = new PS4DebugPage(); tmp.DebugConnect();
-                DebugOut(tmp.geo.Call(Executable, tmp.geo.InstallRPC(Executable), 0x52e060, new object[] { 0x105f83d240, 4 })); // 0x105f83d240
+                PS4DebugPage.DebugConnect();
+                DebugOut(PS4DebugPage.geo.Call(Executable, PS4DebugPage.geo.InstallRPC(Executable), 0x52e060, new object[] { 0x105f83d240, 4 })); // 0x105f83d240
             }
 
 #endif

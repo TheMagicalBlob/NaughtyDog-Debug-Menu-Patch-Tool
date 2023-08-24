@@ -7,6 +7,8 @@ using System.Drawing;
 using System.Net.Sockets;
 using static Dobby.Common;
 using System.Windows.Forms;
+using System.Threading;
+using System.Diagnostics;
 
 namespace Dobby {
     public class PS4DebugPage : Form {
@@ -478,41 +480,52 @@ namespace Dobby {
         /* End Of Repeated Functions
         ============================================================================================================================================================================
         // Start Of PS4Debug Page Specific Functions                                                                                                                      */
-        public delegate void ConnectionDelegate();
-        public static ConnectionDelegate ConnectionThread = new ConnectionDelegate(Connect);
 
+        public delegate void LabelTextDel(string message);
+        public static LabelTextDel SetLabelText = SetInfoLabelText;
+
+        public static Thread ConnectionThread = new Thread(new ThreadStart(CheckConnectionStatus));
+        public static void CheckConnectionStatus() {
+            while(true)
+            if(!PS4DebugIsConnected || geo?.GetProcessInfo(Executable).name != ProcessName || geo.GetProcessList().processes.Length != ProcessCount)
+            Connect();
+        }
         public static void Connect() {
             try {
+                ActiveForm.Invoke(SetLabelText, PS4DebugIsConnected ? $"Reconnecting, Process Changed {ProcessCount}|{geo?.GetProcessList().processes.Length}" : "Connecting To Console");
+
                 geo = new PS4DBG(IPBOX_E.Text);
                 geo.Connect();
-                foreach (libdebug.Process prc in geo.GetProcessList().processes) {
-                    foreach (string id in ExecutablesNames) {
-                        if (prc.name == id) {
-                            string title = geo.GetProcessInfo(prc.pid).titleid;
-                            if (title == "FLTZ00003" || title == "ITEM00003") {
+                PS4DebugIsConnected = true;
+
+                foreach(libdebug.Process process in geo.GetProcessList().processes) { // processprocessprocessprocessprocess
+                    foreach(string id in ExecutablesNames) {
+                        if(process.name == id) {
+                            string title = geo.GetProcessInfo(process.pid).titleid;
+                            if(title == "FLTZ00003" || title == "ITEM00003") {
                                 Dev.DebugOut($"Skipping Lightning's Stuff {title}");
                                 break;
                             } // Code To Avoid Connecting To HB Store Stuff
 
-                            Executable = prc.pid;
-                            ProcessName = prc.name;
-                            TitleID = geo.GetProcessInfo(prc.pid).titleid;
-                            PS4DebugIsConnected = true;
-                            SetInfoLabelText($"Connected And Attached To {geo.GetProcessInfo(Executable).titleid}");
-                            Dev.DebugOut($"{ProcessName} | pid: {Executable} | PS4DebugIsConnected == {PS4DebugIsConnected}");
+                            Executable = process.pid;
+                            ProcessName = process.name;
+                            TitleID = geo.GetProcessInfo(process.pid).titleid;
+                            GameVersion = GetGameVersion(1);
+                            ProcessCount = geo.GetProcessList().processes.Length;
+
+                            ActiveForm.Invoke(SetLabelText, $"Connected And Attached To {TitleID} ({GameVersion})");
+                            goto OopsIBrokeThemBoth;
                         }
                     }
                 }
-                GameVersion = GetGameVersion(1);
-                SetInfoLabelText($"{TitleID} ({GameVersion})");
-                return;
+            ProcessCount = geo.GetProcessList().processes.Length;
+            ActiveForm.Invoke(SetLabelText, "Connected To PS4, But Couldn't Find The Game Process");
+            OopsIBrokeThemBoth:;
             }
-            catch (Exception tabarnack) {
-                if (!Dev.REL) {
-                    Dev.DebugOut($"{tabarnack.Message};{tabarnack.StackTrace}");
-                }
-                SetInfoLabelText($"Connection To {IPBOX_E.Text} Failed");
-                return;
+            catch(Exception tabarnack) {
+                if(!Dev.REL)
+                    Dev.DebugOut($"{tabarnack.StackTrace}");
+                if(ActiveForm != null) ActiveForm.Invoke(SetLabelText, $"Connection To {IPBOX_E.Text} Failed", Console.CursorTop = 8);
             }
         }
 
@@ -603,8 +616,8 @@ namespace Dobby {
                 Dev.DebugOut(v.Remove(v.IndexOf(";")));
                 return v.Remove(v.IndexOf(";"));
             }
-            catch (FileNotFoundException) {
-                using (FileStream f = new FileStream(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB", FileMode.Create, FileAccess.Write)) {
+            catch(FileNotFoundException) {
+                using(FileStream f = new FileStream(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB", FileMode.Create, FileAccess.Write)) {
                     Dev.DebugOut($"IP(); No Settings File Was Found, Made A New One At:\n{f.Name}");
                     f.Position = 0; f.Write(Encoding.UTF8.GetBytes("192.168.137."), 0, 12);
                     f.Position = 15; f.WriteByte(0x3B); f.Write(BitConverter.GetBytes(9020), 0, 4);
@@ -615,13 +628,13 @@ namespace Dobby {
 
         public void IPBOX_TextChanged(object sender, EventArgs e) {
             try {
-                using (FileStream f = new FileStream(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB", FileMode.Open, FileAccess.Write)) {
+                using(FileStream f = new FileStream(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB", FileMode.Open, FileAccess.Write)) {
                     f.Write(Encoding.UTF8.GetBytes(IPBOX_E.Text + ";"), 0, IPBOX_E.Text.Length + 1);
-                    if (IPBOX_E.Text.Length > 12) Dev.DebugOut($"Saved {IPBOX_E.Text} As I.P.");
+                    if(IPBOX_E.Text.Length > 12) Dev.DebugOut($"Saved {IPBOX_E.Text} As I.P.");
                 }
             }
-            catch (FileNotFoundException) { IP(); }
-            catch (Exception tabarnack) { Dev.DebugOut(tabarnack.Message + $"\n{tabarnack.StackTrace}"); }
+            catch(FileNotFoundException) { IP(); }
+            catch(Exception tabarnack) { Dev.DebugOut(tabarnack.Message + $"\n{tabarnack.StackTrace}"); }
         }
 
         public int Port() {
@@ -631,8 +644,8 @@ namespace Dobby {
                 file.Position = 16; file.Read(dat, 0, 4); file.Close();
                 return BitConverter.ToInt32(dat, 0);
             }
-            catch (FileNotFoundException) {
-                using (FileStream f = new FileStream(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB", FileMode.Open, FileAccess.Write)) {
+            catch(FileNotFoundException) {
+                using(FileStream f = new FileStream(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB", FileMode.Open, FileAccess.Write)) {
                     Dev.DebugOut($"Port(); No Settings File Was Found, Made A New One At:\n{f.Name}");
                     f.Write(Encoding.UTF8.GetBytes("192.168.137."), 0, 12);
                     f.Position = 15; f.WriteByte(0x3B); f.Write(BitConverter.GetBytes(9020), 0, 4);
@@ -642,25 +655,51 @@ namespace Dobby {
         }
 
         public void PortBox_TextChanged(object sender, EventArgs e) {
-            if (PortBox.Text.Length < 4) return;
+            if(PortBox.Text.Length < 4) return;
             try {
-                using (FileStream f = new FileStream(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB", FileMode.Open, FileAccess.Write)) {
+                using(FileStream f = new FileStream(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB", FileMode.Open, FileAccess.Write)) {
                     f.Position = 16; f.Write(BitConverter.GetBytes(int.Parse(PortBox.Text)), 0, 4);
                     Dev.DebugOut($"Saved {PortBox.Text} As Port");
                 }
             }
-            catch (Exception tabarnack) {
+            catch(Exception tabarnack) {
                 Dev.DebugOut($"{tabarnack.Message};{tabarnack.StackTrace}");
                 Port();
             }
         }
 
-        public void Toggle(ulong addr) {
-            if (addr == 0) {
-                Dev.DebugOut("addr was 0, this is caused when CheckGame(int) returns UnknownGame");
-                MessageBox.Show("The Current Game Couldn't Be Determined");
-                return;
+        public static void Toggle(ulong[] Addresses, string[] Versions) {
+            Dev.DebugOut($"About To Toggle Byte At 0x{Addresses:X}");
+            var VersionIndex = 0;
+            try {
+                if(PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName) {
+                    foreach(string Version in Versions) {
+                        if (Version == GameVersion)
+                        geo.WriteMemory(Executable, Addresses[VersionIndex], geo.ReadMemory(Executable, Addresses[VersionIndex], 1)[0] == 0x00 ? on : off);
+                    }
+                    Dev.DebugOut($"Wrote To {geo.GetProcessInfo(Executable).name}/{Executable} At 0x{Addresses:X}");
+                    attempts = 0;
+                }
+
+                else {
+                    attempts++;
+                    if(attempts < 2) {
+                        Connect(); Toggle(Addresses, Versions);
+                    }
+                    if(ActiveForm != null) SetInfoLabelText("Connection Failed");
+                }
             }
+            catch(Exception tabarnack) {
+                Dev.DebugOut(tabarnack.Message);
+                attempts++;
+                if(attempts < 2) {
+                    Connect(); Toggle(Addresses, Versions);
+                }
+                MessageBox.Show($"There Was An Error Writing To The Game's Executable\n\n{tabarnack}", "An Oh-Fuck Has Occured!");
+            }
+        }
+
+        public static void Toggle(ulong addr) {
             Dev.DebugOut($"About To Toggle Byte At 0x{addr:X}");
             try {
                 if (PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName) {
@@ -764,19 +803,22 @@ namespace Dobby {
             MessageBox.Show("PS4Debug Paylod Sent Without Issue\n\nPS4Debug Update 1.1.15 By ctn123\nPS4Debug Created By Golden", "Payload Injected Successfully, Here's Some Credits");
         }
 
-        public void ManualConnectBtn_Click(object sender, EventArgs e) => Connect();
+        public void ManualConnectBtn_Click(object sender, EventArgs e) {
+            if(ConnectionThread.ThreadState == System.Threading.ThreadState.Unstarted)
+                ConnectionThread.Start();
+        }
 
         public void T1RBtn_Click(object sender, EventArgs e) {
             Toggle(GameVersion == "1.00" ? 0x114ED32E81 : GameVersion == "UnknownGame" ? (ulong)0x0 : 0x114F536E81);
         }
 
         public void T2Btn_Click(object sender, EventArgs e) {
-            if (PS4DebugIsConnected || Connect() & GameVersion != "UnknownGame")
+            if (PS4DebugIsConnected && GameVersion != "UnknownGame")
             ToggleAlt(GameVersion == "1.00" ? (ulong)0x110693FAA1 : 0x11069DFAA1);
         }
 
         public void UC1Btn_Click(object sender, EventArgs e) {
-            if (PS4DebugIsConnected || Connect() == 0 & GameVersion != "UnknownGame")
+            //if (PS4DebugIsConnected || Connect() == 0 & GameVersion != "UnknownGame")
             Toggle(GameVersion == "1.00" ? new ulong[] { 0xD97B41, 0xD989CC, 0xD98970 } : new ulong[] { 0xD5C9F0, 0xD5CA4C, 0xD5BBC1 });
         }
 
@@ -801,11 +843,11 @@ namespace Dobby {
 
 #if DEBUG
 
-        public byte DebugConnect() {
+        public static byte DebugConnect() {
             try {
                 geo = new PS4DBG(IPBOX_E.Text);
                 geo.Connect();
-                foreach(Process prc in geo.GetProcessList().processes) {
+                foreach(libdebug.Process prc in geo.GetProcessList().processes) {
                     foreach(string id in ExecutablesNames) {
                         if(prc.name == id) {
                             string title = geo.GetProcessInfo(prc.pid).titleid;
