@@ -9,6 +9,8 @@ using static Dobby.Common;
 using System.Windows.Forms;
 using System.Threading;
 using System.Diagnostics;
+using System.Linq;
+using System.Data;
 
 namespace Dobby {
     public class PS4DebugPage : Form {
@@ -484,48 +486,44 @@ namespace Dobby {
         public delegate void LabelTextDel(string message);
         public static LabelTextDel SetLabelText = SetInfoLabelText;
 
-        public static Thread ConnectionThread = new Thread(new ThreadStart(CheckConnectionStatus));
-        public static void CheckConnectionStatus() {
-            while(true)
-            if(!PS4DebugIsConnected || geo?.GetProcessInfo(Executable).name != ProcessName || geo.GetProcessList().processes.Length != ProcessCount)
-            Connect();
-        }
+        public static Thread ConnectionThread = new Thread(new ThreadStart(Connect));
         public static void Connect() {
-            try {
-                ActiveForm.Invoke(SetLabelText, PS4DebugIsConnected ? $"Reconnecting, Process Changed {ProcessCount}|{geo?.GetProcessList().processes.Length}" : "Connecting To Console");
+            while(true) {
+                if (ActiveForm != null)
+                if(!PS4DebugIsConnected || geo.GetProcessInfo(Executable).name != ProcessName || geo.GetProcessList().processes.Length != ProcessCount) {
+                    try {
+                        if (ActiveForm != null) ActiveForm.Invoke(SetLabelText, PS4DebugIsConnected ? $"Reconnecting, Process Changed {ProcessCount}|{geo?.GetProcessList().processes.Length}" : "Connecting To Console");
+                        //Dev.DebugOut($"{PS4DebugIsConnected} | {geo.GetProcessInfo(Executable).name != ProcessName} {geo.GetProcessList().processes.Length == ProcessCount}");
 
-                geo = new PS4DBG(IPBOX_E.Text);
-                geo.Connect();
-                PS4DebugIsConnected = true;
+                        geo = new PS4DBG(IPBOX_E.Text);
+                        geo.Connect();
+                        PS4DebugIsConnected = true;
 
-                foreach(libdebug.Process process in geo.GetProcessList().processes) { // processprocessprocessprocessprocess
-                    foreach(string id in ExecutablesNames) {
-                        if(process.name == id) {
-                            string title = geo.GetProcessInfo(process.pid).titleid;
-                            if(title == "FLTZ00003" || title == "ITEM00003") {
-                                Dev.DebugOut($"Skipping Lightning's Stuff {title}");
-                                break;
-                            } // Code To Avoid Connecting To HB Store Stuff
+                        foreach(libdebug.Process process in geo.GetProcessList().processes) { // processprocessprocessprocessprocess
+                            if(ExecutablesNames.Contains(process.name)) {
+                                string title = geo.GetProcessInfo(process.pid).titleid;
+                                if(title == "FLTZ00003" || title == "ITEM00003") {
+                                    Dev.DebugOut($"Skipping Lightning's Stuff {title}");
+                                    break;
+                                } // Code To Avoid Connecting To HB Store Stuff
 
-                            Executable = process.pid;
-                            ProcessName = process.name;
-                            TitleID = geo.GetProcessInfo(process.pid).titleid;
-                            GameVersion = GetGameVersion(1);
-                            ProcessCount = geo.GetProcessList().processes.Length;
+                                Executable = process.pid;
+                                ProcessName = process.name;
+                                TitleID = geo.GetProcessInfo(process.pid).titleid;
+                                GameVersion = GetGameVersion(1);
+                                ProcessCount = geo.GetProcessList().processes.Length;
 
-                            ActiveForm.Invoke(SetLabelText, $"Connected And Attached To {TitleID} ({GameVersion})");
-                            goto OopsIBrokeThemBoth;
+                                ActiveForm.Invoke(SetLabelText, $"Connected And Attached To {TitleID} ({GameVersion})");
+                                goto FoundProcess;
+                            }
                         }
-                    }
+                        ProcessName = geo?.GetProcessInfo(Executable).name;
+                        ProcessCount = geo.GetProcessList().processes.Length;
+                        if(ActiveForm != null) ActiveForm.Invoke(SetLabelText, "Connected To PS4, But Couldn't Find The Game Process");
+                        FoundProcess:;
+                     }
+                    catch(Exception tabarnack) { if(!Dev.REL) MessageBox.Show($"{tabarnack.Message}\n{tabarnack.StackTrace}"); if(ActiveForm != null) ActiveForm.Invoke(SetLabelText, $"Connection To {IPBOX_E.Text} Failed"); }
                 }
-            ProcessCount = geo.GetProcessList().processes.Length;
-            ActiveForm.Invoke(SetLabelText, "Connected To PS4, But Couldn't Find The Game Process");
-            OopsIBrokeThemBoth:;
-            }
-            catch(Exception tabarnack) {
-                if(!Dev.REL)
-                    Dev.DebugOut($"{tabarnack.StackTrace}");
-                if(ActiveForm != null) ActiveForm.Invoke(SetLabelText, $"Connection To {IPBOX_E.Text} Failed", Console.CursorTop = 8);
             }
         }
 
@@ -729,20 +727,10 @@ namespace Dobby {
         }
         public void ToggleAlt(ulong addr) {
             RetryWrite:
-            if (addr == 0) {
-                Dev.DebugOut("addr was 0, this is caused when CheckGame(int) returns UnknownGame");
-                MessageBox.Show("The Current Game Couldn't Be Determined");
-                return;
-            }
             Dev.DebugOut($"About To Toggle Byte At 0x{addr:X}");
             try {
-                if (PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName && Executable != 0) {
-                    var PreByte = geo.ReadMemory(Executable, addr, 1)[0];
-                    geo.WriteMemory(Executable, addr, PreByte == 0x00 ? on : off);
-                    if(PreByte == geo.ReadMemory(Executable, addr, 1)[0]) {
-                        Dev.DebugOut("fhjdfgsdjsd ");
-                        ToggleAlt(addr);
-                    }
+                if (PS4DebugIsConnected) {
+                    geo.WriteMemory(Executable, addr, geo.ReadMemory(Executable, addr, 1)[0] == 0x00 ? on : off);
 
                     Dev.DebugOut($"Wrote To {geo.GetProcessInfo(Executable).name}/{Executable} At 0x{addr:X}");
                     attempts = 0; return;
@@ -753,6 +741,7 @@ namespace Dobby {
                 attempts++;
                 if (attempts < 2) {
                     Dev.DebugOut("Exception; trying again");
+                    MessageBox.Show(tabarnack.Message, attempts.ToString());
                     Connect(); Toggle(addr);
                 }
                 else {
@@ -804,6 +793,7 @@ namespace Dobby {
         }
 
         public void ManualConnectBtn_Click(object sender, EventArgs e) {
+            PS4DebugIsConnected = false;
             if(ConnectionThread.ThreadState == System.Threading.ThreadState.Unstarted)
                 ConnectionThread.Start();
         }

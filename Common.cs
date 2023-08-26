@@ -1228,7 +1228,7 @@ namespace Dobby {
                             $"Form: {(ActiveForm != null ? $"{ActiveForm.Name} | Form Position: {ActiveForm.Location}" : "Console")}",
                             $"Pages: {Pages?[0]}, {Pages?[1]}, {Pages?[2]}, {Pages?[3]}",
                             $"Active Page ID: {Page} | InfoHasImportantString: {InfoHasImportantStr}",
-                            $"Game: {Game} | TitleID: {TitleID} | Game Version: {GameVersion} | pid:{Executable}",
+                            $"Game: {Game} | TitleID: {TitleID} | Game Version: {GameVersion} | pid:{Executable} | {ProcessName}",
                             "",
                             $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled} | MousePos: {MousePosition}",
                             $"Control: {HoveredControl.Name} | {ControlType.Substring(ControlType.LastIndexOf('.') + 1)}",
