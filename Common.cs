@@ -124,7 +124,8 @@ namespace Dobby {
            "* 3.26.80.208 | Fixed UC3 1.00 Debug Offsets, One Was Wrong And The Other Was Missing (how did I manage that? only the dev menu bool was right) Reordered UC1 Debug Offsets To Make It Appear To Work Slightly faster (Enables FPS First Now lol), Misc tweaks to debug functions",
            "* 3.26.80.208 | Formatting ",
            "* 3.27.80.208 | Deleted Second PC Button On Main Form.",
-           "* 3.28.84.210 | Reworked Connection Method To Be On Another Thread, and added an asynchronous function to wait for a proper connection before trying to write to memory, Fleshed Out CheckGameVersion code, Fixed ToggleAlt function and related code"
+           "* 3.28.84.210 | Reworked Connection Method To Be On Another Thread, and added an asynchronous function to wait for a proper connection before trying to write to memory, Fleshed Out CheckGameVersion code, Fixed ToggleAlt function and related code",
+           "* 3.28.85.213 | Made More PS4Debug Methods Asynchronous, Forgot a Couple"
 
             // TODO:
             // - Finish EbootPatchHelpPage

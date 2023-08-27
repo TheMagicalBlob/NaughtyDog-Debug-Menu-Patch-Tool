@@ -523,7 +523,7 @@ namespace Dobby {
                 ActiveForm?.Invoke(SetLabelText, "Connected To PS4, But Couldn't Find The Game Process");
                 goto Wait;
             }
-            catch(Exception tabarnack) { if(!Dev.REL) MessageBox.Show($"{tabarnack.Message}\n{tabarnack.StackTrace}"); if(ActiveForm != null) ActiveForm.Invoke(SetLabelText, $"Connection To {IPBOX_E.Text} Failed"); }
+            catch(Exception tabarnack) { if(!Dev.REL) MessageBox.Show($"{tabarnack.Message}\n{tabarnack.StackTrace}"); ActiveForm?.Invoke(SetLabelText, $"Connection To {IPBOX_E.Text} Failed"); }
         }
 
         public static Task CheckConnectionStatus() {
@@ -739,13 +739,15 @@ namespace Dobby {
         }
 
         public void ManualConnectBtn_Click(object sender, EventArgs e) {
-            PS4DebugIsConnected = false;
             if(ConnectionThread.ThreadState == System.Threading.ThreadState.Unstarted)
-                ConnectionThread.Start();
+            ConnectionThread.Start();
+            PS4DebugIsConnected = false;
         }
 
         public async void T1RBtn_Click(object sender, EventArgs e) {
-            Toggle(GameVersion == "1.00" ? 0x114ED32E81 : GameVersion == "UnknownGameVersion" ? (ulong)0x0 : 0x114F536E81);
+            await Task.Run(CheckConnectionStatus);
+            if(GameVersion != "UnknownGameVersion")
+                Toggle(GameVersion == "1.00" ? 0x114ED32E81 : GameVersion == "UnknownGameVersion" ? (ulong)0x0 : 0x114F536E81);
         }
 
         public async void T2Btn_Click(object sender, EventArgs e) {
@@ -768,16 +770,29 @@ namespace Dobby {
 
         public async void UC3Btn_Click(object sender, EventArgs e) => Toggle(new ulong[] { 0x18366c9, 0x1e21f90, 0x18366C4 });
 
-        public void UC4Btn_Click(object sender, EventArgs e) {
-            if(GameVersion == "UnkownGame") return;
-            Toggle(GameVersion == "1.00" ? (ulong)0x1104FC2E95 : 0x0);
+        public async void UC4Btn_Click(object sender, EventArgs e) {
+            await Task.Run(CheckConnectionStatus);
+            if(GameVersion != "UnknownGameVersion")
+                Toggle(GameVersion == "1.00" ? (ulong)0x1104FC2E95 : 0x0);
         }
 
-        public async void UC4MPBetaBtn_Click(object sender, EventArgs e) => Toggle(0x113408AE83);
+        public async void UC4MPBetaBtn_Click(object sender, EventArgs e) {
+            await Task.Run(CheckConnectionStatus);
+            if(GameVersion != "UnknownGameVersion")
+                Toggle(0x113408AE83);
+        }
 
-        public async void TLL100(object sender, EventArgs e) => Toggle(0x1105D1AEF9);
+        public async void TLL100(object sender, EventArgs e) {
+            await Task.Run(CheckConnectionStatus);
+            if(GameVersion != "UnknownGameVersion")
+                Toggle(0x1105D1AEF9);
+        }
 
-        public async void TLL109(object sender, EventArgs e) => Toggle(0x1105D1AEF9);
+        public async void TLL109(object sender, EventArgs e) {
+            await Task.Run(CheckConnectionStatus);
+            if(GameVersion != "UnknownGameVersion")
+                Toggle(0x1105D1AEF9);
+        }
 
 
 #if DEBUG
