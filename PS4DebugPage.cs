@@ -11,6 +11,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.Linq;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace Dobby {
     public class PS4DebugPage : Form {
@@ -21,8 +22,6 @@ namespace Dobby {
             PortBox.Text = Port().ToString();
             AddControlEventHandlers(Controls);
         }
-
-        public static PS4DBG geo;
 
         public void InitializeComponent() {
             MainLabel = new System.Windows.Forms.Label();
@@ -485,58 +484,86 @@ namespace Dobby {
 
         public delegate void LabelTextDel(string message);
         public static LabelTextDel SetLabelText = SetInfoLabelText;
-
         public static Thread ConnectionThread = new Thread(new ThreadStart(Connect));
         public static void Connect() {
-            while(true) {
-                if (ActiveForm != null)
-                if(!PS4DebugIsConnected || geo.GetProcessInfo(Executable).name != ProcessName || geo.GetProcessList().processes.Length != ProcessCount) {
-                    try {
-                        if (ActiveForm != null) ActiveForm.Invoke(SetLabelText, PS4DebugIsConnected ? $"Reconnecting, Process Changed {ProcessCount}|{geo?.GetProcessList().processes.Length}" : "Connecting To Console");
-                        //Dev.DebugOut($"{PS4DebugIsConnected} | {geo.GetProcessInfo(Executable).name != ProcessName} {geo.GetProcessList().processes.Length == ProcessCount}");
+            try {
+            Wait:
+                if (PS4DebugIsConnected) goto Wait;
+                ActiveForm?.Invoke(SetLabelText, "Connecting To Console");
+                Dev.DebugOut($"{PS4DebugIsConnected} | {geo?.GetProcessInfo(Executable).name != ProcessName} | {geo?.GetProcessList().processes.Length == ProcessCount}");
 
-                        geo = new PS4DBG(IPBOX_E.Text);
-                        geo.Connect();
-                        PS4DebugIsConnected = true;
+                geo = new PS4DBG(IPBOX_E.Text);
+                geo.Connect();
+                PS4DebugIsConnected = true;
 
-                        foreach(libdebug.Process process in geo.GetProcessList().processes) { // processprocessprocessprocessprocess
-                            if(ExecutablesNames.Contains(process.name)) {
-                                string title = geo.GetProcessInfo(process.pid).titleid;
-                                if(title == "FLTZ00003" || title == "ITEM00003") {
-                                    Dev.DebugOut($"Skipping Lightning's Stuff {title}");
-                                    break;
-                                } // Code To Avoid Connecting To HB Store Stuff
+                foreach(libdebug.Process process in geo.GetProcessList().processes) { // processprocessprocessprocessprocess
+                    if(ExecutablesNames.Contains(process.name)) {
+                        string title = geo.GetProcessInfo(process.pid).titleid;
+                        if(title == "FLTZ00003" || title == "ITEM00003") {
+                            Dev.DebugOut($"Skipping Lightning's Stuff {title}");
+                            break;
+                        } // Check To Avoid Connecting To HB Store Stuff
 
-                                Executable = process.pid;
-                                ProcessName = process.name;
-                                TitleID = geo.GetProcessInfo(process.pid).titleid;
-                                GameVersion = GetGameVersion(1);
-                                ProcessCount = geo.GetProcessList().processes.Length;
-
-                                ActiveForm.Invoke(SetLabelText, $"Connected And Attached To {TitleID} ({GameVersion})");
-                                goto FoundProcess;
-                            }
-                        }
-                        ProcessName = geo?.GetProcessInfo(Executable).name;
+                        Executable = process.pid;
+                        ProcessName = process.name;
+                        TitleID = geo.GetProcessInfo(process.pid).titleid;
+                        GameVersion = GetGameVersion();
                         ProcessCount = geo.GetProcessList().processes.Length;
-                        if(ActiveForm != null) ActiveForm.Invoke(SetLabelText, "Connected To PS4, But Couldn't Find The Game Process");
-                        FoundProcess:;
-                     }
-                    catch(Exception tabarnack) { if(!Dev.REL) MessageBox.Show($"{tabarnack.Message}\n{tabarnack.StackTrace}"); if(ActiveForm != null) ActiveForm.Invoke(SetLabelText, $"Connection To {IPBOX_E.Text} Failed"); }
+
+                        ActiveForm?.Invoke(SetLabelText, $"Connected And Attached To {TitleID} ({GameVersion})");
+                        WaitForConnection = false;
+
+                        goto Wait;
+                    }
                 }
+                ProcessName = geo?.GetProcessInfo(Executable).name;
+                ProcessCount = geo.GetProcessList().processes.Length;
+                WaitForConnection = false;
+
+                ActiveForm?.Invoke(SetLabelText, "Connected To PS4, But Couldn't Find The Game Process");
+                goto Wait;
             }
+            catch(Exception tabarnack) { if(!Dev.REL) MessageBox.Show($"{tabarnack.Message}\n{tabarnack.StackTrace}"); if(ActiveForm != null) ActiveForm.Invoke(SetLabelText, $"Connection To {IPBOX_E.Text} Failed"); }
         }
 
-        public static string GetGameVersion(int Rotation) { // An ugly sack of WHY which determines the patch version of a specified game by just checking the int32 value of 2 bytes at a game-specific address because I have no idea how or if I can check the .sfo
+        public static Task CheckConnectionStatus() {
+            if(ConnectionThread.ThreadState == System.Threading.ThreadState.Unstarted || ConnectionThread.ThreadState == System.Threading.ThreadState.Stopped) ConnectionThread.Start();
+
+            else if(geo.GetProcessInfo(Executable).name != ProcessName || !ExecutablesNames.Contains(geo.GetProcessInfo(Executable).name))
+            { PS4DebugIsConnected = false; WaitForConnection = true; Dev.DebugOut("!!!"); }
+
+            while(WaitForConnection) Thread.Sleep(1);
+            Dev.DebugOut("!!! " + WaitForConnection);
+            return Task.CompletedTask;
+        }
+
+        public static string GetGameVersion() { // An ugly sack of WHY which determines the patch version of a specified game by just checking the int32 value of 2 bytes at a game-specific address because I have no idea how or if I can check the .sfo
             try {
-                if(Rotation == 1 && PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName) {
-                    switch(GetGameVersion(2)) {
+                if(PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName) {
+
+                    switch(TitleID) {     // Determine The Game That's Running
+                        case "CUSA00552":
+                        case "CUSA00554":
+                        case "CUSA00556":
+                        case "CUSA00557":
+                            GameVersion = "T1R";
+                            break;
+                        case "CUSA10249":
+                        case "CUSA14006":
+                        case "CUSA07820":
+                        case "CUSA13986":
+                            GameVersion = "T2";
+                            break;
+                        default: return "UnknownTitleID";
+                    }
+
+                    switch(GameVersion) { // Read A Spot In Memory To Determine Which Patch the Executable's From
                         case "T1R":
                             Int16 chk = BitConverter.ToInt16(geo.ReadMemory(Executable, 0x4000F4, 2), 0);
 
                             string T1RErr() {
                                 Dev.DebugOut($"Error 1 (T1R)\n{chk}");
-                                return "UnknownGame";
+                                return "UnknownGameVersion";
                             }
                             return
                                 chk == 18432 ? "1.00"
@@ -550,7 +577,7 @@ namespace Dobby {
 
                             string T2Err() {
                                 Dev.DebugOut($"Error, Game Was T2 But None of The Checks Matched! || chk:{T2Check}");
-                                return "UnknownGame";
+                                return $"{GameVersion} UnknownGameVersion";
                             }
                             return
                                 T2Check == 25384434 ? "1.00"
@@ -577,33 +604,15 @@ namespace Dobby {
                         case "UC4":
                         case "TLL":
                             break;
-                        default: return "UnknownGame";
+                        default: Dev.DebugOut("!!! " + tmp); return "UnknownGameVersion";
                     }
                 }
-                else {
-                    Dev.DebugOut(5);
-                    switch(TitleID) {
-                        case "CUSA00552":
-                        case "CUSA00554":
-                        case "CUSA00556":
-                        case "CUSA00557":
-                            Dev.DebugOut("TitleID: " + TitleID);
-                            return "T1R";
-                            break;
-                        case "CUSA10249":
-                        case "CUSA14006":
-                        case "CUSA07820":
-                        case "CUSA13986":
-                            Dev.DebugOut("TitleID: " + TitleID);
-                            return "T2";
-                        default: return "UnknownTitleID";
-                    }
-                }
-                return "UnknownGame";
+                Dev.DebugOut($"Fell Out The Window, Ow");
+                return "UnknownGameVersion";
             }
             catch(Exception Tabarnack) {
                 Dev.DebugOut($"{Tabarnack.Message};{Tabarnack.StackTrace}");
-                return "UnknownGame";
+                return "UnknownGameVersion";
             }
         }
 
@@ -672,82 +681,26 @@ namespace Dobby {
             try {
                 if(PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName) {
                     foreach(string Version in Versions) {
-                        if (Version == GameVersion)
-                        geo.WriteMemory(Executable, Addresses[VersionIndex], geo.ReadMemory(Executable, Addresses[VersionIndex], 1)[0] == 0x00 ? on : off);
+                        if(Version == GameVersion)
+                            geo.WriteMemory(Executable, Addresses[VersionIndex], geo.ReadMemory(Executable, Addresses[VersionIndex], 1)[0] == 0x00 ? on : off);
                     }
                     Dev.DebugOut($"Wrote To {geo.GetProcessInfo(Executable).name}/{Executable} At 0x{Addresses:X}");
                     attempts = 0;
                 }
-
-                else {
-                    attempts++;
-                    if(attempts < 2) {
-                        Connect(); Toggle(Addresses, Versions);
-                    }
-                    if(ActiveForm != null) SetInfoLabelText("Connection Failed");
-                }
             }
-            catch(Exception tabarnack) {
-                Dev.DebugOut(tabarnack.Message);
-                attempts++;
-                if(attempts < 2) {
-                    Connect(); Toggle(Addresses, Versions);
-                }
-                MessageBox.Show($"There Was An Error Writing To The Game's Executable\n\n{tabarnack}", "An Oh-Fuck Has Occured!");
-            }
+            catch(Exception tabarnack) { Dev.DebugOut(tabarnack.Message); }
         }
 
         public static void Toggle(ulong addr) {
-            Dev.DebugOut($"About To Toggle Byte At 0x{addr:X}");
             try {
+                Dev.DebugOut($"About To Toggle Byte At 0x{addr:X}");
                 if (PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName) {
                     geo.WriteMemory(Executable, addr, geo.ReadMemory(Executable, addr, 1)[0] == 0x00 ? on : off);
                     Dev.DebugOut($"Wrote To {geo.GetProcessInfo(Executable).name}/{Executable} At 0x{addr:X}");
                     attempts = 0;
                 }
-                else {
-                    Dev.DebugOut($"{(PS4DebugIsConnected ? $"geo.GetProcessInfo(exec).name ({geo.GetProcessInfo(Executable).name}) != processname ({ProcessName})" : "PS4Debug Isn't Connected, Connecting Now...")}");
-                    attempts++;
-                    if (attempts < 2) {
-                        Connect(); Toggle(addr);
-                    }
-                    else if (ActiveForm != null) SetInfoLabelText("Connection Failed");
-                }
             }
-            catch (Exception tabarnack) {
-                Dev.DebugOut(tabarnack.Message);
-                attempts++;
-                if (attempts < 2) {
-                    Connect(); Toggle(addr);
-                }
-                else {
-                    MessageBox.Show($"There Was An Error Writing To The Game's Executable\n\n{tabarnack}", "An Oh-Fuck Has Occured!");
-                }
-            }
-        }
-        public void ToggleAlt(ulong addr) {
-            RetryWrite:
-            Dev.DebugOut($"About To Toggle Byte At 0x{addr:X}");
-            try {
-                if (PS4DebugIsConnected) {
-                    geo.WriteMemory(Executable, addr, geo.ReadMemory(Executable, addr, 1)[0] == 0x00 ? on : off);
-
-                    Dev.DebugOut($"Wrote To {geo.GetProcessInfo(Executable).name}/{Executable} At 0x{addr:X}");
-                    attempts = 0; return;
-                }
-                Connect(); attempts++; goto RetryWrite;
-            }
-            catch (Exception tabarnack) {
-                attempts++;
-                if (attempts < 2) {
-                    Dev.DebugOut("Exception; trying again");
-                    MessageBox.Show(tabarnack.Message, attempts.ToString());
-                    Connect(); Toggle(addr);
-                }
-                else {
-                    MessageBox.Show($"There Was An Error Writing To The Game's Executable\n\n{tabarnack}", "An Oh-Fuck Has Occured!");
-                }
-            }
+            catch (Exception tabarnack) { Dev.DebugOut(tabarnack.Message); }
         }
 
         public void Toggle(ulong[] array) { // Just For The Uncharted Collection
@@ -767,14 +720,7 @@ namespace Dobby {
                     }
                 }
             }
-            catch (Exception tabarnack) {
-                attempts++; if (attempts < 2) {
-                    Connect(); Toggle(array);
-                }
-                else {
-                    MessageBox.Show($"There Was An Error Writing To The Game's Executable\n{tabarnack}", "An Oh-Fuck Has Occured!");
-                }
-            }
+            catch (Exception tabarnack) { Dev.DebugOut(tabarnack.Message); }
         }
 
 
@@ -798,37 +744,40 @@ namespace Dobby {
                 ConnectionThread.Start();
         }
 
-        public void T1RBtn_Click(object sender, EventArgs e) {
-            Toggle(GameVersion == "1.00" ? 0x114ED32E81 : GameVersion == "UnknownGame" ? (ulong)0x0 : 0x114F536E81);
+        public async void T1RBtn_Click(object sender, EventArgs e) {
+            Toggle(GameVersion == "1.00" ? 0x114ED32E81 : GameVersion == "UnknownGameVersion" ? (ulong)0x0 : 0x114F536E81);
         }
 
-        public void T2Btn_Click(object sender, EventArgs e) {
-            if (PS4DebugIsConnected && GameVersion != "UnknownGame")
-            ToggleAlt(GameVersion == "1.00" ? (ulong)0x110693FAA1 : 0x11069DFAA1);
+        public async void T2Btn_Click(object sender, EventArgs e) {
+            await Task.Run(CheckConnectionStatus);
+            if(GameVersion != "UnknownGameVersion")
+                Toggle(GameVersion == "1.00" ? (ulong)0x110693FAA1 : 0x11069DFAA1);
         }
 
-        public void UC1Btn_Click(object sender, EventArgs e) {
-            //if (PS4DebugIsConnected || Connect() == 0 & GameVersion != "UnknownGame")
-            Toggle(GameVersion == "1.00" ? new ulong[] { 0xD97B41, 0xD989CC, 0xD98970 } : new ulong[] { 0xD5C9F0, 0xD5CA4C, 0xD5BBC1 });
+        public async void UC1Btn_Click(object sender, EventArgs e) {
+            await Task.Run(CheckConnectionStatus);
+            if(GameVersion != "UnknownGameVersion")
+                Toggle(GameVersion == "1.00" ? new ulong[] { 0xD97B41, 0xD989CC, 0xD98970 } : new ulong[] { 0xD5C9F0, 0xD5CA4C, 0xD5BBC1 });
         }
 
-        public void UC2Btn_Click(object sender, EventArgs e) {
-            if(GameVersion == "UnkownGame") return;
-            Toggle(GameVersion == "1.00" ? new ulong[] { 0x127149C, 0x12705C9 } : new ulong[] { 0x145decc, 0x145cff9, 0x145de61 });
+        public async void UC2Btn_Click(object sender, EventArgs e) {
+            await Task.Run(CheckConnectionStatus);
+            if(GameVersion != "UnknownGameVersion")
+                Toggle(GameVersion == "1.00" ? new ulong[] { 0x127149C, 0x12705C9 } : new ulong[] { 0x145decc, 0x145cff9, 0x145de61 });
         }
 
-        public void UC3Btn_Click(object sender, EventArgs e) => Toggle(new ulong[] { 0x18366c9, 0x1e21f90, 0x18366C4 });
+        public async void UC3Btn_Click(object sender, EventArgs e) => Toggle(new ulong[] { 0x18366c9, 0x1e21f90, 0x18366C4 });
 
         public void UC4Btn_Click(object sender, EventArgs e) {
             if(GameVersion == "UnkownGame") return;
             Toggle(GameVersion == "1.00" ? (ulong)0x1104FC2E95 : 0x0);
         }
 
-        private void UC4MPBetaBtn_Click(object sender, EventArgs e) => Toggle(0x113408AE83);
+        public async void UC4MPBetaBtn_Click(object sender, EventArgs e) => Toggle(0x113408AE83);
 
-        public void TLL100(object sender, EventArgs e) => Toggle(0x1105D1AEF9);
+        public async void TLL100(object sender, EventArgs e) => Toggle(0x1105D1AEF9);
 
-        public void TLL109(object sender, EventArgs e) => Toggle(0x1105D1AEF9);
+        public async void TLL109(object sender, EventArgs e) => Toggle(0x1105D1AEF9);
 
 
 #if DEBUG
@@ -854,7 +803,7 @@ namespace Dobby {
                         }
                     }
                 }
-                GameVersion = GetGameVersion(1);
+                GameVersion = GetGameVersion();
                 return 0;
             }
             catch(Exception tabarnack) {

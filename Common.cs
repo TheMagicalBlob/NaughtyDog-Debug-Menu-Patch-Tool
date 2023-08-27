@@ -124,7 +124,7 @@ namespace Dobby {
            "* 3.26.80.208 | Fixed UC3 1.00 Debug Offsets, One Was Wrong And The Other Was Missing (how did I manage that? only the dev menu bool was right) Reordered UC1 Debug Offsets To Make It Appear To Work Slightly faster (Enables FPS First Now lol), Misc tweaks to debug functions",
            "* 3.26.80.208 | Formatting ",
            "* 3.27.80.208 | Deleted Second PC Button On Main Form.",
-           "* 3.27.84.210 | Reworking Connect(), Fleshed Out CheckGameVersion code, Fixed ToggleAlt function and related code"
+           "* 3.28.84.210 | Reworked Connection Method To Be On Another Thread, and added an asynchronous function to wait for a proper connection before trying to write to memory, Fleshed Out CheckGameVersion code, Fixed ToggleAlt function and related code"
 
             // TODO:
             // - Finish EbootPatchHelpPage
@@ -165,11 +165,13 @@ namespace Dobby {
         ============================================================================================================================================================================
         // Start Of PS4Debug Page Specific Functions                                                                                                                      */
         
+        public static PS4DBG geo;
+
         public static readonly byte // BECAUSE I FUCKING CAN, YOU TWAT
             on = 0x01,
             off = 0x00
         ;
-        public static bool PS4DebugIsConnected;
+        public static bool PS4DebugIsConnected, WaitForConnection = true;
 
         public static int
             Executable,   // Active PS4DBG Process ID
@@ -191,7 +193,7 @@ namespace Dobby {
             "big4-final-pgo-lto.elf",
             "eboot-mp.elf",
         };
-        public static string ProcessName = "Jack Shit", GameVersion = string.Empty, TitleID;
+        public static string ProcessName = "Jack Shit", GameVersion = "UnknownGameVersion", TitleID;
 
         #endregion
 
@@ -1228,7 +1230,8 @@ namespace Dobby {
                             $"Form: {(ActiveForm != null ? $"{ActiveForm.Name} | Form Position: {ActiveForm.Location}" : "Console")}",
                             $"Pages: {Pages?[0]}, {Pages?[1]}, {Pages?[2]}, {Pages?[3]}",
                             $"Active Page ID: {Page} | InfoHasImportantString: {InfoHasImportantStr}",
-                            $"Game: {Game} | TitleID: {TitleID} | Game Version: {GameVersion} | pid:{Executable} | {ProcessName}",
+                            $"TitleID: {TitleID} | Game Version: {GameVersion} |",
+                            $"Game: {Game} | pid:{Executable} | {ProcessName} | P {PS4DebugIsConnected} | W {WaitForConnection} | Thread: {PS4DebugPage.ConnectionThread.ThreadState}",
                             "",
                             $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled} | MousePos: {MousePosition}",
                             $"Control: {HoveredControl.Name} | {ControlType.Substring(ControlType.LastIndexOf('.') + 1)}",
@@ -1318,7 +1321,7 @@ namespace Dobby {
             public static void DebugFunctionCall() {
                 return;
                 PS4DebugPage.DebugConnect();
-                DebugOut(PS4DebugPage.geo.Call(Executable, PS4DebugPage.geo.InstallRPC(Executable), 0x52e060, new object[] { 0x105f83d240, 4 })); // 0x105f83d240
+                DebugOut(geo.Call(Executable, geo.InstallRPC(Executable), 0x52e060, new object[] { 0x105f83d240, 4 })); // 0x105f83d240
             }
 
 #endif
