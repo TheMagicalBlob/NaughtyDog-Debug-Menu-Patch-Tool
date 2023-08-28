@@ -125,7 +125,8 @@ namespace Dobby {
            "* 3.26.80.208 | Formatting ",
            "* 3.27.80.208 | Deleted Second PC Button On Main Form.",
            "* 3.28.84.210 | Reworked Connection Method To Be On Another Thread, and added an asynchronous function to wait for a proper connection before trying to write to memory, Fleshed Out CheckGameVersion code, Fixed ToggleAlt function and related code",
-           "* 3.28.85.213 | Made More PS4Debug Methods Asynchronous, Forgot a Couple"
+           "* 3.28.85.213 | Made More PS4Debug Methods Asynchronous, Forgot a Couple",
+           "* 3.28.86.219 | Working More On PS4QOLPatchPage "
 
             // TODO:
             // - Finish EbootPatchHelpPage
@@ -162,6 +163,7 @@ namespace Dobby {
         public static Font MainFont = new Font("Franklin Gothic Medium", 6.5F, FontStyle.Bold);
 
         #region PS4DBG_Variables
+
         /* End Of Repeated Functions
         ============================================================================================================================================================================
         // Start Of PS4Debug Page Specific Functions                                                                                                                      */
@@ -626,18 +628,16 @@ namespace Dobby {
         }
 
         delegate void LabelFlashDelegate();
-        static LabelFlashDelegate Yellow = new LabelFlashDelegate(FlashYellow);
-        static LabelFlashDelegate White = new LabelFlashDelegate(FlashWhite);
+        static readonly LabelFlashDelegate Yellow = new LabelFlashDelegate(FlashYellow);
+        static readonly LabelFlashDelegate White = new LabelFlashDelegate(FlashWhite);
         public static Thread FlashThread = new Thread(new ThreadStart(FlashLabel));
         static void FlashLabel() {
             while(!LabelShouldFlash) { Thread.Sleep(7); }
             try {
                 for(int Flashes = 0; Flashes < 8; Flashes++) {
-                    while(ActiveForm == null) { } // Just Chill Here 'Till The Form Gets Focus Again
-                    ActiveForm.Invoke(White);
+                    ActiveForm?.Invoke(White);
                     Thread.Sleep(135);
-                    while(ActiveForm == null) { }
-                    ActiveForm.Invoke(Yellow);
+                    ActiveForm?.Invoke(Yellow);
                     Thread.Sleep(135);
                 }
             }
@@ -1137,10 +1137,10 @@ namespace Dobby {
             static void ReadInput() {
                 while(true) {
                     switch(ReadKey(true).Key) {
-                        case ConsoleKey.R:
+                        case ConsoleKey.C:
                             Clear();
                             break;
-                        case ConsoleKey.C:
+                        case ConsoleKey.R:
                             OutputStrings = new string[OutputStrings.Length];
                             OutputStringIndex = 0;
                             Clear(); Thread.Sleep(42); Clear(); // First Clear Doesn't Get It All
@@ -1157,11 +1157,6 @@ namespace Dobby {
                                     PS4QOLPatchesPage.FormShouldReset = true;
                                 }
                             }
-                            break;
-                        case ConsoleKey.Z:
-                            if(OutputStringIndex < 0)
-                                OutputStringIndex--;
-                            Clear();
                             break;
                         case ConsoleKey.W:
                             PS4DebugDev = "Waiting For Address";
@@ -1314,15 +1309,43 @@ namespace Dobby {
             }
 
             public static void DebugMemoryWrite(ulong address) {
-                if(PS4DebugIsConnected || PS4DebugPage.DebugConnect() == 0)
+                if(PS4DebugIsConnected || DebugConnect() == 0)
                     PS4DebugPage.Toggle((ulong)address);
                 PS4DebugDev = "";
             }
-
             public static void DebugFunctionCall() {
                 return;
-                PS4DebugPage.DebugConnect();
+                DebugConnect();
                 DebugOut(geo.Call(Executable, geo.InstallRPC(Executable), 0x52e060, new object[] { 0x105f83d240, 4 })); // 0x105f83d240
+            }
+            public static byte DebugConnect() {
+                try {
+                    geo = new PS4DBG(PS4DebugPage.IPBOX_E.Text);
+                    geo.Connect();
+                    foreach(libdebug.Process prc in geo.GetProcessList().processes) {
+                        foreach(string id in ExecutablesNames) {
+                            if(prc.name == id) {
+                                string title = geo.GetProcessInfo(prc.pid).titleid;
+                                if(title == "FLTZ00003" || title == "ITEM00003") {
+                                    Dev.DebugOut($"Skipping Lightning's Stuff {title}");
+                                    break;
+                                } // Code To Avoid Connecting To HB Store Stuff
+
+                                Executable = prc.pid;
+                                ProcessName = prc.name;
+                                TitleID = geo.GetProcessInfo(prc.pid).titleid;
+                                PS4DebugIsConnected = true;
+                                Dev.DebugOut($"{ProcessName} | pid: {Executable} | PS4DebugIsConnected == {PS4DebugIsConnected}");
+                            }
+                        }
+                    }
+                    GameVersion = PS4DebugPage.GetGameVersion();
+                    return 0;
+                }
+                catch(Exception tabarnack) {
+                    MessageBox.Show(tabarnack.Message);
+                    return 1;
+                }
             }
 
 #endif

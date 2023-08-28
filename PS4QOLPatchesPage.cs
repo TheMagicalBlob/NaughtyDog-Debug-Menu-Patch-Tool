@@ -26,7 +26,7 @@ namespace Dobby {
         /// <summary> 0: Disable FPS<br/>1: Paused Icon<br/>2: Prog Pause On Open<br/>3: Prog Pause On Close </summary>
         static bool[] UniversalDebugBooleans = new bool[5];
         /// <summary> 1: Debug Shadowed Text<br/>2: Disable Version Text<br/>3: Menu Right Align<br/>4: <br/>5:  </summary>
-        static bool[] GSDebugBooleans = new bool[3];
+        static bool[] GSDebugBooleans = new bool[4];
         /// <summary> Game-Specific Debug Floats <br/>1: Menu Scale<br/>2: Menu Alpha<br/>3: Non-ADS Field of View</summary>
         static float[] GSDebugFloats = new float[] { 0.6f, 0.85f, 1F };
         /// <summary> Variable Used When Adjusting Form Scale And Control Positions </summary>
@@ -468,16 +468,28 @@ namespace Dobby {
             Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {(UniversalDebugBooleans[OptionIndex] ? "Yes" : "No")}";
         }
 
-        public void FloatFunc(Control Control, int OptionIndex, int WheelDelta) {
+        public void FloatScrollFunc(Control Control, int OptionIndex, int WheelDelta) {
             if (CurrentControl != Control.Name) return;
 
             GSDebugFloats[OptionIndex] = (float)Math.Round(GSDebugFloats[OptionIndex] += WheelDelta / 12000.0F, 4);
             Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {GSDebugFloats[OptionIndex]}";
         }
-        public void IntFunc(Control Control, int OptionIndex, int WheelDelta) {
+        public void FloatClickFunc(Control Control, int OptionIndex, MouseButtons Button) {
+            if(CurrentControl != Control.Name) return;
+
+            GSDebugFloats[OptionIndex] = (float)Math.Round(GSDebugFloats[OptionIndex] += 10 / 12000.0F, 4);
+            Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {GSDebugFloats[OptionIndex]}";
+        }
+        public void IntScrollFunc(Control Control, int OptionIndex, int WheelDelta) {
             if (CurrentControl != Control.Name) return;
 
             RightMargin += (byte)(WheelDelta / 120);
+            Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {RightMargin}";
+        }
+        public void IntClickFunc(Control Control, int OptionIndex, MouseButtons Button) {
+            if(CurrentControl != Control.Name) return;
+
+            RightMargin += (byte)(10 / 120);
             Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {RightMargin}";
         }
 
@@ -487,16 +499,23 @@ namespace Dobby {
             string name, text;
 
             void GSBtn_Click(object sender, EventArgs e) => Invert((Control)sender, ((Control)sender).TabIndex);
-            void GSBtn_FloatFunc(object sender, MouseEventArgs e) => FloatFunc((Control)sender, ((Control)sender).TabIndex, e.Delta);
-            void GSBtn_IntFunc(object sender, MouseEventArgs e) => IntFunc((Control)sender, ((Control)sender).TabIndex, e.Delta);
-          
+
+            void GSBtn_FloatFunc(object sender, MouseEventArgs e) => FloatScrollFunc((Control)sender, ((Control)sender).TabIndex, e.Delta);
+            void GSBtn_FloatClick(object sender, MouseEventArgs e) {
+                FloatClickFunc((Control)sender, ((Control)sender).TabIndex, e.Button);
+            }
+            void GSBtn_IntFunc(object sender, MouseEventArgs e) => IntScrollFunc((Control)sender, ((Control)sender).TabIndex, e.Delta);
+            void GSBtn_IntClick(object sender, MouseEventArgs e) {
+                IntScrollFunc((Control)sender, ((Control)sender).TabIndex, e.Delta);
+            }
+
             void GSBtn_HoverString(object sender, EventArgs e) => SetInfoLabelText(GSButtonTextArray[((Control)sender).TabIndex].Substring(GSButtonTextArray[((Control)sender).TabIndex].LastIndexOf(';') + 1)); // disgusting, I know
             
             void GSBtn_EnableButtons(int[] buttons) { foreach (int i in buttons) { GSDebugOptions[i] = new Button(); Controls.Add(GSDebugOptions[i]); } }
             
             void SetVariables() { // I just hate looking at these lol
                 index = int.Parse(GSButtonTextArray[ButtonIndex].Remove(1));
-                text = (GSButtonTextArray[ButtonIndex].Remove(GSButtonTextArray[ButtonIndex].LastIndexOf(';'))).Substring(GSButtonTextArray[ButtonIndex].IndexOf(';') + 1);
+                text = GSButtonTextArray[ButtonIndex].Remove(GSButtonTextArray[ButtonIndex].LastIndexOf(';')).Substring(GSButtonTextArray[ButtonIndex].IndexOf(';') + 1);
                 name = GSButtonTextArray[ButtonIndex].Remove(GSButtonTextArray[ButtonIndex].IndexOf(';'));
             }
 
@@ -533,28 +552,38 @@ namespace Dobby {
                 case UC1100: GSBtn_EnableButtons(new int[] { 4 });
                     Dev.DebugOut("UC1 1.00");
                     break;
-                case UC1102:
+                case UC1102: GSBtn_EnableButtons(new int[] { 4 });
+                    Dev.DebugOut("UC1 1.02");
                     break;
-                case UC2100:
+                case UC2100: GSBtn_EnableButtons(new int[] { 4 });
+                    Dev.DebugOut("UC2 1.00");
                     break;
-                case UC2102:
+                case UC2102: GSBtn_EnableButtons(new int[] { 4 });
+                    Dev.DebugOut("UC2 1.02");
                     break;
-                case UC3100:
+                case UC3100: GSBtn_EnableButtons(new int[] { });
+                    Dev.DebugOut("UC3 1.00");
                     break;
-                case UC3102:
+                case UC3102: GSBtn_EnableButtons(new int[] { });
+                    Dev.DebugOut("UC3 1.02");
                     break;
-                case T1R100:
+                case T1R100: GSBtn_EnableButtons(new int[] { });
+                    Dev.DebugOut("T1R 1.00");
                     break;
-                case T1R109:
+                case T1R109: GSBtn_EnableButtons(new int[] { });
+                    Dev.DebugOut("T1R 1.09");
                     break;
-                case T1R11X:
+                case T1R11X: GSBtn_EnableButtons(new int[] { });
+                    Dev.DebugOut("T1R 1.1X");
                     break;
                 case T2100: GSBtn_EnableButtons(new int[] { 0, 1, 2, 3, 5, 6});
                     Dev.DebugOut("Tlou 2 1.00");
                     break;
-                case T2107:
+                case T2107: GSBtn_EnableButtons(new int[] {});
+                    Dev.DebugOut("Tlou 2 1.07");
                     break;
-                case T2109:
+                case T2109: GSBtn_EnableButtons(new int[] {});
+                    Dev.DebugOut("Tlou 2 1.09");
                     break;
             }
 
@@ -584,6 +613,7 @@ namespace Dobby {
             A.Location = new Point(A.Location.X, A.Location.Y + Y_Axis_Addative * RealSize);
             BorderBox.Size = new Size(BorderBox.Size.Width, BorderBox.Size.Height + (Y_Axis_Addative * RealSize) + 50);
             Size = new Size(Size.Width, Size.Height + (Y_Axis_Addative * RealSize) + 50);
+
             // Move The Controls Below The Confirm And Reset Buttons A Bit Farther Down To Make Room For Them
             for (int i = 4; i < ControlsToMove.Length; i++) {
                 ControlsToMove[i].Location = new Point(ControlsToMove[i].Location.X, ControlsToMove[i].Location.Y + 46);
@@ -591,6 +621,7 @@ namespace Dobby {
 
 RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
             Dev.DebugOut($"Checking, ButtonIndex:{ButtonIndex}");
+
             if (GSDebugOptions[ButtonIndex] == null) { // Skip disabled buttons or return if the end of the collection is reached
                 Dev.DebugOut($"Skipping Button {ButtonIndex}");
                 ButtonIndex++; goto RunCheck;
@@ -615,9 +646,18 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
             GSDebugOptions[ButtonIndex].MouseUp += new MouseEventHandler(MouseUpFunc);
             GSDebugOptions[ButtonIndex].MouseEnter += GSBtn_HoverString;
             GSDebugOptions[ButtonIndex].MouseLeave += ControlLeave;
-            if (GSDebugOptions[ButtonIndex].Name.Contains("_b")) GSDebugOptions[ButtonIndex].Click += GSBtn_Click;
-            else if (GSDebugOptions[ButtonIndex].Name.Contains("_f")) GSDebugOptions[ButtonIndex].MouseWheel += GSBtn_FloatFunc;
-            else if (GSDebugOptions[ButtonIndex].Name.Contains("_i")) GSDebugOptions[ButtonIndex].MouseWheel += GSBtn_IntFunc;
+
+            if (GSDebugOptions[ButtonIndex].Name.Contains("_b"))
+                GSDebugOptions[ButtonIndex].Click += GSBtn_Click;
+
+            else if(GSDebugOptions[ButtonIndex].Name.Contains("_f")) {
+                GSDebugOptions[ButtonIndex].MouseWheel += GSBtn_FloatFunc;
+                GSDebugOptions[ButtonIndex].MouseClick += GSBtn_FloatClick;
+            }
+            else if(GSDebugOptions[ButtonIndex].Name.Contains("_i")) {
+                GSDebugOptions[ButtonIndex].MouseWheel += GSBtn_IntFunc;
+                GSDebugOptions[ButtonIndex].MouseWheel += GSBtn_IntClick;
+            }
             GSDebugOptions[ButtonIndex].BringToFront();
 
 
@@ -668,7 +708,7 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
 
         private void BrowseButton_Click(object sender, EventArgs e) { //goto skip;
 #if DEBUG
-            Dev.DebugForceOpenFile(@"C:\Users\Blob\Desktop\t\UC1100.bin");
+            Dev.DebugForceOpenFile(@"C:\Users\Blob\Desktop\t\T2100.bin");
             LoadGameSpecificMenuOptions();
             return;
             skip:
@@ -903,15 +943,17 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
         public static void DebugOutputOverride() {
             Dev.OverrideDebugOut = true;
             Console.Clear();
-            for (int i = 6;;) { // Create alt debugout that writes to specific spot in the array
+            for (int i = 8;;) { // Create alt debugout that writes to specific spot in the array
                 Console.CursorLeft = 0;
-                Dev.DebugOut(Dev.BlankSpace($"FPS:{UniversalDebugBooleans[0]} | RightAlign:{UniversalDebugBooleans[1]} | ShadowedText:{UniversalDebugBooleans[2]}"), 1);
-                Dev.DebugOut(Dev.BlankSpace($"ProgPause:{UniversalDebugBooleans[3]} | ProgPauseOE:{UniversalDebugBooleans[4]}"), 2);
-                Dev.DebugOut(Dev.BlankSpace($"Shadow:{GSDebugBooleans[0]} | VersionText:{GSDebugBooleans[1]} | ?{GSDebugBooleans[2]}"), 3);
-                Dev.DebugOut(Dev.BlankSpace($"Scale:{GSDebugFloats[0]} | Alpha:{GSDebugFloats[1]} | FoV:{GSDebugFloats[2]}"), 4);
-                foreach (Control c in GSDebugOptions)
+                Dev.DebugOut(Dev.BlankSpace($"FPS: {UniversalDebugBooleans[0]} | PausedIcon: {UniversalDebugBooleans[1]}"), 0);
+                Dev.DebugOut(Dev.BlankSpace($"ProgPauseOnOpen: {UniversalDebugBooleans[2]} | ProgPauseOnExit: {UniversalDebugBooleans[3]}"), 2);
+                Dev.DebugOut(Dev.BlankSpace($"Shadow: {GSDebugBooleans[0]} | VersionText: {GSDebugBooleans[1]} | Disable Version Text: {GSDebugBooleans[2]}"), 4);
+                Dev.DebugOut(Dev.BlankSpace($"Scale: {GSDebugFloats[0]} | Alpha: {GSDebugFloats[1]} | FoV: {GSDebugFloats[2]}"), 6);
+                Dev.DebugOut(Dev.BlankSpace($"Right Align: {GSDebugBooleans[3]}"));
+
+                foreach(Control c in GSDebugOptions)
                     if (c != null) Dev.DebugOut(Dev.BlankSpace($"{c.Name} | {c.Location} | {c.TabIndex}"), i++);
-                i = 6;
+                i = 8;
             }
         }
 #endif

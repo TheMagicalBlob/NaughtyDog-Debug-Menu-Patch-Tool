@@ -77,7 +77,7 @@ namespace Dobby {
             TLLBtn.Text = "Uncharted: The Lost Legacy";
             TLLBtn.TextAlign = ContentAlignment.MiddleLeft;
             TLLBtn.UseVisualStyleBackColor = false;
-            TLLBtn.Click += new System.EventHandler(TLL100);
+            TLLBtn.Click += new System.EventHandler(UCTLLBtn);
             // 
             // MainBox
             // 
@@ -470,11 +470,9 @@ namespace Dobby {
 
         public void BackBtn_Click(object sender, EventArgs e) {
             BackFunc();
-            HoverLeave(BackBtn, false);
+            HoverLeave(BackBtn, false); // What Did This Fix, Again?
         }
-
         public void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
-
         public void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
 
 
@@ -489,6 +487,7 @@ namespace Dobby {
             try {
             Wait:
                 if (PS4DebugIsConnected) goto Wait;
+
                 ActiveForm?.Invoke(SetLabelText, "Connecting To Console");
                 Dev.DebugOut($"{PS4DebugIsConnected} | {geo?.GetProcessInfo(Executable).name != ProcessName} | {geo?.GetProcessList().processes.Length == ProcessCount}");
 
@@ -512,15 +511,14 @@ namespace Dobby {
 
                         ActiveForm?.Invoke(SetLabelText, $"Connected And Attached To {TitleID} ({GameVersion})");
                         WaitForConnection = false;
-
                         goto Wait;
                     }
                 }
-                ProcessName = geo?.GetProcessInfo(Executable).name;
+                ProcessName = "No Valid Process";
                 ProcessCount = geo.GetProcessList().processes.Length;
-                WaitForConnection = false;
 
                 ActiveForm?.Invoke(SetLabelText, "Connected To PS4, But Couldn't Find The Game Process");
+                WaitForConnection = false;
                 goto Wait;
             }
             catch(Exception tabarnack) { if(!Dev.REL) MessageBox.Show($"{tabarnack.Message}\n{tabarnack.StackTrace}"); ActiveForm?.Invoke(SetLabelText, $"Connection To {IPBOX_E.Text} Failed"); }
@@ -768,12 +766,16 @@ namespace Dobby {
                 Toggle(GameVersion == "1.00" ? new ulong[] { 0x127149C, 0x12705C9 } : new ulong[] { 0x145decc, 0x145cff9, 0x145de61 });
         }
 
-        public async void UC3Btn_Click(object sender, EventArgs e) => Toggle(new ulong[] { 0x18366c9, 0x1e21f90, 0x18366C4 });
+        public async void UC3Btn_Click(object sender, EventArgs e) {
+            await Task.Run(CheckConnectionStatus);
+            if(GameVersion != "UnknownGameVersion")
+                Toggle(new ulong[] { 0x18366c9, 0x1e21f90, 0x18366C4 });
+        }
 
         public async void UC4Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
             if(GameVersion != "UnknownGameVersion")
-                Toggle(GameVersion == "1.00" ? (ulong)0x1104FC2E95 : 0x0);
+                Toggle(GameVersion == "1.00" ? (ulong)0x1104FC2E95 : 0);
         }
 
         public async void UC4MPBetaBtn_Click(object sender, EventArgs e) {
@@ -782,52 +784,11 @@ namespace Dobby {
                 Toggle(0x113408AE83);
         }
 
-        public async void TLL100(object sender, EventArgs e) {
+        public async void UCTLLBtn(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
             if(GameVersion != "UnknownGameVersion")
-                Toggle(0x1105D1AEF9);
+                Toggle(GameVersion == "1.00" ? (ulong)0x1105D1AEF9 : 0);
         }
-
-        public async void TLL109(object sender, EventArgs e) {
-            await Task.Run(CheckConnectionStatus);
-            if(GameVersion != "UnknownGameVersion")
-                Toggle(0x1105D1AEF9);
-        }
-
-
-#if DEBUG
-
-        public static byte DebugConnect() {
-            try {
-                geo = new PS4DBG(IPBOX_E.Text);
-                geo.Connect();
-                foreach(libdebug.Process prc in geo.GetProcessList().processes) {
-                    foreach(string id in ExecutablesNames) {
-                        if(prc.name == id) {
-                            string title = geo.GetProcessInfo(prc.pid).titleid;
-                            if(title == "FLTZ00003" || title == "ITEM00003") {
-                                Dev.DebugOut($"Skipping Lightning's Stuff {title}");
-                                break;
-                            } // Code To Avoid Connecting To HB Store Stuff
-
-                            Executable = prc.pid;
-                            ProcessName = prc.name;
-                            TitleID = geo.GetProcessInfo(prc.pid).titleid;
-                            PS4DebugIsConnected = true;
-                            Dev.DebugOut($"{ProcessName} | pid: {Executable} | PS4DebugIsConnected == {PS4DebugIsConnected}");
-                        }
-                    }
-                }
-                GameVersion = GetGameVersion();
-                return 0;
-            }
-            catch(Exception tabarnack) {
-                MessageBox.Show(tabarnack.Message);
-                return 1;
-            }
-        }
-#endif
-
 
         public Button ExitBtn;
         public Button MinimizeBtn;
