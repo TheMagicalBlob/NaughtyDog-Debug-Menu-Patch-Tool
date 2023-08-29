@@ -552,6 +552,13 @@ namespace Dobby {
                         case "CUSA13986":
                             GameVersion = "T2";
                             break;
+                        case "CUSA07737":
+                        case "CUSA07875":
+                        case "CUSA09564":
+                        case "CUSA08347":
+                        case "CUSA08352":
+                            GameVersion = "TLL";
+                            break;
                         default: return "UnknownTitleID";
                     }
 
@@ -601,6 +608,12 @@ namespace Dobby {
                         case "UC3":
                         case "UC4":
                         case "TLL":
+                            switch(geo.ReadMemory(Executable, 0x40002D, 1)[0]) {
+                                case 0x27: return "1.00";
+                                case 0xB7: return "1.0X";  // 1.08 and 1.09 have identical eboot.bin's
+                                case 0x1F: return "1.00 MP";
+                                case 0x2F: return "1.08 MP";
+                            }
                             break;
                         default: Dev.DebugOut("!!! " + tmp); return "UnknownGameVersion";
                     }
@@ -635,7 +648,7 @@ namespace Dobby {
             try {
                 using(FileStream f = new FileStream(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB", FileMode.Open, FileAccess.Write)) {
                     f.Write(Encoding.UTF8.GetBytes(IPBOX_E.Text + ";"), 0, IPBOX_E.Text.Length + 1);
-                    if(IPBOX_E.Text.Length > 12) Dev.DebugOut($"Saved {IPBOX_E.Text} As I.P.");
+                  //if(IPBOX_E.Text.Length > 12) Dev.DebugOut($"Saved {IPBOX_E.Text} As I.P.");
                 }
             }
             catch(FileNotFoundException) { IP(); }
@@ -674,17 +687,19 @@ namespace Dobby {
         }
 
         public static void Toggle(ulong[] Addresses, string[] Versions) {
-            Dev.DebugOut($"About To Toggle Byte At 0x{Addresses:X}");
             var VersionIndex = 0;
             try {
                 if(PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName) {
-                    foreach(string Version in Versions) {
-                        if(Version == GameVersion)
+                    foreach(string Version in Versions)
+                        if(GameVersion == Version) {
+                            Dev.DebugOut($"About To Toggle Byte At 0x{Addresses[VersionIndex]:X}");
                             geo.WriteMemory(Executable, Addresses[VersionIndex], geo.ReadMemory(Executable, Addresses[VersionIndex], 1)[0] == 0x00 ? on : off);
-                    }
-                    Dev.DebugOut($"Wrote To {geo.GetProcessInfo(Executable).name}/{Executable} At 0x{Addresses:X}");
+                            Dev.DebugOut($"Version Was {Version}, Wrote To 0x{Addresses[VersionIndex]:X} in {geo.GetProcessInfo(Executable).name}/{Executable}");
+                        }
+                        else Dev.DebugOut($"GameVersion: {GameVersion} | Version: {Version}");
                     attempts = 0;
                 }
+                else Dev.DebugOut($"{PS4DebugIsConnected} | {geo.GetProcessInfo(Executable).name} == {ProcessName}");
             }
             catch(Exception tabarnack) { Dev.DebugOut(tabarnack.Message); }
         }
@@ -744,50 +759,50 @@ namespace Dobby {
 
         public async void T1RBtn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
-            if(GameVersion != "UnknownGameVersion")
+            if(!GameVersion.Contains("Unknown"))
                 Toggle(GameVersion == "1.00" ? 0x114ED32E81 : GameVersion == "UnknownGameVersion" ? (ulong)0x0 : 0x114F536E81);
         }
 
         public async void T2Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
-            if(GameVersion != "UnknownGameVersion")
+            if(!GameVersion.Contains("Unknown"))
                 Toggle(GameVersion == "1.00" ? (ulong)0x110693FAA1 : 0x11069DFAA1);
         }
 
         public async void UC1Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
-            if(GameVersion != "UnknownGameVersion")
+            if(!GameVersion.Contains("Unknown"))
                 Toggle(GameVersion == "1.00" ? new ulong[] { 0xD97B41, 0xD989CC, 0xD98970 } : new ulong[] { 0xD5C9F0, 0xD5CA4C, 0xD5BBC1 });
         }
 
         public async void UC2Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
-            if(GameVersion != "UnknownGameVersion")
+            if(!GameVersion.Contains("Unknown"))
                 Toggle(GameVersion == "1.00" ? new ulong[] { 0x127149C, 0x12705C9 } : new ulong[] { 0x145decc, 0x145cff9, 0x145de61 });
         }
 
         public async void UC3Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
-            if(GameVersion != "UnknownGameVersion")
+            if(!GameVersion.Contains("Unknown"))
                 Toggle(new ulong[] { 0x18366c9, 0x1e21f90, 0x18366C4 });
         }
 
         public async void UC4Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
-            if(GameVersion != "UnknownGameVersion")
+            if(!GameVersion.Contains("Unknown"))
                 Toggle(GameVersion == "1.00" ? (ulong)0x1104FC2E95 : 0);
         }
 
         public async void UC4MPBetaBtn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
-            if(GameVersion != "UnknownGameVersion")
+            if(!GameVersion.Contains("Unknown"))
                 Toggle(0x113408AE83);
         }
 
         public async void UCTLLBtn(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
-            if(GameVersion != "UnknownGameVersion")
-                Toggle(GameVersion == "1.00" ? (ulong)0x1105D1AEF9 : 0);
+            if(!GameVersion.Contains("Unknown"))
+                Toggle(new ulong[] { 0x1104B1AE79, 0x0, 0x1104B1AEF9 }, new string[] { "1.00 MP", "1.08 MP", "1.0X" } ); // Not A Mistake, 1.00/1.08/1.09 All Use 0x1104B1AEF9
         }
 
         public Button ExitBtn;

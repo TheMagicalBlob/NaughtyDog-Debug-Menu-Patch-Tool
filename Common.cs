@@ -126,7 +126,8 @@ namespace Dobby {
            "* 3.27.80.208 | Deleted Second PC Button On Main Form.",
            "* 3.28.84.210 | Reworked Connection Method To Be On Another Thread, and added an asynchronous function to wait for a proper connection before trying to write to memory, Fleshed Out CheckGameVersion code, Fixed ToggleAlt function and related code",
            "* 3.28.85.213 | Made More PS4Debug Methods Asynchronous, Forgot a Couple",
-           "* 3.28.86.219 | Working More On PS4QOLPatchPage "
+           "* 3.28.86.219 | Working More On PS4QOLPatchPage",
+           "* 3.28.88.228 | Added Proper Support For All Lost Legacy Versions, Added A Check To Reset The Page Before Repeat BrowseBtn Uses On PS4QOLPatchesPage, Misc Changes"
 
             // TODO:
             // - Finish EbootPatchHelpPage

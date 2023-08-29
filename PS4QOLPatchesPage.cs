@@ -477,7 +477,8 @@ namespace Dobby {
         public void FloatClickFunc(Control Control, int OptionIndex, MouseButtons Button) {
             if(CurrentControl != Control.Name) return;
 
-            GSDebugFloats[OptionIndex] = (float)Math.Round(GSDebugFloats[OptionIndex] += 10 / 12000.0F, 4);
+            if(Button == MouseButtons.Left) GSDebugFloats[OptionIndex] = (float)Math.Round(GSDebugFloats[OptionIndex] += 10 / 12000.0F, 4);
+            else GSDebugFloats[OptionIndex] = (float)Math.Round(GSDebugFloats[OptionIndex] -= 10 / 12000.0F, 4);
             Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {GSDebugFloats[OptionIndex]}";
         }
         public void IntScrollFunc(Control Control, int OptionIndex, int WheelDelta) {
@@ -489,7 +490,8 @@ namespace Dobby {
         public void IntClickFunc(Control Control, int OptionIndex, MouseButtons Button) {
             if(CurrentControl != Control.Name) return;
 
-            RightMargin += (byte)(10 / 120);
+            if (Button == MouseButtons.Left) RightMargin += (byte)(10 / 120);
+            else RightMargin -= (byte)(10 / 120);
             Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {RightMargin}";
         }
 
@@ -506,7 +508,7 @@ namespace Dobby {
             }
             void GSBtn_IntFunc(object sender, MouseEventArgs e) => IntScrollFunc((Control)sender, ((Control)sender).TabIndex, e.Delta);
             void GSBtn_IntClick(object sender, MouseEventArgs e) {
-                IntScrollFunc((Control)sender, ((Control)sender).TabIndex, e.Delta);
+                IntClickFunc((Control)sender, ((Control)sender).TabIndex, e.Button);
             }
 
             void GSBtn_HoverString(object sender, EventArgs e) => SetInfoLabelText(GSButtonTextArray[((Control)sender).TabIndex].Substring(GSButtonTextArray[((Control)sender).TabIndex].LastIndexOf(';') + 1)); // disgusting, I know
@@ -520,7 +522,7 @@ namespace Dobby {
             }
 
 
-            if (OriginalFormScale == Size.Empty) { // Assign values to variables made to keep track of the default form size/control postions for the reset button. Doing it on page init is annoying 'cause designer memes
+            if(OriginalFormScale == Size.Empty) { // Assign values to variables made to keep track of the default form size/control postions for the reset button. Doing it on page init is annoying 'cause designer memes
                 Dev.DebugOut("Setting Original Scale Variables");
 
                 ControlsToMove = new Control[] {
@@ -534,12 +536,12 @@ namespace Dobby {
                     ActiveForm.Controls.Find("BackBtn", true)[0],
                     ActiveForm.Controls.Find("Info", true)[0]
                 };
-                
+
                 OriginalFormScale = Size;
                 OriginalBorderScale = ActiveForm.Controls.Find("BorderBox", true)[0].Size;
                 OriginalControlPositions = new Point[ControlsToMove.Length];
 
-                for (int Index = 0; Index < ControlsToMove.Length; Index++) {
+                for(int Index = 0; Index < ControlsToMove.Length; Index++) {
                     OriginalControlPositions[Index] = ControlsToMove[Index].Location;
                 }
             }
@@ -608,8 +610,8 @@ namespace Dobby {
                     break;
             }
 
-            // Move Each Control, Then Resize The Form & BorderBox
-            foreach (Control A in ControlsToMove)
+            // Move Each Control, Then Resize The BorderBox & Form
+            foreach(Control A in ControlsToMove)
             A.Location = new Point(A.Location.X, A.Location.Y + Y_Axis_Addative * RealSize);
             BorderBox.Size = new Size(BorderBox.Size.Width, BorderBox.Size.Height + (Y_Axis_Addative * RealSize) + 50);
             Size = new Size(Size.Width, Size.Height + (Y_Axis_Addative * RealSize) + 50);
@@ -620,15 +622,15 @@ namespace Dobby {
             }
 
 RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
-            Dev.DebugOut($"Checking, ButtonIndex:{ButtonIndex}");
+            Dev.DebugOut($"Checking, ButtonIndex: {ButtonIndex}");
 
             if (GSDebugOptions[ButtonIndex] == null) { // Skip disabled buttons or return if the end of the collection is reached
                 Dev.DebugOut($"Skipping Button {ButtonIndex}");
                 ButtonIndex++; goto RunCheck;
             }
+            Dev.DebugOut("Creating GSDebug Button");
 
             SetVariables();
-            Dev.DebugOut("Creating GSDebug Button");
             GSDebugOptions[ButtonIndex].TabIndex = index;
             GSDebugOptions[ButtonIndex].Name = name;
             GSDebugOptions[ButtonIndex].Location = new Point(1, Y_Pos);
@@ -646,8 +648,10 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
             GSDebugOptions[ButtonIndex].MouseUp += new MouseEventHandler(MouseUpFunc);
             GSDebugOptions[ButtonIndex].MouseEnter += GSBtn_HoverString;
             GSDebugOptions[ButtonIndex].MouseLeave += ControlLeave;
+            GSDebugOptions[ButtonIndex].BringToFront();
 
-            if (GSDebugOptions[ButtonIndex].Name.Contains("_b"))
+
+            if(GSDebugOptions[ButtonIndex].Name.Contains("_b"))
                 GSDebugOptions[ButtonIndex].Click += GSBtn_Click;
 
             else if(GSDebugOptions[ButtonIndex].Name.Contains("_f")) {
@@ -658,11 +662,11 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
                 GSDebugOptions[ButtonIndex].MouseWheel += GSBtn_IntFunc;
                 GSDebugOptions[ButtonIndex].MouseWheel += GSBtn_IntClick;
             }
-            GSDebugOptions[ButtonIndex].BringToFront();
 
 
             Y_Pos += 23; ButtonIndex++;
             goto RunCheck;
+
 
             CreateConfirmBtn:
             // Create Confirm And Reset Buttons Once The Rest Are Created
@@ -707,6 +711,7 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
         }
 
         private void BrowseButton_Click(object sender, EventArgs e) { //goto skip;
+            if (OriginalFormScale != Size.Empty) ResetCustomOptions();
 #if DEBUG
             Dev.DebugForceOpenFile(@"C:\Users\Blob\Desktop\t\T2100.bin");
             LoadGameSpecificMenuOptions();
@@ -906,6 +911,7 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
 
             ActiveForm.Controls.Find("BorderBox", true)[0].Size = OriginalBorderScale;
             ActiveForm.Size = OriginalFormScale;
+            OriginalFormScale = Size.Empty;
 
             for (int index = 0; index < ControlsToMove.Length; index++) {
                 ControlsToMove[index].Location = OriginalControlPositions[index];
