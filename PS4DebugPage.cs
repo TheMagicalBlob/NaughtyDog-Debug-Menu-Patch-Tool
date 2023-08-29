@@ -606,7 +606,18 @@ namespace Dobby {
 
                             break;
                         case "UC3":
+                            if(geo.ReadMemory(Executable, 0x4DE188, 1)[0] == 0x0) return "1.00";
+                            else if(geo.ReadMemory(Executable, 0x4DE188, 1)[0] == 0x0F) return "1.02";
+
+                            break;
                         case "UC4":
+                            switch(geo.ReadMemory(Executable, 0x40002D, 1)[0]) {
+                                case 0x00: return "1.00";
+                                case 0x01: return "1.3X";  // 1.32 and 1.33 have identical eboot.bin's
+                                case 0x02: return "1.32 MP";
+                                case 0x03: return "1.33 MP";
+                            }
+                            break;
                         case "TLL":
                             switch(geo.ReadMemory(Executable, 0x40002D, 1)[0]) {
                                 case 0x27: return "1.00";
@@ -696,8 +707,10 @@ namespace Dobby {
                             geo.WriteMemory(Executable, Addresses[VersionIndex], geo.ReadMemory(Executable, Addresses[VersionIndex], 1)[0] == 0x00 ? on : off);
                             Dev.DebugOut($"Version Was {Version}, Wrote To 0x{Addresses[VersionIndex]:X} in {geo.GetProcessInfo(Executable).name}/{Executable}");
                         }
-                        else Dev.DebugOut($"GameVersion: {GameVersion} | Version: {Version}");
-                    attempts = 0;
+                        else {
+                            if (VersionIndex != Addresses.Length - 1) VersionIndex++;
+                            Dev.DebugOut($"GameVersion: {GameVersion} | Version: {Version}");
+                        }
                 }
                 else Dev.DebugOut($"{PS4DebugIsConnected} | {geo.GetProcessInfo(Executable).name} == {ProcessName}");
             }
@@ -802,7 +815,7 @@ namespace Dobby {
         public async void UCTLLBtn(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
             if(!GameVersion.Contains("Unknown"))
-                Toggle(new ulong[] { 0x1104B1AE79, 0x0, 0x1104B1AEF9 }, new string[] { "1.00 MP", "1.08 MP", "1.0X" } ); // Not A Mistake, 1.00/1.08/1.09 All Use 0x1104B1AEF9
+                Toggle(new ulong[] { 0x1104B1AE79, 0x0, 0x1104B1AEF9 }, new string[] { "1.00 MP", "1.08 MP", "1.00", "1.0X" } ); // Not A Mistake, 1.00/1.08/1.09 All Use 0x1104B1AEF9
         }
 
         public Button ExitBtn;
