@@ -129,14 +129,16 @@ namespace Dobby {
            "* 3.28.86.219 | Working More On PS4QOLPatchPage",
            "* 3.28.88.228 | Added Proper Support For All Lost Legacy Versions, Added A Check To Reset The Page Before Repeat BrowseBtn Uses On PS4QOLPatchesPage, Misc Changes",
            "* 3.28.88.229 | Adeed Missing VersionIndex++, Still Need To Add TLL MP 1.08 Debuug",
-           "* 3.28.90.234 | Finished TLL Debug, Replaced Hardcoded Offsets With Method To Read Current Memory Address From Executable Space; Will Apply To Other Games' Toggle Functions For Consistency Later On. Other Miscellaneous Changes"
+           "* 3.28.90.234 | Finished TLL Debug, Replaced Hardcoded Offsets With Method To Read Current Memory Address From Executable Space; Will Apply To Other Games' Toggle Functions For Consistency Later On. Other Miscellaneous Changes",
+           "* 3.28.90.236 | Minor Changes, Comments"
 
             // TODO:
+            // - Apply The Dynamic Address Bullshit To The Rest Of The Non-Uncharted Collection Games
+            // - Finish PS4QOLPatchesPage Dynamic Button Functionality
             // - Finish EbootPatchHelpPage
-            // - Finish EbootPatchPage GameInfoLabel Functionality
-            // - Implement New Info Label String Method, Prob A Thread idk
             
             // KNOWN BUGS:
+            // - Manual Deletion Of "this." And A Change To Static Are Required For IPBOX_E After Any Editor Changes To The PS4DebugPage, Otherwise The App Won't Compile.
             // - Occasional String Duplication In Debug Output (DebugOutputStr / UpdateConsoleOutput)
 
         };
