@@ -585,7 +585,7 @@ namespace Dobby {
                                 return $"{GameVersion} UnknownGameVersion";
                             }
                             return
-                                T2Check == 25384434 ? "1.00"
+                                  T2Check == 25384434 ? "1.00"
                                 : T2Check == 25548706 ? "1.01"
                                 : T2Check == 25502882 ? "1.02"
                                 : T2Check == 25588450 ? "1.05"
@@ -612,18 +612,19 @@ namespace Dobby {
                             break;
                         case "UC4":
                             switch(geo.ReadMemory(Executable, 0x40002D, 1)[0]) {
-                                case 0x00: return "1.00";
-                                case 0x01: return "1.3X";  // 1.32 and 1.33 have identical eboot.bin's
+                                case 0x00: return "1.00 SP";
+                                case 0x01: return "1.3X SP";  // 1.32 and 1.33 have identical eboot.bin's
                                 case 0x02: return "1.32 MP";
                                 case 0x03: return "1.33 MP";
                             }
                             break;
                         case "TLL":
-                            switch(geo.ReadMemory(Executable, 0x40002D, 1)[0]) {
-                                case 0x27: return "1.00";
-                                case 0xB7: return "1.0X";  // 1.08 and 1.09 have identical eboot.bin's
-                                case 0x1F: return "1.00 MP";
-                                case 0x2F: return "1.08 MP";
+                            switch(BitConverter.ToInt16(geo.ReadMemory(Executable, 0x40003B, 2), 0)) {
+                                case 3777:   return "1.00 SP";
+                                case -9759:  return "1.0X SP";  // 1.08 and 1.09 have identical eboot.bin's
+                                case -23679: return "1.00 MP";
+                                case 27793:  return "1.08 MP";
+                                case 27841:  return "1.09 MP";
                             }
                             break;
                         default: Dev.DebugOut("!!! " + tmp); return "UnknownGameVersion";
@@ -697,22 +698,28 @@ namespace Dobby {
             }
         }
 
+        /// <summary>
+        /// Takes The Address For A Pointer, Adds The Offset For Debug Mode, And Writes To That Byte
+        /// </summary>
+        /// <param name="Addresses">Array Of Addresses To Read The Int64 From Depending On The Version</param>
+        /// <param name="Versions">Version Strings To Check Against GameVersion</param>
         public static void Toggle(ulong[] Addresses, string[] Versions) {
-            var VersionIndex = 0;
             try {
                 if(PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName) {
+                    var AddressIndex = 0;
                     foreach(string Version in Versions)
                         if(GameVersion == Version) {
-                            Dev.DebugOut($"About To Toggle Byte At 0x{Addresses[VersionIndex]:X}");
-                            geo.WriteMemory(Executable, Addresses[VersionIndex], geo.ReadMemory(Executable, Addresses[VersionIndex], 1)[0] == 0x00 ? on : off);
-                            Dev.DebugOut($"Version Was {Version}, Wrote To 0x{Addresses[VersionIndex]:X} in {geo.GetProcessInfo(Executable).name}/{Executable}");
+                            var RawPointer = BitConverter.ToInt64(geo.ReadMemory(Executable, Addresses[AddressIndex], 8), 0);
+
+                            Dev.DebugOut($"Pointer: {RawPointer:X}");
+                            ulong pointer = (ulong)(RawPointer + (GameVersion.Contains("SP") ? 0x2EF9 : 0x2E79));
+                            Dev.DebugOut($"About To Toggle Byte At 0x{pointer:X}");
+                            geo.WriteMemory(Executable, pointer, geo.ReadMemory(Executable, pointer, 1)[0] == 0x00 ? on : off);
+
+                            Dev.DebugOut($"Version Was {Version}, Wrote To 0x{pointer:X} in {geo.GetProcessInfo(Executable).name}/{Executable}");
                         }
-                        else {
-                            if (VersionIndex != Addresses.Length - 1) VersionIndex++;
-                            Dev.DebugOut($"GameVersion: {GameVersion} | Version: {Version}");
-                        }
+                        else if(AddressIndex != Addresses.Length - 1) AddressIndex++;
                 }
-                else Dev.DebugOut($"{PS4DebugIsConnected} | {geo.GetProcessInfo(Executable).name} == {ProcessName}");
             }
             catch(Exception tabarnack) { Dev.DebugOut(tabarnack.Message); }
         }
@@ -764,58 +771,50 @@ namespace Dobby {
             MessageBox.Show("PS4Debug Paylod Sent Without Issue\n\nPS4Debug Update 1.1.15 By ctn123\nPS4Debug Created By Golden", "Payload Injected Successfully, Here's Some Credits");
         }
 
-        public void ManualConnectBtn_Click(object sender, EventArgs e) {
+        private void ManualConnectBtn_Click(object sender, EventArgs e) {
             if(ConnectionThread.ThreadState == System.Threading.ThreadState.Unstarted)
             ConnectionThread.Start();
             PS4DebugIsConnected = false;
         }
-
-        public async void T1RBtn_Click(object sender, EventArgs e) {
+        private async void T1RBtn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
             if(!GameVersion.Contains("Unknown"))
                 Toggle(GameVersion == "1.00" ? 0x114ED32E81 : GameVersion == "UnknownGameVersion" ? (ulong)0x0 : 0x114F536E81);
         }
-
-        public async void T2Btn_Click(object sender, EventArgs e) {
+        private async void T2Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
             if(!GameVersion.Contains("Unknown"))
                 Toggle(GameVersion == "1.00" ? (ulong)0x110693FAA1 : 0x11069DFAA1);
         }
-
-        public async void UC1Btn_Click(object sender, EventArgs e) {
+        private async void UC1Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
             if(!GameVersion.Contains("Unknown"))
                 Toggle(GameVersion == "1.00" ? new ulong[] { 0xD97B41, 0xD989CC, 0xD98970 } : new ulong[] { 0xD5C9F0, 0xD5CA4C, 0xD5BBC1 });
         }
-
-        public async void UC2Btn_Click(object sender, EventArgs e) {
+        private async void UC2Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
             if(!GameVersion.Contains("Unknown"))
                 Toggle(GameVersion == "1.00" ? new ulong[] { 0x127149C, 0x12705C9 } : new ulong[] { 0x145decc, 0x145cff9, 0x145de61 });
         }
-
-        public async void UC3Btn_Click(object sender, EventArgs e) {
+        private async void UC3Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
             if(!GameVersion.Contains("Unknown"))
                 Toggle(new ulong[] { 0x18366c9, 0x1e21f90, 0x18366C4 });
         }
-
-        public async void UC4Btn_Click(object sender, EventArgs e) {
+        private async void UC4Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
             if(!GameVersion.Contains("Unknown"))
-                Toggle(GameVersion == "1.00" ? (ulong)0x1104FC2E95 : 0);
+                Toggle(new ulong[] { 0x1104FC2E95 }, new string[] { "1.00" });
         }
-
-        public async void UC4MPBetaBtn_Click(object sender, EventArgs e) {
+        private async void UC4MPBetaBtn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
             if(!GameVersion.Contains("Unknown"))
                 Toggle(0x113408AE83);
         }
-
-        public async void UCTLLBtn(object sender, EventArgs e) {
+        private async void UCTLLBtn(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
-            if(!GameVersion.Contains("Unknown"))
-                Toggle(new ulong[] { 0x1104B1AE79, 0x0, 0x1104B1AEF9 }, new string[] { "1.00 MP", "1.08 MP", "1.00", "1.0X" } ); // Not A Mistake, 1.00/1.08/1.09 All Use 0x1104B1AEF9
+            if(GameVersion.Contains("Unknown")) return;
+            Toggle(new ulong[] { 0x26b4558, 0x26c0698, 0x0274cd00, 0x275cd00, 0xDEADBEEF }, new string[] { "1.00 SP", " 1.0X SP", "1.00 MP", "1.08 MP", "1.09 MP" }); // 
         }
 
         public Button ExitBtn;

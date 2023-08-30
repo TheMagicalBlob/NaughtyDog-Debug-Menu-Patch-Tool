@@ -128,7 +128,8 @@ namespace Dobby {
            "* 3.28.85.213 | Made More PS4Debug Methods Asynchronous, Forgot a Couple",
            "* 3.28.86.219 | Working More On PS4QOLPatchPage",
            "* 3.28.88.228 | Added Proper Support For All Lost Legacy Versions, Added A Check To Reset The Page Before Repeat BrowseBtn Uses On PS4QOLPatchesPage, Misc Changes",
-           "* 3.28.88.229 | Adeed Missing VersionIndex++, Still Need To Add TLL MP 1.08 Debuug"
+           "* 3.28.88.229 | Adeed Missing VersionIndex++, Still Need To Add TLL MP 1.08 Debuug",
+           "* 3.28.90.234 | Finished TLL Debug, Replaced Hardcoded Offsets With Method To Read Current Memory Address From Executable Space; Will Apply To Other Games' Toggle Functions For Consistency Later On. Other Miscellaneous Changes"
 
             // TODO:
             // - Finish EbootPatchHelpPage
@@ -166,9 +167,10 @@ namespace Dobby {
 
         #region PS4DBG_Variables
 
-        /* End Of Repeated Functions
-        ============================================================================================================================================================================
-        // Start Of PS4Debug Page Specific Functions                                                                                                                      */
+
+        ////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///-- PS4 DEBUG OFFSETS AND OTHER VARIABLES --\\\
+        ////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
         
         public static PS4DBG geo;
 
@@ -669,9 +671,6 @@ namespace Dobby {
         }
         #endregion
         #region PS4 / PC exe Patch Page Shared Variables And Functions
-
-
-
 
         /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///-- DEBUG MODE OFFSETS AND GAME INDENTIFIERS --\\\
