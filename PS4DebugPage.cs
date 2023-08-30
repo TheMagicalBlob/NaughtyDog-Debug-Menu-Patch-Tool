@@ -509,7 +509,7 @@ namespace Dobby {
                         GameVersion = GetGameVersion();
                         ProcessCount = geo.GetProcessList().processes.Length;
 
-                        ActiveForm?.Invoke(SetLabelText, $"Connected And Attached To {TitleID} ({GameVersion})");
+                        ActiveForm?.Invoke(SetLabelText, $"Attached To {TitleID} ({GameVersion})");
                         WaitForConnection = false;
                         goto Wait;
                     }
@@ -551,6 +551,13 @@ namespace Dobby {
                         case "CUSA07820":
                         case "CUSA13986":
                             GameVersion = "T2";
+                            break;
+                        case "CUSA00918":
+                        case "CUSA00341":
+                        case "CUSA00001":
+                        case "CUSA08342":
+                        case "CUSA08353":
+                            GameVersion = "UC4";
                             break;
                         case "CUSA07737":
                         case "CUSA07875":
@@ -611,11 +618,20 @@ namespace Dobby {
 
                             break;
                         case "UC4":
-                            switch(geo.ReadMemory(Executable, 0x40002D, 1)[0]) {
-                                case 0x00: return "1.00 SP";
-                                case 0x01: return "1.3X SP";  // 1.32 and 1.33 have identical eboot.bin's
-                                case 0x02: return "1.32 MP";
-                                case 0x03: return "1.33 MP";
+                            switch(BitConverter.ToInt16(geo.ReadMemory(Executable, 0x400124, 2), 0)) {
+                                case 24216:  return "1.00 SP";
+                                case -15640: return "1.01 SP";
+                                case -7352:  return "1.02 SP";
+                                case -6232:  return "1.03 SP";
+                                case -120:   return "1.04 SP";
+                                case 264:    return "1.05 SP";
+                                case 4744:   return "1.06 SP";
+                                case 17576:  return "1.08 SP";
+                                case 18408:  return "1.10 SP";
+                                case 24424:  return "1.11 SP";
+                                case 4488:   return "1.12 SP";
+                                case 6643:   return "1.3X SP";  // 1.32 and 1.33 have identical eboot.bin's
+                                case 14599:  return geo.ReadMemory(Executable, 0x400131, 1)[0] == 0xBB ? "1.32 MP" : "1.33 MP"; // This Is Probably Gonna Need Updating Once I Support More Versions... Or Maybe I Can Just Not lol
                             }
                             break;
                         case "TLL":
@@ -709,14 +725,20 @@ namespace Dobby {
                     var AddressIndex = 0;
                     foreach(string Version in Versions)
                         if(GameVersion == Version) {
-                            var RawPointer = BitConverter.ToInt64(geo.ReadMemory(Executable, Addresses[AddressIndex], 8), 0);
-
-                            Dev.DebugOut($"Pointer: {RawPointer:X}");
-                            ulong pointer = (ulong)(RawPointer + (GameVersion.Contains("SP") ? 0x2EF9 : 0x2E79));
+#if DEBUG
+                            var RawData = geo.ReadMemory(Executable, Addresses[AddressIndex], 8);
+                            var BasePointer = BitConverter.ToInt64(RawData, 0);
+                            ulong pointer = (ulong)(BasePointer + (GameVersion.Contains("SP") ? 0x2EF9 : 0x2E79));
+                            Dev.DebugOut($"Data: {BitConverter.ToString(RawData)}");
+                            Dev.DebugOut($"Base Pointer: {BasePointer:X}");
                             Dev.DebugOut($"About To Toggle Byte At 0x{pointer:X}");
-                            geo.WriteMemory(Executable, pointer, geo.ReadMemory(Executable, pointer, 1)[0] == 0x00 ? on : off);
 
+                            geo.WriteMemory(Executable, pointer, geo.ReadMemory(Executable, pointer, 1)[0] == 0x00 ? on : off);
                             Dev.DebugOut($"Version Was {Version}, Wrote To 0x{pointer:X} in {geo.GetProcessInfo(Executable).name}/{Executable}");
+#else
+                            var pointer = (ulong)(BitConverter.ToInt64(geo.ReadMemory(Executable, Addresses[AddressIndex], 8), 0) + (GameVersion.Contains("SP") ? 0x2e95 : DebugModePointerOffset));
+                            geo.WriteMemory(Executable, pointer, geo.ReadMemory(Executable, pointer, 1)[0] == 0x00 ? on : off);
+#endif
                         }
                         else if(AddressIndex != Addresses.Length - 1) AddressIndex++;
                 }
@@ -797,7 +819,7 @@ namespace Dobby {
         private async void UC4Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
             if(!GameVersion.Contains("Unknown"))
-                Toggle(new ulong[] { 0x1104FC2E95 }, new string[] { "1.00" });
+                Toggle(new ulong[] { 0x27a3c30 }, new string[] { "1.00 SP" });
         }
         private async void UC4MPBetaBtn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
@@ -807,7 +829,7 @@ namespace Dobby {
         private async void UCTLLBtn(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
             if(GameVersion.Contains("Unknown")) return;
-            Toggle(new ulong[] { 0x26b4558, 0x26c0698, 0x0274cd00, 0x275cd00, 0xDEADBEEF }, new string[] { "1.00 SP", " 1.0X SP", "1.00 MP", "1.08 MP", "1.09 MP" });
+            Toggle(new ulong[] { 0x26b4558, 0x26c0698, 0x0274cd00, 0x275cd00, 0xDEADBEEF }, new string[] { "1.00 SP", "1.0X SP", "1.00 MP", "1.08 MP", "1.09 MP" });
         }
 
         public Button ExitBtn;

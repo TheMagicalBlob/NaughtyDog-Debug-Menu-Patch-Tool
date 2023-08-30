@@ -1602,14 +1602,10 @@ Restored:
         }
 
 
-        void TLL100_Patches(string type) {
-            WriteByte(0x1CCFED, (byte)(type == "Disable" ? off : on));
-        }
+        void TLL100_Patches(string type) => WriteByte(0x1CCFED, (byte)(type == "Disable" ? off : on));
 
 
-        void TLL109_Patches(string type) {
-            WriteByte(0x1CD02D, (byte)(type == "Disable" ? off : on));
-        }
+        void TLL109_Patches(string type) => WriteByte(0x1CD02D, (byte)(type == "Disable" ? off : on));
 
         /*
 =================================================================================================================================================

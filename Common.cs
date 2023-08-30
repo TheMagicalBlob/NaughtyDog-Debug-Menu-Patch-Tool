@@ -130,9 +130,11 @@ namespace Dobby {
            "* 3.28.88.228 | Added Proper Support For All Lost Legacy Versions, Added A Check To Reset The Page Before Repeat BrowseBtn Uses On PS4QOLPatchesPage, Misc Changes",
            "* 3.28.88.229 | Adeed Missing VersionIndex++, Still Need To Add TLL MP 1.08 Debuug",
            "* 3.28.90.234 | Finished TLL Debug, Replaced Hardcoded Offsets With Method To Read Current Memory Address From Executable Space; Will Apply To Other Games' Toggle Functions For Consistency Later On. Other Miscellaneous Changes",
-           "* 3.28.90.236 | Minor Changes, Comments"
+           "* 3.28.90.236 | Minor Changes, Comments",
+           "* 3.28.91.230 | Added Uncharted 4 Check To GetGameVersion Up To 1.12, Plus 1.3X. Shortened PS4Debug Successful Connect Dialogue To Fit Form"
 
             // TODO:
+            // - use DebugModePointerOffset with GetGameVersion
             // - Apply The Dynamic Address Bullshit To The Rest Of The Non-Uncharted Collection Games
             // - Finish PS4QOLPatchesPage Dynamic Button Functionality
             // - Finish EbootPatchHelpPage
@@ -185,7 +187,8 @@ namespace Dobby {
         public static int
             Executable,   // Active PS4DBG Process ID
             attempts = 0, // Connect() retries
-            ProcessCount = 0
+            ProcessCount = 0,
+            DebugModePointerOffset = 0xDEADDAD
         ;
 
         public static readonly string[] ExecutablesNames = new string[] {
