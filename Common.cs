@@ -131,7 +131,8 @@ namespace Dobby {
            "* 3.28.88.229 | Adeed Missing VersionIndex++, Still Need To Add TLL MP 1.08 Debuug",
            "* 3.28.90.234 | Finished TLL Debug, Replaced Hardcoded Offsets With Method To Read Current Memory Address From Executable Space; Will Apply To Other Games' Toggle Functions For Consistency Later On. Other Miscellaneous Changes",
            "* 3.28.90.236 | Minor Changes, Comments",
-           "* 3.28.91.230 | Added Uncharted 4 Check To GetGameVersion Up To 1.12, Plus 1.3X. Shortened PS4Debug Successful Connect Dialogue To Fit Form"
+           "* 3.28.91.240 | Added Uncharted 4 Check To GetGameVersion Up To 1.12, Plus 1.3X. Shortened PS4Debug Successful Connect Dialogue To Fit Form",
+           "* 3.28.91.243 | Minor Code Tweaks"
 
             // TODO:
             // - use DebugModePointerOffset with GetGameVersion

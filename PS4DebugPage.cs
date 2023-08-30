@@ -619,28 +619,28 @@ namespace Dobby {
                             break;
                         case "UC4":
                             switch(BitConverter.ToInt16(geo.ReadMemory(Executable, 0x400124, 2), 0)) {
-                                case 24216:  return "1.00 SP";
-                                case -15640: return "1.01 SP";
-                                case -7352:  return "1.02 SP";
-                                case -6232:  return "1.03 SP";
-                                case -120:   return "1.04 SP";
-                                case 264:    return "1.05 SP";
-                                case 4744:   return "1.06 SP";
-                                case 17576:  return "1.08 SP";
-                                case 18408:  return "1.10 SP";
-                                case 24424:  return "1.11 SP";
-                                case 4488:   return "1.12 SP";
-                                case 6643:   return "1.3X SP";  // 1.32 and 1.33 have identical eboot.bin's
-                                case 14599:  return geo.ReadMemory(Executable, 0x400131, 1)[0] == 0xBB ? "1.32 MP" : "1.33 MP"; // This Is Probably Gonna Need Updating Once I Support More Versions... Or Maybe I Can Just Not lol
+                                case 24216:  DebugModePointerOffset = 0x2e95; return "1.00 SP";
+                                case -15640: DebugModePointerOffset = 0x2e95; return "1.01 SP";
+                                case -7352:  DebugModePointerOffset = 0x2e95; return "1.02 SP";
+                                case -6232:  DebugModePointerOffset = 0x2e95; return "1.03 SP";
+                                case -120:   DebugModePointerOffset = 0x2e95; return "1.04 SP";
+                                case 264:    DebugModePointerOffset = 0x2e95; return "1.05 SP";
+                                case 4744:   DebugModePointerOffset = 0x2e95; return "1.06 SP";
+                                case 17576:  DebugModePointerOffset = 0x2e95; return "1.08 SP";
+                                case 18408:  DebugModePointerOffset = 0x2e95; return "1.10 SP";
+                                case 24424:  DebugModePointerOffset = 0x2e95; return "1.11 SP";
+                                case 4488:   DebugModePointerOffset = 0x2e95; return "1.12 SP";
+                                case 6643:   DebugModePointerOffset = 0x2e79; return "1.3X SP";  // 1.32 and 1.33 have identical eboot.bin's
+                                case 14599:  DebugModePointerOffset = 0x2e79; return geo.ReadMemory(Executable, 0x400131, 1)[0] == 0xBB ? "1.32 MP" : "1.33 MP"; // This Is Probably Gonna Need Updating Once I Support More Versions... Or Maybe I Can Just Not lol
                             }
                             break;
                         case "TLL":
                             switch(BitConverter.ToInt16(geo.ReadMemory(Executable, 0x40003B, 2), 0)) {
-                                case 3777:   return "1.00 SP";
-                                case -9759:  return "1.0X SP";  // 1.08 and 1.09 have identical eboot.bin's
-                                case -23679: return "1.00 MP";
-                                case 27793:  return "1.08 MP";
-                                case 27841:  return "1.09 MP";
+                                case 3777:   DebugModePointerOffset = 0x2EF9; return "1.00 SP";
+                                case -9759:  DebugModePointerOffset = 0x2EF9; return "1.0X SP";  // 1.08 and 1.09 have identical eboot.bin's
+                                case -23679: DebugModePointerOffset = 0x2E79; return "1.00 MP";
+                                case 27793:  DebugModePointerOffset = 0x2E79; return "1.08 MP";
+                                case 27841:  DebugModePointerOffset = 0x2E79; return "1.09 MP";
                             }
                             break;
                         default: Dev.DebugOut("!!! " + tmp); return "UnknownGameVersion";
@@ -725,20 +725,8 @@ namespace Dobby {
                     var AddressIndex = 0;
                     foreach(string Version in Versions)
                         if(GameVersion == Version) {
-#if DEBUG
-                            var RawData = geo.ReadMemory(Executable, Addresses[AddressIndex], 8);
-                            var BasePointer = BitConverter.ToInt64(RawData, 0);
-                            ulong pointer = (ulong)(BasePointer + (GameVersion.Contains("SP") ? 0x2EF9 : 0x2E79));
-                            Dev.DebugOut($"Data: {BitConverter.ToString(RawData)}");
-                            Dev.DebugOut($"Base Pointer: {BasePointer:X}");
-                            Dev.DebugOut($"About To Toggle Byte At 0x{pointer:X}");
-
+                            var pointer = (ulong)(BitConverter.ToInt64(geo.ReadMemory(Executable, Addresses[AddressIndex], 8), 0) + DebugModePointerOffset);
                             geo.WriteMemory(Executable, pointer, geo.ReadMemory(Executable, pointer, 1)[0] == 0x00 ? on : off);
-                            Dev.DebugOut($"Version Was {Version}, Wrote To 0x{pointer:X} in {geo.GetProcessInfo(Executable).name}/{Executable}");
-#else
-                            var pointer = (ulong)(BitConverter.ToInt64(geo.ReadMemory(Executable, Addresses[AddressIndex], 8), 0) + (GameVersion.Contains("SP") ? 0x2e95 : DebugModePointerOffset));
-                            geo.WriteMemory(Executable, pointer, geo.ReadMemory(Executable, pointer, 1)[0] == 0x00 ? on : off);
-#endif
                         }
                         else if(AddressIndex != Addresses.Length - 1) AddressIndex++;
                 }
@@ -747,7 +735,7 @@ namespace Dobby {
         }
 
         /// <summary>
-        /// Toggles A Byte At The Given Address
+        /// Toggles A Byte At A Fixed Address
         /// </summary>
         /// <param name="Address">Address To Read/Write To</param>
         public static void Toggle(ulong Address) {
@@ -760,13 +748,15 @@ namespace Dobby {
             catch (Exception tabarnack) { Dev.DebugOut(tabarnack.Message); }
         }
 
-        public void Toggle(ulong[] AddressArray) { // Just For The Uncharted Collection
+        /// <summary>
+        /// Toggles A Byte At Multiple Fixed Addresses (Just For The Uncharted Collection)
+        /// </summary>
+        /// <param name="AddressArray">Array Of Addresses To Read/Write To</param>
+        public void Toggle(ulong[] AddressArray) {
             try {
                 if (PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName)
-                    foreach (ulong Address in AddressArray) {
-                        geo.WriteMemory(Executable, Address, geo.ReadMemory(Executable, Address, 1)[0] == 0x00 ? on : off);
-                        Dev.DebugOut($"Wrote To 0x{Address:X} in {geo.GetProcessInfo(Executable).name}/{Executable}");
-                    }
+                    foreach (ulong Address in AddressArray)
+                    geo.WriteMemory(Executable, Address, geo.ReadMemory(Executable, Address, 1)[0] == 0x00 ? on : off);
             }
             catch (Exception tabarnack) { Dev.DebugOut(tabarnack.Message); }
         }
