@@ -117,7 +117,7 @@ namespace Dobby {
       "* 3-beta.22.69.163 | Removed Redundant Custom W/ Options Button From Eboot Patch Page, Many, MANY Other Forgotten Changes. Don't code drunk for your changelog's sake...",
       "* 3-beta.24.74.175 | I have no idea anymore",
       "* 3-beta.25.76.177 | I have no idea anymore",
-           "* 3.26.77.180 | Arbitrarily Increased Build Number As I've Forgotten Everything I've Done. Changed More Than The Increase Might Imply",
+           "* 3.26.77.180 | Arbitrarily Increased Build Number As I've Forgotten Everything I've Done. Changed More Than The Increase Might Imply. Don't Kid Drugs, Do",
            "* 3.26.77.192 | Fixed A String In ExecutableNames Array that I for some reason stopped typing mid-way, EbootPatchPage GroupBox Adjust, Added Uncharted Pointers, Seperated Debug Offsets & Pointers A Bit More",
            "* 3.26.78.204 | Added A DebugMemoryWrite Function TO TOggle Shit Quickly, Added InfiniteAmmo As A QOL Option, And More UC4 identifiers up to 1.12",
            "* 3.26.79.205 | Added the ability to send the ps4debug oayload with W then S, Removed Infinite Ammo And Invincible Player As PS4QOLPage Options, 'cause Natives go brr",
@@ -132,7 +132,8 @@ namespace Dobby {
            "* 3.28.90.234 | Finished TLL Debug, Replaced Hardcoded Offsets With Method To Read Current Memory Address From Executable Space; Will Apply To Other Games' Toggle Functions For Consistency Later On. Other Miscellaneous Changes",
            "* 3.28.90.236 | Minor Changes, Comments",
            "* 3.28.91.240 | Added Uncharted 4 Check To GetGameVersion Up To 1.12, Plus 1.3X. Shortened PS4Debug Successful Connect Dialogue To Fit Form",
-           "* 3.28.91.243 | Minor Code Tweaks"
+           "* 3.28.91.243 | Minor Code Tweaks",
+           "* 3.28.92.246 | Replaced UC4 PS4Dbg Checks, Supports All But The Missing 1.28 executables. Need To Add Pointer Addresses Next"
 
             // TODO:
             // - use DebugModePointerOffset with GetGameVersion
