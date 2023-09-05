@@ -133,7 +133,7 @@ namespace Dobby {
            "* 3.28.90.236 | Minor Changes, Comments",
            "* 3.28.91.240 | Added Uncharted 4 Check To GetGameVersion Up To 1.12, Plus 1.3X. Shortened PS4Debug Successful Connect Dialogue To Fit Form",
            "* 3.28.91.243 | Minor Code Tweaks",
-           "* 3.28.92.246 | Replaced UC4 PS4Dbg Checks, Supports All But The Missing 1.28 executables. Need To Add Pointer Addresses Next"
+           "* 3.28.92.249 | Replaced UC4 PS4Dbg Checks, Supports All But The Missing 1.28 executables. Need To Add Pointer Addresses Next, Added up to 1.21 MP"
 
             // TODO:
             // - use DebugModePointerOffset with GetGameVersion
