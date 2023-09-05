@@ -133,7 +133,8 @@ namespace Dobby {
            "* 3.28.90.236 | Minor Changes, Comments",
            "* 3.28.91.240 | Added Uncharted 4 Check To GetGameVersion Up To 1.12, Plus 1.3X. Shortened PS4Debug Successful Connect Dialogue To Fit Form",
            "* 3.28.91.243 | Minor Code Tweaks",
-           "* 3.28.92.249 | Replaced UC4 PS4Dbg Checks, Supports All But The Missing 1.28 executables. Need To Add Pointer Addresses Next, Added up to 1.21 MP"
+           "* 3.28.92.249 | Replaced UC4 PS4Dbg Checks, Supports All But The Missing 1.28 executables. Need To Add Pointer Addresses Next, Added up to 1.21 MP",
+           "* 3.28.92.252 | Added for-some-reason missing exception handling to payload sender button. removed unneccessary debug text and fixed output length"
 
             // TODO:
             // - use DebugModePointerOffset with GetGameVersion
@@ -224,13 +225,13 @@ namespace Dobby {
             MouseIsDown = 1; LastPos = ActiveForm.Location;
             MouseDif = new Point(MousePosition.X - ActiveForm.Location.X, MousePosition.Y - ActiveForm.Location.Y);
         }
-        public static void MouseUpFunc(object sender, MouseEventArgs e) {
-            MouseScrolled = MouseIsDown = 0;
-        }
+        public static void MouseUpFunc(object sender, MouseEventArgs e) => MouseScrolled = MouseIsDown = 0;
         public static void MoveForm(object sender, MouseEventArgs e) {
             if(MouseIsDown != 0) {
+                var pre = ActiveForm.Location;
                 ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
                 ActiveForm.Update();
+                DebugOut($"Moved Form From ({pre.X}, {pre.Y}) to ({ActiveForm.Location.X}, {ActiveForm.Location.Y})");
             }
         }
 
@@ -1219,7 +1220,7 @@ namespace Dobby {
 
             Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIIIIIIGHT
                 WindowHeight = 35; SetWindowPosition(0, 0);
-                OutputStrings = new string[WindowHeight - 14];
+                OutputStrings = new string[WindowHeight - 16];
                 CursorVisible = false;
                 Point OriginalConsoleScale = new Point(WindowHeight, WindowWidth);
                 if(ActiveForm != null && !TimerThreadStarted) { ActiveForm.Invoke(TimerThread); TimerThreadStarted = true; }
@@ -1229,7 +1230,7 @@ namespace Dobby {
                         int StartTime = TimerTicks, Cursor = 0, String = 0; Form frm = ActiveForm;
                         string ControlType = HoveredControl.GetType().ToString();
                         string[] Output = new string[] {
-                            $"Build: {Build} | ~{Interval}ms | {OutputStrings.Length} ({OutputStringIndex})  {PS4DebugDev}",
+                            $"Build: {Build} | ~{Interval}ms | {PS4DebugDev}",
                             "",
                             $"Form: {(ActiveForm != null ? $"{ActiveForm.Name} | Form Position: {ActiveForm.Location}" : "Console")}",
                             $"Pages: {Pages?[0]}, {Pages?[1]}, {Pages?[2]}, {Pages?[3]}",

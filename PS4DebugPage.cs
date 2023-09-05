@@ -794,12 +794,14 @@ namespace Dobby {
 
         public void DebugPayloadBtn_Click(object sender, EventArgs e) {
             Socket S = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            S.Connect(new IPEndPoint(IPAddress.Parse(IPBOX_E.Text), int.Parse(PortBox.Text)));
-            S.Send(Properties.Resources.PS4Debug1_1_15);
-            SetInfoLabelText("Payload Injected Successfully");
+
+            try { S.Connect(new IPEndPoint(IPAddress.Parse(IPBOX_E.Text), int.Parse(PortBox.Text))); S.Send(Properties.Resources.PS4Debug1_1_15); }
+            catch (Exception _) { Dev.DebugOut("Failed To Connect To Specified Address/Port"); return; }
+            
             S.Close();
-            // Excessive Credits To Try Avoiding Beef lol
+            SetInfoLabelText("Payload Injected Successfully");
             MessageBox.Show("PS4Debug Paylod Sent Without Issue\n\nPS4Debug Update 1.1.15 By ctn123\nPS4Debug Created By Golden", "Payload Injected Successfully, Here's Some Credits");
+            // Excessive Credits To Try Avoiding Beef lol
         }
 
         private void ManualConnectBtn_Click(object sender, EventArgs e) {
