@@ -133,8 +133,9 @@ namespace Dobby {
            "* 3.28.90.236 | Minor Changes, Comments",
            "* 3.28.91.240 | Added Uncharted 4 Check To GetGameVersion Up To 1.12, Plus 1.3X. Shortened PS4Debug Successful Connect Dialogue To Fit Form",
            "* 3.28.91.243 | Minor Code Tweaks",
-           "* 3.28.92.249 | Replaced UC4 PS4Dbg Checks, Supports All But The Missing 1.28 executables. Need To Add Pointer Addresses Next, Added up to 1.21 MP",
-           "* 3.28.92.252 | Added for-some-reason missing exception handling to payload sender button. removed unneccessary debug text and fixed output length"
+           "* 3.28.92.249 | Replaced UC4 PS4DBG Checks, Supports All But The Missing 1.28 executables. Need To Add Pointer Addresses Next, Added up to 1.21 MP",
+           "* 3.28.92.252 | Added for-some-reason missing exception handling to payload sender button. removed unneccessary debug text and fixed output length",
+           "* 3.28.93.253 | Replaced References To IPBOX_E.Text In Static Functions To PS4DebugPage.IP() calls to avoid having to change the control to static every time the designer f*cks it up. Renamed to IPBOX"
 
             // TODO:
             // - use DebugModePointerOffset with GetGameVersion
@@ -1329,7 +1330,7 @@ namespace Dobby {
             }
             public static byte DebugConnect() {
                 try {
-                    geo = new PS4DBG(PS4DebugPage.IPBOX_E.Text);
+                    geo = new PS4DBG(PS4DebugPage.IP());
                     geo.Connect();
                     foreach(libdebug.Process prc in geo.GetProcessList().processes) {
                         foreach(string id in ExecutablesNames) {
