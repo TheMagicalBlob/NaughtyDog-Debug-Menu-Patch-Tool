@@ -527,17 +527,25 @@ namespace Dobby {
             catch(Exception tabarnack) { if(!Dev.REL) MessageBox.Show($"{tabarnack.Message}\n{tabarnack.StackTrace}"); ActiveForm?.Invoke(SetLabelText, $"Connection To {PS4DebugPage.IP()} Failed"); }
         }
 
+        /// <summary>
+        /// Avoid Attempting To Toggle The Bool In Memory Before The Connection Process Is Finished
+        /// </summary>
+        /// <returns> System.Threading.Tasks.Task.CompletedTask </returns>
         public static Task CheckConnectionStatus() {
             if(ConnectionThread.ThreadState == System.Threading.ThreadState.Unstarted) ConnectionThread.Start();
 
             else if(!PS4DebugIsConnected || geo?.GetProcessInfo(Executable).name != ProcessName || !ExecutablesNames.Contains(geo?.GetProcessInfo(Executable).name))
             { PS4DebugIsConnected = false; WaitForConnection = true; Dev.DebugOut("CheckConnectionStatus Second Case, Now On WaitForConnection"); }
 
-            while(WaitForConnection) Thread.Sleep(1);
+            while(WaitForConnection) Thread.Sleep(2);
             return Task.CompletedTask;
         }
 
-        public static string GetGameVersion() { // An ugly sack of WHY which determines the patch version of a specified game by just checking the int32 value of 2 bytes at a game-specific address because I have no idea how or if I can check the .sfo
+        /// <summary>
+        /// An ugly sack of gross which determines the patch version of a specified game by just checking the int32 value of 2 bytes at a game-specific address because I have no idea how or if I can check the .sfo
+        /// </summary>
+        /// <returns> The Current Game Version If Successful, Or UnknownGameVersion \ UnknownTitleID If It Failed At Some Stage </returns>
+        public static string GetGameVersion() {
             try {
                 if(PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName) {
 
@@ -837,7 +845,7 @@ namespace Dobby {
         }
         private async void UC4Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
-            var temp = new ulong[] {
+            var AddressArray = new ulong[] {
                 0x27a3c30, // 1.00 SP
                 0x2889370, // 1.01 SP
                 0x288d370, // 1.02 SP
@@ -862,10 +870,21 @@ namespace Dobby {
                 0x273cdc0, // 1.22 MP
                 0x2570748, // 1.22 SP
                 0x273cdc0, // 1.23 MP
-                0x274ccd0 // 1.25 MP
-            };
-            if(!GameVersion.Contains("Unknown")) // Added up to 1.21 MP - not SP. MP comes before sp
-                Toggle(temp, new string[] { "1.00 SP", "1.01 SP", "1.02 SP", "1.03 SP", "1.04 SP", "1.05 SP", "1.06 SP", "1.08 SP", "1.10 SP", "1.11 SP", "1.12 SP", "1.13 SP", "1.15 SP", "1.16 SP", "1.17 SP", "1.18", "1.19", "1.20 MP", "1.20 SP", "1.21 MP", "1.21 SP", "1.22 MP", "1.22 SP", "1.23 MP", "1.23 SP", "1.24 MP", "1.24 SP", "1.25 MP", "1.25 SP", "1.27 MP", "1.27+ SP", "1.29 MP", "1.30 MP", "1.31 MP", "1.32 MP", "1.33 MP", });
+                0xBADBEEF, // 1.23 SP
+                0x274ccd0, // 1.24 MP
+                0xBADBEEF, // 1.24 SP
+                0x274ccd0, // 1.25 MP
+                0x2570748, // 1.25 SP
+                0x2750d00, // 1.27 MP
+                0x2570748, // 1.27+ SP (Single Player Executable Never Changed After 1.27)
+                0x2758d00, // 1.29 MP
+                0x275cd00, // 1.30 MP
+                0x275cd00, // 1.31 MP
+                0x275cd00, // 1.32 MP
+                0x275cd00, // 1.33 MP
+            }; // Easier To Keep Track Of 'Em All
+            if(!GameVersion.Contains("Unknown"))
+                Toggle(AddressArray, new string[] { "1.00 SP", "1.01 SP", "1.02 SP", "1.03 SP", "1.04 SP", "1.05 SP", "1.06 SP", "1.08 SP", "1.10 SP", "1.11 SP", "1.12 SP", "1.13 SP", "1.15 SP", "1.16 SP", "1.17 SP", "1.18", "1.19", "1.20 MP", "1.20 SP", "1.21 MP", "1.21 SP", "1.22 MP", "1.22 SP", "1.23 MP", "1.23 SP", "1.24 MP", "1.24 SP", "1.25 MP", "1.25 SP", "1.27 MP", "1.27+ SP", "1.29 MP", "1.30 MP", "1.31 MP", "1.32 MP", "1.33 MP", });
         }
         private async void UC4MPBetaBtn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
