@@ -136,7 +136,8 @@ namespace Dobby {
            "* 3.28.92.249 | Replaced UC4 PS4DBG Checks, Supports All But The Missing 1.28 executables. Need To Add Pointer Addresses Next, Added up to 1.21 MP",
            "* 3.28.92.252 | Added for-some-reason missing exception handling to payload sender button. removed unneccessary debug text and fixed output length",
            "* 3.28.93.253 | Replaced References To IPBOX_E.Text In Static Functions To PS4DebugPage.IP() calls to avoid having to change the control to static every time the designer f*cks it up. Renamed to IPBOX",
-           "* 3.28.93.254 | Added The Remaining Uncharted 4 Debug Pointer Addresses"
+           "* 3.28.93.254 | Added The Remaining Uncharted 4 Debug Pointer Addresses",
+           "* 3.28.94.256 | Fixed Uncharted 4 PS4 Debug Arrays- I Was Tired. They Were NOT Finished. Other Misc Changes"
 
             // TODO:
             // - use DebugModePointerOffset with GetGameVersion
@@ -230,10 +231,8 @@ namespace Dobby {
         public static void MouseUpFunc(object sender, MouseEventArgs e) => MouseScrolled = MouseIsDown = 0;
         public static void MoveForm(object sender, MouseEventArgs e) {
             if(MouseIsDown != 0) {
-                var pre = ActiveForm.Location;
                 ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
                 ActiveForm.Update();
-                DebugOut($"Moved Form From ({pre.X}, {pre.Y}) to ({ActiveForm.Location.X}, {ActiveForm.Location.Y})");
             }
         }
 

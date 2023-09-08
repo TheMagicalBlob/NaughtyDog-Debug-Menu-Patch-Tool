@@ -629,45 +629,43 @@ namespace Dobby {
                             break;
                         case "UC4":
                             SHA256 hash = SHA256.Create();
-                            var Data = geo.ReadMemory(Executable, 0x400000, 420);
-                            var Check = hash.ComputeHash(Data);
-
-                            switch(BitConverter.ToInt32(Check, 0)) {
-                                case -383619271: DebugModePointerOffset = 0x2E95; return "1.00 SP";
-                                case -2074017023: DebugModePointerOffset = 0x2E95; return "1.01 SP";
-                                case 1594197772: DebugModePointerOffset = 0x2E95; return "1.02 SP";
-                                case -73765551: DebugModePointerOffset = 0x2E95; return "1.03 SP";
-                                case 2050220588: DebugModePointerOffset = 0x2E95; return "1.04 SP";
-                                case 964643492: DebugModePointerOffset = 0x2E95; return "1.05 SP";
-                                case 1128935348: DebugModePointerOffset = 0x2E95; return "1.06 SP";
-                                case 1557543522: DebugModePointerOffset = 0x2E95; return "1.08 SP";
-                                case 140226950: DebugModePointerOffset = 0x2E95; return "1.10 SP";
-                                case 1382522119: DebugModePointerOffset = 0x2E95; return "1.11 SP";
-                                case -2110029906: DebugModePointerOffset = 0x2E95; return "1.12 SP";
-                                case -505931004: DebugModePointerOffset = 0x2E95; return "1.13 SP";
-                                case -1908893377: DebugModePointerOffset = 0x2E95; return "1.15 SP";
-                                case -2120270649: DebugModePointerOffset = 0x2E95; return "1.16 SP";
-                                case 1564049717: DebugModePointerOffset = 0x2E95; return "1.17 SP";
-                                case -1908761222: DebugModePointerOffset = 0x2E79; return "1.18";
-                                case 1015660944: DebugModePointerOffset = 0x2E79; return "1.19";
-                                case -865326956: DebugModePointerOffset = 0x2E79; return "1.20 MP";
-                                case -2018701635: DebugModePointerOffset = 0x2E79; return "1.20 SP";
-                                case 1009183433: DebugModePointerOffset = 0x2E79; return "1.21 MP";
-                                case -1755121046: DebugModePointerOffset = 0x2E79; return "1.21 SP";
-                                case 1351385988: DebugModePointerOffset = 0x2E79; return "1.22 MP";
-                                case -400319621: DebugModePointerOffset = 0x2E79; return "1.22/23 SP";
-                                case 1388516255: DebugModePointerOffset = 0x2E79; return "1.23 MP";
-                                case -1472275997: DebugModePointerOffset = 0x2E79; return "1.24 MP";
-                                case 720968192: DebugModePointerOffset = 0x2E79; return "1.24.25 SP";
-                                case 675710051: DebugModePointerOffset = 0x2E79; return "1.25 MP";
-                                case 54414064: DebugModePointerOffset = 0x2E79; return "1.27 MP";
-                                case 93972589: DebugModePointerOffset = 0x2E79; return "1.27+ SP";
-                                case 638754364: DebugModePointerOffset = 0x2E79; return "1.29 MP";
-                                case 1606747325: DebugModePointerOffset = 0x2E79; return "1.30 MP";
-                                case 311216404: DebugModePointerOffset = 0x2E79; return "1.31 MP";
-                                case 1990898247: DebugModePointerOffset = 0x2E79; return "1.32 MP";
-                                case 1282174637: DebugModePointerOffset = 0x2E79; return "1.33 MP";
-                                default: return $"Unknown UC4 Patch {BitConverter.ToInt32(Check, 0)}";
+                            var Check = BitConverter.ToInt32(hash.ComputeHash(geo.ReadMemory(Executable, 0x400000, 450)), 0);
+                            switch(Check) {
+                                case -164231569: DebugModePointerOffset = 0x2E95; return "1.00 SP";
+                                case 561124052: DebugModePointerOffset = 0x2E95; return "1.01 SP";
+                                case 1001438826: DebugModePointerOffset = 0x2E95; return "1.02 SP";
+                                case -240761314: DebugModePointerOffset = 0x2E95; return "1.03 SP";
+                                case 642668739: DebugModePointerOffset = 0x2E95; return "1.04 SP";
+                                case 1863246975: DebugModePointerOffset = 0x2E95; return "1.05 SP";
+                                case -34645433: DebugModePointerOffset = 0x2E95; return "1.06 SP";
+                                case -1502336242: DebugModePointerOffset = 0x2E95; return "1.08 SP";
+                                case -315414364: DebugModePointerOffset = 0x2E95; return "1.10 SP";
+                                case 593054491: DebugModePointerOffset = 0x2E95; return "1.11 SP";
+                                case 949549480: DebugModePointerOffset = 0x2E95; return "1.12 SP";
+                                case -1656215082: DebugModePointerOffset = 0x2E95; return "1.13 SP";
+                                case 200885124: DebugModePointerOffset = 0x2E95; return "1.15 SP";
+                                case -593963332: DebugModePointerOffset = 0x2E95; return "1.16 SP";
+                                case 791591403: DebugModePointerOffset = 0x2E95; return "1.17 SP";
+                                case 1243873737: DebugModePointerOffset = 0x2E79; return "1.18";
+                                case -627230760: DebugModePointerOffset = 0x2E79; return "1.19";
+                                case 1270660743: DebugModePointerOffset = 0x2E79; return "1.20 MP";
+                                case -2117982988: DebugModePointerOffset = 0x2E79; return "1.20 SP";
+                                case 719837740: DebugModePointerOffset = 0x2E79; return "1.21 MP";
+                                case 722113371: DebugModePointerOffset = 0x2E79; return "1.21 SP";
+                                case 211448500: DebugModePointerOffset = 0x2E79; return "1.22 MP";
+                                case -437432800: DebugModePointerOffset = 0x2E79; return "1.22/23 SP";
+                                case 1317147345: DebugModePointerOffset = 0x2E79; return "1.23 MP";
+                                case 1514442958: DebugModePointerOffset = 0x2E79; return "1.24 MP";
+                                case 407306374: DebugModePointerOffset = 0x2E79; return "1.24/25 SP";
+                                case 590571900: DebugModePointerOffset = 0x2E79; return "1.25 MP";
+                                case 190499529: DebugModePointerOffset = 0x2E79; return "1.27/28 MP";
+                                case -66801341: DebugModePointerOffset = 0x2E79; return "1.27+ SP";
+                                case -1852061601: DebugModePointerOffset = 0x2E79; return "1.29 MP";
+                                case 898227952: DebugModePointerOffset = 0x2E79; return "1.30 MP";
+                                case 1025301972: DebugModePointerOffset = 0x2E79; return "1.31 MP";
+                                case -71032229: DebugModePointerOffset = 0x2E79; return "1.32 MP";
+                                case 145928122: DebugModePointerOffset = 0x2E79; return "1.33 MP";
+                                default: return $"Unknown UC4 Patch {Check}";
                             }
                         case "TLL":
                             switch(BitConverter.ToInt16(geo.ReadMemory(Executable, 0x40003B, 2), 0)) {
@@ -756,6 +754,7 @@ namespace Dobby {
         /// <param name="Versions">Version Strings To Check Against GameVersion</param>
         public static void Toggle(ulong[] Addresses, string[] Versions) {
             try {
+                if(Addresses.Length != Versions.Length) MessageBox.Show("You Fucked The Arrays Up");
                 if(PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName) {
                     var AddressIndex = 0;
                     foreach(string Version in Versions)
@@ -845,6 +844,42 @@ namespace Dobby {
         }
         private async void UC4Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
+            var VersionArray = new string[] {
+                "1.00 SP",
+                "1.01 SP",
+                "1.02 SP",
+                "1.03 SP",
+                "1.04 SP",
+                "1.05 SP",
+                "1.06 SP",
+                "1.08 SP",
+                "1.10 SP",
+                "1.11 SP",
+                "1.12 SP",
+                "1.13 SP",
+                "1.15 SP",
+                "1.16 SP",
+                "1.17 SP",
+                "1.18",
+                "1.19",
+                "1.20 MP",
+                "1.20 SP",
+                "1.21 MP",
+                "1.21 SP",
+                "1.22 MP",
+                "1.22/23 SP",
+                "1.23 MP",
+                "1.24 MP",
+                "1.24/25 SP",
+                "1.25 MP",
+                "1.27/28 MP",
+                "1.27+ SP",
+                "1.29 MP",
+                "1.30 MP",
+                "1.31 MP",
+                "1.32 MP",
+                "1.33 MP"
+            };
             var AddressArray = new ulong[] {
                 0x27a3c30, // 1.00 SP
                 0x2889370, // 1.01 SP
@@ -868,14 +903,12 @@ namespace Dobby {
                 0x2738dc0, // 1.21 MP
                 0x2570748, // 1.21 SP
                 0x273cdc0, // 1.22 MP
-                0x2570748, // 1.22 SP
+                0x2570748, // 1.22/23 SP
                 0x273cdc0, // 1.23 MP
-                0xBADBEEF, // 1.23 SP
                 0x274ccd0, // 1.24 MP
-                0xBADBEEF, // 1.24 SP
+                0x2570748, // 1.24/25 SP
                 0x274ccd0, // 1.25 MP
-                0x2570748, // 1.25 SP
-                0x2750d00, // 1.27 MP
+                0x2750d00, // 1.27/28 MP
                 0x2570748, // 1.27+ SP (Single Player Executable Never Changed After 1.27)
                 0x2758d00, // 1.29 MP
                 0x275cd00, // 1.30 MP
@@ -884,7 +917,7 @@ namespace Dobby {
                 0x275cd00, // 1.33 MP
             }; // Easier To Keep Track Of 'Em All
             if(!GameVersion.Contains("Unknown"))
-                Toggle(AddressArray, new string[] { "1.00 SP", "1.01 SP", "1.02 SP", "1.03 SP", "1.04 SP", "1.05 SP", "1.06 SP", "1.08 SP", "1.10 SP", "1.11 SP", "1.12 SP", "1.13 SP", "1.15 SP", "1.16 SP", "1.17 SP", "1.18", "1.19", "1.20 MP", "1.20 SP", "1.21 MP", "1.21 SP", "1.22 MP", "1.22 SP", "1.23 MP", "1.23 SP", "1.24 MP", "1.24 SP", "1.25 MP", "1.25 SP", "1.27 MP", "1.27+ SP", "1.29 MP", "1.30 MP", "1.31 MP", "1.32 MP", "1.33 MP", });
+                Toggle(AddressArray, VersionArray);
         }
         private async void UC4MPBetaBtn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
