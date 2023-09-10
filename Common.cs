@@ -141,7 +141,8 @@ namespace Dobby {
            "* 3.28.93.254 | Added The Remaining Uncharted 4 Debug Pointer Addresses",
            "* 3.28.94.256 | Fixed Uncharted 4 PS4 Debug Arrays- I Was Tired. They Were NOT Finished. Other Misc Changes",
            "* 3.28.95.260 | Replaced Inconsistent Memory Tlou2 Debug Addresses With Addresses To The Base Pointer It's Read From. Other Misc Stuff",
-           "* 3.28.96.260 | Removed Info String On Control Hover From Most PS4DebugPage Buttons, Going To Use Info Label For Status Only"
+           "* 3.28.96.262 | Removed Info String On Control Hover From Most PS4DebugPage Buttons, Going To Use Info Label For Status Only",
+           "* 3.28.97.264 | Fixed Some UC3 Addresses That Were Somehow Missing"
 
             // TODO:
             // - Replace InfoHover Functionality With Alternative, Prefferably One Recreating Native HoverInfo BS That Doesn't Work For Most Controls
@@ -366,7 +367,7 @@ namespace Dobby {
         /// <summary> Sets The Info Label String Based On The Currently Hovered Control </summary>
         /// <param name="Sender">The Hovered Control</param>
         public static void SetInfoLabelStringOnControlHover(Control Sender) { // 
-            string InfoLabelString = "Unknown Label Error";
+            string InfoLabelString = "";
             switch(Sender.Name) {
                 default: return;
                 //

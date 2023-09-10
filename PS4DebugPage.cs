@@ -585,8 +585,9 @@ namespace Dobby {
         public static string GetGameVersion() {
             try {
                 if(PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName) {
-                    if (!IgnoreTitleID)
+                    
                     // Determine The Game That's Running
+                    if (!IgnoreTitleID) // Skip In Case The User's Using A fPKG With An Altered TitleID
                     switch(TitleID) {
                         case "CUSA00552":
                         case "CUSA00554":
@@ -659,7 +660,7 @@ namespace Dobby {
                                 case -1805287883: return "U2 1.02";
                                 case 750078581:   return "U3 1.02";
                                 case -136556654:  return "U1 1.00";
-                                case -1120900838: return "U1 1.00";
+                                case -1120900838: return "U1 1.02";
                                 default: Dev.DebugOut($"Error, Game Was UCC But None of The Checks Matched! || chk:{UCCCheck}");
                                     return "UnknownUCCGameVersion";
                             }
@@ -864,28 +865,33 @@ namespace Dobby {
         ///////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         private async void T1RBtn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
+            if(IgnoreTitleID) TitleID = "CUSA00552";
             if(!GameVersion.Contains("Unknown"))
                 Toggle(new ulong[] { 0x1b8fa20, 0x1924a70 }, new string[] { "1.00", "1.09", "1.10", "1.11" });
         }
         private async void T2Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
+            if(IgnoreTitleID) TitleID = "CUSA10249";
             if(!GameVersion.Contains("Unknown"))
-              Toggle(new ulong[] { 0x3b61900, 0x3b62d00, 0x3b67130, 0x3b67530, 0x3b675b0, 0x3b7b430, 0x3b7b430 }, new string[] { "1.00", "1.01", "1.02", "1.05", "1.07", "1.08", "1.09" });
+            Toggle(new ulong[] { 0x3b61900, 0x3b62d00, 0x3b67130, 0x3b67530, 0x3b675b0, 0x3b7b430, 0x3b7b430 }, new string[] { "1.00", "1.01", "1.02", "1.05", "1.07", "1.08", "1.09" });
         }
         private async void UC1Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
+            if(IgnoreTitleID) TitleID = "CUSA02320";
             if(!GameVersion.Contains("Unknown"))
                 Toggle(GameVersion == "U1 1.00" ? new ulong[] { 0xD97B41, 0xD989CC, 0xD98970 } : new ulong[] { 0xD5C9F0, 0xD5CA4C, 0xD5BBC1 });
         }
         private async void UC2Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
+            if(IgnoreTitleID) TitleID = "CUSA02320";
             if(!GameVersion.Contains("Unknown"))
-                Toggle(GameVersion == "U2 1.00" ? new ulong[] { 0x127149C, 0x12705C9 } : new ulong[] { 0x145decc, 0x145cff9, 0x145de61 });
+                Toggle(GameVersion == "U2 1.00" ? new ulong[] { 0x1271431, 0x127149C, 0x12705C9 } : new ulong[] { 0x145decc, 0x145cff9, 0x145de61 }); //! why is this missing one?
         }
         private async void UC3Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
+            if(IgnoreTitleID) TitleID = "CUSA02320";
             if(!GameVersion.Contains("Unknown"))
-                Toggle(new ulong[] { 0x18366c9, 0x1e21f90, 0x18366C4 });
+                Toggle(GameVersion == "U3 1.00" ? new ulong[] { 0x18366c9, 0x18366c4, 0x1835481 } : new ulong[] { 0x1bbaf69, 0x1bbaf64, 0x1BB9D21 });
         }
         private async void UC4Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
@@ -961,17 +967,20 @@ namespace Dobby {
                 0x275cd00, // 1.32 MP
                 0x275cd00, // 1.33 MP
             };  // Easier To Keep Track Of 'Em All
+            if(IgnoreTitleID) TitleID = "CUSA00341";
             if(!GameVersion.Contains("Unknown"))
                 Toggle(AddressArray, VersionArray);
         }
         private async void UC4MPBetaBtn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
+            if(IgnoreTitleID) TitleID = "CUSA00341";
             if(!GameVersion.Contains("Unknown"))
                 Toggle(0x113408AE83);
         }
         private async void UCTLLBtn(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
-            if(GameVersion.Contains("Unknown")) return;
+            if(IgnoreTitleID) TitleID = "CUSA07737";
+            if(!GameVersion.Contains("Unknown"))
             Toggle(new ulong[] { 0x26b4558, 0x26c0698, 0x0274cd00, 0x275cd00, 0x275cd00 }, new string[] { "1.00 SP", "1.0X SP", "1.00 MP", "1.08 MP", "1.09 MP" });
         }
 
