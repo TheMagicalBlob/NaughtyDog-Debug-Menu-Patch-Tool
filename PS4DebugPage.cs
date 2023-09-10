@@ -586,7 +586,8 @@ namespace Dobby {
             try {
                 if(PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName) {
                     if (!IgnoreTitleID)
-                    switch(TitleID) {     // Determine The Game That's Running
+                    // Determine The Game That's Running
+                    switch(TitleID) {
                         case "CUSA00552":
                         case "CUSA00554":
                         case "CUSA00556":
@@ -623,14 +624,15 @@ namespace Dobby {
                         default: return "UnknownTitleID";
                     }
 
-                    switch(GameVersion) { // Read A Spot In Memory To Determine Which Patch the Executable's From
+                    // Read A Spot In Memory To Determine Which Patch the Executable's From
+                    switch(GameVersion) {
                         case "T1R":
                             var T1Check = BitConverter.ToInt16(geo.ReadMemory(Executable, 0x4000F4, 2), 0);
                             switch(T1Check) {
                                 case 18432: return "1.00";
-                                case 3480:
-                                case 4488:
-                                case 4472: return "1.XX";
+                                case 3480:  return "1.09";
+                                case 4488:  return "1.10";
+                                case 4472:  return "1.11";
                                 default: Dev.DebugOut($"Error, Game Was T1R But None of The Checks Matched! || {T1Check}");
                                     return "UnknownT1RGameVersion";
                             }
@@ -791,7 +793,7 @@ namespace Dobby {
         /// <param name="Versions">Version Strings To Check Against GameVersion</param>
         public static void Toggle(ulong[] Addresses, string[] Versions) {
             try {
-                if(Addresses.Length != Versions.Length) MessageBox.Show("You Fucked The Arrays Up");
+                if(Addresses.Length != Versions.Length) Dev.DebugOut("Address And Version Arrays Are Different Lengths, Be Sure This Was Intentional");
                 if(PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName) {
                     var AddressIndex = 0;
                     foreach(string Version in Versions)
@@ -863,7 +865,7 @@ namespace Dobby {
         private async void T1RBtn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
             if(!GameVersion.Contains("Unknown"))
-                Toggle(GameVersion == "1.00" ? 0x114ED32E81 : GameVersion == "UnknownGameVersion" ? (ulong)0x0 : 0x114F536E81);
+                Toggle(new ulong[] { 0x1b8fa20, 0x1924a70 }, new string[] { "1.00", "1.09", "1.10", "1.11" });
         }
         private async void T2Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
@@ -975,6 +977,10 @@ namespace Dobby {
 
 
 
+
+        /////////////////\\\\\\\\\\\\\\\\\\
+        ///--     Repeat Buttons      --\\\
+        /////////////////\\\\\\\\\\\\\\\\\\\
         public void BackBtn_Click(object sender, EventArgs e) {
             BackFunc();
             HoverLeave(BackBtn, false); // What Did This Fix, Again?

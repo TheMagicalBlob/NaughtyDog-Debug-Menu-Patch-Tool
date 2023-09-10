@@ -118,7 +118,7 @@ namespace Dobby {
            "* 2.22.69.171 | Just Realized I Can Cast sender to a control ptr... Overhauled Mouse Hover/Leave Functionality, Merged PC and PS4 arrays",
       "* 3-beta.22.69.163 | Removed Redundant Custom W/ Options Button From Eboot Patch Page, Many, MANY Other Forgotten Changes. Don't code drunk for your changelog's sake...",
       "* 3-beta.24.74.175 | I have no idea anymore",
-      "* 3-beta.25.76.177 | I have no idea anymore",
+      "* 3-beta.25.76.177 | I have no idea anymore. new feature tho",
            "* 3.26.77.180 | Arbitrarily Increased Build Number As I've Forgotten Everything I've Done. Changed More Than The Increase Might Imply. Don't Kid Drugs, Do",
            "* 3.26.77.192 | Fixed A String In ExecutableNames Array that I for some reason stopped typing mid-way, EbootPatchPage GroupBox Adjust, Added Uncharted Pointers, Seperated Debug Offsets & Pointers A Bit More",
            "* 3.26.78.204 | Added A DebugMemoryWrite Function TO TOggle Shit Quickly, Added InfiniteAmmo As A QOL Option, And More UC4 identifiers up to 1.12",
@@ -140,10 +140,11 @@ namespace Dobby {
            "* 3.28.93.253 | Replaced References To IPBOX_E.Text In Static Functions To PS4DebugPage.IP() calls to avoid having to change the control to static every time the designer f*cks it up. Renamed to IPBOX",
            "* 3.28.93.254 | Added The Remaining Uncharted 4 Debug Pointer Addresses",
            "* 3.28.94.256 | Fixed Uncharted 4 PS4 Debug Arrays- I Was Tired. They Were NOT Finished. Other Misc Changes",
-           "* 3.28.95.260 | Replaced Inconsistent Memory Tlou2 Debug Addresses With Addresses To The Base Pointer It's Read From. Other Misc Stuff"
+           "* 3.28.95.260 | Replaced Inconsistent Memory Tlou2 Debug Addresses With Addresses To The Base Pointer It's Read From. Other Misc Stuff",
+           "* 3.28.96.260 | Removed Info String On Control Hover From Most PS4DebugPage Buttons, Going To Use Info Label For Status Only"
 
             // TODO:
-            // - Apply The Dynamic Address Bullshit To The Rest Of The Non-Uncharted Collection Games
+            // - Replace InfoHover Functionality With Alternative, Prefferably One Recreating Native HoverInfo BS That Doesn't Work For Most Controls
             // - Finish PS4QOLPatchesPage Dynamic Button Functionality
             // - Finish EbootPatchHelpPage
             // - Finish EbootPatchPage Uncharted 4/TLL Support
