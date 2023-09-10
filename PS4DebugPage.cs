@@ -47,10 +47,13 @@ namespace Dobby {
             this.PortBox = new System.Windows.Forms.TextBox();
             this.IPLabelBtn = new System.Windows.Forms.Button();
             this.PortLabelBtn = new System.Windows.Forms.Button();
-            this.SeperatorLine3 = new System.Windows.Forms.Label();
+            this.SeperatorLine4 = new System.Windows.Forms.Label();
             this.InfoHelpBtn = new System.Windows.Forms.Button();
             this.CreditsBtn = new System.Windows.Forms.Button();
             this.UC4MPBetaBtn = new System.Windows.Forms.Button();
+            this.SeperatorLine3 = new System.Windows.Forms.Label();
+            this.IgnoreTitleIDBtn = new System.Windows.Forms.Button();
+            this.TMPUnusedBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // MainLabel
@@ -85,7 +88,7 @@ namespace Dobby {
             // 
             this.MainBox.Location = new System.Drawing.Point(0, -6);
             this.MainBox.Name = "MainBox";
-            this.MainBox.Size = new System.Drawing.Size(320, 420);
+            this.MainBox.Size = new System.Drawing.Size(320, 469);
             this.MainBox.TabIndex = 5;
             this.MainBox.TabStop = false;
             // 
@@ -149,7 +152,7 @@ namespace Dobby {
             this.ManualConnectBtn.Click += new System.EventHandler(this.ManualConnectBtn_Click);
             this.ManualConnectBtn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.ManualConnectBtn_Click);
             // 
-            // IPBOX_E
+            // IPBOX
             // 
             this.IPBOX.BackColor = System.Drawing.Color.DimGray;
             this.IPBOX.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -157,7 +160,7 @@ namespace Dobby {
             this.IPBOX.ForeColor = System.Drawing.SystemColors.Control;
             this.IPBOX.Location = new System.Drawing.Point(102, 228);
             this.IPBOX.MaxLength = 15;
-            this.IPBOX.Name = "IPBOX_E";
+            this.IPBOX.Name = "IPBOX";
             this.IPBOX.Size = new System.Drawing.Size(100, 13);
             this.IPBOX.TabIndex = 8;
             this.IPBOX.Text = "IP()";
@@ -167,7 +170,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(9, 391);
+            this.Info.Location = new System.Drawing.Point(9, 440);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
@@ -232,7 +235,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 367);
+            this.BackBtn.Location = new System.Drawing.Point(1, 416);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(60, 22);
             this.BackBtn.TabIndex = 14;
@@ -367,15 +370,15 @@ namespace Dobby {
             this.PortLabelBtn.UseVisualStyleBackColor = false;
             this.PortLabelBtn.Click += new System.EventHandler(this.PortLabelBtn_Click);
             // 
-            // SeperatorLine3
+            // SeperatorLine4
             // 
-            this.SeperatorLine3.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine3.Location = new System.Drawing.Point(2, 303);
-            this.SeperatorLine3.Name = "SeperatorLine3";
-            this.SeperatorLine3.Size = new System.Drawing.Size(316, 16);
-            this.SeperatorLine3.TabIndex = 26;
-            this.SeperatorLine3.Text = "_______________________________________________________________";
+            this.SeperatorLine4.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine4.Location = new System.Drawing.Point(2, 352);
+            this.SeperatorLine4.Name = "SeperatorLine4";
+            this.SeperatorLine4.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine4.TabIndex = 26;
+            this.SeperatorLine4.Text = "_______________________________________________________________";
             // 
             // InfoHelpBtn
             // 
@@ -385,7 +388,7 @@ namespace Dobby {
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 319);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 368);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.Size = new System.Drawing.Size(135, 23);
             this.InfoHelpBtn.TabIndex = 27;
@@ -402,7 +405,7 @@ namespace Dobby {
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 343);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 392);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
@@ -429,19 +432,64 @@ namespace Dobby {
             this.UC4MPBetaBtn.UseVisualStyleBackColor = false;
             this.UC4MPBetaBtn.Click += new System.EventHandler(this.UC4MPBetaBtn_Click);
             // 
+            // SeperatorLine3
+            // 
+            this.SeperatorLine3.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine3.Location = new System.Drawing.Point(2, 300);
+            this.SeperatorLine3.Name = "SeperatorLine3";
+            this.SeperatorLine3.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine3.TabIndex = 31;
+            this.SeperatorLine3.Text = "_______________________________________________________________";
+            // 
+            // IgnoreTitleIDBtn
+            // 
+            this.IgnoreTitleIDBtn.BackColor = System.Drawing.Color.DimGray;
+            this.IgnoreTitleIDBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.IgnoreTitleIDBtn.FlatAppearance.BorderSize = 0;
+            this.IgnoreTitleIDBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IgnoreTitleIDBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.IgnoreTitleIDBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.IgnoreTitleIDBtn.Location = new System.Drawing.Point(1, 318);
+            this.IgnoreTitleIDBtn.Name = "IgnoreTitleIDBtn";
+            this.IgnoreTitleIDBtn.Size = new System.Drawing.Size(213, 23);
+            this.IgnoreTitleIDBtn.TabIndex = 32;
+            this.IgnoreTitleIDBtn.Text = "Ignore Game Title ID: Disabled";
+            this.IgnoreTitleIDBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.IgnoreTitleIDBtn.UseVisualStyleBackColor = false;
+            this.IgnoreTitleIDBtn.Click += new System.EventHandler(this.IgnoreTitleIDBtn_Click);
+            // 
+            // TMPUnusedBtn
+            // 
+            this.TMPUnusedBtn.BackColor = System.Drawing.Color.DimGray;
+            this.TMPUnusedBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.TMPUnusedBtn.FlatAppearance.BorderSize = 0;
+            this.TMPUnusedBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.TMPUnusedBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.TMPUnusedBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.TMPUnusedBtn.Location = new System.Drawing.Point(1, 341);
+            this.TMPUnusedBtn.Name = "TMPUnusedBtn";
+            this.TMPUnusedBtn.Size = new System.Drawing.Size(213, 23);
+            this.TMPUnusedBtn.TabIndex = 33;
+            this.TMPUnusedBtn.Text = "TMP: Disabled";
+            this.TMPUnusedBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.TMPUnusedBtn.UseVisualStyleBackColor = false;
+            // 
             // PS4DebugPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 413);
+            this.ClientSize = new System.Drawing.Size(320, 462);
+            this.Controls.Add(this.TMPUnusedBtn);
+            this.Controls.Add(this.ManualConnectBtn);
+            this.Controls.Add(this.SeperatorLine3);
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.MinimizeBtn);
             this.Controls.Add(this.PortBox);
             this.Controls.Add(this.IPBOX);
             this.Controls.Add(this.UC4MPBetaBtn);
             this.Controls.Add(this.InfoHelpBtn);
-            this.Controls.Add(this.ManualConnectBtn);
             this.Controls.Add(this.PortLabelBtn);
             this.Controls.Add(this.IPLabelBtn);
             this.Controls.Add(this.PS4DebugPayloadBtn);
@@ -454,11 +502,12 @@ namespace Dobby {
             this.Controls.Add(this.Info);
             this.Controls.Add(this.UC2Btn);
             this.Controls.Add(this.SeperatorLine2);
-            this.Controls.Add(this.SeperatorLine3);
+            this.Controls.Add(this.SeperatorLine4);
             this.Controls.Add(this.BackBtn);
             this.Controls.Add(this.CreditsBtn);
             this.Controls.Add(this.MainLabel);
             this.Controls.Add(this.SeperatorLine1);
+            this.Controls.Add(this.IgnoreTitleIDBtn);
             this.Controls.Add(this.MainBox);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -470,31 +519,19 @@ namespace Dobby {
 
         }
 
-        public void BackBtn_Click(object sender, EventArgs e) {
-            BackFunc();
-            HoverLeave(BackBtn, false); // What Did This Fix, Again?
-        }
-        public void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
-        public void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
-
-
-        /* End Of Repeated Functions
-        ============================================================================================================================================================================
-        // Start Of PS4Debug Page Specific Functions                                                                                                                      */
-
-        public delegate void LabelTextDel(string message);
-        public static LabelTextDel SetLabelText = SetInfoLabelText;
-        public static Thread ConnectionThread = new Thread(new ThreadStart(Connect));
+        ///////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Debug Mode Toggle Functions For Each Game     --\\\
+        ///////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         public static void Connect() {
             try {
             Wait:
                 if (PS4DebugIsConnected) goto Wait;
 
-                Dev.DebugOut($"Connecting To Console at {PS4DebugPage.IP()}");
+                Dev.DebugOut($"Connecting To Console at {IP()}");
                 ActiveForm?.Invoke(SetLabelText, "Connecting To Console");
                 Dev.DebugOut($"P?: {PS4DebugIsConnected} | {geo?.GetProcessInfo(Executable).name != ProcessName} | {geo?.GetProcessList().processes.Length == ProcessCount}");
 
-                geo = new PS4DBG(PS4DebugPage.IP());
+                geo = new PS4DBG(IP());
                 geo.Connect();
                 PS4DebugIsConnected = true;
 
@@ -548,7 +585,7 @@ namespace Dobby {
         public static string GetGameVersion() {
             try {
                 if(PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName) {
-
+                    if (!IgnoreTitleID)
                     switch(TitleID) {     // Determine The Game That's Running
                         case "CUSA00552":
                         case "CUSA00554":
@@ -561,6 +598,13 @@ namespace Dobby {
                         case "CUSA07820":
                         case "CUSA13986":
                             GameVersion = "T2";
+                            break;
+                        case "CUSA01399":
+                        case "CUSA02320":
+                        case "CUSA02343":
+                        case "CUSA02344":
+                        case "CUSA02826":
+                            GameVersion = "UCC";
                             break;
                         case "CUSA00918":
                         case "CUSA00341":
@@ -581,102 +625,95 @@ namespace Dobby {
 
                     switch(GameVersion) { // Read A Spot In Memory To Determine Which Patch the Executable's From
                         case "T1R":
-                            Int16 chk = BitConverter.ToInt16(geo.ReadMemory(Executable, 0x4000F4, 2), 0);
-
-                            string T1RErr() {
-                                Dev.DebugOut($"Error 1 (T1R)\n{chk}");
-                                return "UnknownGameVersion";
+                            var T1Check = BitConverter.ToInt16(geo.ReadMemory(Executable, 0x4000F4, 2), 0);
+                            switch(T1Check) {
+                                case 18432: return "1.00";
+                                case 3480:
+                                case 4488:
+                                case 4472: return "1.XX";
+                                default: Dev.DebugOut($"Error, Game Was T1R But None of The Checks Matched! || {T1Check}");
+                                    return "UnknownT1RGameVersion";
                             }
-                            return
-                                chk == 18432 ? "1.00"
-                                : chk == 3480 ? "1.XX"
-                                : chk == 4488 ? "1.XX"
-                                : chk == 4472 ? "1.XX"
-                                : T1RErr();
-
                         case "T2":
-                            int T2Check = BitConverter.ToInt32(geo.ReadMemory(Executable, 0x40009A, 4), 0);
-
-                            string T2Err() {
-                                Dev.DebugOut($"Error, Game Was T2 But None of The Checks Matched! || chk:{T2Check}");
-                                return $"{GameVersion} UnknownGameVersion";
+                            var T2Check = BitConverter.ToInt32(geo.ReadMemory(Executable, 0x40009A, 4), 0);
+                            DebugModePointerOffset = 0x3aa1;
+                            switch(T2Check) {
+                                case 25384434: return "1.00";
+                                case 25548706: return "1.01";
+                                case 25502882: return "1.02";
+                                case 25588450: return "1.05";
+                                case 25593522: return "1.07";
+                                case 30024882: return "1.08";
+                                case 30024914: return "1.09";
+                                default: Dev.DebugOut($"Error, Game Was T2 But None of The Checks Matched! || chk:{T2Check}");
+                                    return "UnknownT2GameVersion";
                             }
-                            return
-                                  T2Check == 25384434 ? "1.00"
-                                : T2Check == 25548706 ? "1.01"
-                                : T2Check == 25502882 ? "1.02"
-                                : T2Check == 25588450 ? "1.05"
-                                : T2Check == 25593522 ? "1.07"
-                                : T2Check == 30024882 ? "1.08"
-                                : T2Check == 30024914 ? "1.09"
-                                : T2Err();
-
-                        case "UC1": //! FINISH THIS
-                            if(geo.ReadMemory(Executable, 0x4DE188, 1)[0] == 0x61) return "1.00";
-                            else if(geo.ReadMemory(Executable, 0x4DE188, 1)[0] == 0x61) return "1.02";
-
-                            break;
-
-                        case "UC2": //! FINISH THIS
-                            if(geo.ReadMemory(Executable, 0x4DE188, 1)[0] == 0x0) return "1.00";
-                            else if(geo.ReadMemory(Executable, 0x4DE188, 1)[0] == 0x0F) return "1.02";
-
-                            break;
-                        case "UC3":
-                            if(geo.ReadMemory(Executable, 0x4DE188, 1)[0] == 0x0) return "1.00";
-                            else if(geo.ReadMemory(Executable, 0x4DE188, 1)[0] == 0x0F) return "1.02";
-
-                            break;
+                        case "UCC":
+                            hash = SHA256.Create();
+                            var UCCCheck = BitConverter.ToInt32(hash.ComputeHash(geo.ReadMemory(Executable, 0x400000, 100)), 0);
+                            switch(UCCCheck) {
+                                case 455457367:   return "U2 1.00";
+                                case -1951784656: return "U3 1.00";
+                                case -1805287883: return "U2 1.02";
+                                case 750078581:   return "U3 1.02";
+                                case -136556654:  return "U1 1.00";
+                                case -1120900838: return "U1 1.00";
+                                default: Dev.DebugOut($"Error, Game Was UCC But None of The Checks Matched! || chk:{UCCCheck}");
+                                    return "UnknownUCCGameVersion";
+                            }
                         case "UC4":
-                            SHA256 hash = SHA256.Create();
-                            var Check = BitConverter.ToInt32(hash.ComputeHash(geo.ReadMemory(Executable, 0x400000, 450)), 0);
-                            switch(Check) {
-                                case -164231569: DebugModePointerOffset = 0x2E95; return "1.00 SP";
-                                case 561124052: DebugModePointerOffset = 0x2E95; return "1.01 SP";
-                                case 1001438826: DebugModePointerOffset = 0x2E95; return "1.02 SP";
-                                case -240761314: DebugModePointerOffset = 0x2E95; return "1.03 SP";
-                                case 642668739: DebugModePointerOffset = 0x2E95; return "1.04 SP";
-                                case 1863246975: DebugModePointerOffset = 0x2E95; return "1.05 SP";
-                                case -34645433: DebugModePointerOffset = 0x2E95; return "1.06 SP";
+                            hash = SHA256.Create();
+                            var U4Check = BitConverter.ToInt32(hash.ComputeHash(geo.ReadMemory(Executable, 0x400000, 450)), 0);
+                            switch(U4Check) {
+                                case -164231569:  DebugModePointerOffset = 0x2E95; return "1.00 SP";
+                                case 561124052:   DebugModePointerOffset = 0x2E95; return "1.01 SP";
+                                case 1001438826:  DebugModePointerOffset = 0x2E95; return "1.02 SP";
+                                case -240761314:  DebugModePointerOffset = 0x2E95; return "1.03 SP";
+                                case 642668739:   DebugModePointerOffset = 0x2E95; return "1.04 SP";
+                                case 1863246975:  DebugModePointerOffset = 0x2E95; return "1.05 SP";
+                                case -34645433:   DebugModePointerOffset = 0x2E95; return "1.06 SP";
                                 case -1502336242: DebugModePointerOffset = 0x2E95; return "1.08 SP";
-                                case -315414364: DebugModePointerOffset = 0x2E95; return "1.10 SP";
-                                case 593054491: DebugModePointerOffset = 0x2E95; return "1.11 SP";
-                                case 949549480: DebugModePointerOffset = 0x2E95; return "1.12 SP";
+                                case -315414364:  DebugModePointerOffset = 0x2E95; return "1.10 SP";
+                                case 593054491:   DebugModePointerOffset = 0x2E95; return "1.11 SP";
+                                case 949549480:   DebugModePointerOffset = 0x2E95; return "1.12 SP";
                                 case -1656215082: DebugModePointerOffset = 0x2E95; return "1.13 SP";
-                                case 200885124: DebugModePointerOffset = 0x2E95; return "1.15 SP";
-                                case -593963332: DebugModePointerOffset = 0x2E95; return "1.16 SP";
-                                case 791591403: DebugModePointerOffset = 0x2E95; return "1.17 SP";
-                                case 1243873737: DebugModePointerOffset = 0x2E79; return "1.18";
-                                case -627230760: DebugModePointerOffset = 0x2E79; return "1.19";
-                                case 1270660743: DebugModePointerOffset = 0x2E79; return "1.20 MP";
+                                case 200885124:   DebugModePointerOffset = 0x2E95; return "1.15 SP";
+                                case -593963332:  DebugModePointerOffset = 0x2E95; return "1.16 SP";
+                                case 791591403:   DebugModePointerOffset = 0x2E95; return "1.17 SP";
+                                case 1243873737:  DebugModePointerOffset = 0x2E79; return "1.18";
+                                case -627230760:  DebugModePointerOffset = 0x2E79; return "1.19";
+                                case 1270660743:  DebugModePointerOffset = 0x2E79; return "1.20 MP";
                                 case -2117982988: DebugModePointerOffset = 0x2E79; return "1.20 SP";
-                                case 719837740: DebugModePointerOffset = 0x2E79; return "1.21 MP";
-                                case 722113371: DebugModePointerOffset = 0x2E79; return "1.21 SP";
-                                case 211448500: DebugModePointerOffset = 0x2E79; return "1.22 MP";
-                                case -437432800: DebugModePointerOffset = 0x2E79; return "1.22/23 SP";
-                                case 1317147345: DebugModePointerOffset = 0x2E79; return "1.23 MP";
-                                case 1514442958: DebugModePointerOffset = 0x2E79; return "1.24 MP";
-                                case 407306374: DebugModePointerOffset = 0x2E79; return "1.24/25 SP";
-                                case 590571900: DebugModePointerOffset = 0x2E79; return "1.25 MP";
-                                case 190499529: DebugModePointerOffset = 0x2E79; return "1.27/28 MP";
-                                case -66801341: DebugModePointerOffset = 0x2E79; return "1.27+ SP";
+                                case 719837740:   DebugModePointerOffset = 0x2E79; return "1.21 MP";
+                                case 722113371:   DebugModePointerOffset = 0x2E79; return "1.21 SP";
+                                case 211448500:   DebugModePointerOffset = 0x2E79; return "1.22 MP";
+                                case -437432800:  DebugModePointerOffset = 0x2E79; return "1.22/23 SP";
+                                case 1317147345:  DebugModePointerOffset = 0x2E79; return "1.23 MP";
+                                case 1514442958:  DebugModePointerOffset = 0x2E79; return "1.24 MP";
+                                case 407306374:   DebugModePointerOffset = 0x2E79; return "1.24/25 SP";
+                                case 590571900:   DebugModePointerOffset = 0x2E79; return "1.25 MP";
+                                case 190499529:   DebugModePointerOffset = 0x2E79; return "1.27/28 MP";
+                                case -66801341:   DebugModePointerOffset = 0x2E79; return "1.27+ SP";
                                 case -1852061601: DebugModePointerOffset = 0x2E79; return "1.29 MP";
-                                case 898227952: DebugModePointerOffset = 0x2E79; return "1.30 MP";
-                                case 1025301972: DebugModePointerOffset = 0x2E79; return "1.31 MP";
-                                case -71032229: DebugModePointerOffset = 0x2E79; return "1.32 MP";
-                                case 145928122: DebugModePointerOffset = 0x2E79; return "1.33 MP";
-                                default: return $"Unknown UC4 Patch {Check}";
+                                case 898227952:   DebugModePointerOffset = 0x2E79; return "1.30 MP";
+                                case 1025301972:  DebugModePointerOffset = 0x2E79; return "1.31 MP";
+                                case -71032229:   DebugModePointerOffset = 0x2E79; return "1.32 MP";
+                                case 145928122:   DebugModePointerOffset = 0x2E79; return "1.33 MP";
+                                default: Dev.DebugOut($"Error, Game Was UC4 But None of The Checks Matched! || chk:{U4Check}");
+                                    return "UnknownUC4GameVersion";
                             }
                         case "TLL":
-                            switch(BitConverter.ToInt16(geo.ReadMemory(Executable, 0x40003B, 2), 0)) {
+                            var TLLCheck = BitConverter.ToInt16(geo.ReadMemory(Executable, 0x40003B, 2), 0);
+                            switch(TLLCheck) {
                                 case 3777:   DebugModePointerOffset = 0x2EF9; return "1.00 SP";
                                 case -9759:  DebugModePointerOffset = 0x2EF9; return "1.0X SP";  // 1.08 and 1.09 have identical eboot.bin's
                                 case -23679: DebugModePointerOffset = 0x2E79; return "1.00 MP";
                                 case 27793:  DebugModePointerOffset = 0x2E79; return "1.08 MP";
                                 case 27841:  DebugModePointerOffset = 0x2E79; return "1.09 MP";
+                                default: Dev.DebugOut($"Error, Game Was UCC But None of The Checks Matched! || chk:{TLLCheck}");
+                                    return "UnknownTLLGameVersion";
                             }
-                            break;
-                        default: Dev.DebugOut("!!! " + tmp); return "UnknownGameVersion";
+                        default: Dev.DebugOut("!!! " + TempStringStore); return "UnknownGameVersion";
                     }
                 }
                 Dev.DebugOut($"Fell Out The Window, Ow");
@@ -817,6 +854,12 @@ namespace Dobby {
             ConnectionThread.Start();
             PS4DebugIsConnected = false;
         }
+
+
+
+        ///////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Debug Mode Toggle Functions For Each Game     --\\\
+        ///////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         private async void T1RBtn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
             if(!GameVersion.Contains("Unknown"))
@@ -825,17 +868,17 @@ namespace Dobby {
         private async void T2Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
             if(!GameVersion.Contains("Unknown"))
-                Toggle(GameVersion == "1.00" ? (ulong)0x110693FAA1 : 0x11069DFAA1);
+              Toggle(new ulong[] { 0x3b61900, 0x3b62d00, 0x3b67130, 0x3b67530, 0x3b675b0, 0x3b7b430, 0x3b7b430 }, new string[] { "1.00", "1.01", "1.02", "1.05", "1.07", "1.08", "1.09" });
         }
         private async void UC1Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
             if(!GameVersion.Contains("Unknown"))
-                Toggle(GameVersion == "1.00" ? new ulong[] { 0xD97B41, 0xD989CC, 0xD98970 } : new ulong[] { 0xD5C9F0, 0xD5CA4C, 0xD5BBC1 });
+                Toggle(GameVersion == "U1 1.00" ? new ulong[] { 0xD97B41, 0xD989CC, 0xD98970 } : new ulong[] { 0xD5C9F0, 0xD5CA4C, 0xD5BBC1 });
         }
         private async void UC2Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
             if(!GameVersion.Contains("Unknown"))
-                Toggle(GameVersion == "1.00" ? new ulong[] { 0x127149C, 0x12705C9 } : new ulong[] { 0x145decc, 0x145cff9, 0x145de61 });
+                Toggle(GameVersion == "U2 1.00" ? new ulong[] { 0x127149C, 0x12705C9 } : new ulong[] { 0x145decc, 0x145cff9, 0x145de61 });
         }
         private async void UC3Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
@@ -879,7 +922,7 @@ namespace Dobby {
                 "1.31 MP",
                 "1.32 MP",
                 "1.33 MP"
-            };
+            }; //
             var AddressArray = new ulong[] {
                 0x27a3c30, // 1.00 SP
                 0x2889370, // 1.01 SP
@@ -915,7 +958,7 @@ namespace Dobby {
                 0x275cd00, // 1.31 MP
                 0x275cd00, // 1.32 MP
                 0x275cd00, // 1.33 MP
-            }; // Easier To Keep Track Of 'Em All
+            };  // Easier To Keep Track Of 'Em All
             if(!GameVersion.Contains("Unknown"))
                 Toggle(AddressArray, VersionArray);
         }
@@ -930,6 +973,27 @@ namespace Dobby {
             Toggle(new ulong[] { 0x26b4558, 0x26c0698, 0x0274cd00, 0x275cd00, 0x275cd00 }, new string[] { "1.00 SP", "1.0X SP", "1.00 MP", "1.08 MP", "1.09 MP" });
         }
 
+
+
+        public void BackBtn_Click(object sender, EventArgs e) {
+            BackFunc();
+            HoverLeave(BackBtn, false); // What Did This Fix, Again?
+        }
+        public void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
+        public void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
+
+        public void IgnoreTitleIDBtn_Click(object sender, EventArgs e) {
+            TempStringStore = ((Control)sender).Text;
+            IgnoreTitleID = !IgnoreTitleID;
+            ((Control)sender).Text = $"{TempStringStore.Remove(TempStringStore.LastIndexOf(' '))} {(IgnoreTitleID ? "Enable" : "Disabled")}";
+        }
+
+
+
+
+        ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     PS4DebugPage Control Declarations     --\\\
+        ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
         public TextBox IPBOX;
         public Button ExitBtn;
         public Button MinimizeBtn;
@@ -950,7 +1014,7 @@ namespace Dobby {
         public Button PS4DebugPayloadBtn;
         public Label SeperatorLine1;
         public Label SeperatorLine2;
-        public Label SeperatorLine3;
+        public Label SeperatorLine4;
         public Button EPPBackBtn;
         public Button UC4MPBetaBtn;
         public Button button2;
@@ -958,5 +1022,8 @@ namespace Dobby {
         public Button CreditsBtn;
         public Button BackBtn;
         public Label Info;
+        public Label SeperatorLine3;
+        public Button IgnoreTitleIDBtn;
+        public Button TMPUnusedBtn;
     }
 }

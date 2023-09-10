@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.Remoting.Contexts;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
 using static Dobby.Common.Dev;
@@ -137,16 +139,16 @@ namespace Dobby {
            "* 3.28.92.252 | Added for-some-reason missing exception handling to payload sender button. removed unneccessary debug text and fixed output length",
            "* 3.28.93.253 | Replaced References To IPBOX_E.Text In Static Functions To PS4DebugPage.IP() calls to avoid having to change the control to static every time the designer f*cks it up. Renamed to IPBOX",
            "* 3.28.93.254 | Added The Remaining Uncharted 4 Debug Pointer Addresses",
-           "* 3.28.94.256 | Fixed Uncharted 4 PS4 Debug Arrays- I Was Tired. They Were NOT Finished. Other Misc Changes"
+           "* 3.28.94.256 | Fixed Uncharted 4 PS4 Debug Arrays- I Was Tired. They Were NOT Finished. Other Misc Changes",
+           "* 3.28.95.260 | Replaced Inconsistent Memory Tlou2 Debug Addresses With Addresses To The Base Pointer It's Read From. Other Misc Stuff"
 
             // TODO:
-            // - use DebugModePointerOffset with GetGameVersion
             // - Apply The Dynamic Address Bullshit To The Rest Of The Non-Uncharted Collection Games
             // - Finish PS4QOLPatchesPage Dynamic Button Functionality
             // - Finish EbootPatchHelpPage
+            // - Finish EbootPatchPage Uncharted 4/TLL Support
             
             // KNOWN BUGS:
-            // - Manual Deletion Of "this." And A Change To Static Are Required For IPBOX_E After Any Editor Changes To The PS4DebugPage, Otherwise The App Won't Compile.
             // - Occasional String Duplication In Debug Output (DebugOutputStr / UpdateConsoleOutput)
 
         };
@@ -154,8 +156,11 @@ namespace Dobby {
 
 
         #region Application-Wide Functions And Variable Declarations
+        ////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\
+        ///--      MAIN APPLICATION VARIABLES      --\\\
+        ////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\
 
-        public static string CurrentControl, tmp;
+        public static string CurrentControl, TempStringStore;
 
         public static int Page;
         public static int?[] Pages = new int?[5];
@@ -176,19 +181,22 @@ namespace Dobby {
         public static Font MainFont = new Font("Franklin Gothic Medium", 6.5F, FontStyle.Bold);
 
         #region PS4DBG_Variables
-
-
         ////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
         ///-- PS4 DEBUG OFFSETS AND OTHER VARIABLES --\\\
         ////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
         
         public static PS4DBG geo;
+        public delegate void LabelTextDel(string message);
+        public static LabelTextDel SetLabelText = SetInfoLabelText;
+        public static Thread ConnectionThread = new Thread(new ThreadStart(PS4DebugPage.Connect));
+        public static SHA256 hash;
+
 
         public static readonly byte // BECAUSE I FUCKING CAN, YOU TWAT
             on = 0x01,
             off = 0x00
         ;
-        public static bool PS4DebugIsConnected, WaitForConnection = true;
+        public static bool PS4DebugIsConnected, WaitForConnection = true, IgnoreTitleID = false;
 
         public static int
             Executable,   // Active PS4DBG Process ID
@@ -250,7 +258,7 @@ namespace Dobby {
                 return $"{GameString} | {AddString}";
             }
 
-            bool CheckDebugState(int[] offsets, byte[] Data) {
+            bool CheckDebugState(int[] offsets, byte[] Data) {//! CHANGE THIS, IT'S UNNECESSARY
                 int i = 0; // Just Returns True If The Bytes Read At The Specified Address Match The Byte Given
                 foreach(int addr in offsets) {
                 Read: if(ReadByte(addr) == Data[i]) return true;
@@ -374,7 +382,7 @@ namespace Dobby {
                     InfoLabelString = "Return To The Previous Page";
                     break;
                 //
-                // Main
+                // Main Page
                 //
                 case "PS4DebugPageBtn":
                     YellowInformationLabel.Font = new Font(YellowInformationLabel.Font.FontFamily, 9F);
@@ -396,25 +404,19 @@ namespace Dobby {
                 // PS4DebugPage
                 //
                 case "UC1Btn":
-                    InfoLabelString = "Supports: 1.00 | 1.02";
                     break;
                 case "UC2Btn":
-                    InfoLabelString = "Supports: 1.00";
                     break;
                 case "UC3Btn":
-                    InfoLabelString = "Supports: 1.00";
                     break;
                 case "UC4Btn":
-                    InfoLabelString = "Supports: 1.00 | 1.32 | 1.33";
                     break;
                 case "UC4MPBetaBtn":
                     InfoLabelString = "Supports: 1.09 - Use .bin Patch For 1.00";
                     break;
                 case "T1RBtn":
-                    InfoLabelString = "Supports: 1.00 | 1.09 | 1.10 | 1.11";
                     break;
                 case "T2Btn":
-                    InfoLabelString = "Supports: 1.00 | 1.07 | 1.08 | 1.09";
                     break;
                 case "DebugPayloadBtn":
                     InfoLabelString = "Sends ctn123's Port Of PS4Debug";
@@ -1237,7 +1239,7 @@ namespace Dobby {
                             $"Pages: {Pages?[0]}, {Pages?[1]}, {Pages?[2]}, {Pages?[3]}",
                             $"Active Page ID: {Page} | InfoHasImportantString: {InfoHasImportantStr}",
                             $"TitleID: {TitleID} | Game Version: {GameVersion} |",
-                            $"Game: {Game} | pid:{Executable} | {ProcessName} | P {PS4DebugIsConnected} | W {WaitForConnection} | Thread: {PS4DebugPage.ConnectionThread.ThreadState}",
+                            $"Game: {Game} | pid:{Executable} | {ProcessName} | P {PS4DebugIsConnected} | W {WaitForConnection} | Thread: {ConnectionThread.ThreadState}",
                             "",
                             $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled} | MousePos: {MousePosition}",
                             $"Control: {HoveredControl.Name} | {ControlType.Substring(ControlType.LastIndexOf('.') + 1)}",
@@ -1268,8 +1270,10 @@ namespace Dobby {
 #endif
             public static void DebugOut() => DebugOut(" ");
             public static void DebugOut(object obj, int NewCursorTop) {
+#if DEBUG
                 CursorTop = NewCursorTop;
                 WriteLine(obj);
+#endif
             }
             public static void DebugOut(object obj) {
 #if DEBUG

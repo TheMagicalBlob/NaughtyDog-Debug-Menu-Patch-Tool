@@ -32,10 +32,10 @@ namespace Dobby {
                 Dev.DebugOut($"MouseScrolled: {MouseScrolled}\nMouseIsDown: {MouseIsDown}\n CurrentControl: {CurrentControl}\nC.Name: {Control.Name}");
                 return;
             }
-            tmp = Control.Text;
+            TempStringStore = Control.Text;
             CustomDebugOptions[OptionIndex] = !CustomDebugOptions[OptionIndex];
-            tmp = $"{tmp.Remove(tmp.LastIndexOf(' '))} {(CustomDebugOptions[OptionIndex] ? "On" : "Off")}";
-            Control.Text = tmp;
+            TempStringStore = $"{TempStringStore.Remove(TempStringStore.LastIndexOf(' '))} {(CustomDebugOptions[OptionIndex] ? "On" : "Off")}";
+            Control.Text = TempStringStore;
         }
 
         public void ConfirmBtn_Click(object sender, EventArgs e) {
@@ -593,21 +593,21 @@ namespace Dobby {
             }
             else {
                 MenuScale = 0;
-                tmp = "Set Debug Menu Scale: 0.6 (Small)";
+                TempStringStore = "Set Debug Menu Scale: 0.6 (Small)";
                 f1 = 0.6f;
-                Option10Btn.Text = ">" + tmp;
+                Option10Btn.Text = ">" + TempStringStore;
                 return;
             }
 
             if (MenuScale == 1) {
-                tmp = "Set Debug Menu Scale: 0.7 (Medium)";
+                TempStringStore = "Set Debug Menu Scale: 0.7 (Medium)";
                 f1 = 0.7f;
-                Option10Btn.Text = ">" + tmp;
+                Option10Btn.Text = ">" + TempStringStore;
             }
             else if (MenuScale == 2) {
-                tmp = "Set Debug Menu Scale: 0.8 (Large)";
+                TempStringStore = "Set Debug Menu Scale: 0.8 (Large)";
                 f1 = 0.8f;
-                Option10Btn.Text = ">" + tmp;
+                Option10Btn.Text = ">" + TempStringStore;
             }
         }
 
@@ -620,20 +620,20 @@ namespace Dobby {
                 if (MenuScale < 0 || MenuScale == 2) {
                     f1 = 0.8f;
                     MenuScale = 2;
-                    tmp = "Set Debug Menu Scale: 0.8 (Large)";
-                    Option10Btn.Text = ">" + tmp;
+                    TempStringStore = "Set Debug Menu Scale: 0.8 (Large)";
+                    Option10Btn.Text = ">" + TempStringStore;
                     return;
                 }
 
                 if (MenuScale == 0) {
                     f1 = 0.6f;
-                    tmp = "Set Debug Menu Scale: 0.6 (Small)";
-                    Option10Btn.Text = ">" + tmp;
+                    TempStringStore = "Set Debug Menu Scale: 0.6 (Small)";
+                    Option10Btn.Text = ">" + TempStringStore;
                 }
                 else if (MenuScale == 1) {
                     f1 = 0.7f;
-                    tmp = "Set Debug Menu Scale: 0.7 (Medium)";
-                    Option10Btn.Text = ">" + tmp;
+                    TempStringStore = "Set Debug Menu Scale: 0.7 (Medium)";
+                    Option10Btn.Text = ">" + TempStringStore;
                 }
             }
             else if (e.Delta > 0) {
@@ -641,20 +641,20 @@ namespace Dobby {
                 if (MenuScale == 3 || MenuScale == 0) {
                     f1 = 0.6f;
                     MenuScale = 0;
-                    tmp = "Set Debug Menu Scale: 0.6 (Small)";
-                    Option10Btn.Text = ">" + tmp;
+                    TempStringStore = "Set Debug Menu Scale: 0.6 (Small)";
+                    Option10Btn.Text = ">" + TempStringStore;
                     return;
                 }
 
                 if (MenuScale == 1) {
                     f1 = 0.7f;
-                    tmp = "Set Debug Menu Scale: 0.7 (Medium)";
-                    Option10Btn.Text = ">" + tmp;
+                    TempStringStore = "Set Debug Menu Scale: 0.7 (Medium)";
+                    Option10Btn.Text = ">" + TempStringStore;
                 }
                 if (MenuScale == 2) {
                     f1 = 0.8f;
-                    tmp = "Set Debug Menu Scale: 0.8 (Large)";
-                    Option10Btn.Text = ">" + tmp;
+                    TempStringStore = "Set Debug Menu Scale: 0.8 (Large)";
+                    Option10Btn.Text = ">" + TempStringStore;
                 }
             }
         }
@@ -667,25 +667,25 @@ namespace Dobby {
             if (MenuOpacity == 4 || MenuOpacity == 0) {
                 f2 = 0F;
                 MenuOpacity = 0;
-                tmp = "Menu Background Opacity:         0 - No BG";
-                Option11Btn.Text = ">" + tmp;
+                TempStringStore = "Menu Background Opacity:         0 - No BG";
+                Option11Btn.Text = ">" + TempStringStore;
                 return;
             }
 
             if (MenuOpacity == 1) {
                 f2 = 0.45F;
-                tmp = "Menu Background Opacity:                0.45";
-                Option11Btn.Text = ">" + tmp;
+                TempStringStore = "Menu Background Opacity:                0.45";
+                Option11Btn.Text = ">" + TempStringStore;
             }
             else if (MenuOpacity == 2) {
                 f2 = 0.85F;
-                tmp = "Menu Background Opacity: 0.85 (Default)";
-                Option11Btn.Text = ">" + tmp;
+                TempStringStore = "Menu Background Opacity: 0.85 (Default)";
+                Option11Btn.Text = ">" + TempStringStore;
             }
             else if (MenuOpacity == 3) {
                 f2 = 1F;
-                tmp = "Menu Background Opacity:                1.00";
-                Option11Btn.Text = ">" + tmp;
+                TempStringStore = "Menu Background Opacity:                1.00";
+                Option11Btn.Text = ">" + TempStringStore;
             }
         }
         public void Option11Btn_Scroll(object sender, MouseEventArgs e) {
@@ -697,25 +697,25 @@ namespace Dobby {
                 if (MenuOpacity < 0 || MenuOpacity == 4) {
                     f2 = 1F;
                     MenuOpacity = 3;
-                    tmp = "Menu Background Opacity:                1.00";
-                    Option11Btn.Text = ">" + tmp;
+                    TempStringStore = "Menu Background Opacity:                1.00";
+                    Option11Btn.Text = ">" + TempStringStore;
                     return;
                 }
 
                 if (MenuOpacity == 0) {
                     f2 = 0F;
-                    tmp = "Menu Background Opacity:         0 - No BG";
-                    Option11Btn.Text = ">" + tmp;
+                    TempStringStore = "Menu Background Opacity:         0 - No BG";
+                    Option11Btn.Text = ">" + TempStringStore;
                 }
                 else if (MenuOpacity == 1) {
                     f2 = 0.45F;
-                    tmp = "Menu Background Opacity:                0.45";
-                    Option11Btn.Text = ">" + tmp;
+                    TempStringStore = "Menu Background Opacity:                0.45";
+                    Option11Btn.Text = ">" + TempStringStore;
                 }
                 else if (MenuOpacity == 2) {
                     f2 = 0.85F;
-                    tmp = "Menu Background Opacity: 0.85 (Default)";
-                    Option11Btn.Text = ">" + tmp;
+                    TempStringStore = "Menu Background Opacity: 0.85 (Default)";
+                    Option11Btn.Text = ">" + TempStringStore;
                 }
             }
             else if (e.Delta > 0) {
@@ -723,25 +723,25 @@ namespace Dobby {
                 if (MenuOpacity == 4 || MenuOpacity == 0) {
                     MenuOpacity = 0;
                     f2 = 0F;
-                    tmp = "Menu Background Opacity:         0 - No BG";
-                    Option11Btn.Text = ">" + tmp;
+                    TempStringStore = "Menu Background Opacity:         0 - No BG";
+                    Option11Btn.Text = ">" + TempStringStore;
                     return;
                 }
 
                 if (MenuOpacity == 1) {
                     f2 = 0.45F;
-                    tmp = "Menu Background Opacity:                0.45";
-                    Option11Btn.Text = ">" + tmp;
+                    TempStringStore = "Menu Background Opacity:                0.45";
+                    Option11Btn.Text = ">" + TempStringStore;
                 }
                 if (MenuOpacity == 2) {
                     f2 = 0.85F;
-                    tmp = "Menu Background Opacity: 0.85 (Default)";
-                    Option11Btn.Text = ">" + tmp;
+                    TempStringStore = "Menu Background Opacity: 0.85 (Default)";
+                    Option11Btn.Text = ">" + TempStringStore;
                 }
                 if (MenuOpacity == 3) {
                     f2 = 1F;
-                    tmp = "Menu Background Opacity:                1.00";
-                    Option11Btn.Text = ">" + tmp;
+                    TempStringStore = "Menu Background Opacity:                1.00";
+                    Option11Btn.Text = ">" + TempStringStore;
                 }
             }
         }
@@ -758,22 +758,22 @@ namespace Dobby {
 
             if (FPSMode == 4 || FPSMode == 0) {
                 FPSMode = 0;
-                tmp = "FPS Display Mode:             FPS Only";
-                Option13Btn.Text = ">" + tmp;
+                TempStringStore = "FPS Display Mode:             FPS Only";
+                Option13Btn.Text = ">" + TempStringStore;
                 return;
             }
 
             if (FPSMode == 1) {
-                tmp = "FPS Display Mode:              Verbose";
-                Option13Btn.Text = ">" + tmp;
+                TempStringStore = "FPS Display Mode:              Verbose";
+                Option13Btn.Text = ">" + TempStringStore;
             }
             else if (FPSMode == 2) {
-                tmp = "FPS Display Mode: Verbose Percent";
-                Option13Btn.Text = ">" + tmp;
+                TempStringStore = "FPS Display Mode: Verbose Percent";
+                Option13Btn.Text = ">" + TempStringStore;
             }
             else if (FPSMode == 3) {
-                tmp = "FPS Display Mode:              Minimal";
-                Option13Btn.Text = ">" + tmp;
+                TempStringStore = "FPS Display Mode:              Minimal";
+                Option13Btn.Text = ">" + TempStringStore;
             }
         }
         public void Option13Btn_Scroll(object sender, MouseEventArgs e) {
@@ -784,44 +784,44 @@ namespace Dobby {
                 FPSMode--;
                 if (FPSMode < 0 || FPSMode >= 3) {
                     FPSMode = 3;
-                    tmp = "FPS Display Mode:              Minimal";
-                    Option13Btn.Text = ">" + tmp;
+                    TempStringStore = "FPS Display Mode:              Minimal";
+                    Option13Btn.Text = ">" + TempStringStore;
                     return;
                 }
 
                 if (FPSMode == 0) {
-                    tmp = "FPS Display Mode:             FPS Only";
-                    Option13Btn.Text = ">" + tmp;
+                    TempStringStore = "FPS Display Mode:             FPS Only";
+                    Option13Btn.Text = ">" + TempStringStore;
                 }
                 else if (FPSMode == 1) {
-                    tmp = "FPS Display Mode:              Verbose";
-                    Option13Btn.Text = ">" + tmp;
+                    TempStringStore = "FPS Display Mode:              Verbose";
+                    Option13Btn.Text = ">" + TempStringStore;
                 }
                 else if (FPSMode == 2) {
-                    tmp = "FPS Display Mode: Verbose Percent";
-                    Option13Btn.Text = ">" + tmp;
+                    TempStringStore = "FPS Display Mode: Verbose Percent";
+                    Option13Btn.Text = ">" + TempStringStore;
                 }
             }
             else if (e.Delta > 0) {
                 FPSMode++;
                 if (FPSMode == 4 || FPSMode == 0) {
                     FPSMode = 0;
-                    tmp = "FPS Display Mode:             FPS Only";
-                    Option13Btn.Text = ">" + tmp;
+                    TempStringStore = "FPS Display Mode:             FPS Only";
+                    Option13Btn.Text = ">" + TempStringStore;
                     return;
                 }
 
                 if (FPSMode == 1) {
-                    tmp = "FPS Display Mode:              Verbose";
-                    Option13Btn.Text = ">" + tmp;
+                    TempStringStore = "FPS Display Mode:              Verbose";
+                    Option13Btn.Text = ">" + TempStringStore;
                 }
                 if (FPSMode == 2) {
-                    tmp = "FPS Display Mode: Verbose Percent";
-                    Option13Btn.Text = ">" + tmp;
+                    TempStringStore = "FPS Display Mode: Verbose Percent";
+                    Option13Btn.Text = ">" + TempStringStore;
                 }
                 if (FPSMode == 3) {
-                    tmp = "FPS Display Mode:              Minimal";
-                    Option13Btn.Text = ">" + tmp;
+                    TempStringStore = "FPS Display Mode:              Minimal";
+                    Option13Btn.Text = ">" + TempStringStore;
                 }
             }
         }

@@ -581,17 +581,21 @@ namespace Dobby {
                 case T2100: GSBtn_EnableButtons(new int[] { 0, 1, 2, 3, 5, 6});
                     Dev.DebugOut("Tlou 2 1.00");
                     break;
-                case T2107: GSBtn_EnableButtons(new int[] {});
+                case T2107: GSBtn_EnableButtons(new int[] { });
                     Dev.DebugOut("Tlou 2 1.07");
                     break;
-                case T2109: GSBtn_EnableButtons(new int[] {});
+                case T2109: GSBtn_EnableButtons(new int[] { });
                     Dev.DebugOut("Tlou 2 1.09");
                     break;
             }
 
             // Set The Amount of Pixels To Move Shit Based On How Much Shit Has Been Shat.                                                                                                                  shit
-            foreach (Control _ in GSDebugOptions)
-            if (_ != null) RealSize++; Dev.DebugOut(RealSize, 12);
+            foreach (Control control in GSDebugOptions)
+            if (control != null) RealSize++;
+
+            Dev.DebugOut(RealSize, 12);
+            
+            // Move The Shit
             switch (RealSize) {
                 case 2:
                     Y_Axis_Addative = 10;

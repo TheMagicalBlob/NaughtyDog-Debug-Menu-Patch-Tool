@@ -477,10 +477,10 @@ namespace Dobby {
                 return;
             }
 
-            tmp = Control.Text;
+            TempStringStore = Control.Text;
             CustomDebugBooleans[OptionIndex] = !CustomDebugBooleans[OptionIndex];
-            tmp = $"{tmp.Remove(tmp.LastIndexOf(' '))} {(CustomDebugBooleans[OptionIndex] ? "On" : "Off")}";
-            Control.Text = tmp;
+            TempStringStore = $"{TempStringStore.Remove(TempStringStore.LastIndexOf(' '))} {(CustomDebugBooleans[OptionIndex] ? "On" : "Off")}";
+            Control.Text = TempStringStore;
         }
 
         public void FloatFunc() {
