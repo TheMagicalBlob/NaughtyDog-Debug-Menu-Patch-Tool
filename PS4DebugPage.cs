@@ -53,7 +53,6 @@ namespace Dobby {
             this.UC4MPBetaBtn = new System.Windows.Forms.Button();
             this.SeperatorLine3 = new System.Windows.Forms.Label();
             this.IgnoreTitleIDBtn = new System.Windows.Forms.Button();
-            this.TMPUnusedBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // MainLabel
@@ -88,7 +87,7 @@ namespace Dobby {
             // 
             this.MainBox.Location = new System.Drawing.Point(0, -6);
             this.MainBox.Name = "MainBox";
-            this.MainBox.Size = new System.Drawing.Size(320, 469);
+            this.MainBox.Size = new System.Drawing.Size(320, 446);
             this.MainBox.TabIndex = 5;
             this.MainBox.TabStop = false;
             // 
@@ -170,7 +169,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(9, 440);
+            this.Info.Location = new System.Drawing.Point(9, 419);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
@@ -235,7 +234,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 416);
+            this.BackBtn.Location = new System.Drawing.Point(1, 395);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(60, 22);
             this.BackBtn.TabIndex = 14;
@@ -374,7 +373,7 @@ namespace Dobby {
             // 
             this.SeperatorLine4.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.SeperatorLine4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine4.Location = new System.Drawing.Point(2, 352);
+            this.SeperatorLine4.Location = new System.Drawing.Point(2, 331);
             this.SeperatorLine4.Name = "SeperatorLine4";
             this.SeperatorLine4.Size = new System.Drawing.Size(316, 16);
             this.SeperatorLine4.TabIndex = 26;
@@ -388,7 +387,7 @@ namespace Dobby {
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 368);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 347);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.Size = new System.Drawing.Size(135, 23);
             this.InfoHelpBtn.TabIndex = 27;
@@ -405,7 +404,7 @@ namespace Dobby {
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 392);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 371);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
@@ -459,29 +458,13 @@ namespace Dobby {
             this.IgnoreTitleIDBtn.UseVisualStyleBackColor = false;
             this.IgnoreTitleIDBtn.Click += new System.EventHandler(this.IgnoreTitleIDBtn_Click);
             // 
-            // TMPUnusedBtn
-            // 
-            this.TMPUnusedBtn.BackColor = System.Drawing.Color.DimGray;
-            this.TMPUnusedBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.TMPUnusedBtn.FlatAppearance.BorderSize = 0;
-            this.TMPUnusedBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.TMPUnusedBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.TMPUnusedBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.TMPUnusedBtn.Location = new System.Drawing.Point(1, 341);
-            this.TMPUnusedBtn.Name = "TMPUnusedBtn";
-            this.TMPUnusedBtn.Size = new System.Drawing.Size(213, 23);
-            this.TMPUnusedBtn.TabIndex = 33;
-            this.TMPUnusedBtn.Text = "TMP: Disabled";
-            this.TMPUnusedBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.TMPUnusedBtn.UseVisualStyleBackColor = false;
-            // 
             // PS4DebugPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 462);
-            this.Controls.Add(this.TMPUnusedBtn);
+            this.ClientSize = new System.Drawing.Size(320, 440);
+            this.Controls.Add(this.IgnoreTitleIDBtn);
             this.Controls.Add(this.ManualConnectBtn);
             this.Controls.Add(this.SeperatorLine3);
             this.Controls.Add(this.ExitBtn);
@@ -507,7 +490,6 @@ namespace Dobby {
             this.Controls.Add(this.CreditsBtn);
             this.Controls.Add(this.MainLabel);
             this.Controls.Add(this.SeperatorLine1);
-            this.Controls.Add(this.IgnoreTitleIDBtn);
             this.Controls.Add(this.MainBox);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -852,7 +834,7 @@ namespace Dobby {
             // Excessive Credits To Try Avoiding Beef lol
         }
 
-        private void ManualConnectBtn_Click(object sender, EventArgs e) {
+        private void ManualConnectBtn_Click(object sender, EventArgs e) { // You Never Need To Press This, But People Would Probably Get Confused If It Was Missing
             if(ConnectionThread.ThreadState == System.Threading.ThreadState.Unstarted)
             ConnectionThread.Start();
             PS4DebugIsConnected = false;
@@ -885,7 +867,7 @@ namespace Dobby {
             await Task.Run(CheckConnectionStatus);
             if(IgnoreTitleID) TitleID = "CUSA02320";
             if(!GameVersion.Contains("Unknown"))
-                Toggle(GameVersion == "U2 1.00" ? new ulong[] { 0x1271431, 0x127149C, 0x12705C9 } : new ulong[] { 0x145decc, 0x145cff9, 0x145de61 }); //! why is this missing one?
+                Toggle(GameVersion == "U2 1.00" ? new ulong[] { 0x1271431, 0x127149C, 0x12705C9 } : new ulong[] { 0x145decc, 0x145cff9, 0x145de61 });
         }
         private async void UC3Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
@@ -894,8 +876,7 @@ namespace Dobby {
                 Toggle(GameVersion == "U3 1.00" ? new ulong[] { 0x18366c9, 0x18366c4, 0x1835481 } : new ulong[] { 0x1bbaf69, 0x1bbaf64, 0x1BB9D21 });
         }
         private async void UC4Btn_Click(object sender, EventArgs e) {
-            await Task.Run(CheckConnectionStatus);
-            var VersionArray = new string[] {
+            /*var VersionArray = new string[] {
                 "1.00 SP",
                 "1.01 SP",
                 "1.02 SP",
@@ -930,7 +911,7 @@ namespace Dobby {
                 "1.31 MP",
                 "1.32 MP",
                 "1.33 MP"
-            }; //
+            };
             var AddressArray = new ulong[] {
                 0x27a3c30, // 1.00 SP
                 0x2889370, // 1.01 SP
@@ -966,10 +947,11 @@ namespace Dobby {
                 0x275cd00, // 1.31 MP
                 0x275cd00, // 1.32 MP
                 0x275cd00, // 1.33 MP
-            };  // Easier To Keep Track Of 'Em All
+            };*/
+            await Task.Run(CheckConnectionStatus);
             if(IgnoreTitleID) TitleID = "CUSA00341";
             if(!GameVersion.Contains("Unknown"))
-                Toggle(AddressArray, VersionArray);
+                Toggle(new ulong[] { 0x27a3c30, 0x2889370, 0x288d370, 0x288d370, 0x2891370, 0x2891370, 0x2891370, 0x24ed968, 0x24ed968, 0x24f1978, 0x24fd958, 0x2501738, 0x2739a20, 0x2739a20, 0x2739a20, 0x2570748, 0x2570748, 0x2580888, 0x2570748, 0x2738dc0, 0x2570748, 0x273cdc0, 0x2570748, 0x273cdc0, 0x274ccd0, 0x2570748, 0x274ccd0, 0x2750d00, 0x2570748, 0x2758d00, 0x275cd00, 0x275cd00, 0x275cd00, 0x275cd00 }, new string[] { "1.00 SP", "1.01 SP", "1.02 SP", "1.03 SP", "1.04 SP", "1.05 SP", "1.06 SP", "1.08 SP", "1.10 SP", "1.11 SP", "1.12 SP", "1.13 SP", "1.15 SP", "1.16 SP", "1.17 SP", "1.18", "1.19", "1.20 MP", "1.20 SP", "1.21 MP", "1.21 SP", "1.22 MP", "1.22/23 SP", "1.23 MP", "1.24 MP", "1.24/25 SP", "1.25 MP", "1.27/28 MP", "1.27+ SP", "1.29 MP", "1.30 MP", "1.31 MP", "1.32 MP", "1.33 MP" });
         }
         private async void UC4MPBetaBtn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
@@ -1039,6 +1021,5 @@ namespace Dobby {
         public Label Info;
         public Label SeperatorLine3;
         public Button IgnoreTitleIDBtn;
-        public Button TMPUnusedBtn;
     }
 }

@@ -15,28 +15,8 @@ namespace Dobby {
             AddControlEventHandlers(Controls);
         }
 
-        public Label MainLabel;
-        public Button CreditsBtn;
-        public Button InfoHelpBtn;
-        public Label Info;
-        public Button ExitBtn;
-        public Button MinimizeBtn;
-        public Label SeperatorLabel0;
-        public Label SeperatorLabel2;
-        private GroupBox BorderBox;
-        public Label SeperatorLabel1;
-        public Label GameInfoLabel;
-        private Button BrowseButton;
-        private TextBox ExecutablePathBox;
-        public Button BackBtn;
-        public Button RightMarginBtn;
-        public Button MenuRightAlignBtn;
-        public Button MenuScaleBtn;
-        public Button MenuAlphaBtn;
-        public Button ProgPauseBtn;
-        private Button ApplyBtn;
-        public Button button1;
-        public Button DisableDebugTextBtn;
+
+        public static int Game;
 
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
@@ -512,7 +492,7 @@ namespace Dobby {
         }
 
         public string UpdateGameInfoLabel() { //!
-            var VersionString = $"Unknown Version {BitConverter.ToString(chk):X}";
+            var VersionString = $"Unknown Version {BitConverter.ToString(LocalExecutableHash):X}";
 
             switch (Game) {
                 default:
@@ -589,10 +569,10 @@ namespace Dobby {
                 ActiveFilePath = ExecutablePathBox.Text = f.FileName;
                 MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite);
 
-                MainStream.Position = 0x1EC; MainStream.Read(chk, 0, 4);
-                Game = BitConverter.ToInt32(chk, 0);
-                MainStream.Position = 0x1F8; MainStream.Read(chk, 0, 4);
-                Game += BitConverter.ToInt32(chk, 0);
+                MainStream.Position = 0x1EC; MainStream.Read(LocalExecutableHash, 0, 4);
+                Game = BitConverter.ToInt32(LocalExecutableHash, 0);
+                MainStream.Position = 0x1F8; MainStream.Read(LocalExecutableHash, 0, 4);
+                Game += BitConverter.ToInt32(LocalExecutableHash, 0);
 
                 GameInfoLabel.Text = UpdateGameInfoLabel();
                 IsActiveFilePCExe = true;
@@ -652,5 +632,30 @@ namespace Dobby {
             Dev.DebugOut($"Form Size: {ActiveForm.Size}");
         }
 #endif
+
+
+        public Label MainLabel;
+        public Button CreditsBtn;
+        public Button InfoHelpBtn;
+        public Label Info;
+        public Button ExitBtn;
+        public Button MinimizeBtn;
+        public Label SeperatorLabel0;
+        public Label SeperatorLabel2;
+        private GroupBox BorderBox;
+        public Label SeperatorLabel1;
+        public Label GameInfoLabel;
+        private Button BrowseButton;
+        private TextBox ExecutablePathBox;
+        public Button BackBtn;
+        public Button RightMarginBtn;
+        public Button MenuRightAlignBtn;
+        public Button MenuScaleBtn;
+        public Button MenuAlphaBtn;
+        public Button ProgPauseBtn;
+        private Button ApplyBtn;
+        public Button button1;
+        public Button DisableDebugTextBtn;
     }
+
 }

@@ -1,18 +1,20 @@
 ﻿using System;
 using System.IO;
 using System.Net;
-using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Linq;
 using System.Drawing;
-using System.Windows.Forms;
-using static Dobby.Common;
 using Dobby.Properties;
+using System.Threading;
+using static Dobby.Common;
+using System.Windows.Forms;
+using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 namespace Dobby {
     public class EbootPatchPage : Form {
-
+        // TODO:
+        // - This Page Is Fucking Stupid, Simplify It
         public EbootPatchPage() {
             InitializeComponent();
             AddControlEventHandlers(Controls);
@@ -36,26 +38,90 @@ namespace Dobby {
             MenuScale,
             MenuOpacity = 2
         ;
+        public string[] ResultStrings = new string[] {
+            "Debug Menus Disabled",
+            "Debug Menus Enabled",
+            "Restored Menu Applied",
+            "Custom Menu Applied",
+        };
 
-        public Label GameInfoLabel;
-        private Button BrowseButton;
-        private TextBox ExecutablePathBox;
-        private Label label1;
-        private Button RestoredDebugBtn;
-        private Button CustomDebugBtn;
-        private Button InfoHelpBtn;
-        private Label label4;
-        private Button BackBtn;
-        private Button DisableDebugBtn;
-        private Button EnableDebugBtn;
-        private Label Info;
-        private Button CreditsBtn;
-        private Button MinimizeBtn;
-        private Button ExitBtn;
-        private GroupBox MainBox;
-        private Label MainLabel;
-        private GroupBox groupBox1;
-        private Label label2;
+        public readonly ulong[] BaseDebugAddresses = new ulong[] {
+
+        };
+
+        // Yes, I know an array could be easier to deal with in code, but I want them all labeled individually so bite me
+        public const int
+
+            // Game Identifiers. Read 4 bytes at 0x60 as an integer to get it
+            T1R100 = 22033680,
+            T1R109 = 21444016,
+            T1R11X = 21446072,
+            T2100 = 46552012,
+            T2101 = 46785692,
+            T2102 = 46718028,
+            T2105 = 46826436,
+            T2107 = 46832260,
+            T2108 = 48176392,
+            T2109 = 48176456,
+            UC1100 = 9818208,
+            UC1102 = 9568920,
+            UC2100 = 14655236,
+            UC2102 = 16663728,
+            UC3100 = 20277852,
+            UC3102 = 23365872,
+            UC4100 = 36229424,
+            UC4101 = 37122024,
+            UC4102 = 37136552,
+            UC4103 = 37137792,
+            UC4104 = 37144904,
+            UC4105 = 37145288,
+            UC4106 = 37150008,
+            UC4108 = 33453704,
+            UC4110 = 33454632,
+            UC4111 = 33460888,
+            UC4112 = 33515840,
+            UC413X = 33886256, // UC4 1.32 & 1.33 SP are identical
+            UC4132MP = 35875608,
+            UC4133MP = 35877432,
+            TLL100 = 35178432,
+            TLL10X = 35227448,
+            T1X101 = 42695168 + 16007532,  // 0x1EC + 0x1F8 | Fuck you, I'm keeping them seperate
+            T1XL101 = 42670080 + 16010844,
+            T1X1015 = 2228464 + 95625728,
+            T1XL1015 = 2228464 + 95627776,
+            T1X1016 = 42698752 + 16007532,
+            T1XL1016 = 42673664 + 16010828,
+            T1X1017 = 42702336 + 16007852,
+            T1XL1017 = 42677248 + 16011148,
+            T1X102 = 2228464 + 95631360,
+            T1XL102 = 2228464 + 95634432
+            ;
+
+        public const int
+            // Debug Offsets (0xEB)
+            T1R100Debug = 0x5C5A,
+            T1R109Debug = 0x61A4,
+            T1R110Debug = 0x61A4,
+            T1R111Debug = 0x61A4,
+            T2100Debug = 0x1D6398,
+            T2101Debug = 0x1D6418,
+            T2102Debug = 0x1D6468,
+            T2105Debug = 0x1D66A8,
+            T2107Debug = 0x1D66B8,
+            T2108Debug = 0x6181F8,
+            T2109Debug = 0x6181F8,
+            UC1100Debug = 0x102057,
+            UC1102Debug = 0x102187,
+            UC2100Debug = 0x1EB297,
+            UC2102Debug = 0x3F7A26,
+            UC3100Debug = 0x168EB7,
+            UC3102Debug = 0x578227,
+            UC4100Debug = 0x1297DE,   //! TEST ME
+            UC413XDebug = 0x1CCDEE,   //! TEST ME
+            UC4133MPDebug = 0x1CCEA9, //! TEST ME
+            TLL100Debug = 0x1CCFDE,   //! TEST ME
+            TLL10XDebug = 0x1CD01E    //! TEST ME
+        ;
 
         public void InitializeComponent() {
             this.GameInfoLabel = new System.Windows.Forms.Label();
@@ -63,7 +129,6 @@ namespace Dobby {
             this.ExecutablePathBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.RestoredDebugBtn = new System.Windows.Forms.Button();
-            this.CustomDebugBtn = new System.Windows.Forms.Button();
             this.InfoHelpBtn = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.BackBtn = new System.Windows.Forms.Button();
@@ -83,7 +148,7 @@ namespace Dobby {
             // 
             this.GameInfoLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.GameInfoLabel.Location = new System.Drawing.Point(1, 174);
+            this.GameInfoLabel.Location = new System.Drawing.Point(1, 148);
             this.GameInfoLabel.Name = "GameInfoLabel";
             this.GameInfoLabel.Size = new System.Drawing.Size(316, 19);
             this.GameInfoLabel.TabIndex = 32;
@@ -98,7 +163,7 @@ namespace Dobby {
             this.BrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BrowseButton.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BrowseButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.BrowseButton.Location = new System.Drawing.Point(238, 148);
+            this.BrowseButton.Location = new System.Drawing.Point(238, 122);
             this.BrowseButton.Name = "BrowseButton";
             this.BrowseButton.Size = new System.Drawing.Size(75, 23);
             this.BrowseButton.TabIndex = 31;
@@ -112,7 +177,7 @@ namespace Dobby {
             this.ExecutablePathBox.BackColor = System.Drawing.Color.Gray;
             this.ExecutablePathBox.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.ExecutablePathBox.ForeColor = System.Drawing.SystemColors.Window;
-            this.ExecutablePathBox.Location = new System.Drawing.Point(6, 148);
+            this.ExecutablePathBox.Location = new System.Drawing.Point(6, 122);
             this.ExecutablePathBox.Name = "ExecutablePathBox";
             this.ExecutablePathBox.Size = new System.Drawing.Size(233, 23);
             this.ExecutablePathBox.TabIndex = 30;
@@ -122,7 +187,7 @@ namespace Dobby {
             // 
             this.label1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label1.Location = new System.Drawing.Point(2, 127);
+            this.label1.Location = new System.Drawing.Point(2, 101);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(316, 20);
             this.label1.TabIndex = 29;
@@ -138,29 +203,12 @@ namespace Dobby {
             this.RestoredDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.RestoredDebugBtn.Location = new System.Drawing.Point(1, 88);
             this.RestoredDebugBtn.Name = "RestoredDebugBtn";
-            this.RestoredDebugBtn.Size = new System.Drawing.Size(215, 23);
+            this.RestoredDebugBtn.Size = new System.Drawing.Size(283, 23);
             this.RestoredDebugBtn.TabIndex = 23;
-            this.RestoredDebugBtn.Text = "Enable Debug Mode - Restored";
+            this.RestoredDebugBtn.Text = "Enable Debug Mode - Restored/Custom";
             this.RestoredDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.RestoredDebugBtn.UseVisualStyleBackColor = false;
             this.RestoredDebugBtn.Click += new System.EventHandler(this.RestoredDebugBtn_Click);
-            // 
-            // CustomDebugBtn
-            // 
-            this.CustomDebugBtn.BackColor = System.Drawing.Color.DimGray;
-            this.CustomDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.CustomDebugBtn.FlatAppearance.BorderSize = 0;
-            this.CustomDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CustomDebugBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.CustomDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CustomDebugBtn.Location = new System.Drawing.Point(1, 114);
-            this.CustomDebugBtn.Name = "CustomDebugBtn";
-            this.CustomDebugBtn.Size = new System.Drawing.Size(206, 23);
-            this.CustomDebugBtn.TabIndex = 22;
-            this.CustomDebugBtn.Text = "Enable Debug Mode - Custom";
-            this.CustomDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.CustomDebugBtn.UseVisualStyleBackColor = false;
-            this.CustomDebugBtn.Click += new System.EventHandler(this.CustomDebugBtn_Click);
             // 
             // InfoHelpBtn
             // 
@@ -170,7 +218,7 @@ namespace Dobby {
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 206);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 180);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.Size = new System.Drawing.Size(147, 23);
             this.InfoHelpBtn.TabIndex = 15;
@@ -183,7 +231,7 @@ namespace Dobby {
             // 
             this.label4.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label4.Location = new System.Drawing.Point(2, 184);
+            this.label4.Location = new System.Drawing.Point(2, 158);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(316, 20);
             this.label4.TabIndex = 14;
@@ -197,7 +245,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 256);
+            this.BackBtn.Location = new System.Drawing.Point(1, 230);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(60, 23);
             this.BackBtn.TabIndex = 13;
@@ -244,7 +292,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(3, 279);
+            this.Info.Location = new System.Drawing.Point(3, 253);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(313, 19);
             this.Info.TabIndex = 7;
@@ -258,7 +306,7 @@ namespace Dobby {
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 230);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 204);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(74, 23);
@@ -333,7 +381,7 @@ namespace Dobby {
             // 
             this.groupBox1.Location = new System.Drawing.Point(0, -6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(319, 310);
+            this.groupBox1.Size = new System.Drawing.Size(319, 282);
             this.groupBox1.TabIndex = 34;
             this.groupBox1.TabStop = false;
             // 
@@ -342,7 +390,7 @@ namespace Dobby {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 303);
+            this.ClientSize = new System.Drawing.Size(320, 276);
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.MinimizeBtn);
             this.Controls.Add(this.MainLabel);
@@ -350,7 +398,6 @@ namespace Dobby {
             this.Controls.Add(this.BrowseButton);
             this.Controls.Add(this.ExecutablePathBox);
             this.Controls.Add(this.RestoredDebugBtn);
-            this.Controls.Add(this.CustomDebugBtn);
             this.Controls.Add(this.InfoHelpBtn);
             this.Controls.Add(this.BackBtn);
             this.Controls.Add(this.DisableDebugBtn);
@@ -371,36 +418,61 @@ namespace Dobby {
             this.PerformLayout();
 
         }
-        public void MoveForm(object sender, MouseEventArgs e) => Common.MoveForm(sender, e);
-        public void MouseUpFunc(object sender, MouseEventArgs e) => Common.MouseUpFunc(sender, e);
-        public void MouseDownFunc(object sender, MouseEventArgs e) => Common.MouseDownFunc(sender, e);
-
-        public void BackBtn_Click(object sender, EventArgs e) {
-            LabelShouldFlash = false;
-            BackFunc();
-        }
-
-        public void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
-
-        public void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
 
         /* End Of Repeated Functions
 ============================================================================================================================================================================
-        // Start Of PS4Debug Page Specific Functions                                                                                                                      */
+        Start Of EbootPatchPage Specific Functions                                                                                                                      */
 
-        public string UpdateGameInfoLabel() { //!
-
-            var GameString = "Unknown Game";
-            var AddString = "No Debug";
-
-            MainStream.Position = 0;
-            MainStream.Read(chk, 0, 4);
-            if (BitConverter.ToInt32(chk, 0) != 1179403647) {// Make Sure The File's Actually Even A .elf
-                GameString = "Executable Still Encrypted";
-                AddString = "Must Be Decrypted/Unsigned";
-                return $"{GameString} | {AddString}";
+        public string ApplyButtonText() {
+            switch(Game) {
+                case TLL100:
+                case TLL10X:
+                    RestoredDebugBtn.Enabled = false; return " Restored/Custom";
+                default: RestoredDebugBtn.Enabled = false; return " !Restored/Custom!";
+                case T1R100:
+                case T1R109:
+                case T1R11X:
+                case UC1100:
+                case UC1102:
+                case UC2100:
+                case UC2102:
+                case UC3100:
+                case UC3102:
+                case UC413X:
+                    return " Restored";
+                case UC4100:
+                case UC4101:
+                case UC4102:
+                case UC4103:
+                case UC4104:
+                case UC4105:
+                case UC4106:
+                case UC4108:
+                case UC4110:
+                case UC4111:
+                case UC4112:
+                case T2100:
+                case T2109:
+                    return " Custom";
             }
+        }
 
+        public static string DetermineCurrentGameId() {
+
+            // Make Sure The File's Actually Even A .elf
+            MainStream.Position = 0;
+            MainStream.Read(LocalExecutableHash, 0, 4);
+            if(BitConverter.ToInt32(LocalExecutableHash, 0) != 1179403647) return $"Executable Still Encrypted | Must Be Decrypted/Unsigned";
+            else Dev.DebugOut("Executable Is Unsigned, All Good");
+
+
+            LocalExecutableHash = new byte[160];
+            MainStream.Position = 0x5100; MainStream.Read(LocalExecutableHash, 0, 160);
+            var Hash = SHA256.Create();
+            var HashArray = Hash.ComputeHash(LocalExecutableHash);
+            Game = BitConverter.ToInt32(HashArray, 0);
+
+            /*
             bool CheckDebugState(int[] offsets, byte[] Data) {
                 int i = 0; // Just Returns True If The Bytes Read At The Specified Address Match The Byte Given
                 foreach (int addr in offsets) {
@@ -418,98 +490,69 @@ namespace Dobby {
                 }
                 return false;
             }
+            */
 
-            switch (Game) {
-                default:
-                    MessageBox.Show($"Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported\n{Game}");
-                    break;
-                case T1R100:
-                    CustomDebugBtn.Enabled = true;
-                    GameString = "The Last Of Us Remastered 1.00";
-                    break;
-                case T1R109:
-                    CustomDebugBtn.Enabled = true;
-                    GameString = "The Last Of Us Remastered 1.09";
-                    break;
-                case T1R11X:
-                    CustomDebugBtn.Enabled = true;
-                    MainStream.Position = 0x18;
-                    GameString = $"The Last Of Us Remastered 1.1{((byte)MainStream.ReadByte() == 0x10 ? 1 : 0)}";
-                    break;
-                case T2100:
-                    GameString = "The Last Of Us Part II 1.00";
-                    break;
-                case T2101:
-                    GameString = "The Last Of Us Part II 1.01";
-                    break;
-                case T2102:
-                    GameString = "The Last Of Us Part II 1.02";
-                    break;
-                case T2105:
-                    GameString = "The Last Of Us Part II 1.05";
-                    break;
-                case T2107:
-                    GameString = "The Last Of Us Part II 1.07";
-                    break;
-                case T2108:
-                    GameString = "The Last Of Us Part II 1.08";
-                    break;
-                case T2109:
-                    GameString = "The Last Of Us Part II 1.09";
-                    break;
-                case UC1100:
-                    if (CheckDebugState(new int[] { 0x102056, 0x102057, 0x10207B }, new byte[] { 0x01, 0x75, 0x01 }) == true)
-                        AddString = "Debug";
-
-                    GameString = "Uncharted 1 1.00";
-                    break;
-                case UC1102:
-                    if (CheckDebugState(new int[] { 0x102186, 0x102187, 0x1021AB }, new byte[] { 0x01, 0x75, 0x01 }) == true)
-                        AddString = "Debug";
-
-                    GameString = "Uncharted 1 1.02";
-                    break;
-                case UC2100:
-                    if (CheckDebugState(new int[] { 0x1EB296, 0x1EB297, 0x1EB2BB }, new byte[] { 0x01, 0x75, 0x01 }) == true)
-                        AddString = "Debug";
-
-                    GameString = "Uncharted 2 1.00";
-                    break;
-                case UC2102:
-                    if (CheckDebugState(new int[] { 0x3F7A25, 0x3F7A26, 0x3F7A4A }, new byte[] { 0x01, 0x75, 0x01 }) == true)
-                        AddString = "Debug";
-
-                    GameString = "Uncharted 2 1.02";
-                    break;
-                case UC3100:
-                    if (CheckDebugState(new int[] { 0x168EB6, 0x168EB7, 0x168EDB }, new byte[] { 0x01, 0x75, 0x01 }) == true)
-                        AddString = "Debug";
-
-                    GameString = "Uncharted 3 1.00";
-                    break;
-                case UC3102:
-                    if (CheckDebugState(new int[] { 0x578226, 0x578227, 0x57824B }, new byte[] { 0x01, 0x75, 0x01 }) == true)
-                        AddString = "Debug";
-
-                    GameString = "Uncharted 3 1.02";
-                    break;
-                case UC4100:
-                    GameString = "Uncharted 4: A Thief's End 1.00";
-                    break;
-                case UC413X:
-                    GameString = "Uncharted 4: A Thief's End 1.32/1.33";
-                    break;
-                case UC4133MP:
-                    GameString = "Uncharted 4: A Thief's End 1.33 Multiplayer";
-                    break;
-                case TLL100:
-                    GameString = "Uncharted: The Lost Legacy 1.00";
-                    break;
-                case TLL10X:
-                    GameString = "Uncharted: The Lost Legacy 1.08/1.09";
-                    break;
+            switch(Game) {
+                case -679355525:  return "Uncharted 1 1.00";
+                case 104877429:   return "Uncharted 1 1.02";
+                case 414674483:   return "Uncharted 2 1.00";
+                case 216080152:   return "Uncharted 2 1.02";
+                case 823868754:   return "Uncharted 3 1.00";
+                case 1911044661:  return "Uncharted 3 1.02";
+                case 308820129:   return "Uncharted 4 1.00";
+                case -1879120502: return "Uncharted 4 1.01";
+                case 1084389925:  return "Uncharted 4 1.02";
+                case 1009654146:  return "Uncharted 4 1.03";
+                case 1174607918:  return "Uncharted 4 1.04";
+                case 1397785573:  return "Uncharted 4 1.05";
+                case 1880438911:  return "Uncharted 4 1.06";
+                case -1521275605: return "Uncharted 4 1.08";
+                case 556134345:   return "Uncharted 4 1.10";
+                case 533967079:   return "Uncharted 4 1.11";
+                case -1876292260: return "Uncharted 4 1.12";
+                case 441673980:   return "Uncharted 4 1.13";
+                case 1382306251:  return "Uncharted 4 1.15";
+                case -1865276990: return "Uncharted 4 1.16";
+                case -2002709567: return "Uncharted 4 1.17";
+                case 1337597197:  return "Uncharted 4 1.18 SP/MP";
+                case 853166708:   return "Uncharted 4 1.19 SP/MP";
+                case 948532543:   return "Uncharted 4 1.20 MP";
+                case 1044003518:  return "Uncharted 4 1.20 SP";
+                case 1404274247:  return "Uncharted 4 1.21 MP";
+                case -538479879:  return "Uncharted 4 1.21 SP";
+                case -605975924:  return "Uncharted 4 1.22 MP";
+                case 1849401718:  return "Uncharted 4 1.22/23 SP";
+                case -959800645:  return "Uncharted 4 1.23 MP";
+                case 1301857603:  return "Uncharted 4 1.24 MP";
+                case -1166682695: return "Uncharted 4 1.24/25 SP";
+                case -634367694:  return "Uncharted 4 1.25 MP";
+                case -1449571981: return "Uncharted 4 1.27/28 MP";
+                case -400040687:  return "Uncharted 4 1.27+ SP";
+                case -1725079303: return "Uncharted 4 1.29 MP";
+                case 931397679:   return "Uncharted 4 1.30 MP";
+                case 1212014389:  return "Uncharted 4 1.31 MP";
+                case 1923471472:  return "Uncharted 4/TLL 1.32/1.08 MP";
+                case 486460629:   return "Uncharted 4/TLL 1.33/1.09 MP";
+                case 1813169088:  return "CUSA04051 Uncharted 4 MP Beta 1.00";
+                case -1103269419: return "CUSA04021 Uncharted 4 MP Beta 1.09";
+                case 306377542:   return "The Last Of Us 1.00";
+                case -1391237605: return "The Last Of Us 1.09";
+                case -915963582:  return "The Last Of Us 1.10";
+                case -866651344:  return "The Last Of Us 1.11";
+                case 469274180:   return "Uncharted Lost Legacy 1.00 MP";
+                case -1269602830: return "Uncharted Lost Legacy 1.00 SP";
+                case 2141223617:  return "Uncharted Lost Legacy 1.08 SP";
+                case -1496529414: return "The Last Of Us 2 1.00";
+                case -777844382:  return "The Last Of Us 2 1.01";
+                case -357372043:  return "The Last Of Us 2 1.02";
+                case -342416055:  return "The Last Of Us 2 1.05";
+                case 154664618:   return "The Last Of Us 2 1.07";
+                case 537380869:   return "The Last Of Us 2 1.08";
+                case 1174398197:  return "The Last Of Us 2 1.09";
+                default:          return "UnknownGame";
             }
-            return $"{GameString} | {AddString}";
+
+
         }
         private void BrowseButton_Click(object sender, EventArgs e) {
             if (e == null) {
@@ -524,16 +567,17 @@ namespace Dobby {
                 ActiveFilePath = ExecutablePathBox.Text = f.FileName;
 
                 MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite);
-                MainStream.Position = 0x60; MainStream.Read(chk, 0, 4);
-                Game = BitConverter.ToInt32(chk, 0);
-                GameInfoLabel.Text = UpdateGameInfoLabel();
+
+                GameInfoLabel.Text = DetermineCurrentGameId();
+                
+                RestoredDebugBtn.Text = RestoredDebugBtn.Text.Remove(RestoredDebugBtn.Text.LastIndexOf(' ')) + ApplyButtonText();
+                
                 MainStreamIsOpen = true;
                 IsActiveFilePCExe = false;
-                if (!Dev.REL) Console.Clear();
             }
         }
 
-
+        /*
         void BaseDebugFunction(byte OnOrOff) {
             var Type = OnOrOff == on ? "Enable" : "Disable";
             switch (Game) {
@@ -621,61 +665,36 @@ namespace Dobby {
                     break;
             }
         }
+        */
 
-
-        public void EnableDebugBtn_Click(object sender, EventArgs e) {
-            if (Game == 0) {
-                if (!FlashThreadHasStarted) {
+        /// <summary>
+        /// 0: Disable | 1: Enable | 2: Restored | 3: Custom 
+        /// </summary>
+        /// <param name="PatchType"></param>
+        public void DoShit(int PatchType) {
+            if(Game == 0) {
+                if(!FlashThreadHasStarted) {
                     FlashThread.Start();
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;
                 SetInfoLabelText("Please Select A Game's Executable First");
-                Common.InfoHasImportantStr = true;
-                return;
-            }
-            BaseDebugFunction(on);
-        }
-
-
-        public void DisableDebugBtn_Click(object sender, EventArgs e) {
-            if (Game == 0) {
-                if (!FlashThreadHasStarted) {
-                    FlashThread.Start();
-                    FlashThreadHasStarted = true;
-                }
-                LabelShouldFlash = true;
-                SetInfoLabelText("Please Select A Game's Executable First");
-                Common.InfoHasImportantStr = true;
-                return;
-            }
-            BaseDebugFunction(off);
-        }
-
-        public void RestoredDebugBtn_Click(object sender, EventArgs e) {
-            if (Game == 0) {
-                if (!FlashThreadHasStarted) {
-                    FlashThread.Start();
-                    FlashThreadHasStarted = true;
-                }
-                LabelShouldFlash = true;
-                SetInfoLabelText("Please Select A Game's Executable First");
-                Common.InfoHasImportantStr = true;
+                InfoHasImportantStr = true;
                 return;
             }
 
-            switch (Game) {
+            switch(Game) {
                 default:
                     MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported\n" + Game);
                     break;
                 case T1R100:
-                    SetInfoLabelText("No Restored Menu Available Yet (I'm Workin' on It). Try 1.11");
+                    SetInfoLabelText("No Restored Menu Available Yet. Try 1.11");
                     break;
                 case T1R109:
                     SetInfoLabelText("No Restored Menu Available, Try 1.10/1.11");
                     break;
                 case T1R11X:
-                    T1R11X_Patches("Restored");
+                    T1R11X_Patches(PatchType);
                     SetInfoLabelText($"The Last Of Us Remastered 1.1X Restored Menu Applied");
                     break;
                 case T2100:
@@ -700,23 +719,23 @@ namespace Dobby {
                     SetInfoLabelText("The Last Of Us Part II 1.09 Has Nothing To Restore");
                     break;
                 case UC1100: // Uncharted 1 1.00 Restored Debug Ver. 2.6.1
-                    UC1100_Patches("Restored");
+                    UC1100_Patches(PatchType);
                     SetInfoLabelText("Restored Debug Menu Patch Applied");
                     break;
                 case UC1102: // Uncharted 1 1.02 Restored Debug Ver. 2.7
-                    UC1102_Patches("Restored");
+                    UC1102_Patches(PatchType);
                     SetInfoLabelText("Restored Debug Menu Patch Applied");
                     break;
                 case UC2100: // Uncharted 2 1.00 Restored Debug Ver. 1.0 (Diff 1.11) //!
-                    UC2100_Patches("Restored");
+                    UC2100_Patches(PatchType);
                     SetInfoLabelText("Restored Debug Menu Patch Applied");
                     break;
                 case UC2102: // Uncharted 2 1.02 Restored Debug Ver. 1.0
-                    UC2102_Patches("Restored");
+                    UC2102_Patches(PatchType);
                     SetInfoLabelText("Restored Debug Menu Patch Applied");
                     break;
                 case UC3100:
-                    UC3100_Patches("Restored");
+                    UC3100_Patches(PatchType);
                     SetInfoLabelText("Uncharted 3 1.00 Restored Debug Applied");
                     break;
                 case UC3102:
@@ -729,7 +748,7 @@ namespace Dobby {
                     SetInfoLabelText("Uncharted 4 1.3X Restoration Not Available, Try MP");
                     break;
                 case UC4133MP:
-                    UC4MP133_Patches("Restored");
+                    UC4MP133_Patches(PatchType);
                     SetInfoLabelText("Restored Multiplayer Debug Menu Patch Applied");
                     break;
                 case TLL100:
@@ -741,18 +760,14 @@ namespace Dobby {
             }
         }
 
+        public void EnableDebugBtn_Click(object sender, EventArgs e) => DoShit(1);
+        public void DisableDebugBtn_Click(object sender, EventArgs e) => DoShit(0);
 
-        public void CustomDebugBtn_Click(object sender, EventArgs e) { // Just Edited Debug Menus, Some Things May Be Replaced
-            if (Game == 0) {
-                if (!FlashThreadHasStarted) {
-                    FlashThread.Start();
-                    FlashThreadHasStarted = true;
-                }
-                LabelShouldFlash = true;
-                SetInfoLabelText("Please Select A Game's Executable First");
-                Common.InfoHasImportantStr = true;
-                return;
-            }
+        public void RestoredDebugBtn_Click(object sender, EventArgs e) => DoShit(2);
+
+
+        public void CustomDebugBtn_Click(object sender, EventArgs e) // => DoShit(3);
+            { // Just Edited Debug Menus, Some Things May Be Replaced
 
             switch (Game) {
                 default:
@@ -763,7 +778,6 @@ namespace Dobby {
                 case T1R109:
                     break;
                 case T1R11X:
-                    T1R11X_Patches("Restored");
                     SetInfoLabelText("\"Custom\" Menu Applied");
                     break;
                 case T2100:
@@ -785,7 +799,6 @@ namespace Dobby {
                     SetInfoLabelText("Try 1.09");
                     break;
                 case T2109:
-                    T2109_Patches("Custom");
                     SetInfoLabelText("The Last Of Us Part II 1.09 Custom Debug Enabled");
                     break;
 
@@ -810,7 +823,6 @@ namespace Dobby {
                     SetInfoLabelText("Sorry, Uncharted 4 1.3X Isn't Supported Just Yet");
                     break;
                 case UC4133MP: // UC4 1.33 MP
-                    UC4MP133_Patches("Restored");
                     SetInfoLabelText("Resto- I Mean Custom Menu Applied");
                     break;
                 case TLL100:
@@ -910,19 +922,19 @@ namespace Dobby {
         /*======================================================================================================================
         |                                               Patch Application Functions
         ======================================================================================================================*/
-        void UC1100_Patches(string type) { // String over an int for readability
+        void UC1100_Patches(int type) { // String over an int for readability
             switch (type) {      // I Have A Very Good Reason For Using goto here:       I Wanted To. Don't Like It? goto Fuck_Yourself
-                case "Enable":
+                case 0:
                     goto Default;
-                case "Disable":
+                case 1:
                     goto Default;
-                case "Restored":
+                case 2:
                     goto Restored;
-                case "Custom":
+                case 3:
                     goto Custom;
             }
 Default:
-            WriteByte(0x102057, type == "Enable" ? (byte)0xEB : (byte)0x74);
+            WriteByte(0x102057, type == 1 ? (byte)0xEB : (byte)0x74);
             return;
 Restored:
             int[] WhiteJumpsOneByte = new int[] {
@@ -1069,7 +1081,7 @@ Custom:
         }
 
 
-        void UC1102_Patches(string type) {
+        void UC1102_Patches(int i) {
             int[] WhiteJumpsOneByte = new int[] {
                 0xE21D3,    // BP UCC...
                 0xE382A,    // Collision...
@@ -1150,11 +1162,11 @@ Custom:
         }
 
 
-        void UC2100_Patches(string type) {
-            WriteByte(0x4D7BE7, (byte)(type == "Disable" ? 0x74 : 0xEB));
+        void UC2100_Patches(int type) {
+            WriteByte(0x4D7BE7, (byte)(type == 0 ? 0x74 : 0xEB));
             switch (type) {
                 default: return;
-                case "Restored":
+                case 2:
                     goto Restored;
             }
 
@@ -1269,15 +1281,21 @@ Restored:
             SetInfoLabelText("Restored Debug Menu Patch Applied");
         }
 
-        void UC2102_Patches(string type) {
-            WriteByte(0x4D7BE7, (byte)(type == "Disable" ? 0x74 : 0xEB));
+        void UC2102_Patches(int type) {
+            WriteByte(0x4D7BE7, (byte)(type == 0 ? 0x74 : 0xEB));
             switch (type) {
                 default: return;
             }
         }
 
-        void UC3100_Patches(string type) {
-            WriteByte(0x168EB7, (byte)(type == "Disable" ? 0x74 : 0xEB));
+        void UC3100_Patches(int type) {
+            WriteByte(0x168EB7, (byte)(type == 0 ? 0x74 : 0xEB));
+
+            switch(type) {
+                default: return;
+                case 2: break;
+            }
+
 
             int[] FunctionNops = new int[] {
                 0x151743, // System Push
@@ -1362,15 +1380,6 @@ Restored:
                 0x86B170, // Skip IGC Menu Update
             };
 
-            switch (type) {
-                default: return;
-                case "Restored":
-                    goto Restored;
-                case "Custom":
-                    goto Custom;
-            }
-Custom: //! tmp
-Restored:
             WriteBytes(0x6cff50, new byte[] { 0x80, 0x34, 0x25, 0x6b, 0x95, 0x7f, 0x01, 0x01 }); // Change Debug Rendering Toggle To Novis One Until I Get The Rendering Menu Loaded
             WriteBytes(0x1517A0, new byte[] { 0xe8, 0xeb, 0x4a, 0x3a, 0x00, 0x49, 0x89, 0xc7 }); // Load Mini-Rendering Menu For Now
             WriteBytes(0x15355f, new byte[] { 0xe9, 0x66, 0x13, 0x00, 0x00 });                   // Skip Four Audio... Submenus
@@ -1384,14 +1393,6 @@ Restored:
                 WriteByte(addr, 0x00);
             foreach (int addr in Returns)
                 WriteByte(addr, 0xC3);
-            return;
-
-//Custom: //!
-
-            foreach (int addr in FunctionNops)
-                WriteBytes(addr, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 });
-            foreach (int addr in WhiteJumpsSmol)
-                WriteBytes(addr, new byte[] { 0x00, 0x00 });
             return;
         }
 
@@ -1409,15 +1410,13 @@ Restored:
         }
 
 
-        void UC4MP133_Patches(string type) {
-            WriteByte(0x1CCEB8, (byte)(type == "Disable" ? 0x74 : 0xEB));
+        void UC4MP133_Patches(int type) {
+            WriteByte(0x1CCEB8, (byte)(type == 0 ? 0x74 : 0xEB));
             switch (type) {
                 default: return;
-                case "Restored":
-                    goto Restored;
+                case 2: break;
             }
 
-Restored:
             int[] WhiteJumps = new int[] {
                 0x2409ED,  // Relaunch...
                 0x18725CA, // Switch On/Off Neo Resolution Mode...
@@ -1611,13 +1610,13 @@ Restored:
 =================================================================================================================================================
 =================================================================================================================================================
         */
-        void T1R100_Patches(string type) {
-            WriteByte(T1R100Debug, (byte)(type == "Disable" ? 0x75 : 0x74));
+        void T1R100_Patches(int type) {
+            WriteByte(T1R100Debug, (byte)(type == 0 ? 0x75 : 0x74));
             switch (type) {
                 default: return;
-                case "Restored":
+                case 2:
                     goto Restored;
-                case "Custom":
+                case 3:
                     goto Custom;
             }
 
@@ -1628,7 +1627,7 @@ Restored:
             return;
 
 Custom:
-            WriteBytes(0x6363C, new byte[] { 0xE8, 0xEF, 0x24, 0x6D, 0x00 }); // Replace Call To Mini-Rendering Menu With One To The Full Rendering Menu
+            WriteBytes(0x6363C,  new byte[] { 0xE8, 0xEF, 0x24, 0x6D, 0x00 }); // Replace Call To Mini-Rendering Menu With One To The Full Rendering Menu
             WriteBytes(0x94DD35, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 }); // Skip A Function In The Material Debug Menu That Causes The Game To Crash While Booting
             WriteBytes(0x38282C, new byte[] { 0x00, 0x00 });                   // Load Net... Contents
 
@@ -1636,15 +1635,14 @@ Custom:
         }
 
 
-        void T1R11X_Patches(string type) {
-            WriteByte(T1R111Debug, (byte)(type == "Disable" ? 0x75 : 0x74));
+        void T1R11X_Patches(int type) {
+            WriteByte(T1R111Debug, (byte)(type == 0 ? 0x75 : 0x74));
             switch (type) {
                 default: return;
-                case "Restored":
-                    goto Restored;
+                case 3: case 2:
+                    break;
             }
 
-Restored:
             var FunctionsToSkip = new int[] {
                 0x76E62C, // State Scripts Push
                 0x76F0CF, // State Scripts Pop
@@ -1709,21 +1707,21 @@ Restored:
         }
 
 
-        void T2100_Patches(string type) {
-            WriteBytes(0x1D639C, type == "Disable" ? T2DebugOff : T2Debug);
+        void T2100_Patches(int type) {
+            WriteBytes(0x1D639C, type == 0 ? T2DebugOff : T2Debug);
         }
 
 
-        void T2107_Patches(string type) {
-            WriteBytes(0x1D66BC, type == "Disable" ? T2DebugOff : T2Debug);
+        void T2107_Patches(int type) {
+            WriteBytes(0x1D66BC, type == 0 ? T2DebugOff : T2Debug);
         }
 
 
-        void T2109_Patches(string type) { // 1.08 as well, same offsets
-            WriteBytes(0x6181FA, type == "Disable" ? T2DebugOff : T2Debug);
+        void T2109_Patches(int type) { // 1.08 as well, same offsets
+            WriteBytes(0x6181FA, type == 0 ? T2DebugOff : T2Debug);
             switch (type) {
                 default: return;
-                case "Custom":
+                case 2:
                     goto Custom;
             }
 
@@ -1734,15 +1732,16 @@ Custom:
 
             int i = 0;
             int[] addrs = new int[] { 0x25AE9DA, 0x25AE990, 0x2DF3B50, 0x25B231B, 0x25B2279, 0x2DF3B67, 0x7A4ECF };
-            byte[][] dat = new byte[7][] {
-                                new byte[] { 0x5f, 0x16, 0x9c, 0x01 },
-                                new byte[] { 0xbc, 0x51, 0x84 },
-                                new byte[] { 0x44, 0x69, 0x73, 0x61, 0x62, 0x6C, 0x65, 0x20, 0x41, 0x6C, 0x6C, 0x20, 0x56, 0x69, 0x73, 0x69, 0x62, 0x69, 0x6C, 0x69, 0x74, 0x79 },
-                                new byte[] { 0x29, 0xc3, 0xca, 0x00 },
-                                new byte[] { 0xea, 0x18, 0x84, 0x00 },
-                                new byte[] { 0x41, 0x64, 0x6A, 0x75, 0x73, 0x74, 0x20, 0x44, 0x65, 0x62, 0x75, 0x67, 0x20, 0x4D, 0x65, 0x6E, 0x75, 0x20, 0x53, 0x63, 0x61, 0x6C, 0x65 },
-                                new byte[] { 0xcd, 0xcc, 0x4c, 0x3f }
-                            };
+            byte[][] dat = new byte[7][]
+            {
+                new byte[] { 0x5f, 0x16, 0x9c, 0x01 },
+                new byte[] { 0xbc, 0x51, 0x84 },
+                new byte[] { 0x44, 0x69, 0x73, 0x61, 0x62, 0x6C, 0x65, 0x20, 0x41, 0x6C, 0x6C, 0x20, 0x56, 0x69, 0x73, 0x69, 0x62, 0x69, 0x6C, 0x69, 0x74, 0x79 },
+                new byte[] { 0x29, 0xc3, 0xca, 0x00 },
+                new byte[] { 0xea, 0x18, 0x84, 0x00 },
+                new byte[] { 0x41, 0x64, 0x6A, 0x75, 0x73, 0x74, 0x20, 0x44, 0x65, 0x62, 0x75, 0x67, 0x20, 0x4D, 0x65, 0x6E, 0x75, 0x20, 0x53, 0x63, 0x61, 0x6C, 0x65 },
+                new byte[] { 0xcd, 0xcc, 0x4c, 0x3f }
+             };
 
             foreach (int addr in addrs) {
                 MainStream.Position = addr;
@@ -1751,5 +1750,46 @@ Custom:
             }
             return;
         }
+
+
+        #region RepeatedButtonFunctions
+        /////////////////\\\\\\\\\\\\\\\\\\
+        ///--     Repeat Buttons      --\\\
+        /////////////////\\\\\\\\\\\\\\\\\\\
+        
+        public void BackBtn_Click(object sender, EventArgs e) {
+            LabelShouldFlash = false;
+            BackFunc();
+        }
+
+        public void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
+
+        public void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
+        #endregion
+
+        #region ControlDeclarations
+        ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     PS4DebugPage Control Declarations     --\\\
+        ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
+        
+        public Label GameInfoLabel;
+        private Button BrowseButton;
+        private TextBox ExecutablePathBox;
+        private Label label1;
+        private Button RestoredDebugBtn;
+        private Button InfoHelpBtn;
+        private Label label4;
+        private Button BackBtn;
+        private Button DisableDebugBtn;
+        private Button EnableDebugBtn;
+        private Label Info;
+        private Button CreditsBtn;
+        private Button MinimizeBtn;
+        private Button ExitBtn;
+        private GroupBox MainBox;
+        private Label MainLabel;
+        private GroupBox groupBox1;
+        private Label label2;
+        #endregion
     }
 }

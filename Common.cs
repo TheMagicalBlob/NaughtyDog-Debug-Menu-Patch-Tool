@@ -142,7 +142,9 @@ namespace Dobby {
            "* 3.28.94.256 | Fixed Uncharted 4 PS4 Debug Arrays- I Was Tired. They Were NOT Finished. Other Misc Changes",
            "* 3.28.95.260 | Replaced Inconsistent Memory Tlou2 Debug Addresses With Addresses To The Base Pointer It's Read From. Other Misc Stuff",
            "* 3.28.96.262 | Removed Info String On Control Hover From Most PS4DebugPage Buttons, Going To Use Info Label For Status Only",
-           "* 3.28.97.264 | Fixed Some UC3 Addresses That Were Somehow Missing"
+           "* 3.28.97.264 | Fixed Some UC3 Addresses That Were Somehow Missing",
+           "* 3.28.97.267 | HoverString For Ignore TitleID Button, Misc Formatting Changes",
+           "* 3.29.98.270 | Replaced Method For Checking Games With Similar Hash Function To PS4DebugPage, As Checking 0x60 Doesn't Give Different Results For Each exe Once All Are Supported. Related Changes, Formatting"
 
             // TODO:
             // - Replace InfoHover Functionality With Alternative, Prefferably One Recreating Native HoverInfo BS That Doesn't Work For Most Controls
@@ -158,9 +160,9 @@ namespace Dobby {
 
 
         #region Application-Wide Functions And Variable Declarations
-        ////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\
-        ///--      MAIN APPLICATION VARIABLES      --\\\
-        ////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\
+        //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///--  MAIN APPLICATION VARIABLES & Functions  --\\\
+        //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
 
         public static string CurrentControl, TempStringStore;
 
@@ -181,12 +183,31 @@ namespace Dobby {
         public static NetworkStream net_stream;
 
         public static Font MainFont = new Font("Franklin Gothic Medium", 6.5F, FontStyle.Bold);
+        public static void ExitBtn_Click(object sender, EventArgs e) { MainStream?.Dispose(); Environment.Exit(0); }
+        public static void ExitBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
+        public static void ExitBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
+        public static void MinimizeBtn_Click(object sender, EventArgs e) => ((Control)sender).FindForm().WindowState = FormWindowState.Minimized;
+        public static void MinimizeBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
+        public static void MinimizeBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
+        public static void ControlHover(object sender, EventArgs e) => HoverLeave((Control)sender, true);
+        public static void ControlLeave(object sender, EventArgs e) => HoverLeave((Control)sender, false);
+        public static void MouseDownFunc(object sender, MouseEventArgs e) {
+            MouseIsDown = 1; LastPos = ActiveForm.Location;
+            MouseDif = new Point(MousePosition.X - ActiveForm.Location.X, MousePosition.Y - ActiveForm.Location.Y);
+        }
+        public static void MouseUpFunc(object sender, MouseEventArgs e) => MouseScrolled = MouseIsDown = 0;
+        public static void MoveForm(object sender, MouseEventArgs e) {
+            if(MouseIsDown != 0) {
+                ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
+                ActiveForm.Update();
+            }
+        }
 
         #region PS4DBG_Variables
         ////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
         ///-- PS4 DEBUG OFFSETS AND OTHER VARIABLES --\\\
         ////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
-        
+
         public static PS4DBG geo;
         public delegate void LabelTextDel(string message);
         public static LabelTextDel SetLabelText = SetInfoLabelText;
@@ -222,151 +243,12 @@ namespace Dobby {
             "eboot-mp.elf",
         };
         public static string ProcessName = "Jack Shit", GameVersion = "UnknownGameVersion", TitleID;
-
         #endregion
-
-
-        public static void ExitBtn_Click(object sender, EventArgs e) { MainStream?.Dispose(); Environment.Exit(0); }
-        public static void ExitBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
-        public static void ExitBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
-        public static void MinimizeBtn_Click(object sender, EventArgs e) => ((Control)sender).FindForm().WindowState = FormWindowState.Minimized;
-        public static void MinimizeBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
-        public static void MinimizeBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
-        public static void ControlHover(object sender, EventArgs e) => HoverLeave((Control)sender, true);
-        public static void ControlLeave(object sender, EventArgs e) => HoverLeave((Control)sender, false);
-        public static void MouseDownFunc(object sender, MouseEventArgs e) {
-            MouseIsDown = 1; LastPos = ActiveForm.Location;
-            MouseDif = new Point(MousePosition.X - ActiveForm.Location.X, MousePosition.Y - ActiveForm.Location.Y);
-        }
-        public static void MouseUpFunc(object sender, MouseEventArgs e) => MouseScrolled = MouseIsDown = 0;
-        public static void MoveForm(object sender, MouseEventArgs e) {
-            if(MouseIsDown != 0) {
-                ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
-                ActiveForm.Update();
-            }
-        }
-
-
-        public static string UpdateGameInfoLabel() {
-
-            var GameString = "Unknown Game";
-            var AddString = "No Debug";
-
-            MainStream.Position = 0;
-            MainStream.Read(chk, 0, 4);
-            if(BitConverter.ToInt32(chk, 0) != 1179403647) {// Make Sure The File's Actually Even A .elf
-                GameString = "Executable Still Encrypted";
-                AddString = "Must Be Decrypted/Unsigned";
-                return $"{GameString} | {AddString}";
-            }
-
-            bool CheckDebugState(int[] offsets, byte[] Data) {//! CHANGE THIS, IT'S UNNECESSARY
-                int i = 0; // Just Returns True If The Bytes Read At The Specified Address Match The Byte Given
-                foreach(int addr in offsets) {
-                Read: if(ReadByte(addr) == Data[i]) return true;
-
-                    if(Data[i] == 0x75) { // Go back and check for an unconditional jump
-                        Data[i] = 0xEB;
-                        goto Read;
-                    }
-                    i++;
-                }
-                return false;
-            }
-
-            switch(Game) {
-                default:
-                    MessageBox.Show($"Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported\n{Game}");
-                    break;
-                case T1R100:
-                    GameString = "The Last Of Us Remastered 1.00";
-                    break;
-                case T1R109:
-                    GameString = "The Last Of Us Remastered 1.09";
-                    break;
-                case T1R11X:
-                    MainStream.Position = 0x18;
-                    GameString = $"The Last Of Us Remastered 1.1{((byte)MainStream.ReadByte() == 0x10 ? 1 : 0)}";
-                    break;
-                case T2100:
-                    GameString = "The Last Of Us Part II 1.00";
-                    break;
-                case T2101:
-                    GameString = "The Last Of Us Part II 1.01";
-                    break;
-                case T2102:
-                    GameString = "The Last Of Us Part II 1.02";
-                    break;
-                case T2105:
-                    GameString = "The Last Of Us Part II 1.05";
-                    break;
-                case T2107:
-                    GameString = "The Last Of Us Part II 1.07";
-                    break;
-                case T2108:
-                    GameString = "The Last Of Us Part II 1.08";
-                    break;
-                case T2109:
-                    GameString = "The Last Of Us Part II 1.09";
-                    break;
-                case UC1100:
-                    if(CheckDebugState(new int[] { 0x102056, 0x102057, 0x10207B }, new byte[] { 0x01, 0x75, 0x01 }) == true)
-                        AddString = "Debug";
-
-                    GameString = "Uncharted 1 1.00";
-                    break;
-                case UC1102:
-                    if(CheckDebugState(new int[] { 0x102186, 0x102187, 0x1021AB }, new byte[] { 0x01, 0x75, 0x01 }) == true)
-                        AddString = "Debug";
-
-                    GameString = "Uncharted 1 1.02";
-                    break;
-                case UC2100:
-                    if(CheckDebugState(new int[] { 0x1EB296, 0x1EB297, 0x1EB2BB }, new byte[] { 0x01, 0x75, 0x01 }) == true)
-                        AddString = "Debug";
-
-                    GameString = "Uncharted 2 1.00";
-                    break;
-                case UC2102:
-                    if(CheckDebugState(new int[] { 0x3F7A25, 0x3F7A26, 0x3F7A4A }, new byte[] { 0x01, 0x75, 0x01 }) == true)
-                        AddString = "Debug";
-
-                    GameString = "Uncharted 2 1.02";
-                    break;
-                case UC3100:
-                    if(CheckDebugState(new int[] { 0x168EB6, 0x168EB7, 0x168EDB }, new byte[] { 0x01, 0x75, 0x01 }) == true)
-                        AddString = "Debug";
-
-                    GameString = "Uncharted 3 1.00";
-                    break;
-                case UC3102:
-                    if(CheckDebugState(new int[] { 0x578226, 0x578227, 0x57824B }, new byte[] { 0x01, 0x75, 0x01 }) == true)
-                        AddString = "Debug";
-
-                    GameString = "Uncharted 3 1.02";
-                    break;
-                case UC4100:
-                    GameString = "Uncharted 4: A Thief's End 1.00";
-                    break;
-                case UC413X:
-                    GameString = "Uncharted 4: A Thief's End 1.32/1.33";
-                    break;
-                case UC4133MP:
-                    GameString = "Uncharted 4: A Thief's End 1.33 Multiplayer";
-                    break;
-                case TLL100:
-                    GameString = "Uncharted: The Lost Legacy 1.00";
-                    break;
-                case TLL10X:
-                    GameString = "Uncharted: The Lost Legacy 1.08/1.09";
-                    break;
-            }
-            return $"{GameString} | {AddString}";
-        }
+        
 
         /// <summary> Sets The Info Label String Based On The Currently Hovered Control </summary>
         /// <param name="Sender">The Hovered Control</param>
-        public static void SetInfoLabelStringOnControlHover(Control Sender) { // 
+        public static void SetInfoLabelStringOnControlHover(Control Sender) { // SetInfo
             string InfoLabelString = "";
             switch(Sender.Name) {
                 default: return;
@@ -425,6 +307,9 @@ namespace Dobby {
                     break;
                 case "ManualConnectBtn":
                     InfoLabelString = "Tool Also Auto-Connects When An Option's Selected";
+                    break;
+                case "IgnoreTitleIDBtn":
+                    InfoLabelString = "Enable This If You've Changed The Title ID";
                     break;
                 //
                 // EbootPatchPage
@@ -564,7 +449,7 @@ namespace Dobby {
 
                 if(Pages[i] != null) {
                     ChangeForm((int)Pages[i], true);
-                    DebugOut($"Pages[i]: {Pages[i]}");
+                  //DebugOut($"Pages[i]: {Pages[i]}");
                     Pages[i] = null;
                     break;
                 }
@@ -683,15 +568,14 @@ namespace Dobby {
             }
         }
         #endregion
-        #region PS4 / PC exe Patch Page Shared Variables And Functions
 
+        #region PS4 / PC exe Patch Page Shared Variables And Functions
         /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///-- DEBUG MODE OFFSETS AND GAME INDENTIFIERS --\\\
         /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-        // Yes, I know an array could be easier to deal with in code, but I want them all labeled individually so bite me
+        // DEPRICATED, KEPT JIC
         public const int
-
             // Game Identifiers. Read 4 bytes at 0x60 as an integer to get it
             T1R100 = 22033680,
             T1R109 = 21444016,
@@ -720,22 +604,12 @@ namespace Dobby {
             UC4110 = 33454632,
             UC4111 = 33460888,
             UC4112 = 33515840,
-            UC413X = 33886256, // UC4 1.32 & 1.33 SP are identical
+            UC413X = 33886256, // UC4 1.32 & 1.33 SP are identical (As Are 1.27+ SP, 1.18 MP/SP, 1.19 MP/SP, 1.22/23 SP, 1.24/25 SP)
             UC4132MP = 35875608,
             UC4133MP = 35877432,
             TLL100 = 35178432,
-            TLL10X = 35227448,
-            T1X101 = 42695168 + 16007532,  // 0x1EC + 0x1F8 | Fuck you, I'm keeping them seperate
-            T1XL101 = 42670080 + 16010844,
-            T1X1015 = 2228464 + 95625728,
-            T1XL1015 = 2228464 + 95627776,
-            T1X1016 = 42698752 + 16007532,
-            T1XL1016 = 42673664 + 16010828,
-            T1X1017 = 42702336 + 16007852,
-            T1XL1017 = 42677248 + 16011148,
-            T1X102 = 2228464 + 95631360,
-            T1XL102 = 2228464 + 95634432
-            ;
+            TLL10X = 35227448
+        ;
 
         public const int
             // Debug Offsets (0xEB)
@@ -763,6 +637,19 @@ namespace Dobby {
             TLL10XDebug = 0x1CD01E    //! TEST ME
         ;
 
+        public const int
+            T1X101 = 42695168 + 16007532,  // 0x1EC + 0x1F8 | Fuck you, I'm keeping them seperate
+            T1XL101 = 42670080 + 16010844,
+            T1X1015 = 2228464 + 95625728,
+            T1XL1015 = 2228464 + 95627776,
+            T1X1016 = 42698752 + 16007532,
+            T1XL1016 = 42673664 + 16010828,
+            T1X1017 = 42702336 + 16007852,
+            T1XL1017 = 42677248 + 16011148,
+            T1X102 = 2228464 + 95631360,
+            T1XL102 = 2228464 + 95634432
+        ;
+
         /// <summary> Offsets To Enable The Debug Mode in the pc version of the game </summary>
         public const int
             // PC Debug Offsets (0x97 -> 0x8F)
@@ -781,9 +668,9 @@ namespace Dobby {
 
 
 
-        //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///-- QUALITY OF LIFE/BOOTSETTINGS OFFSET POINTERS--\\\
-        //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        //////////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///-- EBOOTPATCHPAGE VARIABLES AND FUNCTIONS + QUALITY OF LIFE/BOOTSETTINGS OFFSET POINTERS  --\\\
+        //////////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
         /// <summary>
         ///  Byte arrays to be used as pointers with the BootSettings custom function
@@ -1039,7 +926,7 @@ namespace Dobby {
 
 
         public static byte[]
-            chk = new byte[4],
+            LocalExecutableHash,
             E9Jump = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 },
             DebugDat = new byte[] { 0x8a, 0x8f, 0xf2, 0x3e, 0x00, 0x00, 0x84, 0xc9, 0x0f, 0x94, 0xc2, 0x84, 0xc9, 0x0f, 0x95, 0xc1, 0x88, 0x8f, 0x3d, 0x3f, 0x00, 0x00, 0x88, 0x97, 0x2f, 0x3f, 0x00, 0x00 },
             T2Debug = new byte[] { 0xb2, 0x00, 0xb0, 0x01 }, // Turns "Disable Debug Rendering" Off (b2 00) & Debug Mode On (b0 01)
@@ -1312,10 +1199,10 @@ namespace Dobby {
                 if(MainStreamIsOpen) { MainStream.Dispose(); }
                 ActiveFilePath = FilePath;
                 MainStream = new FileStream(FilePath, FileMode.Open, FileAccess.ReadWrite);
-                MainStream.Position = 0x60; MainStream.Read(chk, 0, 4);
-                Game = BitConverter.ToInt32(chk, 0);
+                MainStream.Position = 0x60; MainStream.Read(LocalExecutableHash, 0, 4);
+                Game = BitConverter.ToInt32(LocalExecutableHash, 0);
                 try {
-                    ActiveForm.Controls.Find("GameInfoLabel", true)[0].Text = UpdateGameInfoLabel();
+                    ActiveForm.Controls.Find("GameInfoLabel", true)[0].Text = EbootPatchPage.DetermineCurrentGameId();
                     ActiveForm.Controls.Find("ResetBtn", true)[0].Visible = MainStreamIsOpen = true;
                     ActiveForm.Controls.Find("CustomDebugOptionsLabel", true)[0].Visible = IsActiveFilePCExe = false;
                 }

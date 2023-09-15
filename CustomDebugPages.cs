@@ -41,7 +41,7 @@ namespace Dobby {
         public void ConfirmBtn_Click(object sender, EventArgs e) {
 
             using (FileStream MainStream = new FileStream(@"No Path, Fix.", FileMode.Open, FileAccess.ReadWrite)) {
-                MainStream.Read(chk, 0, 4);
+                MainStream.Read(LocalExecutableHash, 0, 4);
                 switch (Game) {
 
                     case 48176456: // T2 1.09

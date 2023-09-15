@@ -52,31 +52,6 @@ namespace Dobby {
         /// <summary> Array of Controls to Move When Loading >1 Game-SpecificDebugOptions </summary>
         public static Control[] ControlsToMove;
 
-        private Label MainLabel;
-        private Button CreditsBtn;
-        private Button InfoHelpBtn;
-        private Label Info;
-        private Button ExitBtn;
-        private Button MinimizeBtn;
-        private Label SeperatorLabel0;
-        private GroupBox BorderBox;
-        private Label SeperatorLabel2;
-        private Label GameInfoLabel;
-        private Button BrowseButton;
-        private TextBox ExecutablePathBox;
-        private Button DisableDebugTextBtn;
-        private Button ProgPauseOnOpenBtn;
-        private Button PausedIconBtn;
-        private Button MenuScaleBtn;
-        private Button MenuAlphaBtn;
-        private Label UniversalPatchesLabel;
-        private Label GameSpecificPatchesLabel;
-        private Label SeperatorLabel3;
-        private Label SeperatorLabel1;
-        private Label CustomDebugOptionsLabel;
-        private Button ProgPauseOnCloseBtn;
-        private Button BackBtn;
-
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
             this.ExitBtn = new System.Windows.Forms.Button();
@@ -731,10 +706,10 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
                 ActiveFilePath = ExecutablePathBox.Text = OpenedFile.FileName;
 
                 MainStream = File.Open(OpenedFile.FileName, FileMode.Open, FileAccess.ReadWrite);
-                MainStream.Position = 0x60; MainStream.Read(chk, 0, 4);
-                Game = BitConverter.ToInt32(chk, 0);
+                MainStream.Position = 0x60; MainStream.Read(LocalExecutableHash, 0, 4);
+                Game = BitConverter.ToInt32(LocalExecutableHash, 0);
 
-                GameInfoLabel.Text = UpdateGameInfoLabel();
+                GameInfoLabel.Text = EbootPatchPage.DetermineCurrentGameId();
 
                 MainStreamIsOpen = true;
                 CustomDebugOptionsLabel.Visible = IsActiveFilePCExe = false;
@@ -967,5 +942,32 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
             }
         }
 #endif
+
+
+
+        private Label MainLabel;
+        private Button CreditsBtn;
+        private Button InfoHelpBtn;
+        private Label Info;
+        private Button ExitBtn;
+        private Button MinimizeBtn;
+        private Label SeperatorLabel0;
+        private GroupBox BorderBox;
+        private Label SeperatorLabel2;
+        private Label GameInfoLabel;
+        private Button BrowseButton;
+        private TextBox ExecutablePathBox;
+        private Button DisableDebugTextBtn;
+        private Button ProgPauseOnOpenBtn;
+        private Button PausedIconBtn;
+        private Button MenuScaleBtn;
+        private Button MenuAlphaBtn;
+        private Label UniversalPatchesLabel;
+        private Label GameSpecificPatchesLabel;
+        private Label SeperatorLabel3;
+        private Label SeperatorLabel1;
+        private Label CustomDebugOptionsLabel;
+        private Button ProgPauseOnCloseBtn;
+        private Button BackBtn;
     }
 }
