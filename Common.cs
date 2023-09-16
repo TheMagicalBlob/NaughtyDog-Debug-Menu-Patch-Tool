@@ -144,13 +144,14 @@ namespace Dobby {
            "* 3.28.96.262 | Removed Info String On Control Hover From Most PS4DebugPage Buttons, Going To Use Info Label For Status Only",
            "* 3.28.97.264 | Fixed Some UC3 Addresses That Were Somehow Missing",
            "* 3.28.97.267 | HoverString For Ignore TitleID Button, Misc Formatting Changes",
-           "* 3.29.98.270 | Replaced Method For Checking Games With Similar Hash Function To PS4DebugPage, As Checking 0x60 Doesn't Give Different Results For Each exe Once All Are Supported. Related Changes, Formatting"
+           "* 3.29.98.270 | Replaced Method For Checking Games With Similar Hash Function To PS4DebugPage, As Checking 0x60 Doesn't Give Different Results For Each exe Once All Are Supported. Related Changes, Formatting",
+           "* 3.29.99.271 | Commented Out Old Group Of Labeled Int32 Checks Used In EbootPatchPage, Replaced With More Thorough Version Supporting Every Executable It Needs To And Replaced EbootPathPageCheck ints with them"
 
             // TODO:
             // - Replace InfoHover Functionality With Alternative, Prefferably One Recreating Native HoverInfo BS That Doesn't Work For Most Controls
             // - Finish PS4QOLPatchesPage Dynamic Button Functionality
             // - Finish EbootPatchHelpPage
-            // - Finish EbootPatchPage Uncharted 4/TLL Support
+            // - Finish EbootPatchPage
             
             // KNOWN BUGS:
             // - Occasional String Duplication In Debug Output (DebugOutputStr / UpdateConsoleOutput)
@@ -574,7 +575,67 @@ namespace Dobby {
         ///-- DEBUG MODE OFFSETS AND GAME INDENTIFIERS --\\\
         /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-        // DEPRICATED, KEPT JIC
+        public const int
+            // Read And Hashed 160 bytes at 0x5100 as SHA256 Then Checked As Int32
+            UC1100   = -679355525,
+            UC1102   = 104877429,
+            UC2100   = 414674483,
+            UC2102   = 216080152,
+            UC3100   = 823868754,
+            UC3102   = 1911044661,
+            UC4100   = 308820129,
+            UC4101   = -1879120502,
+            UC4102   = 1084389925,
+            UC4103   = 1009654146,
+            UC4104   = 1174607918,
+            UC4105   = 1397785573,
+            UC4106   = 1880438911,
+            UC4108   = -1521275605,
+            UC4110   = 556134345,
+            UC4111   = 533967079,
+            UC4112   = -1876292260,
+            UC4113   = 441673980,
+            UC4115   = 1382306251,
+            UC4116   = -1865276990,
+            UC4117   = -2002709567,
+            UC4118   = 1337597197,
+            UC4119   = 853166708,
+            UC4MP120 = 948532543,
+            UC4SP120 = 1044003518,
+            UC4MP121 = 1404274247,
+            UC4SP121 = -538479879,
+            UC4MP122 = -605975924,
+            UC4SP122_23  = 1849401718,
+            UC4MP123     = -959800645,
+            UC4MP124     = 1301857603,
+            UC4SP124_25  = -1166682695,
+            UC4MP125     = -634367694,
+            UC4MP127_28  = -1449571981,
+            UC4SP127     = -400040687, // 1.27+, SP exe Never Changed After 1.27 Released
+            UC4MP129     = -1725079303,
+            UC4MP130     = 931397679,
+            UC4MP131     = 1212014389,
+            UC4MP132     = 1923471472, // Also The Lost Legacy 1.08 MP
+            UC4MP133     = 486460629,  // Also The Lost Legacy 1.09 MP
+            UC4MPBETA100 = 1813169088,  // CUSA04051
+            UC4MPBETA109 = -1103269419, // CUSA04021
+            UCTLLMP100   = 469274180,
+            UCTLLSP100   = -1269602830,
+            UCTLLSP108   = 2141223617,  // UCTLL 1.08/1.09 SP Identical
+            T1R100 = 306377542,
+            T1R109 = -1391237605,
+            T1R110 = -915963582,
+            T1R111 = -866651344,
+            T2100  = -1496529414,
+            T2101  = -777844382,
+            T2102  = -357372043,
+            T2105  = -342416055,
+            T2107  = 154664618,
+            T2108  = 537380869,
+            T2109  = 1174398197
+        ;
+
+        /* DEPRICATED, KEPT JIC
         public const int
             // Game Identifiers. Read 4 bytes at 0x60 as an integer to get it
             T1R100 = 22033680,
@@ -610,7 +671,7 @@ namespace Dobby {
             TLL100 = 35178432,
             TLL10X = 35227448
         ;
-
+        */
         public const int
             // Debug Offsets (0xEB)
             T1R100Debug = 0x5C5A,

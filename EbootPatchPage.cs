@@ -470,6 +470,7 @@ namespace Dobby {
             MainStream.Position = 0x5100; MainStream.Read(LocalExecutableHash, 0, 160);
             var Hash = SHA256.Create();
             var HashArray = Hash.ComputeHash(LocalExecutableHash);
+            Dev.DebugOut("HashLen: " + HashArray.Length);
             Game = BitConverter.ToInt32(HashArray, 0);
 
             /*
@@ -493,63 +494,63 @@ namespace Dobby {
             */
 
             switch(Game) {
-                case -679355525:  return "Uncharted 1 1.00";
-                case 104877429:   return "Uncharted 1 1.02";
-                case 414674483:   return "Uncharted 2 1.00";
-                case 216080152:   return "Uncharted 2 1.02";
-                case 823868754:   return "Uncharted 3 1.00";
-                case 1911044661:  return "Uncharted 3 1.02";
-                case 308820129:   return "Uncharted 4 1.00";
-                case -1879120502: return "Uncharted 4 1.01";
-                case 1084389925:  return "Uncharted 4 1.02";
-                case 1009654146:  return "Uncharted 4 1.03";
-                case 1174607918:  return "Uncharted 4 1.04";
-                case 1397785573:  return "Uncharted 4 1.05";
-                case 1880438911:  return "Uncharted 4 1.06";
-                case -1521275605: return "Uncharted 4 1.08";
-                case 556134345:   return "Uncharted 4 1.10";
-                case 533967079:   return "Uncharted 4 1.11";
-                case -1876292260: return "Uncharted 4 1.12";
-                case 441673980:   return "Uncharted 4 1.13";
-                case 1382306251:  return "Uncharted 4 1.15";
-                case -1865276990: return "Uncharted 4 1.16";
-                case -2002709567: return "Uncharted 4 1.17";
-                case 1337597197:  return "Uncharted 4 1.18 SP/MP";
-                case 853166708:   return "Uncharted 4 1.19 SP/MP";
-                case 948532543:   return "Uncharted 4 1.20 MP";
-                case 1044003518:  return "Uncharted 4 1.20 SP";
-                case 1404274247:  return "Uncharted 4 1.21 MP";
-                case -538479879:  return "Uncharted 4 1.21 SP";
-                case -605975924:  return "Uncharted 4 1.22 MP";
-                case 1849401718:  return "Uncharted 4 1.22/23 SP";
-                case -959800645:  return "Uncharted 4 1.23 MP";
-                case 1301857603:  return "Uncharted 4 1.24 MP";
-                case -1166682695: return "Uncharted 4 1.24/25 SP";
-                case -634367694:  return "Uncharted 4 1.25 MP";
-                case -1449571981: return "Uncharted 4 1.27/28 MP";
-                case -400040687:  return "Uncharted 4 1.27+ SP";
-                case -1725079303: return "Uncharted 4 1.29 MP";
-                case 931397679:   return "Uncharted 4 1.30 MP";
-                case 1212014389:  return "Uncharted 4 1.31 MP";
-                case 1923471472:  return "Uncharted 4/TLL 1.32/1.08 MP";
-                case 486460629:   return "Uncharted 4/TLL 1.33/1.09 MP";
-                case 1813169088:  return "CUSA04051 Uncharted 4 MP Beta 1.00";
-                case -1103269419: return "CUSA04021 Uncharted 4 MP Beta 1.09";
-                case 306377542:   return "The Last Of Us 1.00";
-                case -1391237605: return "The Last Of Us 1.09";
-                case -915963582:  return "The Last Of Us 1.10";
-                case -866651344:  return "The Last Of Us 1.11";
-                case 469274180:   return "Uncharted Lost Legacy 1.00 MP";
-                case -1269602830: return "Uncharted Lost Legacy 1.00 SP";
-                case 2141223617:  return "Uncharted Lost Legacy 1.08 SP";
-                case -1496529414: return "The Last Of Us 2 1.00";
-                case -777844382:  return "The Last Of Us 2 1.01";
-                case -357372043:  return "The Last Of Us 2 1.02";
-                case -342416055:  return "The Last Of Us 2 1.05";
-                case 154664618:   return "The Last Of Us 2 1.07";
-                case 537380869:   return "The Last Of Us 2 1.08";
-                case 1174398197:  return "The Last Of Us 2 1.09";
-                default:          return "UnknownGame";
+                case UC1100:       return "Uncharted 1 1.00";
+                case UC1102:       return "Uncharted 1 1.02";
+                case UC2100:       return "Uncharted 2 1.00";
+                case UC2102:       return "Uncharted 2 1.02";
+                case UC3100:       return "Uncharted 3 1.00";
+                case UC3102:       return "Uncharted 3 1.02";
+                case UC4100:       return "Uncharted 4 1.00";
+                case UC4101:       return "Uncharted 4 1.01";
+                case UC4102:       return "Uncharted 4 1.02";
+                case UC4103:       return "Uncharted 4 1.03";
+                case UC4104:       return "Uncharted 4 1.04";
+                case UC4105:       return "Uncharted 4 1.05";
+                case UC4106:       return "Uncharted 4 1.06";
+                case UC4108:       return "Uncharted 4 1.08";
+                case UC4110:       return "Uncharted 4 1.10";
+                case UC4111:       return "Uncharted 4 1.11";
+                case UC4112:       return "Uncharted 4 1.12";
+                case UC4113:       return "Uncharted 4 1.13";
+                case UC4115:       return "Uncharted 4 1.15";
+                case UC4116:       return "Uncharted 4 1.16";
+                case UC4117:       return "Uncharted 4 1.17";
+                case UC4118:       return "Uncharted 4 1.18 SP/MP";
+                case UC4119:       return "Uncharted 4 1.19 SP/MP";
+                case UC4MP120:     return "Uncharted 4 1.20 MP";
+                case UC4SP120:     return "Uncharted 4 1.20 SP";
+                case UC4MP121:     return "Uncharted 4 1.21 MP";
+                case UC4SP121:     return "Uncharted 4 1.21 SP";
+                case UC4MP122:     return "Uncharted 4 1.22 MP";
+                case UC4SP122_23:  return "Uncharted 4 1.22/23 SP";
+                case UC4MP123:     return "Uncharted 4 1.23 MP";
+                case UC4MP124:     return "Uncharted 4 1.24 MP";
+                case UC4SP124_25:  return "Uncharted 4 1.24/25 SP";
+                case UC4MP125:     return "Uncharted 4 1.25 MP";
+                case UC4MP127_28:  return "Uncharted 4 1.27/28 MP";
+                case UC4SP127:     return "Uncharted 4 1.27+ SP";
+                case UC4MP129:     return "Uncharted 4 1.29 MP";
+                case UC4MP130:     return "Uncharted 4 1.30 MP";
+                case UC4MP131:     return "Uncharted 4 1.31 MP";
+                case UC4MP132:     return "Uncharted 4/TLL 1.32/1.08 MP";
+                case UC4MP133:     return "Uncharted 4/TLL 1.33/1.09 MP";
+                case UC4MPBETA100: return "CUSA04051 Uncharted 4 MP Beta 1.00";
+                case UC4MPBETA109: return "CUSA04021 Uncharted 4 MP Beta 1.09";
+                case UCTLLMP100:   return "Uncharted Lost Legacy 1.00 MP";
+                case UCTLLSP100:   return "Uncharted Lost Legacy 1.00 SP";
+                case UCTLLSP108:   return "Uncharted Lost Legacy 1.08 SP";
+                case T1R100:       return "The Last Of Us 1.00";
+                case T1R109:       return "The Last Of Us 1.09";
+                case T1R110:       return "The Last Of Us 1.10";
+                case T1R111:       return "The Last Of Us 1.11";
+                case T2100:        return "The Last Of Us 2 1.00";
+                case T2101:        return "The Last Of Us 2 1.01";
+                case T2102:        return "The Last Of Us 2 1.02";
+                case T2105:        return "The Last Of Us 2 1.05";
+                case T2107:        return "The Last Of Us 2 1.07";
+                case T2108:        return "The Last Of Us 2 1.08";
+                case T2109:        return "The Last Of Us 2 1.09";
+                default:           return "UnknownGame";
             }
 
 
@@ -762,10 +763,7 @@ namespace Dobby {
 
         public void EnableDebugBtn_Click(object sender, EventArgs e) => DoShit(1);
         public void DisableDebugBtn_Click(object sender, EventArgs e) => DoShit(0);
-
         public void RestoredDebugBtn_Click(object sender, EventArgs e) => DoShit(2);
-
-
         public void CustomDebugBtn_Click(object sender, EventArgs e) // => DoShit(3);
             { // Just Edited Debug Menus, Some Things May Be Replaced
 
