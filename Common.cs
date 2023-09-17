@@ -146,7 +146,8 @@ namespace Dobby {
            "* 3.28.97.267 | HoverString For Ignore TitleID Button, Misc Formatting Changes",
            "* 3.29.98.270 | Replaced Method For Checking Games With Similar Hash Function To PS4DebugPage, As Checking 0x60 Doesn't Give Different Results For Each exe Once All Are Supported. Related Changes, Formatting",
            "* 3.29.99.271 | Commented Out Old Group Of Labeled Int32 Checks Used In EbootPatchPage, Replaced With More Thorough Version Supporting Every Executable It Needs To And Replaced EbootPathPageCheck ints with them",
-           "* 3.29.99.277 | Added Try/Catch For EbootPatchPage Stream Creation In Case Same File Is Selected Twice In A Row, Misc Changes And Formatting"
+           "* 3.29.99.277 | Added Try/Catch For EbootPatchPage Stream Creation In Case Same File Is Selected Twice In A Row, Misc Changes And Formatting",
+           "* 3.29.99.278 | Misc"
 
             // TODO:
             // - Replace InfoHover Functionality With Alternative, Prefferably One Recreating Native HoverInfo BS That Doesn't Work For Most Controls
@@ -775,7 +776,7 @@ namespace Dobby {
 
         public static FileStream MainStream;
 
-        public static string ActiveFilePath;
+        public static string ActiveFilePath, ActiveGameID;
 
         public static bool IsActiveFilePCExe, MainStreamIsOpen;
 

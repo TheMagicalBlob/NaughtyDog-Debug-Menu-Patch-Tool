@@ -318,6 +318,34 @@ namespace Dobby {
 
         }
 
+        public void BrowseButton_Click(object sender, EventArgs e) {
+            if(e == null) {
+                GameInfoLabel.Text = "Select An Executable To Patch First.";
+                Refresh();
+            }
+            FileDialog f = new OpenFileDialog {
+                Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
+                Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned / Decrypted (The First 4 Bytes Will Be .elf If It Is)"
+            };
+
+            if(f.ShowDialog() == DialogResult.OK) {
+                ActiveFilePath = ExecutablePathBox.Text = f.FileName;
+
+                try { MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite); }
+                catch(IOException Oop) {
+                    Dev.DebugOut(Oop.Message); SetInfoLabelText("Access Denied, File In Use Elsewhere");
+                    return;
+                }
+
+                ActiveGameID = GameInfoLabel.Text = GetGameId();
+
+                RestoredDebugBtn.Text = RestoredDebugBtn.Text.Remove(RestoredDebugBtn.Text.LastIndexOf(' ')) + ApplyButtonText();
+
+                MainStreamIsOpen = true;
+                IsActiveFilePCExe = false;
+            }
+        }
+
         /* Start Of EbootPatchPage Specific Functions                                                                                                                      */
 
         public string ApplyButtonText() {
@@ -455,33 +483,6 @@ namespace Dobby {
             }
 
 
-        }
-        private void BrowseButton_Click(object sender, EventArgs e) {
-            if (e == null) {
-                GameInfoLabel.Text = "Select An Executable To Patch First.";
-                Refresh();
-            }
-            FileDialog f = new OpenFileDialog {
-                Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
-                Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned / Decrypted (The First 4 Bytes Will Be .elf If It Is)"
-            };
-            if (f.ShowDialog() == DialogResult.OK) {
-                ActiveFilePath = ExecutablePathBox.Text = f.FileName;
-
-                try
-                    { MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite); }
-                catch(IOException Oop) {
-                    Dev.DebugOut(Oop.Message); SetInfoLabelText("Access Denied, File In Use Elsewhere");
-                    return;
-                }
-
-                GameInfoLabel.Text = GetGameId();
-                
-                RestoredDebugBtn.Text = RestoredDebugBtn.Text.Remove(RestoredDebugBtn.Text.LastIndexOf(' ')) + ApplyButtonText();
-                
-                MainStreamIsOpen = true;
-                IsActiveFilePCExe = false;
-            }
         }
 
         /*
