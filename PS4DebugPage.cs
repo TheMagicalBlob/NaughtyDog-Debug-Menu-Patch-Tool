@@ -701,7 +701,6 @@ namespace Dobby {
                         default: Dev.DebugOut("!!! " + TempStringStore); return "UnknownGameVersion";
                     }
                 }
-                Dev.DebugOut($"Fell Out The Window, Ow");
                 return "UnknownGameVersion";
             }
             catch(Exception Tabarnack) {

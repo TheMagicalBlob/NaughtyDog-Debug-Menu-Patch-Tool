@@ -145,7 +145,8 @@ namespace Dobby {
            "* 3.28.97.264 | Fixed Some UC3 Addresses That Were Somehow Missing",
            "* 3.28.97.267 | HoverString For Ignore TitleID Button, Misc Formatting Changes",
            "* 3.29.98.270 | Replaced Method For Checking Games With Similar Hash Function To PS4DebugPage, As Checking 0x60 Doesn't Give Different Results For Each exe Once All Are Supported. Related Changes, Formatting",
-           "* 3.29.99.271 | Commented Out Old Group Of Labeled Int32 Checks Used In EbootPatchPage, Replaced With More Thorough Version Supporting Every Executable It Needs To And Replaced EbootPathPageCheck ints with them"
+           "* 3.29.99.271 | Commented Out Old Group Of Labeled Int32 Checks Used In EbootPatchPage, Replaced With More Thorough Version Supporting Every Executable It Needs To And Replaced EbootPathPageCheck ints with them",
+           "* 3.29.99.277 | Added Try/Catch For EbootPatchPage Stream Creation In Case Same File Is Selected Twice In A Row, Misc Changes And Formatting"
 
             // TODO:
             // - Replace InfoHover Functionality With Alternative, Prefferably One Recreating Native HoverInfo BS That Doesn't Work For Most Controls
@@ -204,47 +205,6 @@ namespace Dobby {
             }
         }
 
-        #region PS4DBG_Variables
-        ////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///-- PS4 DEBUG OFFSETS AND OTHER VARIABLES --\\\
-        ////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
-
-        public static PS4DBG geo;
-        public delegate void LabelTextDel(string message);
-        public static LabelTextDel SetLabelText = SetInfoLabelText;
-        public static Thread ConnectionThread = new Thread(new ThreadStart(PS4DebugPage.Connect));
-        public static SHA256 hash;
-
-
-        public static readonly byte // BECAUSE I FUCKING CAN, YOU TWAT
-            on = 0x01,
-            off = 0x00
-        ;
-        public static bool PS4DebugIsConnected, WaitForConnection = true, IgnoreTitleID = false;
-
-        public static int
-            Executable,   // Active PS4DBG Process ID
-            attempts = 0, // Connect() retries
-            ProcessCount = 0,
-            DebugModePointerOffset = 0xDEADDAD
-        ;
-
-        public static readonly string[] ExecutablesNames = new string[] {
-            "eboot.bin",
-            "t2.elf",
-            "t2-rtm.elf",
-            "t2-final.elf",
-            "t2-final-pgo-lto.elf",
-            "big2-ps4_Shipping.elf",
-            "big3-ps4_Shipping.elf",
-            "big4.elf",
-            "big4-final.elf",
-            "big4-mp.elf",
-            "big4-final-pgo-lto.elf",
-            "eboot-mp.elf",
-        };
-        public static string ProcessName = "Jack Shit", GameVersion = "UnknownGameVersion", TitleID;
-        #endregion
         
 
         /// <summary> Sets The Info Label String Based On The Currently Hovered Control </summary>
@@ -570,13 +530,55 @@ namespace Dobby {
         }
         #endregion
 
-        #region PS4 / PC exe Patch Page Shared Variables And Functions
+        #region PS4DBG_Variables
+        ////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///-- PS4 DEBUG OFFSETS AND OTHER VARIABLES --\\\
+        ////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
+
+        public static PS4DBG geo;
+        public delegate void LabelTextDel(string message);
+        public static LabelTextDel SetLabelText = SetInfoLabelText;
+        public static Thread ConnectionThread = new Thread(new ThreadStart(PS4DebugPage.Connect));
+        public static SHA256 hash;
+
+
+        public static readonly byte
+            on = 0x01, off = 0x00
+        ;
+        public static bool PS4DebugIsConnected, WaitForConnection = true, IgnoreTitleID = false;
+
+        public static int
+            Executable,   // Active PS4DBG Process ID
+            attempts = 0, // Connect() retries
+            ProcessCount = 0,
+            DebugModePointerOffset = 0xDEADDAD
+        ;
+
+        public static readonly string[] ExecutablesNames = new string[] {
+            "eboot.bin",
+            "t2.elf",
+            "t2-rtm.elf",
+            "t2-final.elf",
+            "t2-final-pgo-lto.elf",
+            "big2-ps4_Shipping.elf",
+            "big3-ps4_Shipping.elf",
+            "big4.elf",
+            "big4-final.elf",
+            "big4-mp.elf",
+            "big4-final-pgo-lto.elf",
+            "eboot-mp.elf",
+        };
+        public static string ProcessName = "Jack Shit", GameVersion = "UnknownGameVersion", TitleID;
+        #endregion
+
+
+        #region Debug Offsets & Game Identifiers
         /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///-- DEBUG MODE OFFSETS AND GAME INDENTIFIERS --\\\
         /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
         public const int
-            // Read And Hashed 160 bytes at 0x5100 as SHA256 Then Checked As Int32
+            // Read 160 bytes at 0x5100 as SHA256 Then Checked As Int32 Because I'm An Idiot And Don't Feel Like Correcting It Since It Works
             UC1100   = -679355525,
             UC1102   = 104877429,
             UC2100   = 414674483,
@@ -619,9 +621,9 @@ namespace Dobby {
             UC4MP133     = 486460629,  // Also The Lost Legacy 1.09 MP
             UC4MPBETA100 = 1813169088,  // CUSA04051
             UC4MPBETA109 = -1103269419, // CUSA04021
-            UCTLLMP100   = 469274180,
-            UCTLLSP100   = -1269602830,
-            UCTLLSP108   = 2141223617,  // UCTLL 1.08/1.09 SP Identical
+            TLLMP100   = 469274180,
+            TLLSP100   = -1269602830,
+            TLLSP10X   = 2141223617,  // UCTLL 1.08/1.09 SP Identical
             T1R100 = 306377542,
             T1R109 = -1391237605,
             T1R110 = -915963582,
@@ -672,6 +674,7 @@ namespace Dobby {
             TLL10X = 35227448
         ;
         */
+
         public const int
             // Debug Offsets (0xEB)
             T1R100Debug = 0x5C5A,
@@ -693,13 +696,19 @@ namespace Dobby {
             UC3102Debug = 0x578227,
             UC4100Debug = 0x1297DE,   //! TEST ME
             UC413XDebug = 0x1CCDEE,   //! TEST ME
+            UC4132MPDebug = 0x1CCEA9, //! TEST ME
             UC4133MPDebug = 0x1CCEA9, //! TEST ME
-            TLL100Debug = 0x1CCFDE,   //! TEST ME
-            TLL10XDebug = 0x1CD01E    //! TEST ME
+            TLL100MPDebug = 0x1CCE25,
+            TLL100Debug   = 0x1CCFDA,
+            TLLMP108Debug = 0x1CCE85,
+            TLLMP109Debug = 0x1CCEA5,
+            TLL10XDebug   = 0x1CD01A
         ;
 
+        /// <summary> Int Value Used To Identify The Specific Executable Selected By The User.<br/>(0x1EC + 0x1F8) <br/>VERY LIMITED </summary>
         public const int
-            T1X101 = 42695168 + 16007532,  // 0x1EC + 0x1F8 | Fuck you, I'm keeping them seperate
+            // PC Eboot Identifiers - Very Limited Though | 0x1EC + 0x1F8 (Kept Seperate Through Immense Laziness)
+            T1X101 = 42695168 + 16007532,
             T1XL101 = 42670080 + 16010844,
             T1X1015 = 2228464 + 95625728,
             T1XL1015 = 2228464 + 95627776,
@@ -711,7 +720,7 @@ namespace Dobby {
             T1XL102 = 2228464 + 95634432
         ;
 
-        /// <summary> Offsets To Enable The Debug Mode in the pc version of the game </summary>
+        /// <summary> Offsets To Enable The Debug Mode in the pc version of the game<br/>(0x97 -> 0x8F) </summary>
         public const int
             // PC Debug Offsets (0x97 -> 0x8F)
             T1X101Debug = 0x3B66CD,
@@ -726,270 +735,35 @@ namespace Dobby {
             T1XL102Debug = 0x3B6885
         ;
 
+        //////////////////////////\/\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///-- DEBUG MODE OFFSETS AND GAME INDENTIFIERS END --\\\
+        //////////////////////////\/\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        #endregion
 
 
 
-        //////////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///-- EBOOTPATCHPAGE VARIABLES AND FUNCTIONS + QUALITY OF LIFE/BOOTSETTINGS OFFSET POINTERS  --\\\
-        //////////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        #region EbootPatchPage Variables & Functions
+        /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///-- EBOOTPATCHPAGE VARIABLES AND FUNCTIONS  --\\\
+        /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-        /// <summary>
-        ///  Byte arrays to be used as pointers with the BootSettings custom function
-        /// </summary>
-        public static readonly byte[]
-            UC1100DisableFPS = new byte[] { 0x70, 0x89, 0x99, 0x00 }, // fill null bytes just in case of repeat uses with alternate options
-            UC1102DisableFPS = new byte[] { 0xF0, 0xC9, 0x95, 0x00 }, // 
-            UC2100DisableFPS = new byte[] { 0x31, 0x14, 0xE7, 0x00 }, // 
-            UC2102DisableFPS = new byte[] { 0x61, 0xDE, 0x05, 0x01 }, // 
-            UC3100DisableFPS = new byte[] { 0xC9, 0x66, 0x43, 0x01 }, // 
-            UC3102DisableFPS = new byte[] { 0x69, 0xAF, 0x7B, 0x01 }, // 
-            UC4100DisableFPS = new byte[] { }, // 
-            UC4133DisableFPS = new byte[] { }, // 
-          UC4133MPDisableFPS = new byte[] { }, // 
-            TLL100DisableFPS = new byte[] { }, // 
-            TLL107DisableFPS = new byte[] { }, // 
-            TLL108DisableFPS = new byte[] { }, // 
-            TLL109DisableFPS = new byte[] { }, // 
-            T1R100DisableFPS = new byte[] { }, // 
-            T1R109DisableFPS = new byte[] { }, // 
-            T1R110DisableFPS = new byte[] { }, // 
-            T1R111DisableFPS = new byte[] { }, // 
-            T2100DisableFPS = new byte[] { }, // 
-            T2101DisableFPS = new byte[] { }, // 
-            T2102DisableFPS = new byte[] { }, // 
-            T2105DisableFPS = new byte[] { }, // 
-            T2107DisableFPS = new byte[] { }, // 
-            T2108DisableFPS = new byte[] { }, // 
-            T2109DisableFPS = new byte[] { }  // 
+        public static bool[] CDO = new bool[11]; // Custom Debug Options - 11th is For Eventually Keeping Track Of Whether The Options Were Left Default (true if changed)
+
+        public static int
+            MenuScale,
+            MenuOpacity = 2
         ;
-
-        /// <summary>
-        ///  ProgPauseOnOpen Offsets
-        /// </summary>
-        public static readonly byte[]
-            UC1100ProgPause = new byte[] { 0x88, 0xF9, 0xA9, 0x00 }, // 0xE9F988
-            UC1102ProgPause = new byte[] { 0x88, 0x38, 0xA6, 0x00 }, // 0xE63888
-            UC2100ProgPause = new byte[] { 0x78, 0xC7, 0xEB, 0x00 }, // 0x12bc778
-            UC2102ProgPause = new byte[] { 0xE0, 0x95, 0x05, 0x01 }, // 0x14595e0
-            UC3100ProgPause = new byte[] { 0x30, 0xFA, 0x42, 0x01 }, // 0x182fa30
-            UC3102ProgPause = new byte[] { 0x50, 0x4A, 0x7B, 0x01 }, // 0x1bb4a50
-            UC4100ProgPause = new byte[] { }, // 
-            UC4133ProgPause = new byte[] { }, // 
-          UC4133MPProgPause = new byte[] { }, // 
-            TLL100ProgPause = new byte[] { }, // 
-            TLL107ProgPause = new byte[] { }, // 
-            TLL108ProgPause = new byte[] { }, // 
-            TLL109ProgPause = new byte[] { }, // 
-            T1R100ProgPause = new byte[] { }, // 
-            T1R109ProgPause = new byte[] { }, // 
-            T1R110ProgPause = new byte[] { }, // 
-            T1R111ProgPause = new byte[] { }, // 
-            T2100ProgPause = new byte[] { }, // 
-            T2101ProgPause = new byte[] { }, // 
-            T2102ProgPause = new byte[] { }, // 
-            T2105ProgPause = new byte[] { }, // 
-            T2107ProgPause = new byte[] { }, // 
-            T2108ProgPause = new byte[] { }, // 
-            T2109ProgPause = new byte[] { }  // 
-        ;
-
-        /// <summary>
-        ///  ProgPauseOnExitOffsets
-        /// </summary>
-        public static readonly byte[]
-            UC1100ProgPauseOnExit = new byte[] { 0x8C, 0xF9, 0xA9, 0x00 }, // 0xE9F98C
-            UC1102ProgPauseOnExit = new byte[] { 0x89, 0x38, 0xA6, 0x00 }, // 0xE63889 
-            UC2100ProgPauseOnExit = new byte[] { 0x79, 0xC7, 0xEB, 0x00 }, // 0x12bc779
-            UC2102ProgPauseOnExit = new byte[] { 0xE1, 0x95, 0x05, 0x01 }, // 0x14595e1
-            UC3100ProgPauseOnExit = new byte[] { 0x31, 0xFA, 0x42, 0x01 }, // 0x14595e1
-            UC3102ProgPauseOnExit = new byte[] { 0x51, 0x4A, 0x7B, 0x01 }, // 0x1bb4a51 USELESS
-            UC4100ProgPauseOnExit = new byte[] { }, // 
-            UC4133ProgPauseOnExit = new byte[] { }, // 
-          UC4133MPProgPauseOnExit = new byte[] { }, // 
-            TLL100ProgPauseOnExit = new byte[] { }, // 
-            TLL107ProgPauseOnExit = new byte[] { }, // 
-            TLL108ProgPauseOnExit = new byte[] { }, // 
-            TLL109ProgPauseOnExit = new byte[] { }, // 
-            T1R100ProgPauseOnExit = new byte[] { }, // 
-            T1R109ProgPauseOnExit = new byte[] { }, // 
-            T1R110ProgPauseOnExit = new byte[] { }, // 
-            T1R111ProgPauseOnExit = new byte[] { }, // 
-            T2100ProgPauseOnExit = new byte[] { }, // 
-            T2101ProgPauseOnExit = new byte[] { }, // 
-            T2102ProgPauseOnExit = new byte[] { }, // 
-            T2105ProgPauseOnExit = new byte[] { }, // 
-            T2107ProgPauseOnExit = new byte[] { }, // 
-            T2108ProgPauseOnExit = new byte[] { }, // 
-            T2109ProgPauseOnExit = new byte[] { } // 
-        ;
-
-        /// <summary>
-        ///  Swap Circle And Square Offsets
-        /// </summary>
-        public static readonly byte[]
-            UC1100PausedIcon = new byte[] { 0x8A, 0xF9, 0xA9, 0x00 }, // 0xD98970
-            UC1102PausedIcon = new byte[] { 0x8A, 0x38, 0xA6, 0x00 }, // 0xE6388A
-            UC2100PausedIcon = new byte[] { 0x7A, 0xC7, 0xEB, 0x00 }, // 0x12bc77a
-            UC2102PausedIcon = new byte[] { 0xE2, 0x95, 0x05, 0x00 }, // 0x14595e2
-            UC3100PausedIcon = new byte[] { 0x32, 0xFA, 0x42, 0x00 }, // 0x182fa32
-            UC3102PausedIcon = new byte[] { 0x52, 0x4A, 0x7B, 0x00 }, // 0x1bb4a52
-            UC4100PausedIcon = new byte[] { }, // 
-            UC4133PausedIcon = new byte[] { }, // 
-          UC4133MPPausedIcon = new byte[] { }, // 
-            TLL100PausedIcon = new byte[] { }, // 
-            TLL107PausedIcon = new byte[] { }, // 
-            TLL108PausedIcon = new byte[] { }, // 
-            TLL109PausedIcon = new byte[] { }, // 
-            T1R100PausedIcon = new byte[] { }, // 
-            T1R109PausedIcon = new byte[] { }, // 
-            T1R110PausedIcon = new byte[] { }, // 
-            T1R111PausedIcon = new byte[] { }, // 
-            T2100PausedIcon = new byte[] { }, // 
-            T2101PausedIcon = new byte[] { }, // 
-            T2102PausedIcon = new byte[] { }, // 
-            T2105PausedIcon = new byte[] { }, // 
-            T2107PausedIcon = new byte[] { }, // 
-            T2108PausedIcon = new byte[] { }, // 
-            T2109PausedIcon = new byte[] { }  // 
-        ;
-
-        /// <summary>
-        ///  Swap Circle And Square Offsets
-        /// </summary>
-        public static readonly byte[]
-            UC4100SwapCircle = new byte[] { }, // 
-            UC4133SwapCircle = new byte[] { }, // 
-          UC4133MPSwapCircle = new byte[] { }, // 
-            TLL100SwapCircle = new byte[] { }, // 
-            TLL107SwapCircle = new byte[] { }, // 
-            TLL108SwapCircle = new byte[] { }, // 
-            TLL109SwapCircle = new byte[] { }, // 
-            T1R100SwapCircle = new byte[] { }, // 
-            T1R109SwapCircle = new byte[] { }, // 
-            T1R110SwapCircle = new byte[] { }, // 
-            T1R111SwapCircle = new byte[] { }, // 
-            T2100SwapCircle = new byte[] { }, // 
-            T2101SwapCircle = new byte[] { }, // 
-            T2102SwapCircle = new byte[] { }, // 
-            T2105SwapCircle = new byte[] { }, // 
-            T2107SwapCircle = new byte[] { }, // 
-            T2108SwapCircle = new byte[] { }, // 
-            T2109SwapCircle = new byte[] { }  // 
-        ;
-
-
-        /// <summary>
-        ///  Suppress Active Task Display
-        /// </summary>
-        public static readonly byte[]
-            UC1100HideTaskInfo = new byte[] { 0x41, 0x7B, 0x99, 0x00 }, // 0xD97B41
-            UC1102HideTaskInfo = new byte[] { 0x41, 0x7B, 0x99, 0x00 }, // 0xFA7E41
-            UC2100HideTaskInfo = new byte[] { 0xC9, 0x05, 0xE7, 0x00 }, // 0x12705C9
-            UC2102HideTaskInfo = new byte[] { 0xF9, 0xCF, 0x05, 0x01 }, // 0x145cff9
-            UC3100HideTaskInfo = new byte[] { 0x90, 0x1F, 0xA2, 0x01 }, // 0x1e21f90
-            UC3102HideTaskInfo = new byte[] { 0x60, 0xEE, 0xB3, 0x01 }, // 0x1f3ee60
-            UC4100HideTaskInfo = new byte[] { }, // 
-            UC4133HideTaskInfo = new byte[] { }, // 
-          UC4133MPHideTaskInfo = new byte[] { }, // 
-            TLL100HideTaskInfo = new byte[] { }, // 
-            TLL107HideTaskInfo = new byte[] { }, // 
-            TLL108HideTaskInfo = new byte[] { }, // 
-            TLL109HideTaskInfo = new byte[] { }, // 
-            T2100HideTaskInfo = new byte[] { }, // 
-            T2101HideTaskInfo = new byte[] { }, // 
-            T2102HideTaskInfo = new byte[] { }, // 
-            T2105HideTaskInfo = new byte[] { }, // 
-            T2107HideTaskInfo = new byte[] { }, // 
-            T2108HideTaskInfo = new byte[] { }, // 
-            T2109HideTaskInfo = new byte[] { }  // 
-        ;
-
-        public static readonly byte[]
-
-            // Right Align Offsets
-            UC3100RightAlign = new byte[] { 0x34, 0xFA, 0x42, 0x01 }, // 0x182FA34
-            UC3102RightAlign = new byte[] { 0x54, 0x4A, 0x7B, 0x01 }, // 0x1bb4a54
-            UC4100RightAlign = new byte[] { }, // 
-            UC4133RightAlign = new byte[] { }, // 
-          UC4133MPRightAlign = new byte[] { }, // 
-            TLL100RightAlign = new byte[] { }, // 
-            TLL107RightAlign = new byte[] { }, // 
-            TLL108RightAlign = new byte[] { }, // 
-            TLL109RightAlign = new byte[] { }, // 
-            T1R100RightAlign = new byte[] { }, // 
-            T1R109RightAlign = new byte[] { }, // 
-            T1R110RightAlign = new byte[] { }, // 
-            T1R111RightAlign = new byte[] { }, // 
-            T2100RightAlign = new byte[] { }, // 
-            T2101RightAlign = new byte[] { }, // 
-            T2102RightAlign = new byte[] { }, // 
-            T2105RightAlign = new byte[] { }, // 
-            T2107RightAlign = new byte[] { }, // 
-            T2108RightAlign = new byte[] { }, // 
-            T2109RightAlign = new byte[] { }  // 
-        ;
-
-        /// <summary>
-        ///  Right Align Offsets
-        /// </summary>
-        public static readonly byte[]
-            UC3100RightMargin = new byte[] { 0x38, 0xFA, 0x42, 0x01 }, // 0x182FA38
-            UC3102RightMargin = new byte[] { 0x58, 0x4A, 0x7B, 0x01 }, // 0x1bb4a58
-            UC4100RightMargin = new byte[] { }, // 
-            UC4133RightMargin = new byte[] { }, // 
-          UC4133MPRightMargin = new byte[] { }, // 
-            TLL100RightMargin = new byte[] { }, // 
-            TLL107RightMargin = new byte[] { }, // 
-            TLL108RightMargin = new byte[] { }, // 
-            TLL109RightMargin = new byte[] { }, // 
-            T1R100RightMargin = new byte[] { }, // 
-            T1R109RightMargin = new byte[] { }, // 
-            T1R110RightMargin = new byte[] { }, // 
-            T1R111RightMargin = new byte[] { }, // 
-            T2100RightMargin = new byte[] { }, // 
-            T2101RightMargin = new byte[] { }, // 
-            T2102RightMargin = new byte[] { }, // 
-            T2105RightMargin = new byte[] { }, // 
-            T2107RightMargin = new byte[] { }, // 
-            T2108RightMargin = new byte[] { }, // 
-            T2109RightMargin = new byte[] { }  // 
-        ;
-
-        /// <summary>
-        ///  novis (Disable All Visibility) Offsets, with the memory addresses as comments 
-        /// </summary>
-        public static readonly byte[]
-            UC1100Novis = new byte[] { 0x6B, 0xF9, 0x98, 0x00 }, // 0xd8f96b
-            UC1102Novis = new byte[] { 0x9B, 0x59, 0x95, 0x00 }, // 0xD5599B
-            UC2100Novis = new byte[] { 0xFB, 0x61, 0xE6, 0x00 }, // 0x12661fb 
-            UC2102Novis = new byte[] { 0xCB, 0x0D, 0x05, 0x01 }, // 0x1450dcb
-            UC3100Novis = new byte[] { 0x34, 0xFA, 0x42, 0x01 }, // 0x182FA34
-            UC3102Novis = new byte[] { 0x8B, 0x80, 0x6E, 0x01 }, // 0x1ae808b
-            UC4101Novis = new byte[] { }, // 
-            UC4133Novis = new byte[] { }, // 
-          UC4133MPNovis = new byte[] { }, // 
-            TLL100Novis = new byte[] { }, // 
-            TLL107Novis = new byte[] { }, // 
-            TLL108Novis = new byte[] { }, // 
-            TLL109Novis = new byte[] { }, // 
-            T1R100Novis = new byte[] { }, // 
-            T1R109Novis = new byte[] { }, // 
-            T1R110Novis = new byte[] { }, // 
-            T1R111Novis = new byte[] { }, // 
-            T2100Novis = new byte[] { 0x2C, 0x62, 0x01, 0x03 }, // 0x341622c
-            T2101Novis = new byte[] { }, // 
-            T2102Novis = new byte[] { }, // 
-            T2105Novis = new byte[] { }, // 
-            T2107Novis = new byte[] { 0x2C, 0x60, 0x01, 0x03 }, // 0x341602c
-            T2108Novis = new byte[] { }, // 
-            T2109Novis = new byte[] { 0x2C, 0x9E, 0x04, 0x03 }  // 0x3449e2c
-        ;
-
+        public static string[] ResultStrings = new string[] {
+            "Debug Menus Disabled",
+            "Debug Menus Enabled",
+            "Restored Menu Applied",
+            "Custom Menu Applied",
+        };
 
         public static byte[]
-            LocalExecutableHash,
+            LocalExecutableCheck,
             E9Jump = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 },
-            DebugDat = new byte[] { 0x8a, 0x8f, 0xf2, 0x3e, 0x00, 0x00, 0x84, 0xc9, 0x0f, 0x94, 0xc2, 0x84, 0xc9, 0x0f, 0x95, 0xc1, 0x88, 0x8f, 0x3d, 0x3f, 0x00, 0x00, 0x88, 0x97, 0x2f, 0x3f, 0x00, 0x00 },
+            DebugDat = new byte[] { 0x8a, 0x8f, 0xf2, 0x3e, 0x00, 0x00, 0x84, 0xc9, 0x0f, 0x94, 0xc2, 0x84, 0xc9, 0x0f, 0x95, 0xc1, 0x88, 0x8f, 0x3d, 0x3f, 0x00, 0x00, 0x88, 0x97, 0x2f, 0x3f, 0x00, 0x00 }, // Used To Find Debug Mode Addr In PC Executables, From What I Remember
             T2Debug = new byte[] { 0xb2, 0x00, 0xb0, 0x01 }, // Turns "Disable Debug Rendering" Off (b2 00) & Debug Mode On (b0 01)
             T2DebugOff = new byte[] { 0xb2, 0x01, 0x31, 0xc0 }
         ;
@@ -1005,7 +779,7 @@ namespace Dobby {
 
         public static bool IsActiveFilePCExe, MainStreamIsOpen;
 
-        public static int Game;
+        public static int Game, DebugAddressForSelectedGame;
 
         public static void WriteBytes(int offset, byte[] data) {
             MainStream.Position = offset;
@@ -1046,23 +820,268 @@ namespace Dobby {
             MainStream.Position = Address;
             return (byte)MainStream.ReadByte() == ByteToCompare;
         }
-        /// <summary>
-        /// Compare Data Read At The Given Address
+        /// <summary> Compare Data Read At The Given Address
         /// </summary>
-        /// <returns>True If The Data Read Matches The Array Given</returns>
+        /// <returns> True If The Data Read Matches The Array Given </returns>
         public static bool ArrayCmp(int Address, byte[] DataToCompare) {
             MainStream.Position = Address;
             byte[] DataPresent = new byte[DataToCompare.Length];
             MainStream.Read(DataPresent, 0, DataToCompare.Length);
             return DataPresent.SequenceEqual<byte>(DataToCompare);
         }
-        //
-        /////////////////////////////////////////////////////////////////////////////////
-        //
         #endregion
 
 
+
+        #region BootSettingsPointers
+        ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///-- QUALITY OF LIFE/BOOTSETTINGS OFFSET POINTERS  --\\\
+        ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+        /// <summary> Byte arrays to be used as pointers with the BootSettings custom function </summary>
+        public static readonly byte[]
+            UC1100DisableFPS = new byte[] { 0x70, 0x89, 0x99, 0x00 }, // fill null bytes just in case of repeat uses with alternate options
+            UC1102DisableFPS = new byte[] { 0xF0, 0xC9, 0x95, 0x00 }, // 
+            UC2100DisableFPS = new byte[] { 0x31, 0x14, 0xE7, 0x00 }, // 
+            UC2102DisableFPS = new byte[] { 0x61, 0xDE, 0x05, 0x01 }, // 
+            UC3100DisableFPS = new byte[] { 0xC9, 0x66, 0x43, 0x01 }, // 
+            UC3102DisableFPS = new byte[] { 0x69, 0xAF, 0x7B, 0x01 }, // 
+            UC4100DisableFPS = new byte[] { }, // 
+            UC4133DisableFPS = new byte[] { }, // 
+          UC4133MPDisableFPS = new byte[] { }, // 
+            TLL100DisableFPS = new byte[] { }, // 
+            TLL107DisableFPS = new byte[] { }, // 
+            TLL108DisableFPS = new byte[] { }, // 
+            TLL109DisableFPS = new byte[] { }, // 
+            T1R100DisableFPS = new byte[] { }, // 
+            T1R109DisableFPS = new byte[] { }, // 
+            T1R110DisableFPS = new byte[] { }, // 
+            T1R111DisableFPS = new byte[] { }, // 
+            T2100DisableFPS = new byte[] { }, // 
+            T2101DisableFPS = new byte[] { }, // 
+            T2102DisableFPS = new byte[] { }, // 
+            T2105DisableFPS = new byte[] { }, // 
+            T2107DisableFPS = new byte[] { }, // 
+            T2108DisableFPS = new byte[] { }, // 
+            T2109DisableFPS = new byte[] { }  // 
+        ;
+
+        /// <summary> ProgPauseOnOpen Offsets </summary>
+        public static readonly byte[]
+            UC1100ProgPause = new byte[] { 0x88, 0xF9, 0xA9, 0x00 }, // 0xE9F988
+            UC1102ProgPause = new byte[] { 0x88, 0x38, 0xA6, 0x00 }, // 0xE63888
+            UC2100ProgPause = new byte[] { 0x78, 0xC7, 0xEB, 0x00 }, // 0x12bc778
+            UC2102ProgPause = new byte[] { 0xE0, 0x95, 0x05, 0x01 }, // 0x14595e0
+            UC3100ProgPause = new byte[] { 0x30, 0xFA, 0x42, 0x01 }, // 0x182fa30
+            UC3102ProgPause = new byte[] { 0x50, 0x4A, 0x7B, 0x01 }, // 0x1bb4a50
+            UC4100ProgPause = new byte[] { }, // 
+            UC4133ProgPause = new byte[] { }, // 
+          UC4133MPProgPause = new byte[] { }, // 
+            TLL100ProgPause = new byte[] { }, // 
+            TLL107ProgPause = new byte[] { }, // 
+            TLL108ProgPause = new byte[] { }, // 
+            TLL109ProgPause = new byte[] { }, // 
+            T1R100ProgPause = new byte[] { }, // 
+            T1R109ProgPause = new byte[] { }, // 
+            T1R110ProgPause = new byte[] { }, // 
+            T1R111ProgPause = new byte[] { }, // 
+            T2100ProgPause = new byte[] { }, // 
+            T2101ProgPause = new byte[] { }, // 
+            T2102ProgPause = new byte[] { }, // 
+            T2105ProgPause = new byte[] { }, // 
+            T2107ProgPause = new byte[] { }, // 
+            T2108ProgPause = new byte[] { }, // 
+            T2109ProgPause = new byte[] { }  // 
+        ;
+
+        /// <summary> ProgPauseOnExitOffsets </summary>
+        public static readonly byte[]
+            UC1100ProgPauseOnExit = new byte[] { 0x8C, 0xF9, 0xA9, 0x00 }, // 0xE9F98C
+            UC1102ProgPauseOnExit = new byte[] { 0x89, 0x38, 0xA6, 0x00 }, // 0xE63889 
+            UC2100ProgPauseOnExit = new byte[] { 0x79, 0xC7, 0xEB, 0x00 }, // 0x12bc779
+            UC2102ProgPauseOnExit = new byte[] { 0xE1, 0x95, 0x05, 0x01 }, // 0x14595e1
+            UC3100ProgPauseOnExit = new byte[] { 0x31, 0xFA, 0x42, 0x01 }, // 0x14595e1
+            UC3102ProgPauseOnExit = new byte[] { 0x51, 0x4A, 0x7B, 0x01 }, // 0x1bb4a51 USELESS
+            UC4100ProgPauseOnExit = new byte[] { }, // 
+            UC4133ProgPauseOnExit = new byte[] { }, // 
+          UC4133MPProgPauseOnExit = new byte[] { }, // 
+            TLL100ProgPauseOnExit = new byte[] { }, // 
+            TLL107ProgPauseOnExit = new byte[] { }, // 
+            TLL108ProgPauseOnExit = new byte[] { }, // 
+            TLL109ProgPauseOnExit = new byte[] { }, // 
+            T1R100ProgPauseOnExit = new byte[] { }, // 
+            T1R109ProgPauseOnExit = new byte[] { }, // 
+            T1R110ProgPauseOnExit = new byte[] { }, // 
+            T1R111ProgPauseOnExit = new byte[] { }, // 
+            T2100ProgPauseOnExit = new byte[] { }, // 
+            T2101ProgPauseOnExit = new byte[] { }, // 
+            T2102ProgPauseOnExit = new byte[] { }, // 
+            T2105ProgPauseOnExit = new byte[] { }, // 
+            T2107ProgPauseOnExit = new byte[] { }, // 
+            T2108ProgPauseOnExit = new byte[] { }, // 
+            T2109ProgPauseOnExit = new byte[] { } // 
+        ;
+
+        /// <summary> Swap Circle And Square Offsets </summary>
+        public static readonly byte[]
+            UC1100PausedIcon = new byte[] { 0x8A, 0xF9, 0xA9, 0x00 }, // 0xD98970
+            UC1102PausedIcon = new byte[] { 0x8A, 0x38, 0xA6, 0x00 }, // 0xE6388A
+            UC2100PausedIcon = new byte[] { 0x7A, 0xC7, 0xEB, 0x00 }, // 0x12bc77a
+            UC2102PausedIcon = new byte[] { 0xE2, 0x95, 0x05, 0x00 }, // 0x14595e2
+            UC3100PausedIcon = new byte[] { 0x32, 0xFA, 0x42, 0x00 }, // 0x182fa32
+            UC3102PausedIcon = new byte[] { 0x52, 0x4A, 0x7B, 0x00 }, // 0x1bb4a52
+            UC4100PausedIcon = new byte[] { }, // 
+            UC4133PausedIcon = new byte[] { }, // 
+          UC4133MPPausedIcon = new byte[] { }, // 
+            TLL100PausedIcon = new byte[] { }, // 
+            TLL107PausedIcon = new byte[] { }, // 
+            TLL108PausedIcon = new byte[] { }, // 
+            TLL109PausedIcon = new byte[] { }, // 
+            T1R100PausedIcon = new byte[] { }, // 
+            T1R109PausedIcon = new byte[] { }, // 
+            T1R110PausedIcon = new byte[] { }, // 
+            T1R111PausedIcon = new byte[] { }, // 
+            T2100PausedIcon = new byte[] { }, // 
+            T2101PausedIcon = new byte[] { }, // 
+            T2102PausedIcon = new byte[] { }, // 
+            T2105PausedIcon = new byte[] { }, // 
+            T2107PausedIcon = new byte[] { }, // 
+            T2108PausedIcon = new byte[] { }, // 
+            T2109PausedIcon = new byte[] { }  // 
+        ;
+
+        /// <summary> Swap Circle And Square Offsets </summary>
+        public static readonly byte[]
+            UC4100SwapCircle = new byte[] { }, // 
+            UC4133SwapCircle = new byte[] { }, // 
+          UC4133MPSwapCircle = new byte[] { }, // 
+            TLL100SwapCircle = new byte[] { }, // 
+            TLL107SwapCircle = new byte[] { }, // 
+            TLL108SwapCircle = new byte[] { }, // 
+            TLL109SwapCircle = new byte[] { }, // 
+            T1R100SwapCircle = new byte[] { }, // 
+            T1R109SwapCircle = new byte[] { }, // 
+            T1R110SwapCircle = new byte[] { }, // 
+            T1R111SwapCircle = new byte[] { }, // 
+            T2100SwapCircle = new byte[] { }, // 
+            T2101SwapCircle = new byte[] { }, // 
+            T2102SwapCircle = new byte[] { }, // 
+            T2105SwapCircle = new byte[] { }, // 
+            T2107SwapCircle = new byte[] { }, // 
+            T2108SwapCircle = new byte[] { }, // 
+            T2109SwapCircle = new byte[] { }  // 
+        ;
+
+
+        /// <summary> Suppress Active Task Display </summary>
+        public static readonly byte[]
+            UC1100HideTaskInfo = new byte[] { 0x41, 0x7B, 0x99, 0x00 }, // 0xD97B41
+            UC1102HideTaskInfo = new byte[] { 0x41, 0x7B, 0x99, 0x00 }, // 0xFA7E41
+            UC2100HideTaskInfo = new byte[] { 0xC9, 0x05, 0xE7, 0x00 }, // 0x12705C9
+            UC2102HideTaskInfo = new byte[] { 0xF9, 0xCF, 0x05, 0x01 }, // 0x145cff9
+            UC3100HideTaskInfo = new byte[] { 0x90, 0x1F, 0xA2, 0x01 }, // 0x1e21f90
+            UC3102HideTaskInfo = new byte[] { 0x60, 0xEE, 0xB3, 0x01 }, // 0x1f3ee60
+            UC4100HideTaskInfo = new byte[] { }, // 
+            UC4133HideTaskInfo = new byte[] { }, // 
+          UC4133MPHideTaskInfo = new byte[] { }, // 
+            TLL100HideTaskInfo = new byte[] { }, // 
+            TLL107HideTaskInfo = new byte[] { }, // 
+            TLL108HideTaskInfo = new byte[] { }, // 
+            TLL109HideTaskInfo = new byte[] { }, // 
+            T2100HideTaskInfo = new byte[] { }, // 
+            T2101HideTaskInfo = new byte[] { }, // 
+            T2102HideTaskInfo = new byte[] { }, // 
+            T2105HideTaskInfo = new byte[] { }, // 
+            T2107HideTaskInfo = new byte[] { }, // 
+            T2108HideTaskInfo = new byte[] { }, // 
+            T2109HideTaskInfo = new byte[] { }  // 
+        ;
+
+        /// <summary> Menu Right Align Offsets </summary>
+        public static readonly byte[]
+            UC3100RightAlign = new byte[] { 0x34, 0xFA, 0x42, 0x01 }, // 0x182FA34
+            UC3102RightAlign = new byte[] { 0x54, 0x4A, 0x7B, 0x01 }, // 0x1bb4a54
+            UC4100RightAlign = new byte[] { }, // 
+            UC4133RightAlign = new byte[] { }, // 
+          UC4133MPRightAlign = new byte[] { }, // 
+            TLL100RightAlign = new byte[] { }, // 
+            TLL107RightAlign = new byte[] { }, // 
+            TLL108RightAlign = new byte[] { }, // 
+            TLL109RightAlign = new byte[] { }, // 
+            T1R100RightAlign = new byte[] { }, // 
+            T1R109RightAlign = new byte[] { }, // 
+            T1R110RightAlign = new byte[] { }, // 
+            T1R111RightAlign = new byte[] { }, // 
+            T2100RightAlign = new byte[] { }, // 
+            T2101RightAlign = new byte[] { }, // 
+            T2102RightAlign = new byte[] { }, // 
+            T2105RightAlign = new byte[] { }, // 
+            T2107RightAlign = new byte[] { }, // 
+            T2108RightAlign = new byte[] { }, // 
+            T2109RightAlign = new byte[] { }  // 
+        ;
+
+        /// <summary> Right Margin Offsets </summary>
+        public static readonly byte[]
+            UC3100RightMargin = new byte[] { 0x38, 0xFA, 0x42, 0x01 }, // 0x182FA38
+            UC3102RightMargin = new byte[] { 0x58, 0x4A, 0x7B, 0x01 }, // 0x1bb4a58
+            UC4100RightMargin = new byte[] { }, // 
+            UC4133RightMargin = new byte[] { }, // 
+          UC4133MPRightMargin = new byte[] { }, // 
+            TLL100RightMargin = new byte[] { }, // 
+            TLL107RightMargin = new byte[] { }, // 
+            TLL108RightMargin = new byte[] { }, // 
+            TLL109RightMargin = new byte[] { }, // 
+            T1R100RightMargin = new byte[] { }, // 
+            T1R109RightMargin = new byte[] { }, // 
+            T1R110RightMargin = new byte[] { }, // 
+            T1R111RightMargin = new byte[] { }, // 
+            T2100RightMargin = new byte[] { }, // 
+            T2101RightMargin = new byte[] { }, // 
+            T2102RightMargin = new byte[] { }, // 
+            T2105RightMargin = new byte[] { }, // 
+            T2107RightMargin = new byte[] { }, // 
+            T2108RightMargin = new byte[] { }, // 
+            T2109RightMargin = new byte[] { }  // 
+        ;
+
+        /// <summary> novis (Disable All Visibility) Offsets, with the memory addresses as comments </summary>
+        public static readonly byte[]
+            UC1100Novis = new byte[] { 0x6B, 0xF9, 0x98, 0x00 }, // 0xd8f96b
+            UC1102Novis = new byte[] { 0x9B, 0x59, 0x95, 0x00 }, // 0xD5599B
+            UC2100Novis = new byte[] { 0xFB, 0x61, 0xE6, 0x00 }, // 0x12661fb 
+            UC2102Novis = new byte[] { 0xCB, 0x0D, 0x05, 0x01 }, // 0x1450dcb
+            UC3100Novis = new byte[] { 0x34, 0xFA, 0x42, 0x01 }, // 0x182FA34
+            UC3102Novis = new byte[] { 0x8B, 0x80, 0x6E, 0x01 }, // 0x1ae808b
+            UC4101Novis = new byte[] { }, // 
+            UC4133Novis = new byte[] { }, // 
+          UC4133MPNovis = new byte[] { }, // 
+            TLL100Novis = new byte[] { }, // 
+            TLL107Novis = new byte[] { }, // 
+            TLL108Novis = new byte[] { }, // 
+            TLL109Novis = new byte[] { }, // 
+            T1R100Novis = new byte[] { }, // 
+            T1R109Novis = new byte[] { }, // 
+            T1R110Novis = new byte[] { }, // 
+            T1R111Novis = new byte[] { }, // 
+            T2100Novis = new byte[] { 0x2C, 0x62, 0x01, 0x03 }, // 0x341622c
+            T2101Novis = new byte[] { }, // 
+            T2102Novis = new byte[] { }, // 
+            T2105Novis = new byte[] { }, // 
+            T2107Novis = new byte[] { 0x2C, 0x60, 0x01, 0x03 }, // 0x341602c
+            T2108Novis = new byte[] { }, // 
+            T2109Novis = new byte[] { 0x2C, 0x9E, 0x04, 0x03 }  // 0x3449e2c
+        ;
+        #endregion
+
+
+        #region Debug Class
         public class Dev {
+            ////////////\\\\\\\\\\\\
+            ///-- DEBUG CLASS  --\\\
+            ////////////\\\\\\\\\\\\
+
 #if !DEBUG
             public const bool REL = true;
 
@@ -1260,10 +1279,10 @@ namespace Dobby {
                 if(MainStreamIsOpen) { MainStream.Dispose(); }
                 ActiveFilePath = FilePath;
                 MainStream = new FileStream(FilePath, FileMode.Open, FileAccess.ReadWrite);
-                MainStream.Position = 0x60; MainStream.Read(LocalExecutableHash, 0, 4);
-                Game = BitConverter.ToInt32(LocalExecutableHash, 0);
+                MainStream.Position = 0x60; MainStream.Read(LocalExecutableCheck, 0, 4);
+                Game = BitConverter.ToInt32(LocalExecutableCheck, 0);
                 try {
-                    ActiveForm.Controls.Find("GameInfoLabel", true)[0].Text = EbootPatchPage.DetermineCurrentGameId();
+                    ActiveForm.Controls.Find("GameInfoLabel", true)[0].Text = EbootPatchPage.GetGameId();
                     ActiveForm.Controls.Find("ResetBtn", true)[0].Visible = MainStreamIsOpen = true;
                     ActiveForm.Controls.Find("CustomDebugOptionsLabel", true)[0].Visible = IsActiveFilePCExe = false;
                 }
@@ -1314,5 +1333,10 @@ namespace Dobby {
 
 #endif
         }
+        /////////////\/\\\\\\\\\\\\
+        ///-- DEBUG CLASS END --\\\
+        /////////////\/\\\\\\\\\\\\
+        #endregion
+
     }
 }

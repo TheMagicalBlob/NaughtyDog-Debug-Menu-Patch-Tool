@@ -550,7 +550,8 @@ namespace Dobby {
                 case T1R109: GSBtn_EnableButtons(new int[] { });
                     Dev.DebugOut("T1R 1.09");
                     break;
-                case T1R11X: GSBtn_EnableButtons(new int[] { });
+                case T1R110:
+                case T1R111: GSBtn_EnableButtons(new int[] { });
                     Dev.DebugOut("T1R 1.1X");
                     break;
                 case T2100: GSBtn_EnableButtons(new int[] { 0, 1, 2, 3, 5, 6});
@@ -706,10 +707,10 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
                 ActiveFilePath = ExecutablePathBox.Text = OpenedFile.FileName;
 
                 MainStream = File.Open(OpenedFile.FileName, FileMode.Open, FileAccess.ReadWrite);
-                MainStream.Position = 0x60; MainStream.Read(LocalExecutableHash, 0, 4);
-                Game = BitConverter.ToInt32(LocalExecutableHash, 0);
+                MainStream.Position = 0x60; MainStream.Read(LocalExecutableCheck, 0, 4);
+                Game = BitConverter.ToInt32(LocalExecutableCheck, 0);
 
-                GameInfoLabel.Text = EbootPatchPage.DetermineCurrentGameId();
+                GameInfoLabel.Text = EbootPatchPage.GetGameId();
 
                 MainStreamIsOpen = true;
                 CustomDebugOptionsLabel.Visible = IsActiveFilePCExe = false;
@@ -803,7 +804,8 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
                 case T1R109:
                     break;
 
-                case T1R11X:
+                case T1R110:
+                case T1R111:
                     break;
 
                 case T2100:
@@ -859,7 +861,8 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
 
                 case T1R109: return 0;
 
-                case T1R11X: return 0;
+                case T1R110:
+                case T1R111: return 0;
 
                 case T2100: return 0;
 

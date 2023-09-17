@@ -22,107 +22,6 @@ namespace Dobby {
                 ExecutablePathBox.Text = ActiveFilePath;
         }
 
-        public bool[] CDO = new bool[11]; // Custom Debug Options - 11th is For Eventually Keeping Track Of Whether The Options Were Left Default (true if changed)
-
-        const byte    // Simple Readability Addition, I know it's silly
-            on = 0x01,
-            off = 0x00
-        ;
-
-        public readonly byte[]
-            T2Debug = new byte[] { 0xb2, 0x00, 0xb0, 0x01 }, // Turns "Disable Debug Rendering" Off (b2 00) & Debug Mode On (b0 01)
-            T2DebugOff = new byte[] { 0xb2, 0x01, 0x31, 0xc0 }
-        ;
-
-        public int
-            MenuScale,
-            MenuOpacity = 2
-        ;
-        public string[] ResultStrings = new string[] {
-            "Debug Menus Disabled",
-            "Debug Menus Enabled",
-            "Restored Menu Applied",
-            "Custom Menu Applied",
-        };
-
-        public readonly ulong[] BaseDebugAddresses = new ulong[] {
-
-        };
-
-        // Yes, I know an array could be easier to deal with in code, but I want them all labeled individually so bite me
-        public const int
-
-            // Game Identifiers. Read 4 bytes at 0x60 as an integer to get it
-            T1R100 = 22033680,
-            T1R109 = 21444016,
-            T1R11X = 21446072,
-            T2100 = 46552012,
-            T2101 = 46785692,
-            T2102 = 46718028,
-            T2105 = 46826436,
-            T2107 = 46832260,
-            T2108 = 48176392,
-            T2109 = 48176456,
-            UC1100 = 9818208,
-            UC1102 = 9568920,
-            UC2100 = 14655236,
-            UC2102 = 16663728,
-            UC3100 = 20277852,
-            UC3102 = 23365872,
-            UC4100 = 36229424,
-            UC4101 = 37122024,
-            UC4102 = 37136552,
-            UC4103 = 37137792,
-            UC4104 = 37144904,
-            UC4105 = 37145288,
-            UC4106 = 37150008,
-            UC4108 = 33453704,
-            UC4110 = 33454632,
-            UC4111 = 33460888,
-            UC4112 = 33515840,
-            UC413X = 33886256, // UC4 1.32 & 1.33 SP are identical
-            UC4132MP = 35875608,
-            UC4133MP = 35877432,
-            TLL100 = 35178432,
-            TLL10X = 35227448,
-            T1X101 = 42695168 + 16007532,  // 0x1EC + 0x1F8 | Fuck you, I'm keeping them seperate
-            T1XL101 = 42670080 + 16010844,
-            T1X1015 = 2228464 + 95625728,
-            T1XL1015 = 2228464 + 95627776,
-            T1X1016 = 42698752 + 16007532,
-            T1XL1016 = 42673664 + 16010828,
-            T1X1017 = 42702336 + 16007852,
-            T1XL1017 = 42677248 + 16011148,
-            T1X102 = 2228464 + 95631360,
-            T1XL102 = 2228464 + 95634432
-            ;
-
-        public const int
-            // Debug Offsets (0xEB)
-            T1R100Debug = 0x5C5A,
-            T1R109Debug = 0x61A4,
-            T1R110Debug = 0x61A4,
-            T1R111Debug = 0x61A4,
-            T2100Debug = 0x1D6398,
-            T2101Debug = 0x1D6418,
-            T2102Debug = 0x1D6468,
-            T2105Debug = 0x1D66A8,
-            T2107Debug = 0x1D66B8,
-            T2108Debug = 0x6181F8,
-            T2109Debug = 0x6181F8,
-            UC1100Debug = 0x102057,
-            UC1102Debug = 0x102187,
-            UC2100Debug = 0x1EB297,
-            UC2102Debug = 0x3F7A26,
-            UC3100Debug = 0x168EB7,
-            UC3102Debug = 0x578227,
-            UC4100Debug = 0x1297DE,   //! TEST ME
-            UC413XDebug = 0x1CCDEE,   //! TEST ME
-            UC4133MPDebug = 0x1CCEA9, //! TEST ME
-            TLL100Debug = 0x1CCFDE,   //! TEST ME
-            TLL10XDebug = 0x1CD01E    //! TEST ME
-        ;
-
         public void InitializeComponent() {
             this.GameInfoLabel = new System.Windows.Forms.Label();
             this.BrowseButton = new System.Windows.Forms.Button();
@@ -419,26 +318,29 @@ namespace Dobby {
 
         }
 
-        /* End Of Repeated Functions
-============================================================================================================================================================================
-        Start Of EbootPatchPage Specific Functions                                                                                                                      */
+        /* Start Of EbootPatchPage Specific Functions                                                                                                                      */
 
         public string ApplyButtonText() {
             switch(Game) {
-                case TLL100:
-                case TLL10X:
+                case TLLMP100:
+                case TLLSP100:
+                case TLLSP10X:
                     RestoredDebugBtn.Enabled = false; return " Restored/Custom";
                 default: RestoredDebugBtn.Enabled = false; return " !Restored/Custom!";
                 case T1R100:
                 case T1R109:
-                case T1R11X:
+                case T1R110:
+                case T1R111:
                 case UC1100:
                 case UC1102:
                 case UC2100:
                 case UC2102:
                 case UC3100:
                 case UC3102:
-                case UC413X:
+                case UC4MP127_28:
+                case UC4SP127:
+                case UC4MP132:
+                case UC4MP133:
                     return " Restored";
                 case UC4100:
                 case UC4101:
@@ -457,21 +359,20 @@ namespace Dobby {
             }
         }
 
-        public static string DetermineCurrentGameId() {
+        public static string GetGameId() {
 
             // Make Sure The File's Actually Even A .elf
-            MainStream.Position = 0;
-            MainStream.Read(LocalExecutableHash, 0, 4);
-            if(BitConverter.ToInt32(LocalExecutableHash, 0) != 1179403647) return $"Executable Still Encrypted | Must Be Decrypted/Unsigned";
+            LocalExecutableCheck = new byte[160];
+
+            MainStream.Read(LocalExecutableCheck, 0, 4);
+            if(BitConverter.ToInt32(LocalExecutableCheck, 0) != 1179403647) return $"Executable Still Encrypted | Must Be Decrypted/Unsigned";
             else Dev.DebugOut("Executable Is Unsigned, All Good");
 
 
-            LocalExecutableHash = new byte[160];
-            MainStream.Position = 0x5100; MainStream.Read(LocalExecutableHash, 0, 160);
+            MainStream.Position = 0x5100; MainStream.Read(LocalExecutableCheck, 0, 160);
             var Hash = SHA256.Create();
-            var HashArray = Hash.ComputeHash(LocalExecutableHash);
-            Dev.DebugOut("HashLen: " + HashArray.Length);
-            Game = BitConverter.ToInt32(HashArray, 0);
+            var HashArray = Hash.ComputeHash(LocalExecutableCheck);
+            Game = BitConverter.ToInt32(HashArray, 0); // Meh
 
             /*
             bool CheckDebugState(int[] offsets, byte[] Data) {
@@ -494,63 +395,63 @@ namespace Dobby {
             */
 
             switch(Game) {
-                case UC1100:       return "Uncharted 1 1.00";
-                case UC1102:       return "Uncharted 1 1.02";
-                case UC2100:       return "Uncharted 2 1.00";
-                case UC2102:       return "Uncharted 2 1.02";
-                case UC3100:       return "Uncharted 3 1.00";
-                case UC3102:       return "Uncharted 3 1.02";
-                case UC4100:       return "Uncharted 4 1.00";
-                case UC4101:       return "Uncharted 4 1.01";
-                case UC4102:       return "Uncharted 4 1.02";
-                case UC4103:       return "Uncharted 4 1.03";
-                case UC4104:       return "Uncharted 4 1.04";
-                case UC4105:       return "Uncharted 4 1.05";
-                case UC4106:       return "Uncharted 4 1.06";
-                case UC4108:       return "Uncharted 4 1.08";
-                case UC4110:       return "Uncharted 4 1.10";
-                case UC4111:       return "Uncharted 4 1.11";
-                case UC4112:       return "Uncharted 4 1.12";
-                case UC4113:       return "Uncharted 4 1.13";
-                case UC4115:       return "Uncharted 4 1.15";
-                case UC4116:       return "Uncharted 4 1.16";
-                case UC4117:       return "Uncharted 4 1.17";
-                case UC4118:       return "Uncharted 4 1.18 SP/MP";
-                case UC4119:       return "Uncharted 4 1.19 SP/MP";
-                case UC4MP120:     return "Uncharted 4 1.20 MP";
-                case UC4SP120:     return "Uncharted 4 1.20 SP";
-                case UC4MP121:     return "Uncharted 4 1.21 MP";
-                case UC4SP121:     return "Uncharted 4 1.21 SP";
-                case UC4MP122:     return "Uncharted 4 1.22 MP";
-                case UC4SP122_23:  return "Uncharted 4 1.22/23 SP";
-                case UC4MP123:     return "Uncharted 4 1.23 MP";
-                case UC4MP124:     return "Uncharted 4 1.24 MP";
-                case UC4SP124_25:  return "Uncharted 4 1.24/25 SP";
-                case UC4MP125:     return "Uncharted 4 1.25 MP";
-                case UC4MP127_28:  return "Uncharted 4 1.27/28 MP";
-                case UC4SP127:     return "Uncharted 4 1.27+ SP";
-                case UC4MP129:     return "Uncharted 4 1.29 MP";
-                case UC4MP130:     return "Uncharted 4 1.30 MP";
-                case UC4MP131:     return "Uncharted 4 1.31 MP";
-                case UC4MP132:     return "Uncharted 4/TLL 1.32/1.08 MP";
-                case UC4MP133:     return "Uncharted 4/TLL 1.33/1.09 MP";
-                case UC4MPBETA100: return "CUSA04051 Uncharted 4 MP Beta 1.00";
-                case UC4MPBETA109: return "CUSA04021 Uncharted 4 MP Beta 1.09";
-                case UCTLLMP100:   return "Uncharted Lost Legacy 1.00 MP";
-                case UCTLLSP100:   return "Uncharted Lost Legacy 1.00 SP";
-                case UCTLLSP108:   return "Uncharted Lost Legacy 1.08 SP";
-                case T1R100:       return "The Last Of Us 1.00";
-                case T1R109:       return "The Last Of Us 1.09";
-                case T1R110:       return "The Last Of Us 1.10";
-                case T1R111:       return "The Last Of Us 1.11";
-                case T2100:        return "The Last Of Us 2 1.00";
-                case T2101:        return "The Last Of Us 2 1.01";
-                case T2102:        return "The Last Of Us 2 1.02";
-                case T2105:        return "The Last Of Us 2 1.05";
-                case T2107:        return "The Last Of Us 2 1.07";
-                case T2108:        return "The Last Of Us 2 1.08";
-                case T2109:        return "The Last Of Us 2 1.09";
-                default:           return "UnknownGame";
+                case UC1100:       DebugAddressForSelectedGame = 0x0; return "Uncharted 1 1.00";
+                case UC1102:       DebugAddressForSelectedGame = 0x0; return "Uncharted 1 1.02";
+                case UC2100:       DebugAddressForSelectedGame = 0x0; return "Uncharted 2 1.00";
+                case UC2102:       DebugAddressForSelectedGame = 0x0; return "Uncharted 2 1.02";
+                case UC3100:       DebugAddressForSelectedGame = 0x0; return "Uncharted 3 1.00";
+                case UC3102:       DebugAddressForSelectedGame = 0x0; return "Uncharted 3 1.02";
+                case UC4100:       DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.00";
+                case UC4101:       DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.01";
+                case UC4102:       DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.02";
+                case UC4103:       DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.03";
+                case UC4104:       DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.04";
+                case UC4105:       DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.05";
+                case UC4106:       DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.06";
+                case UC4108:       DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.08";
+                case UC4110:       DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.10";
+                case UC4111:       DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.11";
+                case UC4112:       DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.12";
+                case UC4113:       DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.13";
+                case UC4115:       DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.15";
+                case UC4116:       DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.16";
+                case UC4117:       DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.17";
+                case UC4118:       DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.18 SP/MP";
+                case UC4119:       DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.19 SP/MP";
+                case UC4MP120:     DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.20 MP";
+                case UC4SP120:     DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.20 SP";
+                case UC4MP121:     DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.21 MP";
+                case UC4SP121:     DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.21 SP";
+                case UC4MP122:     DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.22 MP";
+                case UC4SP122_23:  DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.22/23 SP";
+                case UC4MP123:     DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.23 MP";
+                case UC4MP124:     DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.24 MP";
+                case UC4SP124_25:  DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.24/25 SP";
+                case UC4MP125:     DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.25 MP";
+                case UC4MP127_28:  DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.27/28 MP";
+                case UC4SP127:     DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.27+ SP";
+                case UC4MP129:     DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.29 MP";
+                case UC4MP130:     DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.30 MP";
+                case UC4MP131:     DebugAddressForSelectedGame = 0x0; return "Uncharted 4 1.31 MP";
+                case UC4MP132:     DebugAddressForSelectedGame = TLLMP108Debug; return "Uncharted 4 1.32/TLL 1.08 MP";
+                case UC4MP133:     DebugAddressForSelectedGame = TLLMP109Debug; return "Uncharted 4 1.33/TLL 1.09 MP";
+                case UC4MPBETA100: DebugAddressForSelectedGame = 0x0; return "CUSA04051 Uncharted 4 MP Beta 1.00";
+                case UC4MPBETA109: DebugAddressForSelectedGame = 0x0; return "CUSA04021 Uncharted 4 MP Beta 1.09";
+                case TLLMP100:     DebugAddressForSelectedGame = TLL100MPDebug; return "Uncharted Lost Legacy 1.00 MP";
+                case TLLSP100:     DebugAddressForSelectedGame = TLL100Debug; return "Uncharted Lost Legacy 1.00 SP";
+                case TLLSP10X:     DebugAddressForSelectedGame = TLL10XDebug; return "Uncharted Lost Legacy 1.08 SP";
+                case T1R100:       DebugAddressForSelectedGame = T1R100Debug; return "The Last Of Us 1.00";
+                case T1R109:       DebugAddressForSelectedGame = T1R109Debug; return "The Last Of Us 1.09";
+                case T1R110:       DebugAddressForSelectedGame = T1R110Debug; return "The Last Of Us 1.10";
+                case T1R111:       DebugAddressForSelectedGame = T1R111Debug; return "The Last Of Us 1.11";
+                case T2100:        DebugAddressForSelectedGame = T2100Debug; return "The Last Of Us 2 1.00";
+                case T2101:        DebugAddressForSelectedGame = T2100Debug; return "The Last Of Us 2 1.01";
+                case T2102:        DebugAddressForSelectedGame = T2100Debug; return "The Last Of Us 2 1.02";
+                case T2105:        DebugAddressForSelectedGame = T2100Debug; return "The Last Of Us 2 1.05";
+                case T2107:        DebugAddressForSelectedGame = T2100Debug; return "The Last Of Us 2 1.07";
+                case T2108:        DebugAddressForSelectedGame = T2100Debug; return "The Last Of Us 2 1.08";
+                case T2109:        DebugAddressForSelectedGame = T2100Debug; return "The Last Of Us 2 1.09";
+                default:           DebugAddressForSelectedGame = 0xBADBEEF; return $"UnknownGame {Game}";
             }
 
 
@@ -567,9 +468,14 @@ namespace Dobby {
             if (f.ShowDialog() == DialogResult.OK) {
                 ActiveFilePath = ExecutablePathBox.Text = f.FileName;
 
-                MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite);
+                try
+                    { MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite); }
+                catch(IOException Oop) {
+                    Dev.DebugOut(Oop.Message); SetInfoLabelText("Access Denied, File In Use Elsewhere");
+                    return;
+                }
 
-                GameInfoLabel.Text = DetermineCurrentGameId();
+                GameInfoLabel.Text = GetGameId();
                 
                 RestoredDebugBtn.Text = RestoredDebugBtn.Text.Remove(RestoredDebugBtn.Text.LastIndexOf(' ')) + ApplyButtonText();
                 
@@ -668,6 +574,10 @@ namespace Dobby {
         }
         */
 
+        public byte BaseDebugByte(int OnOrOff) {
+            return (byte)(OnOrOff == 0 ? 0x75 : 0xEB);
+        }
+
         /// <summary>
         /// 0: Disable | 1: Enable | 2: Restored | 3: Custom 
         /// </summary>
@@ -684,6 +594,13 @@ namespace Dobby {
                 return;
             }
 
+            WriteByte(DebugAddressForSelectedGame, BaseDebugByte(PatchType));
+
+            if(PatchType < 2) {
+                SetInfoLabelText(ResultStrings[PatchType]);
+                return;
+            }
+
             switch(Game) {
                 default:
                     MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported\n" + Game);
@@ -694,7 +611,8 @@ namespace Dobby {
                 case T1R109:
                     SetInfoLabelText("No Restored Menu Available, Try 1.10/1.11");
                     break;
-                case T1R11X:
+                case T1R110:
+                case T1R111:
                     T1R11X_Patches(PatchType);
                     SetInfoLabelText($"The Last Of Us Remastered 1.1X Restored Menu Applied");
                     break;
@@ -740,23 +658,20 @@ namespace Dobby {
                     SetInfoLabelText("Uncharted 3 1.00 Restored Debug Applied");
                     break;
                 case UC3102:
-                    SetInfoLabelText("Uncharted 3 1.02 Restored Debug N/A Yet");
                     break;
                 case UC4100:
-                    SetInfoLabelText("Uncharted 4 1.00 Restoration Not Available (Try 1.33 MP)");
                     break;
-                case UC413X:
-                    SetInfoLabelText("Uncharted 4 1.3X Restoration Not Available, Try MP");
+                case UC4SP127:
                     break;
-                case UC4133MP:
+                case UC4MP133:
                     UC4MP133_Patches(PatchType);
                     SetInfoLabelText("Restored Multiplayer Debug Menu Patch Applied");
                     break;
-                case TLL100:
-                    SetInfoLabelText("The Lost Legacy 1.00 Restoration Not Available");
+                case TLLMP100:
                     break;
-                case TLL10X:
-                    SetInfoLabelText("The Lost Legacy 1.0X Restoration Not Available");
+                case TLLSP100:
+                    break;
+                case TLLSP10X:
                     break;
             }
         }
@@ -769,63 +684,13 @@ namespace Dobby {
 
             switch (Game) {
                 default:
-                    MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported");
-                    break;
-                case T1R100:
-                    break;
-                case T1R109:
-                    break;
-                case T1R11X:
-                    SetInfoLabelText("\"Custom\" Menu Applied");
-                    break;
-                case T2100:
-                    SetInfoLabelText("Try 1.09");
-                    break;
-                case T2101:
-                    SetInfoLabelText("Try 1.09");
-                    break;
-                case T2102:
-                    SetInfoLabelText("Try 1.09");
-                    break;
-                case T2105:
-                    SetInfoLabelText("Try 1.09");
-                    break;
-                case T2107:
-                    SetInfoLabelText("Try 1.09");
-                    break;
-                case T2108:
-                    SetInfoLabelText("Try 1.09");
-                    break;
-                case T2109:
-                    SetInfoLabelText("The Last Of Us Part II 1.09 Custom Debug Enabled");
-                    break;
-
-                case UC1100: // UC1 1.00
-                    break;
-                case UC1102:
+                    MessageBox.Show("TMP UC2 1.00 Only");
                     break;
                 case UC2100: // UC2 1.00 ?
-                    byte[] skip = E9Jump;
                     WriteByte(0x1EB296, 0x01);
                     WriteByte(new int[] { 0x6C9C, 0x436CEE }, 0x1C);
-                    WriteBytes(new int[] { 0x6D5E, 0x1C4708, 0x1C4C60, 0x436D71 }, new byte[][] { skip, new byte[] { 0x1C, 0x00, 0x00, 0x00 }, skip, skip });
-                    SetInfoLabelText("Uncharted 2 1.00 Restored Debug Applied");
-                    break;
-                case UC3100:
-                    SetInfoLabelText("Sorry, This Version Isn't Supported Just Yet");
-                    break;
-                case UC4100:
-                    SetInfoLabelText("Sorry, Uncharted 4 1.00 Isn't Supported Just Yet");
-                    break;
-                case UC413X:
-                    SetInfoLabelText("Sorry, Uncharted 4 1.3X Isn't Supported Just Yet");
-                    break;
-                case UC4133MP: // UC4 1.33 MP
-                    SetInfoLabelText("Resto- I Mean Custom Menu Applied");
-                    break;
-                case TLL100:
-                    break;
-                case TLL10X:
+                    WriteBytes(new int[] { 0x6D5E, 0x1C4708, 0x1C4C60, 0x436D71 }, new byte[][] { E9Jump, new byte[] { 0x1C, 0x00, 0x00, 0x00 }, E9Jump, E9Jump });
+                    SetInfoLabelText("Uncharted 2 1.00 Custom Debug Applied");
                     break;
             }
         }
@@ -857,7 +722,8 @@ namespace Dobby {
                 case T1R109:
                     SetInfoLabelText("Sorry, The Last Of Us Remastered 1.09 Isn't Supported Just Yet");
                     break;
-                case T1R11X:
+                case T1R110:
+                case T1R111:
                     SetInfoLabelText("Sorry, The Last Of Us Remastered 1.10/1.11 Isn't Supported Just Yet");
                     break;
                 case T2100:
@@ -903,15 +769,6 @@ namespace Dobby {
                     break;
                 case UC4100:
                     SetInfoLabelText("Sorry, Uncharted 4 1.00 Isn't Supported Just Yet");
-                    break;
-                case UC413X:
-                    SetInfoLabelText("Sorry, Uncharted 4 1.3X Isn't Supported Just Yet");
-                    break;
-                case TLL100:
-                    SetInfoLabelText("Sorry, The Lost Legacy 1.00 Isn't Supported Just Yet");
-                    break;
-                case TLL10X:
-                    SetInfoLabelText("Sorry, The Lost Legacy 1.08\\1.09 Isn't Supported Just Yet");
                     break;
             }
         }

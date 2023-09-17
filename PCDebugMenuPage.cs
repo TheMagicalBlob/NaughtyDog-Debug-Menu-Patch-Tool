@@ -355,12 +355,12 @@ namespace Dobby {
         public static Thread DebugScanThread = new Thread(new ThreadStart(ScanForDebugAddr));
         public static void ScanForDebugAddr() { 
             int TmpAddr = 0;
-            LocalExecutableHash = new byte[28];
+            LocalExecutableCheck = new byte[28];
             string StartTime = DateTime.Now.ToString();
 Read:       MainStream.Position = TmpAddr;
-            MainStream.Read(LocalExecutableHash, 0, 28);
+            MainStream.Read(LocalExecutableCheck, 0, 28);
             TmpAddr++;
-            if (LocalExecutableHash.SequenceEqual(DebugDat)) {
+            if (LocalExecutableCheck.SequenceEqual(DebugDat)) {
                 GuessedDebug = (int)MainStream.Position - 5;
                 MainStream.Position = GuessedDebug;
                 MainStream.WriteByte(0x8F);
@@ -371,7 +371,7 @@ Read:       MainStream.Position = TmpAddr;
         }
 
         public string UpdateGameInfoLabel() { //!
-            var VersionString = $"Unknown Version {BitConverter.ToString(LocalExecutableHash):X}";
+            var VersionString = $"Unknown Version {BitConverter.ToString(LocalExecutableCheck):X}";
 
             switch (Game) {
                 default:
@@ -447,10 +447,10 @@ Read:       MainStream.Position = TmpAddr;
                 ActiveFilePath = ExecutablePathBox.Text = f.FileName;
                 MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite);
 
-                MainStream.Position = 0x1EC; MainStream.Read(LocalExecutableHash, 0, 4);
-                Game = BitConverter.ToInt32(LocalExecutableHash, 0);
-                MainStream.Position = 0x1F8; MainStream.Read(LocalExecutableHash, 0, 4);
-                Game += BitConverter.ToInt32(LocalExecutableHash, 0);
+                MainStream.Position = 0x1EC; MainStream.Read(LocalExecutableCheck, 0, 4);
+                Game = BitConverter.ToInt32(LocalExecutableCheck, 0);
+                MainStream.Position = 0x1F8; MainStream.Read(LocalExecutableCheck, 0, 4);
+                Game += BitConverter.ToInt32(LocalExecutableCheck, 0);
 
                 GameInfoLabel.Text = UpdateGameInfoLabel();
                 IsActiveFilePCExe = true;
