@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.Remoting.Contexts;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
@@ -147,7 +146,7 @@ namespace Dobby {
            "* 3.29.98.270 | Replaced Method For Checking Games With Similar Hash Function To PS4DebugPage, As Checking 0x60 Doesn't Give Different Results For Each exe Once All Are Supported. Related Changes, Formatting",
            "* 3.29.99.271 | Commented Out Old Group Of Labeled Int32 Checks Used In EbootPatchPage, Replaced With More Thorough Version Supporting Every Executable It Needs To And Replaced EbootPathPageCheck ints with them",
            "* 3.29.99.277 | Added Try/Catch For EbootPatchPage Stream Creation In Case Same File Is Selected Twice In A Row, Misc Changes And Formatting",
-           "* 3.29.99.278 | Misc"
+           "* 3.29.99.281 | Added New UC4 1.00 - 1.33 Debug 0xEB/0x75 Offsets (UC4 MP Beta 1.00 & 1.09 Still Missing, All Others Only Need Testing), Misc Changes. Formatting"
 
             // TODO:
             // - Replace InfoHover Functionality With Alternative, Prefferably One Recreating Native HoverInfo BS That Doesn't Work For Most Controls
@@ -676,29 +675,45 @@ namespace Dobby {
         ;
         */
 
+
+        /// <summary> Debug Offsets For Various PS4 Naughty Dog Games (On:0xEB || Off:0x74) </summary>
         public const int
-            // Debug Offsets (0xEB)
-            T1R100Debug = 0x5C5A,
-            T1R109Debug = 0x61A4,
-            T1R110Debug = 0x61A4,
-            T1R111Debug = 0x61A4,
-            T2100Debug = 0x1D6398,
-            T2101Debug = 0x1D6418,
-            T2102Debug = 0x1D6468,
-            T2105Debug = 0x1D66A8,
-            T2107Debug = 0x1D66B8,
-            T2108Debug = 0x6181F8,
-            T2109Debug = 0x6181F8,
-            UC1100Debug = 0x102057,
-            UC1102Debug = 0x102187,
-            UC2100Debug = 0x1EB297,
-            UC2102Debug = 0x3F7A26,
-            UC3100Debug = 0x168EB7,
-            UC3102Debug = 0x578227,
-            UC4100Debug = 0x1297DE,   //! TEST ME
-            UC413XDebug = 0x1CCDEE,   //! TEST ME
-            UC4132MPDebug = 0x1CCEA9, //! TEST ME
-            UC4133MPDebug = 0x1CCEA9, //! TEST ME
+            T1R100Debug       = 0x5C5A,  //! TEST ME
+            T1R109Debug       = 0x61A4,  //! TEST ME
+            T1R110Debug       = 0x61A4,  //! TEST ME
+            T1R111Debug       = 0x61A4,  //! TEST ME
+            T2100Debug        = 0x1D6398, //! TEST ME
+            T2101Debug        = 0x1D6418, //! TEST ME
+            T2102Debug        = 0x1D6468, //! TEST ME
+            T2105Debug        = 0x1D66A8, //! TEST ME
+            T2107Debug        = 0x1D66B8, //! TEST ME
+            T2108Debug        = 0x6181F8, //! TEST ME
+            T2109Debug        = 0x6181F8, //! TEST ME
+            UC1100Debug       = 0x102057,
+            UC1102Debug       = 0x102187,
+            UC2100Debug       = 0x1EB297,
+            UC2102Debug       = 0x3F7A26,
+            UC3100Debug       = 0x168EB7,
+            UC3102Debug       = 0x578227,
+            UC4100Debug       = 0x5257DA,       //! TEST ME
+            UC4101_106Debug   = 0x12980E, //! TEST ME
+            UC4108_111Debug   = 0x1C738B, //! TEST ME
+            UC4112_113Debug   = 0x1C7CAB, //! TEST ME
+            UC4115Debug       = 0x41885E, //! TEST ME
+            UC4116Debug       = 0x41886E, //! TEST ME
+            UC4117Debug       = 0x4188DD, //! TEST ME
+            UC4118_119Debug   = 0x1CCC36, //! TEST ME
+            UC4120MPDebug     = 0x1CCDAA, //! TEST ME
+            UC4120SPDebug     = 0x1CCC0A, //! TEST ME
+            UC4121MPDebug     = 0x1CCE25, //! TEST ME
+            UC4121SPDebug     = 0x1CCDEA, //! TEST ME
+            UC4122_125MPDebug = 0x1CCE25, //! TEST ME
+            UC4122_125SPDebug = 0x1CCDEA, //! TEST ME
+            UC4127_132MPDebug = 0x1CCE85, //! TEST ME
+            UC4127_133SPDebug = 0x1CCDEA, //! TEST ME
+            UC4133MPDebug     = 0x1CCEA5, //! TEST ME
+            UC4MPBETA100Debug = 0xBADBEEF,
+            UC4MPBETA109Debug = 0xBADBEEF,
             TLL100MPDebug = 0x1CCE25,
             TLL100Debug   = 0x1CCFDA,
             TLLMP108Debug = 0x1CCE85,
@@ -1209,7 +1224,7 @@ namespace Dobby {
                             $"Pages: {Pages?[0]}, {Pages?[1]}, {Pages?[2]}, {Pages?[3]}",
                             $"Active Page ID: {Page} | InfoHasImportantString: {InfoHasImportantStr}",
                             $"TitleID: {TitleID} | Game Version: {GameVersion} |",
-                            $"Game: {Game} | pid:{Executable} | {ProcessName} | P {PS4DebugIsConnected} | W {WaitForConnection} | Thread: {ConnectionThread.ThreadState}",
+                            $"GameID: {ActiveGameID} | processname: {ProcessName} | PIC {PS4DebugIsConnected} | WFC {WaitForConnection}",
                             "",
                             $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled} | MousePos: {MousePosition}",
                             $"Control: {HoveredControl.Name} | {ControlType.Substring(ControlType.LastIndexOf('.') + 1)}",
