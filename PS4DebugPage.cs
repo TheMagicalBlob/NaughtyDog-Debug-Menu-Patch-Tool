@@ -575,7 +575,8 @@ namespace Dobby {
                         case "CUSA00554":
                         case "CUSA00556":
                         case "CUSA00557":
-                            GameVersion = "T1R";
+                        case "CUSA00559":
+                                GameVersion = "T1R";
                             break;
                         case "CUSA10249":
                         case "CUSA14006":
@@ -590,12 +591,19 @@ namespace Dobby {
                         case "CUSA02826":
                             GameVersion = "UCC";
                             break;
-                        case "CUSA00918":
                         case "CUSA00341":
-                        case "CUSA00001":
                         case "CUSA08342":
-                        case "CUSA08353":
+                        case "CUSA00912":
+                        case "CUSA00917":
+                        case "CUSA00918":
+                        case "CUSA04529":
                             GameVersion = "UC4";
+                            break;
+                        case "CUSA04030":
+                        case "CUSA04032":
+                        case "CUSA04034":
+                        case "CUSA04051":
+                                GameVersion = "UC4 MP Beta";
                             break;
                         case "CUSA07737":
                         case "CUSA07875":
@@ -775,7 +783,6 @@ namespace Dobby {
         /// <param name="Versions">Version Strings To Check Against GameVersion</param>
         public static void Toggle(ulong[] Addresses, string[] Versions) {
             try {
-                if(Addresses.Length != Versions.Length) Dev.DebugOut("Address And Version Arrays Are Different Lengths, Be Sure This Was Intentional");
                 if(PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName) {
                     var AddressIndex = 0;
                     foreach(string Version in Versions)
@@ -956,7 +963,7 @@ namespace Dobby {
             await Task.Run(CheckConnectionStatus);
             if(IgnoreTitleID) TitleID = "CUSA00341";
             if(!GameVersion.Contains("Unknown"))
-                Toggle(0x113408AE83);
+                Toggle(new ulong[] { 0x2bbf720, 0x2bc3720 }, new string[] { "1.00", "1.09" });
         }
         private async void UCTLLBtn(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
