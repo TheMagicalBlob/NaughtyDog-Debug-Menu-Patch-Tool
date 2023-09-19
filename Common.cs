@@ -147,7 +147,8 @@ namespace Dobby {
            "* 3.29.99.271 | Commented Out Old Group Of Labeled Int32 Checks Used In EbootPatchPage, Replaced With More Thorough Version Supporting Every Executable It Needs To And Replaced EbootPathPageCheck ints with them",
            "* 3.29.99.277 | Added Try/Catch For EbootPatchPage Stream Creation In Case Same File Is Selected Twice In A Row, Misc Changes And Formatting",
           "* 3.29.100.281 | Added New UC4 1.00 - 1.33 Debug 0xEB/0x75 Offsets (UC4 MP Beta 1.00 & 1.09 Still Missing, All Others Only Need Testing), Misc Changes. Formatting",
-          "* 3.29.102.281 | Added UC4 MP Beta Pointer Addresses, Replaced SINGLE Harcoded RAM Address (tf?), Added Params For UC4 MP Beta Detection On PS4DebugPage, Replaced Two Outright Wrong Title ID's For UC4, And Added One For TlouR | Retroactively fixed Previous Build #, I Didn't update It Correctly."
+          "* 3.29.102.281 | Added UC4 MP Beta Pointer Addresses, Replaced SINGLE Harcoded RAM Address (tf?), Added Params For UC4 MP Beta Detection On PS4DebugPage, Replaced Two Outright Wrong Title ID's For UC4, And Added One For TlouR | Retroactively fixed Previous Build #, I Didn't update It Correctly.",
+          "* 3.29.103.285 | Added Missing UC4 MP Beta Switch Case For PS4DebugPage, Game Would Never Have Been Detected :/. Also Added Error Popups In Case Game Check Fails (Backported .elf go brr)"
 
             // TODO:
             // - Replace InfoHover Functionality With Alternative, Prefferably One Recreating Native HoverInfo BS That Doesn't Work For Most Controls
@@ -621,7 +622,7 @@ namespace Dobby {
             UC4MP132     = 1923471472, // Also The Lost Legacy 1.08 MP
             UC4MP133     = 486460629,  // Also The Lost Legacy 1.09 MP
             UC4MPBETA100 = 1813169088,  // CUSA04051
-            UC4MPBETA109 = -1103269419, // CUSA04021
+            UC4MPBETA109 = -1103269419, // CUSA04051
             TLLMP100   = 469274180,
             TLLSP100   = -1269602830,
             TLLSP10X   = 2141223617,  // UCTLL 1.08/1.09 SP Identical
@@ -713,8 +714,8 @@ namespace Dobby {
             UC4127_132MPDebug = 0x1CCE85, //! TEST ME
             UC4127_133SPDebug = 0x1CCDEA, //! TEST ME
             UC4133MPDebug     = 0x1CCEA5, //! TEST ME
-            UC4MPBETA100Debug = 0xBADBEEF,
-            UC4MPBETA109Debug = 0xBADBEEF,
+            UC4MPBETA100Debug = 0x4C1B54,
+            UC4MPBETA109Debug = 0x4C1CC6,
             TLL100MPDebug = 0x1CCE25,
             TLL100Debug   = 0x1CCFDA,
             TLLMP108Debug = 0x1CCE85,

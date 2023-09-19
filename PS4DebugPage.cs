@@ -612,19 +612,22 @@ namespace Dobby {
                         case "CUSA08352":
                             GameVersion = "TLL";
                             break;
-                        default: return "UnknownTitleID";
+                        default:
+                                MessageBox.Show("Title ID Doesn't Match Any Known ID's, Try Enabling \"Ignore Title ID\" If You've Changed The Game's Title ID Yourself", "No Idea Which Game This Is");
+                                return "UnknownTitleID";
                     }
 
                     // Read A Spot In Memory To Determine Which Patch the Executable's From
                     switch(GameVersion) {
                         case "T1R":
-                            var T1Check = BitConverter.ToInt16(geo.ReadMemory(Executable, 0x4000F4, 2), 0);
-                            switch(T1Check) {
+                            var T1RCheck = BitConverter.ToInt16(geo.ReadMemory(Executable, 0x4000F4, 2), 0);
+                            switch(T1RCheck) {
                                 case 18432: return "1.00";
                                 case 3480:  return "1.09";
                                 case 4488:  return "1.10";
                                 case 4472:  return "1.11";
-                                default: Dev.DebugOut($"Error, Game Was T1R But None of The Checks Matched! || {T1Check}");
+                                default: Dev.DebugOut($"Error, Game Was T1R But None of The Checks Matched! || {T1RCheck}");
+                                    MessageBox.Show($"The Game Was Determined To Be The Last of Us: Remastered, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{T1RCheck} {TitleID}", "Error Finding App Version");
                                     return "UnknownT1RGameVersion";
                             }
                         case "T2":
@@ -639,6 +642,7 @@ namespace Dobby {
                                 case 30024882: return "1.08";
                                 case 30024914: return "1.09";
                                 default: Dev.DebugOut($"Error, Game Was T2 But None of The Checks Matched! || chk:{T2Check}");
+                                    MessageBox.Show($"The Game Was Determined To Be The Last of Us Part II, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{T2Check} {TitleID}", "Error Finding App Version");
                                     return "UnknownT2GameVersion";
                             }
                         case "UCC":
@@ -652,6 +656,7 @@ namespace Dobby {
                                 case -136556654:  return "U1 1.00";
                                 case -1120900838: return "U1 1.02";
                                 default: Dev.DebugOut($"Error, Game Was UCC But None of The Checks Matched! || chk:{UCCCheck}");
+                                    MessageBox.Show($"The Game Was Determined To Be The Uncharted Collection, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{UCCCheck} {TitleID}", "Error Finding App Version");
                                     return "UnknownUCCGameVersion";
                             }
                         case "UC4":
@@ -692,7 +697,18 @@ namespace Dobby {
                                 case 1025301972:  DebugModePointerOffset = 0x2E79; return "1.31 MP";
                                 case -71032229:   DebugModePointerOffset = 0x2E79; return "1.32 MP";
                                 case 145928122:   DebugModePointerOffset = 0x2E79; return "1.33 MP";
-                                default: Dev.DebugOut($"Error, Game Was UC4 But None of The Checks Matched! || chk:{U4Check}");
+                                default: Dev.DebugOut($"Error, Game Was UC4, But None of The Checks Matched! || chk:{U4Check}");
+                                    MessageBox.Show($"The Game Was Determined To Be UC4, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{U4Check} {TitleID}", "Error Finding App Version");
+                                    return "UnknownUC4GameVersion";
+                            }
+                        case "UC4 MP Beta":
+                            var U4MPBetaCheck = BitConverter.ToInt32(geo.ReadMemory(Executable, 0x403000, 4), 0);
+                            switch(U4MPBetaCheck) {
+                                case 759883849:  DebugModePointerOffset = 0x2E83; return "1.00 MP Beta"; 
+                                case 2067458121: DebugModePointerOffset = 0x2E83; return "1.09 MP Beta";
+                                default:
+                                    Dev.DebugOut($"Error, Game Was UC4 MP Beta, But None of The Checks Matched! || chk:{U4MPBetaCheck}");
+                                    MessageBox.Show($"The Game Was Determined To Be The UC4 MP Beta (Nice), But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{U4MPBetaCheck} {TitleID}", "Error Finding App Version");
                                     return "UnknownUC4GameVersion";
                             }
                         case "TLL":
@@ -704,6 +720,7 @@ namespace Dobby {
                                 case 27793:  DebugModePointerOffset = 0x2E79; return "1.08 MP";
                                 case 27841:  DebugModePointerOffset = 0x2E79; return "1.09 MP";
                                 default: Dev.DebugOut($"Error, Game Was UCC But None of The Checks Matched! || chk:{TLLCheck}");
+                                    MessageBox.Show($"The Game Was Determined To Be The The Lost Legacy, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{TLLCheck} {TitleID}", "Error Finding App Version");
                                     return "UnknownTLLGameVersion";
                             }
                         default: Dev.DebugOut("!!! " + TempStringStore); return "UnknownGameVersion";
