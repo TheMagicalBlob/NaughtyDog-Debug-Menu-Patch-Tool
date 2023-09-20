@@ -331,7 +331,7 @@ namespace Dobby {
             if(f.ShowDialog() == DialogResult.OK) {
                 ActiveFilePath = ExecutablePathBox.Text = f.FileName;
 
-                try { MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite); }
+                try { MainStream?.Dispose(); MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite); }
                 catch(IOException Oop) {
                     Dev.DebugOut(Oop.Message); SetInfoLabelText("Access Denied, File In Use Elsewhere");
                     return;
@@ -348,28 +348,12 @@ namespace Dobby {
 
         /* Start Of EbootPatchPage Specific Functions                                                                                                                      */
 
+        /// <summary> | </summary>
+        /// <returns> The New Button Text </returns>
         public string ApplyButtonText() {
             switch(Game) {
-                case TLLMP100:
-                case TLLSP100:
-                case TLLSP10X:
-                    RestoredDebugBtn.Enabled = false; return " Restored/Custom";
-                default: RestoredDebugBtn.Enabled = false; return " !Restored/Custom!";
                 case T1R100:
                 case T1R109:
-                case T1R110:
-                case T1R111:
-                case UC1100:
-                case UC1102:
-                case UC2100:
-                case UC2102:
-                case UC3100:
-                case UC3102:
-                case UC4MP127_28:
-                case UC4SP127:
-                case UC4MP132:
-                case UC4MP133:
-                    return " Restored";
                 case UC4100:
                 case UC4101:
                 case UC4102:
@@ -381,9 +365,47 @@ namespace Dobby {
                 case UC4110:
                 case UC4111:
                 case UC4112:
+                case UC4113:
+                case UC4115:
+                case UC4116:
+                case UC4118:
+                case UC4119:
+                case UC4SP120:
+                case UC4MP120:
+                case UC4SP121:
+                case UC4MP121:
+                case UC4SP122_23:
+                case UC4MP122:
+                case UC4MP123:
+                case UC4SP124_25:
+                case UC4MP124:
+                case UC4MP125:
+                case UC4SP127:
+                case UC4MP127_28:
+                case TLLMP100:
+                case TLLSP100:
+                case TLLSP10X:
+                    RestoredDebugBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Strikeout);
+                    RestoredDebugBtn.Enabled = false; return " Restored/Custom";
+                case T1R110:
+                case T1R111:
+                case UC1100:
+                case UC1102:
+                case UC2100:
+                case UC2102:
+                case UC3100:
+                case UC3102:
+                case UC4117:
+                case UC4MP132:
+                case UC4MP133:
+                    return " Restored";
                 case T2100:
                 case T2109:
                     return " Custom";
+                default:
+                    RestoredDebugBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Strikeout);
+                  //RestoredDebugBtn.Enabled = false;
+                    return " ------------";
             }
         }
 
@@ -463,8 +485,8 @@ namespace Dobby {
                 case UC4MP131:     DebugAddressForSelectedGame = UC4127_132MPDebug; return "Uncharted 4 1.31 MP";
                 case UC4MP132:     DebugAddressForSelectedGame = UC4127_132MPDebug; return "Uncharted 4 1.32/TLL 1.08 MP";
                 case UC4MP133:     DebugAddressForSelectedGame = UC4133MPDebug;     return "Uncharted 4 1.33/TLL 1.09 MP";
-                case UC4MPBETA100: DebugAddressForSelectedGame = UC4MPBETA100Debug; return "CUSA04051 Uncharted 4 MP Beta 1.00";
-                case UC4MPBETA109: DebugAddressForSelectedGame = UC4MPBETA109Debug; return "CUSA04021 Uncharted 4 MP Beta 1.09";
+                case UC4MPBETA100: DebugAddressForSelectedGame = UC4MPBETA100Debug; return "Uncharted 4 MP Beta 1.00";
+                case UC4MPBETA109: DebugAddressForSelectedGame = UC4MPBETA109Debug; return "Uncharted 4 MP Beta 1.09";
                 case TLLMP100:     DebugAddressForSelectedGame = TLL100MPDebug;     return "Uncharted Lost Legacy 1.00 MP";
                 case TLLSP100:     DebugAddressForSelectedGame = TLL100Debug;       return "Uncharted Lost Legacy 1.00 SP";
                 case TLLSP10X:     DebugAddressForSelectedGame = TLL10XDebug;       return "Uncharted Lost Legacy 1.08 SP";

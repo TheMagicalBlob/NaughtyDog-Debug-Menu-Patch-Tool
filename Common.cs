@@ -148,9 +148,12 @@ namespace Dobby {
            "* 3.29.99.277 | Added Try/Catch For EbootPatchPage Stream Creation In Case Same File Is Selected Twice In A Row, Misc Changes And Formatting",
           "* 3.29.100.281 | Added New UC4 1.00 - 1.33 Debug 0xEB/0x75 Offsets (UC4 MP Beta 1.00 & 1.09 Still Missing, All Others Only Need Testing), Misc Changes. Formatting",
           "* 3.29.102.281 | Added UC4 MP Beta Pointer Addresses, Replaced SINGLE Harcoded RAM Address (tf?), Added Params For UC4 MP Beta Detection On PS4DebugPage, Replaced Two Outright Wrong Title ID's For UC4, And Added One For TlouR | Retroactively fixed Previous Build #, I Didn't update It Correctly.",
-          "* 3.29.103.285 | Added Missing UC4 MP Beta Switch Case For PS4DebugPage, Game Would Never Have Been Detected :/. Also Added Error Popups In Case Game Check Fails (Backported .elf go brr)"
+          "* 3.29.103.285 | Added Missing UC4 MP Beta Switch Case For PS4DebugPage, Game Would Never Have Been Detected :/. Also Added Error Popups In Case Game Check Fails (Backported .elf go brr)",
+          "* 3.29.103.288 | Removed Title ID From UC4 MP Beta Game ID, Formatting. Minor Debug Output Tweak",
+          "* 3.29.103.289 | Misc Changes"
 
             // TODO:
+            // - Fix Control Spacing
             // - Replace InfoHover Functionality With Alternative, Prefferably One Recreating Native HoverInfo BS That Doesn't Work For Most Controls
             // - Finish PS4QOLPatchesPage Dynamic Button Functionality
             // - Finish EbootPatchHelpPage
@@ -1225,8 +1228,8 @@ namespace Dobby {
                             $"Form: {(ActiveForm != null ? $"{ActiveForm.Name} | Form Position: {ActiveForm.Location}" : "Console")}",
                             $"Pages: {Pages?[0]}, {Pages?[1]}, {Pages?[2]}, {Pages?[3]}",
                             $"Active Page ID: {Page} | InfoHasImportantString: {InfoHasImportantStr}",
-                            $"TitleID: {TitleID} | Game Version: {GameVersion} |",
-                            $"GameID: {ActiveGameID} | processname: {ProcessName} | PIC {PS4DebugIsConnected} | WFC {WaitForConnection}",
+                            $"TitleID: {TitleID} | Game Version: {GameVersion} | GameID: {ActiveGameID}",
+                            $"processname: {ProcessName} | PIC {PS4DebugIsConnected} | WFC {WaitForConnection}",
                             "",
                             $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled} | MousePos: {MousePosition}",
                             $"Control: {HoveredControl.Name} | {ControlType.Substring(ControlType.LastIndexOf('.') + 1)}",
