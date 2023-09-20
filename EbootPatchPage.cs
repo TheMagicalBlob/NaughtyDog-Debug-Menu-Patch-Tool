@@ -574,7 +574,7 @@ namespace Dobby {
                     break;
                 case T1R110:
                 case T1R111:
-                    T1R11X_Patches(PatchType);
+                    T1R11X_RestoredMenu();
                     SetInfoLabelText($"The Last Of Us Remastered 1.1X Restored Menu Applied");
                     break;
                 case T2100:
@@ -596,27 +596,22 @@ namespace Dobby {
                     SetInfoLabelText("The Last Of Us Part II 1.08 Has Nothing To Restore");
                     break;
                 case T2109:
-                    SetInfoLabelText("The Last Of Us Part II 1.09 Has Nothing To Restore");
+                    T2109_CustomMenu();
                     break;
                 case UC1100: // Uncharted 1 1.00 Restored Debug Ver. 2.6.1
-                    UC1100_Patches(PatchType);
-                    SetInfoLabelText("Restored Debug Menu Patch Applied");
+                    UC1100_Patches();
                     break;
                 case UC1102: // Uncharted 1 1.02 Restored Debug Ver. 2.7
-                    UC1102_Patches(PatchType);
-                    SetInfoLabelText("Restored Debug Menu Patch Applied");
+                    UC1102_RestoredMenu();
                     break;
                 case UC2100: // Uncharted 2 1.00 Restored Debug Ver. 1.0 (Diff 1.11) //!
-                    UC2100_Patches(PatchType);
-                    SetInfoLabelText("Restored Debug Menu Patch Applied");
+                    UC2100_RestoredMenu();
                     break;
                 case UC2102: // Uncharted 2 1.02 Restored Debug Ver. 1.0
-                    UC2102_Patches(PatchType);
-                    SetInfoLabelText("Restored Debug Menu Patch Applied");
+                    UC2102_RestoredMenu();
                     break;
                 case UC3100:
-                    UC3100_Patches(PatchType);
-                    SetInfoLabelText("Uncharted 3 1.00 Restored Debug Applied");
+                    UC3100_RestoredMenu();
                     break;
                 case UC3102:
                     break;
@@ -625,8 +620,7 @@ namespace Dobby {
                 case UC4SP127:
                     break;
                 case UC4MP133:
-                    UC4MP133_Patches(PatchType);
-                    SetInfoLabelText("Restored Multiplayer Debug Menu Patch Applied");
+                    UC4MP133_RestoredMenu();
                     break;
                 case TLLMP100:
                     break;
@@ -635,27 +629,17 @@ namespace Dobby {
                 case TLLSP10X:
                     break;
             }
+
+            SetInfoLabelText($"{ActiveGameID} {ResultStrings[PatchType]}");
+
         }
 
-        public void EnableDebugBtn_Click(object sender, EventArgs e) => ApplyDebugPatches(1);
         public void DisableDebugBtn_Click(object sender, EventArgs e) => ApplyDebugPatches(0);
-        public void RestoredDebugBtn_Click(object sender, EventArgs e) => ApplyDebugPatches(2);
-        public void CustomDebugBtn_Click(object sender, EventArgs e)
-            { // Just Edited Debug Menus, Some Things May Be Replaced
-            switch (Game) {
-                default:
-                    MessageBox.Show("TMP UC2 1.00 Only");
-                    break;
-                case UC2100: // UC2 1.00 ?
-                    WriteByte(0x1EB296, 0x01);
-                    WriteByte(new int[] { 0x6C9C, 0x436CEE }, 0x1C);
-                    WriteBytes(new int[] { 0x6D5E, 0x1C4708, 0x1C4C60, 0x436D71 }, new byte[][] { E9Jump, new byte[] { 0x1C, 0x00, 0x00, 0x00 }, E9Jump, E9Jump });
-                    SetInfoLabelText("Uncharted 2 1.00 Custom Debug Applied");
-                    break;
-            }
-        }
+        public void EnableDebugBtn_Click(object sender, EventArgs e) => ApplyDebugPatches(1);
+        public void RestoredDebugBtn_Click(object sender, EventArgs e) => ApplyDebugPatches(RestoredDebugBtn.Text.Contains(" Custom") ? 3 : 2);
 
 
+        /*
         public void CustomOptDebugBtn_Click(object sender, EventArgs e) { if (Dev.REL) return;
             if (Game == 0) {
                 if (!FlashThreadHasStarted) {
@@ -732,25 +716,13 @@ namespace Dobby {
                     break;
             }
         }
-
+        */
 
         /*======================================================================================================================
         |                                               Patch Application Functions
         ======================================================================================================================*/
-        void UC1100_Patches(int type) { // String over an int for readability
-            switch (type) {      // I Have A Very Good Reason For Using goto here:       I Wanted To. Don't Like It? goto Fuck_Yourself
-                case 0:
-                    goto Default;
-                case 1:
-                    goto Default;
-                case 2:
-                    goto Restored;
-                case 3:
-                    goto Custom;
-            }
-Default:
-            WriteByte(0x102057, type == 1 ? (byte)0xEB : (byte)0x74);
-            return;
+        void UC1100_Patches() { // TMP
+
 Restored:
             int[] WhiteJumpsOneByte = new int[] {
                 0xE20E3,  // BP UCC...
@@ -802,10 +774,10 @@ Restored:
             WriteBytes(0x2D6C87, new byte[] { 0xE9, 0x76 });                   // Skip Crashing Shader Variables Submenu (Crashes The Game Mid-Boot)
             WriteByte (new int[] { 0x2D6A70, 0x2D6A50 }, 0xEB);                // Fix The Material Debug... Options
 
-            WriteBytes(0x77B2E0, new byte[] { 0x5A, 0x7D, 0x0C, 0x00 });       // Add Valid Build Number. This Enables The "Build: " & "Built: " Debug Text As Well
+          //WriteBytes(0x77B2E0, new byte[] { 0x5A, 0x7D, 0x0C, 0x00 });       // Add Valid Build Number. This Enables The "Build: " & "Built: " Debug Text As Well
 
             WriteBytes(0x354650, new byte[] { 0xB0, 0x01 });                   // Load HYBRID Text
-          //WriteByte (0x354681, 0x00);                                        // Change HYBRID To DEBUG
+            WriteByte (0x354681, 0x00);                                        // Change HYBRID To DEBUG
 
             WriteBytes(0x2C7230, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Create New Level Render Settings..." From Crashing The Game When "Default Render Settings..." Is Opened
             WriteBytes(0x2C7220, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Load Existing Render Settings..." From Crashing The Game When "Default Render Settings..." Is Opened
@@ -819,84 +791,11 @@ Restored:
 
             foreach (int Address in FunctionNops)
                 WriteBytes(Address, E9Jump);
-
-            return;
-
-Custom:
-            WhiteJumpsOneByte = new int[] {
-                0xE20E3,  // BP UCC...
-                0xE373A,  // Collision...
-                0xE379B,  // Gameplay...
-                0xE37FC,  // Game Objects...
-                0xE385E,  // Levels...
-                0xE395E,  // Npc...
-                0xE39BF,  // Nav-Mesh...
-                0xE3A58,  // Interactive Background...
-                0xE3A65,  // Interactive Background... (Pt.2)
-                0xE3A9E,  // Actors...
-                0xE3AB0,  // Animation...
-                0xE3AC2,  // Water...
-                0xE3B23,  // Fx...
-                0xE3B84,  // Camera... (Literally Just The String, Unfortunately :/)
-                0xE3E18,  // Physics...
-                0xE52F2,  // Particles...
-                0x39F37C, // Some PlayGo... Options
-                0x9FF43,  // CutScenes Menu Nest
-                0xD41B4   // CutScenes...
-            };
-            WhiteJumps = new int[] {
-                0x2A7E08, // Quick Menu Character Options
-                0xE2125,  // Rendering, BP Rendering, And Rendering PS3
-                0xE2EA1,  // Spawn Character...
-                0xE35BA,  // Spawn Vehicle...
-                0x271F0D, // Player...
-                0x272161, // Player... (Pt.2)
-                0x1027BD, // Gameplay... (Pt.2)
-                0x104B47, // Gameplay... (Pt.3)
-                0xE3BBE,  // Clock...
-                0xE3E7C,  // Menu...
-                0xE4033,  // Audio...
-                0xE536E   // Language...
-            };
-            FunctionNops = new int[] {
-                0x4462F6, // Particles Push
-                0x447399, // Particles Pop
-                0xD3BC9,  // CutScenes Push
-                0xD3DCE,  // CutScenes Pop
-                0xD4548   // Skip Crashing CutScenes... Function
-            };
-
-            WriteByte (0x102050, 0xC3);                                        // Keep Debug Mode Enabled (It Gets Disabled On Boot, It's Actually On By Default).
-
-            WriteBytes(0x2D6AD3, new byte[] { 0xE9, 0x27, 0x00, 0x00, 0x00 }); // Skip Crashing Shader Variables Code
-            WriteBytes(0x2D6B26, new byte[] { 0xEB, 0x05 });                   // Skip Some Code That Causes The Material Debug... Menu To Crash When Selected
-            WriteBytes(0x2D6C87, new byte[] { 0xE9, 0x76 });                   // Skip Crashing Shader Variables Submenu (Crashes The Game Mid-Boot)
-            WriteByte (new int[] { 0x2D6A70, 0x2D6A50 }, 0xEB);                // Fix The Material Debug... Options
-
-            WriteBytes(0x77B2E0, new byte[] { 0x5A, 0x7D, 0x0C, 0x00 });       // Add Valid Build Number. This Enables The "Build: " & "Built: " Debug Text As Well
-
-            WriteBytes(0x354650, new byte[] { 0xB0, 0x01 });                   // Load HYBRID Text
-          //WriteByte (0x354681, 0x00);                                        // Change HYBRID To DEBUG
-
-            WriteBytes(0x2C7230, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Create New Level Render Settings..." From Crashing The Game When "Default Render Settings..." Is Opened
-            WriteBytes(0x2C7220, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Load Existing Render Settings..." From Crashing The Game When "Default Render Settings..." Is Opened
-            WriteByte (0x2C71A1, 0xEB);                                        // Stop "Save Current Render Settings..." From Crashing When Selected
-
-            foreach (int Address in WhiteJumpsOneByte)
-                WriteByte(Address, 0x00);
-
-            foreach (int Address in WhiteJumps)
-                WriteBytes(Address, new byte[] { 0x00, 0x00 });
-
-            foreach (int Address in FunctionNops)
-                WriteBytes(Address, E9Jump);
-
-            SetInfoLabelText("\"Custom\" Debug Patch Applied");
             return;
         }
 
 
-        void UC1102_Patches(int i) {
+        void UC1102_RestoredMenu() {
             int[] WhiteJumpsOneByte = new int[] {
                 0xE21D3,    // BP UCC...
                 0xE382A,    // Collision...
@@ -945,13 +844,13 @@ Custom:
                                                                                                Gameplay Menu Isn't Loaded. It Looks Cooler, Heh.                                    */
 
 
-            WriteBytes(0x772B80, new byte[] { 0x46, 0x7F, 0x0C, 0x00 });       // Add Valid Build Number. This Enables The "Build: " & "Built: " Debug Text As Well
+          //WriteBytes(0x772B80, new byte[] { 0x46, 0x7F, 0x0C, 0x00 });       // Add Valid Build Number. This Enables The "Build: " & "Built: " Debug Text As Well
 
             WriteBytes(0x44AE30, new byte[] { 0xB0, 0x01 });                   // Load HYBRID Debug Text
           //WriteByte (0x44AE41, 0x00);                                        // Change HYBRID To DEBUG
 
             WriteBytes(new int[] { 0x30FF09, 0x30FF3C }, new byte[][] { new byte[] { 0xEB, 0x2C }, new byte[] { 0xEB, 0x17 } });
-            //                          /\       Skip Some Code In Two Spots In The State Objects Menu To Stop Tasks From Crashing The Game Mid-Load       /\
+            //\       Skip Some Code In Two Spots In The State Objects Menu To Stop Tasks From Crashing The Game Mid-Load       /\
 
             WriteBytes(0x2D70C3, new byte[] { 0xE9, 0x27, 0x00, 0x00, 0x00 }); // Skip Crashing Shader Variables Code
             WriteBytes(0x2D7116, new byte[] { 0xEB, 0x05 });                   // Skip Some Code That Causes The Material Debug... Menu To Crash When Selected
@@ -976,16 +875,8 @@ Custom:
             SetInfoLabelText("Restored Debug Patch Applied");
         }
 
-
-        void UC2100_Patches(int type) {
-            WriteByte(0x4D7BE7, (byte)(type == 0 ? 0x74 : 0xEB));
-            switch (type) {
-                default: return;
-                case 2:
-                    goto Restored;
-            }
-
-Restored:
+        
+        void UC2100_RestoredMenu() {
             int[] WhiteJumpsOneByte = new int[] {
                 0x6C9C,   // Actor Viewer... (Quick Menu)
                 0x1C46C7, // BP UCC...
@@ -1096,22 +987,11 @@ Restored:
             SetInfoLabelText("Restored Debug Menu Patch Applied");
         }
 
-        void UC2102_Patches(int type) {
-            WriteByte(0x4D7BE7, (byte)(type == 0 ? 0x74 : 0xEB));
-            switch (type) {
-                default: return;
-            }
+        void UC2102_RestoredMenu() {
+
         }
 
-        void UC3100_Patches(int type) {
-            WriteByte(0x168EB7, (byte)(type == 0 ? 0x74 : 0xEB));
-
-            switch(type) {
-                default: return;
-                case 2: break;
-            }
-
-
+        void UC3100_RestoredMenu() {
             int[] FunctionNops = new int[] {
                 0x151743, // System Push
                 0x15183D, // System Pop
@@ -1212,26 +1092,17 @@ Restored:
         }
 
 
-        void UC3102_Patches(string type) {
-            WriteByte(0x578227, (byte)(type == "Disable" ? 0x74 : 0xEB));
+        void UC3102_RestoredMenu() {
         }
 
-        void UC4100_Patches(string type) {
-            WriteByte(0x1297ED, (byte)(type == "Disable" ? 0x74 : 0xEB));
+        void UC4100_Patches() {
         }
 
-        void UC4133_Patches(string type) {
-            WriteByte(0x1CCDFD, (byte)(type == "Disable" ? 0x74 : 0xEB));
+        void UC4133_Patches() {
         }
 
 
-        void UC4MP133_Patches(int type) {
-            WriteByte(0x1CCEB8, (byte)(type == 0 ? 0x74 : 0xEB));
-            switch (type) {
-                default: return;
-                case 2: break;
-            }
-
+        void UC4MP133_RestoredMenu() {
             int[] WhiteJumps = new int[] {
                 0x2409ED,  // Relaunch...
                 0x18725CA, // Switch On/Off Neo Resolution Mode...
@@ -1419,45 +1290,35 @@ Restored:
         void TLL100_Patches(string type) => WriteByte(0x1CCFED, (byte)(type == "Disable" ? off : on));
 
 
-        void TLL109_Patches(string type) => WriteByte(0x1CD02D, (byte)(type == "Disable" ? off : on));
 
-        /*
-=================================================================================================================================================
-=================================================================================================================================================
-        */
-        void T1R100_Patches(int type) {
-            WriteByte(T1R100Debug, (byte)(type == 0 ? 0x75 : 0x74));
-            switch (type) {
-                default: return;
-                case 2:
-                    goto Restored;
-                case 3:
-                    goto Custom;
-            }
+        void TLL100MP_RestoredMenu() {
 
-Restored:
+        }
+        void TLL100_RestoredMenu() {
+
+        }
+
+        void TLL108MP_RestoredMenu() {
+
+        }
+        void TLL108_RestoredMenu() {
+
+        }
+        void TLL109MP_RestoredMenu() {
+
+        }
+        void TLL109_RestoredMenu() {
+
+        }
+
+        void T1R100_RestoredMenu() {
             WriteBytes(0x6363C,  new byte[] { 0xE8, 0xEF, 0x24, 0x6D, 0x00 }); // Replace Call To Mini-Rendering Menu With One To The Full Rendering Menu
             WriteBytes(0x94DD35, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 }); // Skip A Function In The Material Debug Menu That Causes The Game To Crash While Booting
             WriteBytes(0x38282C, new byte[] { 0x00, 0x00 });                   // Load Net... Contents
-            return;
-
-Custom:
-            WriteBytes(0x6363C,  new byte[] { 0xE8, 0xEF, 0x24, 0x6D, 0x00 }); // Replace Call To Mini-Rendering Menu With One To The Full Rendering Menu
-            WriteBytes(0x94DD35, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 }); // Skip A Function In The Material Debug Menu That Causes The Game To Crash While Booting
-            WriteBytes(0x38282C, new byte[] { 0x00, 0x00 });                   // Load Net... Contents
-
-            return;
         }
 
 
-        void T1R11X_Patches(int type) {
-            WriteByte(T1R111Debug, (byte)(type == 0 ? 0x75 : 0x74));
-            switch (type) {
-                default: return;
-                case 3: case 2:
-                    break;
-            }
-
+        void T1R11X_RestoredMenu() {
             var FunctionsToSkip = new int[] {
                 0x76E62C, // State Scripts Push
                 0x76F0CF, // State Scripts Pop
@@ -1518,31 +1379,12 @@ Custom:
             WriteBytes(0x51CE08, new byte[] { 0xe8, 0xf3, 0x4a, 0x51, 0x00, 0x48, 0x8d, 0x15, 0x6c, 0xc3, 0x0d, 0x01, 0x48, 0x8d, 0x35, 0x4a, 0xbc, 0xbd, 0x00, 0x49, 0x8b, 0xff, 0xe8, 0xcd, 0xc4, 0x32, 0x00, 0xbf, 0xa0, 0x00, 0x00, 0x00, 0xe8, 0xe3, 0x81, 0x76, 0x00, 0x48, 0x89, 0xc3, 0x48, 0x8d, 0x35, 0x5d, 0xf4, 0xbc, 0x00, 0x31, 0xc9, 0x45, 0x31, 0xc0, 0x4c, 0x89, 0xfa, 0x48, 0x89, 0xdf, 0xe8, 0x79, 0x3f, 0x51, 0x00, 0x4c, 0x89, 0xf7, 0x48, 0x89, 0xde, 0xe8, 0x6e, 0x4e, 0x51, 0x00, 0x48, 0x83, 0xc4, 0x08, 0x5b, 0x41, 0x5e, 0x41, 0x5f, 0x5d, 0xc3 });
             WriteBytes(0x4060DE, new byte[] { 0xE9, 0xA6, 0x02, 0x00, 0x00 }); // "Fix" Skins Menu
             WriteBytes(0x7371F, new byte[] { 0xed, 0x4e, 0xfd, 0xff }); // Call Bonuses Menu In Quick Menu. Might As Well
-            return;
         }
 
 
-        void T2100_Patches(int type) {
-            WriteBytes(0x1D639C, type == 0 ? T2DebugOff : T2Debug);
-        }
+        void T2109_CustomMenu() { // 1.08 as well, same offsets
 
-
-        void T2107_Patches(int type) {
-            WriteBytes(0x1D66BC, type == 0 ? T2DebugOff : T2Debug);
-        }
-
-
-        void T2109_Patches(int type) { // 1.08 as well, same offsets
-            WriteBytes(0x6181FA, type == 0 ? T2DebugOff : T2Debug);
-            switch (type) {
-                default: return;
-                case 2:
-                    goto Custom;
-            }
-
-Custom:
-            // Enable Debug + Change L3 & Triangle Toggle First \\
-            WriteBytes(0x6181F9, T2Debug);
+            // Change The Debug Rendering Toggle Mapped To L3 & Triangle To An 2d Debug Text Toggle First \\
             WriteByte (new int[] { 0x1C45085, 0x1C45092 }, 0xB8);
 
             int i = 0;

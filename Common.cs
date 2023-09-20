@@ -151,7 +151,8 @@ namespace Dobby {
           "* 3.29.103.285 | Added Missing UC4 MP Beta Switch Case For PS4DebugPage, Game Would Never Have Been Detected :/. Also Added Error Popups In Case Game Check Fails (Backported .elf go brr)",
           "* 3.29.103.288 | Removed Title ID From UC4 MP Beta Game ID, Formatting. Minor Debug Output Tweak",
           "* 3.29.103.289 | Misc Changes",
-          "* 3.29.103.291 | Deleted Useless Check In BrowseBtn Function I Forgot About. Comments, Misc Changes"
+          "* 3.29.103.291 | Deleted Useless Check In BrowseBtn Function I Forgot About. Comments, Misc Changes",
+          "* 3.29.105.294 | Deleted Ueless/Outdated Code, Commented Out One I Wanna Keep For Sh*ts And Giggles. Reworked EbootPatchPage Restored Debug Functions, Misc Changes"
 
             // TODO:
             // - Fix Control Spacing
@@ -450,7 +451,7 @@ namespace Dobby {
                             Child.MouseLeave += new EventHandler(ControlLeave);
                         }
 #if DEBUG
-                        else Child.MouseEnter += new EventHandler(DebugControlHover);
+                        Child.MouseEnter += new EventHandler(DebugControlHover);
 #endif
                     }
                 }
@@ -459,7 +460,7 @@ namespace Dobby {
                     Item.MouseLeave += new EventHandler(ControlLeave);
                 }
 #if DEBUG
-                else Item.MouseEnter += new EventHandler(DebugControlHover);
+                Item.MouseEnter += new EventHandler(DebugControlHover);
 #endif
                 Item.MouseDown += new MouseEventHandler(MouseDownFunc);
                 Item.MouseMove += new MouseEventHandler(MoveForm);
