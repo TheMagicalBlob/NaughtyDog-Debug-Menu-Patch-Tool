@@ -318,11 +318,15 @@ namespace Dobby {
 
         }
 
+
+        /// <summary>
+        /// Search For An Unsigned Executable To Apply Patches To. <br/>
+        /// Loads The File Path, Creats A New Stream, Then Runs GetGameID() To Determine The Selected Executable's Source.<br/>
+        /// Then Assigns The RestoredDebugBtn's Button Text
+        /// </summary>
+        /// <param name="sender">Control Sender As An Object</param>
+        /// <param name="e"> Button Click EventArgs</param>
         public void BrowseButton_Click(object sender, EventArgs e) {
-            if(e == null) {
-                GameInfoLabel.Text = "Select An Executable To Patch First.";
-                Refresh();
-            }
             FileDialog f = new OpenFileDialog {
                 Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
                 Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned / Decrypted (The First 4 Bytes Will Be .elf If It Is)"
@@ -348,12 +352,30 @@ namespace Dobby {
 
         /* Start Of EbootPatchPage Specific Functions                                                                                                                      */
 
-        /// <summary> | </summary>
+        /// <summary>
+        /// Change The Text Of The RestoredDebugBtn Depending On Which Menu Path Type's Available <br/><br/> 
+        /// It Didn't Really Make Sense To Have Two Seperate Buttons For It,<br/>
+        ///  But I Still Want To Differenciate Between The Two </summary>
         /// <returns> The New Button Text </returns>
         public string ApplyButtonText() {
             switch(Game) {
+                ////
+                // Games That Aren't The Right Fucking Game You Dumbass
+                ////
+                default:
+                    RestoredDebugBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Strikeout);
+                    RestoredDebugBtn.Enabled = false; return " -!Restored/Custom";
+
+                ///
+                // Games I've Made Naught More That Debug Menu Toggles For
+                ///
                 case T1R100:
                 case T1R109:
+                case T2100:
+                case T2101:
+                case T2102:
+                case T2105:
+                case T2107:
                 case UC4100:
                 case UC4101:
                 case UC4102:
@@ -382,11 +404,19 @@ namespace Dobby {
                 case UC4MP125:
                 case UC4SP127:
                 case UC4MP127_28:
+                case UC4MP129:
+                case UC4MP130:
+                case UC4MP131:
+                case UC4MP132:
                 case TLLMP100:
                 case TLLSP100:
                 case TLLSP10X:
                     RestoredDebugBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Strikeout);
                     RestoredDebugBtn.Enabled = false; return " Restored/Custom";
+
+                ////
+                // Games I've Made Restorations For
+                ////
                 case T1R110:
                 case T1R111:
                 case UC1100:
@@ -396,16 +426,14 @@ namespace Dobby {
                 case UC3100:
                 case UC3102:
                 case UC4117:
-                case UC4MP132:
                 case UC4MP133:
                     return " Restored";
-                case T2100:
+
+                ////
+                // Games I've Made Customized Menus For
+                ////
                 case T2109:
                     return " Custom";
-                default:
-                    RestoredDebugBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Strikeout);
-                  //RestoredDebugBtn.Enabled = false;
-                    return " ------------";
             }
         }
 
@@ -416,7 +444,6 @@ namespace Dobby {
             // Make Sure The File's Actually Even A .elf
             MainStream.Read(LocalExecutableCheck, 0, 4);
             if(BitConverter.ToInt32(LocalExecutableCheck, 0) != 1179403647) return $"Executable Still Encrypted | Must Be Decrypted/Unsigned";
-            else Dev.DebugOut("Executable Is Unsigned, All Good");
 
 
             MainStream.Position = 0x5100; MainStream.Read(LocalExecutableCheck, 0, 160);
