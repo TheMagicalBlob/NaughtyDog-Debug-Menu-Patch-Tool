@@ -48,6 +48,4 @@ All Debug Offsets & Patches Are From Myself Only (For Now...), But I Have No Par
 [illusion](https://github.com/illusion0001) &amp; I Also Worked Together To A Small Extent On The UC4 1.33 MP Restoration (Which, Is Also The Lost Legacy 1.09 MP Rest Since The .elf Is Identical...)
 
 *Special Thanks To illusion For Introducing Me To Ghidra A Few Years Back, Plus kiwidog, Al Azif And Plenty Of Others For Miscellaneous Help Over Time.*
-[Naughty Dog Debug Patch Tool.zip](https://github.com/TheMagicalBlob/NaughtyDog-Debug-Menu-Patch-Tool/files/10361168/Naughty.Dog.Debug.Patch.Tool.zip)
-
 **-** TheMagicalBlob
