@@ -35,6 +35,13 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="libdebug, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -56,7 +63,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class1.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="PkgCreationPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="PS4QOLPatchesPage.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,6 +114,9 @@
     <Compile Include="PS4DebugPage.cs">
       <SubType>Form</SubType>
     </Compile>
+    <EmbeddedResource Include="Common.resx">
+      <DependentUpon>Common.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CustomDebugPages.resx">
       <DependentUpon>CustomDebugPages.cs</DependentUpon>
     </EmbeddedResource>
@@ -124,6 +138,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PkgCreationPage.resx">
+      <DependentUpon>PkgCreationPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PS4QOLPatchesPage.resx">
       <DependentUpon>PS4QOLPatchesPage.cs</DependentUpon>

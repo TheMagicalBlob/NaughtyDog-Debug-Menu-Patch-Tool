@@ -14,8 +14,7 @@ using static System.Console;
 
 namespace Dobby {
     public class Common : Dobby {
-
-
+        //#error version
         // MajorFeature.Feature.Minor.Patch
         public static string[] ChangeList = new string[] {
             "* ------------",
@@ -152,7 +151,8 @@ namespace Dobby {
           "* 3.29.103.288 | Removed Title ID From UC4 MP Beta Game ID, Formatting. Minor Debug Output Tweak",
           "* 3.29.103.289 | Misc Changes",
           "* 3.29.103.291 | Deleted Useless Check In BrowseBtn Function I Forgot About. Comments, Misc Changes",
-          "* 3.29.105.294 | Deleted Ueless/Outdated Code, Commented Out One I Wanna Keep For Sh*ts And Giggles. Reworked EbootPatchPage Restored Debug Functions, Misc Changes"
+          "* 3.29.105.294 | Deleted Ueless/Outdated Code, Commented Out One I Wanna Keep For Sh*ts And Giggles. Reworked EbootPatchPage Restored Debug Functions, Misc Changes",
+          "* 3.30.109.304 | PkgCreationPage Base Creation. Made The TextBox In EbootPatchPage Actually Functional, Moved GetGameID() And AssignButtonText() Part To Seperate Function Below. Stopped Path Boxes From Getting MoveForm Functionality So the User Can Drag-Select The Text, Comments, Other Crap"
 
             // TODO:
             // - Fix Control Spacing
@@ -400,6 +400,10 @@ namespace Dobby {
                     PCQOLPatches.Show();
                     MessageBox.Show("Important Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
                     break;
+                case 11:
+                    PkgCreationPage PkgCreation = new PkgCreationPage();
+                    PkgCreation.Show();
+                    break;
             }
             YellowInformationLabel = ActiveForm.Controls.Find("Info", true)[0];
             ActiveForm.Location = LastPos;
@@ -417,7 +421,6 @@ namespace Dobby {
 
                 if(Pages[i] != null) {
                     ChangeForm((int)Pages[i], true);
-                  //DebugOut($"Pages[i]: {Pages[i]}");
                     Pages[i] = null;
                     break;
                 }
@@ -443,9 +446,13 @@ namespace Dobby {
             foreach(Control Item in Controls) {
                 if(Item.HasChildren) { // Designer Added Some Things To The Form, And Some To The Group Box Used To Make The Border. This is me bing lazy. as long as it's not noticably slower
                     foreach(Control Child in Item.Controls) {
+
                         Child.MouseDown += new MouseEventHandler(MouseDownFunc);
-                        Child.MouseMove += new MouseEventHandler(MoveForm);
                         Child.MouseUp += new MouseEventHandler(MouseUpFunc);
+
+                        if (!Child.Name.Contains("PathBox")) // So You Can Drag Select The Text Lol
+                        Child.MouseMove += new MouseEventHandler(MoveForm);
+
                         if($"{Child.GetType()}" == "System.Windows.Forms.Button" && !Blacklist.Contains(Child.Name)) {
                             Child.MouseEnter += new EventHandler(ControlHover);
                             Child.MouseLeave += new EventHandler(ControlLeave);
@@ -455,6 +462,13 @@ namespace Dobby {
 #endif
                     }
                 }
+
+                Item.MouseDown += new MouseEventHandler(MouseDownFunc);
+                Item.MouseUp += new MouseEventHandler(MouseUpFunc);
+
+                if(!Item.Name.Contains("PathBox")) // So You Can Drag Select The Text Lol
+                    Item.MouseMove += new MouseEventHandler(MoveForm);
+
                 if($"{Item.GetType()}" == "System.Windows.Forms.Button" && !Blacklist.Contains(Item.Name)) {
                     Item.MouseEnter += new EventHandler(ControlHover);
                     Item.MouseLeave += new EventHandler(ControlLeave);
@@ -462,9 +476,6 @@ namespace Dobby {
 #if DEBUG
                 Item.MouseEnter += new EventHandler(DebugControlHover);
 #endif
-                Item.MouseDown += new MouseEventHandler(MouseDownFunc);
-                Item.MouseMove += new MouseEventHandler(MoveForm);
-                Item.MouseUp += new MouseEventHandler(MouseUpFunc);
             }
             try {
                 Controls.Find("MinimizeBtn", true)[0].Click += new EventHandler(MinimizeBtn_Click);

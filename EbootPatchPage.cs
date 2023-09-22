@@ -13,8 +13,10 @@ using System.Security.Cryptography;
 
 namespace Dobby {
     public class EbootPatchPage : Form {
+
         // TODO:
         // - This Page Is Fucking Stupid, Simplify It
+
         public EbootPatchPage() {
             InitializeComponent();
             AddControlEventHandlers(Controls);
@@ -22,6 +24,9 @@ namespace Dobby {
                 ExecutablePathBox.Text = ActiveFilePath;
         }
 
+
+        /// <summary> Initialize Form Controlls
+        /// </summary>
         public void InitializeComponent() {
             this.GameInfoLabel = new System.Windows.Forms.Label();
             this.BrowseButton = new System.Windows.Forms.Button();
@@ -81,6 +86,7 @@ namespace Dobby {
             this.ExecutablePathBox.Size = new System.Drawing.Size(233, 23);
             this.ExecutablePathBox.TabIndex = 30;
             this.ExecutablePathBox.Text = " Select A .bin/.elf To Modify";
+            this.ExecutablePathBox.TextChanged += new System.EventHandler(this.ExecutablePathBox_TextChanged);
             // 
             // label1
             // 
@@ -318,46 +324,62 @@ namespace Dobby {
 
         }
 
+        /// <summary> Open A File Dialog Window To Select A File For Checking/Patching
+        /// </summary>
+        private void BrowseButton_Click(object sender, EventArgs e) {
+            FileDialog file = new OpenFileDialog {
+                Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
+                Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned / Decrypted (The First 4 Bytes Will Be .elf If It Is)"
+            };
+
+            if(file.ShowDialog() == DialogResult.OK) {
+                ExecutablePathBox.Text = file.FileName;
+                LoadFileToBePatched(file.FileName);
+            }
+        }
+
+        /// <summary> Load A File For Checking/Patching If The Path In The ExecutablePathBox Exists
+        /// </summary>
+        private void ExecutablePathBox_TextChanged(object sender, EventArgs e) {
+            var TextBox = ((Control)sender);
+
+            if(File.Exists(TextBox.Text))
+            LoadFileToBePatched(TextBox.Text);
+        }
 
         /// <summary>
         /// Search For An Unsigned Executable To Apply Patches To. <br/>
         /// Loads The File Path, Creats A New Stream, Then Runs GetGameID() To Determine The Selected Executable's Source.<br/>
         /// Then Assigns The RestoredDebugBtn's Button Text
         /// </summary>
-        /// <param name="sender">Control Sender As An Object</param>
-        /// <param name="e"> Button Click EventArgs</param>
-        public void BrowseButton_Click(object sender, EventArgs e) {
-            FileDialog f = new OpenFileDialog {
-                Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
-                Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned / Decrypted (The First 4 Bytes Will Be .elf If It Is)"
-            };
-
-            if(f.ShowDialog() == DialogResult.OK) {
-                ActiveFilePath = ExecutablePathBox.Text = f.FileName;
-
-                try { MainStream?.Dispose(); MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite); }
-                catch(IOException Oop) {
-                    Dev.DebugOut(Oop.Message); SetInfoLabelText("Access Denied, File In Use Elsewhere");
-                    return;
-                }
-
-                ActiveGameID = GameInfoLabel.Text = GetGameId();
-
-                RestoredDebugBtn.Text = RestoredDebugBtn.Text.Remove(RestoredDebugBtn.Text.LastIndexOf(' ')) + ApplyButtonText();
-
-                MainStreamIsOpen = true;
-                IsActiveFilePCExe = false;
+        /// <param name="FilePath"> The Opened File </param>
+        private void LoadFileToBePatched(string FilePath) {
+            try { 
+                MainStream?.Dispose();
+                MainStream = new FileStream(FilePath, FileMode.Open, FileAccess.ReadWrite);
             }
-        }
+            catch(IOException Oop) {
+                Dev.DebugOut(Oop.Message); SetInfoLabelText("Access Denied, File In Use Elsewhere");
+                return;
+            }
 
-        /* Start Of EbootPatchPage Specific Functions                                                                                                                      */
+            ActiveFilePath = FilePath;
+
+            ActiveGameID = GameInfoLabel.Text = GetGameId();
+
+            RestoredDebugBtn.Text = RestoredDebugBtn.Text.Remove(RestoredDebugBtn.Text.LastIndexOf(' ')) + GetMenuPatchTypeAvailability();
+
+            MainStreamIsOpen = true;
+            IsActiveFilePCExe = false;
+
+        }
 
         /// <summary>
         /// Change The Text Of The RestoredDebugBtn Depending On Which Menu Path Type's Available <br/><br/> 
         /// It Didn't Really Make Sense To Have Two Seperate Buttons For It,<br/>
         ///  But I Still Want To Differenciate Between The Two </summary>
         /// <returns> The New Button Text </returns>
-        public string ApplyButtonText() {
+        public string GetMenuPatchTypeAvailability() {
             switch(Game) {
                 ////
                 // Games That Aren't The Right Fucking Game You Dumbass
@@ -567,39 +589,30 @@ namespace Dobby {
                     MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported\n" + Game);
                     break;
                 case T1R100:
-                    SetInfoLabelText("No Restored Menu Available Yet. Try 1.11");
                     break;
                 case T1R109:
-                    SetInfoLabelText("No Restored Menu Available, Try 1.10/1.11");
                     break;
                 case T1R110:
                 case T1R111:
                     T1R11X_RestoredMenu();
-                    SetInfoLabelText($"The Last Of Us Remastered 1.1X Restored Menu Applied");
                     break;
                 case T2100:
-                    SetInfoLabelText("The Last Of Us Part II 1.00 Has Nothing To Restore");
                     break;
                 case T2101:
-                    SetInfoLabelText("The Last Of Us Part II 1.01 Has Nothing To Restore");
                     break;
                 case T2102:
-                    SetInfoLabelText("The Last Of Us Part II 1.02 Has Nothing To Restore");
                     break;
                 case T2105:
-                    SetInfoLabelText("The Last Of Us Part II 1.05 Has Nothing To Restore");
                     break;
                 case T2107:
-                    SetInfoLabelText("The Last Of Us Part II 1.07 Has Nothing To Restore");
                     break;
                 case T2108:
-                    SetInfoLabelText("The Last Of Us Part II 1.08 Has Nothing To Restore");
                     break;
                 case T2109:
                     T2109_CustomMenu();
                     break;
                 case UC1100: // Uncharted 1 1.00 Restored Debug Ver. 2.6.1
-                    UC1100_Patches();
+                    UC1100_RestoredMenu();
                     break;
                 case UC1102: // Uncharted 1 1.02 Restored Debug Ver. 2.7
                     UC1102_RestoredMenu();
@@ -608,25 +621,31 @@ namespace Dobby {
                     UC2100_RestoredMenu();
                     break;
                 case UC2102: // Uncharted 2 1.02 Restored Debug Ver. 1.0
-                    UC2102_RestoredMenu();
+                  //UC2102_RestoredMenu();
                     break;
                 case UC3100:
                     UC3100_RestoredMenu();
                     break;
                 case UC3102:
+                  //UC3100_RestoredMenu();
                     break;
                 case UC4100:
+                  //UC4SP100_CustomMenu();
                     break;
                 case UC4SP127:
+                  //UC4SP127_CustomMenu();
                     break;
                 case UC4MP133:
                     UC4MP133_RestoredMenu();
                     break;
                 case TLLMP100:
+                  //TLLMP100_RestoredMenu();
                     break;
                 case TLLSP100:
+                  //TLLSP100_CustomMenu();
                     break;
                 case TLLSP10X:
+                  //TLLMP100_RestoredMenu();
                     break;
             }
 
@@ -718,12 +737,13 @@ namespace Dobby {
         }
         */
 
+
+
+
         /*======================================================================================================================
         |                                               Patch Application Functions
         ======================================================================================================================*/
-        void UC1100_Patches() { // TMP
-
-Restored:
+        void UC1100_RestoredMenu() {
             int[] WhiteJumpsOneByte = new int[] {
                 0xE20E3,  // BP UCC...
                 0xE373A,  // Collision...
@@ -983,8 +1003,6 @@ Restored:
 
             foreach (int address in Returns)
                 WriteByte(address, 0xC3);
-
-            SetInfoLabelText("Restored Debug Menu Patch Applied");
         }
 
         void UC2102_RestoredMenu() {
