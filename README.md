@@ -41,6 +41,9 @@ _In Case This Crossed Your Mind:_
 - The Most Obvious Solution Of Simply Making The Debug Memory Check Return Successful Will Cause Numerous Entirely Unusable Things To Load, And Break Far More Than I'd Like, So Individually Loading Skipped Bits Is Still The Best Solution
 
 
+
+
+
 All Debug Offsets & Patches Are From Myself Only (For Now...), But I Have No Part In PS4Debug/libdebug's Creation.
 [illusion](https://github.com/illusion0001) &amp; I Also Worked Together To A Small Extent On The UC4 1.33 MP Restoration (Which, Is Also The Lost Legacy 1.09 MP Rest Since The .elf Is Identical...)
 
