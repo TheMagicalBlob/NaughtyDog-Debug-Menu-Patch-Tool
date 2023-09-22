@@ -21,14 +21,14 @@ Debug Mode/Menus Usage:
 - The First (PS4Debug Page) Uses libdebug &amp; PS4Debug to enable the debug modes of any of the PS4 Naughty Dog games - Though Once The Game's Booted, Applying The Restoration Patches (Or Any Others) Won't Unlock Anything Since The Menu's Already Loaded; *It Can Only Be Toggled*
 
 - The Second (EbootPatch Page) Can Be Used On An Unsigned/Decrypted Game's Executable (usually named eboot.bin, But May Also Be self Files) 
-To Enable Or Disable The Default Debug Mode For Whichever Game's Selected, Or, If Available; Patch In A Restored Version Of The Debug Menu Through *Various Methods, Or A Customized One If There's Not Enough Left To Really "Restore" It.
+To Enable Or Disable The Default Debug Mode For Whichever Game's Selected, Or, If Available; Patch In A Restored Version Of The Debug Menu Through Various Methods, Or A Customized One If There's Not Enough Left To Really "Restore" It.
 
 - The Third (MiscPatch Page) I'll Type This Later, My Back's Starting To Hurt...
 
 - The Fourth (PkgCreation Page) This Page Hasn't Been Finished Yet, But It'll Just Use Orbis-pub-cmd.exe To Build A Pkg For The User
 
 
-#Methods For Restoring Debug Submenus/Options In Naughty Dog's Debug Menus
+# Methods For Restoring Debug Submenus/Options In Naughty Dog's Debug Menus
 
 _For The Uncharted Collection, Uncharted 4 1.15, 1.16, And 1.17 (SP), Plus All It's MP .elf's Starting At 1.21 And The Lost Legacy MP (All Of 'Em):_
 - Devkit Checks That Fail On Retail Consoles/Testkits Without Debug Memory Skip Large Portions Of The Menu. Not Everything's Functionality Can Be Restored, But An Attempt At Restoring As Much As Possible Can Be Done By Skipping Memory Push/Pop Allocators That Just End Up Crashing The Game On A Console Mising Debug Memory, And Fixing The Other Issues That Arise For Various Reasons.
