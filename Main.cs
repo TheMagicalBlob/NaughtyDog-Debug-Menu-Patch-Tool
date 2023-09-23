@@ -166,7 +166,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.PS4QOLPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PS4QOLPageBtn.FlatAppearance.BorderSize = 0;
             this.PS4QOLPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PS4QOLPageBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.PS4QOLPageBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Strikeout))));
             this.PS4QOLPageBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.PS4QOLPageBtn.Location = new System.Drawing.Point(1, 102);
             this.PS4QOLPageBtn.Name = "PS4QOLPageBtn";
@@ -373,6 +373,5 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
 
         private void PCDebugMenuPageBtn_Click(object sender, EventArgs e) => ChangeForm(9, false);
 
-        private void InfogramsIllusionLinkBtn_Click(object sender, EventArgs e) { }
     }
 }

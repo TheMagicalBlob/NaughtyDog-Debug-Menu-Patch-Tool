@@ -153,7 +153,8 @@ namespace Dobby {
           "* 3.29.103.291 | Deleted Useless Check In BrowseBtn Function I Forgot About. Comments, Misc Changes",
           "* 3.29.105.294 | Deleted Ueless/Outdated Code, Commented Out One I Wanna Keep For Sh*ts And Giggles. Reworked EbootPatchPage Restored Debug Functions, Misc Changes",
           "* 3.30.109.304 | PkgCreationPage Base Creation. Made The TextBox In EbootPatchPage Actually Functional, Moved GetGameID() And AssignButtonText() Part To Seperate Function Below. Stopped Path Boxes From Getting MoveForm Functionality So the User Can Drag-Select The Text, Comments, Other Crap",
-          "* 3.31.109.304 | PKGCreationHelpPage Created"
+          "* 3.31.109.304 | PkgCreationHelpPage Created",
+          "* 3.31.109.306 | Strikeout For Misc Patches Button, Misc Debug Function Fix"
 
             // TODO:
             // - Fix Control Spacing
@@ -1317,6 +1318,7 @@ namespace Dobby {
             public static void DebugForceOpenFile(string FilePath) {
                 if(MainStreamIsOpen) { MainStream.Dispose(); }
                 ActiveFilePath = FilePath;
+                LocalExecutableCheck = new byte[4];
                 MainStream = new FileStream(FilePath, FileMode.Open, FileAccess.ReadWrite);
                 MainStream.Position = 0x60; MainStream.Read(LocalExecutableCheck, 0, 4);
                 Game = BitConverter.ToInt32(LocalExecutableCheck, 0);
