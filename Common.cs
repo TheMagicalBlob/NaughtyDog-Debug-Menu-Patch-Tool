@@ -156,7 +156,7 @@ namespace Dobby {
           "* 3.31.109.304 | PkgCreationHelpPage Created",
           "* 3.31.109.306 | Strikeout For Misc Patches Button, Misc Debug Function Fix",
           "* 3.31.110.307 | Updated Contact Info",
-          "* 3.31.111.308 | Fixed Tlou2 Debug Offset Assignment, Copy Pasted Cases Still All Had 1.00"
+          "* 3.31.112.308 | Fixed Tlou2 Debug Offset Assignment, Copy Pasted Cases Still All Had 1.00. Fixed Tlou2 Custom Debug novis Patch, I Copied The Default Hex Data..."
 
             // TODO:
             // - Fix Control Spacing
@@ -708,13 +708,13 @@ namespace Dobby {
             T1R109Debug       = 0x61A4,  //! TEST ME
             T1R110Debug       = 0x61A4,  //! TEST ME
             T1R111Debug       = 0x61A4,  //! TEST ME
-            T2100Debug        = 0x1D6398, //! TEST ME
-            T2101Debug        = 0x1D6418, //! TEST ME
-            T2102Debug        = 0x1D6468, //! TEST ME
-            T2105Debug        = 0x1D66A8, //! TEST ME
-            T2107Debug        = 0x1D66B8, //! TEST ME
-            T2108Debug        = 0x6181F8, //! TEST ME
-            T2109Debug        = 0x6181F8, //! TEST ME
+            T2100Debug        = 0x1D6394, //! TEST ME
+            T2101Debug        = 0x1D6414, //! TEST ME
+            T2102Debug        = 0x1D6464, //! TEST ME
+            T2105Debug        = 0x1D66A4, //! TEST ME
+            T2107Debug        = 0x1D66B4,
+            T2108Debug        = 0x6181F4,
+            T2109Debug        = 0x6181F4,
             UC1100Debug       = 0x102057,
             UC1102Debug       = 0x102187,
             UC2100Debug       = 0x1EB297,
@@ -851,7 +851,7 @@ namespace Dobby {
             foreach(int ofs in offset) {
                 MainStream.Position = ofs;
                 MainStream.WriteByte(data);
-                DebugOut($"Wrote {data:X} at {offset:X}");
+                DebugOut($"Wrote {data:X} at {ofs:X}");
             }
         }
         public static byte ReadByte(int offset) {
