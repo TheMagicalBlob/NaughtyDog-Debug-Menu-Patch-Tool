@@ -544,12 +544,12 @@ namespace Dobby {
                 case T1R110:       DebugAddressForSelectedGame = T1R110Debug;       return "The Last Of Us 1.10";
                 case T1R111:       DebugAddressForSelectedGame = T1R111Debug;       return "The Last Of Us 1.11";
                 case T2100:        DebugAddressForSelectedGame = T2100Debug;        return "The Last Of Us 2 1.00";
-                case T2101:        DebugAddressForSelectedGame = T2100Debug;        return "The Last Of Us 2 1.01";
-                case T2102:        DebugAddressForSelectedGame = T2100Debug;        return "The Last Of Us 2 1.02";
-                case T2105:        DebugAddressForSelectedGame = T2100Debug;        return "The Last Of Us 2 1.05";
-                case T2107:        DebugAddressForSelectedGame = T2100Debug;        return "The Last Of Us 2 1.07";
-                case T2108:        DebugAddressForSelectedGame = T2100Debug;        return "The Last Of Us 2 1.08";
-                case T2109:        DebugAddressForSelectedGame = T2100Debug;        return "The Last Of Us 2 1.09";
+                case T2101:        DebugAddressForSelectedGame = T2101Debug;        return "The Last Of Us 2 1.01";
+                case T2102:        DebugAddressForSelectedGame = T2102Debug;        return "The Last Of Us 2 1.02";
+                case T2105:        DebugAddressForSelectedGame = T2105Debug;        return "The Last Of Us 2 1.05";
+                case T2107:        DebugAddressForSelectedGame = T2107Debug;        return "The Last Of Us 2 1.07";
+                case T2108:        DebugAddressForSelectedGame = T2108Debug;        return "The Last Of Us 2 1.08";
+                case T2109:        DebugAddressForSelectedGame = T2109Debug;        return "The Last Of Us 2 1.09";
                 default:           DebugAddressForSelectedGame = 0xBADBEEF;         return $"UnknownGame {Game}";
             }
 

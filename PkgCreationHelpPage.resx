@@ -119,7 +119,7 @@
   </resheader>
   <data name="label2.Text" xml:space="preserve">
     <value>Once You Have Your Game Dumped Or .pkg Extracted, Make Sure The Folder's Named Like:
-----------------------------------, Or Else gengp4 Will Screw Things Up. Just Select The CUSA Folder With
+-------------------------, Or Else gengp4 Will Screw Things Up. Just Select The CUSA Folder With
 gengp4 And Hit "Generate"</value>
   </data>
 </root>

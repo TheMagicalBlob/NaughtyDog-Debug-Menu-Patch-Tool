@@ -154,7 +154,9 @@ namespace Dobby {
           "* 3.29.105.294 | Deleted Ueless/Outdated Code, Commented Out One I Wanna Keep For Sh*ts And Giggles. Reworked EbootPatchPage Restored Debug Functions, Misc Changes",
           "* 3.30.109.304 | PkgCreationPage Base Creation. Made The TextBox In EbootPatchPage Actually Functional, Moved GetGameID() And AssignButtonText() Part To Seperate Function Below. Stopped Path Boxes From Getting MoveForm Functionality So the User Can Drag-Select The Text, Comments, Other Crap",
           "* 3.31.109.304 | PkgCreationHelpPage Created",
-          "* 3.31.109.306 | Strikeout For Misc Patches Button, Misc Debug Function Fix"
+          "* 3.31.109.306 | Strikeout For Misc Patches Button, Misc Debug Function Fix",
+          "* 3.31.110.307 | Updated Contact Info",
+          "* 3.31.111.308 | Fixed Tlou2 Debug Offset Assignment, Copy Pasted Cases Still All Had 1.00"
 
             // TODO:
             // - Fix Control Spacing
