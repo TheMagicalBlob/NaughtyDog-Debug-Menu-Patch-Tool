@@ -424,11 +424,15 @@ namespace Dobby {
 
 
         private void StartPkgCreationBtn_Click(object sender, EventArgs e) {
-            if(!IsBuildReady) return;
-            else MessageBox.Show("orbis-pub-cmd.exe And A .gp4 Are Necessary For .pkg Creation");
+            if(!IsBuildReady) {
+                MessageBox.Show("orbis-pub-cmd.exe And A .gp4 Are Necessary For .pkg Creation");
+                return;
+            }
 
             string Parameters = $"img_create --oformat pkg  {(VerboseOutput ? "--no_progress_bar" : string.Empty)} --skip_digest {(SpecifyTMPDirectory ? $"--tmp_path {TMPPath}" : string.Empty)} {GP4Path} {OutputDirectory}";
             System.Diagnostics.Process.Start(OrbisPubCmdPath, Parameters);
+
+            MessageBox.Show(".pkg Creation Started; If The CMD Window Closes Immediately, You Did Something Wrong. Try ");
         }
 
         private void VerbosityBtn_Click(object sender, EventArgs e) {

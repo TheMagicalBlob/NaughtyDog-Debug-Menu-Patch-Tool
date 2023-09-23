@@ -117,15 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="GeneralInfoLabel.Text" xml:space="preserve">
-    <value>This Application Is For Playstation 4 Consoles
-On Firmware 9.00 Or Lower.
-
-eboot.bin (Or Other) Files Patched With The
-EbootPatchPage Are Meant To Be Added To
-A fPKG Patch\Game.
-
-Contact: TheMagicalBlob#2680 (Discord)
-</value>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Once You Have Your Game Dumped Or .pkg Extracted, Make Sure The Folder's Named Like:
+----------------------------------, Or Else gengp4 Will Screw Things Up. Just Select The CUSA Folder With
+gengp4 And Hit "Generate"</value>
   </data>
 </root>

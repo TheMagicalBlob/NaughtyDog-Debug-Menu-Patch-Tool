@@ -152,7 +152,8 @@ namespace Dobby {
           "* 3.29.103.289 | Misc Changes",
           "* 3.29.103.291 | Deleted Useless Check In BrowseBtn Function I Forgot About. Comments, Misc Changes",
           "* 3.29.105.294 | Deleted Ueless/Outdated Code, Commented Out One I Wanna Keep For Sh*ts And Giggles. Reworked EbootPatchPage Restored Debug Functions, Misc Changes",
-          "* 3.30.109.304 | PkgCreationPage Base Creation. Made The TextBox In EbootPatchPage Actually Functional, Moved GetGameID() And AssignButtonText() Part To Seperate Function Below. Stopped Path Boxes From Getting MoveForm Functionality So the User Can Drag-Select The Text, Comments, Other Crap"
+          "* 3.30.109.304 | PkgCreationPage Base Creation. Made The TextBox In EbootPatchPage Actually Functional, Moved GetGameID() And AssignButtonText() Part To Seperate Function Below. Stopped Path Boxes From Getting MoveForm Functionality So the User Can Drag-Select The Text, Comments, Other Crap",
+          "* 3.31.109.304 | PKGCreationHelpPage Created"
 
             // TODO:
             // - Fix Control Spacing
@@ -393,16 +394,20 @@ namespace Dobby {
                 case 9:
                     PCDebugMenuPage PCDebugMenu = new PCDebugMenuPage();
                     PCDebugMenu.Show();
-                    MessageBox.Show("Important Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
+                    MessageBox.Show("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
                     break;
                 case 10:
                     PCQOLPatchesPage PCQOLPatches = new PCQOLPatchesPage();
                     PCQOLPatches.Show();
-                    MessageBox.Show("Important Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
+                    MessageBox.Show("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
                     break;
                 case 11:
                     PkgCreationPage PkgCreation = new PkgCreationPage();
                     PkgCreation.Show();
+                    break;
+                case 12:
+                    PkgCreationHelpPage PkgCreationHelp = new PkgCreationHelpPage();
+                    PkgCreationHelp.Show();
                     break;
             }
             YellowInformationLabel = ActiveForm.Controls.Find("Info", true)[0];
