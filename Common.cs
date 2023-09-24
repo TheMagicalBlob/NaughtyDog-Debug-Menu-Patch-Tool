@@ -156,7 +156,8 @@ namespace Dobby {
           "* 3.31.109.304 | PkgCreationHelpPage Created",
           "* 3.31.109.306 | Strikeout For Misc Patches Button, Misc Debug Function Fix",
           "* 3.31.110.307 | Updated Contact Info",
-          "* 3.31.112.308 | Fixed Tlou2 Debug Offset Assignment, Copy Pasted Cases Still All Had 1.00. Fixed Tlou2 Custom Debug novis Patch, I Copied The Default Hex Data..."
+          "* 3.31.112.308 | Fixed Tlou2 Debug Offset Assignment, Copy Pasted Cases Still All Had 1.00. Fixed Tlou2 Custom Debug novis Patch, I Copied The Default Hex Data...",
+          "* 3.31.112.311 | Added Missing \" Trim From Path Names If The ExecutablePathBox Is Pasted To Directly (Where did it go? I already did that), Misc Changes"
 
             // TODO:
             // - Fix Control Spacing
@@ -173,7 +174,7 @@ namespace Dobby {
 
 
         #region Application-Wide Functions And Variable Declarations
-        //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
+        //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///--  MAIN APPLICATION VARIABLES & Functions  --\\\
         //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
 
@@ -705,9 +706,9 @@ namespace Dobby {
         /// <summary> Debug Offsets For Various PS4 Naughty Dog Games (On:0xEB || Off:0x74) </summary>
         public const int
             T1R100Debug       = 0x5C5A,  //! TEST ME
-            T1R109Debug       = 0x61A4,  //! TEST ME
-            T1R110Debug       = 0x61A4,  //! TEST ME
-            T1R111Debug       = 0x61A4,  //! TEST ME
+            T1R109Debug       = 0x61A0,  //! TEST ME
+            T1R110Debug       = 0x61A0,  //! TEST ME
+            T1R111Debug       = 0x61A0,  //! TEST ME
             T2100Debug        = 0x1D6394, //! TEST ME
             T2101Debug        = 0x1D6414, //! TEST ME
             T2102Debug        = 0x1D6464, //! TEST ME
@@ -858,6 +859,9 @@ namespace Dobby {
             MainStream.Position = offset;
             return (byte)MainStream.ReadByte();
         }
+        /// <summary> Compares The Bytes At The Give Address To The One Given
+        /// </summary>
+        /// <returns> True If The Bytes Match </returns>
         public static bool ByteCmp(int Address, byte ByteToCompare) {
             MainStream.Position = Address;
             return (byte)MainStream.ReadByte() == ByteToCompare;
@@ -1294,6 +1298,8 @@ namespace Dobby {
                     s += " (Use Seperate Calls For New Line!!!)";
                 }
 
+            Wait:
+                if(OutputStrings == null) goto Wait; // Try And Avoid Rare Crash On Boot In Dev Build When The App Doesn't Boot Fast Enough
                 if(OutputStringIndex != OutputStrings.Length - 1) {
                     for(; OutputStringIndex < OutputStrings.Length - 1; OutputStringIndex++) {
                         if(OutputStrings[OutputStringIndex] == null) {

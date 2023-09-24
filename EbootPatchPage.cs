@@ -341,10 +341,10 @@ namespace Dobby {
         /// <summary> Load A File For Checking/Patching If The Path In The ExecutablePathBox Exists
         /// </summary>
         private void ExecutablePathBox_TextChanged(object sender, EventArgs e) {
-            var TextBox = ((Control)sender);
+            var TextBoxData = (((Control)sender).Text.Replace("\"", ""));
 
-            if(File.Exists(TextBox.Text))
-            LoadFileToBePatched(TextBox.Text);
+            if(File.Exists(TextBoxData))
+            LoadFileToBePatched(TextBoxData);
         }
 
         /// <summary>
@@ -356,6 +356,7 @@ namespace Dobby {
         private void LoadFileToBePatched(string FilePath) {
             try { 
                 MainStream?.Dispose();
+                Dev.DebugOut(FilePath);
                 MainStream = new FileStream(FilePath, FileMode.Open, FileAccess.ReadWrite);
             }
             catch(IOException Oop) {
@@ -473,26 +474,6 @@ namespace Dobby {
             var HashArray = Hash.ComputeHash(LocalExecutableCheck);
             Game = BitConverter.ToInt32(HashArray, 0);
 
-            /*
-            bool CheckDebugState(int[] offsets, byte[] Data) {
-                int i = 0; // Just Returns True If The Bytes Read At The Specified Address Match The Byte Given
-                foreach (int addr in offsets) {
-                    MainStream.Position = addr; Read:
-                    if ((byte)MainStream.ReadByte() == Data[i])
-                        return true;
-
-                    if (Data[i] == 0x75) { // Go back and check for an unconditional jump
-                        MainStream.Position--;
-                        Data[i] = 0xEB;
-                        goto Read;
-                    }
-
-                    i++;
-                }
-                return false;
-            }
-            */
-
             switch(Game) {
                 case UC1100:       DebugAddressForSelectedGame = UC1100Debug;       return "Uncharted 1 1.00";
                 case UC1102:       DebugAddressForSelectedGame = UC1102Debug;       return "Uncharted 1 1.02";
@@ -552,17 +533,10 @@ namespace Dobby {
                 case T2109:        DebugAddressForSelectedGame = T2109Debug;        return "The Last Of Us 2 1.09";
                 default:           DebugAddressForSelectedGame = 0xBADBEEF;         return $"UnknownGame {Game}";
             }
-
-
         }
         
 
-        public byte BaseDebugByte(int OnOrOff) {
-            return (byte)(OnOrOff == 0 ? 0x75 : 0xEB);
-        }
-
-        /// <summary>
-        /// 0: Disable | 1: Enable | 2: Restored | 3: Custom 
+        /// <summary> 0: Disable | 1: Enable | 2: Restored | 3: Custom 
         /// </summary>
         /// <param name="PatchType"></param>
         public void ApplyDebugPatches(int PatchType) {
@@ -577,7 +551,8 @@ namespace Dobby {
                 return;
             }
 
-            WriteByte(DebugAddressForSelectedGame, BaseDebugByte(PatchType));
+            // Checks Whether The Game's Tlou R 1.00 Because That's The Only One Without a JNZ
+            WriteByte(DebugAddressForSelectedGame, (byte)(PatchType == 0 ? (DebugAddressForSelectedGame == 0x5C5A ? 0x74 : 0x74) : 0xEB));
 
             if(PatchType < 2) {
                 SetInfoLabelText($"{ActiveGameID} {ResultStrings[PatchType]}");
@@ -656,7 +631,6 @@ namespace Dobby {
         public void DisableDebugBtn_Click(object sender, EventArgs e) => ApplyDebugPatches(0);
         public void EnableDebugBtn_Click(object sender, EventArgs e) => ApplyDebugPatches(1);
         public void RestoredDebugBtn_Click(object sender, EventArgs e) => ApplyDebugPatches(RestoredDebugBtn.Text.Contains(" Custom") ? 3 : 2);
-
 
         /*
         public void CustomOptDebugBtn_Click(object sender, EventArgs e) { if (Dev.REL) return;
@@ -737,12 +711,10 @@ namespace Dobby {
         }
         */
 
-
-
-
-        /*======================================================================================================================
-        |                                               Patch Application Functions
-        ======================================================================================================================*/
+        #region Patch Application Functions
+        ////////////////////\\\\\\\\\\\\\\\\\\\\\
+        ///--  PATCH APPLICATION FUNCTIONS  --\\\
+        ////////////////////\\\\\\\\\\\\\\\\\\\\\
         void UC1100_RestoredMenu() {
             int[] WhiteJumpsOneByte = new int[] {
                 0xE20E3,  // BP UCC...
@@ -1409,13 +1381,13 @@ namespace Dobby {
             int[] addrs = new int[] { 0x25AE9DA, 0x25AE990, 0x2DF3B50, 0x25B231B, 0x25B2279, 0x2DF3B67, 0x7A4ECF };
             byte[][] dat = new byte[7][]
             {
-                new byte[] { 0x4e, 0xf4, 0xa9, 0x00 },
-                new byte[] { 0xbc, 0x51, 0x84 },
+                new byte[] { 0x4e, 0xf4, 0xa9, 0x00 }, // Change Draw World Axis Pointer To Novis One
+                new byte[] { 0xbc, 0x51, 0x84 },       //
                 new byte[] { 0x44, 0x69, 0x73, 0x61, 0x62, 0x6C, 0x65, 0x20, 0x41, 0x6C, 0x6C, 0x20, 0x56, 0x69, 0x73, 0x69, 0x62, 0x69, 0x6C, 0x69, 0x74, 0x79 },
-                new byte[] { 0x29, 0xc3, 0xca, 0x00 },
-                new byte[] { 0xea, 0x18, 0x84, 0x00 },
-                new byte[] { 0x41, 0x64, 0x6A, 0x75, 0x73, 0x74, 0x20, 0x44, 0x65, 0x62, 0x75, 0x67, 0x20, 0x4D, 0x65, 0x6E, 0x75, 0x20, 0x53, 0x63, 0x61, 0x6C, 0x65 },
-                new byte[] { 0xcd, 0xcc, 0x4c, 0x3f }
+                new byte[] { 0x29, 0xc3, 0xca, 0x00 }, //
+                new byte[] { 0xea, 0x18, 0x84, 0x00 }, //
+                new byte[] { 0x41, 0x64, 0x6A, 0x75, 0x73, 0x74, 0x20, 0x44, 0x65, 0x62, 0x75, 0x67, 0x20, 0x4D, 0x65, 0x6E, 0x75, 0x20, 0x53, 0x63, 0x61, 0x6C, 0x65 }, // 
+                new byte[] { 0xcd, 0xcc, 0x4c, 0x3f }  //
              };
 
             foreach (int addr in addrs) {
@@ -1425,13 +1397,12 @@ namespace Dobby {
             }
             return;
         }
-
-
+        #endregion
         #region RepeatedButtonFunctions
         /////////////////\\\\\\\\\\\\\\\\\\
         ///--     Repeat Buttons      --\\\
         /////////////////\\\\\\\\\\\\\\\\\\\
-        
+
         public void BackBtn_Click(object sender, EventArgs e) {
             LabelShouldFlash = false;
             BackFunc();
@@ -1441,7 +1412,6 @@ namespace Dobby {
 
         public void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
         #endregion
-
         #region ControlDeclarations
         ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///--     PS4DebugPage Control Declarations     --\\\
