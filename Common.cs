@@ -164,7 +164,8 @@ namespace Dobby {
           "* 3.31.112.311 | Added Missing \" Trim From Path Names If The ExecutablePathBox Is Pasted To Directly (Where did it go? I already did that), Misc Changes",
           "* 3.33.113.315 | Font Changes, PkgCreationHelp Page Initial Creation And Partial Completion, Finished EbootPatchHelp Page I Forgot Was Hilariously Unfinished But Still Accessible. Misc Changes, Comments",
           "* 3.33.115.323 | Added Page Id Variable For Readability, Formatting For Many Pages, Comments, Other Changes My Dumb Arse Can't Recall Fully",
-          "* 3.33.116.325 | Added Click Functionality To PkgCreationPage Path Labels 'Cause Why Not, Misc Changes"
+          "* 3.33.116.325 | Added Click Functionality To PkgCreationPage Path Labels 'Cause Why Not, Misc Changes",
+          "* 3.33.117.325 | Added Underline On Path Label Hover For PkgCreationPage Path Labels"
 
             // TODO:
             // - Standardize Help Page Fonts For Readability
@@ -198,6 +199,7 @@ namespace Dobby {
             InfoHelpPageId = 6,
             CreditsPageId = 7
         ;
+
         public static int?[] Pages = new int?[5];
         public static bool InfoHasImportantStr, IsPageGoingBack = false, LastDebugOutputWasInfoString = false, LabelShouldFlash = false, FlashThreadHasStarted = false;
 
