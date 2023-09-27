@@ -117,9 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label2.Text" xml:space="preserve">
-    <value>Once You Have Your Game Dumped Or .pkg Extracted, Make Sure The Folder's Named Like:
--------------------------, Or Else gengp4 Will Screw Things Up. Just Select The CUSA Folder With
-gengp4 And Hit "Generate"</value>
+  <data name="Question1Btn.Text" xml:space="preserve">
+    <value>To get the orbis-pub-cmd.exe and gengp4.exe required,
+you'll just have to grab them off of google yourself,
+I can't just include copyrighted Sony SDK tools in my apps.
+
+These are thankfully very easy to find, you won't have trouble getting them
+
+- Obtaining The Files Needed</value>
   </data>
 </root>

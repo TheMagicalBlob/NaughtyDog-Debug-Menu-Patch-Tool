@@ -15,6 +15,10 @@ using static System.Console;
 namespace Dobby {
     public class Common : Dobby {
         //#error version
+
+        // Spacing:
+        // Info & Back Btn; Info: Form.Size.Y - Info.Size.Y | BackBtn Pos: (Info Vertical Pos - BackBtn.Size.Y - 3)
+
         // MajorFeature.Feature.Minor.Patch
         public static string[] ChangeList = new string[] {
             "* ------------",
@@ -157,18 +161,17 @@ namespace Dobby {
           "* 3.31.109.306 | Strikeout For Misc Patches Button, Misc Debug Function Fix",
           "* 3.31.110.307 | Updated Contact Info",
           "* 3.31.112.308 | Fixed Tlou2 Debug Offset Assignment, Copy Pasted Cases Still All Had 1.00. Fixed Tlou2 Custom Debug novis Patch, I Copied The Default Hex Data...",
-          "* 3.31.112.311 | Added Missing \" Trim From Path Names If The ExecutablePathBox Is Pasted To Directly (Where did it go? I already did that), Misc Changes"
+          "* 3.31.112.311 | Added Missing \" Trim From Path Names If The ExecutablePathBox Is Pasted To Directly (Where did it go? I already did that), Misc Changes",
+          "* 3.33.113.315 | Font Changes, PkgCreationHelp Page Initial Creation And Partial Completion, Finished EbootPatchHelp Page I Forgot Was Hilariously Unfinished But Still Accessible. Misc Changes, Comments",
+          "* 3.33.115.323 | Added Page Id Variable For Readability, Formatting For Many Pages, Comments, Other Changes My Dumb Arse Can't Recall Fully",
+          "* 3.33.116.325 | Added Click Functionality To PkgCreationPage Path Labels 'Cause Why Not, Misc Changes"
 
             // TODO:
-            // - Fix Control Spacing
+            // - Standardize Help Page Fonts For Readability
+            // - Standardize Info Label And Back Button Positioning, As Well As Space Betweeen Buttons
+            // - Improve/Finish Help Pages
             // - Replace InfoHover Functionality With Alternative, Prefferably One Recreating Native HoverInfo BS That Doesn't Work For Most Controls
             // - Finish PS4QOLPatchesPage Dynamic Button Functionality
-            // - Finish EbootPatchHelpPage
-            // - Finish EbootPatchPage
-            
-            // KNOWN BUGS:
-            // - Occasional String Duplication In Debug Output (DebugOutputStr / UpdateConsoleOutput)
-
         };
         public static string Build = ChangeList[ChangeList.Length - 1].Substring(2).Substring(0, ChangeList[ChangeList.Length - 1].IndexOf('|') - 3); // Trims The Last ChangeList String For Latest The Build Number
 
@@ -180,9 +183,23 @@ namespace Dobby {
 
         public static string CurrentControl, TempStringStore;
 
-        public static int Page;
+        public static int
+            Page,
+            MainPageId = 0,
+            PS4DebugPageId = 1,
+            PS4DebugHelpPageId = 11,
+            EbootPatchPageId = 2,
+            EbootPatchHelpPageId = 21,
+            PS4QOLPageId = 3,
+            PS4QOLHelpPageId = 31,
+            PkgCreationPageId = 4,
+            PkgCreationHelpPageId = 41,
+            PCDebugMenuPageId = 5,
+            InfoHelpPageId = 6,
+            CreditsPageId = 7
+        ;
         public static int?[] Pages = new int?[5];
-        public static bool InfoHasImportantStr, LastDebugOutputWasInfoString = false, LabelShouldFlash = false, FlashThreadHasStarted = false;
+        public static bool InfoHasImportantStr, IsPageGoingBack = false, LastDebugOutputWasInfoString = false, LabelShouldFlash = false, FlashThreadHasStarted = false;
 
         public static Point LastPos, MousePos, MouseDif;
         public static Point[] OriginalControlPositions;
@@ -343,11 +360,12 @@ namespace Dobby {
         /// 0: Main Form <br/>1: PS4DebugPage 2: EbootPatchPage 3: PS4QOLPatchPage 4:  PKG Build Page <br/>5: InfoHelpPage 6: PS4DebugHelpPage 7: EbootPatchHelpPage  8: Credits Page <br/>9: PCDebugMenuPage 10: PCQOLPatchesPage
         /// </summary>
         /// <param name="Page"> Page To Change To </param>
-        /// <param name="IsGoingBack"> Whether We're Returning Or Loading A New Page </param>
-        public static void ChangeForm(int Page, bool IsGoingBack) {
+        /// <param name="IsPageGoingBack"> Whether We're Returning Or Loading A New Page </param>
+        public static void ChangeForm(int Page) {
+
             LastPos = ActiveForm.Location;
             var ClosingForm = ActiveForm;
-            if(!IsGoingBack) {
+            if(!IsPageGoingBack) {
                 for(int i = 0; i < 5; i++) {
                     if(Pages[i] == null) {
                         Pages[i] = Common.Page;
@@ -367,51 +385,52 @@ namespace Dobby {
                     PS4DebugPage PS4Debug = new PS4DebugPage();
                     PS4Debug.Show();
                     break;
+                case 11:
+                    PS4DebugHelpPage PS4DebugHelp = new PS4DebugHelpPage();
+                    PS4DebugHelp.Show();
+                    break;
                 case 2:
                     EbootPatchPage EbootPatch = new EbootPatchPage();
                     EbootPatch.Show();
+                    break;
+                case 21:
+                    EbootPatchHelpPage EbootPatchHelp = new EbootPatchHelpPage();
+                    EbootPatchHelp.Show();
                     break;
                 case 3:
                     PS4QOLPatchesPage PS4QOLPage = new PS4QOLPatchesPage();
                     PS4QOLPage.Show();
                     break;
+                case 31:
+
+                    //PS4QOLPatchesHelpPage PS4QOLHelpPage = new PS4QOLPatchesHelpPage();
+                    //PS4QOLHelpPage.Show();
+                    break;
                 case 4:
-                    PS4QOLPatchesPage tmp = new PS4QOLPatchesPage();
-                    tmp.Show();
+                    PkgCreationPage PkgCreation = new PkgCreationPage();
+                    PkgCreation.Show();
+                    break;
+                case 41:
+                    PkgCreationHelpPage PkgCreationHelp = new PkgCreationHelpPage();
+                    PkgCreationHelp.Show();
                     break;
                 case 5:
-                    InfoHelpPage InfoHelp = new InfoHelpPage();
-                    InfoHelp.Show();
-                    break;
-                case 6:
-                    PS4DebugHelpPage PS4DebugHelp = new PS4DebugHelpPage();
-                    PS4DebugHelp.Show();
-                    break;
-                case 7:
-                    EbootPatchHelpPage EbootPatchHelp = new EbootPatchHelpPage();
-                    EbootPatchHelp.Show();
-                    break;
-                case 8:
-                    CreditsPage Credits = new CreditsPage();
-                    Credits.Show();
-                    break;
-                case 9:
                     PCDebugMenuPage PCDebugMenu = new PCDebugMenuPage();
                     PCDebugMenu.Show();
                     MessageBox.Show("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
                     break;
-                case 10:
+                case 11111111:
                     PCQOLPatchesPage PCQOLPatches = new PCQOLPatchesPage();
                     PCQOLPatches.Show();
                     MessageBox.Show("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
                     break;
-                case 11:
-                    PkgCreationPage PkgCreation = new PkgCreationPage();
-                    PkgCreation.Show();
+                case 6:
+                    InfoHelpPage InfoHelp = new InfoHelpPage();
+                    InfoHelp.Show();
                     break;
-                case 12:
-                    PkgCreationHelpPage PkgCreationHelp = new PkgCreationHelpPage();
-                    PkgCreationHelp.Show();
+                case 7:
+                    CreditsPage Credits = new CreditsPage();
+                    Credits.Show();
                     break;
             }
             YellowInformationLabel = ActiveForm.Controls.Find("Info", true)[0];
@@ -425,14 +444,15 @@ namespace Dobby {
         }
 
         public static void BackFunc() {
-
+            IsPageGoingBack = true;
             for(int i = 4; i >= 0; i--)
 
                 if(Pages[i] != null) {
-                    ChangeForm((int)Pages[i], true);
+                    ChangeForm((int)Pages[i]);
                     Pages[i] = null;
                     break;
                 }
+            IsPageGoingBack = false;
         }
 
         public static void AddControlEventHandlers(Control.ControlCollection Controls) { // Got Sick of Manually Editing InitializeComponent()
@@ -599,198 +619,14 @@ namespace Dobby {
         #endregion
 
 
-        #region Debug Offsets & Game Identifiers
-        /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///-- DEBUG MODE OFFSETS AND GAME INDENTIFIERS --\\\
-        /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-        public const int
-            // Read 160 bytes at 0x5100 as SHA256 Then Checked As Int32 Because I'm An Idiot And Don't Feel Like Correcting It Since It Works
-            UC1100   = -679355525,
-            UC1102   = 104877429,
-            UC2100   = 414674483,
-            UC2102   = 216080152,
-            UC3100   = 823868754,
-            UC3102   = 1911044661,
-            UC4100   = 308820129,
-            UC4101   = -1879120502,
-            UC4102   = 1084389925,
-            UC4103   = 1009654146,
-            UC4104   = 1174607918,
-            UC4105   = 1397785573,
-            UC4106   = 1880438911,
-            UC4108   = -1521275605,
-            UC4110   = 556134345,
-            UC4111   = 533967079,
-            UC4112   = -1876292260,
-            UC4113   = 441673980,
-            UC4115   = 1382306251,
-            UC4116   = -1865276990,
-            UC4117   = -2002709567,
-            UC4118   = 1337597197,
-            UC4119   = 853166708,
-            UC4MP120 = 948532543,
-            UC4SP120 = 1044003518,
-            UC4MP121 = 1404274247,
-            UC4SP121 = -538479879,
-            UC4MP122 = -605975924,
-            UC4SP122_23  = 1849401718,
-            UC4MP123     = -959800645,
-            UC4MP124     = 1301857603,
-            UC4SP124_25  = -1166682695,
-            UC4MP125     = -634367694,
-            UC4MP127_28  = -1449571981,
-            UC4SP127     = -400040687, // 1.27+, SP exe Never Changed After 1.27 Released
-            UC4MP129     = -1725079303,
-            UC4MP130     = 931397679,
-            UC4MP131     = 1212014389,
-            UC4MP132     = 1923471472, // Also The Lost Legacy 1.08 MP
-            UC4MP133     = 486460629,  // Also The Lost Legacy 1.09 MP
-            UC4MPBETA100 = 1813169088,  // CUSA04051
-            UC4MPBETA109 = -1103269419, // CUSA04051
-            TLLMP100   = 469274180,
-            TLLSP100   = -1269602830,
-            TLLSP10X   = 2141223617,  // UCTLL 1.08/1.09 SP Identical
-            T1R100 = 306377542,
-            T1R109 = -1391237605,
-            T1R110 = -915963582,
-            T1R111 = -866651344,
-            T2100  = -1496529414,
-            T2101  = -777844382,
-            T2102  = -357372043,
-            T2105  = -342416055,
-            T2107  = 154664618,
-            T2108  = 537380869,
-            T2109  = 1174398197
-        ;
-
-        /* DEPRICATED, KEPT JIC
-        public const int
-            // Game Identifiers. Read 4 bytes at 0x60 as an integer to get it
-            T1R100 = 22033680,
-            T1R109 = 21444016,
-            T1R11X = 21446072,
-            T2100 = 46552012,
-            T2101 = 46785692,
-            T2102 = 46718028,
-            T2105 = 46826436,
-            T2107 = 46832260,
-            T2108 = 48176392,
-            T2109 = 48176456,
-            UC1100 = 9818208,
-            UC1102 = 9568920,
-            UC2100 = 14655236,
-            UC2102 = 16663728,
-            UC3100 = 20277852,
-            UC3102 = 23365872,
-            UC4100 = 36229424,
-            UC4101 = 37122024,
-            UC4102 = 37136552,
-            UC4103 = 37137792,
-            UC4104 = 37144904,
-            UC4105 = 37145288,
-            UC4106 = 37150008,
-            UC4108 = 33453704,
-            UC4110 = 33454632,
-            UC4111 = 33460888,
-            UC4112 = 33515840,
-            UC413X = 33886256, // UC4 1.32 & 1.33 SP are identical (As Are 1.27+ SP, 1.18 MP/SP, 1.19 MP/SP, 1.22/23 SP, 1.24/25 SP)
-            UC4132MP = 35875608,
-            UC4133MP = 35877432,
-            TLL100 = 35178432,
-            TLL10X = 35227448
-        ;
-        */
-
-
-        /// <summary> Debug Offsets For Various PS4 Naughty Dog Games (On:0xEB || Off:0x74) </summary>
-        public const int
-            T1R100Debug       = 0x5C5A,  //! TEST ME
-            T1R109Debug       = 0x61A0,  //! TEST ME
-            T1R110Debug       = 0x61A0,  //! TEST ME
-            T1R111Debug       = 0x61A0,  //! TEST ME
-            T2100Debug        = 0x1D6394, //! TEST ME
-            T2101Debug        = 0x1D6414, //! TEST ME
-            T2102Debug        = 0x1D6464, //! TEST ME
-            T2105Debug        = 0x1D66A4, //! TEST ME
-            T2107Debug        = 0x1D66B4,
-            T2108Debug        = 0x6181F4,
-            T2109Debug        = 0x6181F4,
-            UC1100Debug       = 0x102057,
-            UC1102Debug       = 0x102187,
-            UC2100Debug       = 0x1EB297,
-            UC2102Debug       = 0x3F7A26,
-            UC3100Debug       = 0x168EB7,
-            UC3102Debug       = 0x578227,
-            UC4100Debug       = 0x5257DA,       //! TEST ME
-            UC4101_106Debug   = 0x12980E, //! TEST ME
-            UC4108_111Debug   = 0x1C738B, //! TEST ME
-            UC4112_113Debug   = 0x1C7CAB, //! TEST ME
-            UC4115Debug       = 0x41885E, //! TEST ME
-            UC4116Debug       = 0x41886E, //! TEST ME
-            UC4117Debug       = 0x4188DD, //! TEST ME
-            UC4118_119Debug   = 0x1CCC36, //! TEST ME
-            UC4120MPDebug     = 0x1CCDAA, //! TEST ME
-            UC4120SPDebug     = 0x1CCC0A, //! TEST ME
-            UC4121MPDebug     = 0x1CCE25, //! TEST ME
-            UC4121SPDebug     = 0x1CCDEA, //! TEST ME
-            UC4122_125MPDebug = 0x1CCE25, //! TEST ME
-            UC4122_125SPDebug = 0x1CCDEA, //! TEST ME
-            UC4127_132MPDebug = 0x1CCE85, //! TEST ME
-            UC4127_133SPDebug = 0x1CCDEA, //! TEST ME
-            UC4133MPDebug     = 0x1CCEA5, //! TEST ME
-            UC4MPBETA100Debug = 0x4C1B54,
-            UC4MPBETA109Debug = 0x4C1CC6,
-            TLL100MPDebug = 0x1CCE25,
-            TLL100Debug   = 0x1CCFDA,
-            TLLMP108Debug = 0x1CCE85,
-            TLLMP109Debug = 0x1CCEA5,
-            TLL10XDebug   = 0x1CD01A
-        ;
-
-        /// <summary> Int Value Used To Identify The Specific Executable Selected By The User.<br/>(0x1EC + 0x1F8) <br/>VERY LIMITED </summary>
-        public const int
-            // PC Eboot Identifiers - Very Limited Though | 0x1EC + 0x1F8 (Kept Seperate Through Immense Laziness)
-            T1X101 = 42695168 + 16007532,
-            T1XL101 = 42670080 + 16010844,
-            T1X1015 = 2228464 + 95625728,
-            T1XL1015 = 2228464 + 95627776,
-            T1X1016 = 42698752 + 16007532,
-            T1XL1016 = 42673664 + 16010828,
-            T1X1017 = 42702336 + 16007852,
-            T1XL1017 = 42677248 + 16011148,
-            T1X102 = 2228464 + 95631360,
-            T1XL102 = 2228464 + 95634432
-        ;
-
-        /// <summary> Offsets To Enable The Debug Mode in the pc version of the game<br/>(0x97 -> 0x8F) </summary>
-        public const int
-            // PC Debug Offsets (0x97 -> 0x8F)
-            T1X101Debug = 0x3B66CD,
-            T1XL101Debug = 0x3B64B9,
-            T1X1015Debug = 0x3B68FD,
-            T1XL1015Debug = 0x3B66E9,
-            T1X1016Debug = 0x3B690D,
-            T1XL1016Debug = 0x3B66E9,
-            T1X1017Debug = 0x3B6A2E,
-            T1XL1017Debug = 0x03B680A,
-            T1X102Debug = 0x3B6AA9,
-            T1XL102Debug = 0x3B6885
-        ;
-
-        //////////////////////////\/\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///-- DEBUG MODE OFFSETS AND GAME INDENTIFIERS END --\\\
-        //////////////////////////\/\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        #endregion
-
-
-
         #region EbootPatchPage Variables & Functions
         /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///-- EBOOTPATCHPAGE VARIABLES AND FUNCTIONS  --\\\
         /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
 
         public static bool[] CDO = new bool[11]; // Custom Debug Options - 11th is For Eventually Keeping Track Of Whether The Options Were Left Default (true if changed)
+
+        public static bool PathBoxHasDefaultText = true;
 
         public static int
             MenuScale,
@@ -878,13 +714,151 @@ namespace Dobby {
         #endregion
 
 
+        #region Debug Offsets & Game Identifiers
+        /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///-- DEBUG MODE OFFSETS AND GAME INDENTIFIERS --\\\
+        /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        public const int
+            // Read 160 bytes at 0x5100 as SHA256 Then Checked As Int32 Because I'm An Idiot And Don't Feel Like Correcting It Since It Works
+            UC1100 = -679355525,
+            UC1102 = 104877429,
+            UC2100 = 414674483,
+            UC2102 = 216080152,
+            UC3100 = 823868754,
+            UC3102 = 1911044661,
+            UC4100 = 308820129,
+            UC4101 = -1879120502,
+            UC4102 = 1084389925,
+            UC4103 = 1009654146,
+            UC4104 = 1174607918,
+            UC4105 = 1397785573,
+            UC4106 = 1880438911,
+            UC4108 = -1521275605,
+            UC4110 = 556134345,
+            UC4111 = 533967079,
+            UC4112 = -1876292260,
+            UC4113 = 441673980,
+            UC4115 = 1382306251,
+            UC4116 = -1865276990,
+            UC4117 = -2002709567,
+            UC4118 = 1337597197,
+            UC4119 = 853166708,
+            UC4MP120 = 948532543,
+            UC4SP120 = 1044003518,
+            UC4MP121 = 1404274247,
+            UC4SP121 = -538479879,
+            UC4MP122 = -605975924,
+            UC4SP122_23 = 1849401718,
+            UC4MP123 = -959800645,
+            UC4MP124 = 1301857603,
+            UC4SP124_25 = -1166682695,
+            UC4MP125 = -634367694,
+            UC4MP127_28 = -1449571981,
+            UC4SP127 = -400040687, // 1.27+, SP exe Never Changed After 1.27 Released
+            UC4MP129 = -1725079303,
+            UC4MP130 = 931397679,
+            UC4MP131 = 1212014389,
+            UC4MP132 = 1923471472, // Also The Lost Legacy 1.08 MP
+            UC4MP133 = 486460629,  // Also The Lost Legacy 1.09 MP
+            UC4MPBETA100 = 1813169088,  // CUSA04051
+            UC4MPBETA109 = -1103269419, // CUSA04051
+            TLLMP100 = 469274180,
+            TLLSP100 = -1269602830,
+            TLLSP10X = 2141223617,  // UCTLL 1.08/1.09 SP Identical
+            T1R100 = 306377542,
+            T1R109 = -1391237605,
+            T1R110 = -915963582,
+            T1R111 = -866651344,
+            T2100 = -1496529414,
+            T2101 = -777844382,
+            T2102 = -357372043,
+            T2105 = -342416055,
+            T2107 = 154664618,
+            T2108 = 537380869,
+            T2109 = 1174398197
+        ;
+
+
+        /// <summary> Debug Offsets For Various PS4 Naughty Dog Games (On:0xEB || Off:0x74) </summary>
+        public const int
+            T1R100Debug = 0x5C5A,
+            T1R109Debug = 0x61A0,
+            T1R110Debug = 0x61A0,
+            T1R111Debug = 0x61A0,
+            T2100Debug = 0x1D6394,
+            T2101Debug = 0x1D6414,
+            T2102Debug = 0x1D6464,
+            T2105Debug = 0x1D66A4,
+            T2107Debug = 0x1D66B4,
+            T2108Debug = 0x6181F4,
+            T2109Debug = 0x6181F4,
+            UC1100Debug = 0x102057,
+            UC1102Debug = 0x102187,
+            UC2100Debug = 0x1EB297,
+            UC2102Debug = 0x3F7A26,
+            UC3100Debug = 0x168EB7,
+            UC3102Debug = 0x578227,
+            UC4100Debug = 0x5257DA,       //! TEST ME
+            UC4101_106Debug = 0x12980E,   //! TEST ME
+            UC4108_111Debug = 0x1C738B,   //! TEST ME
+            UC4112_113Debug = 0x1C7CAB,   //! TEST ME
+            UC4115Debug = 0x41885E,       //! TEST ME
+            UC4116Debug = 0x41886E,       //! TEST ME
+            UC4117Debug = 0x4188DD,       //! TEST ME
+            UC4118_119Debug = 0x1CCC36,   //! TEST ME
+            UC4120MPDebug = 0x1CCDAA,     //! TEST ME
+            UC4120SPDebug = 0x1CCC0A,     //! TEST ME
+            UC4121MPDebug = 0x1CCE25,     //! TEST ME
+            UC4121SPDebug = 0x1CCDEA,     //! TEST ME
+            UC4122_125MPDebug = 0x1CCE25, //! TEST ME
+            UC4122_125SPDebug = 0x1CCDEA, //! TEST ME
+            UC4127_132MPDebug = 0x1CCE85, //! TEST ME
+            UC4127_133SPDebug = 0x1CCDEA, //! TEST ME
+            UC4133MPDebug = 0x1CCEA5,     //! TEST ME
+            UC4MPBETA100Debug = 0x4C1B54,
+            UC4MPBETA109Debug = 0x4C1CC6,
+            TLL100MPDebug = 0x1CCE25,
+            TLL100Debug = 0x1CCFDA,
+            TLLMP108Debug = 0x1CCE85,
+            TLLMP109Debug = 0x1CCEA5,
+            TLL10XDebug = 0x1CD01A
+        ;
+
+        /// <summary> Int Value Used To Identify The Specific Executable Selected By The User.<br/>(0x1EC + 0x1F8) <br/>VERY LIMITED </summary>
+        public const int
+            // PC Eboot Identifiers - Very Limited Though | 0x1EC + 0x1F8 (Kept Seperate Through Immense Laziness)
+            T1X101 = 42695168 + 16007532,
+            T1XL101 = 42670080 + 16010844,
+            T1X1015 = 2228464 + 95625728,
+            T1XL1015 = 2228464 + 95627776,
+            T1X1016 = 42698752 + 16007532,
+            T1XL1016 = 42673664 + 16010828,
+            T1X1017 = 42702336 + 16007852,
+            T1XL1017 = 42677248 + 16011148,
+            T1X102 = 2228464 + 95631360,
+            T1XL102 = 2228464 + 95634432
+        ;
+
+        /// <summary> Offsets To Enable The Debug Mode in the pc version of the game<br/>(0x97 -> 0x8F) </summary>
+        public const int
+            // PC Debug Offsets (0x97 -> 0x8F)
+            T1X101Debug = 0x3B66CD,
+            T1XL101Debug = 0x3B64B9,
+            T1X1015Debug = 0x3B68FD,
+            T1XL1015Debug = 0x3B66E9,
+            T1X1016Debug = 0x3B690D,
+            T1XL1016Debug = 0x3B66E9,
+            T1X1017Debug = 0x3B6A2E,
+            T1XL1017Debug = 0x03B680A,
+            T1X102Debug = 0x3B6AA9,
+            T1XL102Debug = 0x3B6885
+        ;
+        #endregion
 
         #region BootSettingsPointers
         ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///-- QUALITY OF LIFE/BOOTSETTINGS OFFSET POINTERS  --\\\
         ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-
         /// <summary> Byte arrays to be used as pointers with the BootSettings custom function </summary>
         public static readonly byte[]
             UC1100DisableFPS = new byte[] { 0x70, 0x89, 0x99, 0x00 }, // fill null bytes just in case of repeat uses with alternate options
@@ -904,13 +878,13 @@ namespace Dobby {
             T1R109DisableFPS = new byte[] { }, // 
             T1R110DisableFPS = new byte[] { }, // 
             T1R111DisableFPS = new byte[] { }, // 
-            T2100DisableFPS = new byte[] { }, // 
-            T2101DisableFPS = new byte[] { }, // 
-            T2102DisableFPS = new byte[] { }, // 
-            T2105DisableFPS = new byte[] { }, // 
-            T2107DisableFPS = new byte[] { }, // 
-            T2108DisableFPS = new byte[] { }, // 
-            T2109DisableFPS = new byte[] { }  // 
+            T2100DisableFPS  = new byte[] { }, // 
+            T2101DisableFPS  = new byte[] { }, // 
+            T2102DisableFPS  = new byte[] { }, // 
+            T2105DisableFPS  = new byte[] { }, // 
+            T2107DisableFPS  = new byte[] { }, // 
+            T2108DisableFPS  = new byte[] { }, // 
+            T2109DisableFPS  = new byte[] { }  // 
         ;
 
         /// <summary> ProgPauseOnOpen Offsets </summary>
@@ -932,13 +906,13 @@ namespace Dobby {
             T1R109ProgPause = new byte[] { }, // 
             T1R110ProgPause = new byte[] { }, // 
             T1R111ProgPause = new byte[] { }, // 
-            T2100ProgPause = new byte[] { }, // 
-            T2101ProgPause = new byte[] { }, // 
-            T2102ProgPause = new byte[] { }, // 
-            T2105ProgPause = new byte[] { }, // 
-            T2107ProgPause = new byte[] { }, // 
-            T2108ProgPause = new byte[] { }, // 
-            T2109ProgPause = new byte[] { }  // 
+            T2100ProgPause  = new byte[] { }, // 
+            T2101ProgPause  = new byte[] { }, // 
+            T2102ProgPause  = new byte[] { }, // 
+            T2105ProgPause  = new byte[] { }, // 
+            T2107ProgPause  = new byte[] { }, // 
+            T2108ProgPause  = new byte[] { }, // 
+            T2109ProgPause  = new byte[] { }  // 
         ;
 
         /// <summary> ProgPauseOnExitOffsets </summary>
@@ -960,13 +934,13 @@ namespace Dobby {
             T1R109ProgPauseOnExit = new byte[] { }, // 
             T1R110ProgPauseOnExit = new byte[] { }, // 
             T1R111ProgPauseOnExit = new byte[] { }, // 
-            T2100ProgPauseOnExit = new byte[] { }, // 
-            T2101ProgPauseOnExit = new byte[] { }, // 
-            T2102ProgPauseOnExit = new byte[] { }, // 
-            T2105ProgPauseOnExit = new byte[] { }, // 
-            T2107ProgPauseOnExit = new byte[] { }, // 
-            T2108ProgPauseOnExit = new byte[] { }, // 
-            T2109ProgPauseOnExit = new byte[] { } // 
+            T2100ProgPauseOnExit  = new byte[] { }, // 
+            T2101ProgPauseOnExit  = new byte[] { }, // 
+            T2102ProgPauseOnExit  = new byte[] { }, // 
+            T2105ProgPauseOnExit  = new byte[] { }, // 
+            T2107ProgPauseOnExit  = new byte[] { }, // 
+            T2108ProgPauseOnExit  = new byte[] { }, // 
+            T2109ProgPauseOnExit  = new byte[] { } // 
         ;
 
         /// <summary> Swap Circle And Square Offsets </summary>
@@ -988,13 +962,13 @@ namespace Dobby {
             T1R109PausedIcon = new byte[] { }, // 
             T1R110PausedIcon = new byte[] { }, // 
             T1R111PausedIcon = new byte[] { }, // 
-            T2100PausedIcon = new byte[] { }, // 
-            T2101PausedIcon = new byte[] { }, // 
-            T2102PausedIcon = new byte[] { }, // 
-            T2105PausedIcon = new byte[] { }, // 
-            T2107PausedIcon = new byte[] { }, // 
-            T2108PausedIcon = new byte[] { }, // 
-            T2109PausedIcon = new byte[] { }  // 
+            T2100PausedIcon  = new byte[] { }, // 
+            T2101PausedIcon  = new byte[] { }, // 
+            T2102PausedIcon  = new byte[] { }, // 
+            T2105PausedIcon  = new byte[] { }, // 
+            T2107PausedIcon  = new byte[] { }, // 
+            T2108PausedIcon  = new byte[] { }, // 
+            T2109PausedIcon  = new byte[] { }  // 
         ;
 
         /// <summary> Swap Circle And Square Offsets </summary>
@@ -1010,13 +984,13 @@ namespace Dobby {
             T1R109SwapCircle = new byte[] { }, // 
             T1R110SwapCircle = new byte[] { }, // 
             T1R111SwapCircle = new byte[] { }, // 
-            T2100SwapCircle = new byte[] { }, // 
-            T2101SwapCircle = new byte[] { }, // 
-            T2102SwapCircle = new byte[] { }, // 
-            T2105SwapCircle = new byte[] { }, // 
-            T2107SwapCircle = new byte[] { }, // 
-            T2108SwapCircle = new byte[] { }, // 
-            T2109SwapCircle = new byte[] { }  // 
+            T2100SwapCircle  = new byte[] { }, // 
+            T2101SwapCircle  = new byte[] { }, // 
+            T2102SwapCircle  = new byte[] { }, // 
+            T2105SwapCircle  = new byte[] { }, // 
+            T2107SwapCircle  = new byte[] { }, // 
+            T2108SwapCircle  = new byte[] { }, // 
+            T2109SwapCircle  = new byte[] { }  // 
         ;
 
 
@@ -1035,13 +1009,13 @@ namespace Dobby {
             TLL107HideTaskInfo = new byte[] { }, // 
             TLL108HideTaskInfo = new byte[] { }, // 
             TLL109HideTaskInfo = new byte[] { }, // 
-            T2100HideTaskInfo = new byte[] { }, // 
-            T2101HideTaskInfo = new byte[] { }, // 
-            T2102HideTaskInfo = new byte[] { }, // 
-            T2105HideTaskInfo = new byte[] { }, // 
-            T2107HideTaskInfo = new byte[] { }, // 
-            T2108HideTaskInfo = new byte[] { }, // 
-            T2109HideTaskInfo = new byte[] { }  // 
+            T2100HideTaskInfo  = new byte[] { }, // 
+            T2101HideTaskInfo  = new byte[] { }, // 
+            T2102HideTaskInfo  = new byte[] { }, // 
+            T2105HideTaskInfo  = new byte[] { }, // 
+            T2107HideTaskInfo  = new byte[] { }, // 
+            T2108HideTaskInfo  = new byte[] { }, // 
+            T2109HideTaskInfo  = new byte[] { }  // 
         ;
 
         /// <summary> Menu Right Align Offsets </summary>
@@ -1059,13 +1033,13 @@ namespace Dobby {
             T1R109RightAlign = new byte[] { }, // 
             T1R110RightAlign = new byte[] { }, // 
             T1R111RightAlign = new byte[] { }, // 
-            T2100RightAlign = new byte[] { }, // 
-            T2101RightAlign = new byte[] { }, // 
-            T2102RightAlign = new byte[] { }, // 
-            T2105RightAlign = new byte[] { }, // 
-            T2107RightAlign = new byte[] { }, // 
-            T2108RightAlign = new byte[] { }, // 
-            T2109RightAlign = new byte[] { }  // 
+            T2100RightAlign  = new byte[] { }, // 
+            T2101RightAlign  = new byte[] { }, // 
+            T2102RightAlign  = new byte[] { }, // 
+            T2105RightAlign  = new byte[] { }, // 
+            T2107RightAlign  = new byte[] { }, // 
+            T2108RightAlign  = new byte[] { }, // 
+            T2109RightAlign  = new byte[] { }  // 
         ;
 
         /// <summary> Right Margin Offsets </summary>
@@ -1083,13 +1057,13 @@ namespace Dobby {
             T1R109RightMargin = new byte[] { }, // 
             T1R110RightMargin = new byte[] { }, // 
             T1R111RightMargin = new byte[] { }, // 
-            T2100RightMargin = new byte[] { }, // 
-            T2101RightMargin = new byte[] { }, // 
-            T2102RightMargin = new byte[] { }, // 
-            T2105RightMargin = new byte[] { }, // 
-            T2107RightMargin = new byte[] { }, // 
-            T2108RightMargin = new byte[] { }, // 
-            T2109RightMargin = new byte[] { }  // 
+            T2100RightMargin  = new byte[] { }, // 
+            T2101RightMargin  = new byte[] { }, // 
+            T2102RightMargin  = new byte[] { }, // 
+            T2105RightMargin  = new byte[] { }, // 
+            T2107RightMargin  = new byte[] { }, // 
+            T2108RightMargin  = new byte[] { }, // 
+            T2109RightMargin  = new byte[] { }  // 
         ;
 
         /// <summary> novis (Disable All Visibility) Offsets, with the memory addresses as comments </summary>
@@ -1111,13 +1085,13 @@ namespace Dobby {
             T1R109Novis = new byte[] { }, // 
             T1R110Novis = new byte[] { }, // 
             T1R111Novis = new byte[] { }, // 
-            T2100Novis = new byte[] { 0x2C, 0x62, 0x01, 0x03 }, // 0x341622c
-            T2101Novis = new byte[] { }, // 
-            T2102Novis = new byte[] { }, // 
-            T2105Novis = new byte[] { }, // 
-            T2107Novis = new byte[] { 0x2C, 0x60, 0x01, 0x03 }, // 0x341602c
-            T2108Novis = new byte[] { }, // 
-            T2109Novis = new byte[] { 0x2C, 0x9E, 0x04, 0x03 }  // 0x3449e2c
+            T2100Novis  = new byte[] { 0x2C, 0x62, 0x01, 0x03 }, // 0x341622c
+            T2101Novis  = new byte[] { }, // 
+            T2102Novis  = new byte[] { }, // 
+            T2105Novis  = new byte[] { }, // 
+            T2107Novis  = new byte[] { 0x2C, 0x60, 0x01, 0x03 }, // 0x341602c
+            T2108Novis  = new byte[] { }, // 
+            T2109Novis  = new byte[] { 0x2C, 0x9E, 0x04, 0x03 }  // 0x3449e2c
         ;
         #endregion
 
@@ -1244,16 +1218,20 @@ namespace Dobby {
                 if(ActiveForm != null && !TimerThreadStarted) { ActiveForm.Invoke(TimerThread); TimerThreadStarted = true; }
                 try {
                     while(OriginalConsoleScale == new Point(WindowHeight, WindowWidth) & !OverrideDebugOut) {
-                        CursorLeft = 0; // Lazy Fix
+
+                        CursorLeft = 0;
+                        
                         int StartTime = TimerTicks, Cursor = 0, String = 0; Form frm = ActiveForm;
                         string ControlType = HoveredControl.GetType().ToString();
+
                         string[] Output = new string[] {
                             $"Build: {Build} | ~{Interval}ms | {PS4DebugDev}",
                             "",
                             $"Form: {(ActiveForm != null ? $"{ActiveForm.Name} | Form Position: {ActiveForm.Location}" : "Console")}",
                             $"Pages: {Pages?[0]}, {Pages?[1]}, {Pages?[2]}, {Pages?[3]}",
                             $"Active Page ID: {Page} | InfoHasImportantString: {InfoHasImportantStr}",
-                            $"TitleID: {TitleID} | Game Version: {GameVersion} | GameID: {ActiveGameID}",
+                            $"TitleID: {TitleID} | Game Version: {GameVersion}",
+                            $"GameID: {ActiveGameID}",
                             $"processname: {ProcessName} | PIC {PS4DebugIsConnected} | WFC {WaitForConnection}",
                             "",
                             $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled} | MousePos: {MousePosition}",
@@ -1269,6 +1247,7 @@ namespace Dobby {
 
                         CursorTop = MainStreamIsOpen ? Cursor += 1 : Cursor;
                         for(int i = 0; i <= OutputStringIndex;) {
+                            CursorLeft = 0;
                             Write(BlankSpace(OutputStrings[i++]));
                             Cursor++;
                         }
@@ -1339,6 +1318,8 @@ namespace Dobby {
                 MainStreamIsOpen = true;
                 Clear();
             }
+
+
 
             public static void DebugMemoryWrite(ulong address) {
                 if(PS4DebugIsConnected || DebugConnect() == 0)

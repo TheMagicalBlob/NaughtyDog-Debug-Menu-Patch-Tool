@@ -356,22 +356,20 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.ResumeLayout(false);
 
         }
-
-        public void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
-        public void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
-        public void PS4DebugPageBtn_Click(object sender, EventArgs e) => ChangeForm(1, false);
-        public void EbootPatchPageBtn_Click(object sender, EventArgs e) => ChangeForm(2, false);
+        private void PS4DebugPageBtn_Click(object sender, EventArgs e) => ChangeForm(PS4DebugPageId);
+        private void EbootPatchPageBtn_Click(object sender, EventArgs e) => ChangeForm(EbootPatchPageId);
 
         private void MiscPatchesBtn_Click(object sender, EventArgs e) {
             if (Dev.REL) return;
-            ChangeForm(3, false);
+            ChangeForm(PS4QOLPageId);
         }
 
-        public void PkgPageBtn_Click(object sender, EventArgs e) => ChangeForm(11, false);
+        private void PkgPageBtn_Click(object sender, EventArgs e) => ChangeForm(PkgCreationPageId);
+        private void PCDebugMenuPageBtn_Click(object sender, EventArgs e) => ChangeForm(PCDebugMenuPageId);
 
+
+        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(InfoHelpPageId);
+        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(CreditsPageId);
         private void DownloadSourceBtn_Click(object sender, EventArgs e) => System.Diagnostics.Process.Start(@"https://github.com/TheMagicalBlob/NaughtyDog-Debug-Menu-Patch-Tool/archive/refs/heads/master.zip");
-
-        private void PCDebugMenuPageBtn_Click(object sender, EventArgs e) => ChangeForm(9, false);
-
     }
 }

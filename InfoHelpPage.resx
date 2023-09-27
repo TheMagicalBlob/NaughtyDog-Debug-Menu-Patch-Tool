@@ -121,9 +121,9 @@
     <value>This Application Is For Playstation 4 Consoles
 On Firmware 9.00 Or Lower.
 
-eboot.bin (Or Other) Files Patched With The
-EbootPatchPage Are Meant To Be Added To
-A fPKG Patch\Game.
+eboot.bin (Or Other .elf) Files Patched With The
+EbootPatchPage Will Need To Be Added To
+A fPKG (.pkg) Patch\Game.
 
 Contacts
 themagicalblob (Discord)

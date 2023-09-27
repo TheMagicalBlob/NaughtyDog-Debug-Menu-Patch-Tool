@@ -24,13 +24,13 @@ namespace Dobby {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InfoHelpPage));
             this.MainLabel = new System.Windows.Forms.Label();
             this.MainBox = new System.Windows.Forms.GroupBox();
+            this.BlobLabel = new System.Windows.Forms.Label();
             this.PkgHelpPageBtn = new System.Windows.Forms.Button();
             this.ExitBtn = new System.Windows.Forms.Button();
             this.MinimizeBtn = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
-            this.MiscPatchPageHelpBtn = new System.Windows.Forms.Button();
+            this.PS4QOLPageHelpBtn = new System.Windows.Forms.Button();
             this.SeperatorLabel2 = new System.Windows.Forms.Label();
-            this.BlobLabel = new System.Windows.Forms.Label();
             this.BuildLabel = new System.Windows.Forms.Label();
             this.SeperatorLabel1 = new System.Windows.Forms.Label();
             this.PS4DebugHelpBtn = new System.Windows.Forms.Button();
@@ -58,14 +58,14 @@ namespace Dobby {
             // 
             // MainBox
             // 
+            this.MainBox.Controls.Add(this.BlobLabel);
             this.MainBox.Controls.Add(this.PkgHelpPageBtn);
             this.MainBox.Controls.Add(this.ExitBtn);
             this.MainBox.Controls.Add(this.MinimizeBtn);
             this.MainBox.Controls.Add(this.MainLabel);
             this.MainBox.Controls.Add(this.label5);
-            this.MainBox.Controls.Add(this.MiscPatchPageHelpBtn);
+            this.MainBox.Controls.Add(this.PS4QOLPageHelpBtn);
             this.MainBox.Controls.Add(this.SeperatorLabel2);
-            this.MainBox.Controls.Add(this.BlobLabel);
             this.MainBox.Controls.Add(this.BuildLabel);
             this.MainBox.Controls.Add(this.SeperatorLabel1);
             this.MainBox.Controls.Add(this.PS4DebugHelpBtn);
@@ -76,12 +76,23 @@ namespace Dobby {
             this.MainBox.Controls.Add(this.GeneralInfoLabel);
             this.MainBox.Location = new System.Drawing.Point(0, -6);
             this.MainBox.Name = "MainBox";
-            this.MainBox.Size = new System.Drawing.Size(320, 395);
+            this.MainBox.Size = new System.Drawing.Size(320, 424);
             this.MainBox.TabIndex = 5;
             this.MainBox.TabStop = false;
             this.MainBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
             this.MainBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.MainBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
+            // 
+            // BlobLabel
+            // 
+            this.BlobLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.BlobLabel.Font = new System.Drawing.Font("Sitka Text", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BlobLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.BlobLabel.Location = new System.Drawing.Point(149, 248);
+            this.BlobLabel.Name = "BlobLabel";
+            this.BlobLabel.Size = new System.Drawing.Size(170, 22);
+            this.BlobLabel.TabIndex = 32;
+            this.BlobLabel.Text = "Created By TheMagicalBlob";
             // 
             // PkgHelpPageBtn
             // 
@@ -89,9 +100,9 @@ namespace Dobby {
             this.PkgHelpPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PkgHelpPageBtn.FlatAppearance.BorderSize = 0;
             this.PkgHelpPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PkgHelpPageBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.PkgHelpPageBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Strikeout))));
             this.PkgHelpPageBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.PkgHelpPageBtn.Location = new System.Drawing.Point(1, 314);
+            this.PkgHelpPageBtn.Location = new System.Drawing.Point(1, 346);
             this.PkgHelpPageBtn.Name = "PkgHelpPageBtn";
             this.PkgHelpPageBtn.Size = new System.Drawing.Size(203, 23);
             this.PkgHelpPageBtn.TabIndex = 39;
@@ -148,50 +159,39 @@ namespace Dobby {
             this.label5.TabIndex = 38;
             this.label5.Text = "______________________________________________________________";
             // 
-            // MiscPatchPageHelpBtn
+            // PS4QOLPageHelpBtn
             // 
-            this.MiscPatchPageHelpBtn.BackColor = System.Drawing.Color.DimGray;
-            this.MiscPatchPageHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.MiscPatchPageHelpBtn.FlatAppearance.BorderSize = 0;
-            this.MiscPatchPageHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MiscPatchPageHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Strikeout))));
-            this.MiscPatchPageHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MiscPatchPageHelpBtn.Location = new System.Drawing.Point(1, 287);
-            this.MiscPatchPageHelpBtn.Name = "MiscPatchPageHelpBtn";
-            this.MiscPatchPageHelpBtn.Size = new System.Drawing.Size(172, 23);
-            this.MiscPatchPageHelpBtn.TabIndex = 35;
-            this.MiscPatchPageHelpBtn.Text = "Misc. Patch Page Help...";
-            this.MiscPatchPageHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.MiscPatchPageHelpBtn.UseVisualStyleBackColor = false;
-            this.MiscPatchPageHelpBtn.Click += new System.EventHandler(this.MiscPatchPageHelpBtn_Click);
+            this.PS4QOLPageHelpBtn.BackColor = System.Drawing.Color.DimGray;
+            this.PS4QOLPageHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.PS4QOLPageHelpBtn.FlatAppearance.BorderSize = 0;
+            this.PS4QOLPageHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PS4QOLPageHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Strikeout))));
+            this.PS4QOLPageHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.PS4QOLPageHelpBtn.Location = new System.Drawing.Point(1, 323);
+            this.PS4QOLPageHelpBtn.Name = "PS4QOLPageHelpBtn";
+            this.PS4QOLPageHelpBtn.Size = new System.Drawing.Size(172, 23);
+            this.PS4QOLPageHelpBtn.TabIndex = 35;
+            this.PS4QOLPageHelpBtn.Text = "Misc. Patch Page Help...";
+            this.PS4QOLPageHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.PS4QOLPageHelpBtn.UseVisualStyleBackColor = false;
+            this.PS4QOLPageHelpBtn.Click += new System.EventHandler(this.PS4QOLPageHelpBtn_Click);
             // 
             // SeperatorLabel2
             // 
             this.SeperatorLabel2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.SeperatorLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLabel2.Location = new System.Drawing.Point(2, 327);
+            this.SeperatorLabel2.Location = new System.Drawing.Point(2, 359);
             this.SeperatorLabel2.Name = "SeperatorLabel2";
             this.SeperatorLabel2.Size = new System.Drawing.Size(316, 16);
             this.SeperatorLabel2.TabIndex = 37;
             this.SeperatorLabel2.Text = "______________________________________________________________";
-            // 
-            // BlobLabel
-            // 
-            this.BlobLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.BlobLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
-            this.BlobLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.BlobLabel.Location = new System.Drawing.Point(149, 207);
-            this.BlobLabel.Name = "BlobLabel";
-            this.BlobLabel.Size = new System.Drawing.Size(170, 22);
-            this.BlobLabel.TabIndex = 32;
-            this.BlobLabel.Text = "Created By TheMagicalBlob";
             // 
             // BuildLabel
             // 
             this.BuildLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.BuildLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
             this.BuildLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.BuildLabel.Location = new System.Drawing.Point(1, 208);
+            this.BuildLabel.Location = new System.Drawing.Point(1, 248);
             this.BuildLabel.Name = "BuildLabel";
             this.BuildLabel.Size = new System.Drawing.Size(304, 22);
             this.BuildLabel.TabIndex = 20;
@@ -204,7 +204,7 @@ namespace Dobby {
             // 
             this.SeperatorLabel1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.SeperatorLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLabel1.Location = new System.Drawing.Point(2, 215);
+            this.SeperatorLabel1.Location = new System.Drawing.Point(2, 256);
             this.SeperatorLabel1.Name = "SeperatorLabel1";
             this.SeperatorLabel1.Size = new System.Drawing.Size(316, 16);
             this.SeperatorLabel1.TabIndex = 36;
@@ -218,7 +218,7 @@ namespace Dobby {
             this.PS4DebugHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PS4DebugHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.PS4DebugHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.PS4DebugHelpBtn.Location = new System.Drawing.Point(1, 235);
+            this.PS4DebugHelpBtn.Location = new System.Drawing.Point(1, 277);
             this.PS4DebugHelpBtn.Name = "PS4DebugHelpBtn";
             this.PS4DebugHelpBtn.Size = new System.Drawing.Size(166, 23);
             this.PS4DebugHelpBtn.TabIndex = 14;
@@ -246,7 +246,7 @@ namespace Dobby {
             this.EbootPatchPageHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EbootPatchPageHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.EbootPatchPageHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.EbootPatchPageHelpBtn.Location = new System.Drawing.Point(1, 260);
+            this.EbootPatchPageHelpBtn.Location = new System.Drawing.Point(1, 299);
             this.EbootPatchPageHelpBtn.Name = "EbootPatchPageHelpBtn";
             this.EbootPatchPageHelpBtn.Size = new System.Drawing.Size(253, 23);
             this.EbootPatchPageHelpBtn.TabIndex = 29;
@@ -259,11 +259,11 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(8, 373);
+            this.Info.Location = new System.Drawing.Point(1, 405);
             this.Info.Name = "Info";
-            this.Info.Size = new System.Drawing.Size(304, 17);
+            this.Info.Size = new System.Drawing.Size(318, 17);
             this.Info.TabIndex = 7;
-            this.Info.Text = "=====================================";
+            this.Info.Text = "========================================";
             // 
             // BackBtn
             // 
@@ -273,7 +273,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 348);
+            this.BackBtn.Location = new System.Drawing.Point(1, 379);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(60, 23);
             this.BackBtn.TabIndex = 13;
@@ -285,11 +285,11 @@ namespace Dobby {
             // GeneralInfoLabel
             // 
             this.GeneralInfoLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.GeneralInfoLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
+            this.GeneralInfoLabel.Font = new System.Drawing.Font("Sitka Text", 9F, System.Drawing.FontStyle.Bold);
             this.GeneralInfoLabel.ForeColor = System.Drawing.SystemColors.Control;
             this.GeneralInfoLabel.Location = new System.Drawing.Point(3, 54);
             this.GeneralInfoLabel.Name = "GeneralInfoLabel";
-            this.GeneralInfoLabel.Size = new System.Drawing.Size(302, 171);
+            this.GeneralInfoLabel.Size = new System.Drawing.Size(302, 195);
             this.GeneralInfoLabel.TabIndex = 33;
             this.GeneralInfoLabel.Text = resources.GetString("GeneralInfoLabel.Text");
             this.GeneralInfoLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
@@ -301,7 +301,7 @@ namespace Dobby {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 388);
+            this.ClientSize = new System.Drawing.Size(320, 417);
             this.Controls.Add(this.MainBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "InfoHelpPage";
@@ -313,6 +313,37 @@ namespace Dobby {
             this.ResumeLayout(false);
 
         }
+
+        #region Page-Specific Functions
+        //////////////////////\\\\\\\\\\\\\\\\\\\\\
+        ///--     Page-Specific Functions     --\\\
+        //////////////////////\\\\\\\\\\\\\\\\\\\\\
+
+        private void BuildLabel_Click(object sender, MouseEventArgs e) {
+            if(e.Button == MouseButtons.Right) {
+                File.WriteAllLines(Directory.GetCurrentDirectory() + @"\ChangeLog.txt", Common.ChangeList);
+                MessageBox.Show($"Changelist Dumped To {Directory.GetCurrentDirectory()}\\ChangeLog.txt");
+            }
+        }
+        void BuildLabelMH(object sender, EventArgs e) { SetInfoLabelText("Right Click To Dump ChangeList"); }
+        void BuildLabelML(object sender, EventArgs e) => SetInfoLabelText("");
+
+        private void PS4DebugHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PS4DebugHelpPageId);
+        private void EbootPatchPageHelpBtn_Click(object sender, EventArgs e) => ChangeForm(EbootPatchHelpPageId);
+        private void PS4QOLPageHelpBtn_Click(object sender, EventArgs e) {
+            return;
+            ChangeForm(PS4QOLHelpPageId);
+        }
+        private void PkgHelpPageBtn_Click(object sender, EventArgs e) {
+            if(Dev.REL) return;
+            ChangeForm(PkgCreationHelpPageId);
+        }
+        #endregion
+
+        #region RepeatedButtonFunctions
+        /////////////////\\\\\\\\\\\\\\\\\\
+        ///--     Repeat Buttons      --\\\
+        /////////////////\\\\\\\\\\\\\\\\\\\
         public void MoveForm(object sender, MouseEventArgs e) => Common.MoveForm(sender, e);
         public void MouseUpFunc(object sender, MouseEventArgs e) => Common.MouseUpFunc(sender, e);
         public void MouseDownFunc(object sender, MouseEventArgs e) => Common.MouseDownFunc(sender, e);
@@ -322,30 +353,13 @@ namespace Dobby {
         public void MinimizeBtn_Click(object sender, EventArgs e) => ActiveForm.WindowState = FormWindowState.Minimized;
         public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
-
         void BackBtn_Click(object sender, EventArgs e) => BackFunc();
+        #endregion
 
-        public void PS4DebugHelpBtn_Click(object sender, EventArgs e) => ChangeForm(6, false);
-
-        private void BuildLabel_Click(object sender, MouseEventArgs e) {
-            if (e.Button == MouseButtons.Right) {
-                File.WriteAllLines(Directory.GetCurrentDirectory() + @"\ChangeLog.txt", Common.ChangeList );
-                MessageBox.Show($"Changelist Dumped To {Directory.GetCurrentDirectory()}\\ChangeLog.txt");
-            }
-        }
-        void BuildLabelMH(object sender, EventArgs e) { SetInfoLabelText("Right Click To Dump ChangeList"); Common.InfoHasImportantStr = false; }
-        void BuildLabelML(object sender, EventArgs e) => SetInfoLabelText("");
-
-        private void MiscPatchPageHelpBtn_Click(object sender, EventArgs e) {
-            Dev.DebugOut("Stop that :|");
-        }
-
-        private void EbootPatchPageHelpBtn_Click(object sender, EventArgs e) => ChangeForm(7, false);
-
-        private void PkgHelpPageBtn_Click(object sender, EventArgs e) => ChangeForm(12, false);
-
-
-
+        #region ControlDeclarations
+        ////////////////////\\\\\\\\\\\\\\\\\\\\
+        ///--     Control Declarations     --\\\
+        ////////////////////\\\\\\\\\\\\\\\\\\\\
         public Button MinimizeBtn; 
         public Label MainLabel;
         public GroupBox MainBox;
@@ -357,11 +371,12 @@ namespace Dobby {
         public Label BlobLabel;
         public Label GeneralInfoLabel;
         public Label label4;
-        public Button MiscPatchPageHelpBtn;
+        public Button PS4QOLPageHelpBtn;
         public Label Info;
         public Label label5;
         public Label SeperatorLabel2;
         public Button PkgHelpPageBtn;
         public Label SeperatorLabel1;
+        #endregion
     }
 }

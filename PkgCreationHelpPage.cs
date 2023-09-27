@@ -1,144 +1,54 @@
 ﻿using System;
-using libdebug;
-using System.IO;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.Net.Sockets;
-using System.Net;
-using System.Linq;
-using System.Threading;
 using System.Collections.Generic;
+using System.Windows.Forms;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using static Dobby.Common;
+using System.Drawing;
+using Dobby.Properties;
+using System.Windows.Forms.VisualStyles;
 
 namespace Dobby {
     public class PkgCreationHelpPage : Form {
         public PkgCreationHelpPage() {
             InitializeComponent();
             AddControlEventHandlers(Controls);
+
+            Question1Btn.Text = "- Button Text Here";
+            Question2Btn.Text = "- Button Text Here?";
+            Question3Btn.Text = "- Button Text Here?";
+            Question4Btn.Text = "- Button Text Here";
         }
+        public string[] headers = new string[] {
+            "",
+            "                [Getting The Game's Executable]\n",
+            "     [Extracting Your Game's .pkg \\ Dumping It]\n",
+            "                [Building A New .pkg]\n",
+            "                [\"Fixing\" A Broken .pkg]\n"
+        };
+        public bool[] Questions = new bool[] { false, false, false, false };
 
         public void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PkgCreationHelpPage));
-            this.MainLabel = new System.Windows.Forms.Label();
-            this.MainBox = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.UsingGenGP4 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.TroubleshootingLabel = new System.Windows.Forms.Label();
-            this.PkgCreationInfoLabel1 = new System.Windows.Forms.Label();
             this.ExitBtn = new System.Windows.Forms.Button();
             this.MinimizeBtn = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
-            this.SeperatorLabel3 = new System.Windows.Forms.Label();
-            this.SeperatorLabel2 = new System.Windows.Forms.Label();
-            this.ObtainingFilesLabel = new System.Windows.Forms.Label();
+            this.MainLabel = new System.Windows.Forms.Label();
+            this.MainBox = new System.Windows.Forms.GroupBox();
+            this.Question4Btn = new System.Windows.Forms.Button();
+            this.Question3Btn = new System.Windows.Forms.Button();
+            this.Question2Btn = new System.Windows.Forms.Button();
+            this.SeperatorLine3 = new System.Windows.Forms.Label();
+            this.SeperatorLine1 = new System.Windows.Forms.Label();
+            this.PopupLabel = new System.Windows.Forms.Label();
             this.Info = new System.Windows.Forms.Label();
+            this.CreditsBtn = new System.Windows.Forms.Button();
             this.BackBtn = new System.Windows.Forms.Button();
-            this.PkgCreationInfo = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.Question0Btn = new System.Windows.Forms.Label();
+            this.SeperatorLine2 = new System.Windows.Forms.Label();
+            this.Question1Btn = new System.Windows.Forms.Button();
             this.MainBox.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // MainLabel
-            // 
-            this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MainLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 12.25F, System.Drawing.FontStyle.Bold);
-            this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.MainLabel.Location = new System.Drawing.Point(2, 7);
-            this.MainLabel.Name = "MainLabel";
-            this.MainLabel.Size = new System.Drawing.Size(266, 22);
-            this.MainLabel.TabIndex = 0;
-            this.MainLabel.Text = "Pkg Creation Help Page";
-            this.MainLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MainLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.MainLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            // 
-            // MainBox
-            // 
-            this.MainBox.Controls.Add(this.PkgCreationInfo);
-            this.MainBox.Controls.Add(this.label4);
-            this.MainBox.Controls.Add(this.label1);
-            this.MainBox.Controls.Add(this.label3);
-            this.MainBox.Controls.Add(this.UsingGenGP4);
-            this.MainBox.Controls.Add(this.label2);
-            this.MainBox.Controls.Add(this.TroubleshootingLabel);
-            this.MainBox.Controls.Add(this.PkgCreationInfoLabel1);
-            this.MainBox.Controls.Add(this.ExitBtn);
-            this.MainBox.Controls.Add(this.MinimizeBtn);
-            this.MainBox.Controls.Add(this.MainLabel);
-            this.MainBox.Controls.Add(this.label5);
-            this.MainBox.Controls.Add(this.SeperatorLabel3);
-            this.MainBox.Controls.Add(this.SeperatorLabel2);
-            this.MainBox.Controls.Add(this.ObtainingFilesLabel);
-            this.MainBox.Controls.Add(this.Info);
-            this.MainBox.Controls.Add(this.BackBtn);
-            this.MainBox.Location = new System.Drawing.Point(0, -6);
-            this.MainBox.Name = "MainBox";
-            this.MainBox.Size = new System.Drawing.Size(320, 485);
-            this.MainBox.TabIndex = 5;
-            this.MainBox.TabStop = false;
-            this.MainBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MainBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            this.MainBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            // 
-            // label3
-            // 
-            this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label3.Font = new System.Drawing.Font("Gadugi", 9.5F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))));
-            this.label3.ForeColor = System.Drawing.SystemColors.Control;
-            this.label3.Location = new System.Drawing.Point(1, 211);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(129, 22);
-            this.label3.TabIndex = 43;
-            this.label3.Text = "\"CUSA00552-patch\"";
-            // 
-            // UsingGenGP4
-            // 
-            this.UsingGenGP4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.UsingGenGP4.Font = new System.Drawing.Font("Franklin Gothic Medium", 10.5F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))));
-            this.UsingGenGP4.ForeColor = System.Drawing.SystemColors.Control;
-            this.UsingGenGP4.Location = new System.Drawing.Point(1, 157);
-            this.UsingGenGP4.Name = "UsingGenGP4";
-            this.UsingGenGP4.Size = new System.Drawing.Size(318, 22);
-            this.UsingGenGP4.TabIndex = 42;
-            this.UsingGenGP4.Text = "Getting A .gp4 File With gengp4.exe:";
-            // 
-            // label2
-            // 
-            this.label2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label2.Font = new System.Drawing.Font("Gadugi", 9F, System.Drawing.FontStyle.Bold);
-            this.label2.ForeColor = System.Drawing.SystemColors.Control;
-            this.label2.Location = new System.Drawing.Point(1, 180);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(318, 82);
-            this.label2.TabIndex = 41;
-            this.label2.Text = resources.GetString("label2.Text");
-            // 
-            // TroubleshootingLabel
-            // 
-            this.TroubleshootingLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.TroubleshootingLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 10.75F, System.Drawing.FontStyle.Bold);
-            this.TroubleshootingLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.TroubleshootingLabel.Location = new System.Drawing.Point(1, 273);
-            this.TroubleshootingLabel.Name = "TroubleshootingLabel";
-            this.TroubleshootingLabel.Size = new System.Drawing.Size(318, 22);
-            this.TroubleshootingLabel.TabIndex = 40;
-            this.TroubleshootingLabel.Text = "Troubleshooting:";
-            this.TroubleshootingLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // PkgCreationInfoLabel1
-            // 
-            this.PkgCreationInfoLabel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.PkgCreationInfoLabel1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10.5F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))));
-            this.PkgCreationInfoLabel1.ForeColor = System.Drawing.SystemColors.Control;
-            this.PkgCreationInfoLabel1.Location = new System.Drawing.Point(1, 52);
-            this.PkgCreationInfoLabel1.Name = "PkgCreationInfoLabel1";
-            this.PkgCreationInfoLabel1.Size = new System.Drawing.Size(318, 22);
-            this.PkgCreationInfoLabel1.TabIndex = 39;
-            this.PkgCreationInfoLabel1.Text = "orbis-pub-cmd.exe and gengp4.exe:";
             // 
             // ExitBtn
             // 
@@ -178,57 +88,148 @@ namespace Dobby {
             this.MinimizeBtn.MouseEnter += new System.EventHandler(this.MinimizeBtnMH);
             this.MinimizeBtn.MouseLeave += new System.EventHandler(this.MinimizeBtnML);
             // 
-            // label5
+            // MainLabel
             // 
-            this.label5.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label5.Location = new System.Drawing.Point(2, 15);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(316, 16);
-            this.label5.TabIndex = 38;
-            this.label5.Text = "______________________________________________________________";
+            this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MainLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 12.25F, System.Drawing.FontStyle.Bold);
+            this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.MainLabel.Location = new System.Drawing.Point(2, 7);
+            this.MainLabel.Name = "MainLabel";
+            this.MainLabel.Size = new System.Drawing.Size(265, 22);
+            this.MainLabel.TabIndex = 0;
+            this.MainLabel.Text = "Pkg Creation Help Information";
+            this.MainLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.MainLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
+            this.MainLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             // 
-            // SeperatorLabel3
+            // MainBox
             // 
-            this.SeperatorLabel3.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.SeperatorLabel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLabel3.Location = new System.Drawing.Point(2, 417);
-            this.SeperatorLabel3.Name = "SeperatorLabel3";
-            this.SeperatorLabel3.Size = new System.Drawing.Size(316, 16);
-            this.SeperatorLabel3.TabIndex = 37;
-            this.SeperatorLabel3.Text = "______________________________________________________________";
+            this.MainBox.Controls.Add(this.Question4Btn);
+            this.MainBox.Controls.Add(this.Question3Btn);
+            this.MainBox.Controls.Add(this.Question2Btn);
+            this.MainBox.Controls.Add(this.SeperatorLine3);
+            this.MainBox.Controls.Add(this.ExitBtn);
+            this.MainBox.Controls.Add(this.MinimizeBtn);
+            this.MainBox.Controls.Add(this.MainLabel);
+            this.MainBox.Controls.Add(this.SeperatorLine1);
+            this.MainBox.Controls.Add(this.PopupLabel);
+            this.MainBox.Controls.Add(this.Info);
+            this.MainBox.Controls.Add(this.CreditsBtn);
+            this.MainBox.Controls.Add(this.BackBtn);
+            this.MainBox.Controls.Add(this.Question0Btn);
+            this.MainBox.Controls.Add(this.SeperatorLine2);
+            this.MainBox.Controls.Add(this.Question1Btn);
+            this.MainBox.Location = new System.Drawing.Point(0, -6);
+            this.MainBox.Name = "MainBox";
+            this.MainBox.Size = new System.Drawing.Size(320, 483);
+            this.MainBox.TabIndex = 5;
+            this.MainBox.TabStop = false;
+            this.MainBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.MainBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
+            this.MainBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             // 
-            // SeperatorLabel2
+            // Question4Btn
             // 
-            this.SeperatorLabel2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.SeperatorLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLabel2.Location = new System.Drawing.Point(2, 257);
-            this.SeperatorLabel2.Name = "SeperatorLabel2";
-            this.SeperatorLabel2.Size = new System.Drawing.Size(316, 16);
-            this.SeperatorLabel2.TabIndex = 36;
-            this.SeperatorLabel2.Text = "______________________________________________________________";
+            this.Question4Btn.FlatAppearance.BorderSize = 0;
+            this.Question4Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Question4Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
+            this.Question4Btn.ForeColor = System.Drawing.SystemColors.Control;
+            this.Question4Btn.Location = new System.Drawing.Point(1, 379);
+            this.Question4Btn.Name = "Question4Btn";
+            this.Question4Btn.Size = new System.Drawing.Size(236, 24);
+            this.Question4Btn.TabIndex = 43;
+            this.Question4Btn.Text = "- Obtaining The Files Needed";
+            this.Question4Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.Question4Btn.Click += new System.EventHandler(this.Question4Btn_Click);
             // 
-            // ObtainingFilesLabel
+            // Question3Btn
             // 
-            this.ObtainingFilesLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ObtainingFilesLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 10.75F, System.Drawing.FontStyle.Bold);
-            this.ObtainingFilesLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.ObtainingFilesLabel.Location = new System.Drawing.Point(1, 31);
-            this.ObtainingFilesLabel.Name = "ObtainingFilesLabel";
-            this.ObtainingFilesLabel.Size = new System.Drawing.Size(318, 22);
-            this.ObtainingFilesLabel.TabIndex = 34;
-            this.ObtainingFilesLabel.Text = "Optaining The Files Needed:";
-            this.ObtainingFilesLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Question3Btn.FlatAppearance.BorderSize = 0;
+            this.Question3Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Question3Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
+            this.Question3Btn.ForeColor = System.Drawing.SystemColors.Control;
+            this.Question3Btn.Location = new System.Drawing.Point(1, 356);
+            this.Question3Btn.Name = "Question3Btn";
+            this.Question3Btn.Size = new System.Drawing.Size(236, 24);
+            this.Question3Btn.TabIndex = 42;
+            this.Question3Btn.Text = "- Obtaining The Files Needed";
+            this.Question3Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.Question3Btn.Click += new System.EventHandler(this.Question3Btn_Click);
+            // 
+            // Question2Btn
+            // 
+            this.Question2Btn.FlatAppearance.BorderSize = 0;
+            this.Question2Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Question2Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
+            this.Question2Btn.ForeColor = System.Drawing.SystemColors.Control;
+            this.Question2Btn.Location = new System.Drawing.Point(1, 332);
+            this.Question2Btn.Name = "Question2Btn";
+            this.Question2Btn.Size = new System.Drawing.Size(236, 24);
+            this.Question2Btn.TabIndex = 41;
+            this.Question2Btn.Text = "- Obtaining The Files Needed";
+            this.Question2Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.Question2Btn.Click += new System.EventHandler(this.Question2Btn_Click);
+            // 
+            // SeperatorLine3
+            // 
+            this.SeperatorLine3.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine3.Location = new System.Drawing.Point(2, 394);
+            this.SeperatorLine3.Name = "SeperatorLine3";
+            this.SeperatorLine3.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine3.TabIndex = 40;
+            this.SeperatorLine3.Text = "______________________________________________________________";
+            // 
+            // SeperatorLine1
+            // 
+            this.SeperatorLine1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 15);
+            this.SeperatorLine1.Name = "SeperatorLine1";
+            this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine1.TabIndex = 39;
+            this.SeperatorLine1.Text = "______________________________________________________________";
+            // 
+            // PopupLabel
+            // 
+            this.PopupLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
+            this.PopupLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.PopupLabel.Location = new System.Drawing.Point(7, 86);
+            this.PopupLabel.Name = "PopupLabel";
+            this.PopupLabel.Size = new System.Drawing.Size(57, 17);
+            this.PopupLabel.TabIndex = 36;
+            this.PopupLabel.Text = "*(Kupo)";
+            this.PopupLabel.Click += new System.EventHandler(this.WithSomeExceptionsLabel_Click);
+            this.PopupLabel.MouseEnter += new System.EventHandler(this.WithSomeExceptionsLabelMH);
+            this.PopupLabel.MouseLeave += new System.EventHandler(this.WithSomeExceptionsLabelML);
             // 
             // Info
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(8, 463);
+            this.Info.Location = new System.Drawing.Point(9, 461);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
             this.Info.Text = "=====================================";
+            // 
+            // CreditsBtn
+            // 
+            this.CreditsBtn.BackColor = System.Drawing.Color.DimGray;
+            this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.CreditsBtn.FlatAppearance.BorderSize = 0;
+            this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 415);
+            this.CreditsBtn.Name = "CreditsBtn";
+            this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
+            this.CreditsBtn.TabIndex = 28;
+            this.CreditsBtn.Text = "Credits...";
+            this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.CreditsBtn.UseVisualStyleBackColor = false;
+            this.CreditsBtn.Click += new System.EventHandler(this.CreditsBtn_Click);
             // 
             // BackBtn
             // 
@@ -238,7 +239,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 438);
+            this.BackBtn.Location = new System.Drawing.Point(1, 437);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(60, 23);
             this.BackBtn.TabIndex = 13;
@@ -247,48 +248,46 @@ namespace Dobby {
             this.BackBtn.UseVisualStyleBackColor = false;
             this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
             // 
-            // PkgCreationInfo
+            // Question0Btn
             // 
-            this.PkgCreationInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.PkgCreationInfo.Font = new System.Drawing.Font("Gadugi", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PkgCreationInfo.ForeColor = System.Drawing.SystemColors.Control;
-            this.PkgCreationInfo.Location = new System.Drawing.Point(1, 75);
-            this.PkgCreationInfo.Name = "PkgCreationInfo";
-            this.PkgCreationInfo.Size = new System.Drawing.Size(318, 66);
-            this.PkgCreationInfo.TabIndex = 33;
-            this.PkgCreationInfo.Text = "All I Can Say Is Search For \"FakePkgTools For PS4\" On Google,\r\nI Can\'t Provide So" +
-    "ny\'s Copyrighted SDK Tools.\r\nThey\'re Very Easy To Find, Thankfully.\r\n\r\n";
-            this.PkgCreationInfo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.PkgCreationInfo.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.PkgCreationInfo.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
+            this.Question0Btn.Font = new System.Drawing.Font("Sitka Text", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Question0Btn.ForeColor = System.Drawing.SystemColors.Control;
+            this.Question0Btn.Location = new System.Drawing.Point(3, 36);
+            this.Question0Btn.Name = "Question0Btn";
+            this.Question0Btn.Size = new System.Drawing.Size(316, 270);
+            this.Question0Btn.TabIndex = 34;
+            this.Question0Btn.Text = "text\r\n";
             // 
-            // label1
+            // SeperatorLine2
             // 
-            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label1.Font = new System.Drawing.Font("Gadugi", 10.5F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))));
-            this.label1.ForeColor = System.Drawing.SystemColors.Control;
-            this.label1.Location = new System.Drawing.Point(1, 293);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(318, 22);
-            this.label1.TabIndex = 44;
-            this.label1.Text = "Common Error Causes:";
+            this.SeperatorLine2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine2.Location = new System.Drawing.Point(2, 291);
+            this.SeperatorLine2.Name = "SeperatorLine2";
+            this.SeperatorLine2.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine2.TabIndex = 38;
+            this.SeperatorLine2.Text = "______________________________________________________________";
             // 
-            // label4
+            // Question1Btn
             // 
-            this.label4.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label4.Location = new System.Drawing.Point(2, 134);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(316, 16);
-            this.label4.TabIndex = 45;
-            this.label4.Text = "______________________________________________________________";
+            this.Question1Btn.FlatAppearance.BorderSize = 0;
+            this.Question1Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Question1Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
+            this.Question1Btn.ForeColor = System.Drawing.SystemColors.Control;
+            this.Question1Btn.Location = new System.Drawing.Point(1, 309);
+            this.Question1Btn.Name = "Question1Btn";
+            this.Question1Btn.Size = new System.Drawing.Size(236, 24);
+            this.Question1Btn.TabIndex = 30;
+            this.Question1Btn.Text = resources.GetString("Question1Btn.Text");
+            this.Question1Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.Question1Btn.Click += new System.EventHandler(this.Question1Btn_Click);
             // 
             // PkgCreationHelpPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 478);
+            this.ClientSize = new System.Drawing.Size(320, 476);
             this.Controls.Add(this.MainBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PkgCreationHelpPage";
@@ -300,35 +299,71 @@ namespace Dobby {
             this.ResumeLayout(false);
 
         }
+
+
+
+
+        #region RepeatedButtonFunctions
+        /////////////////\\\\\\\\\\\\\\\\\\
+        ///--     Repeat Buttons      --\\\
+        /////////////////\\\\\\\\\\\\\\\\\\\
         public void MoveForm(object sender, MouseEventArgs e) => Common.MoveForm(sender, e);
         public void MouseUpFunc(object sender, MouseEventArgs e) => Common.MouseUpFunc(sender, e);
         public void MouseDownFunc(object sender, MouseEventArgs e) => Common.MouseDownFunc(sender, e);
         public void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
         public void ExitBtnMH(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void ExitBtnML(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 255, 255);
+
         public void MinimizeBtn_Click(object sender, EventArgs e) => ActiveForm.WindowState = FormWindowState.Minimized;
         public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
-
+        public void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(CreditsPageId);
         void BackBtn_Click(object sender, EventArgs e) => BackFunc();
+        #endregion
 
+        #region Page-Specific Functions
+        //////////////////////\\\\\\\\\\\\\\\\\\\\\
+        ///--     Page-Specific Functions     --\\\
+        //////////////////////\\\\\\\\\\\\\\\\\\\\\
+        void LoadQuestions(int Index) {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PkgCreationHelpPage));
+            Question0Btn.Text = headers[Questions[Index - 1] ? 0 : Index] + resources.GetString($"Question{(Questions[Index - 1] ? 0 : Index)}Btn.Text");
+
+            for(int i = 0; i < Questions.Length - 1; i++) // Reset The Other Buttons
+                Questions[i] = i == Index - 1 ? Questions[i] : false;
+            Questions[Index - 1] = !Questions[Index - 1];
+            PopupLabel.Visible = !Questions[Index - 1];
+        }
+        private void Question1Btn_Click(object sender, EventArgs e) => LoadQuestions(1);
+        private void Question2Btn_Click(object sender, EventArgs e) => LoadQuestions(2);
+        private void Question3Btn_Click(object sender, EventArgs e) => LoadQuestions(3);
+        private void Question4Btn_Click(object sender, EventArgs e) => LoadQuestions(4);
+
+        private void WithSomeExceptionsLabel_Click(object sender, EventArgs e) => MessageBox.Show("Some Misc. Patches Will Be Applied To Uncharted 4/Lost Legacy Multiplayer Eboots To Make The Game Playable");
+        private void WithSomeExceptionsLabelMH(object sender, EventArgs e) => PopupLabel.ForeColor = Color.Aqua;
+        private void WithSomeExceptionsLabelML(object sender, EventArgs e) => PopupLabel.ForeColor = Color.White;
+        #endregion
+
+        #region ControlDeclarations
+        ////////////////////\\\\\\\\\\\\\\\\\\\\
+        ///--     Control Declarations     --\\\
+        ////////////////////\\\\\\\\\\\\\\\\\\\\
         public Button MinimizeBtn;
+        public Label Info;
         public Label MainLabel;
         public GroupBox MainBox;
+        public Button CreditsBtn;
         public Button BackBtn;
+        private Button Question1Btn;
         public Button ExitBtn;
-        public Label PkgCreationInfo;
-        public Label ObtainingFilesLabel;
-        public Label Info;
-        public Label label5;
-        public Label SeperatorLabel3;
-        public Label PkgCreationInfoLabel1;
-        public Label TroubleshootingLabel;
-        public Label UsingGenGP4;
-        public Label label2;
-        public Label label3;
-        public Label label1;
-        public Label label4;
-        public Label SeperatorLabel2;
+        private Label PopupLabel;
+        public Label SeperatorLine1;
+        public Label SeperatorLine2;
+        public Label SeperatorLine3;
+        private Label Question0Btn;
+        private Button Question4Btn;
+        private Button Question3Btn;
+        private Button Question2Btn;
+        #endregion
     }
 }

@@ -18,11 +18,11 @@
     <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
     <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
     <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="Color, System.Drawing">Blue</data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
     <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
         <value>[base64 mime encoded serialized .NET Framework object]</value>
     </data>
-    <data name="Icon1" type="Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
@@ -117,39 +117,53 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Question4Btn.Text" xml:space="preserve">
+    <value>
+Because Depending On The Game, There May
+Either Be A Large Amount Of Skipped Or 
+Uncalled Code That Can Be Restored With
+Varrying Levels Of Effort
+
+Or There May Only Be Small Things Leftover
+Which I Just Add To Existing Submenus For
+The "Custom Debug".
+
+However- I'm not Gonna Sit Around And
+Make These Patches For Every Version Of
+Every Game. For These, The Button's Disabled</value>
+  </data>
   <data name="Question3Btn.Text" xml:space="preserve">
-    <value>Dumbass.
+    <value>
+- The First Way Is With The Official PS4 SDK Tools,
+  Which I Can Not Include In My Projects Due To
+  Them Being Copyrighted Sony PS4 SDK Tools.
 
- - The First Way Is With The Official PS4 SDK Tools,Get Em Urself
+  Use The PkgCreationPage To Build A New
+  .pkg Once You've Got The FakePKGTools
+  Downloaded, And Have Made A .gp4
+  
 
-- The Second Way Is With The Patch Builder App From ModdedWarfrare
- (Add A Link)- How Do I Add A Patched .bin To My Game?
-
- - The First Way Is With The Official PS4 SDK Tools,Get Em Urself
-
-- The Second Way Is With The Patch Builder App From ModdedWarfrare
- (Add A Link)
-
-
+- The Second Way Is With The Patch Builder
+  App From ModdedWarfrare, Which You
+  Can Easily Find With A Quick Google
+  Or Even Youtube Search
 </value>
   </data>
   <data name="Question2Btn.Text" xml:space="preserve">
     <value>
- - The First Way Is With The Official PS4 SDK Tools,Get Em Urself
+- App Dumper: Dump The App Via The Homebrew Store
+  Or Vortex Dumper 1.8 Payload By Running The Game,
+  Then Sending The Dumper Payload To The PS4 With
+  An Ext HDD/SSD Plugged In.
 
-- The Second Way Is With The Patch Builder App From ModdedWarfrare
- (Add A Link)
-- How Do I Add A Patched .bin To My Game?
-
- - The First Way Is With The Official PS4 SDK Tools,Get Em Urself
-
-- The Second Way Is With The Patch Builder App From ModdedWarfrare
- (Add A Link)
-
-</value>
+- fPKG/.pkg: Open orbis-pub-chk And Import The .pkg
+  You Want To Extract By Dragging It, Or With The
+  "Add Image" Button. Select The eboot.bin
+  And Choose An Output Directory, Then Extract
+  (fpkg Password's 32 Zeros)</value>
   </data>
   <data name="Question0Btn.Text" xml:space="preserve">
-    <value>                           [General Info]
+    <value>                                     [General Info]
 - Default Debug: Turns The Debug Mode
   On Without Any Other Changes
 
@@ -158,19 +172,26 @@
 
 - Custom Debug: Customized Menu, Some Useless Things May Be Deleted, Other Things Changed For Convenience
 
-- Disable Debug: Only Disables The Debug Mode, Does Not Undo Any Other Patches Applied</value>
+- Disable Debug: Only Disables The Debug Mode, Does Not Undo Any Other Patches Applied
+
+- PC Debug Menu: Limited Support, Use Ilusion's Patches. Idc About PC Games</value>
   </data>
   <data name="Question1Btn.Text" xml:space="preserve">
-    <value>There Are A Few Methods, Here Are A Few:
+    <value>
+- FTP: Have Your PC And PS4 On The Same Network,
+  And Either Send The FTP Payload To Your PS4,
+  Or Enable FTP In GoldHEN's Settings.
+  Then, Go To mnt/sandbox/CUSAXXXXX/app0,
+  You Game's Executables And Other Files Will Be There.
 
-FTP: Have Your PC And PS4 On The Same Network,
-And Either Send The FTP Payload To Your PS4,
-Or Enable FTP In GoldHEN's Settings.
-Then, Go To mnt/sandbox/CUSAXXXXX/app0,
-And Find It There.
+- App Dumper: Dump The App Via The
+  Homebrew Store, Or Vortex Dumper
+  1.8 Payload. The Unsigned Eboot Will
+  Be In The Dumped Game Data,
+  Ready To Be Patched.
 
-App Dumper: Dump The App Via The Homebrew Store Or Payload.
-
-PKG: Extract The .bin With orbis-pub-chk.exe And Decrypt It With UnFSelf.exe</value>
+- orbis-pub-chk.exe: Extract The .pkg With The
+  Hacked PS4 SDK Tool orbis-pub-chk.exe, Then
+  Unsign/Decrypt The eboot With Unfself.exe/.py</value>
   </data>
 </root>

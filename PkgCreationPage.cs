@@ -66,6 +66,7 @@ namespace Dobby {
             this.CmdPathLabel.TabIndex = 32;
             this.CmdPathLabel.Text = "No Program Path Loaded";
             this.CmdPathLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.CmdPathLabel.Click += new System.EventHandler(this.CmdPathLabel_Click);
             // 
             // LoadFilesButton
             // 
@@ -270,6 +271,7 @@ namespace Dobby {
             this.GP4PathLabel.TabIndex = 36;
             this.GP4PathLabel.Text = "No .gp4 Selected";
             this.GP4PathLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.GP4PathLabel.Click += new System.EventHandler(this.GP4PathLabel_Click);
             // 
             // PathBox
             // 
@@ -303,6 +305,7 @@ namespace Dobby {
             this.OutputDirectoryLabel.TabIndex = 38;
             this.OutputDirectoryLabel.Text = "Using Current Directory For .pkg Output";
             this.OutputDirectoryLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.OutputDirectoryLabel.Click += new System.EventHandler(this.OutputDirectoryLabel_Click);
             // 
             // TMPPathLabel
             // 
@@ -314,6 +317,7 @@ namespace Dobby {
             this.TMPPathLabel.TabIndex = 37;
             this.TMPPathLabel.Text = "Using This PC\'s Default TMP Directory";
             this.TMPPathLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.TMPPathLabel.Click += new System.EventHandler(this.TMPPathLabel_Click);
             // 
             // TempDirectoryBtn
             // 
@@ -432,7 +436,7 @@ namespace Dobby {
             string Parameters = $"img_create --oformat pkg  {(VerboseOutput ? "--no_progress_bar" : string.Empty)} --skip_digest {(SpecifyTMPDirectory ? $"--tmp_path {TMPPath}" : string.Empty)} {GP4Path} {OutputDirectory}";
             System.Diagnostics.Process.Start(OrbisPubCmdPath, Parameters);
 
-            MessageBox.Show(".pkg Creation Started; If The CMD Window Closes Immediately, You Did Something Wrong. Try ");
+            MessageBox.Show(".pkg Creation Started; If The CMD Window Closes Immediately, You Did Something Wrong. Check Info/Help Page -> Pkg Creation Page Help");
         }
 
         private void VerbosityBtn_Click(object sender, EventArgs e) {
@@ -462,7 +466,50 @@ namespace Dobby {
             SpecifyTMPDirectory = !SpecifyTMPDirectory;
         }
 
+        private void CmdPathLabel_Click(object sender, EventArgs e) {
+            FileDialog file = new OpenFileDialog {
+                Filter = "Executable|*.exe",
+                Title = "Select Your .gp4 File/orbis-pub-cmd.exe (The Order Doesn't Matter)"
+            };
 
+            if(file.ShowDialog() == DialogResult.OK)
+                LoadFilesFromSelectedPath(file.FileName);
+            else return;
+        }
+
+
+        private void GP4PathLabel_Click(object sender, EventArgs e) {
+            FileDialog file = new OpenFileDialog {
+                Filter = "Executable|*.exe",
+                Title = "Select Your .gp4 File/orbis-pub-cmd.exe (The Order Doesn't Matter)"
+            };
+
+            if(file.ShowDialog() == DialogResult.OK)
+                LoadFilesFromSelectedPath(file.FileName);
+            else return;
+        }
+
+        private void OutputDirectoryLabel_Click(object sender, EventArgs e) {
+            FolderBrowserDialog Folder = new FolderBrowserDialog {
+                Description = "Chose A Directory You Want The Finished .pkg To Go, Or Close This Window To Use The App Directory"
+            };
+            if(Folder.ShowDialog() == DialogResult.OK)
+                OutputDirectoryLabel.Text = OutputDirectory = Folder.SelectedPath;
+            else {
+                OutputDirectoryLabel.Text = "Using Current Directory For.pkg Output";
+                OutputDirectory = Directory.GetCurrentDirectory();
+            }
+        }
+
+        private void TMPPathLabel_Click(object sender, EventArgs e) {
+            FolderBrowserDialog Folder = new FolderBrowserDialog {
+                Description = "Choose A Temp Directory For .pkg Creation"
+            };
+            if(Folder.ShowDialog() != DialogResult.OK) return;
+            
+            TMPPathLabel.Text = TMPPath = Folder.SelectedPath;
+            SpecifyTMPDirectory = true;
+        }
 
         #region RepeatedButtonFunctions
         /////////////////\\\\\\\\\\\\\\\\\\
@@ -474,9 +521,9 @@ namespace Dobby {
             BackFunc();
         }
 
-        public void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
+        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(InfoHelpPageId);
 
-        public void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
+        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(CreditsPageId);
         #endregion
 
         #region ControlDeclarations

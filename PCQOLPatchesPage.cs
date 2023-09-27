@@ -607,9 +607,9 @@ namespace Dobby {
 
         }
 
-        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
+        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(InfoHelpPageId);
 
-        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
+        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(CreditsPageId);
 
         private void BackBtn_Click(object sender, EventArgs e) => BackFunc();
 

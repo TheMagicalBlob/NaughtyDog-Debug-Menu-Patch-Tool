@@ -324,8 +324,13 @@ namespace Dobby {
 
         }
 
-        /// <summary> Open A File Dialog Window To Select A File For Checking/Patching
-        /// </summary>
+
+        #region Page-Specific Functions
+        //////////////////////\\\\\\\\\\\\\\\\\\\\\
+        ///--     Page-Specific Functions     --\\\
+        //////////////////////\\\\\\\\\\\\\\\\\\\\\
+
+        /// <summary> Open A File Dialog Window To Select A File For Checking/Patching </summary>
         private void BrowseButton_Click(object sender, EventArgs e) {
             FileDialog file = new OpenFileDialog {
                 Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
@@ -338,8 +343,7 @@ namespace Dobby {
             }
         }
 
-        /// <summary> Load A File For Checking/Patching If The Path In The ExecutablePathBox Exists
-        /// </summary>
+        /// <summary> Load A File For Checking/Patching If The Path In The ExecutablePathBox Exists </summary>
         private void ExecutablePathBox_TextChanged(object sender, EventArgs e) {
             var TextBoxData = (((Control)sender).Text.Replace("\"", ""));
 
@@ -459,7 +463,8 @@ namespace Dobby {
                     return " Custom";
             }
         }
-
+        /// <summary> Add A Summary, You Lazy Fuck </summary>
+        /// <returns> The Game Name And App Version Respectively </returns>
         public static string GetGameId() {
 
             LocalExecutableCheck = new byte[160];
@@ -552,7 +557,7 @@ namespace Dobby {
             }
 
             // Checks Whether The Game's Tlou R 1.00 Because That's The Only One Without a JNZ
-            WriteByte(DebugAddressForSelectedGame, (byte)(PatchType == 0 ? (DebugAddressForSelectedGame == 0x5C5A ? 0x74 : 0x74) : 0xEB));
+            WriteByte(DebugAddressForSelectedGame, (byte)(PatchType == 0 ? (DebugAddressForSelectedGame == 0x5C5A ? 0x74 : 0x75) : 0xEB));
 
             if(PatchType < 2) {
                 SetInfoLabelText($"{ActiveGameID} {ResultStrings[PatchType]}");
@@ -631,9 +636,8 @@ namespace Dobby {
         public void DisableDebugBtn_Click(object sender, EventArgs e) => ApplyDebugPatches(0);
         public void EnableDebugBtn_Click(object sender, EventArgs e) => ApplyDebugPatches(1);
         public void RestoredDebugBtn_Click(object sender, EventArgs e) => ApplyDebugPatches(RestoredDebugBtn.Text.Contains(" Custom") ? 3 : 2);
-
-        /*
-        public void CustomOptDebugBtn_Click(object sender, EventArgs e) { if (Dev.REL) return;
+        public void CustomOptDebugBtn_Click(object sender, EventArgs e) {
+            if (Dev.REL) return;
             if (Game == 0) {
                 if (!FlashThreadHasStarted) {
                     FlashThread.Start();
@@ -647,69 +651,20 @@ namespace Dobby {
 
             CDO = new bool[10]; CDO[7] = CDO[8] = true; MenuOpacity = 2;
 
-            MessageBox.Show("This Page Is Hardly Even Added, It Only Supports Tlou2 1.08/1.09 At The Moment", "Note:");
-            
-            switch (Game) {
-                default:
-                    MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported");
-                    break;
-                case T1R100:
-                    SetInfoLabelText("Sorry, The Last Of Us Remastered 1.00 Isn't Supported Just Yet");
-                    break;
-                case T1R109:
-                    SetInfoLabelText("Sorry, The Last Of Us Remastered 1.09 Isn't Supported Just Yet");
-                    break;
-                case T1R110:
-                case T1R111:
-                    SetInfoLabelText("Sorry, The Last Of Us Remastered 1.10/1.11 Isn't Supported Just Yet");
-                    break;
-                case T2100:
-                    MessageBox.Show("Please Get The 1.00, 1.07, or 1.09 Version Of The Game For This I'm Not Doing It For 6 Versions, 3 is Enough");
-                    SetInfoLabelText("Sorry, The Last Of Us Part II 1.00 Isn't Supported Just Yet");
-                    break;
-                case T2101:
-                    MessageBox.Show("Please Get The 1.00, 1.07, or 1.09 Version Of The Game For This I'm Not Doing It For 6 Versions, 3 is Enough");
-                    SetInfoLabelText("Sorry, The Last Of Us Part II 1.01 Isn't Supported");
-                    break;
-                case T2102:
-                    MessageBox.Show("Please Get The 1.00, 1.07, or 1.09 Version Of The Game For This I'm Not Doing It For 6 Versions, 3 is Enough");
-                    SetInfoLabelText("Sorry, The Last Of Us Part II 1.02 Isn't Supported");
-                    break;
-                case T2105:
-                    MessageBox.Show("Please Get The 1.00, 1.07, or 1.09 Version Of The Game For This I'm Not Doing It For 6 Versions, 3 is Enough");
-                    SetInfoLabelText("Sorry, The Last Of Us Part II 1.05 Isn't Supported");
-                    break;
-                case T2107:
-                    MessageBox.Show("Please Get The 1.00, 1.07, or 1.09 Version Of The Game For This I'm Not Doing It For 6 Versions, 3 is Enough");
-                    SetInfoLabelText("Sorry, The Last Of Us Part II 1.07 Isn't Supported Just Yet");
-                    break;
-                case T2108:
-                    MessageBox.Show("Please Get The 1.00, 1.07, or 1.09 Version Of The Game For This I'm Not Doing It For 6 Versions, 3 is Enough");
-                    SetInfoLabelText("Sorry, The Last Of Us Part II 1.08 Isn't Supported");
-                    break;
+            //MessageBox.Show("This Page Is Hardly Even Added, It Only Supports Tlou2 1.08/1.09 At The Moment", "Note:");
+            MessageBox.Show("Tlou2 1.08/1.09 Only");
 
+            switch (Game) {
+                default: break;
                 case T2109:
                     T2CustomOptionsDebug NewPage = new T2CustomOptionsDebug();
                     NewPage.ShowDialog();
                     //!
                     SetInfoLabelText("The Last Of Us Part II 1.09 Custom Debug Enabled");
                     break;
-
-                case UC1100: // UC1 1.00
-                    SetInfoLabelText("Sorry, Uncharted 1 1.00 Isn't Supported Yet. Use The Restored Debug");
-                    break;
-                case UC2100:
-                    SetInfoLabelText("Sorry, Uncharted 2 1.00 Debug Isn't Supported Yet");
-                    break;
-                case UC3100:
-                    SetInfoLabelText("Sorry, Uncharted 3 1.00 Isn't Supported Just Yet. Use The Restored Debug");
-                    break;
-                case UC4100:
-                    SetInfoLabelText("Sorry, Uncharted 4 1.00 Isn't Supported Just Yet");
-                    break;
             }
         }
-        */
+
 
         #region Patch Application Functions
         ////////////////////\\\\\\\\\\\\\\\\\\\\\
@@ -1398,6 +1353,8 @@ namespace Dobby {
             return;
         }
         #endregion
+        #endregion
+
         #region RepeatedButtonFunctions
         /////////////////\\\\\\\\\\\\\\\\\\
         ///--     Repeat Buttons      --\\\
@@ -1408,15 +1365,15 @@ namespace Dobby {
             BackFunc();
         }
 
-        public void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(5, false);
+        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(InfoHelpPageId);
 
-        public void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(8, false);
+        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(CreditsPageId);
         #endregion
         #region ControlDeclarations
-        ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     PS4DebugPage Control Declarations     --\\\
-        ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
-        
+        ////////////////////\\\\\\\\\\\\\\\\\\\\
+        ///--     Control Declarations     --\\\
+        ////////////////////\\\\\\\\\\\\\\\\\\\\
+
         public Label GameInfoLabel;
         private Button BrowseButton;
         private TextBox ExecutablePathBox;

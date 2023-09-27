@@ -88,7 +88,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="PS4InfoPage.cs">
+    <Compile Include="PS4DebugHelpPage.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Common.cs">
@@ -165,8 +165,8 @@
     <EmbeddedResource Include="PS4DebugPage.resx">
       <DependentUpon>PS4DebugPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PS4InfoPage.resx">
-      <DependentUpon>PS4InfoPage.cs</DependentUpon>
+    <EmbeddedResource Include="PS4DebugHelpPage.resx">
+      <DependentUpon>PS4DebugHelpPage.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
