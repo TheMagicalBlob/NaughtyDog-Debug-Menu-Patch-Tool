@@ -250,13 +250,13 @@ namespace Dobby {
             // 
             // Question0Btn
             // 
-            this.Question0Btn.Font = new System.Drawing.Font("Sitka Text", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Question0Btn.Font = new System.Drawing.Font("Microsoft YaHei", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Question0Btn.ForeColor = System.Drawing.SystemColors.Control;
             this.Question0Btn.Location = new System.Drawing.Point(3, 36);
             this.Question0Btn.Name = "Question0Btn";
             this.Question0Btn.Size = new System.Drawing.Size(316, 270);
             this.Question0Btn.TabIndex = 34;
-            this.Question0Btn.Text = "text\r\n";
+            this.Question0Btn.Text = resources.GetString("Question0Btn.Text");
             // 
             // SeperatorLine2
             // 

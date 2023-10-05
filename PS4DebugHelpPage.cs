@@ -109,7 +109,7 @@ namespace Dobby {
             // 
             // PS4DebugAnswerLabel
             // 
-            this.PS4DebugAnswerLabel.Font = new System.Drawing.Font("Gadugi", 9F, System.Drawing.FontStyle.Bold);
+            this.PS4DebugAnswerLabel.Font = new System.Drawing.Font("Microsoft YaHei", 8F, System.Drawing.FontStyle.Bold);
             this.PS4DebugAnswerLabel.ForeColor = System.Drawing.SystemColors.Control;
             this.PS4DebugAnswerLabel.Location = new System.Drawing.Point(1, 57);
             this.PS4DebugAnswerLabel.Name = "PS4DebugAnswerLabel";

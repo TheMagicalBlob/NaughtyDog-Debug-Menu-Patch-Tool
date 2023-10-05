@@ -133,7 +133,7 @@ namespace Dobby {
             // 
             this.Question4Btn.FlatAppearance.BorderSize = 0;
             this.Question4Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Question4Btn.Font = new System.Drawing.Font("Gadugi", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Question4Btn.Font = new System.Drawing.Font("Microsoft YaHei", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Question4Btn.ForeColor = System.Drawing.SystemColors.Control;
             this.Question4Btn.Location = new System.Drawing.Point(1, 399);
             this.Question4Btn.Name = "Question4Btn";
@@ -180,7 +180,7 @@ namespace Dobby {
             // 
             this.Question3Btn.FlatAppearance.BorderSize = 0;
             this.Question3Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Question3Btn.Font = new System.Drawing.Font("Gadugi", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Question3Btn.Font = new System.Drawing.Font("Microsoft YaHei", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Question3Btn.ForeColor = System.Drawing.SystemColors.Control;
             this.Question3Btn.Location = new System.Drawing.Point(1, 377);
             this.Question3Btn.Name = "Question3Btn";
@@ -194,7 +194,7 @@ namespace Dobby {
             // 
             this.Question2Btn.FlatAppearance.BorderSize = 0;
             this.Question2Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Question2Btn.Font = new System.Drawing.Font("Gadugi", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Question2Btn.Font = new System.Drawing.Font("Microsoft YaHei", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Question2Btn.ForeColor = System.Drawing.SystemColors.Control;
             this.Question2Btn.Location = new System.Drawing.Point(1, 356);
             this.Question2Btn.Name = "Question2Btn";
@@ -251,7 +251,7 @@ namespace Dobby {
             // 
             // Question0Btn
             // 
-            this.Question0Btn.Font = new System.Drawing.Font("Gadugi", 9F, System.Drawing.FontStyle.Bold);
+            this.Question0Btn.Font = new System.Drawing.Font("Microsoft YaHei", 9F, System.Drawing.FontStyle.Bold);
             this.Question0Btn.ForeColor = System.Drawing.SystemColors.Control;
             this.Question0Btn.Location = new System.Drawing.Point(3, 36);
             this.Question0Btn.Name = "Question0Btn";
@@ -273,7 +273,7 @@ namespace Dobby {
             // 
             this.Question1Btn.FlatAppearance.BorderSize = 0;
             this.Question1Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Question1Btn.Font = new System.Drawing.Font("Gadugi", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Question1Btn.Font = new System.Drawing.Font("Microsoft YaHei", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Question1Btn.ForeColor = System.Drawing.SystemColors.Control;
             this.Question1Btn.Location = new System.Drawing.Point(1, 336);
             this.Question1Btn.Name = "Question1Btn";

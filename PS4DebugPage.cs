@@ -879,7 +879,7 @@ namespace Dobby {
             await Task.Run(CheckConnectionStatus);
             if(IgnoreTitleID) TitleID = "CUSA00552";
             if(!GameVersion.Contains("Unknown"))
-                Toggle(new ulong[] { 0x1b8fa20, 0x1924a70 }, new string[] { "1.00", "1.09", "1.10", "1.11" });
+                Toggle(new ulong[] { 0x1b8fa20, 0x1924a70, 0x1924a70, 0x1924a70 }, new string[] { "1.00", "1.09", "1.10", "1.11" });
         }
         private async void T2Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
