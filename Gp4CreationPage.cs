@@ -5,6 +5,7 @@ using static Dobby.Common;
 using System.Windows.Forms;
 using libdebug;
 using libgp4;
+using System.Linq;
 
 namespace Dobby {
     public class Gp4CreationPage : Form {
@@ -449,7 +450,15 @@ namespace Dobby {
 
         private void StartPkgCreationBtn_Click(object sender, EventArgs e) {
             var outbox = CreateTextBox();
-            //LIBGP4 lIBGP4 = new LIBGP4();
+            GP4 gp4 = new GP4() {
+                passcode = "23232323232323232323232323232323",
+                gp4_output_directory = @"C:\Users\Blob\Desktop",
+                pkg_source = @"F:\PS4\PKG\UP9000-CUSA00552_00-THELASTOFUS00000-A0111-V0100.pkg",
+                gamedata_folder = @"D:\PS4\CUSA00552-patch",
+                //filter_array = new string[] { "illueboot", "Restored_Menu" },
+                ignore_keystone = true
+            };
+            gp4.Build();
         }
 
         private void VerbosityBtn_Click(object sender, EventArgs e) {
