@@ -623,10 +623,10 @@ namespace Dobby {
                         case "T1R":
                             var T1RCheck = BitConverter.ToInt16(geo.ReadMemory(Executable, 0x4000F4, 2), 0);
                             switch(T1RCheck) {
-                                case 18432: return "1.00";
-                                case 3480:  return "1.09";
-                                case 4488:  return "1.10";
-                                case 4472:  return "1.11";
+                                case 18432: DebugModePointerOffset = 0x2E81; return "1.00";
+                                case 3480:  DebugModePointerOffset = 0x2E81; return "1.09";
+                                case 4488:  DebugModePointerOffset = 0x2E81; return "1.10";
+                                case 4472:  DebugModePointerOffset = 0x2E81; return "1.11";
 
                                 default: Dev.DebugOut($"Error, Game Was T1R But None of The Checks Matched! || {T1RCheck}");
                                     MessageBox.Show($"The Game Was Determined To Be The Last of Us: Remastered, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{T1RCheck} {TitleID}", "Error Finding App Version");
@@ -636,13 +636,13 @@ namespace Dobby {
                             var T2Check = BitConverter.ToInt32(geo.ReadMemory(Executable, 0x40009A, 4), 0);
                             DebugModePointerOffset = 0x3aa1;
                             switch(T2Check) {
-                                case 25384434: return "1.00";
-                                case 25548706: return "1.01";
-                                case 25502882: return "1.02";
-                                case 25588450: return "1.05";
-                                case 25593522: return "1.07";
-                                case 30024882: return "1.08";
-                                case 30024914: return "1.09";
+                                case 25384434: DebugModePointerOffset = 0x3aa1; return "1.00";
+                                case 25548706: DebugModePointerOffset = 0x3aa1; return "1.01";
+                                case 25502882: DebugModePointerOffset = 0x3aa1; return "1.02";
+                                case 25588450: DebugModePointerOffset = 0x3aa1; return "1.05";
+                                case 25593522: DebugModePointerOffset = 0x3aa1; return "1.07";
+                                case 30024882: DebugModePointerOffset = 0x3aa1; return "1.08";
+                                case 30024914: DebugModePointerOffset = 0x3aa1; return "1.09";
 
                                 default: Dev.DebugOut($"Error, Game Was T2 But None of The Checks Matched! || chk:{T2Check}");
                                     MessageBox.Show($"The Game Was Determined To Be The Last of Us Part II, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{T2Check} {TitleID}", "Error Finding App Version");
@@ -813,6 +813,7 @@ namespace Dobby {
                         if(GameVersion == Version) {
                             var pointer = (ulong)(BitConverter.ToInt64(geo.ReadMemory(Executable, Addresses[AddressIndex], 8), 0) + DebugModePointerOffset);
                             geo.WriteMemory(Executable, pointer, geo.ReadMemory(Executable, pointer, 1)[0] == 0x00 ? on : off);
+                            Dev.DebugOut($"Toggle(ulong[] Addresses, string[] Versions) Wrote To {pointer:X}");
                         }
                         else if(AddressIndex != Addresses.Length - 1) AddressIndex++;
                 }

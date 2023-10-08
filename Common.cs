@@ -166,7 +166,8 @@ namespace Dobby {
           "* 3.33.115.323 | Added Page Id Variable For Readability, Formatting For Many Pages, Comments, Other Changes My Dumb Arse Can't Recall Fully",
           "* 3.33.116.325 | Added Click Functionality To PkgCreationPage Path Labels 'Cause Why Not, Misc Changes",
           "* 3.33.117.325 | Added Underline On Path Label Hover For PkgCreationPage Path Labels",
-          "* 3.33.117.325 | Misc Changes"
+          "* 3.33.117.325 | Misc Changes",
+          "* 3.33.119.325 | Fixed Missing DebugModePointerOffset Assignment For T1R and T2; My Bad."
 
             // TODO:
             // - Standardize Help Page Fonts For Readability
