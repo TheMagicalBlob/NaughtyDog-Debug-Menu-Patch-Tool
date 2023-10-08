@@ -30,14 +30,14 @@ namespace Dobby {
             this.Info = new System.Windows.Forms.Label();
             this.CreditsBtn = new System.Windows.Forms.Button();
             this.InfoHelpBtn = new System.Windows.Forms.Button();
-            this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.SeperatorLine0 = new System.Windows.Forms.Label();
+            this.SeperatorLine2 = new System.Windows.Forms.Label();
             this.BorderBox = new System.Windows.Forms.GroupBox();
             this.GameInfoLabel = new System.Windows.Forms.Label();
             this.BackBtn = new System.Windows.Forms.Button();
             this.BrowseButton = new System.Windows.Forms.Button();
             this.ExecutablePathBox = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
+            this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.BaseDebugBtn = new System.Windows.Forms.Button();
             this.DownloadIllusionPluginBtn = new System.Windows.Forms.Button();
             this.DisableDebugBtn = new System.Windows.Forms.Button();
@@ -145,25 +145,25 @@ namespace Dobby {
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
             this.InfoHelpBtn.Click += new System.EventHandler(this.InfoHelpBtn_Click);
             // 
-            // SeperatorLine1
+            // SeperatorLine0
             // 
-            this.SeperatorLine1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 14);
-            this.SeperatorLine1.Name = "SeperatorLine1";
-            this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
-            this.SeperatorLine1.TabIndex = 31;
-            this.SeperatorLine1.Text = "______________________________________________________________";
+            this.SeperatorLine0.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine0.Location = new System.Drawing.Point(2, 14);
+            this.SeperatorLine0.Name = "SeperatorLine0";
+            this.SeperatorLine0.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine0.TabIndex = 31;
+            this.SeperatorLine0.Text = "______________________________________________________________";
             // 
-            // label5
+            // SeperatorLine2
             // 
-            this.label5.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label5.Location = new System.Drawing.Point(3, 172);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(316, 16);
-            this.label5.TabIndex = 32;
-            this.label5.Text = "______________________________________________________________";
+            this.SeperatorLine2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine2.Location = new System.Drawing.Point(3, 172);
+            this.SeperatorLine2.Name = "SeperatorLine2";
+            this.SeperatorLine2.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine2.TabIndex = 32;
+            this.SeperatorLine2.Text = "______________________________________________________________";
             // 
             // BorderBox
             // 
@@ -237,15 +237,15 @@ namespace Dobby {
             this.ExecutablePathBox.TabIndex = 38;
             this.ExecutablePathBox.Text = " Select An exe To Modify";
             // 
-            // label6
+            // SeperatorLine1
             // 
-            this.label6.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label6.Location = new System.Drawing.Point(2, 103);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(316, 16);
-            this.label6.TabIndex = 36;
-            this.label6.Text = "______________________________________________________________";
+            this.SeperatorLine1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 103);
+            this.SeperatorLine1.Name = "SeperatorLine1";
+            this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine1.TabIndex = 36;
+            this.SeperatorLine1.Text = "______________________________________________________________";
             // 
             // BaseDebugBtn
             // 
@@ -306,13 +306,13 @@ namespace Dobby {
             this.ClientSize = new System.Drawing.Size(320, 288);
             this.Controls.Add(this.DownloadIllusionPluginBtn);
             this.Controls.Add(this.DisableDebugBtn);
-            this.Controls.Add(this.label6);
+            this.Controls.Add(this.SeperatorLine1);
             this.Controls.Add(this.BaseDebugBtn);
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.MinimizeBtn);
             this.Controls.Add(this.MainLabel);
-            this.Controls.Add(this.SeperatorLine1);
-            this.Controls.Add(this.label5);
+            this.Controls.Add(this.SeperatorLine0);
+            this.Controls.Add(this.SeperatorLine2);
             this.Controls.Add(this.BorderBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PCDebugMenuPage";
@@ -570,10 +570,10 @@ Read:       MainStream.Position = TmpAddr;
         public Label Info;
         public Button ExitBtn;
         public Button MinimizeBtn;
-        public Label SeperatorLine1;
-        public Label label5;
+        public Label SeperatorLine0;
+        public Label SeperatorLine2;
         private GroupBox BorderBox;
-        public Label label6;
+        public Label SeperatorLine1;
         public Label GameInfoLabel;
         private Button BrowseButton;
         private TextBox ExecutablePathBox;

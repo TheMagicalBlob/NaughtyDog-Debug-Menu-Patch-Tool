@@ -28,11 +28,11 @@ namespace Dobby {
             this.PkgHelpPageBtn = new System.Windows.Forms.Button();
             this.ExitBtn = new System.Windows.Forms.Button();
             this.MinimizeBtn = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
+            this.SeperatorLine0 = new System.Windows.Forms.Label();
             this.PS4QOLPageHelpBtn = new System.Windows.Forms.Button();
-            this.SeperatorLabel2 = new System.Windows.Forms.Label();
+            this.SeperatorLine2 = new System.Windows.Forms.Label();
             this.BuildLabel = new System.Windows.Forms.Label();
-            this.SeperatorLabel1 = new System.Windows.Forms.Label();
+            this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.PS4DebugHelpBtn = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.EbootPatchPageHelpBtn = new System.Windows.Forms.Button();
@@ -63,11 +63,11 @@ namespace Dobby {
             this.MainBox.Controls.Add(this.ExitBtn);
             this.MainBox.Controls.Add(this.MinimizeBtn);
             this.MainBox.Controls.Add(this.MainLabel);
-            this.MainBox.Controls.Add(this.label5);
+            this.MainBox.Controls.Add(this.SeperatorLine0);
             this.MainBox.Controls.Add(this.PS4QOLPageHelpBtn);
-            this.MainBox.Controls.Add(this.SeperatorLabel2);
+            this.MainBox.Controls.Add(this.SeperatorLine2);
             this.MainBox.Controls.Add(this.BuildLabel);
-            this.MainBox.Controls.Add(this.SeperatorLabel1);
+            this.MainBox.Controls.Add(this.SeperatorLine1);
             this.MainBox.Controls.Add(this.PS4DebugHelpBtn);
             this.MainBox.Controls.Add(this.label4);
             this.MainBox.Controls.Add(this.EbootPatchPageHelpBtn);
@@ -149,15 +149,15 @@ namespace Dobby {
             this.MinimizeBtn.MouseEnter += new System.EventHandler(this.MinimizeBtnMH);
             this.MinimizeBtn.MouseLeave += new System.EventHandler(this.MinimizeBtnML);
             // 
-            // label5
+            // SeperatorLine0
             // 
-            this.label5.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label5.Location = new System.Drawing.Point(2, 15);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(316, 16);
-            this.label5.TabIndex = 38;
-            this.label5.Text = "______________________________________________________________";
+            this.SeperatorLine0.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine0.Location = new System.Drawing.Point(2, 15);
+            this.SeperatorLine0.Name = "SeperatorLine0";
+            this.SeperatorLine0.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine0.TabIndex = 38;
+            this.SeperatorLine0.Text = "______________________________________________________________";
             // 
             // PS4QOLPageHelpBtn
             // 
@@ -176,15 +176,15 @@ namespace Dobby {
             this.PS4QOLPageHelpBtn.UseVisualStyleBackColor = false;
             this.PS4QOLPageHelpBtn.Click += new System.EventHandler(this.PS4QOLPageHelpBtn_Click);
             // 
-            // SeperatorLabel2
+            // SeperatorLine2
             // 
-            this.SeperatorLabel2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.SeperatorLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLabel2.Location = new System.Drawing.Point(2, 359);
-            this.SeperatorLabel2.Name = "SeperatorLabel2";
-            this.SeperatorLabel2.Size = new System.Drawing.Size(316, 16);
-            this.SeperatorLabel2.TabIndex = 37;
-            this.SeperatorLabel2.Text = "______________________________________________________________";
+            this.SeperatorLine2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine2.Location = new System.Drawing.Point(2, 359);
+            this.SeperatorLine2.Name = "SeperatorLine2";
+            this.SeperatorLine2.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine2.TabIndex = 37;
+            this.SeperatorLine2.Text = "______________________________________________________________";
             // 
             // BuildLabel
             // 
@@ -200,15 +200,15 @@ namespace Dobby {
             this.BuildLabel.MouseEnter += new System.EventHandler(this.BuildLabelMH);
             this.BuildLabel.MouseLeave += new System.EventHandler(this.BuildLabelML);
             // 
-            // SeperatorLabel1
+            // SeperatorLine1
             // 
-            this.SeperatorLabel1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.SeperatorLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLabel1.Location = new System.Drawing.Point(2, 256);
-            this.SeperatorLabel1.Name = "SeperatorLabel1";
-            this.SeperatorLabel1.Size = new System.Drawing.Size(316, 16);
-            this.SeperatorLabel1.TabIndex = 36;
-            this.SeperatorLabel1.Text = "______________________________________________________________";
+            this.SeperatorLine1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 256);
+            this.SeperatorLine1.Name = "SeperatorLine1";
+            this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine1.TabIndex = 36;
+            this.SeperatorLine1.Text = "______________________________________________________________";
             // 
             // PS4DebugHelpBtn
             // 
@@ -373,10 +373,10 @@ namespace Dobby {
         public Label label4;
         public Button PS4QOLPageHelpBtn;
         public Label Info;
-        public Label label5;
-        public Label SeperatorLabel2;
+        public Label SeperatorLine0;
+        public Label SeperatorLine2;
         public Button PkgHelpPageBtn;
-        public Label SeperatorLabel1;
+        public Label SeperatorLine1;
         #endregion
     }
 }

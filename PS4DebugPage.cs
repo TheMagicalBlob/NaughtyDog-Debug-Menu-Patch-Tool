@@ -18,8 +18,7 @@ namespace Dobby {
     public class PS4DebugPage : Form {
 
         public PS4DebugPage() {
-
-        InitializeComponent();
+            InitializeComponent();
             IPBOX.Text = IP();
             PortBox.Text = Port().ToString();
             AddControlEventHandlers(Controls);
@@ -1019,9 +1018,10 @@ namespace Dobby {
 
 
 
-        ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     PS4DebugPage Control Declarations     --\\\
-        ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
+        #region Control Declarations
+        ////////////////////\\\\\\\\\\\\\\\\\\\\
+        ///--     Control Declarations     --\\\
+        ////////////////////\\\\\\\\\\\\\\\\\\\\
         public TextBox IPBOX;
         public Button ExitBtn;
         public Button MinimizeBtn;
@@ -1052,5 +1052,6 @@ namespace Dobby {
         public Label Info;
         public Label SeperatorLine3;
         public Button IgnoreTitleIDBtn;
+        #endregion
     }
 }

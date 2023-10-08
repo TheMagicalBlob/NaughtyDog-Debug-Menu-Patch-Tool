@@ -59,7 +59,7 @@ namespace Dobby {
             this.Info = new System.Windows.Forms.Label();
             this.CreditsBtn = new System.Windows.Forms.Button();
             this.InfoHelpBtn = new System.Windows.Forms.Button();
-            this.SeperatorLabel0 = new System.Windows.Forms.Label();
+            this.SeperatorLine0 = new System.Windows.Forms.Label();
             this.BorderBox = new System.Windows.Forms.GroupBox();
             this.ProgPauseOnCloseBtn = new System.Windows.Forms.Button();
             this.CustomDebugOptionsLabel = new System.Windows.Forms.Label();
@@ -67,13 +67,13 @@ namespace Dobby {
             this.GameSpecificPatchesLabel = new System.Windows.Forms.Label();
             this.ProgPauseOnOpenBtn = new System.Windows.Forms.Button();
             this.GameInfoLabel = new System.Windows.Forms.Label();
-            this.SeperatorLabel3 = new System.Windows.Forms.Label();
+            this.SeperatorLine2 = new System.Windows.Forms.Label();
             this.DisableDebugTextBtn = new System.Windows.Forms.Button();
             this.BackBtn = new System.Windows.Forms.Button();
             this.PausedIconBtn = new System.Windows.Forms.Button();
             this.BrowseButton = new System.Windows.Forms.Button();
             this.ExecutablePathBox = new System.Windows.Forms.TextBox();
-            this.SeperatorLabel1 = new System.Windows.Forms.Label();
+            this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.SeperatorLabel2 = new System.Windows.Forms.Label();
             this.MenuScaleBtn = new System.Windows.Forms.Button();
             this.MenuAlphaBtn = new System.Windows.Forms.Button();
@@ -168,15 +168,15 @@ namespace Dobby {
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
             this.InfoHelpBtn.Click += new System.EventHandler(this.InfoHelpBtn_Click);
             // 
-            // SeperatorLabel0
+            // SeperatorLine0
             // 
-            this.SeperatorLabel0.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.SeperatorLabel0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLabel0.Location = new System.Drawing.Point(2, 12);
-            this.SeperatorLabel0.Name = "SeperatorLabel0";
-            this.SeperatorLabel0.Size = new System.Drawing.Size(316, 16);
-            this.SeperatorLabel0.TabIndex = 31;
-            this.SeperatorLabel0.Text = "______________________________________________________________";
+            this.SeperatorLine0.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine0.Location = new System.Drawing.Point(2, 12);
+            this.SeperatorLine0.Name = "SeperatorLine0";
+            this.SeperatorLine0.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine0.TabIndex = 31;
+            this.SeperatorLine0.Text = "______________________________________________________________";
             // 
             // BorderBox
             // 
@@ -264,15 +264,15 @@ namespace Dobby {
             this.GameInfoLabel.Text = "No File Selected";
             this.GameInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // SeperatorLabel3
+            // SeperatorLine2
             // 
-            this.SeperatorLabel3.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.SeperatorLabel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLabel3.Location = new System.Drawing.Point(2, 262);
-            this.SeperatorLabel3.Name = "SeperatorLabel3";
-            this.SeperatorLabel3.Size = new System.Drawing.Size(316, 16);
-            this.SeperatorLabel3.TabIndex = 32;
-            this.SeperatorLabel3.Text = "______________________________________________________________";
+            this.SeperatorLine2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine2.Location = new System.Drawing.Point(2, 262);
+            this.SeperatorLine2.Name = "SeperatorLine2";
+            this.SeperatorLine2.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine2.TabIndex = 32;
+            this.SeperatorLine2.Text = "______________________________________________________________";
             // 
             // DisableDebugTextBtn
             // 
@@ -355,15 +355,15 @@ namespace Dobby {
             this.ExecutablePathBox.TabIndex = 38;
             this.ExecutablePathBox.Text = " Select An exe To Modify";
             // 
-            // SeperatorLabel1
+            // SeperatorLine1
             // 
-            this.SeperatorLabel1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.SeperatorLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLabel1.Location = new System.Drawing.Point(2, 141);
-            this.SeperatorLabel1.Name = "SeperatorLabel1";
-            this.SeperatorLabel1.Size = new System.Drawing.Size(316, 16);
-            this.SeperatorLabel1.TabIndex = 37;
-            this.SeperatorLabel1.Text = "______________________________________________________________";
+            this.SeperatorLine1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 141);
+            this.SeperatorLine1.Name = "SeperatorLine1";
+            this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine1.TabIndex = 37;
+            this.SeperatorLine1.Text = "______________________________________________________________";
             // 
             // SeperatorLabel2
             // 
@@ -402,7 +402,7 @@ namespace Dobby {
             this.Controls.Add(this.GameSpecificPatchesLabel);
             this.Controls.Add(this.ProgPauseOnOpenBtn);
             this.Controls.Add(this.GameInfoLabel);
-            this.Controls.Add(this.SeperatorLabel3);
+            this.Controls.Add(this.SeperatorLine2);
             this.Controls.Add(this.DisableDebugTextBtn);
             this.Controls.Add(this.BackBtn);
             this.Controls.Add(this.PausedIconBtn);
@@ -411,11 +411,11 @@ namespace Dobby {
             this.Controls.Add(this.Info);
             this.Controls.Add(this.InfoHelpBtn);
             this.Controls.Add(this.CreditsBtn);
-            this.Controls.Add(this.SeperatorLabel1);
+            this.Controls.Add(this.SeperatorLine1);
             this.Controls.Add(this.SeperatorLabel2);
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.MainLabel);
-            this.Controls.Add(this.SeperatorLabel0);
+            this.Controls.Add(this.SeperatorLine0);
             this.Controls.Add(this.BorderBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PS4QOLPatchesPage";
@@ -954,7 +954,7 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
         private Label Info;
         private Button ExitBtn;
         private Button MinimizeBtn;
-        private Label SeperatorLabel0;
+        private Label SeperatorLine0;
         private GroupBox BorderBox;
         private Label SeperatorLabel2;
         private Label GameInfoLabel;
@@ -967,8 +967,8 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
         private Button MenuAlphaBtn;
         private Label UniversalPatchesLabel;
         private Label GameSpecificPatchesLabel;
-        private Label SeperatorLabel3;
-        private Label SeperatorLabel1;
+        private Label SeperatorLine2;
+        private Label SeperatorLine1;
         private Label CustomDebugOptionsLabel;
         private Button ProgPauseOnCloseBtn;
         private Button BackBtn;

@@ -47,8 +47,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\libdebug.dll</HintPath>
     </Reference>
-    <Reference Include="LibOrbisPkg">
-      <HintPath>.\LibOrbisPkg.dll</HintPath>
+    <Reference Include="libgp4">
+      <HintPath>.\libgp4.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

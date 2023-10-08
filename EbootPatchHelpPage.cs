@@ -37,8 +37,8 @@ namespace Dobby {
             this.MainLabel = new System.Windows.Forms.Label();
             this.MainBox = new System.Windows.Forms.GroupBox();
             this.Question4Btn = new System.Windows.Forms.Button();
-            this.SeperatorLine3 = new System.Windows.Forms.Label();
-            this.SeperatorLine1 = new System.Windows.Forms.Label();
+            this.SeperatorLine2 = new System.Windows.Forms.Label();
+            this.SeperatorLine0 = new System.Windows.Forms.Label();
             this.WithSomeExceptionsLabel = new System.Windows.Forms.Label();
             this.Question3Btn = new System.Windows.Forms.Button();
             this.Question2Btn = new System.Windows.Forms.Button();
@@ -46,7 +46,7 @@ namespace Dobby {
             this.CreditsBtn = new System.Windows.Forms.Button();
             this.BackBtn = new System.Windows.Forms.Button();
             this.Question0Btn = new System.Windows.Forms.Label();
-            this.SeperatorLine2 = new System.Windows.Forms.Label();
+            this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.Question1Btn = new System.Windows.Forms.Button();
             this.MainBox.SuspendLayout();
             this.SuspendLayout();
@@ -106,11 +106,11 @@ namespace Dobby {
             // MainBox
             // 
             this.MainBox.Controls.Add(this.Question4Btn);
-            this.MainBox.Controls.Add(this.SeperatorLine3);
+            this.MainBox.Controls.Add(this.SeperatorLine2);
             this.MainBox.Controls.Add(this.ExitBtn);
             this.MainBox.Controls.Add(this.MinimizeBtn);
             this.MainBox.Controls.Add(this.MainLabel);
-            this.MainBox.Controls.Add(this.SeperatorLine1);
+            this.MainBox.Controls.Add(this.SeperatorLine0);
             this.MainBox.Controls.Add(this.WithSomeExceptionsLabel);
             this.MainBox.Controls.Add(this.Question3Btn);
             this.MainBox.Controls.Add(this.Question2Btn);
@@ -118,7 +118,7 @@ namespace Dobby {
             this.MainBox.Controls.Add(this.CreditsBtn);
             this.MainBox.Controls.Add(this.BackBtn);
             this.MainBox.Controls.Add(this.Question0Btn);
-            this.MainBox.Controls.Add(this.SeperatorLine2);
+            this.MainBox.Controls.Add(this.SeperatorLine1);
             this.MainBox.Controls.Add(this.Question1Btn);
             this.MainBox.Location = new System.Drawing.Point(0, -6);
             this.MainBox.Name = "MainBox";
@@ -143,25 +143,25 @@ namespace Dobby {
             this.Question4Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.Question4Btn.Click += new System.EventHandler(this.Question4Btn_Click);
             // 
-            // SeperatorLine3
+            // SeperatorLine2
             // 
-            this.SeperatorLine3.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine3.Location = new System.Drawing.Point(2, 411);
-            this.SeperatorLine3.Name = "SeperatorLine3";
-            this.SeperatorLine3.Size = new System.Drawing.Size(316, 16);
-            this.SeperatorLine3.TabIndex = 40;
-            this.SeperatorLine3.Text = "______________________________________________________________";
+            this.SeperatorLine2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine2.Location = new System.Drawing.Point(2, 411);
+            this.SeperatorLine2.Name = "SeperatorLine2";
+            this.SeperatorLine2.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine2.TabIndex = 40;
+            this.SeperatorLine2.Text = "______________________________________________________________";
             // 
-            // SeperatorLine1
+            // SeperatorLine0
             // 
-            this.SeperatorLine1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 15);
-            this.SeperatorLine1.Name = "SeperatorLine1";
-            this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
-            this.SeperatorLine1.TabIndex = 39;
-            this.SeperatorLine1.Text = "______________________________________________________________";
+            this.SeperatorLine0.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine0.Location = new System.Drawing.Point(2, 15);
+            this.SeperatorLine0.Name = "SeperatorLine0";
+            this.SeperatorLine0.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine0.TabIndex = 39;
+            this.SeperatorLine0.Text = "______________________________________________________________";
             // 
             // WithSomeExceptionsLabel
             // 
@@ -251,7 +251,7 @@ namespace Dobby {
             // 
             // Question0Btn
             // 
-            this.Question0Btn.Font = new System.Drawing.Font("Microsoft YaHei", 9F, System.Drawing.FontStyle.Bold);
+            this.Question0Btn.Font = new System.Drawing.Font("Microsoft YaHei", 8F, System.Drawing.FontStyle.Bold);
             this.Question0Btn.ForeColor = System.Drawing.SystemColors.Control;
             this.Question0Btn.Location = new System.Drawing.Point(3, 36);
             this.Question0Btn.Name = "Question0Btn";
@@ -259,15 +259,15 @@ namespace Dobby {
             this.Question0Btn.TabIndex = 0;
             this.Question0Btn.Text = resources.GetString("Question0Btn.Text");
             // 
-            // SeperatorLine2
+            // SeperatorLine1
             // 
-            this.SeperatorLine2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(2, 314);
-            this.SeperatorLine2.Name = "SeperatorLine2";
-            this.SeperatorLine2.Size = new System.Drawing.Size(316, 16);
-            this.SeperatorLine2.TabIndex = 38;
-            this.SeperatorLine2.Text = "______________________________________________________________";
+            this.SeperatorLine1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 314);
+            this.SeperatorLine1.Name = "SeperatorLine1";
+            this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine1.TabIndex = 38;
+            this.SeperatorLine1.Text = "______________________________________________________________";
             // 
             // Question1Btn
             // 
@@ -361,9 +361,9 @@ namespace Dobby {
         private Label Question0Btn;
         public Button ExitBtn;
         private Label WithSomeExceptionsLabel;
+        public Label SeperatorLine0;
         public Label SeperatorLine1;
         public Label SeperatorLine2;
-        public Label SeperatorLine3;
         #endregion
     }
 }

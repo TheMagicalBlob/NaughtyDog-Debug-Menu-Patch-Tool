@@ -170,7 +170,8 @@ namespace Dobby {
           "* 3.33.119.325 | Fixed Missing DebugModePointerOffset Assignment For T1R and T2; My Bad.",
           "* 3.33.120.326 | Added Missing AddControlEventHandlers(Controls) In Ps4DebugHelpPage Class init, Misc Formatting.",
           "* 3.34.120.326 | Initial Gp4CreationPage Creation",
-          "* 3.34.121.327 | Basic Gp4CreationPage Work- Not Even Remotely Finished, Just Got The Basic Layout Done- Zero Functionality Yet. Removed A Few Prints"
+          "* 3.34.121.327 | Basic Gp4CreationPage Work- Not Even Remotely Finished, Just Got The Basic Layout Done- Zero Functionality Yet. Removed A Few Prints",
+          "* 3.34.122.331 | Created Basic Popup TexBox Function, Minor Changes"
 
             // TODO:
             // - Standardize Help Page Fonts For Readability
@@ -218,6 +219,7 @@ namespace Dobby {
 
         public static Form MainForm, PopupBox;
         public static Control YellowInformationLabel;
+        public static GroupBox PopupGroupBox;
 
         public static TcpClient tcp_client;
         public static NetworkStream net_stream;
@@ -243,6 +245,54 @@ namespace Dobby {
             }
         }
 
+
+        public static Control CreateTextBox() {
+            PopupGroupBox?.Dispose();
+
+            PopupGroupBox = new GroupBox() {
+                Cursor = Cursors.Cross,
+                Size = new Size(250, ActiveForm.Size.Height - 25),
+                Location = new Point(35, ActiveForm.Controls.Find("SeperatorLine0", true)[0].Location.Y + 11),
+                BackColor = Color.FromArgb(255, Color.DimGray)
+            };
+            var popupBoxLabel = new Label() {
+                Text = ".gp4 Log",
+                Font = new Font("Microsoft YaHei UI", 7F),
+                Size = new Size(217, 21),
+                Location = new Point(4, 8),
+                ForeColor = SystemColors.Control,
+                BackColor = Color.DimGray
+            };
+            var closeBtn = new Button() {
+                Text = "X",
+                Cursor = Cursors.Cross,
+                Size = new Size(19, 19),
+                BackColor = Color.DimGray,
+                FlatStyle = FlatStyle.Flat,
+                Location = new Point(228, 9),
+                ForeColor = SystemColors.Control,
+                TextAlign = ContentAlignment.MiddleRight,
+                Font = new Font("Franklin Gothic Medium", 6.5F)
+            };
+            var textBox = new RichTextBox() {
+                ReadOnly = true,
+                Cursor = Cursors.Cross,
+                Size = new Size(242, 286),
+                Location = new Point(4, 29),
+                BackColor = Color.FromArgb(255, Color.DarkGray)
+            };
+
+            closeBtn.FlatAppearance.BorderSize = 0;
+            PopupGroupBox.Controls.Add(textBox);
+            PopupGroupBox.Controls.Add(closeBtn);
+            PopupGroupBox.Controls.Add(popupBoxLabel);
+            ActiveForm.Controls.Add(PopupGroupBox);
+
+            PopupGroupBox.BringToFront(); textBox.BringToFront();
+            closeBtn.BringToFront(); popupBoxLabel.BringToFront();
+
+            return PopupGroupBox;
+        }
         
 
         /// <summary> Sets The Info Label String Based On The Currently Hovered Control </summary>
@@ -1137,7 +1187,7 @@ namespace Dobby {
 
 #elif DEBUG
             public const bool REL = false;
-            public static void MiscDebugFunc(object sender, EventArgs e) => DebugOut($"{tst_int++}");
+            public static void MiscDebugFunc(object sender, EventArgs e) => CreateTextBox();
             public static void DebugControlHover(object sender, EventArgs e) => HoveredControl = (Control)sender;
 
             public static bool OverrideDebugOut;
