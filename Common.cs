@@ -167,7 +167,10 @@ namespace Dobby {
           "* 3.33.116.325 | Added Click Functionality To PkgCreationPage Path Labels 'Cause Why Not, Misc Changes",
           "* 3.33.117.325 | Added Underline On Path Label Hover For PkgCreationPage Path Labels",
           "* 3.33.117.325 | Misc Changes",
-          "* 3.33.119.325 | Fixed Missing DebugModePointerOffset Assignment For T1R and T2; My Bad."
+          "* 3.33.119.325 | Fixed Missing DebugModePointerOffset Assignment For T1R and T2; My Bad.",
+          "* 3.33.120.326 | Added Missing AddControlEventHandlers(Controls) In Ps4DebugHelpPage Class init, Misc Formatting.",
+          "* 3.34.120.326 | Initial Gp4CreationPage Creation",
+          "* 3.34.121.327 | Basic Gp4CreationPage Work- Not Even Remotely Finished, Just Got The Basic Layout Done- Zero Functionality Yet. Removed A Few Prints"
 
             // TODO:
             // - Standardize Help Page Fonts For Readability
@@ -186,8 +189,7 @@ namespace Dobby {
 
         public static string CurrentControl, TempStringStore;
 
-        public static int
-            Page,
+        public const int
             MainPageId = 0,
             PS4DebugPageId = 1,
             PS4DebugHelpPageId = 11,
@@ -197,11 +199,14 @@ namespace Dobby {
             PS4QOLHelpPageId = 31,
             PkgCreationPageId = 4,
             PkgCreationHelpPageId = 41,
-            PCDebugMenuPageId = 5,
-            InfoHelpPageId = 6,
-            CreditsPageId = 7
+            Gp4CreationPageId = 5,
+            Gp4CreationHelpPageId = 51,
+            PCDebugMenuPageId = 6,
+            InfoHelpPageId = 7,
+            CreditsPageId = 8
         ;
 
+        public static int Page;
         public static int?[] Pages = new int?[5];
         public static bool InfoHasImportantStr, IsPageGoingBack = false, LastDebugOutputWasInfoString = false, LabelShouldFlash = false, FlashThreadHasStarted = false;
 
@@ -259,6 +264,7 @@ namespace Dobby {
                 case "BackBtn":
                     InfoLabelString = "Return To The Previous Page";
                     break;
+                // _______________
                 //
                 // Main Page
                 //
@@ -278,6 +284,7 @@ namespace Dobby {
                 case "PCQOLPageBtn":
                     InfoLabelString = "Enable The Default Or Restored Debug Menu";
                     break;
+                // _______________
                 //
                 // PS4DebugPage
                 //
@@ -305,6 +312,7 @@ namespace Dobby {
                 case "IgnoreTitleIDBtn":
                     InfoLabelString = "Enable This If You've Changed The Title ID";
                     break;
+                // _______________
                 //
                 // EbootPatchPage
                 //
@@ -323,36 +331,49 @@ namespace Dobby {
                 case "CustomOptDebugBtn":
                     InfoLabelString = REL ? "Temporarily Disabled" : "change me //!";
                     break;
+                // _______________
+                //
+                // PkgCreationPage
+                //
+                // _______________
+                //
+                // PkgCreationHelpPage
+                //
+                // _______________
+                //
+                // Gp4CreationPage
+                //
+                case "Gp4CreationPageBtn":
+                    InfoLabelString = "A .gp4 Is Required For .pkg Creation";
+                    break;
+                //
+                // Gp4CreationHelpPage
+                //
+                // _______________
                 //
                 // PS4QOLPatchesPage
                 //
-                case "2":
-                    break;
+                // _______________
                 //
                 // PCExePatchPage
                 //
-                case "3":
-                    break;
+                // _______________
                 //
                 // PCQOLPatchPage
                 //
-                case "4":
-                    break;
+                // _______________
                 //
                 // InfoHelpPage
                 //
-                case "5":
-                    break;
+                // _______________
                 //
                 // CreditsPage
                 //
-                case "6":
-                    break;
+                // _______________
                 //
                 // PCQOLPatchPage
                 //
-                case "7":
-                    break;
+                // _______________
 
             }
             SetInfoLabelText(InfoLabelString);
@@ -360,8 +381,7 @@ namespace Dobby {
 
 
         /// <summary>
-        /// Loads The Specified Page.<br/>
-        /// 0: Main Form <br/>1: PS4DebugPage 2: EbootPatchPage 3: PS4QOLPatchPage 4:  PKG Build Page <br/>5: InfoHelpPage 6: PS4DebugHelpPage 7: EbootPatchHelpPage  8: Credits Page <br/>9: PCDebugMenuPage 10: PCQOLPatchesPage
+        /// Loads The Specified Page From The PageId Group (E.g. ChangeForm(EbootPatchPageId))
         /// </summary>
         /// <param name="Page"> Page To Change To </param>
         /// <param name="IsPageGoingBack"> Whether We're Returning Or Loading A New Page </param>
@@ -382,43 +402,49 @@ namespace Dobby {
                 default:
                     DebugOut($"{Page} Is Not A Page!");
                     break;
-                case 0:
+                case MainPageId:
                     MainForm.Show();
                     break;
-                case 1:
+                case PS4DebugPageId:
                     PS4DebugPage PS4Debug = new PS4DebugPage();
                     PS4Debug.Show();
                     break;
-                case 11:
+                case PS4DebugHelpPageId:
                     PS4DebugHelpPage PS4DebugHelp = new PS4DebugHelpPage();
                     PS4DebugHelp.Show();
                     break;
-                case 2:
+                case EbootPatchPageId:
                     EbootPatchPage EbootPatch = new EbootPatchPage();
                     EbootPatch.Show();
                     break;
-                case 21:
+                case EbootPatchHelpPageId:
                     EbootPatchHelpPage EbootPatchHelp = new EbootPatchHelpPage();
                     EbootPatchHelp.Show();
                     break;
-                case 3:
+                case PS4QOLPageId:
                     PS4QOLPatchesPage PS4QOLPage = new PS4QOLPatchesPage();
                     PS4QOLPage.Show();
                     break;
-                case 31:
+                case PS4QOLHelpPageId:
 
                     //PS4QOLPatchesHelpPage PS4QOLHelpPage = new PS4QOLPatchesHelpPage();
                     //PS4QOLHelpPage.Show();
                     break;
-                case 4:
+                case PkgCreationPageId:
                     PkgCreationPage PkgCreation = new PkgCreationPage();
                     PkgCreation.Show();
                     break;
-                case 41:
+                case PkgCreationHelpPageId:
                     PkgCreationHelpPage PkgCreationHelp = new PkgCreationHelpPage();
                     PkgCreationHelp.Show();
                     break;
-                case 5:
+                case Gp4CreationPageId:
+                    Gp4CreationPage Gp4Creation = new Gp4CreationPage();
+                    Gp4Creation.Show();
+                    break;
+                case Gp4CreationHelpPageId:
+                    break;
+                case PCDebugMenuPageId:
                     PCDebugMenuPage PCDebugMenu = new PCDebugMenuPage();
                     PCDebugMenu.Show();
                     MessageBox.Show("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
@@ -428,11 +454,11 @@ namespace Dobby {
                     PCQOLPatches.Show();
                     MessageBox.Show("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
                     break;
-                case 6:
+                case InfoHelpPageId:
                     InfoHelpPage InfoHelp = new InfoHelpPage();
                     InfoHelp.Show();
                     break;
-                case 7:
+                case CreditsPageId:
                     CreditsPage Credits = new CreditsPage();
                     Credits.Show();
                     break;

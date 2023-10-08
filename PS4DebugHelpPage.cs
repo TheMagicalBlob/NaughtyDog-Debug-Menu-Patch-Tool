@@ -11,6 +11,7 @@ namespace Dobby {
     public class PS4DebugHelpPage : Form {
         public PS4DebugHelpPage() {
             InitializeComponent();
+            AddControlEventHandlers(Controls);
         }
         public void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PS4DebugHelpPage));

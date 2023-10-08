@@ -25,9 +25,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             YellowInformationLabel = Info;
             Info.Text = "";
             Page = 0;
-            Dev.DebugOut("Test PS4DebugPage Changes!!!");
-            Dev.DebugOut("Test PS4QOLPage Addresses!!!");
-            Dev.DebugOut("Add UC2 1.02 / UC3 1.02 PS4 Debug Adresses!!!");
             AddControlEventHandlers(Controls);
         }
 

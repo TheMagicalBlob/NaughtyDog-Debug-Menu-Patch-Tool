@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{0769F6AF-F222-4543-BCC5-57C331D894C6}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>Dobby</RootNamespace>
     <AssemblyName>ND Debug Enabler</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
@@ -65,6 +65,9 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Gp4CreationPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="PkgCreationHelpPage.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -134,6 +137,9 @@
     <EmbeddedResource Include="EbootPatchPage.resx">
       <DependentUpon>EbootPatchPage.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gp4CreationPage.resx">
+      <DependentUpon>Gp4CreationPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InfoHelpPage.resx">
       <DependentUpon>InfoHelpPage.cs</DependentUpon>
