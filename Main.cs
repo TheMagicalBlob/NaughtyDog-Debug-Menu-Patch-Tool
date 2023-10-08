@@ -28,7 +28,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             AddControlEventHandlers(Controls);
         }
 
-        #endregion
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
             this.ExitBtn = new System.Windows.Forms.Button();
@@ -351,7 +350,10 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
         private void DownloadSourceBtn_Click(object sender, EventArgs e) => System.Diagnostics.Process.Start(@"https://github.com/TheMagicalBlob/NaughtyDog-Debug-Menu-Patch-Tool/archive/refs/heads/master.zip");
 
 
-        #region ControlDeclarations
+        #region Control Declarations
+        ////////////////////\\\\\\\\\\\\\\\\\\\\
+        ///--     Control Declarations     --\\\
+        ////////////////////\\\\\\\\\\\\\\\\\\\\
         public Label MainLabel;
         public Button PS4DebugPageBtn;
         public Button EbootPatchPageBtn;
@@ -370,5 +372,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
         public Label Playstation4Label;
         public Label SeperatorLine1;
         public Button PCDebugMenuPageBtn;
+        #endregion
     }
 }
