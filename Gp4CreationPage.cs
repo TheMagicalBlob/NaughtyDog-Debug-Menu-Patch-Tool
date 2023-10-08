@@ -34,6 +34,7 @@ namespace Dobby {
         private Button LoadBaseGamePkgPathBtn;
         private ContextMenuStrip contextMenuStrip1;
         private System.ComponentModel.IContainer components;
+        public Label PasscodeLabel;
         private Button Gp4CreationPageBtn;
 
         public void InitializeComponent() {
@@ -61,6 +62,7 @@ namespace Dobby {
             this.Gp4CreationPageBtn = new System.Windows.Forms.Button();
             this.LoadBaseGamePkgPathBtn = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.PasscodeLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // GamedataPathLabel
@@ -83,7 +85,7 @@ namespace Dobby {
             this.LoadGamedataFolderButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LoadGamedataFolderButton.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.LoadGamedataFolderButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.LoadGamedataFolderButton.Location = new System.Drawing.Point(1, 156);
+            this.LoadGamedataFolderButton.Location = new System.Drawing.Point(1, 183);
             this.LoadGamedataFolderButton.Name = "LoadGamedataFolderButton";
             this.LoadGamedataFolderButton.Size = new System.Drawing.Size(317, 23);
             this.LoadGamedataFolderButton.TabIndex = 31;
@@ -100,7 +102,7 @@ namespace Dobby {
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 281);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 308);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.Size = new System.Drawing.Size(317, 23);
             this.InfoHelpBtn.TabIndex = 15;
@@ -113,7 +115,7 @@ namespace Dobby {
             // 
             this.SeperatorLine2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(2, 221);
+            this.SeperatorLine2.Location = new System.Drawing.Point(2, 248);
             this.SeperatorLine2.Name = "SeperatorLine2";
             this.SeperatorLine2.Size = new System.Drawing.Size(316, 20);
             this.SeperatorLine2.TabIndex = 14;
@@ -127,7 +129,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 331);
+            this.BackBtn.Location = new System.Drawing.Point(1, 358);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(317, 23);
             this.BackBtn.TabIndex = 13;
@@ -140,7 +142,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(3, 356);
+            this.Info.Location = new System.Drawing.Point(3, 383);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(313, 19);
             this.Info.TabIndex = 7;
@@ -154,7 +156,7 @@ namespace Dobby {
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 306);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 333);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(317, 23);
@@ -230,7 +232,7 @@ namespace Dobby {
             this.BorderBox.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.BorderBox.Location = new System.Drawing.Point(0, -6);
             this.BorderBox.Name = "BorderBox";
-            this.BorderBox.Size = new System.Drawing.Size(319, 386);
+            this.BorderBox.Size = new System.Drawing.Size(319, 412);
             this.BorderBox.TabIndex = 34;
             this.BorderBox.TabStop = false;
             // 
@@ -268,7 +270,7 @@ namespace Dobby {
             this.PathBox.BackColor = System.Drawing.Color.Gray;
             this.PathBox.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F);
             this.PathBox.ForeColor = System.Drawing.SystemColors.Window;
-            this.PathBox.Location = new System.Drawing.Point(3, 208);
+            this.PathBox.Location = new System.Drawing.Point(3, 235);
             this.PathBox.Name = "PathBox";
             this.PathBox.Size = new System.Drawing.Size(313, 21);
             this.PathBox.TabIndex = 32;
@@ -301,7 +303,7 @@ namespace Dobby {
             // 
             this.FilterArrayLabel.Font = new System.Drawing.Font("Georgia", 9.75F);
             this.FilterArrayLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.FilterArrayLabel.Location = new System.Drawing.Point(1, 132);
+            this.FilterArrayLabel.Location = new System.Drawing.Point(1, 155);
             this.FilterArrayLabel.Name = "FilterArrayLabel";
             this.FilterArrayLabel.Size = new System.Drawing.Size(317, 19);
             this.FilterArrayLabel.TabIndex = 37;
@@ -312,7 +314,7 @@ namespace Dobby {
             // 
             this.SeperatorLine3.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine3.Location = new System.Drawing.Point(2, 259);
+            this.SeperatorLine3.Location = new System.Drawing.Point(2, 286);
             this.SeperatorLine3.Name = "SeperatorLine3";
             this.SeperatorLine3.Size = new System.Drawing.Size(316, 20);
             this.SeperatorLine3.TabIndex = 40;
@@ -327,7 +329,7 @@ namespace Dobby {
             this.Gp4CreationPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Gp4CreationPageBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.Gp4CreationPageBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Gp4CreationPageBtn.Location = new System.Drawing.Point(1, 243);
+            this.Gp4CreationPageBtn.Location = new System.Drawing.Point(1, 270);
             this.Gp4CreationPageBtn.Name = "Gp4CreationPageBtn";
             this.Gp4CreationPageBtn.Size = new System.Drawing.Size(317, 23);
             this.Gp4CreationPageBtn.TabIndex = 41;
@@ -343,7 +345,7 @@ namespace Dobby {
             this.LoadBaseGamePkgPathBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LoadBaseGamePkgPathBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.LoadBaseGamePkgPathBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.LoadBaseGamePkgPathBtn.Location = new System.Drawing.Point(1, 181);
+            this.LoadBaseGamePkgPathBtn.Location = new System.Drawing.Point(1, 208);
             this.LoadBaseGamePkgPathBtn.Name = "LoadBaseGamePkgPathBtn";
             this.LoadBaseGamePkgPathBtn.Size = new System.Drawing.Size(317, 23);
             this.LoadBaseGamePkgPathBtn.TabIndex = 42;
@@ -356,12 +358,24 @@ namespace Dobby {
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // PasscodeLabel
+            // 
+            this.PasscodeLabel.Font = new System.Drawing.Font("Georgia", 9.75F);
+            this.PasscodeLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.PasscodeLabel.Location = new System.Drawing.Point(2, 132);
+            this.PasscodeLabel.Name = "PasscodeLabel";
+            this.PasscodeLabel.Size = new System.Drawing.Size(317, 19);
+            this.PasscodeLabel.TabIndex = 44;
+            this.PasscodeLabel.Text = "Using Default Passcode";
+            this.PasscodeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // Gp4CreationPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 379);
+            this.ClientSize = new System.Drawing.Size(320, 406);
+            this.Controls.Add(this.PasscodeLabel);
             this.Controls.Add(this.LoadBaseGamePkgPathBtn);
             this.Controls.Add(this.Gp4CreationPageBtn);
             this.Controls.Add(this.SeperatorLine3);
@@ -451,11 +465,19 @@ namespace Dobby {
         private void StartPkgCreationBtn_Click(object sender, EventArgs e) {
             var outbox = CreateTextBox();
             GP4 gp4 = new GP4() {
-                passcode = "23232323232323232323232323232323",
-                gp4_output_directory = @"C:\Users\Blob\Desktop",
+                gamedata_folder = GamedataPathLabel.Text,
+                passcode =
+                    PasscodeLabel.Text == "Using Default Passcode"
+                    ? "00000000000000000000000000000000"
+                    : PasscodeLabel.Text,
+
+                gp4_output_directory =
+                    OutputPathLabel.Text == "Using Gamedata Folder's Directory As Output"
+                    ? $"{GamedataPathLabel.Text.Remove(GamedataPathLabel.Text.LastIndexOf('\\') - 1)}"
+                    : OutputPathLabel.Text,
+
                 pkg_source = @"F:\PS4\PKG\UP9000-CUSA00552_00-THELASTOFUS00000-A0111-V0100.pkg",
-                gamedata_folder = @"D:\PS4\CUSA00552-patch",
-                //filter_array = new string[] { "illueboot", "Restored_Menu" },
+                filter_array = new string[] { "illueboot", "Restored_Menu" },
                 ignore_keystone = true
             };
             gp4.Build();
