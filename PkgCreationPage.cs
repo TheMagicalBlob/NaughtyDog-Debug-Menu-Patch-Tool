@@ -289,7 +289,7 @@ namespace Dobby {
             this.PathBox.BackColor = System.Drawing.Color.Gray;
             this.PathBox.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.PathBox.ForeColor = System.Drawing.SystemColors.Window;
-            this.PathBox.Location = new System.Drawing.Point(3, 208);
+            this.PathBox.Location = new System.Drawing.Point(3, 210);
             this.PathBox.Name = "PathBox";
             this.PathBox.Size = new System.Drawing.Size(313, 23);
             this.PathBox.TabIndex = 32;
@@ -361,6 +361,7 @@ namespace Dobby {
             // 
             this.Gp4CreationPageBtn.BackColor = System.Drawing.Color.DimGray;
             this.Gp4CreationPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.Gp4CreationPageBtn.Enabled = false;
             this.Gp4CreationPageBtn.FlatAppearance.BorderSize = 0;
             this.Gp4CreationPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Gp4CreationPageBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
@@ -544,7 +545,7 @@ namespace Dobby {
             if(Folder.ShowDialog() == DialogResult.OK)
                 OutputPathLabel.Text = OutputDirectory = Folder.SelectedPath;
             else {
-                OutputPathLabel.Text = "Using Current Directory For.pkg Output";
+                OutputPathLabel.Text = "Using Current Directory For .pkg Output";
                 OutputDirectory = Directory.GetCurrentDirectory();
             }
         }
@@ -552,7 +553,7 @@ namespace Dobby {
         private void TMPPathLabel_Click(object sender, EventArgs e) => TempDirectoryBtn_Click(TempDirectoryBtn, null);
 
 
-        private void Gp4CreationPageBtn_Click(object sender, EventArgs e) => ChangeForm(Gp4CreationPageId);
+        private void Gp4CreationPageBtn_Click(object sender, EventArgs e) => ChangeForm((int)PageID.Gp4CreationPageId);
 
 
         #region RepeatedButtonFunctions
@@ -564,9 +565,9 @@ namespace Dobby {
             BackFunc();
         }
 
-        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(InfoHelpPageId);
+        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm((int)PageID.InfoHelpPageId);
 
-        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(CreditsPageId);
+        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm((int)PageID.CreditsPageId);
         #endregion
 
         #region ControlDeclarations

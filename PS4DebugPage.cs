@@ -13,6 +13,7 @@ using System.Linq;
 using System.Data;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
+using System.ComponentModel;
 
 namespace Dobby {
     public class PS4DebugPage : Form {
@@ -24,6 +25,10 @@ namespace Dobby {
             AddControlEventHandlers(Controls);
         }
 
+        #region Designer Managed
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Designer Managed Functions     --\\\
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
             this.TLLBtn = new System.Windows.Forms.Button();
@@ -499,6 +504,8 @@ namespace Dobby {
             this.PerformLayout();
 
         }
+#endregion
+
 
         ///////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///--     Debug Mode Toggle Functions For Each Game     --\\\
@@ -1006,8 +1013,8 @@ namespace Dobby {
             BackFunc();
             HoverLeave(BackBtn, false); // What Did This Fix, Again?
         }
-        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(InfoHelpPageId);
-        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(CreditsPageId);
+        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm((int)PageID.InfoHelpPageId);
+        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm((int)PageID.CreditsPageId);
 
         public void IgnoreTitleIDBtn_Click(object sender, EventArgs e) {
             TempStringStore = ((Control)sender).Text;

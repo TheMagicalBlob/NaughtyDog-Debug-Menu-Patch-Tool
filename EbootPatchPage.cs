@@ -1365,9 +1365,9 @@ namespace Dobby {
             BackFunc();
         }
 
-        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(InfoHelpPageId);
+        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm((int)PageID.InfoHelpPageId);
 
-        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(CreditsPageId);
+        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm((int)PageID.CreditsPageId);
         #endregion
         #region ControlDeclarations
         ////////////////////\\\\\\\\\\\\\\\\\\\\

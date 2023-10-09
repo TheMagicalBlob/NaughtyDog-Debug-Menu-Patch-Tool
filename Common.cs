@@ -1,6 +1,7 @@
 ﻿using Dobby.Properties;
 using libdebug;
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -172,7 +173,8 @@ namespace Dobby {
           "* 3.34.120.326 | Initial Gp4CreationPage Creation",
           "* 3.34.121.327 | Basic Gp4CreationPage Work- Not Even Remotely Finished, Just Got The Basic Layout Done- Zero Functionality Yet. Removed A Few Prints",
           "* 3.34.122.331 | Created Basic Popup TexBox Function, Minor Changes",
-          "* 3.34.122.334 | Minor Popup TexBox Work, Comments"
+          "* 3.34.122.334 | Minor Popup TexBox Work, Comments",
+          "* 3.34.123.336 | Misc Changes"
 
             // TODO:
             // - Standardize Help Page Fonts For Readability
@@ -183,6 +185,13 @@ namespace Dobby {
         };
         public static string Build = ChangeList[ChangeList.Length - 1].Substring(2).Substring(0, ChangeList[ChangeList.Length - 1].IndexOf('|') - 3); // Trims The Last ChangeList String For Latest The Build Number
 
+        #region Designer Related
+        private IContainer components = null;
+        protected override void Dispose(bool disposing) {
+            if(disposing) components?.Dispose();
+            base.Dispose(disposing);
+        }
+        #endregion
 
         #region Application-Wide Functions And Variable Declarations
         //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -191,7 +200,7 @@ namespace Dobby {
 
         public static string CurrentControl, TempStringStore;
 
-        public const int
+        public enum PageID : int {
             MainPageId = 0,
             PS4DebugPageId = 1,
             PS4DebugHelpPageId = 11,
@@ -206,11 +215,12 @@ namespace Dobby {
             PCDebugMenuPageId = 6,
             InfoHelpPageId = 7,
             CreditsPageId = 8
-        ;
+        }
 
         public static int Page;
         public static int?[] Pages = new int?[5];
         public static bool InfoHasImportantStr, IsPageGoingBack = false, LastDebugOutputWasInfoString = false, LabelShouldFlash = false, FlashThreadHasStarted = false;
+        public static byte[] buffer;
 
         public static Point LastPos, MousePos, MouseDif;
         public static Point[] OriginalControlPositions;
@@ -247,7 +257,7 @@ namespace Dobby {
         }
 
         private static void KillTextBox(object sender, MouseEventArgs e) => PopupGroupBox?.Dispose();
-        public static Control CreateTextBox() {
+        public static RichTextBox CreateTextBox(string Title) {
             PopupGroupBox?.Dispose();
 
             PopupGroupBox = new GroupBox() {
@@ -257,7 +267,7 @@ namespace Dobby {
                 BackColor = Color.FromArgb(255, Color.DimGray)
             };
             var popupBoxLabel = new Label() {
-                Text = ".gp4 Log",
+                Text = Title,
                 Font = new Font("Microsoft YaHei UI", 7.5F),
                 Size = new Size(217, 21),
                 Location = new Point(4, 8),
@@ -294,7 +304,7 @@ namespace Dobby {
             PopupGroupBox.BringToFront(); textBox.BringToFront();
             closeBtn.BringToFront(); popupBoxLabel.BringToFront();
 
-            return PopupGroupBox;
+            return textBox;
         }
         
 
@@ -434,7 +444,7 @@ namespace Dobby {
 
 
         /// <summary>
-        /// Loads The Specified Page From The PageId Group (E.g. ChangeForm(EbootPatchPageId))
+        /// Loads The Specified Page From The PageId Group (E.g. ChangeForm((int)PageID.PS4QOLPageId))
         /// </summary>
         /// <param name="Page"> Page To Change To </param>
         /// <param name="IsPageGoingBack"> Whether We're Returning Or Loading A New Page </param>
@@ -455,49 +465,49 @@ namespace Dobby {
                 default:
                     DebugOut($"{Page} Is Not A Page!");
                     break;
-                case MainPageId:
+                case (int)PageID.MainPageId:
                     MainForm.Show();
                     break;
-                case PS4DebugPageId:
+                case (int)PageID.PS4DebugPageId:
                     PS4DebugPage PS4Debug = new PS4DebugPage();
                     PS4Debug.Show();
                     break;
-                case PS4DebugHelpPageId:
+                case (int)PageID.PS4DebugHelpPageId:
                     PS4DebugHelpPage PS4DebugHelp = new PS4DebugHelpPage();
                     PS4DebugHelp.Show();
                     break;
-                case EbootPatchPageId:
+                case (int)PageID.EbootPatchPageId:
                     EbootPatchPage EbootPatch = new EbootPatchPage();
                     EbootPatch.Show();
                     break;
-                case EbootPatchHelpPageId:
+                case (int)PageID.EbootPatchHelpPageId:
                     EbootPatchHelpPage EbootPatchHelp = new EbootPatchHelpPage();
                     EbootPatchHelp.Show();
                     break;
-                case PS4QOLPageId:
+                case (int)PageID.PS4QOLPageId:
                     PS4QOLPatchesPage PS4QOLPage = new PS4QOLPatchesPage();
                     PS4QOLPage.Show();
                     break;
-                case PS4QOLHelpPageId:
+                case (int)PageID.PS4QOLHelpPageId:
 
                     //PS4QOLPatchesHelpPage PS4QOLHelpPage = new PS4QOLPatchesHelpPage();
                     //PS4QOLHelpPage.Show();
                     break;
-                case PkgCreationPageId:
+                case (int)PageID.PkgCreationPageId:
                     PkgCreationPage PkgCreation = new PkgCreationPage();
                     PkgCreation.Show();
                     break;
-                case PkgCreationHelpPageId:
+                case (int)PageID.PkgCreationHelpPageId:
                     PkgCreationHelpPage PkgCreationHelp = new PkgCreationHelpPage();
                     PkgCreationHelp.Show();
                     break;
-                case Gp4CreationPageId:
+                case (int)PageID.Gp4CreationPageId:
                     Gp4CreationPage Gp4Creation = new Gp4CreationPage();
                     Gp4Creation.Show();
                     break;
-                case Gp4CreationHelpPageId:
+                case (int)PageID.Gp4CreationHelpPageId:
                     break;
-                case PCDebugMenuPageId:
+                case (int)PageID.PCDebugMenuPageId:
                     PCDebugMenuPage PCDebugMenu = new PCDebugMenuPage();
                     PCDebugMenu.Show();
                     MessageBox.Show("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
@@ -507,11 +517,11 @@ namespace Dobby {
                     PCQOLPatches.Show();
                     MessageBox.Show("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
                     break;
-                case InfoHelpPageId:
+                case (int)PageID.InfoHelpPageId:
                     InfoHelpPage InfoHelp = new InfoHelpPage();
                     InfoHelp.Show();
                     break;
-                case CreditsPageId:
+                case (int)PageID.CreditsPageId:
                     CreditsPage Credits = new CreditsPage();
                     Credits.Show();
                     break;
@@ -1190,7 +1200,7 @@ namespace Dobby {
 
 #elif DEBUG
             public const bool REL = false;
-            public static void MiscDebugFunc(object sender, EventArgs e) => CreateTextBox();
+            public static void MiscDebugFunc(object sender, EventArgs e) => CreateTextBox("Test Box");
             public static void DebugControlHover(object sender, EventArgs e) => HoveredControl = (Control)sender;
 
             public static bool OverrideDebugOut;

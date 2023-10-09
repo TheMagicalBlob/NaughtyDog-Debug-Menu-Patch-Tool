@@ -333,20 +333,20 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.ResumeLayout(false);
 
         }
-        private void PS4DebugPageBtn_Click(object sender, EventArgs e) => ChangeForm(PS4DebugPageId);
-        private void EbootPatchPageBtn_Click(object sender, EventArgs e) => ChangeForm(EbootPatchPageId);
+        private void PS4DebugPageBtn_Click(object sender, EventArgs e) => ChangeForm((int)PageID.PS4DebugPageId);
+        private void EbootPatchPageBtn_Click(object sender, EventArgs e) => ChangeForm((int)PageID.PS4QOLPageId);
 
         private void MiscPatchesBtn_Click(object sender, EventArgs e) {
             if (Dev.REL) return;
-            ChangeForm(PS4QOLPageId);
+            ChangeForm((int)PageID.PS4QOLPageId);
         }
 
-        private void PkgPageBtn_Click(object sender, EventArgs e) => ChangeForm(PkgCreationPageId);
-        private void PCDebugMenuPageBtn_Click(object sender, EventArgs e) => ChangeForm(PCDebugMenuPageId);
+        private void PkgPageBtn_Click(object sender, EventArgs e) => ChangeForm((int)PageID.PkgCreationPageId);
+        private void PCDebugMenuPageBtn_Click(object sender, EventArgs e) => ChangeForm((int)PageID.PCDebugMenuPageId);
 
 
-        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(InfoHelpPageId);
-        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(CreditsPageId);
+        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm((int)PageID.InfoHelpPageId);
+        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm((int)PageID.CreditsPageId);
         private void DownloadSourceBtn_Click(object sender, EventArgs e) => System.Diagnostics.Process.Start(@"https://github.com/TheMagicalBlob/NaughtyDog-Debug-Menu-Patch-Tool/archive/refs/heads/master.zip");
 
 

@@ -423,8 +423,8 @@ namespace Dobby {
             this.PerformLayout();
 
         }
-        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(InfoHelpPageId);
-        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(CreditsPageId);
+        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm((int)PageID.InfoHelpPageId);
+        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm((int)PageID.CreditsPageId);
         private void BackBtn_Click(object sender, EventArgs e) => BackFunc();
         public void ResetBtn_Click(object sender, EventArgs e) => ResetCustomOptions();
 
