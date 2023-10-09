@@ -174,7 +174,8 @@ namespace Dobby {
           "* 3.34.121.327 | Basic Gp4CreationPage Work- Not Even Remotely Finished, Just Got The Basic Layout Done- Zero Functionality Yet. Removed A Few Prints",
           "* 3.34.122.331 | Created Basic Popup TexBox Function, Minor Changes",
           "* 3.34.122.334 | Minor Popup TexBox Work, Comments",
-          "* 3.34.123.336 | Misc Changes"
+          "* 3.34.123.336 | Misc Changes",
+          "* 3.34.123.337 | Misc Fixes"
 
             // TODO:
             // - Standardize Help Page Fonts For Readability
@@ -214,10 +215,11 @@ namespace Dobby {
             Gp4CreationHelpPageId = 51,
             PCDebugMenuPageId = 6,
             InfoHelpPageId = 7,
-            CreditsPageId = 8
+            CreditsPageId = 8,
+            Placeholder = 111111111
         }
 
-        public static int Page;
+        public static PageID Page;
         public static int?[] Pages = new int?[5];
         public static bool InfoHasImportantStr, IsPageGoingBack = false, LastDebugOutputWasInfoString = false, LabelShouldFlash = false, FlashThreadHasStarted = false;
         public static byte[] buffer;
@@ -444,18 +446,18 @@ namespace Dobby {
 
 
         /// <summary>
-        /// Loads The Specified Page From The PageId Group (E.g. ChangeForm((int)PageID.PS4QOLPageId))
+        /// Loads The Specified Page From The PageId Group (E.g. ChangeForm(PageID.PS4QOLPageId))
         /// </summary>
         /// <param name="Page"> Page To Change To </param>
         /// <param name="IsPageGoingBack"> Whether We're Returning Or Loading A New Page </param>
-        public static void ChangeForm(int Page) {
+        public static void ChangeForm(PageID Page) {
 
             LastPos = ActiveForm.Location;
             var ClosingForm = ActiveForm;
             if(!IsPageGoingBack) {
                 for(int i = 0; i < 5; i++) {
                     if(Pages[i] == null) {
-                        Pages[i] = Common.Page;
+                        Pages[i] = (int)Common.Page;
                         break;
                     }
                 }
@@ -465,63 +467,63 @@ namespace Dobby {
                 default:
                     DebugOut($"{Page} Is Not A Page!");
                     break;
-                case (int)PageID.MainPageId:
+                case PageID.MainPageId:
                     MainForm.Show();
                     break;
-                case (int)PageID.PS4DebugPageId:
+                case PageID.PS4DebugPageId:
                     PS4DebugPage PS4Debug = new PS4DebugPage();
                     PS4Debug.Show();
                     break;
-                case (int)PageID.PS4DebugHelpPageId:
+                case PageID.PS4DebugHelpPageId:
                     PS4DebugHelpPage PS4DebugHelp = new PS4DebugHelpPage();
                     PS4DebugHelp.Show();
                     break;
-                case (int)PageID.EbootPatchPageId:
+                case PageID.EbootPatchPageId:
                     EbootPatchPage EbootPatch = new EbootPatchPage();
                     EbootPatch.Show();
                     break;
-                case (int)PageID.EbootPatchHelpPageId:
+                case PageID.EbootPatchHelpPageId:
                     EbootPatchHelpPage EbootPatchHelp = new EbootPatchHelpPage();
                     EbootPatchHelp.Show();
                     break;
-                case (int)PageID.PS4QOLPageId:
+                case PageID.PS4QOLPageId:
                     PS4QOLPatchesPage PS4QOLPage = new PS4QOLPatchesPage();
                     PS4QOLPage.Show();
                     break;
-                case (int)PageID.PS4QOLHelpPageId:
+                case PageID.PS4QOLHelpPageId:
 
                     //PS4QOLPatchesHelpPage PS4QOLHelpPage = new PS4QOLPatchesHelpPage();
                     //PS4QOLHelpPage.Show();
                     break;
-                case (int)PageID.PkgCreationPageId:
+                case PageID.PkgCreationPageId:
                     PkgCreationPage PkgCreation = new PkgCreationPage();
                     PkgCreation.Show();
                     break;
-                case (int)PageID.PkgCreationHelpPageId:
+                case PageID.PkgCreationHelpPageId:
                     PkgCreationHelpPage PkgCreationHelp = new PkgCreationHelpPage();
                     PkgCreationHelp.Show();
                     break;
-                case (int)PageID.Gp4CreationPageId:
+                case PageID.Gp4CreationPageId:
                     Gp4CreationPage Gp4Creation = new Gp4CreationPage();
                     Gp4Creation.Show();
                     break;
-                case (int)PageID.Gp4CreationHelpPageId:
+                case PageID.Gp4CreationHelpPageId:
                     break;
-                case (int)PageID.PCDebugMenuPageId:
+                case PageID.PCDebugMenuPageId:
                     PCDebugMenuPage PCDebugMenu = new PCDebugMenuPage();
                     PCDebugMenu.Show();
                     MessageBox.Show("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
                     break;
-                case 11111111:
+                case PageID.Placeholder:
                     PCQOLPatchesPage PCQOLPatches = new PCQOLPatchesPage();
                     PCQOLPatches.Show();
                     MessageBox.Show("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
                     break;
-                case (int)PageID.InfoHelpPageId:
+                case PageID.InfoHelpPageId:
                     InfoHelpPage InfoHelp = new InfoHelpPage();
                     InfoHelp.Show();
                     break;
-                case (int)PageID.CreditsPageId:
+                case PageID.CreditsPageId:
                     CreditsPage Credits = new CreditsPage();
                     Credits.Show();
                     break;
@@ -541,7 +543,7 @@ namespace Dobby {
             for(int i = 4; i >= 0; i--)
 
                 if(Pages[i] != null) {
-                    ChangeForm((int)Pages[i]);
+                    ChangeForm((PageID)Pages[i]);
                     Pages[i] = null;
                     break;
                 }
@@ -1244,7 +1246,7 @@ namespace Dobby {
                                 MainStream.Dispose();
                                 MainStreamIsOpen = false;
                                 DebugOut("MainStream Closed");
-                                if(Page == 3) {
+                                if(Page == (PageID)3) {
                                 Wait:
                                     if(ActiveForm == null) goto Wait;
                                     DebugOut("FormShouldReset = true");

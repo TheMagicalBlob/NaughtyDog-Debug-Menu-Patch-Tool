@@ -28,6 +28,8 @@ namespace Dobby {
                     control.MouseLeave += new EventHandler(HighlightPathLabel);
                 }
             }
+
+            Gp4CreationPageBtn.Enabled = true;
         }
 
         string
@@ -361,7 +363,6 @@ namespace Dobby {
             // 
             this.Gp4CreationPageBtn.BackColor = System.Drawing.Color.DimGray;
             this.Gp4CreationPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.Gp4CreationPageBtn.Enabled = false;
             this.Gp4CreationPageBtn.FlatAppearance.BorderSize = 0;
             this.Gp4CreationPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Gp4CreationPageBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
@@ -553,7 +554,7 @@ namespace Dobby {
         private void TMPPathLabel_Click(object sender, EventArgs e) => TempDirectoryBtn_Click(TempDirectoryBtn, null);
 
 
-        private void Gp4CreationPageBtn_Click(object sender, EventArgs e) => ChangeForm((int)PageID.Gp4CreationPageId);
+        private void Gp4CreationPageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.Gp4CreationPageId);
 
 
         #region RepeatedButtonFunctions
@@ -565,9 +566,9 @@ namespace Dobby {
             BackFunc();
         }
 
-        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm((int)PageID.InfoHelpPageId);
+        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPageId);
 
-        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm((int)PageID.CreditsPageId);
+        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPageId);
         #endregion
 
         #region ControlDeclarations

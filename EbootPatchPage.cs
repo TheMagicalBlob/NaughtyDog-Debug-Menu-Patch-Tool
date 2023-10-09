@@ -471,7 +471,7 @@ namespace Dobby {
 
             // Make Sure The File's Actually Even A .elf
             MainStream.Read(LocalExecutableCheck, 0, 4);
-            if(BitConverter.ToInt32(LocalExecutableCheck, 0) != 1179403647) return $"Executable Still Encrypted | Must Be Decrypted/Unsigned";
+            if(BitConverter.ToInt32(LocalExecutableCheck, 0) == 1179403647) return $"Executable Still Encrypted | Must Be Decrypted/Unsigned";
 
 
             MainStream.Position = 0x5100; MainStream.Read(LocalExecutableCheck, 0, 160);
@@ -1365,9 +1365,9 @@ namespace Dobby {
             BackFunc();
         }
 
-        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm((int)PageID.InfoHelpPageId);
+        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPageId);
 
-        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm((int)PageID.CreditsPageId);
+        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPageId);
         #endregion
         #region ControlDeclarations
         ////////////////////\\\\\\\\\\\\\\\\\\\\

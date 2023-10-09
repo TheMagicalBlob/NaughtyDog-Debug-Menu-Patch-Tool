@@ -221,7 +221,7 @@ namespace Dobby {
         public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
 
-        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm((int)PageID.CreditsPageId);
+        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPageId);
         private void BackBtn_Click(object sender, EventArgs e) => BackFunc();
         #endregion
 

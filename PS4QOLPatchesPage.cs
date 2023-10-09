@@ -67,14 +67,14 @@ namespace Dobby {
             this.GameSpecificPatchesLabel = new System.Windows.Forms.Label();
             this.ProgPauseOnOpenBtn = new System.Windows.Forms.Button();
             this.GameInfoLabel = new System.Windows.Forms.Label();
-            this.SeperatorLine2 = new System.Windows.Forms.Label();
+            this.SeperatorLine3 = new System.Windows.Forms.Label();
             this.DisableDebugTextBtn = new System.Windows.Forms.Button();
             this.BackBtn = new System.Windows.Forms.Button();
             this.PausedIconBtn = new System.Windows.Forms.Button();
             this.BrowseButton = new System.Windows.Forms.Button();
             this.ExecutablePathBox = new System.Windows.Forms.TextBox();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.SeperatorLabel2 = new System.Windows.Forms.Label();
+            this.SeperatorLine2 = new System.Windows.Forms.Label();
             this.MenuScaleBtn = new System.Windows.Forms.Button();
             this.MenuAlphaBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -264,15 +264,15 @@ namespace Dobby {
             this.GameInfoLabel.Text = "No File Selected";
             this.GameInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // SeperatorLine2
+            // SeperatorLine3
             // 
-            this.SeperatorLine2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(2, 262);
-            this.SeperatorLine2.Name = "SeperatorLine2";
-            this.SeperatorLine2.Size = new System.Drawing.Size(316, 16);
-            this.SeperatorLine2.TabIndex = 32;
-            this.SeperatorLine2.Text = "______________________________________________________________";
+            this.SeperatorLine3.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine3.Location = new System.Drawing.Point(2, 262);
+            this.SeperatorLine3.Name = "SeperatorLine3";
+            this.SeperatorLine3.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine3.TabIndex = 32;
+            this.SeperatorLine3.Text = "______________________________________________________________";
             // 
             // DisableDebugTextBtn
             // 
@@ -365,15 +365,15 @@ namespace Dobby {
             this.SeperatorLine1.TabIndex = 37;
             this.SeperatorLine1.Text = "______________________________________________________________";
             // 
-            // SeperatorLabel2
+            // SeperatorLine2
             // 
-            this.SeperatorLabel2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.SeperatorLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLabel2.Location = new System.Drawing.Point(2, 199);
-            this.SeperatorLabel2.Name = "SeperatorLabel2";
-            this.SeperatorLabel2.Size = new System.Drawing.Size(316, 16);
-            this.SeperatorLabel2.TabIndex = 36;
-            this.SeperatorLabel2.Text = "______________________________________________________________";
+            this.SeperatorLine2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine2.Location = new System.Drawing.Point(2, 199);
+            this.SeperatorLine2.Name = "SeperatorLine2";
+            this.SeperatorLine2.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine2.TabIndex = 36;
+            this.SeperatorLine2.Text = "______________________________________________________________";
             // 
             // MenuScaleBtn
             // 
@@ -402,7 +402,7 @@ namespace Dobby {
             this.Controls.Add(this.GameSpecificPatchesLabel);
             this.Controls.Add(this.ProgPauseOnOpenBtn);
             this.Controls.Add(this.GameInfoLabel);
-            this.Controls.Add(this.SeperatorLine2);
+            this.Controls.Add(this.SeperatorLine3);
             this.Controls.Add(this.DisableDebugTextBtn);
             this.Controls.Add(this.BackBtn);
             this.Controls.Add(this.PausedIconBtn);
@@ -412,7 +412,7 @@ namespace Dobby {
             this.Controls.Add(this.InfoHelpBtn);
             this.Controls.Add(this.CreditsBtn);
             this.Controls.Add(this.SeperatorLine1);
-            this.Controls.Add(this.SeperatorLabel2);
+            this.Controls.Add(this.SeperatorLine2);
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.MainLabel);
             this.Controls.Add(this.SeperatorLine0);
@@ -423,8 +423,8 @@ namespace Dobby {
             this.PerformLayout();
 
         }
-        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm((int)PageID.InfoHelpPageId);
-        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm((int)PageID.CreditsPageId);
+        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPageId);
+        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPageId);
         private void BackBtn_Click(object sender, EventArgs e) => BackFunc();
         public void ResetBtn_Click(object sender, EventArgs e) => ResetCustomOptions();
 
@@ -501,11 +501,11 @@ namespace Dobby {
                 Dev.DebugOut("Setting Original Scale Variables");
 
                 ControlsToMove = new Control[] {
-                    ActiveForm.Controls.Find("SeperatorLabel2", true)[0],
+                    ActiveForm.Controls.Find("SeperatorLine2", true)[0],
                     ActiveForm.Controls.Find("BrowseButton", true)[0],
                     ActiveForm.Controls.Find("ExecutablePathBox", true)[0],
                     ActiveForm.Controls.Find("GameInfoLabel", true)[0],
-                    ActiveForm.Controls.Find("SeperatorLabel3", true)[0],
+                    ActiveForm.Controls.Find("SeperatorLine3", true)[0],
                     ActiveForm.Controls.Find("InfoHelpBtn", true)[0],
                     ActiveForm.Controls.Find("CreditsBtn", true)[0],
                     ActiveForm.Controls.Find("BackBtn", true)[0],
@@ -692,7 +692,7 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
 
         private void BrowseButton_Click(object sender, EventArgs e) { //goto skip;
             if (OriginalFormScale != Size.Empty) ResetCustomOptions();
-#if DEBUG
+#if false
             Dev.DebugForceOpenFile(@"C:\Users\Blob\Desktop\t\T2100.bin");
             LoadGameSpecificMenuOptions();
             return;
@@ -703,8 +703,9 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
                 Title = "Select Either Of The Game's Executables"
             };
             if (OpenedFile.ShowDialog() == DialogResult.OK) {
-                ResetCustomOptions();
+                //ResetCustomOptions();
                 ActiveFilePath = ExecutablePathBox.Text = OpenedFile.FileName;
+                LocalExecutableCheck = new byte[4];
 
                 MainStream = File.Open(OpenedFile.FileName, FileMode.Open, FileAccess.ReadWrite);
                 MainStream.Position = 0x60; MainStream.Read(LocalExecutableCheck, 0, 4);
@@ -956,7 +957,7 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
         private Button MinimizeBtn;
         private Label SeperatorLine0;
         private GroupBox BorderBox;
-        private Label SeperatorLabel2;
+        private Label SeperatorLine2;
         private Label GameInfoLabel;
         private Button BrowseButton;
         private TextBox ExecutablePathBox;
@@ -967,7 +968,7 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
         private Button MenuAlphaBtn;
         private Label UniversalPatchesLabel;
         private Label GameSpecificPatchesLabel;
-        private Label SeperatorLine2;
+        private Label SeperatorLine3;
         private Label SeperatorLine1;
         private Label CustomDebugOptionsLabel;
         private Button ProgPauseOnCloseBtn;
