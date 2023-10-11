@@ -176,7 +176,8 @@ namespace Dobby {
           "* 3.34.122.334 | Minor Popup TexBox Work, Comments",
           "* 3.34.123.336 | Misc Changes",
           "* 3.34.123.337 | Misc Fixes",
-          "* 3.34.125.340 | Lots Of MiscPatchesPage Work, Misc Changes, Comments And Formatting"
+          "* 3.34.125.340 | Lots Of MiscPatchesPage Work, Misc Changes, Comments And Formatting",
+          "* 3.34.125.342 | Minor MiscPatchesPage Work; Adding BootSettings Function."
 
             // TODO:
             // - Standardize Help Page Fonts For Readability

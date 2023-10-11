@@ -28,6 +28,10 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             Info.Text = "";
             Page = 0;
             AddControlEventHandlers(Controls);
+
+#if !DEBUG
+            PS4QOLPageBtn.Enabled = false;
+#endif
         }
 
         public void InitializeComponent() {

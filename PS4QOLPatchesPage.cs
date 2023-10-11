@@ -854,7 +854,6 @@ namespace Dobby {
         }
 
         private static void ConfirmBtn_Click(object sender, EventArgs e) {
-            return;
             using (MainStream) {
                 int index = 0,
                 BootSettingsAddress = GetPatchDataPointerAddress();
@@ -871,10 +870,10 @@ namespace Dobby {
                 
                 /*
                 // Game-Specific Options
-                WriteByte(0x0, (byte)(GSDebugBooleans[4] ? 0x01 : 0));
-                WriteByte(0x0, (byte)(GSDebugBooleans[4] ? 0x01 : 0));
-                WriteByte(0x0, (byte)(GSDebugBooleans[4] ? 0x01 : 0));
-                WriteByte(0x0, (byte)(GSDebugBooleans[4] ? 0x01 : 0));
+                WriteByte(0x00, (byte)(GSDebugBooleans[4] ? 0x01 : 0));
+                WriteByte(0x00, (byte)(GSDebugBooleans[4] ? 0x01 : 0));
+                WriteByte(0x00, (byte)(GSDebugBooleans[4] ? 0x01 : 0));
+                WriteByte(0x00, (byte)(GSDebugBooleans[4] ? 0x01 : 0));
                 */
             }
         }
@@ -990,7 +989,42 @@ namespace Dobby {
         }
 
         private static byte[] GetBootSettingsData() {
-            return new byte[] { 0xDE, 0xAD, 0xBE, 0xEF };
+            byte[] BootSettingsData = new byte[41];
+
+            byte[][] BootSettingsBaseAdressPointers = new byte[][] {
+                new byte [] { 0x96, 0x52, 0x6b, 0xff }, // UC1 1.00
+                new byte [] { 0x00, 0x00, 0x00, 0x00 }, // UC1 1.02
+                new byte [] { 0x00, 0x00, 0x00, 0x00 }, // UC2 1.00
+                new byte [] { 0x00, 0x00, 0x00, 0x00 }, // UC2 1.02
+                new byte [] { 0x00, 0x00, 0x00, 0x00 }, // UC3 1.00
+                new byte [] { 0x00, 0x00, 0x00, 0x00 }, // UC3 1.02
+                new byte [] { 0x00, 0x00, 0x00, 0x00 }, // UC4 1.00
+                new byte [] { 0x00, 0x00, 0x00, 0x00 }, // UC4 1.32
+                new byte [] { 0x00, 0x00, 0x00, 0x00 }, // TLL 1.00
+                new byte [] { 0x00, 0x00, 0x00, 0x00 }, // TLL 1.08
+                new byte [] { 0x00, 0x00, 0x00, 0x00 }, // TLL 1.09
+                new byte [] { 0x00, 0x00, 0x00, 0x00 }, // T2 1.00
+                new byte [] { 0x00, 0x00, 0x00, 0x00 }, // T2 1.01
+                new byte [] { 0x00, 0x00, 0x00, 0x00 }, // T2 1.02
+                new byte [] { 0x00, 0x00, 0x00, 0x00 }, // T2 1.05
+                new byte [] { 0x00, 0x00, 0x00, 0x00 }, // T2 1.07
+                new byte [] { 0x00, 0x00, 0x00, 0x00 }, // T2 1.08
+                new byte [] { 0x00, 0x00, 0x00, 0x00 }, // T2 1.09
+                new byte [] { 0x00, 0x00, 0x00, 0x00 }, // T1R 1.00
+                new byte [] { 0x00, 0x00, 0x00, 0x00 }, // T1R 1.06
+                new byte [] { 0x00, 0x00, 0x00, 0x00 }, // T1R 1.08
+                new byte [] { 0x00, 0x00, 0x00, 0x00 }, // T1R 1.10
+                new byte [] { 0x00, 0x00, 0x00, 0x00 }, // T1R 1.11
+                new byte [] { 0x00, 0x00, 0x00, 0x00 }
+            };
+
+            Buffer.BlockCopy(new byte[] { 0x41, 0x56, 0x48, 0x8d, 0x05 }, 0, BootSettingsData, 0, 5);
+            Buffer.BlockCopy(BootSettingsBaseAdressPointers[0], 0, BootSettingsData, 0, 4);
+            Buffer.BlockCopy(new byte[] { 0x48, 0x8d, 0x0d, 0x19, 0x00, 0x00, 0x00, 0x4c, 0x8b, 0x31, 0x49, 0x83, 0xfe, 0x00, 0x74, 0x0d, 0x49, 0x01, 0xc6, 0x41, 0x80, 0x36, 0x01, 0x48, 0x8d, 0x49, 0x08, 0xeb, 0xea, 0x41, 0x5e, 0xc3 },
+                0, BootSettingsData, 0, 32
+            );
+
+            return BootSettingsData;
         }
 
         /// <summary>
