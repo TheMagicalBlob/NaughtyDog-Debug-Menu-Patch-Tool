@@ -175,7 +175,8 @@ namespace Dobby {
           "* 3.34.122.331 | Created Basic Popup TexBox Function, Minor Changes",
           "* 3.34.122.334 | Minor Popup TexBox Work, Comments",
           "* 3.34.123.336 | Misc Changes",
-          "* 3.34.123.337 | Misc Fixes"
+          "* 3.34.123.337 | Misc Fixes",
+          "* 3.34.125.340 | Lots Of MiscPatchesPage Work, Misc Changes, Comments And Formatting"
 
             // TODO:
             // - Standardize Help Page Fonts For Readability
@@ -202,25 +203,26 @@ namespace Dobby {
         public static string CurrentControl, TempStringStore;
 
         public enum PageID : int {
-            MainPageId = 0,
-            PS4DebugPageId = 1,
-            PS4DebugHelpPageId = 11,
-            EbootPatchPageId = 2,
-            EbootPatchHelpPageId = 21,
-            PS4QOLPageId = 3,
-            PS4QOLHelpPageId = 31,
-            PkgCreationPageId = 4,
-            PkgCreationHelpPageId = 41,
-            Gp4CreationPageId = 5,
-            Gp4CreationHelpPageId = 51,
-            PCDebugMenuPageId = 6,
-            InfoHelpPageId = 7,
-            CreditsPageId = 8,
-            Placeholder = 111111111
+            MainPage = 0,
+            PS4DebugPage = 1,
+            PS4DebugHelpPage = 11,
+            EbootPatchPage = 2,
+            EbootPatchHelpPage = 21,
+            PS4QOLPage = 3,
+            PS4QOLHelpPage = 31,
+            PkgCreationPage = 4,
+            PkgCreationHelpPage = 41,
+            Gp4CreationPage = 5,
+            Gp4CreationHelpPage = 51,
+            PCDebugMenuPage = 6,
+            InfoHelpPage = 7,
+            CreditsPage = 8,
+            PlaceholderPage = 111111111
         }
 
+        public static int index;
         public static PageID Page;
-        public static int?[] Pages = new int?[5];
+        public static PageID?[] Pages = new PageID?[5];
         public static bool InfoHasImportantStr, IsPageGoingBack = false, LastDebugOutputWasInfoString = false, LabelShouldFlash = false, FlashThreadHasStarted = false;
         public static byte[] buffer;
 
@@ -457,7 +459,7 @@ namespace Dobby {
             if(!IsPageGoingBack) {
                 for(int i = 0; i < 5; i++) {
                     if(Pages[i] == null) {
-                        Pages[i] = (int)Common.Page;
+                        Pages[i] = Common.Page;
                         break;
                     }
                 }
@@ -467,63 +469,63 @@ namespace Dobby {
                 default:
                     DebugOut($"{Page} Is Not A Page!");
                     break;
-                case PageID.MainPageId:
+                case PageID.MainPage:
                     MainForm.Show();
                     break;
-                case PageID.PS4DebugPageId:
+                case PageID.PS4DebugPage:
                     PS4DebugPage PS4Debug = new PS4DebugPage();
                     PS4Debug.Show();
                     break;
-                case PageID.PS4DebugHelpPageId:
+                case PageID.PS4DebugHelpPage:
                     PS4DebugHelpPage PS4DebugHelp = new PS4DebugHelpPage();
                     PS4DebugHelp.Show();
                     break;
-                case PageID.EbootPatchPageId:
+                case PageID.EbootPatchPage:
                     EbootPatchPage EbootPatch = new EbootPatchPage();
                     EbootPatch.Show();
                     break;
-                case PageID.EbootPatchHelpPageId:
+                case PageID.EbootPatchHelpPage:
                     EbootPatchHelpPage EbootPatchHelp = new EbootPatchHelpPage();
                     EbootPatchHelp.Show();
                     break;
-                case PageID.PS4QOLPageId:
+                case PageID.PS4QOLPage:
                     PS4QOLPatchesPage PS4QOLPage = new PS4QOLPatchesPage();
                     PS4QOLPage.Show();
                     break;
-                case PageID.PS4QOLHelpPageId:
+                case PageID.PS4QOLHelpPage:
 
                     //PS4QOLPatchesHelpPage PS4QOLHelpPage = new PS4QOLPatchesHelpPage();
                     //PS4QOLHelpPage.Show();
                     break;
-                case PageID.PkgCreationPageId:
+                case PageID.PkgCreationPage:
                     PkgCreationPage PkgCreation = new PkgCreationPage();
                     PkgCreation.Show();
                     break;
-                case PageID.PkgCreationHelpPageId:
+                case PageID.PkgCreationHelpPage:
                     PkgCreationHelpPage PkgCreationHelp = new PkgCreationHelpPage();
                     PkgCreationHelp.Show();
                     break;
-                case PageID.Gp4CreationPageId:
+                case PageID.Gp4CreationPage:
                     Gp4CreationPage Gp4Creation = new Gp4CreationPage();
                     Gp4Creation.Show();
                     break;
-                case PageID.Gp4CreationHelpPageId:
+                case PageID.Gp4CreationHelpPage:
                     break;
-                case PageID.PCDebugMenuPageId:
+                case PageID.PCDebugMenuPage:
                     PCDebugMenuPage PCDebugMenu = new PCDebugMenuPage();
                     PCDebugMenu.Show();
                     MessageBox.Show("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
                     break;
-                case PageID.Placeholder:
+                case PageID.PlaceholderPage:
                     PCQOLPatchesPage PCQOLPatches = new PCQOLPatchesPage();
                     PCQOLPatches.Show();
                     MessageBox.Show("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
                     break;
-                case PageID.InfoHelpPageId:
+                case PageID.InfoHelpPage:
                     InfoHelpPage InfoHelp = new InfoHelpPage();
                     InfoHelp.Show();
                     break;
-                case PageID.CreditsPageId:
+                case PageID.CreditsPage:
                     CreditsPage Credits = new CreditsPage();
                     Credits.Show();
                     break;
@@ -1229,7 +1231,7 @@ namespace Dobby {
 
 
             public static Thread InputThread = new Thread(new ThreadStart(ReadInput));
-            public static void ReadCurrentKey() => InputThread.Start();
+            public static void StartInputReadThread() => InputThread.Start();
             static void ReadInput() {
                 while(true) {
                     switch(ReadKey(true).Key) {
@@ -1296,7 +1298,7 @@ namespace Dobby {
 
 
             public static Thread DebuggerThread = new Thread(new ThreadStart(UpdateConsoleOutput));
-            public static void DebuggerInfo() => DebuggerThread.Start();
+            public static void StartDebugOutputThread() => DebuggerThread.Start();
             public static Control HoveredControl = new Label(); // Just so the debugger doesn't bitch
 
             public static void UpdateConsoleOutput() {
@@ -1397,7 +1399,7 @@ namespace Dobby {
                 return String;
             }
 
-            public static void DebugForceOpenFile(string FilePath) {
+            public static void DebugOpenFile(string FilePath) {
                 if(MainStreamIsOpen) { MainStream.Dispose(); }
                 ActiveFilePath = FilePath;
                 LocalExecutableCheck = new byte[4];

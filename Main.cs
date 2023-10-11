@@ -10,15 +10,17 @@ using System.Net.Sockets;
 using System.Windows.Forms;
 using static Dobby.Common;
 
-namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
+namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
     public partial class Dobby : Form {
         public Dobby() {
 #if DEBUG
             if (Pages[1] == null) {
-                try { Console.WindowWidth = 75; Console.BufferWidth = 75; }
+                try {
+                    Console.WindowWidth = 75; Console.BufferWidth = 75;
+                }
                 catch (Exception) { } // These Caused A Crash I Couldn't Recreate, So I Got Lazy Put Them In A Try/Catch
-                Dev.DebuggerInfo();
-                Dev.ReadCurrentKey();
+                Dev.StartDebugOutputThread();
+                Dev.StartInputReadThread();
             }
 #endif
             InitializeComponent();
@@ -143,7 +145,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.PS4QOLPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PS4QOLPageBtn.FlatAppearance.BorderSize = 0;
             this.PS4QOLPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PS4QOLPageBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Strikeout))));
+            this.PS4QOLPageBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.PS4QOLPageBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.PS4QOLPageBtn.Location = new System.Drawing.Point(1, 102);
             this.PS4QOLPageBtn.Name = "PS4QOLPageBtn";
@@ -333,22 +335,26 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before release"
             this.ResumeLayout(false);
 
         }
-        private void PS4DebugPageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.PS4DebugPageId);
-        private void EbootPatchPageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.PS4QOLPageId);
 
-        private void MiscPatchesBtn_Click(object sender, EventArgs e) {
-            //if (Dev.REL) return;
-            ChangeForm(PageID.PS4QOLPageId);
-        }
+        #region Page Functions
+        /////////////////\\\\\\\\\\\\\\\\\
+        ///--     Page Functions     --\\\
+        /////////////////\\\\\\\\\\\\\\\\\
+        private void PS4DebugPageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.PS4DebugPage);
+        private void EbootPatchPageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.EbootPatchPage);
+        private void MiscPatchesBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.PS4QOLPage);
+        private void PkgPageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.PkgCreationPage);
+        private void PCDebugMenuPageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.PCDebugMenuPage);
+        #endregion
 
-        private void PkgPageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.PkgCreationPageId);
-        private void PCDebugMenuPageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.PCDebugMenuPageId);
-
-
-        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPageId);
-        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPageId);
+        #region Repeated Page Functions
+        //////////////////////\\\\\\\\\\\\\\\\\\\\\
+        ///--     Repeated Page Functions     --\\\
+        //////////////////////\\\\\\\\\\\\\\\\\\\\\
+        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);
+        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
         private void DownloadSourceBtn_Click(object sender, EventArgs e) => System.Diagnostics.Process.Start(@"https://github.com/TheMagicalBlob/NaughtyDog-Debug-Menu-Patch-Tool/archive/refs/heads/master.zip");
-
+        #endregion
 
         #region Control Declarations
         ////////////////////\\\\\\\\\\\\\\\\\\\\

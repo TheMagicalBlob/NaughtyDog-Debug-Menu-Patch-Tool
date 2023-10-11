@@ -554,7 +554,7 @@ namespace Dobby {
         private void TMPPathLabel_Click(object sender, EventArgs e) => TempDirectoryBtn_Click(TempDirectoryBtn, null);
 
 
-        private void Gp4CreationPageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.Gp4CreationPageId);
+        private void Gp4CreationPageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.Gp4CreationPage);
 
 
         #region RepeatedButtonFunctions
@@ -566,9 +566,9 @@ namespace Dobby {
             BackFunc();
         }
 
-        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPageId);
+        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);
 
-        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPageId);
+        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
         #endregion
 
         #region ControlDeclarations

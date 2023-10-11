@@ -8,13 +8,15 @@ using static Dobby.Common;
 using System.Drawing;
 using System.IO;
 using System.Threading;
+using System.Data.SqlTypes;
 
 namespace Dobby {
     internal class PS4QOLPatchesPage : Form {
         public PS4QOLPatchesPage() {
             InitializeComponent();
+            BorderFunc(this);
             AddControlEventHandlers(Controls);
-#if DEBUG
+#if false
             if (FormResetThread.ThreadState != ThreadState.Running)
             FormResetThread.Start();
             if (DebugOutputOverrideThread.ThreadState != ThreadState.Running)
@@ -22,36 +24,6 @@ namespace Dobby {
 
 #endif
         }
-
-        /// <summary> 0: Disable FPS<br/>1: Paused Icon<br/>2: Prog Pause On Open<br/>3: Prog Pause On Close </summary>
-        static bool[] UniversalDebugBooleans = new bool[5];
-        /// <summary> 1: Debug Shadowed Text<br/>2: Disable Version Text<br/>3: Menu Right Align<br/>4: <br/>5:  </summary>
-        static bool[] GSDebugBooleans = new bool[4];
-        /// <summary> Game-Specific Debug Floats <br/>1: Menu Scale<br/>2: Menu Alpha<br/>3: Non-ADS Field of View</summary>
-        static float[] GSDebugFloats = new float[] { 0.6f, 0.85f, 1F };
-        /// <summary> Variable Used When Adjusting Form Scale And Control Positions </summary>
-        static int ButtonIndex = 0, RealSize = 0, Y_Axis_Addative = 0, Y_Pos;
-        /// <summary> Distance From The Right Side of The Screen When Menu Right Align Is Available </summary>
-        static byte RightMargin = 10;
-        /// <summary>
-        /// String array containing various values for GSButtons seperated by ;<br/> (Name, Text, Hint) | b == bool, f == float, i == int<br/>
-        /// Indexing Of The Selected Patch Type, Followed By The Patch Type, The Button Name, The Button Text & Value Seperated By a ':', Then Hover Hint<br/>
-        /// 0_fMenuScaleBtn;Set Dev Menu Scale: 0.60;Hint
-        /// </summary>
-        static readonly string[] GSButtonTextArray = new string[] { // Why the fuck won't this summary show
-            $"0_fMenuScaleBtn;Set Dev Menu Scale: 0.60;Hint",
-            $"1_fMenuAlphaBtn;Set DMenu BG Opacity: 0.85;Hint",
-            $"2_fFOVBtn;Adjust Non-ADS FOV: 1.00;Only Effects The Camera While Not Aiming",
-            $"0_bMenuShadowTextBtn;Enable Debug Menu Text Shadow: No;Hint",
-            $"1_bVersionTxtBtn;Disable Version Text: No;Hint",
-            $"2_bMenuRightAlignBtn;Align Debug Menus To The Right: No;Moves The Dev/Quick Menus To The Right Of The Screen",
-            $"0_iRightMarginBtn;Set Distance From Right Side: 10;Hint"
-        };
-        /// <summary> Game-Specific Debug Options Loaded Based On The Game Chosen. <br/>1: MenuScaleBtn<br/>2: MenuScaleBtn <br/>3: MenuShadowTextBtn<br/>4: FOVBtn<br/>5: VersionTxtBtn</summary>
-        public static Button[] GSDebugOptions = new Button[GSButtonTextArray.Length + 1];
-        /// <summary> Array of Controls to Move When Loading >1 Game-SpecificDebugOptions </summary>
-        public static Control[] ControlsToMove;
-
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
             this.ExitBtn = new System.Windows.Forms.Button();
@@ -60,13 +32,11 @@ namespace Dobby {
             this.CreditsBtn = new System.Windows.Forms.Button();
             this.InfoHelpBtn = new System.Windows.Forms.Button();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
-            this.BorderBox = new System.Windows.Forms.GroupBox();
             this.ProgPauseOnCloseBtn = new System.Windows.Forms.Button();
             this.CustomDebugOptionsLabel = new System.Windows.Forms.Label();
             this.UniversalPatchesLabel = new System.Windows.Forms.Label();
             this.GameSpecificPatchesLabel = new System.Windows.Forms.Label();
             this.ProgPauseOnOpenBtn = new System.Windows.Forms.Button();
-            this.GameInfoLabel = new System.Windows.Forms.Label();
             this.SeperatorLine3 = new System.Windows.Forms.Label();
             this.DisableDebugTextBtn = new System.Windows.Forms.Button();
             this.BackBtn = new System.Windows.Forms.Button();
@@ -77,6 +47,7 @@ namespace Dobby {
             this.SeperatorLine2 = new System.Windows.Forms.Label();
             this.MenuScaleBtn = new System.Windows.Forms.Button();
             this.MenuAlphaBtn = new System.Windows.Forms.Button();
+            this.GameInfoLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // MainLabel
@@ -126,7 +97,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(5, 351);
+            this.Info.Location = new System.Drawing.Point(5, 348);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
@@ -140,7 +111,7 @@ namespace Dobby {
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 303);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 300);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(75, 22);
@@ -158,7 +129,7 @@ namespace Dobby {
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 281);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 278);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.InfoHelpBtn.Size = new System.Drawing.Size(147, 22);
@@ -178,14 +149,6 @@ namespace Dobby {
             this.SeperatorLine0.TabIndex = 31;
             this.SeperatorLine0.Text = "______________________________________________________________";
             // 
-            // BorderBox
-            // 
-            this.BorderBox.Location = new System.Drawing.Point(0, -6);
-            this.BorderBox.Name = "BorderBox";
-            this.BorderBox.Size = new System.Drawing.Size(320, 379);
-            this.BorderBox.TabIndex = 34;
-            this.BorderBox.TabStop = false;
-            // 
             // ProgPauseOnCloseBtn
             // 
             this.ProgPauseOnCloseBtn.BackColor = System.Drawing.Color.DimGray;
@@ -194,11 +157,11 @@ namespace Dobby {
             this.ProgPauseOnCloseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ProgPauseOnCloseBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.ProgPauseOnCloseBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ProgPauseOnCloseBtn.Location = new System.Drawing.Point(1, 127);
+            this.ProgPauseOnCloseBtn.Location = new System.Drawing.Point(1, 122);
             this.ProgPauseOnCloseBtn.Name = "ProgPauseOnCloseBtn";
-            this.ProgPauseOnCloseBtn.Size = new System.Drawing.Size(301, 23);
+            this.ProgPauseOnCloseBtn.Size = new System.Drawing.Size(286, 23);
             this.ProgPauseOnCloseBtn.TabIndex = 56;
-            this.ProgPauseOnCloseBtn.Text = "Disable Debug Pause On Menu Close: ";
+            this.ProgPauseOnCloseBtn.Text = "Disable Debug Pause On Menu Close: Yes";
             this.ProgPauseOnCloseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ProgPauseOnCloseBtn.UseVisualStyleBackColor = false;
             this.ProgPauseOnCloseBtn.Click += new System.EventHandler(this.ProgPauseOnCloseBtn_Click);
@@ -208,7 +171,7 @@ namespace Dobby {
             this.CustomDebugOptionsLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.CustomDebugOptionsLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CustomDebugOptionsLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.CustomDebugOptionsLabel.Location = new System.Drawing.Point(3, 186);
+            this.CustomDebugOptionsLabel.Location = new System.Drawing.Point(3, 183);
             this.CustomDebugOptionsLabel.Name = "CustomDebugOptionsLabel";
             this.CustomDebugOptionsLabel.Size = new System.Drawing.Size(316, 19);
             this.CustomDebugOptionsLabel.TabIndex = 54;
@@ -219,7 +182,7 @@ namespace Dobby {
             this.UniversalPatchesLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.UniversalPatchesLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F, System.Drawing.FontStyle.Bold);
             this.UniversalPatchesLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.UniversalPatchesLabel.Location = new System.Drawing.Point(105, 35);
+            this.UniversalPatchesLabel.Location = new System.Drawing.Point(105, 34);
             this.UniversalPatchesLabel.Name = "UniversalPatchesLabel";
             this.UniversalPatchesLabel.Size = new System.Drawing.Size(102, 19);
             this.UniversalPatchesLabel.TabIndex = 53;
@@ -230,7 +193,7 @@ namespace Dobby {
             this.GameSpecificPatchesLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.GameSpecificPatchesLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F, System.Drawing.FontStyle.Bold);
             this.GameSpecificPatchesLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.GameSpecificPatchesLabel.Location = new System.Drawing.Point(96, 162);
+            this.GameSpecificPatchesLabel.Location = new System.Drawing.Point(96, 159);
             this.GameSpecificPatchesLabel.Name = "GameSpecificPatchesLabel";
             this.GameSpecificPatchesLabel.Size = new System.Drawing.Size(127, 19);
             this.GameSpecificPatchesLabel.TabIndex = 52;
@@ -244,31 +207,20 @@ namespace Dobby {
             this.ProgPauseOnOpenBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ProgPauseOnOpenBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.ProgPauseOnOpenBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ProgPauseOnOpenBtn.Location = new System.Drawing.Point(1, 103);
+            this.ProgPauseOnOpenBtn.Location = new System.Drawing.Point(1, 99);
             this.ProgPauseOnOpenBtn.Name = "ProgPauseOnOpenBtn";
-            this.ProgPauseOnOpenBtn.Size = new System.Drawing.Size(301, 23);
+            this.ProgPauseOnOpenBtn.Size = new System.Drawing.Size(283, 23);
             this.ProgPauseOnOpenBtn.TabIndex = 51;
-            this.ProgPauseOnOpenBtn.Text = "Disable Debug Pause On Menu Open: ";
+            this.ProgPauseOnOpenBtn.Text = "Disable Debug Pause On Menu Open: Yes";
             this.ProgPauseOnOpenBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ProgPauseOnOpenBtn.UseVisualStyleBackColor = false;
             this.ProgPauseOnOpenBtn.Click += new System.EventHandler(this.ProgPauseOnOpenBtn_Click);
-            // 
-            // GameInfoLabel
-            // 
-            this.GameInfoLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.5F);
-            this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.GameInfoLabel.Location = new System.Drawing.Point(2, 252);
-            this.GameInfoLabel.Name = "GameInfoLabel";
-            this.GameInfoLabel.Size = new System.Drawing.Size(316, 19);
-            this.GameInfoLabel.TabIndex = 40;
-            this.GameInfoLabel.Text = "No File Selected";
-            this.GameInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // SeperatorLine3
             // 
             this.SeperatorLine3.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine3.Location = new System.Drawing.Point(2, 262);
+            this.SeperatorLine3.Location = new System.Drawing.Point(2, 259);
             this.SeperatorLine3.Name = "SeperatorLine3";
             this.SeperatorLine3.Size = new System.Drawing.Size(316, 16);
             this.SeperatorLine3.TabIndex = 32;
@@ -282,11 +234,11 @@ namespace Dobby {
             this.DisableDebugTextBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DisableDebugTextBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.DisableDebugTextBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.DisableDebugTextBtn.Location = new System.Drawing.Point(1, 55);
+            this.DisableDebugTextBtn.Location = new System.Drawing.Point(1, 53);
             this.DisableDebugTextBtn.Name = "DisableDebugTextBtn";
-            this.DisableDebugTextBtn.Size = new System.Drawing.Size(269, 23);
+            this.DisableDebugTextBtn.Size = new System.Drawing.Size(267, 23);
             this.DisableDebugTextBtn.TabIndex = 46;
-            this.DisableDebugTextBtn.Text = "Disable 2D Debug Text On Startup: ";
+            this.DisableDebugTextBtn.Text = "Disable 2D Debug Text On Startup: Yes";
             this.DisableDebugTextBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisableDebugTextBtn.UseVisualStyleBackColor = false;
             this.DisableDebugTextBtn.Click += new System.EventHandler(this.DisableDebugTextBtn_Click);
@@ -300,7 +252,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 325);
+            this.BackBtn.Location = new System.Drawing.Point(1, 322);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.BackBtn.Size = new System.Drawing.Size(75, 22);
@@ -318,7 +270,7 @@ namespace Dobby {
             this.PausedIconBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PausedIconBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.PausedIconBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.PausedIconBtn.Location = new System.Drawing.Point(1, 80);
+            this.PausedIconBtn.Location = new System.Drawing.Point(1, 76);
             this.PausedIconBtn.Name = "PausedIconBtn";
             this.PausedIconBtn.Size = new System.Drawing.Size(230, 23);
             this.PausedIconBtn.TabIndex = 49;
@@ -335,7 +287,7 @@ namespace Dobby {
             this.BrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BrowseButton.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BrowseButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.BrowseButton.Location = new System.Drawing.Point(239, 226);
+            this.BrowseButton.Location = new System.Drawing.Point(237, 222);
             this.BrowseButton.Name = "BrowseButton";
             this.BrowseButton.Size = new System.Drawing.Size(75, 23);
             this.BrowseButton.TabIndex = 39;
@@ -349,7 +301,7 @@ namespace Dobby {
             this.ExecutablePathBox.BackColor = System.Drawing.Color.Gray;
             this.ExecutablePathBox.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.ExecutablePathBox.ForeColor = System.Drawing.SystemColors.Window;
-            this.ExecutablePathBox.Location = new System.Drawing.Point(7, 226);
+            this.ExecutablePathBox.Location = new System.Drawing.Point(3, 222);
             this.ExecutablePathBox.Name = "ExecutablePathBox";
             this.ExecutablePathBox.Size = new System.Drawing.Size(233, 23);
             this.ExecutablePathBox.TabIndex = 38;
@@ -359,7 +311,7 @@ namespace Dobby {
             // 
             this.SeperatorLine1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 141);
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 137);
             this.SeperatorLine1.Name = "SeperatorLine1";
             this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
             this.SeperatorLine1.TabIndex = 37;
@@ -369,7 +321,7 @@ namespace Dobby {
             // 
             this.SeperatorLine2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(2, 199);
+            this.SeperatorLine2.Location = new System.Drawing.Point(2, 197);
             this.SeperatorLine2.Name = "SeperatorLine2";
             this.SeperatorLine2.Size = new System.Drawing.Size(316, 16);
             this.SeperatorLine2.TabIndex = 36;
@@ -389,12 +341,23 @@ namespace Dobby {
             this.MenuAlphaBtn.Size = new System.Drawing.Size(75, 23);
             this.MenuAlphaBtn.TabIndex = 0;
             // 
+            // GameInfoLabel
+            // 
+            this.GameInfoLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.5F);
+            this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.GameInfoLabel.Location = new System.Drawing.Point(2, 248);
+            this.GameInfoLabel.Name = "GameInfoLabel";
+            this.GameInfoLabel.Size = new System.Drawing.Size(316, 19);
+            this.GameInfoLabel.TabIndex = 40;
+            this.GameInfoLabel.Text = "No File Selected";
+            this.GameInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // PS4QOLPatchesPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 372);
+            this.ClientSize = new System.Drawing.Size(320, 370);
             this.Controls.Add(this.ProgPauseOnCloseBtn);
             this.Controls.Add(this.MinimizeBtn);
             this.Controls.Add(this.CustomDebugOptionsLabel);
@@ -416,90 +379,368 @@ namespace Dobby {
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.MainLabel);
             this.Controls.Add(this.SeperatorLine0);
-            this.Controls.Add(this.BorderBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PS4QOLPatchesPage";
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
-        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPageId);
-        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPageId);
-        private void BackBtn_Click(object sender, EventArgs e) => BackFunc();
-        public void ResetBtn_Click(object sender, EventArgs e) => ResetCustomOptions();
+        private static void BorderFunc(Form form) {
+            BorderBox = new GroupBox();
+            BorderBox.Location = new Point(0, -6);
+            BorderBox.Name = "BorderBox";
+            BorderBox.Size = new Size(form.Size.Width, form.Size.Height + 7);
+            form.Controls.Add(BorderBox);
+        }
 
-        
-        public void Invert(Control Control, int OptionIndex) {
-            if (MouseScrolled == 1 || MouseIsDown == 0 || CurrentControl != Control.Name) return;
 
-            if (Control.Location.Y > GameSpecificPatchesLabel.Location.Y) {
-                Dev.DebugOut($"Button Is GSDegug Btn, Option Index: {OptionIndex}");
-                GSDebugBooleans[OptionIndex] =! GSDebugBooleans[OptionIndex];
-                Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {(GSDebugBooleans[OptionIndex] ? "Yes" : "No")}";
-                return;
+        #region Misc Patches Page Variables
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Misc Patches Page Variables    --\\\
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+
+        /// <summary>
+        /// 0: Disable FPS
+        ///<br/> 1: Paused Icon
+        ///<br/> 2: Prog Pause On Open 
+        ///<br/> 3: Prog Pause On Close
+        /// </summary>
+        private static bool[] UniversalDebugBooleans = new bool[4];
+
+        /// <summary>
+        /// Variable Used When Adjusting Form Scale And Control Positions
+        /// </summary>
+        private static int
+            ButtonIndex = 0,
+            RealSize = 0,
+            RB_StartPos
+        ;
+
+        private static float Y_Axis_Addative = 6;
+
+        private Label GameInfoLabel;
+
+        private struct DynamicPatchButtons {
+            public enum ID {
+                MenuScaleBtn,
+                MenuAlphaBtn,
+                FOVBtn,
+                MenuShadowedTextBtn,
+                VersionTxtBtn,
+                RightAlignBtn,
+                RightMarginBtn
             }
 
-            UniversalDebugBooleans[OptionIndex] =! UniversalDebugBooleans[OptionIndex];
+            /// <summary>
+            /// Enable Specific Button
+            /// </summary>
+            public void EnableDynamicPatchButtons(int[] buttons) {
+                Buttons = new Button[Text.Length + 1];
+
+                if(buttons == null) {
+                    for(index = 0; index < Buttons.Length - 1; index++) {
+                        Buttons[index] = new Button();
+                        ActiveForm.Controls.Add(Buttons[index]);
+                    }
+                    return;
+                }
+                foreach(int i in buttons) {
+                    Buttons[i] = new Button();
+                    ActiveForm.Controls.Add(Buttons[i]);
+                }
+            }
+
+            static object[] PatchValues = new object[] {
+                0.60f,
+                0.85f,
+                1f,
+                false,
+                false,
+                false,
+                (byte)10
+            };
+
+            /// <summary>
+            /// Variable Used In Dynamic Button Cration For Game-Specific Patches
+            /// </summary>
+            private static readonly string[] Name = new string[] {
+                "MenuScaleBtn_f",
+                "MenuAlphaBtn_f",
+                "FOVBtn_f",
+                "MenuShadowTextBtn_b",
+                "VersionTxtBtn_b",
+                "MenuRightAlignBtn_b",
+                "RightMarginBtn_i"
+            };
+
+            private static readonly string[] Text = new string[] {
+                "Set Dev Menu Scale: ",             // default=0.60
+                "Set DMenu BG Opacity: ",           // default=0.85
+                "Adjust Non-ADS FOV: ",             // default=1.00
+                "Enable Debug Menu Text Shadow: ",  // default=No
+                "Disable Version Text: ",           // default=No
+                "Align Debug Menus To The Right: ", // default=No
+                "Set Distance From Right Side: "    // default=10
+            };
+
+            private static readonly string[] Hint = new string[] {
+                "Hint",
+                "Hint",
+                "Only Effects The Camera While Not Aiming",
+                "Hint",
+                "Hint",
+                "Moves The Dev/Quick Menus To The Right Of The Screen",
+                "Hint",
+            };
+
+            /// <summary> Game-Specific Debug Options Loaded Based On The Game Chosen <br/><br/>
+            /// 1: MenuScaleBtn                                             <br/>
+            /// 2: MenuScaleBtn                                             <br/>
+            /// 3: MenuShadowTextBtn                                        <br/>
+            /// 4: FOVBtn                                                   <br/>
+            /// 5: VersionTxtBtn
+            /// </summary>
+            public static Button[] Buttons { get; private set; }
+
+
+            #region Option Toggle/Edit Event Handlers And Functions
+            /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+            ///--     Option Toggle/Edit Event Handlers And Functions    --\\\
+            /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+            private void DBtn_Click(object sender, EventArgs e) => ToggleFunc((Control)sender, ((Control)sender).TabIndex);
+
+            private void FloatFunc(object sender, MouseEventArgs e) => FloatScrollFunc((Control)sender, ((Control)sender).TabIndex, e.Delta);
+            private void FloatClick(object sender, MouseEventArgs e) => FloatClickFunc((Control)sender, ((Control)sender).TabIndex, e.Button);
+
+            private void IntFunc(object sender, MouseEventArgs e) => IntScrollFunc((Control)sender, ((Control)sender).TabIndex, e.Delta);
+            private void IntClick(object sender, MouseEventArgs e) => IntClickFunc((Control)sender, ((Control)sender).TabIndex, e.Button);
+
+            private void HoverString(object sender, EventArgs e) => SetInfoLabelText(Hint[((Control)sender).TabIndex]);
+
+            private void ToggleFunc(Control Control, int ButtonIndex) {
+                if(MouseScrolled == 1 || MouseIsDown == 0 || CurrentControl != Control.Name) return;
+
+                PatchValues[ButtonIndex] = !(bool)PatchValues[ButtonIndex];
+                Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {(bool)PatchValues[ButtonIndex]}";
+            }
+            private void FloatClickFunc(Control Control, int ButtonIndex, MouseButtons Button) {
+                if(CurrentControl != Control.Name) return;
+                var currentFloat = (float)PatchValues[ButtonIndex]; // Avoid CS0445
+
+                if(Button == MouseButtons.Left) PatchValues[ButtonIndex] = (float)Math.Round(currentFloat += 0.1f, 4);
+                else PatchValues[ButtonIndex] = (float)Math.Round(currentFloat -= 0.1f, 4);
+
+                Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {PatchValues[ButtonIndex]}";
+            }
+            private void FloatScrollFunc(Control Control, int ButtonIndex, int WheelDelta) {
+                if(CurrentControl != Control.Name) return;
+                var currentFloat = (float)PatchValues[ButtonIndex]; // Avoid CS0445
+
+                PatchValues[ButtonIndex] = (float)Math.Round(currentFloat += WheelDelta / 12000.0F, 4);
+                Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {PatchValues[ButtonIndex]}";
+            }
+
+            private void IntClickFunc(Control Control, int ButtonIndex, MouseButtons Button) {
+                if(CurrentControl != Control.Name) return;
+                var currentInt = (byte)PatchValues[ButtonIndex]; // Avoid CS0445
+
+                if(Button == MouseButtons.Left)
+                currentInt += 5;
+                else
+                currentInt -= 5;
+                PatchValues[ButtonIndex] = currentInt;
+                Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {PatchValues[ButtonIndex]}";
+            }
+            private void IntScrollFunc(Control Control, int ButtonIndex, int WheelDelta) {
+                if(CurrentControl != Control.Name) return;
+                var currentInt = (byte)PatchValues[ButtonIndex]; // Avoid CS0445
+
+                currentInt += (byte)(WheelDelta / 120);
+                PatchValues[ButtonIndex] = currentInt;
+
+                Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {PatchValues[ButtonIndex]}";
+            }
+            #endregion
+
+
+            public static void ResetCustomOptions() => ResetCustomOptions(null, null);
+            public static void ResetCustomOptions(object _, EventArgs __) {
+                if(Game == 0) return;
+#if DEBUG
+                FormShouldReset = false;
+                Dev.DebugOut("Resetting Form And Main Stream");
+#endif
+                int index = 0;
+
+                ActiveForm.Controls.Find("BorderBox", true)[0].Size = OriginalBorderScale;
+                ActiveForm.Size = OriginalFormScale;
+                OriginalFormScale = Size.Empty;
+
+                for(; index < ControlsToMove.Length; index++)
+                    ControlsToMove[index].Location = OriginalControlPositions[index];
+
+                for(index = 0; index < Buttons.Length; index++)
+                    if(Buttons[index] != null) Buttons[index].Dispose();
+
+                MainStreamIsOpen = false;
+                MainStream.Dispose();
+
+                ActiveForm.Controls.Find("CustomDebugOptionsLabel", true)[0].Visible = true;
+                ActiveForm.Controls.Find("ConfirmPatchesBtn", true)[0].Dispose();
+                ActiveForm.Controls.Find("ResetBtn", true)[0].Dispose();
+                Game = 0;
+            }
+
+            public void AddDynamicButtonsToForm(Form activeForm, int ButtonsVerticalStartPos) {
+
+
+                // Set The Amount of Pixels To Move Shit Based On How Much Shit Has Been Shat.                                                                                                                  shit
+                foreach(Control control in Buttons)
+                    if(control != null) RealSize++;
+
+                Dev.DebugOut($"RealSize: {RealSize}", 12);
+
+                // Move The Shit
+                if(RealSize > 1) {
+                    Y_Axis_Addative = 6;
+                    for(int i = RealSize; i > 0; i--) {
+                        Y_Axis_Addative += 2.5f;
+                    }
+                }
+
+
+
+                // Move Each Control, Then Resize The BorderBox & Form
+                BorderBox.Size = new Size(BorderBox.Size.Width, BorderBox.Size.Height + (int)(Y_Axis_Addative * RealSize) + 50);
+                activeForm.Size = new Size(activeForm.Size.Width, activeForm.Size.Height + (int)(Y_Axis_Addative * RealSize) + 50);
+                foreach(Control A in ControlsToMove)
+                    A.Location = new Point(A.Location.X, A.Location.Y + (int)(Y_Axis_Addative * RealSize));
+
+                // Move The Controls Below The Confirm And Reset Buttons A Bit Farther Down To Make Room For Them
+                for(int i = 4; i < ControlsToMove.Length; i++)
+                    ControlsToMove[i].Location = new Point(ControlsToMove[i].Location.X, ControlsToMove[i].Location.Y + 46);
+
+                RunCheck:
+                Dev.DebugOut($"Checking, ButtonIndex: {ButtonIndex}");
+                if(ButtonIndex >= Buttons.Length - 1) return;
+
+                // Skip disabled buttons or return if the end of the collection is reached
+                if(Buttons[ButtonIndex] == null) {
+                    Dev.DebugOut($"Skipping Button {ButtonIndex}");
+                    ButtonIndex++; goto RunCheck;
+                }
+
+
+                Dev.DebugOut($"Creating GSDebug Button {ButtonIndex}");
+                Buttons[ButtonIndex].Name = Name[ButtonIndex];
+                Buttons[ButtonIndex].TabIndex = ButtonIndex;
+                Buttons[ButtonIndex].Location = new Point(1, ButtonsVerticalStartPos);
+                Buttons[ButtonIndex].Size = new Size(ActiveForm.Width - 11, 23);
+                Buttons[ButtonIndex].Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
+                Buttons[ButtonIndex].Text = $"{Text[ButtonIndex]}{PatchValues[ButtonIndex]}";
+                Buttons[ButtonIndex].TextAlign = ContentAlignment.MiddleLeft;
+                Buttons[ButtonIndex].FlatAppearance.BorderSize = 0;
+                Buttons[ButtonIndex].FlatStyle = FlatStyle.Flat;
+                Buttons[ButtonIndex].ForeColor = SystemColors.Control;
+                Buttons[ButtonIndex].BackColor = Color.DimGray;
+                Buttons[ButtonIndex].Cursor = Cursors.Cross;
+                Buttons[ButtonIndex].MouseEnter += ControlHover;
+                Buttons[ButtonIndex].MouseDown += new MouseEventHandler(MouseDownFunc);
+                Buttons[ButtonIndex].MouseUp += new MouseEventHandler(MouseUpFunc);
+                Buttons[ButtonIndex].MouseEnter += HoverString;
+                Buttons[ButtonIndex].MouseLeave += ControlLeave;
+                Buttons[ButtonIndex].BringToFront();
+
+
+                if(PatchValues[ButtonIndex].GetType().ToString() == "System.Boolean")
+                    Buttons[ButtonIndex].Click += DBtn_Click;
+
+                else if(PatchValues[ButtonIndex].GetType().ToString() == "System.Single") {
+                    Buttons[ButtonIndex].MouseWheel += FloatFunc;
+                    Buttons[ButtonIndex].MouseDown += FloatClick;
+                }
+
+                else if(PatchValues[ButtonIndex].GetType().ToString() == "System.Byte") {
+                    Buttons[ButtonIndex].MouseWheel += IntFunc;
+                    Buttons[ButtonIndex].MouseDown += IntClick;
+                }
+
+
+                ButtonsVerticalStartPos += 23; ButtonIndex++;
+                goto RunCheck;
+            }
+        }
+
+
+        /// <summary>
+        /// Array of Controls to Move When Loading >1 Game-Specific Debug Options
+        /// </summary>
+        private static Control[] ControlsToMove;
+        #endregion
+
+
+
+        #region Event Handlers For Basic Patches Available For Each Game
+        ///////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Event Handlers For Basic Patches Available For Each Game     --\\\
+        ///////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        private void DisableDebugTextBtn_SClick(object sender, EventArgs e) {
+            DisableDebugTextBtn_Click(sender, e);
+            MouseScrolled = 1;
+        }
+        private void DisableDebugTextBtn_Click(object sender, EventArgs e) => Invert((Control)sender, 0);
+        private void MenuRightAlignBtn_Click(object sender, EventArgs e)   => Invert((Control)sender, 1);
+        private void ProgPauseOnOpenBtn_Click(object sender, EventArgs e)  => Invert((Control)sender, 2);
+        private void ProgPauseOnCloseBtn_Click(object sender, EventArgs e) => Invert((Control)sender, 3);
+
+
+        void Invert(Control Control, int OptionIndex) {
+            if(MouseScrolled == 1 || MouseIsDown == 0 || CurrentControl != Control.Name) return;
+
+            UniversalDebugBooleans[OptionIndex] = !UniversalDebugBooleans[OptionIndex];
             Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {(UniversalDebugBooleans[OptionIndex] ? "Yes" : "No")}";
         }
+        #endregion
 
-        public void FloatScrollFunc(Control Control, int OptionIndex, int WheelDelta) {
-            if (CurrentControl != Control.Name) return;
 
-            GSDebugFloats[OptionIndex] = (float)Math.Round(GSDebugFloats[OptionIndex] += WheelDelta / 12000.0F, 4);
-            Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {GSDebugFloats[OptionIndex]}";
-        }
-        public void FloatClickFunc(Control Control, int OptionIndex, MouseButtons Button) {
-            if(CurrentControl != Control.Name) return;
 
-            if(Button == MouseButtons.Left) GSDebugFloats[OptionIndex] = (float)Math.Round(GSDebugFloats[OptionIndex] += 10 / 12000.0F, 4);
-            else GSDebugFloats[OptionIndex] = (float)Math.Round(GSDebugFloats[OptionIndex] -= 10 / 12000.0F, 4);
-            Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {GSDebugFloats[OptionIndex]}";
-        }
-        public void IntScrollFunc(Control Control, int OptionIndex, int WheelDelta) {
-            if (CurrentControl != Control.Name) return;
+        #region Misc Patches Page Main Functions
+        //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Misc Patches Page Main Functions    --\\\
+        //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
+        private void BrowseButton_Click(object sender, EventArgs e) {
+            if(OriginalFormScale != Size.Empty) DynamicPatchButtons.ResetCustomOptions(null, null);
 
-            RightMargin += (byte)(WheelDelta / 120);
-            Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {RightMargin}";
-        }
-        public void IntClickFunc(Control Control, int OptionIndex, MouseButtons Button) {
-            if(CurrentControl != Control.Name) return;
+            FileDialog OpenedFile = new OpenFileDialog {
+                Filter = "Executable|*.elf;*.bin",
+                Title = "Select Either Of The Game's Executables"
+            };
+            if(OpenedFile.ShowDialog() == DialogResult.OK) {
+                DynamicPatchButtons.ResetCustomOptions();
+                ActiveFilePath = ExecutablePathBox.Text = OpenedFile.FileName;
+                LocalExecutableCheck = new byte[4];
 
-            if (Button == MouseButtons.Left) RightMargin += (byte)(10 / 120);
-            else RightMargin -= (byte)(10 / 120);
-            Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {RightMargin}";
+                MainStream = File.Open(OpenedFile.FileName, FileMode.Open, FileAccess.ReadWrite);
+                MainStream.Position = 0x60; MainStream.Read(LocalExecutableCheck, 0, 4);
+                Game = BitConverter.ToInt32(LocalExecutableCheck, 0);
+
+                GameInfoLabel.Text = EbootPatchPage.GetGameId();
+
+                MainStreamIsOpen = true;
+                CustomDebugOptionsLabel.Visible = IsActiveFilePCExe = false;
+                LoadGameSpecificMenuOptions();
+                if(!Dev.REL) Console.Clear();
+            }
         }
 
         public void LoadGameSpecificMenuOptions() {
-            
-            int index;
-            string name, text;
+            DynamicPatchButtons gsButtons = new DynamicPatchButtons();
 
-            void GSBtn_Click(object sender, EventArgs e) => Invert((Control)sender, ((Control)sender).TabIndex);
-
-            void GSBtn_FloatFunc(object sender, MouseEventArgs e) => FloatScrollFunc((Control)sender, ((Control)sender).TabIndex, e.Delta);
-            void GSBtn_FloatClick(object sender, MouseEventArgs e) {
-                FloatClickFunc((Control)sender, ((Control)sender).TabIndex, e.Button);
-            }
-            void GSBtn_IntFunc(object sender, MouseEventArgs e) => IntScrollFunc((Control)sender, ((Control)sender).TabIndex, e.Delta);
-            void GSBtn_IntClick(object sender, MouseEventArgs e) {
-                IntClickFunc((Control)sender, ((Control)sender).TabIndex, e.Button);
-            }
-
-            void GSBtn_HoverString(object sender, EventArgs e) => SetInfoLabelText(GSButtonTextArray[((Control)sender).TabIndex].Substring(GSButtonTextArray[((Control)sender).TabIndex].LastIndexOf(';') + 1)); // disgusting, I know
-            
-            void GSBtn_EnableButtons(int[] buttons) { foreach (int i in buttons) { GSDebugOptions[i] = new Button(); Controls.Add(GSDebugOptions[i]); } }
-            
-            void SetVariables() { // I just hate looking at these lol
-                index = int.Parse(GSButtonTextArray[ButtonIndex].Remove(1));
-                text = GSButtonTextArray[ButtonIndex].Remove(GSButtonTextArray[ButtonIndex].LastIndexOf(';')).Substring(GSButtonTextArray[ButtonIndex].IndexOf(';') + 1);
-                name = GSButtonTextArray[ButtonIndex].Remove(GSButtonTextArray[ButtonIndex].IndexOf(';'));
-            }
-
-
-            if(OriginalFormScale == Size.Empty) { // Assign values to variables made to keep track of the default form size/control postions for the reset button. Doing it on page init is annoying 'cause designer memes
+            // Assign values to variables made to keep track of the default form size/control postions for the reset button. Doing it on page init is annoying 'cause designer memes
+            if(OriginalFormScale == Size.Empty) {
                 Dev.DebugOut("Setting Original Scale Variables");
 
+                // Every Control Below The "Game Specific Patches" Label
                 ControlsToMove = new Control[] {
                     ActiveForm.Controls.Find("SeperatorLine2", true)[0],
                     ActiveForm.Controls.Find("BrowseButton", true)[0],
@@ -511,150 +752,72 @@ namespace Dobby {
                     ActiveForm.Controls.Find("BackBtn", true)[0],
                     ActiveForm.Controls.Find("Info", true)[0]
                 };
-
                 OriginalFormScale = Size;
                 OriginalBorderScale = ActiveForm.Controls.Find("BorderBox", true)[0].Size;
                 OriginalControlPositions = new Point[ControlsToMove.Length];
 
-                for(int Index = 0; Index < ControlsToMove.Length; Index++) {
-                    OriginalControlPositions[Index] = ControlsToMove[Index].Location;
-                }
+                for(index = 0; index < ControlsToMove.Length; index++)
+                OriginalControlPositions[index] = ControlsToMove[index].Location;
             }
 
-            Y_Pos = GameSpecificPatchesLabel.Location.Y + GameSpecificPatchesLabel.Size.Height + 1; // Right Below The "Game-Specific Patches" Label
-            RealSize = ButtonIndex = 0; // In Case Of Repeat Uses
-            CustomDebugOptionsLabel.Visible = false; // Gee, I wonder what this does
+            RB_StartPos = GameInfoLabel.Location.Y + GameInfoLabel.Size.Height + 1; // Right Below The GameInfoLabel
+            CustomDebugOptionsLabel.Visible = false;
 
+            // In Case Of Repeat Uses
+            RealSize = ButtonIndex = 0;
+
+            // Enable Buttons Based On Which Patches Are Available For The Current Game
             switch (Game) {
-                case UC1100: GSBtn_EnableButtons(new int[] { 4 });
+                case UC1100: gsButtons.EnableDynamicPatchButtons(new int[] { 4 });
                     Dev.DebugOut("UC1 1.00");
                     break;
-                case UC1102: GSBtn_EnableButtons(new int[] { 4 });
+                case UC1102: gsButtons.EnableDynamicPatchButtons(new int[] { 4 });
                     Dev.DebugOut("UC1 1.02");
                     break;
-                case UC2100: GSBtn_EnableButtons(new int[] { 4 });
+                case UC2100: gsButtons.EnableDynamicPatchButtons(new int[] { 4 });
                     Dev.DebugOut("UC2 1.00");
                     break;
-                case UC2102: GSBtn_EnableButtons(new int[] { 4 });
+                case UC2102: gsButtons.EnableDynamicPatchButtons(new int[] { 4 });
                     Dev.DebugOut("UC2 1.02");
                     break;
-                case UC3100: GSBtn_EnableButtons(new int[] { });
+                case UC3100: gsButtons.EnableDynamicPatchButtons(new int[] { });
                     Dev.DebugOut("UC3 1.00");
                     break;
-                case UC3102: GSBtn_EnableButtons(new int[] { });
+                case UC3102: gsButtons.EnableDynamicPatchButtons(new int[] { });
                     Dev.DebugOut("UC3 1.02");
                     break;
-                case T1R100: GSBtn_EnableButtons(new int[] { });
+                case T1R100: gsButtons.EnableDynamicPatchButtons(new int[] { });
                     Dev.DebugOut("T1R 1.00");
                     break;
-                case T1R109: GSBtn_EnableButtons(new int[] { });
+                case T1R109: gsButtons.EnableDynamicPatchButtons(new int[] { });
                     Dev.DebugOut("T1R 1.09");
                     break;
                 case T1R110:
-                case T1R111: GSBtn_EnableButtons(new int[] { });
+                case T1R111: gsButtons.EnableDynamicPatchButtons(new int[] { 0, 1 });
                     Dev.DebugOut("T1R 1.1X");
                     break;
-                case T2100: GSBtn_EnableButtons(new int[] { 0, 1, 2, 3, 5, 6});
+                case T2100: gsButtons.EnableDynamicPatchButtons(new int[] { 0, 1, 2, 3, 5 });
                     Dev.DebugOut("Tlou 2 1.00");
                     break;
-                case T2107: GSBtn_EnableButtons(new int[] { });
+                case T2107: gsButtons.EnableDynamicPatchButtons(new int[] { 0, 1, 2 });
                     Dev.DebugOut("Tlou 2 1.07");
                     break;
-                case T2109: GSBtn_EnableButtons(new int[] { });
+                case T2109: gsButtons.EnableDynamicPatchButtons(null);
                     Dev.DebugOut("Tlou 2 1.09");
                     break;
             }
 
-            // Set The Amount of Pixels To Move Shit Based On How Much Shit Has Been Shat.                                                                                                                  shit
-            foreach (Control control in GSDebugOptions)
-            if (control != null) RealSize++;
-
-            Dev.DebugOut(RealSize, 12);
-            
-            // Move The Shit
-            switch (RealSize) {
-                case 2:
-                    Y_Axis_Addative = 10;
-                    break;
-                case 3:
-                    Y_Axis_Addative = 14;
-                    break;
-                case 4:
-                    Y_Axis_Addative = 16;
-                    break;
-                case 5:
-                    Y_Axis_Addative = 18;
-                    break;
-                case 6:
-                    Y_Axis_Addative = 20;
-                    break;
-            }
-
-            // Move Each Control, Then Resize The BorderBox & Form
-            foreach(Control A in ControlsToMove)
-            A.Location = new Point(A.Location.X, A.Location.Y + Y_Axis_Addative * RealSize);
-            BorderBox.Size = new Size(BorderBox.Size.Width, BorderBox.Size.Height + (Y_Axis_Addative * RealSize) + 50);
-            Size = new Size(Size.Width, Size.Height + (Y_Axis_Addative * RealSize) + 50);
-
-            // Move The Controls Below The Confirm And Reset Buttons A Bit Farther Down To Make Room For Them
-            for (int i = 4; i < ControlsToMove.Length; i++) {
-                ControlsToMove[i].Location = new Point(ControlsToMove[i].Location.X, ControlsToMove[i].Location.Y + 46);
-            }
-
-RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
-            Dev.DebugOut($"Checking, ButtonIndex: {ButtonIndex}");
-
-            if (GSDebugOptions[ButtonIndex] == null) { // Skip disabled buttons or return if the end of the collection is reached
-                Dev.DebugOut($"Skipping Button {ButtonIndex}");
-                ButtonIndex++; goto RunCheck;
-            }
-            Dev.DebugOut("Creating GSDebug Button");
-
-            SetVariables();
-            GSDebugOptions[ButtonIndex].TabIndex = index;
-            GSDebugOptions[ButtonIndex].Name = name;
-            GSDebugOptions[ButtonIndex].Location = new Point(1, Y_Pos);
-            GSDebugOptions[ButtonIndex].Size = new Size(ActiveForm.Width - 11, 23);
-            GSDebugOptions[ButtonIndex].Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
-            GSDebugOptions[ButtonIndex].Text = text;
-            GSDebugOptions[ButtonIndex].TextAlign = ContentAlignment.MiddleLeft;
-            GSDebugOptions[ButtonIndex].FlatAppearance.BorderSize = 0;
-            GSDebugOptions[ButtonIndex].FlatStyle = FlatStyle.Flat;
-            GSDebugOptions[ButtonIndex].ForeColor = SystemColors.Control;
-            GSDebugOptions[ButtonIndex].BackColor = Color.DimGray;
-            GSDebugOptions[ButtonIndex].Cursor = Cursors.Cross;
-            GSDebugOptions[ButtonIndex].MouseEnter += ControlHover;
-            GSDebugOptions[ButtonIndex].MouseDown += new MouseEventHandler(MouseDownFunc);
-            GSDebugOptions[ButtonIndex].MouseUp += new MouseEventHandler(MouseUpFunc);
-            GSDebugOptions[ButtonIndex].MouseEnter += GSBtn_HoverString;
-            GSDebugOptions[ButtonIndex].MouseLeave += ControlLeave;
-            GSDebugOptions[ButtonIndex].BringToFront();
+            gsButtons.AddDynamicButtonsToForm(this, (GameSpecificPatchesLabel.Location.Y + GameSpecificPatchesLabel.Size.Height + 1));
 
 
-            if(GSDebugOptions[ButtonIndex].Name.Contains("_b"))
-                GSDebugOptions[ButtonIndex].Click += GSBtn_Click;
 
-            else if(GSDebugOptions[ButtonIndex].Name.Contains("_f")) {
-                GSDebugOptions[ButtonIndex].MouseWheel += GSBtn_FloatFunc;
-                GSDebugOptions[ButtonIndex].MouseClick += GSBtn_FloatClick;
-            }
-            else if(GSDebugOptions[ButtonIndex].Name.Contains("_i")) {
-                GSDebugOptions[ButtonIndex].MouseWheel += GSBtn_IntFunc;
-                GSDebugOptions[ButtonIndex].MouseWheel += GSBtn_IntClick;
-            }
-
-
-            Y_Pos += 23; ButtonIndex++;
-            goto RunCheck;
-
-
-            CreateConfirmBtn:
             // Create Confirm And Reset Buttons Once The Rest Are Created
+            RB_StartPos = GameInfoLabel.Location.Y + GameInfoLabel.Size.Height + 1; // Right Below The GameInfoLabel
             Button ConfirmPatchesBtn = new Button();
             ActiveForm.Controls.Add(ConfirmPatchesBtn);
             ConfirmPatchesBtn.TabIndex = ButtonIndex;
             ConfirmPatchesBtn.Name = "ConfirmPatchesBtn";
-            ConfirmPatchesBtn.Location = new Point(1, GameInfoLabel.Location.Y + 21);
+            ConfirmPatchesBtn.Location = new Point(1, RB_StartPos);
             ConfirmPatchesBtn.Size = new Size(ActiveForm.Width - 11, 23);
             ConfirmPatchesBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
             ConfirmPatchesBtn.Text = "Confirm And Apply Patches";
@@ -678,72 +841,55 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
             ResetBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
             ResetBtn.ForeColor = SystemColors.Control;
             ResetBtn.ImageAlign = ContentAlignment.TopRight;
-            ResetBtn.Location = new Point(1, GameInfoLabel.Location.Y + 44);
+            ResetBtn.Location = new Point(1, RB_StartPos + 24);
             ResetBtn.Name = "ResetBtn";
             ResetBtn.Size = new Size(ActiveForm.Width - 11, 23);
             ResetBtn.Text = "Reset";
             ResetBtn.TextAlign = ContentAlignment.MiddleLeft;
             ResetBtn.UseVisualStyleBackColor = false;
-            ResetBtn.Click += new EventHandler(ResetBtn_Click);
+            ResetBtn.Click += new EventHandler(DynamicPatchButtons.ResetCustomOptions);
             ResetBtn.MouseEnter += ControlHover;
             ResetBtn.MouseLeave += ControlLeave;
             ResetBtn.BringToFront();
         }
 
-        private void BrowseButton_Click(object sender, EventArgs e) { //goto skip;
-            if (OriginalFormScale != Size.Empty) ResetCustomOptions();
-#if false
-            Dev.DebugForceOpenFile(@"C:\Users\Blob\Desktop\t\T2100.bin");
-            LoadGameSpecificMenuOptions();
+        private static void ConfirmBtn_Click(object sender, EventArgs e) {
             return;
-            skip:
-#endif
-            FileDialog OpenedFile = new OpenFileDialog {
-                Filter = "Executable|*.elf;*.bin",
-                Title = "Select Either Of The Game's Executables"
-            };
-            if (OpenedFile.ShowDialog() == DialogResult.OK) {
-                //ResetCustomOptions();
-                ActiveFilePath = ExecutablePathBox.Text = OpenedFile.FileName;
-                LocalExecutableCheck = new byte[4];
-
-                MainStream = File.Open(OpenedFile.FileName, FileMode.Open, FileAccess.ReadWrite);
-                MainStream.Position = 0x60; MainStream.Read(LocalExecutableCheck, 0, 4);
-                Game = BitConverter.ToInt32(LocalExecutableCheck, 0);
-
-                GameInfoLabel.Text = EbootPatchPage.GetGameId();
-
-                MainStreamIsOpen = true;
-                CustomDebugOptionsLabel.Visible = IsActiveFilePCExe = false;
-                LoadGameSpecificMenuOptions();
-                if (!Dev.REL) Console.Clear();
-            }
-        }
-
-        private void ConfirmBtn_Click(object sender, EventArgs e) {
             using (MainStream) {
-                int i = 0,
-                PointerAddress = GetPatchDataPointerAddress();
+                int index = 0,
+                BootSettingsAddress = GetPatchDataPointerAddress();
+
+                // Write BootSettings Function's Assembly To Game Executable
+                WriteBytes(BootSettingsAddress, GetBootSettingsData());
 
                 // Universal Options
-                while (i < UniversalDebugBooleans.Length)
-                if (UniversalDebugBooleans[i]) {
-                    WriteBytes(PointerAddress, GetPatchPointerData(i++));
-                    PointerAddress += 8;
+                while (index < UniversalDebugBooleans.Length)
+                if (UniversalDebugBooleans[index]) {
+                    WriteBytes((BootSettingsAddress + 0x28), GetPatchPointerData(index++));
+                    BootSettingsAddress += 8;
                 }
                 
+                /*
                 // Game-Specific Options
                 WriteByte(0x0, (byte)(GSDebugBooleans[4] ? 0x01 : 0));
                 WriteByte(0x0, (byte)(GSDebugBooleans[4] ? 0x01 : 0));
                 WriteByte(0x0, (byte)(GSDebugBooleans[4] ? 0x01 : 0));
                 WriteByte(0x0, (byte)(GSDebugBooleans[4] ? 0x01 : 0));
+                */
             }
         }
 
-        /// <summary>  </summary>
-        /// <param name="PatchIndex">0: Disable FPS<br/>1: Align Menus Right<br/>2: Prog Pause On Menu Open<br/>3: Prog Pause On Menu Close (The Former + 1)<br/> 4: Swap Circle</param>
-        /// <returns> The Desired Address, Based On The Game<br/>(Determined by bytes read at 0x60 in the selected executable),<br/>as well as PatchIndex for the type of patch</returns>
-        public byte[] GetPatchPointerData(int PatchIndex) {
+
+        /// <summary>
+        ///  0: Disable FPS<br/>
+        ///  1: Align Menus Right<br/>
+        ///  2: Prog Pause On Menu Open<br/>
+        ///  3: Prog Pause On Menu Close (The Former + 1)<br/>
+        ///  4: Swap Circle
+        /// </summary>
+        /// <param name="PatchIndex"> The Patch To Get The Pointer For</param>
+        /// <returns> The Desired Address, Based On The Current Game Value (Determined by bytes read at 0x60 in the selected executable),<br/>as well as PatchIndex for the type of patch</returns>
+        private static byte[] GetPatchPointerData(int PatchIndex) {
             switch (Game) {
                 case UC1100:
                 switch (PatchIndex) {
@@ -751,7 +897,7 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
                     case 0: return UC1100DisableFPS;
                     case 1: return UC1100PausedIcon;
                     case 2: return UC1100ProgPause;
-                    case 3: return new byte[] { UC1100ProgPause[0], UC1100ProgPause[1], (byte)(UC1100ProgPause[2] + 1) }; //prog pause on close
+                    case 3: return UC1100ProgPauseOnExit;
                 }
 
                 case UC1102:
@@ -760,7 +906,7 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
                     case 0: return UC1102DisableFPS;
                     case 1: return UC1102PausedIcon;
                     case 2: return UC1102ProgPause;
-                    case 3: return new byte[] { UC1102ProgPause[0], UC1102ProgPause[1], (byte)(UC1102ProgPause[2] + 1) }; //prog pause on close
+                    case 3: return UC1102ProgPauseOnExit;
                 }
 
                 case UC2100:
@@ -769,7 +915,7 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
                     case 0: return UC2100DisableFPS;
                     case 1: return UC2100PausedIcon;
                     case 2: return UC2100ProgPause;
-                    case 3: return new byte[] { UC2100ProgPause[0], UC2100ProgPause[1], (byte)(UC2100ProgPause[2] + 1) }; //prog pause on close
+                    case 3: return UC2100ProgPauseOnExit;
                 }
                 
                 case UC2102:
@@ -778,7 +924,7 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
                     case 0: return UC2102DisableFPS;
                     case 1: return UC2102PausedIcon;
                     case 2: return UC2102ProgPause;
-                    case 3: return new byte[] { UC2102ProgPause[0], UC2102ProgPause[1], (byte)(UC2102ProgPause[2] + 1) }; //prog pause on close
+                    case 3: return UC2102ProgPauseOnExit;
                 }
 
                 case UC3100:
@@ -787,7 +933,7 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
                     case 0: return UC3100DisableFPS;
                     case 1: return UC3100RightAlign;
                     case 2: return UC3100ProgPause;
-                    case 3: return new byte[] { UC3100ProgPause[0], UC3100ProgPause[1], (byte)(UC3100ProgPause[2] + 1) }; //prog pause on close
+                    case 3: return UC3100ProgPauseOnExit;
                 }
 
                 case UC3102:
@@ -796,7 +942,7 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
                     case 0: return UC3102DisableFPS;
                     case 1: return UC3102RightAlign;
                     case 2: return UC3102ProgPause;
-                    case 3: return new byte[] { UC3102ProgPause[0], UC3102ProgPause[1], (byte)(UC3102ProgPause[2] + 0x4) }; //prog pause on close
+                    case 3: return UC3102ProgPauseOnExit;
                 }
 
                 case T1R100:
@@ -815,7 +961,7 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
                     case 0: return T2100DisableFPS;
                     case 1: return T2100RightAlign;
                     case 2: return T2100ProgPause;
-                    case 3: return new byte[] { T2100ProgPause[0], T2100ProgPause[1], (byte)(T2100ProgPause[2] + 1) }; //prog pause on close
+                    case 3: return T2100ProgPauseOnExit;
                     case 4: return T2100SwapCircle;
                 }
                      
@@ -825,7 +971,7 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
                     case 0: return T2107DisableFPS;
                     case 1: return T2107RightAlign;
                     case 2: return T2107ProgPause;
-                    case 3: return new byte[] { T2107ProgPause[0], T2107ProgPause[1], (byte)(T2107ProgPause[2] + 1) }; //prog pause on close
+                    case 3: return T2107ProgPauseOnExit;
                     case 4: return T2107SwapCircle;
                 }
 
@@ -835,7 +981,7 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
                     case 0: return T2109DisableFPS;
                     case 1: return T2109RightAlign;
                     case 2: return T2109ProgPause;
-                    case 3: return new byte[] { T2109ProgPause[0], T2109ProgPause[1], (byte)(T2109ProgPause[2] + 1) }; //prog pause on close
+                    case 3: return T2109ProgPauseOnExit;
                     case 4: return T2109SwapCircle;
                 }
             }
@@ -843,10 +989,16 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
             return new byte[] { 0x00, 0x00, 0x00, 0x00 };
         }
 
-        /// <returns> The Address For The BootSettings Byte Pointers </returns>
-        public static int GetPatchDataPointerAddress() { // Address Is For BootSettings 0x28 For Pointers
+        private static byte[] GetBootSettingsData() {
+            return new byte[] { 0xDE, 0xAD, 0xBE, 0xEF };
+        }
+
+        /// <summary>
+        /// Returns The Address For The BootSettings Function. Pointer Data Starts At 0x28
+        /// </summary>
+        private static int GetPatchDataPointerAddress() { // Address Is For BootSettings 0x28 For Pointers
             switch (Game) {
-                case UC1100: return 0x94ED61; //0x94ed8d;
+                case UC1100: return 0x94ED61; // 0x94ed8d;
 
                 case UC1102: return 0x915531; 
 
@@ -873,47 +1025,20 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
             }
             return 0;
         }
-        private void DisableDebugTextBtn_SClick(object sender, EventArgs e) { DisableDebugTextBtn_Click(sender, e); MouseScrolled = 1; }
-        private void DisableDebugTextBtn_Click(object sender, EventArgs e) => Invert((Control)sender, 0);
-        private void MenuRightAlignBtn_Click(object sender, EventArgs e) => Invert((Control)sender, 1);
-        private void RightMarginBtn_Click(object sender, MouseEventArgs e) {
-            if (e.Button == MouseButtons.None) RightMargin += (byte)(e.Delta / 120);
-            else RightMargin += 5;
-            ((Control)sender).Text = $"{((Control)sender).Text.Remove(((Control)sender).Text.LastIndexOf(' '))} {RightMargin}";
-        }
-        private void ProgPauseOnOpenBtn_Click(object sender, EventArgs e) => Invert((Control)sender, 2);
-        private void ProgPauseOnCloseBtn_Click(object sender, EventArgs e) => Invert((Control)sender, 3);
+        #endregion
 
 
-        public static void ResetCustomOptions() {
-#if DEBUG
-            FormShouldReset = false;
-            Dev.DebugOut("Resetting Form And Main Stream");
-#endif
-            if (Game == 0) return;
-
-            ActiveForm.Controls.Find("BorderBox", true)[0].Size = OriginalBorderScale;
-            ActiveForm.Size = OriginalFormScale;
-            OriginalFormScale = Size.Empty;
-
-            for (int index = 0; index < ControlsToMove.Length; index++) {
-                ControlsToMove[index].Location = OriginalControlPositions[index];
-            }
-            for (int i = 0; i < GSDebugOptions.Length; i++)
-                if (GSDebugOptions[i] != null) GSDebugOptions[i].Dispose();
-
-            MainStreamIsOpen = false;
-            MainStream.Dispose();
-            ActiveForm.Controls.Find("CustomDebugOptionsLabel", true)[0].Visible = true;
-            ActiveForm.Controls.Find("ConfirmPatchesBtn", true)[0].Dispose();
-            ActiveForm.Controls.Find("ResetBtn", true)[0].Dispose();
-            Game = 0;
-        }
 
 
+
+
+        #region Debug Output Override For Misc Patches Page
+        ////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Debug Output Override For Misc Patches Page     --\\\
+        ////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 #if DEBUG
         public delegate void ResetDelegate();
-        public static ResetDelegate ResetDelegateInstance = new ResetDelegate(ResetCustomOptions);
+        public static ResetDelegate ResetDelegateInstance = new ResetDelegate(DynamicPatchButtons.ResetCustomOptions);
         public static bool FormShouldReset;
 
 
@@ -936,18 +1061,33 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
                 Console.CursorLeft = 0;
                 Dev.DebugOut(Dev.BlankSpace($"FPS: {UniversalDebugBooleans[0]} | PausedIcon: {UniversalDebugBooleans[1]}"), 0);
                 Dev.DebugOut(Dev.BlankSpace($"ProgPauseOnOpen: {UniversalDebugBooleans[2]} | ProgPauseOnExit: {UniversalDebugBooleans[3]}"), 2);
-                Dev.DebugOut(Dev.BlankSpace($"Shadow: {GSDebugBooleans[0]} | VersionText: {GSDebugBooleans[1]} | Disable Version Text: {GSDebugBooleans[2]}"), 4);
+              /*Dev.DebugOut(Dev.BlankSpace($"Shadow: {GSDebugBooleans[0]} | VersionText: {GSDebugBooleans[1]} | Disable Version Text: {GSDebugBooleans[2]}"), 4);
                 Dev.DebugOut(Dev.BlankSpace($"Scale: {GSDebugFloats[0]} | Alpha: {GSDebugFloats[1]} | FoV: {GSDebugFloats[2]}"), 6);
                 Dev.DebugOut(Dev.BlankSpace($"Right Align: {GSDebugBooleans[3]}"));
-
-                foreach(Control c in GSDebugOptions)
+              */
+                foreach(Control c in DynamicPatchButtons.Buttons)
                     if (c != null) Dev.DebugOut(Dev.BlankSpace($"{c.Name} | {c.Location} | {c.TabIndex}"), i++);
                 i = 8;
             }
         }
 #endif
+        #endregion
 
 
+        #region Repeated Page Functions
+        //////////////////////\\\\\\\\\\\\\\\\\\\\\
+        ///--     Repeated Page Functions     --\\\
+        //////////////////////\\\\\\\\\\\\\\\\\\\\\
+        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);
+        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
+        private void BackBtn_Click(object sender, EventArgs e) => BackFunc();
+        #endregion
+
+        #region Control Declarations
+        ////////////////////\\\\\\\\\\\\\\\\\\\\
+        ///--     Control Declarations     --\\\
+        ////////////////////\\\\\\\\\\\\\\\\\\\\
+        private static GroupBox BorderBox;
 
         private Label MainLabel;
         private Button CreditsBtn;
@@ -956,9 +1096,7 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
         private Button ExitBtn;
         private Button MinimizeBtn;
         private Label SeperatorLine0;
-        private GroupBox BorderBox;
         private Label SeperatorLine2;
-        private Label GameInfoLabel;
         private Button BrowseButton;
         private TextBox ExecutablePathBox;
         private Button DisableDebugTextBtn;
@@ -973,5 +1111,6 @@ RunCheck:   if (ButtonIndex >= GSDebugOptions.Length - 1) goto CreateConfirmBtn;
         private Label CustomDebugOptionsLabel;
         private Button ProgPauseOnCloseBtn;
         private Button BackBtn;
+        #endregion
     }
 }

@@ -1013,8 +1013,8 @@ namespace Dobby {
             BackFunc();
             HoverLeave(BackBtn, false); // What Did This Fix, Again?
         }
-        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPageId);
-        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPageId);
+        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);
+        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
 
         public void IgnoreTitleIDBtn_Click(object sender, EventArgs e) {
             TempStringStore = ((Control)sender).Text;
