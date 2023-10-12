@@ -332,7 +332,7 @@ namespace Dobby {
         private void EbootPatchPageHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.EbootPatchHelpPage);
         private void PS4QOLPageHelpBtn_Click(object sender, EventArgs e) {
             return;
-            ChangeForm(PageID.PS4QOLHelpPage);
+            ChangeForm(PageID.PS4MiscPatchesHelpPage);
         }
         private void PkgHelpPageBtn_Click(object sender, EventArgs e) {
             if(Dev.REL) return;

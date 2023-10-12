@@ -177,7 +177,8 @@ namespace Dobby {
           "* 3.34.123.336 | Misc Changes",
           "* 3.34.123.337 | Misc Fixes",
           "* 3.34.125.340 | Lots Of MiscPatchesPage Work, Misc Changes, Comments And Formatting",
-          "* 3.34.125.342 | Minor MiscPatchesPage Work; Adding BootSettings Function."
+          "* 3.34.125.342 | Minor MiscPatchesPage Work; Adding BootSettings Function.",
+          "* 3.34.126.345 | PS4MiscPatches Page Mostly Finished, Need To Fix For Resizing Though. Other Misc Changes"
 
             // TODO:
             // - Standardize Help Page Fonts For Readability
@@ -209,8 +210,8 @@ namespace Dobby {
             PS4DebugHelpPage = 11,
             EbootPatchPage = 2,
             EbootPatchHelpPage = 21,
-            PS4QOLPage = 3,
-            PS4QOLHelpPage = 31,
+            PS4MiscPage = 3,
+            PS4MiscPatchesHelpPage = 31,
             PkgCreationPage = 4,
             PkgCreationHelpPage = 41,
             Gp4CreationPage = 5,
@@ -419,7 +420,7 @@ namespace Dobby {
                 //
                 // _______________
                 //
-                // PS4QOLPatchesPage
+                // PS4MiscPatchesPage
                 //
                 // _______________
                 //
@@ -449,7 +450,7 @@ namespace Dobby {
 
 
         /// <summary>
-        /// Loads The Specified Page From The PageId Group (E.g. ChangeForm(PageID.PS4QOLPageId))
+        /// Loads The Specified Page From The PageId Group (E.g. ChangeForm(PageID.PS4MiscPageId))
         /// </summary>
         /// <param name="Page"> Page To Change To </param>
         /// <param name="IsPageGoingBack"> Whether We're Returning Or Loading A New Page </param>
@@ -489,14 +490,13 @@ namespace Dobby {
                     EbootPatchHelpPage EbootPatchHelp = new EbootPatchHelpPage();
                     EbootPatchHelp.Show();
                     break;
-                case PageID.PS4QOLPage:
-                    PS4QOLPatchesPage PS4QOLPage = new PS4QOLPatchesPage();
-                    PS4QOLPage.Show();
+                case PageID.PS4MiscPage:
+                    PS4MiscPatchesPage PS4MiscPage = new PS4MiscPatchesPage();
+                    PS4MiscPage.Show();
                     break;
-                case PageID.PS4QOLHelpPage:
-
-                    //PS4QOLPatchesHelpPage PS4QOLHelpPage = new PS4QOLPatchesHelpPage();
-                    //PS4QOLHelpPage.Show();
+                case PageID.PS4MiscPatchesHelpPage:
+                    //PS4MiscPatchesHelpPage PS4MiscPatchesHelpPage = new PS4MiscPatchesHelpPage();
+                    //PS4MiscPatchesHelpPage.Show();
                     break;
                 case PageID.PkgCreationPage:
                     PkgCreationPage PkgCreation = new PkgCreationPage();
@@ -1253,7 +1253,7 @@ namespace Dobby {
                                 Wait:
                                     if(ActiveForm == null) goto Wait;
                                     DebugOut("FormShouldReset = true");
-                                    PS4QOLPatchesPage.FormShouldReset = true;
+                                    PS4MiscPatchesPage.FormShouldReset = true;
                                 }
                             }
                             break;

@@ -9,10 +9,11 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Data.SqlTypes;
+using System.Drawing.Text;
 
 namespace Dobby {
-    internal class PS4QOLPatchesPage : Form {
-        public PS4QOLPatchesPage() {
+    internal class PS4MiscPatchesPage : Form {
+        public PS4MiscPatchesPage() {
             InitializeComponent();
             BorderFunc(this);
             AddControlEventHandlers(Controls);
@@ -352,7 +353,7 @@ namespace Dobby {
             this.GameInfoLabel.Text = "No File Selected";
             this.GameInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // PS4QOLPatchesPage
+            // PS4MiscPatchesPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -380,7 +381,7 @@ namespace Dobby {
             this.Controls.Add(this.MainLabel);
             this.Controls.Add(this.SeperatorLine0);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "PS4QOLPatchesPage";
+            this.Name = "PS4MiscPatchesPage";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -394,21 +395,16 @@ namespace Dobby {
         }
 
 
-        #region Misc Patches Page Variables
         ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
         ///--     Misc Patches Page Variables    --\\\
         ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+        #region Misc Patches Page Variables
 
-        /// <summary>
-        /// 0: Disable FPS
-        ///<br/> 1: Paused Icon
-        ///<br/> 2: Prog Pause On Open 
-        ///<br/> 3: Prog Pause On Close
+        /// <summary> Array of Controls to Move When Loading >1 Game-Specific Debug Options
         /// </summary>
-        private static bool[] UniversalDebugBooleans = new bool[4];
+        private static Control[] ControlsToMove;
 
-        /// <summary>
-        /// Variable Used When Adjusting Form Scale And Control Positions
+        /// <summary> Variable Used When Adjusting Form Scale And Control Positions
         /// </summary>
         private static int
             ButtonIndex = 0,
@@ -416,266 +412,283 @@ namespace Dobby {
             RB_StartPos
         ;
 
+        /// <summary> Var Used In Adjusting Form Size To Fit Extra Buttons
+        /// </summary>
         private static float Y_Axis_Addative = 6;
 
-        private Label GameInfoLabel;
+        /// <summary>
+        /// MenuScaleBtn        <br/>
+        /// MenuAlphaBtn        <br/>
+        /// FOVBtn              <br/>
+        /// MenuShadowedTextBtn <br/>
+        /// VersionTxtBtn       <br/>
+        /// RightAlignBtn       <br/>
+        /// RightMarginBtn
+        /// </summary>
+        private enum IDS {
+            MenuScaleBtn,
+            MenuAlphaBtn,
+            FOVBtn,
+            MenuShadowedTextBtn,
+            VersionTxtBtn,
+            RightAlignBtn,
+            RightMarginBtn
+        }
 
+        /// <summary>
+        ///      0: Disable FPS
+        ///<br/> 1: Paused Icon
+        ///<br/> 2: Prog Pause On Open 
+        ///<br/> 3: Prog Pause On Close
+        /// </summary>
+        private static bool[] UniversalDebugBooleans = new bool[4];
+
+
+        /// <summary> Struct For Creating Dynamic Patch Buttons
+        /// </summary>
         private struct DynamicPatchButtons {
-            public enum ID {
-                MenuScaleBtn,
-                MenuAlphaBtn,
-                FOVBtn,
-                MenuShadowedTextBtn,
-                VersionTxtBtn,
-                RightAlignBtn,
-                RightMarginBtn
-            }
 
-            /// <summary>
-            /// Enable Specific Button
-            /// </summary>
-            public void EnableDynamicPatchButtons(int[] buttons) {
-                Buttons = new Button[Text.Length + 1];
+                public static object[] PatchValues = new object[] {
+                    0.60f,
+                    0.85f,
+                    1f,
+                    false,
+                    false,
+                    false,
+                    (byte)10
+                };
 
-                if(buttons == null) {
-                    for(index = 0; index < Buttons.Length - 1; index++) {
+                /// <summary>
+                /// Variable Used In Dynamic Button Cration For Game-Specific Patches
+                /// </summary>
+                private static readonly string[] Name = new string[] {
+                    "MenuScaleBtn_f",
+                    "MenuAlphaBtn_f",
+                    "FOVBtn_f",
+                    "MenuShadowTextBtn_b",
+                    "VersionTxtBtn_b",
+                    "MenuRightAlignBtn_b",
+                    "RightMarginBtn_i"
+                };
+
+                private static readonly string[] Text = new string[] {
+                    "Set Dev Menu Scale: ",             // default=0.60
+                    "Set DMenu BG Opacity: ",           // default=0.85
+                    "Adjust Non-ADS FOV: ",             // default=1.00
+                    "Enable Debug Menu Text Shadow: ",  // default=No
+                    "Disable Version Text: ",           // default=No
+                    "Align Debug Menus To The Right: ", // default=No
+                    "Set Distance From Right Side: "    // default=10
+                };
+
+                private static readonly string[] Hint = new string[] {
+                    "Hint",
+                    "Hint",
+                    "Only Effects The Camera While Not Aiming",
+                    "Hint",
+                    "Hint",
+                    "Moves The Dev/Quick Menus To The Right Of The Screen",
+                    "Hint",
+                };
+
+                /// <summary> Buttons For Game-Specific Debug Options Loaded Based On The Game Chosen <br/><br/>
+                /// 1: MenuScaleBtn                                                                        <br/>
+                /// 2: MenuScaleBtn                                                                        <br/>
+                /// 3: MenuShadowTextBtn                                                                   <br/>
+                /// 4: FOVBtn                                                                              <br/>
+                /// 5: VersionTxtBtn
+                /// </summary>
+                public static Button[] Buttons { get; private set; } // Initialized Once An Executable's Selected
+
+
+                /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\
+                ///--     Dynamic Buttons Main Functions    --\\\
+                /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\
+                #region Dynamic Buttons Main Functions
+                /// <summary> Enable Specific Buttons
+                /// </summary>
+                public void EnableDynamicPatchButtons(IDS[] buttons) {
+                    Buttons = new Button[Text.Length + 1];
+                    if(buttons == null) goto EnableAll;
+
+                    foreach(int id in buttons) {
+                        Buttons[id] = new Button();
+                        ActiveForm.Controls.Add(Buttons[id]);
+                    }
+                    return;
+
+                EnableAll: for(index = 0; index < Buttons.Length - 1; index++) {
                         Buttons[index] = new Button();
                         ActiveForm.Controls.Add(Buttons[index]);
                     }
-                    return;
                 }
-                foreach(int i in buttons) {
-                    Buttons[i] = new Button();
-                    ActiveForm.Controls.Add(Buttons[i]);
+
+                /// <summary> Enable A Specific Button
+                /// </summary>
+                public void EnableDynamicPatchButtons(IDS button) {
+                    Buttons = new Button[Text.Length + 1];
+
+                    Buttons[(int)button] = new Button();
+                    ActiveForm.Controls.Add(Buttons[(int)button]);
                 }
-            }
+                public static void ResetCustomOptions() => ResetCustomOptions(null, null);
+                public static void ResetCustomOptions(object _, EventArgs __) {
+                    if(Game == 0) return;
+    #if DEBUG
+                    FormShouldReset = false;
+                    Dev.DebugOut("Resetting Form And Main Stream");
+    #endif
+                    int index = 0;
 
-            static object[] PatchValues = new object[] {
-                0.60f,
-                0.85f,
-                1f,
-                false,
-                false,
-                false,
-                (byte)10
-            };
+                    ActiveForm.Controls.Find("BorderBox", true)[0].Size = OriginalBorderScale;
+                    ActiveForm.Size = OriginalFormScale;
+                    OriginalFormScale = Size.Empty;
 
-            /// <summary>
-            /// Variable Used In Dynamic Button Cration For Game-Specific Patches
-            /// </summary>
-            private static readonly string[] Name = new string[] {
-                "MenuScaleBtn_f",
-                "MenuAlphaBtn_f",
-                "FOVBtn_f",
-                "MenuShadowTextBtn_b",
-                "VersionTxtBtn_b",
-                "MenuRightAlignBtn_b",
-                "RightMarginBtn_i"
-            };
+                    for(; index < ControlsToMove.Length; index++)
+                        ControlsToMove[index].Location = OriginalControlPositions[index];
 
-            private static readonly string[] Text = new string[] {
-                "Set Dev Menu Scale: ",             // default=0.60
-                "Set DMenu BG Opacity: ",           // default=0.85
-                "Adjust Non-ADS FOV: ",             // default=1.00
-                "Enable Debug Menu Text Shadow: ",  // default=No
-                "Disable Version Text: ",           // default=No
-                "Align Debug Menus To The Right: ", // default=No
-                "Set Distance From Right Side: "    // default=10
-            };
+                    foreach(Button button in Buttons)
+                        button?.Dispose();
 
-            private static readonly string[] Hint = new string[] {
-                "Hint",
-                "Hint",
-                "Only Effects The Camera While Not Aiming",
-                "Hint",
-                "Hint",
-                "Moves The Dev/Quick Menus To The Right Of The Screen",
-                "Hint",
-            };
+                    MainStreamIsOpen = false;
+                    MainStream?.Dispose();
 
-            /// <summary> Game-Specific Debug Options Loaded Based On The Game Chosen <br/><br/>
-            /// 1: MenuScaleBtn                                             <br/>
-            /// 2: MenuScaleBtn                                             <br/>
-            /// 3: MenuShadowTextBtn                                        <br/>
-            /// 4: FOVBtn                                                   <br/>
-            /// 5: VersionTxtBtn
-            /// </summary>
-            public static Button[] Buttons { get; private set; }
+                    ActiveForm.Controls.Find("CustomDebugOptionsLabel", true)[0].Visible = true;
+                    ActiveForm.Controls.Find("ConfirmPatchesBtn", true)[0].Dispose();
+                    ActiveForm.Controls.Find("ResetBtn", true)[0].Dispose();
+                    Game = 0;
+                }
 
+                public void AddDynamicButtonsToForm(Form activeForm, int ButtonsVerticalStartPos) {
+                    // Set The Amount of Pixels To Move Shit Based On How Much Shit Has Been Shat.                                                                                                                  shit
+                    foreach(Control control in Buttons)
+                        if(control != null) RealSize++;
 
-            #region Option Toggle/Edit Event Handlers And Functions
-            /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-            ///--     Option Toggle/Edit Event Handlers And Functions    --\\\
-            /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-            private void DBtn_Click(object sender, EventArgs e) => ToggleFunc((Control)sender, ((Control)sender).TabIndex);
-
-            private void FloatFunc(object sender, MouseEventArgs e) => FloatScrollFunc((Control)sender, ((Control)sender).TabIndex, e.Delta);
-            private void FloatClick(object sender, MouseEventArgs e) => FloatClickFunc((Control)sender, ((Control)sender).TabIndex, e.Button);
-
-            private void IntFunc(object sender, MouseEventArgs e) => IntScrollFunc((Control)sender, ((Control)sender).TabIndex, e.Delta);
-            private void IntClick(object sender, MouseEventArgs e) => IntClickFunc((Control)sender, ((Control)sender).TabIndex, e.Button);
-
-            private void HoverString(object sender, EventArgs e) => SetInfoLabelText(Hint[((Control)sender).TabIndex]);
-
-            private void ToggleFunc(Control Control, int ButtonIndex) {
-                if(MouseScrolled == 1 || MouseIsDown == 0 || CurrentControl != Control.Name) return;
-
-                PatchValues[ButtonIndex] = !(bool)PatchValues[ButtonIndex];
-                Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {(bool)PatchValues[ButtonIndex]}";
-            }
-            private void FloatClickFunc(Control Control, int ButtonIndex, MouseButtons Button) {
-                if(CurrentControl != Control.Name) return;
-                var currentFloat = (float)PatchValues[ButtonIndex]; // Avoid CS0445
-
-                if(Button == MouseButtons.Left) PatchValues[ButtonIndex] = (float)Math.Round(currentFloat += 0.1f, 4);
-                else PatchValues[ButtonIndex] = (float)Math.Round(currentFloat -= 0.1f, 4);
-
-                Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {PatchValues[ButtonIndex]}";
-            }
-            private void FloatScrollFunc(Control Control, int ButtonIndex, int WheelDelta) {
-                if(CurrentControl != Control.Name) return;
-                var currentFloat = (float)PatchValues[ButtonIndex]; // Avoid CS0445
-
-                PatchValues[ButtonIndex] = (float)Math.Round(currentFloat += WheelDelta / 12000.0F, 4);
-                Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {PatchValues[ButtonIndex]}";
-            }
-
-            private void IntClickFunc(Control Control, int ButtonIndex, MouseButtons Button) {
-                if(CurrentControl != Control.Name) return;
-                var currentInt = (byte)PatchValues[ButtonIndex]; // Avoid CS0445
-
-                if(Button == MouseButtons.Left)
-                currentInt += 5;
-                else
-                currentInt -= 5;
-                PatchValues[ButtonIndex] = currentInt;
-                Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {PatchValues[ButtonIndex]}";
-            }
-            private void IntScrollFunc(Control Control, int ButtonIndex, int WheelDelta) {
-                if(CurrentControl != Control.Name) return;
-                var currentInt = (byte)PatchValues[ButtonIndex]; // Avoid CS0445
-
-                currentInt += (byte)(WheelDelta / 120);
-                PatchValues[ButtonIndex] = currentInt;
-
-                Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {PatchValues[ButtonIndex]}";
-            }
-            #endregion
-
-
-            public static void ResetCustomOptions() => ResetCustomOptions(null, null);
-            public static void ResetCustomOptions(object _, EventArgs __) {
-                if(Game == 0) return;
-#if DEBUG
-                FormShouldReset = false;
-                Dev.DebugOut("Resetting Form And Main Stream");
-#endif
-                int index = 0;
-
-                ActiveForm.Controls.Find("BorderBox", true)[0].Size = OriginalBorderScale;
-                ActiveForm.Size = OriginalFormScale;
-                OriginalFormScale = Size.Empty;
-
-                for(; index < ControlsToMove.Length; index++)
-                    ControlsToMove[index].Location = OriginalControlPositions[index];
-
-                for(index = 0; index < Buttons.Length; index++)
-                    if(Buttons[index] != null) Buttons[index].Dispose();
-
-                MainStreamIsOpen = false;
-                MainStream.Dispose();
-
-                ActiveForm.Controls.Find("CustomDebugOptionsLabel", true)[0].Visible = true;
-                ActiveForm.Controls.Find("ConfirmPatchesBtn", true)[0].Dispose();
-                ActiveForm.Controls.Find("ResetBtn", true)[0].Dispose();
-                Game = 0;
-            }
-
-            public void AddDynamicButtonsToForm(Form activeForm, int ButtonsVerticalStartPos) {
-
-
-                // Set The Amount of Pixels To Move Shit Based On How Much Shit Has Been Shat.                                                                                                                  shit
-                foreach(Control control in Buttons)
-                    if(control != null) RealSize++;
-
-                Dev.DebugOut($"RealSize: {RealSize}", 12);
-
-                // Move The Shit
-                if(RealSize > 1) {
-                    Y_Axis_Addative = 6;
-                    for(int i = RealSize; i > 0; i--) {
-                        Y_Axis_Addative += 2.5f;
+                    // Move The Shit
+                    if(RealSize > 1) {
+                        Y_Axis_Addative = 6;
+                        for(int i = RealSize; i > 0; i--) {
+                            Y_Axis_Addative += 2.5f;
+                        }
                     }
+
+
+                    // Resize The BorderBox & Form, Then Move Each Control
+                    BorderBox.Size = new Size(BorderBox.Size.Width, BorderBox.Size.Height + (int)(Y_Axis_Addative * RealSize) + 50);
+                    activeForm.Size = new Size(activeForm.Size.Width, activeForm.Size.Height + (int)(Y_Axis_Addative * RealSize) + 50);
+                    foreach(Control A in ControlsToMove)
+                        A.Location = new Point(A.Location.X, A.Location.Y + (int)(Y_Axis_Addative * RealSize));
+
+                    // Move The Controls Below The Confirm And Reset Buttons A Bit Farther Down To Make Room For Them
+                    for(int i = 4; i < ControlsToMove.Length; i++)
+                        ControlsToMove[i].Location = new Point(ControlsToMove[i].Location.X, ControlsToMove[i].Location.Y + 46);
+
+                    RunCheck:
+                    if(ButtonIndex >= Buttons.Length - 1) return;
+
+                    // Skip disabled buttons or return if the end of the collection is reached
+                    if(Buttons[ButtonIndex] == null) {
+                        ButtonIndex++;
+                        goto RunCheck;
+                    }
+
+                    Buttons[ButtonIndex].Name = Name[ButtonIndex];
+                    Buttons[ButtonIndex].TabIndex = ButtonIndex;
+                    Buttons[ButtonIndex].Location = new Point(1, ButtonsVerticalStartPos);
+                    Buttons[ButtonIndex].Size = new Size(ActiveForm.Width - 11, 23);
+                    Buttons[ButtonIndex].Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
+                    Buttons[ButtonIndex].Text = $"{Text[ButtonIndex]}{PatchValues[ButtonIndex]}";
+                    Buttons[ButtonIndex].TextAlign = ContentAlignment.MiddleLeft;
+                    Buttons[ButtonIndex].FlatAppearance.BorderSize = 0;
+                    Buttons[ButtonIndex].FlatStyle = FlatStyle.Flat;
+                    Buttons[ButtonIndex].ForeColor = SystemColors.Control;
+                    Buttons[ButtonIndex].BackColor = Color.DimGray;
+                    Buttons[ButtonIndex].Cursor = Cursors.Cross;
+                    Buttons[ButtonIndex].MouseEnter += ControlHover;
+                    Buttons[ButtonIndex].MouseDown += new MouseEventHandler(MouseDownFunc);
+                    Buttons[ButtonIndex].MouseUp += new MouseEventHandler(MouseUpFunc);
+                    Buttons[ButtonIndex].MouseEnter += HoverString;
+                    Buttons[ButtonIndex].MouseLeave += ControlLeave;
+                    Buttons[ButtonIndex].BringToFront();
+
+                    if(PatchValues[ButtonIndex].GetType().ToString() == "System.Boolean")
+                        Buttons[ButtonIndex].Click += DBtn_Click;
+
+                    else if(PatchValues[ButtonIndex].GetType().ToString() == "System.Single") {
+                        Buttons[ButtonIndex].MouseWheel += FloatFunc;
+                        Buttons[ButtonIndex].MouseDown += FloatClick;
+                    }
+
+                    else if(PatchValues[ButtonIndex].GetType().ToString() == "System.Byte") {
+                        Buttons[ButtonIndex].MouseWheel += IntFunc;
+                        Buttons[ButtonIndex].MouseDown += IntClick;
+                    }
+
+                    ButtonsVerticalStartPos += 23; ButtonIndex++;
+                    goto RunCheck;
+                }
+                #endregion
+
+
+                /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+                ///--     Event Handlers And Functions For Dynamic Button   --\\\
+                /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+                #region Event Handlers And Functions For Dynamic Button
+                private void DBtn_Click(object sender, EventArgs e) => ToggleFunc((Control)sender, ((Control)sender).TabIndex);
+                private void ToggleFunc(Control Control, int ButtonIndex) {
+                    if(MouseScrolled == 1 || MouseIsDown == 0 || CurrentControl != Control.Name) return;
+
+                    PatchValues[ButtonIndex] = !(bool)PatchValues[ButtonIndex];
+                    Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {(bool)PatchValues[ButtonIndex]}";
+                }
+            
+
+                private void FloatClick(object sender, MouseEventArgs e) => FloatClickFunc((Control)sender, ((Control)sender).TabIndex, e.Button);
+                private void FloatClickFunc(Control Control, int ButtonIndex, MouseButtons Button) {
+                    if(CurrentControl != Control.Name) return;
+                    var currentFloat = (float)PatchValues[ButtonIndex]; // Avoid CS0445
+
+                    if(Button == MouseButtons.Left) PatchValues[ButtonIndex] = (float)Math.Round(currentFloat += 0.1f, 4);
+                    else PatchValues[ButtonIndex] = (float)Math.Round(currentFloat -= 0.1f, 4);
+
+                    Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {PatchValues[ButtonIndex]}";
+                }
+
+                private void FloatFunc(object sender, MouseEventArgs e) => FloatScrollFunc((Control)sender, ((Control)sender).TabIndex, e.Delta);
+                private void FloatScrollFunc(Control Control, int ButtonIndex, int WheelDelta) {
+                    if(CurrentControl != Control.Name) return;
+                    var currentFloat = (float)PatchValues[ButtonIndex]; // Avoid CS0445
+
+                    PatchValues[ButtonIndex] = (float)Math.Round(currentFloat += WheelDelta / 12000.0F, 4);
+                    Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {PatchValues[ButtonIndex]}";
                 }
 
 
+                private void IntClick(object sender, MouseEventArgs e) => IntClickFunc((Control)sender, ((Control)sender).TabIndex, e.Button);
+                private void IntClickFunc(Control Control, int ButtonIndex, MouseButtons Button) {
+                    if(CurrentControl != Control.Name) return;
+                    var currentInt = (byte)PatchValues[ButtonIndex]; // Avoid CS0445
 
-                // Move Each Control, Then Resize The BorderBox & Form
-                BorderBox.Size = new Size(BorderBox.Size.Width, BorderBox.Size.Height + (int)(Y_Axis_Addative * RealSize) + 50);
-                activeForm.Size = new Size(activeForm.Size.Width, activeForm.Size.Height + (int)(Y_Axis_Addative * RealSize) + 50);
-                foreach(Control A in ControlsToMove)
-                    A.Location = new Point(A.Location.X, A.Location.Y + (int)(Y_Axis_Addative * RealSize));
-
-                // Move The Controls Below The Confirm And Reset Buttons A Bit Farther Down To Make Room For Them
-                for(int i = 4; i < ControlsToMove.Length; i++)
-                    ControlsToMove[i].Location = new Point(ControlsToMove[i].Location.X, ControlsToMove[i].Location.Y + 46);
-
-                RunCheck:
-                Dev.DebugOut($"Checking, ButtonIndex: {ButtonIndex}");
-                if(ButtonIndex >= Buttons.Length - 1) return;
-
-                // Skip disabled buttons or return if the end of the collection is reached
-                if(Buttons[ButtonIndex] == null) {
-                    Dev.DebugOut($"Skipping Button {ButtonIndex}");
-                    ButtonIndex++; goto RunCheck;
+                    if(Button == MouseButtons.Left) currentInt += 5;
+                    else currentInt -= 5;
+                    PatchValues[ButtonIndex] = currentInt;
+                    Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {PatchValues[ButtonIndex]}";
                 }
 
+                private void IntFunc(object sender, MouseEventArgs e) => IntScrollFunc((Control)sender, ((Control)sender).TabIndex, e.Delta);
+                private void IntScrollFunc(Control Control, int ButtonIndex, int WheelDelta) {
+                    if(CurrentControl != Control.Name) return;
+                    var currentInt = (byte)PatchValues[ButtonIndex]; // Avoid CS0445
 
-                Dev.DebugOut($"Creating GSDebug Button {ButtonIndex}");
-                Buttons[ButtonIndex].Name = Name[ButtonIndex];
-                Buttons[ButtonIndex].TabIndex = ButtonIndex;
-                Buttons[ButtonIndex].Location = new Point(1, ButtonsVerticalStartPos);
-                Buttons[ButtonIndex].Size = new Size(ActiveForm.Width - 11, 23);
-                Buttons[ButtonIndex].Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
-                Buttons[ButtonIndex].Text = $"{Text[ButtonIndex]}{PatchValues[ButtonIndex]}";
-                Buttons[ButtonIndex].TextAlign = ContentAlignment.MiddleLeft;
-                Buttons[ButtonIndex].FlatAppearance.BorderSize = 0;
-                Buttons[ButtonIndex].FlatStyle = FlatStyle.Flat;
-                Buttons[ButtonIndex].ForeColor = SystemColors.Control;
-                Buttons[ButtonIndex].BackColor = Color.DimGray;
-                Buttons[ButtonIndex].Cursor = Cursors.Cross;
-                Buttons[ButtonIndex].MouseEnter += ControlHover;
-                Buttons[ButtonIndex].MouseDown += new MouseEventHandler(MouseDownFunc);
-                Buttons[ButtonIndex].MouseUp += new MouseEventHandler(MouseUpFunc);
-                Buttons[ButtonIndex].MouseEnter += HoverString;
-                Buttons[ButtonIndex].MouseLeave += ControlLeave;
-                Buttons[ButtonIndex].BringToFront();
+                    currentInt += (byte)(WheelDelta / 120);
+                    PatchValues[ButtonIndex] = currentInt;
 
-
-                if(PatchValues[ButtonIndex].GetType().ToString() == "System.Boolean")
-                    Buttons[ButtonIndex].Click += DBtn_Click;
-
-                else if(PatchValues[ButtonIndex].GetType().ToString() == "System.Single") {
-                    Buttons[ButtonIndex].MouseWheel += FloatFunc;
-                    Buttons[ButtonIndex].MouseDown += FloatClick;
+                    Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {PatchValues[ButtonIndex]}";
                 }
 
-                else if(PatchValues[ButtonIndex].GetType().ToString() == "System.Byte") {
-                    Buttons[ButtonIndex].MouseWheel += IntFunc;
-                    Buttons[ButtonIndex].MouseDown += IntClick;
-                }
-
-
-                ButtonsVerticalStartPos += 23; ButtonIndex++;
-                goto RunCheck;
-            }
+                private void HoverString(object sender, EventArgs e) => SetInfoLabelText(Hint[((Control)sender).TabIndex]);
+                #endregion
         }
-
-
-        /// <summary>
-        /// Array of Controls to Move When Loading >1 Game-Specific Debug Options
-        /// </summary>
-        private static Control[] ControlsToMove;
         #endregion
 
 
@@ -704,10 +717,10 @@ namespace Dobby {
 
 
 
-        #region Misc Patches Page Main Functions
         //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
         ///--     Misc Patches Page Main Functions    --\\\
         //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
+        #region Misc Patches Page Main Functions
         private void BrowseButton_Click(object sender, EventArgs e) {
             if(OriginalFormScale != Size.Empty) DynamicPatchButtons.ResetCustomOptions(null, null);
 
@@ -768,39 +781,39 @@ namespace Dobby {
 
             // Enable Buttons Based On Which Patches Are Available For The Current Game
             switch (Game) {
-                case UC1100: gsButtons.EnableDynamicPatchButtons(new int[] { 4 });
+                case UC1100: gsButtons.EnableDynamicPatchButtons(IDS.VersionTxtBtn);
                     Dev.DebugOut("UC1 1.00");
                     break;
-                case UC1102: gsButtons.EnableDynamicPatchButtons(new int[] { 4 });
+                case UC1102: gsButtons.EnableDynamicPatchButtons(IDS.VersionTxtBtn);
                     Dev.DebugOut("UC1 1.02");
                     break;
-                case UC2100: gsButtons.EnableDynamicPatchButtons(new int[] { 4 });
+                case UC2100: gsButtons.EnableDynamicPatchButtons(IDS.VersionTxtBtn);
                     Dev.DebugOut("UC2 1.00");
                     break;
-                case UC2102: gsButtons.EnableDynamicPatchButtons(new int[] { 4 });
+                case UC2102: gsButtons.EnableDynamicPatchButtons(IDS.VersionTxtBtn);
                     Dev.DebugOut("UC2 1.02");
                     break;
-                case UC3100: gsButtons.EnableDynamicPatchButtons(new int[] { });
+                case UC3100: gsButtons.EnableDynamicPatchButtons(IDS.VersionTxtBtn);
                     Dev.DebugOut("UC3 1.00");
                     break;
-                case UC3102: gsButtons.EnableDynamicPatchButtons(new int[] { });
+                case UC3102: gsButtons.EnableDynamicPatchButtons(IDS.VersionTxtBtn);
                     Dev.DebugOut("UC3 1.02");
                     break;
-                case T1R100: gsButtons.EnableDynamicPatchButtons(new int[] { });
+                case T1R100: gsButtons.EnableDynamicPatchButtons(IDS.VersionTxtBtn);
                     Dev.DebugOut("T1R 1.00");
                     break;
-                case T1R109: gsButtons.EnableDynamicPatchButtons(new int[] { });
+                case T1R109: gsButtons.EnableDynamicPatchButtons(IDS.VersionTxtBtn);
                     Dev.DebugOut("T1R 1.09");
                     break;
                 case T1R110:
-                case T1R111: gsButtons.EnableDynamicPatchButtons(new int[] { 0, 1 });
+                case T1R111: gsButtons.EnableDynamicPatchButtons(IDS.VersionTxtBtn);
                     Dev.DebugOut("T1R 1.1X");
                     break;
-                case T2100: gsButtons.EnableDynamicPatchButtons(new int[] { 0, 1, 2, 3, 5 });
+                case T2100: gsButtons.EnableDynamicPatchButtons(new IDS[] { IDS.MenuScaleBtn, IDS.MenuShadowedTextBtn, IDS.VersionTxtBtn, IDS.RightAlignBtn });
                     Dev.DebugOut("Tlou 2 1.00");
                     break;
-                case T2107: gsButtons.EnableDynamicPatchButtons(new int[] { 0, 1, 2 });
-                    Dev.DebugOut("Tlou 2 1.07");
+                case T2107: gsButtons.EnableDynamicPatchButtons(new IDS[] { IDS.MenuScaleBtn, IDS.MenuAlphaBtn, IDS.MenuShadowedTextBtn, IDS.VersionTxtBtn, IDS.RightAlignBtn });
+                    Dev.DebugOut("Tlou 2 1.07"); //! /\
                     break;
                 case T2109: gsButtons.EnableDynamicPatchButtons(null);
                     Dev.DebugOut("Tlou 2 1.09");
@@ -855,26 +868,30 @@ namespace Dobby {
 
         private static void ConfirmBtn_Click(object sender, EventArgs e) {
             using (MainStream) {
-                int index = 0,
-                BootSettingsAddress = GetPatchDataPointerAddress();
+                index = 0;
+                int BootSettingsCallerAddress,
 
                 // Write BootSettings Function's Assembly To Game Executable
-                WriteBytes(BootSettingsAddress, GetBootSettingsData());
+                BootSettingsAddress = GetAddressToWriteBootSettings();
+                WriteBytes(BootSettingsAddress, GetBootSettingsBytes());
+
+                // Write Function Call To Call BootSettings
+                BootSettingsCallerAddress = GetAddressToCallBootSettings();
+                WriteBytes(BootSettingsCallerAddress, GetBytesToCallBootSettings());
 
                 // Universal Options
-                while (index < UniversalDebugBooleans.Length)
+                while(index < UniversalDebugBooleans.Length)
                 if (UniversalDebugBooleans[index]) {
                     WriteBytes((BootSettingsAddress + 0x28), GetPatchPointerData(index++));
                     BootSettingsAddress += 8;
                 }
                 
-                /*
                 // Game-Specific Options
-                WriteByte(0x00, (byte)(GSDebugBooleans[4] ? 0x01 : 0));
-                WriteByte(0x00, (byte)(GSDebugBooleans[4] ? 0x01 : 0));
-                WriteByte(0x00, (byte)(GSDebugBooleans[4] ? 0x01 : 0));
-                WriteByte(0x00, (byte)(GSDebugBooleans[4] ? 0x01 : 0));
-                */
+                for(index = 0; ; index++) {
+
+                    WriteByte(BootSettingsAddress, (byte)(DynamicPatchButtons.PatchValues[4] ? 0x01 : 0));
+                    BootSettingsAddress += 8;
+                }
             }
         }
 
@@ -886,8 +903,12 @@ namespace Dobby {
         ///  3: Prog Pause On Menu Close (The Former + 1)<br/>
         ///  4: Swap Circle
         /// </summary>
-        /// <param name="PatchIndex"> The Patch To Get The Pointer For</param>
-        /// <returns> The Desired Address, Based On The Current Game Value (Determined by bytes read at 0x60 in the selected executable),<br/>as well as PatchIndex for the type of patch</returns>
+        /// <param name="PatchIndex"> The Patch To Get The Pointer For
+        /// </param>
+        /// <returns>
+        /// The Desired Address, Based On The Current Game Value (Determined by bytes read at 0x60 in the selected executable), <br/>
+        /// as well as PatchIndex for the type of patch
+        /// </returns>
         private static byte[] GetPatchPointerData(int PatchIndex) {
             switch (Game) {
                 case UC1100:
@@ -966,7 +987,7 @@ namespace Dobby {
                      
                 case T2107:
                 switch (PatchIndex) {
-                    default: return null;
+                    default: Dev.DebugOut($"Game Was T2 1.07, But Patch Index Was Invalid ({PatchIndex})"); return null;
                     case 0: return T2107DisableFPS;
                     case 1: return T2107RightAlign;
                     case 2: return T2107ProgPause;
@@ -976,7 +997,7 @@ namespace Dobby {
 
                 case T2109:
                 switch (PatchIndex) {
-                    default: return null;
+                    default: Dev.DebugOut($"Game Was T2 1.09, But Patch Index Was Invalid ({PatchIndex})"); return null;
                     case 0: return T2109DisableFPS;
                     case 1: return T2109RightAlign;
                     case 2: return T2109ProgPause;
@@ -988,12 +1009,13 @@ namespace Dobby {
             return new byte[] { 0x00, 0x00, 0x00, 0x00 };
         }
 
-        private static byte[] GetBootSettingsData() {
+
+        private static byte[] GetBootSettingsBytes() {
             byte[] BootSettingsData = new byte[41];
 
             byte[][] BootSettingsBaseAdressPointers = new byte[][] {
                 new byte [] { 0x96, 0x52, 0x6b, 0xff }, // UC1 1.00
-                new byte [] { 0x00, 0x00, 0x00, 0x00 }, // UC1 1.02
+                new byte [] { 0xc6, 0xea, 0x6e, 0xff }, // UC1 1.02
                 new byte [] { 0x00, 0x00, 0x00, 0x00 }, // UC2 1.00
                 new byte [] { 0x00, 0x00, 0x00, 0x00 }, // UC2 1.02
                 new byte [] { 0x00, 0x00, 0x00, 0x00 }, // UC3 1.00
@@ -1027,102 +1049,125 @@ namespace Dobby {
             return BootSettingsData;
         }
 
-        /// <summary>
-        /// Returns The Address For The BootSettings Function. Pointer Data Starts At 0x28
+        /// <summary> Returns The Address For The BootSettings Function. Pointer Data Starts At 0x28
         /// </summary>
-        private static int GetPatchDataPointerAddress() { // Address Is For BootSettings 0x28 For Pointers
+        private static int GetAddressToWriteBootSettings() { // Address Is For BootSettings 0x28 For Pointers
             switch (Game) {
                 case UC1100: return 0x94ED61; // 0x94ed8d;
 
-                case UC1102: return 0x915531; 
+                case UC1102: return 0x915531;  // 
 
-                case UC2100: return 0;
+                case UC2100: return 0; // 
 
-                case UC2102: return 0;
+                case UC2102: return 0; // 
 
-                case UC3100: return 0;
+                case UC3100: return 0; // 
 
-                case UC3102: return 0;
+                case UC3102: return 0; // 
 
-                case T1R100: return 0;
+                case T1R100: return 0; // 
 
-                case T1R109: return 0;
+                case T1R109: return 0; // 
 
                 case T1R110:
-                case T1R111: return 0;
+                case T1R111: return 0; // 
 
-                case T2100: return 0;
+                case T2100: return 0;  // 
 
-                case T2107: return 0;
+                case T2107: return 0;  // 
 
-                case T2109: return 0;
+                case T2109: return 0;  // 
             }
             return 0;
         }
+
+        /// <summary>
+        /// Returns The Address To Write A Function Call For The BootSettings Function,<br/>
+        /// With The Data Being Gotten From 
+        /// </summary>
+        private static int GetAddressToCallBootSettings() {
+            switch(Game) {
+                case UC1100: return 0; // 
+
+                case UC1102: return 0; // 
+
+                case UC2100: return 0; // 
+
+                case UC2102: return 0; // 
+
+                case UC3100: return 0; // 
+
+                case UC3102: return 0; // 
+
+                case T1R100: return 0; // 
+
+                case T1R109: return 0; // 
+
+                case T1R110:
+                case T1R111: return 0; // 
+
+                case T2100: return 0; // 
+
+                case T2107: return 0; // 
+
+                case T2109: return 0; // 
+            }
+            return 0;
+        }
+
+        /// <summary> Returns The Data For The Custom Function Used To Call BootSettings
+        /// </summary>
+        private static byte[] GetBytesToCallBootSettings() {
+            switch(Game) {
+                case UC1100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+
+                case UC1102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+
+                case UC2100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+
+                case UC2102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+
+                case UC3100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+
+                case UC3102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+
+                case T1R100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+
+                case T1R109: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+
+                case T1R110:
+                case T1R111: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+
+                case T2100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 };  // 
+
+                case T2107: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 };  // 
+
+                case T2109: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 };  // 
+            }
+            return Array.Empty<byte>();
+        }
         #endregion
 
 
 
 
-
-
-        #region Debug Output Override For Misc Patches Page
-        ////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     Debug Output Override For Misc Patches Page     --\\\
-        ////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-#if DEBUG
-        public delegate void ResetDelegate();
-        public static ResetDelegate ResetDelegateInstance = new ResetDelegate(DynamicPatchButtons.ResetCustomOptions);
-        public static bool FormShouldReset;
-
-
-        public static Thread FormResetThread = new Thread(new ThreadStart(Wait));
-        public static void Wait() {
-            for (;;) {
-                if (FormShouldReset) {
-                    Dev.DebugOut("Initiating Reset");
-                    ActiveForm.Invoke(ResetDelegateInstance);
-                }
-            }
-        }
-
-
-        public static Thread DebugOutputOverrideThread = new Thread(new ThreadStart(DebugOutputOverride));
-        public static void DebugOutputOverride() {
-            Dev.OverrideDebugOut = true;
-            Console.Clear();
-            for (int i = 8;;) { // Create alt debugout that writes to specific spot in the array
-                Console.CursorLeft = 0;
-                Dev.DebugOut(Dev.BlankSpace($"FPS: {UniversalDebugBooleans[0]} | PausedIcon: {UniversalDebugBooleans[1]}"), 0);
-                Dev.DebugOut(Dev.BlankSpace($"ProgPauseOnOpen: {UniversalDebugBooleans[2]} | ProgPauseOnExit: {UniversalDebugBooleans[3]}"), 2);
-              /*Dev.DebugOut(Dev.BlankSpace($"Shadow: {GSDebugBooleans[0]} | VersionText: {GSDebugBooleans[1]} | Disable Version Text: {GSDebugBooleans[2]}"), 4);
-                Dev.DebugOut(Dev.BlankSpace($"Scale: {GSDebugFloats[0]} | Alpha: {GSDebugFloats[1]} | FoV: {GSDebugFloats[2]}"), 6);
-                Dev.DebugOut(Dev.BlankSpace($"Right Align: {GSDebugBooleans[3]}"));
-              */
-                foreach(Control c in DynamicPatchButtons.Buttons)
-                    if (c != null) Dev.DebugOut(Dev.BlankSpace($"{c.Name} | {c.Location} | {c.TabIndex}"), i++);
-                i = 8;
-            }
-        }
-#endif
-        #endregion
-
-
-        #region Repeated Page Functions
         //////////////////////\\\\\\\\\\\\\\\\\\\\\
         ///--     Repeated Page Functions     --\\\
         //////////////////////\\\\\\\\\\\\\\\\\\\\\
+        #region Repeated Page Functions
         private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);
         private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
         private void BackBtn_Click(object sender, EventArgs e) => BackFunc();
         #endregion
 
-        #region Control Declarations
+
         ////////////////////\\\\\\\\\\\\\\\\\\\\
         ///--     Control Declarations     --\\\
         ////////////////////\\\\\\\\\\\\\\\\\\\\
+        #region Control Declarations
         private static GroupBox BorderBox;
 
+        private Label GameInfoLabel;
         private Label MainLabel;
         private Button CreditsBtn;
         private Button InfoHelpBtn;
@@ -1145,6 +1190,47 @@ namespace Dobby {
         private Label CustomDebugOptionsLabel;
         private Button ProgPauseOnCloseBtn;
         private Button BackBtn;
+        #endregion
+
+        ////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Debug Output Override For Misc Patches Page     --\\\
+        ////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        #region Debug Output Override For Misc Patches Page
+#if DEBUG
+        public delegate void ResetDelegate();
+        public static ResetDelegate ResetDelegateInstance = new ResetDelegate(DynamicPatchButtons.ResetCustomOptions);
+        public static bool FormShouldReset;
+
+
+        public static Thread FormResetThread = new Thread(new ThreadStart(Wait));
+        public static void Wait() {
+            for(; ; ) {
+                if(FormShouldReset) {
+                    Dev.DebugOut("Initiating Reset");
+                    ActiveForm.Invoke(ResetDelegateInstance);
+                }
+            }
+        }
+
+
+        public static Thread DebugOutputOverrideThread = new Thread(new ThreadStart(DebugOutputOverride));
+        public static void DebugOutputOverride() {
+            Dev.OverrideDebugOut = true;
+            Console.Clear();
+            for(int i = 8; ;) { // Create alt debugout that writes to specific spot in the array
+                Console.CursorLeft = 0;
+                Dev.DebugOut(Dev.BlankSpace($"FPS: {UniversalDebugBooleans[0]} | PausedIcon: {UniversalDebugBooleans[1]}"), 0);
+                Dev.DebugOut(Dev.BlankSpace($"ProgPauseOnOpen: {UniversalDebugBooleans[2]} | ProgPauseOnExit: {UniversalDebugBooleans[3]}"), 2);
+                /*Dev.DebugOut(Dev.BlankSpace($"Shadow: {GSDebugBooleans[0]} | VersionText: {GSDebugBooleans[1]} | Disable Version Text: {GSDebugBooleans[2]}"), 4);
+                  Dev.DebugOut(Dev.BlankSpace($"Scale: {GSDebugFloats[0]} | Alpha: {GSDebugFloats[1]} | FoV: {GSDebugFloats[2]}"), 6);
+                  Dev.DebugOut(Dev.BlankSpace($"Right Align: {GSDebugBooleans[3]}"));
+                */
+                foreach(Control c in DynamicPatchButtons.Buttons)
+                    if(c != null) Dev.DebugOut(Dev.BlankSpace($"{c.Name} | {c.Location} | {c.TabIndex}"), i++);
+                i = 8;
+            }
+        }
+#endif
         #endregion
     }
 }

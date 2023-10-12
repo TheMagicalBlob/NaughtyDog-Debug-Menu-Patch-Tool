@@ -346,7 +346,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
         /////////////////\\\\\\\\\\\\\\\\\
         private void PS4DebugPageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.PS4DebugPage);
         private void EbootPatchPageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.EbootPatchPage);
-        private void MiscPatchesBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.PS4QOLPage);
+        private void MiscPatchesBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.PS4MiscPage);
         private void PkgPageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.PkgCreationPage);
         private void PCDebugMenuPageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.PCDebugMenuPage);
         #endregion

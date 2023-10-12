@@ -74,7 +74,7 @@
     <Compile Include="PkgCreationPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PS4QOLPatchesPage.cs">
+    <Compile Include="PS4MiscPatchesPage.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PCQOLPatchesPage.cs">
@@ -154,8 +154,8 @@
     <EmbeddedResource Include="PkgCreationPage.resx">
       <DependentUpon>PkgCreationPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PS4QOLPatchesPage.resx">
-      <DependentUpon>PS4QOLPatchesPage.cs</DependentUpon>
+    <EmbeddedResource Include="PS4MiscPatchesPage.resx">
+      <DependentUpon>PS4MiscPatchesPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PCDebugMenuPage.resx">
       <DependentUpon>PCDebugMenuPage.cs</DependentUpon>
