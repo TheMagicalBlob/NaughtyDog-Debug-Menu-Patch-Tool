@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Windows.Forms;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Dobby.Common;
-using System.Drawing;
 using System.IO;
+using System.Drawing;
 using System.Threading;
-using System.Data.SqlTypes;
-using System.Drawing.Text;
+using static Dobby.Common;
+using System.Windows.Forms;
 
 namespace Dobby {
     internal class PS4MiscPatchesPage : Form {
@@ -17,7 +11,7 @@ namespace Dobby {
             InitializeComponent();
             BorderFunc(this);
             AddControlEventHandlers(Controls);
-#if false
+#if DEBUG
             if (FormResetThread.ThreadState != ThreadState.Running)
             FormResetThread.Start();
             if (DebugOutputOverrideThread.ThreadState != ThreadState.Running)
@@ -446,6 +440,16 @@ namespace Dobby {
 
             private static int AmountOfButtonsEnabled = 0;
 
+
+            /// <summary>
+            /// 0: Menu Scale <br/>
+            /// 1: Menu Alpha <br/>
+            /// 2: Non-ADS FOV <br/>
+            /// 3: Menu Shadowed Text <br/>
+            /// 4: Version Text <br/>
+            /// 5: Align Menus Right <br/>
+            /// 6: Right Margin <br/>
+            /// </summary>
             public static object[] PatchValues = new object[] {
                     0.60f,
                     0.85f,
@@ -540,28 +544,37 @@ namespace Dobby {
                 FormShouldReset = false;
                 Dev.DebugOut("Resetting Form And Main Stream");
 #endif
-                int index = 0;
+                index = 0;
 
+                // Reset Form Size
                 ActiveForm.Controls.Find("BorderBox", true)[0].Size = OriginalBorderScale;
                 ActiveForm.Size = OriginalFormScale;
                 OriginalFormScale = Size.Empty;
 
+                // Move Controls Back To Their Original Positions
                 for(; index < ControlsToMove.Length; index++)
                     ControlsToMove[index].Location = OriginalControlPositions[index];
 
+                // Nuke Dynamic Patch Buttons
                 foreach(Button button in Buttons)
                     button?.Dispose();
 
+                // Kill MainStream
                 MainStreamIsOpen = false;
                 MainStream?.Dispose();
 
-                ActiveForm.Controls.Find("CustomDebugOptionsLabel", true)[0].Visible = true;
-                ActiveForm.Controls.Find("ConfirmPatchesBtn", true)[0].Dispose();
+                // Reset Remaining Controls
                 ActiveForm.Controls.Find("ResetBtn", true)[0].Dispose();
+                ActiveForm.Controls.Find("ConfirmPatchesBtn", true)[0].Dispose();
+                ActiveForm.Controls.Find("CustomDebugOptionsLabel", true)[0].Visible = true;
                 Game = 0;
+
+#if DEBUG
+                Console.Clear();
+#endif
             }
 
-            public void AddDynamicButtonsToForm(Form activeForm, int ButtonsVerticalStartPos) {
+            public void AddDynamicButtonsToForm(Form activeForm, int ButtonsVerticalStartPos) { // A Bit Odd, But It Works And There Are So Many Other Things That Need Work More
                 if(AmountOfButtonsEnabled == 1) goto OneButton;
 
                 // Set The Amount of Pixels To Move Shit Based On How Much Shit Has Been Shat.                                                                                                                  shit
@@ -1334,17 +1347,28 @@ namespace Dobby {
         public static void DebugOutputOverride() {
             Dev.OverrideDebugOut = true;
             Console.Clear();
-            for(int i = 8; ;) { // Create alt debugout that writes to specific spot in the array
+            string YN(object In) { return (bool)In == true ? "Yes" : "No"; }
+
+            // Create alt debugout that writes to specific spot in the array
+            for(int i = 12; ;) {
                 Console.CursorLeft = 0;
-                Dev.DebugOut(Dev.BlankSpace($"FPS: {UniversalDebugBooleans[0]} | PausedIcon: {UniversalDebugBooleans[1]}"), 0);
-                Dev.DebugOut(Dev.BlankSpace($"ProgPauseOnOpen: {UniversalDebugBooleans[2]} | ProgPauseOnExit: {UniversalDebugBooleans[3]}"), 2);
-                /*Dev.DebugOut(Dev.BlankSpace($"Shadow: {GSDebugBooleans[0]} | VersionText: {GSDebugBooleans[1]} | Disable Version Text: {GSDebugBooleans[2]}"), 4);
-                  Dev.DebugOut(Dev.BlankSpace($"Scale: {GSDebugFloats[0]} | Alpha: {GSDebugFloats[1]} | FoV: {GSDebugFloats[2]}"), 6);
-                  Dev.DebugOut(Dev.BlankSpace($"Right Align: {GSDebugBooleans[3]}"));
-                */
+                Dev.DebugOut(Dev.BlankSpace($"| Disable FPS:     {YN(UniversalDebugBooleans[0])}"), 0);
+                Dev.DebugOut(Dev.BlankSpace($"| Paused Icon:     {YN(UniversalDebugBooleans[1])}"), 1);
+                Dev.DebugOut(Dev.BlankSpace($"| ProgPauseOnOpen: {YN(UniversalDebugBooleans[2])}"), 2);
+                Dev.DebugOut(Dev.BlankSpace($"| ProgPauseOnExit: {YN(UniversalDebugBooleans[3])}"), 3);
+
+                Dev.DebugOut(Dev.BlankSpace($"| Menu Scale:    {DynamicPatchButtons.PatchValues[0]}"), 4);
+                Dev.DebugOut(Dev.BlankSpace($"| Menu Alpha:    {DynamicPatchButtons.PatchValues[1]}"), 5);
+                Dev.DebugOut(Dev.BlankSpace($"| Non-ADS FOV:   {DynamicPatchButtons.PatchValues[2]}"), 6);
+                Dev.DebugOut(Dev.BlankSpace($"| Shadowed Text: {YN(DynamicPatchButtons.PatchValues[3])}"), 7);
+                Dev.DebugOut(Dev.BlankSpace($"| Version Text:  {YN(DynamicPatchButtons.PatchValues[4])}"), 8);
+                Dev.DebugOut(Dev.BlankSpace($"| Right Align:   {YN(DynamicPatchButtons.PatchValues[5])}"), 9);
+                Dev.DebugOut(Dev.BlankSpace($"| Right Margin:  {DynamicPatchButtons.PatchValues[6]}"));
+                
+                if (DynamicPatchButtons.Buttons != null)
                 foreach(Control c in DynamicPatchButtons.Buttons)
                     if(c != null) Dev.DebugOut(Dev.BlankSpace($"{c.Name} | {c.Location} | {c.TabIndex}"), i++);
-                i = 8;
+                i = 12;
             }
         }
 #endif

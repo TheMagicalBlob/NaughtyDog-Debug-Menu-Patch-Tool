@@ -179,14 +179,17 @@ namespace Dobby {
           "* 3.34.125.340 | Lots Of MiscPatchesPage Work, Misc Changes, Comments And Formatting",
           "* 3.34.125.342 | Minor MiscPatchesPage Work; Adding BootSettings Function.",
           "* 3.34.126.345 | PS4MiscPatches Page Mostly Finished, Need To Fix For Resizing Though. Other Misc Changes",
-          "* 3.35.126.346 | Finished PS4MiscPatchPage Dynamic Buttons' Form Resizing Crap, Misc Changes"
+          "* 3.35.126.346 | Finished PS4MiscPatchPage Dynamic Buttons' Form Resizing Crap, Misc Changes",
+          "* 3.35.126.347 | Small Change To Fix PKG Creation; I Forgot To Add \"'s In Case Any Paths Have Spaces...",
+          "* 3.35.126.348 | GP4CreationPage Patch; New gp4 instance was being created pre-build for some reason, resetting all gp4 options"
 
             // TODO:
+            // - Finish Adding Basic Dynamic Patch Application
+            // - Update PKG Creation Page To Be More Like GP4 Creation Page
             // - Standardize Help Page Fonts For Readability
             // - Standardize Info Label And Back Button Positioning, As Well As Space Betweeen Buttons
             // - Improve/Finish Help Pages
             // - Replace InfoHover Functionality With Alternative, Prefferably One Recreating Native HoverInfo BS That Doesn't Work For Most Controls
-            // - Finish PS4QOLPatchesPage Dynamic Button Functionality
         };
         public static string Build = ChangeList[ChangeList.Length - 1].Substring(2).Substring(0, ChangeList[ChangeList.Length - 1].IndexOf('|') - 3); // Trims The Last ChangeList String For Latest The Build Number
 

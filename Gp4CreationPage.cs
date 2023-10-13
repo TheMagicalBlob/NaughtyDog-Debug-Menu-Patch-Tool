@@ -93,7 +93,7 @@ namespace Dobby {
             this.LoadGamedataFolderButton.Name = "LoadGamedataFolderButton";
             this.LoadGamedataFolderButton.Size = new System.Drawing.Size(317, 23);
             this.LoadGamedataFolderButton.TabIndex = 31;
-            this.LoadGamedataFolderButton.Text = "Browse For App Folder/Gamedata Path...";
+            this.LoadGamedataFolderButton.Text = "Browse For App Folder/Gamedata Path";
             this.LoadGamedataFolderButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.LoadGamedataFolderButton.UseVisualStyleBackColor = false;
             // 
@@ -409,7 +409,7 @@ namespace Dobby {
             this.LoadBaseGamePkgPathBtn.Name = "LoadBaseGamePkgPathBtn";
             this.LoadBaseGamePkgPathBtn.Size = new System.Drawing.Size(317, 23);
             this.LoadBaseGamePkgPathBtn.TabIndex = 42;
-            this.LoadBaseGamePkgPathBtn.Text = "Browse For Base Game .pkg...";
+            this.LoadBaseGamePkgPathBtn.Text = "Browse For Base Game .pkg";
             this.LoadBaseGamePkgPathBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.LoadBaseGamePkgPathBtn.UseVisualStyleBackColor = false;
             this.LoadBaseGamePkgPathBtn.Click += new System.EventHandler(this.LoadBaseGamePkgPathBtn_Click);
@@ -511,20 +511,9 @@ namespace Dobby {
         private void StartPkgCreationBtn_Click(object sender, EventArgs e) {
             var outBox = CreateTextBox(".gp4 Log");
 
-            GP4 gp4 = new GP4();
-            outBox.AppendText(".gp4 Creation Started");
-            /*
-            GP4.FileListing f = new GP4.FileListing();
-            f.ass();
-            gp4.ParseParamFile();
-            gp4.ParsePlaygoChunks();
-            var files = gp4.GetFiles();*/
-            gp4.Build();
-        }
+            outBox.AppendText(".gp4 Creation Started\n");
 
-        private void VerbosityBtn_Click(object sender, EventArgs e) {
-            VerboseOutput = !VerboseOutput;
-            ((Control)sender).Text = ((Control)sender).Text.Remove(((Control)sender).Text.LastIndexOf(' ') + 1) + (VerboseOutput ? "Details" : "Bar");
+            outBox.AppendText(gp4._Build());
         }
 
         void HighlightPathLabel(object sender, EventArgs e) {
@@ -545,7 +534,7 @@ namespace Dobby {
             };
 
             if(file.ShowDialog() == DialogResult.OK) {
-                gp4.gamedata_folder = file.FileName.Remove(file.FileName.LastIndexOf(@"\"));
+                GamedataPathLabel.Text = gp4.gamedata_folder = file.FileName.Remove(file.FileName.LastIndexOf(@"\"));
                 Dev.DebugOut($"dta folder: {gp4.gamedata_folder}");
             }
 
