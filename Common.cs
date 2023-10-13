@@ -178,7 +178,8 @@ namespace Dobby {
           "* 3.34.123.337 | Misc Fixes",
           "* 3.34.125.340 | Lots Of MiscPatchesPage Work, Misc Changes, Comments And Formatting",
           "* 3.34.125.342 | Minor MiscPatchesPage Work; Adding BootSettings Function.",
-          "* 3.34.126.345 | PS4MiscPatches Page Mostly Finished, Need To Fix For Resizing Though. Other Misc Changes"
+          "* 3.34.126.345 | PS4MiscPatches Page Mostly Finished, Need To Fix For Resizing Though. Other Misc Changes",
+          "* 3.35.126.346 | Finished PS4MiscPatchPage Dynamic Buttons' Form Resizing Crap, Misc Changes"
 
             // TODO:
             // - Standardize Help Page Fonts For Readability
@@ -779,6 +780,15 @@ namespace Dobby {
         public static void WriteByte(int offset, byte data) {
             MainStream.Position = offset;
             MainStream.WriteByte(data);
+            MainStream.Flush();
+            DebugOut($"Wrote {data:X} at {offset:X}");
+        }
+        public static void WriteByte(int offset, object data) {
+            TypeConverter conv = new TypeConverter();
+
+            byte[] bytes = (byte[])conv.ConvertTo(data, typeof(byte[]));
+            MainStream.Position = offset;
+            MainStream.Write(bytes, 0, bytes.Length);
             MainStream.Flush();
             DebugOut($"Wrote {data:X} at {offset:X}");
         }
