@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Question4Btn.Text" xml:space="preserve">
+  <data name="Question3Btn.Text" xml:space="preserve">
     <value>
 Because Depending On The Game, There May
 Either Be A Large Amount Of Skipped Or 
@@ -132,7 +132,7 @@ However- I'm not Gonna Sit Around And
 Make These Patches For Every Version Of
 Every Game. For These, The Button's Disabled</value>
   </data>
-  <data name="Question3Btn.Text" xml:space="preserve">
+  <data name="Question2Btn.Text" xml:space="preserve">
     <value>
 - The First Way Is With The Official PS4 SDK Tools,
   Which I Can Not Include In My Projects Due To
@@ -149,12 +149,13 @@ Every Game. For These, The Button's Disabled</value>
   Or Even Youtube Search
 </value>
   </data>
-  <data name="Question2Btn.Text" xml:space="preserve">
+  <data name="Question1Btn.Text" xml:space="preserve">
     <value>
-- App Dumper: Dump The App Via The Homebrew Store
-  Or Vortex Dumper 1.8 Payload By Running The Game,
-  Then Sending The Dumper Payload To The PS4 With
-  An Ext HDD/SSD Plugged In.
+- App Dumper: Dump The App Via The
+   Homebrew Store Or Vtx Dumper 1.8
+   Payload By Running The Game,
+   Then Sending The Dumper Payload To
+   The PS4 With An Ext HDD/SSD Connected.
 
 - fPKG/.pkg: Open orbis-pub-chk And Import The .pkg
   You Want To Extract By Dragging It, Or With The
@@ -162,11 +163,11 @@ Every Game. For These, The Button's Disabled</value>
   And Choose An Output Directory, Then Extract
   (fpkg Password's 32 Zeros)</value>
   </data>
-  <data name="Question0Btn.Text" xml:space="preserve">
+  <data name="DefaultQuestionBtn.Text" xml:space="preserve">
     <value>                                     [General Info]
-- Default Debug: Turns The Debug Mode
-  On Without Any Other Changes
 
+- Default Debug: Turns The Debug Mode On
+   Without Any Other Changes
 
 - Restored Debug: Load Some Hidden Menus That Don't Normally Load While Trying Not To Change Anything About Them
 
@@ -174,9 +175,9 @@ Every Game. For These, The Button's Disabled</value>
 
 - Disable Debug: Only Disables The Debug Mode, Does Not Undo Any Other Patches Applied
 
-- PC Debug Menu: Limited Support, Use Ilusion's Patches. Idc About PC Games</value>
+- PC Debug Menu: Limited Support, Use Ilusion's Patches. Idc About PC Games. Laptop Too Weak</value>
   </data>
-  <data name="Question1Btn.Text" xml:space="preserve">
+  <data name="Question0Btn.Text" xml:space="preserve">
     <value>
 - FTP: Have Your PC And PS4 On The Same Network,
   And Either Send The FTP Payload To Your PS4,

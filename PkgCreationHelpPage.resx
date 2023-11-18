@@ -117,20 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Question0Btn.Text" xml:space="preserve">
+  <data name="DefaultQuestionBtn.Text" xml:space="preserve">
     <value>                                     [General Info]
-- Default Debug: Turns The Debug Mode
-  On Without Any Other Changes
 
+- {General Pkg Creation Page Info}
 
-- Restored Debug: Load Some Hidden Menus That Don't Normally Load While Trying Not To Change Anything About Them
+- {General Pkg Creation Page Info}
 
-- Custom Debug: Customized Menu, Some Useless Things May Be Deleted, Other Things Changed For Convenience
+- {General Pkg Creation Page Info}
 
-- Disable Debug: Only Disables The Debug Mode, Does Not Undo Any Other Patches Applied
-
-- PC Debug Menu: Limited Support, Use Ilusion's Patches. Idc About PC Games
-</value>
+- {General Pkg Creation Page Info}</value>
   </data>
   <data name="Question1Btn.Text" xml:space="preserve">
     <value>To get the orbis-pub-cmd.exe and gengp4.exe required,

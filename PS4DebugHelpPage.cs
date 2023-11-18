@@ -94,36 +94,36 @@ namespace Dobby {
             this.MainBox.Controls.Add(this.BackBtn);
             this.MainBox.Location = new System.Drawing.Point(0, -6);
             this.MainBox.Name = "MainBox";
-            this.MainBox.Size = new System.Drawing.Size(320, 435);
+            this.MainBox.Size = new System.Drawing.Size(320, 421);
             this.MainBox.TabIndex = 5;
             this.MainBox.TabStop = false;
             // 
             // SeperatorLine1
             // 
-            this.SeperatorLine1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine1.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 295);
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 282);
             this.SeperatorLine1.Name = "SeperatorLine1";
-            this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine1.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine1.TabIndex = 33;
             this.SeperatorLine1.Text = "_______________________________________________________________";
             // 
             // PS4DebugAnswerLabel
             // 
-            this.PS4DebugAnswerLabel.Font = new System.Drawing.Font("Microsoft YaHei", 8F, System.Drawing.FontStyle.Bold);
+            this.PS4DebugAnswerLabel.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.PS4DebugAnswerLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.PS4DebugAnswerLabel.Location = new System.Drawing.Point(1, 57);
+            this.PS4DebugAnswerLabel.Location = new System.Drawing.Point(2, 57);
             this.PS4DebugAnswerLabel.Name = "PS4DebugAnswerLabel";
             this.PS4DebugAnswerLabel.Padding = new System.Windows.Forms.Padding(0, 0, 25, 0);
-            this.PS4DebugAnswerLabel.Size = new System.Drawing.Size(317, 306);
+            this.PS4DebugAnswerLabel.Size = new System.Drawing.Size(317, 289);
             this.PS4DebugAnswerLabel.TabIndex = 30;
             this.PS4DebugAnswerLabel.Text = resources.GetString("PS4DebugAnswerLabel.Text");
             // 
             // SeperatorLine2
             // 
-            this.SeperatorLine2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine2.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F);
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(1, 349);
+            this.SeperatorLine2.Location = new System.Drawing.Point(1, 334);
             this.SeperatorLine2.Name = "SeperatorLine2";
             this.SeperatorLine2.Size = new System.Drawing.Size(316, 16);
             this.SeperatorLine2.TabIndex = 32;
@@ -141,19 +141,19 @@ namespace Dobby {
             // 
             // PS4DebugQuestionLabel
             // 
-            this.PS4DebugQuestionLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
+            this.PS4DebugQuestionLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.PS4DebugQuestionLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.PS4DebugQuestionLabel.Location = new System.Drawing.Point(1, 34);
+            this.PS4DebugQuestionLabel.Location = new System.Drawing.Point(22, 34);
             this.PS4DebugQuestionLabel.Name = "PS4DebugQuestionLabel";
-            this.PS4DebugQuestionLabel.Size = new System.Drawing.Size(313, 18);
+            this.PS4DebugQuestionLabel.Size = new System.Drawing.Size(276, 18);
             this.PS4DebugQuestionLabel.TabIndex = 29;
-            this.PS4DebugQuestionLabel.Text = "\"How Do I Enable The Debug Mode With This?\"\r\n";
+            this.PS4DebugQuestionLabel.Text = "[How To Enable The Debug Mode Ingame]";
             // 
             // Info
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(8, 414);
+            this.Info.Location = new System.Drawing.Point(8, 399);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
@@ -167,7 +167,7 @@ namespace Dobby {
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 367);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 352);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
@@ -185,7 +185,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 390);
+            this.BackBtn.Location = new System.Drawing.Point(1, 373);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(60, 23);
             this.BackBtn.TabIndex = 13;
@@ -199,7 +199,7 @@ namespace Dobby {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 428);
+            this.ClientSize = new System.Drawing.Size(320, 414);
             this.Controls.Add(this.MainBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PS4DebugHelpPage";

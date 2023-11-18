@@ -226,7 +226,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.BorderBox.Controls.Add(this.CreditsBtn);
             this.BorderBox.Location = new System.Drawing.Point(0, -6);
             this.BorderBox.Name = "BorderBox";
-            this.BorderBox.Size = new System.Drawing.Size(320, 309);
+            this.BorderBox.Size = new System.Drawing.Size(320, 310);
             this.BorderBox.TabIndex = 34;
             this.BorderBox.TabStop = false;
             // 
@@ -253,7 +253,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.PCLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.PCLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.PCLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.PCLabel.Location = new System.Drawing.Point(146, 169);
+            this.PCLabel.Location = new System.Drawing.Point(146, 166);
             this.PCLabel.Name = "PCLabel";
             this.PCLabel.Size = new System.Drawing.Size(24, 19);
             this.PCLabel.TabIndex = 37;
@@ -291,7 +291,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             // 
             this.SeperatorLine1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 145);
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 142);
             this.SeperatorLine1.Name = "SeperatorLine1";
             this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
             this.SeperatorLine1.TabIndex = 36;
@@ -305,7 +305,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.PCDebugMenuPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PCDebugMenuPageBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.PCDebugMenuPageBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.PCDebugMenuPageBtn.Location = new System.Drawing.Point(1, 181);
+            this.PCDebugMenuPageBtn.Location = new System.Drawing.Point(1, 178);
             this.PCDebugMenuPageBtn.Name = "PCDebugMenuPageBtn";
             this.PCDebugMenuPageBtn.Size = new System.Drawing.Size(240, 23);
             this.PCDebugMenuPageBtn.TabIndex = 37;
@@ -319,7 +319,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 302);
+            this.ClientSize = new System.Drawing.Size(320, 303);
             this.Controls.Add(this.PCDebugMenuPageBtn);
             this.Controls.Add(this.PkgPageBtn);
             this.Controls.Add(this.SeperatorLine1);

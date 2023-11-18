@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{0769F6AF-F222-4543-BCC5-57C331D894C6}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>Dobby</RootNamespace>
     <AssemblyName>ND Debug Enabler</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
@@ -47,8 +47,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\libdebug.dll</HintPath>
     </Reference>
-    <Reference Include="libgp4">
-      <HintPath>.\libgp4.dll</HintPath>
+    <Reference Include="libgp4, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\libgp4.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

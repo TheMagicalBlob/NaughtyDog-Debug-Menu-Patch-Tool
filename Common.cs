@@ -181,7 +181,11 @@ namespace Dobby {
           "* 3.34.126.345 | PS4MiscPatches Page Mostly Finished, Need To Fix For Resizing Though. Other Misc Changes",
           "* 3.35.126.346 | Finished PS4MiscPatchPage Dynamic Buttons' Form Resizing Crap, Misc Changes",
           "* 3.35.126.347 | Small Change To Fix PKG Creation; I Forgot To Add \"'s In Case Any Paths Have Spaces...",
-          "* 3.35.126.348 | GP4CreationPage Patch; New gp4 instance was being created pre-build for some reason, resetting all gp4 options"
+          "* 3.35.126.348 | GP4CreationPage Patch; New gp4 instance was being created pre-build for some reason, resetting all gp4 options",
+          "* 3.35.126.349 | Main Page Control Spacing Fix",
+          "* 3.35.126.350 | Added Warning To GP4 Creation Page As Base Game .pkg's Are Broken Still- I Haven't Got The Chunk Crap Added",
+          "* 3.35.126.351 | Deleted Redundant Button On wip Form",
+          "* 3.35.130.358 | Different Help Page Fonts, Homebrew Store Link. Misc Background Changes, Comments"
 
             // TODO:
             // - Finish Adding Basic Dynamic Patch Application
@@ -207,6 +211,18 @@ namespace Dobby {
         //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
 
         public static string CurrentControl, TempStringStore;
+
+        /// <summary> Buttons To Avoid Applying Hpver Arrow To </summary>
+        public static string[] Blacklist = new string[] {
+            "ExitBtn",
+            "MinimizeBtn",
+            "IPLabelBtn",
+            "PortLabelBtn",
+            "CmdPathBtn",
+            "Gp4PathBtn",
+            "OutputDirectoryBtn",
+            "TmpDirectoryBtn"
+        };
 
         public enum PageID : int {
             MainPage = 0,
@@ -266,7 +282,7 @@ namespace Dobby {
             }
         }
 
-        private static void KillTextBox(object sender, MouseEventArgs e) => PopupGroupBox?.Dispose();
+
         public static RichTextBox CreateTextBox(string Title) {
             PopupGroupBox?.Dispose();
 
@@ -316,6 +332,7 @@ namespace Dobby {
 
             return textBox;
         }
+        private static void KillTextBox(object sender, MouseEventArgs e) => PopupGroupBox?.Dispose();
         
 
         /// <summary> Sets The Info Label String Based On The Currently Hovered Control </summary>
@@ -572,7 +589,6 @@ namespace Dobby {
             DebugLabel.BringToFront();
 #endif
             #endregion
-            string[] Blacklist = new string[] { "ExitBtn", "MinimizeBtn", "IPLabelBtn", "PortLabelBtn" };
 
             foreach(Control Item in Controls) {
                 if(Item.HasChildren) { // Designer Added Some Things To The Form, And Some To The Group Box Used To Make The Border. This is me bing lazy. as long as it's not noticably slower
@@ -702,6 +718,8 @@ namespace Dobby {
             ProcessCount = 0,
             DebugModePointerOffset = 0xDEADDAD
         ;
+
+        public static ulong BaseAddress;
 
         public static readonly string[] ExecutablesNames = new string[] {
             "eboot.bin",

@@ -16,18 +16,21 @@ namespace Dobby {
             AddControlEventHandlers(Controls);
 
             Question1Btn.Text = "- Button Text Here";
-            Question2Btn.Text = "- Button Text Here?";
-            Question3Btn.Text = "- Button Text Here?";
+            Question2Btn.Text = "- Button Text Here";
+            Question3Btn.Text = "- Button Text Here";
             Question4Btn.Text = "- Button Text Here";
         }
-        public string[] headers = new string[] {
-            "",
-            "                [Getting The Game's Executable]\n",
-            "     [Extracting Your Game's .pkg \\ Dumping It]\n",
-            "                [Building A New .pkg]\n",
-            "                [\"Fixing\" A Broken .pkg]\n"
+
+        string[] headers = new string[] {
+            "                [Page Title]\n",
+            "                [Page Title]\n",
+            "                [Page Title]\n",
+            "                [Page Title]\n"
         };
-        public bool[] Questions = new bool[] { false, false, false, false };
+
+        bool[] Questions = new bool[4];
+        bool DefaultQuestion = true;
+
 
         public void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PkgCreationHelpPage));
@@ -44,7 +47,7 @@ namespace Dobby {
             this.Info = new System.Windows.Forms.Label();
             this.CreditsBtn = new System.Windows.Forms.Button();
             this.BackBtn = new System.Windows.Forms.Button();
-            this.Question0Btn = new System.Windows.Forms.Label();
+            this.DefaultQuestionBtn = new System.Windows.Forms.Label();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
             this.Question1Btn = new System.Windows.Forms.Button();
             this.MainBox.SuspendLayout();
@@ -116,7 +119,7 @@ namespace Dobby {
             this.MainBox.Controls.Add(this.Info);
             this.MainBox.Controls.Add(this.CreditsBtn);
             this.MainBox.Controls.Add(this.BackBtn);
-            this.MainBox.Controls.Add(this.Question0Btn);
+            this.MainBox.Controls.Add(this.DefaultQuestionBtn);
             this.MainBox.Controls.Add(this.SeperatorLine2);
             this.MainBox.Controls.Add(this.Question1Btn);
             this.MainBox.Location = new System.Drawing.Point(0, -6);
@@ -192,16 +195,16 @@ namespace Dobby {
             // 
             // PopupLabel
             // 
-            this.PopupLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
+            this.PopupLabel.Font = new System.Drawing.Font("Cambria", 9.5F, System.Drawing.FontStyle.Bold);
             this.PopupLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.PopupLabel.Location = new System.Drawing.Point(7, 86);
+            this.PopupLabel.Location = new System.Drawing.Point(7, 79);
             this.PopupLabel.Name = "PopupLabel";
             this.PopupLabel.Size = new System.Drawing.Size(57, 17);
             this.PopupLabel.TabIndex = 36;
             this.PopupLabel.Text = "*(Kupo)";
-            this.PopupLabel.Click += new System.EventHandler(this.WithSomeExceptionsLabel_Click);
-            this.PopupLabel.MouseEnter += new System.EventHandler(this.WithSomeExceptionsLabelMH);
-            this.PopupLabel.MouseLeave += new System.EventHandler(this.WithSomeExceptionsLabelML);
+            this.PopupLabel.Click += new System.EventHandler(this.PopupLabel_Click);
+            this.PopupLabel.MouseEnter += new System.EventHandler(this.PopupLabelMH);
+            this.PopupLabel.MouseLeave += new System.EventHandler(this.PopupLabelML);
             // 
             // Info
             // 
@@ -248,15 +251,15 @@ namespace Dobby {
             this.BackBtn.UseVisualStyleBackColor = false;
             this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
             // 
-            // Question0Btn
+            // DefaultQuestionBtn
             // 
-            this.Question0Btn.Font = new System.Drawing.Font("Microsoft YaHei", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Question0Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Question0Btn.Location = new System.Drawing.Point(3, 36);
-            this.Question0Btn.Name = "Question0Btn";
-            this.Question0Btn.Size = new System.Drawing.Size(316, 270);
-            this.Question0Btn.TabIndex = 34;
-            this.Question0Btn.Text = resources.GetString("Question0Btn.Text");
+            this.DefaultQuestionBtn.Font = new System.Drawing.Font("Cambria", 9.5F, System.Drawing.FontStyle.Bold);
+            this.DefaultQuestionBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.DefaultQuestionBtn.Location = new System.Drawing.Point(3, 36);
+            this.DefaultQuestionBtn.Name = "DefaultQuestionBtn";
+            this.DefaultQuestionBtn.Size = new System.Drawing.Size(316, 270);
+            this.DefaultQuestionBtn.TabIndex = 34;
+            this.DefaultQuestionBtn.Text = resources.GetString("DefaultQuestionBtn.Text");
             // 
             // SeperatorLine2
             // 
@@ -299,10 +302,6 @@ namespace Dobby {
             this.ResumeLayout(false);
 
         }
-
-
-
-
         #region RepeatedButtonFunctions
         /////////////////\\\\\\\\\\\\\\\\\\
         ///--     Repeat Buttons      --\\\
@@ -321,27 +320,40 @@ namespace Dobby {
         void BackBtn_Click(object sender, EventArgs e) => BackFunc();
         #endregion
 
+
         #region Page-Specific Functions
         //////////////////////\\\\\\\\\\\\\\\\\\\\\
         ///--     Page-Specific Functions     --\\\
         //////////////////////\\\\\\\\\\\\\\\\\\\\\
         void LoadQuestions(int Index) {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PkgCreationHelpPage));
-            Question0Btn.Text = headers[Questions[Index - 1] ? 0 : Index] + resources.GetString($"Question{(Questions[Index - 1] ? 0 : Index)}Btn.Text");
 
-            for(int i = 0; i < Questions.Length - 1; i++) // Reset The Other Buttons
-                Questions[i] = i == Index - 1 ? Questions[i] : false;
-            Questions[Index - 1] = !Questions[Index - 1];
-            PopupLabel.Visible = !Questions[Index - 1];
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EbootPatchHelpPage));
+
+            for(int i = 0; i < Questions.Length; i++) // Reset The Other Buttons
+                if(i != Index) Questions[i] = false;
+
+            Questions[Index] = !Questions[Index];
+
+            if(Questions[Index] == false) {
+                DefaultQuestion = true;
+                DefaultQuestionBtn.Text = resources.GetString("DefaultQuestionBtn.Text");
+                return;
+            }
+            else DefaultQuestion = false;
+
+            DefaultQuestionBtn.Text = headers[Index] + resources.GetString($"Question{Index}Btn.Text");
+            PopupLabel.Visible = DefaultQuestion;
         }
-        private void Question1Btn_Click(object sender, EventArgs e) => LoadQuestions(1);
-        private void Question2Btn_Click(object sender, EventArgs e) => LoadQuestions(2);
-        private void Question3Btn_Click(object sender, EventArgs e) => LoadQuestions(3);
-        private void Question4Btn_Click(object sender, EventArgs e) => LoadQuestions(4);
+        private void Question1Btn_Click(object sender, EventArgs e) => LoadQuestions(0);
+        private void Question2Btn_Click(object sender, EventArgs e) => LoadQuestions(1);
+        private void Question3Btn_Click(object sender, EventArgs e) => LoadQuestions(2);
+        private void Question4Btn_Click(object sender, EventArgs e) => LoadQuestions(3);
 
-        private void WithSomeExceptionsLabel_Click(object sender, EventArgs e) => MessageBox.Show("Some Misc. Patches Will Be Applied To Uncharted 4/Lost Legacy Multiplayer Eboots To Make The Game Playable");
-        private void WithSomeExceptionsLabelMH(object sender, EventArgs e) => PopupLabel.ForeColor = Color.Aqua;
-        private void WithSomeExceptionsLabelML(object sender, EventArgs e) => PopupLabel.ForeColor = Color.White;
+        private void PopupLabel_Click(object sender, EventArgs e) {
+
+        }
+        private void PopupLabelMH(object sender, EventArgs e) => PopupLabel.ForeColor = Color.Aqua;
+        private void PopupLabelML(object sender, EventArgs e) => PopupLabel.ForeColor = Color.White;
         #endregion
 
         #region ControlDeclarations
@@ -360,7 +372,7 @@ namespace Dobby {
         public Label SeperatorLine1;
         public Label SeperatorLine2;
         public Label SeperatorLine3;
-        private Label Question0Btn;
+        private Label DefaultQuestionBtn;
         private Button Question4Btn;
         private Button Question3Btn;
         private Button Question2Btn;

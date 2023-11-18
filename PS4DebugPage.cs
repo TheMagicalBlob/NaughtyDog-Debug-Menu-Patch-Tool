@@ -377,7 +377,7 @@ namespace Dobby {
             // 
             this.SeperatorLine3.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine3.Location = new System.Drawing.Point(2, 331);
+            this.SeperatorLine3.Location = new System.Drawing.Point(2, 329);
             this.SeperatorLine3.Name = "SeperatorLine3";
             this.SeperatorLine3.Size = new System.Drawing.Size(316, 16);
             this.SeperatorLine3.TabIndex = 26;
@@ -523,19 +523,30 @@ namespace Dobby {
                 geo.Connect();
                 PS4DebugIsConnected = true;
 
-                foreach(libdebug.Process process in geo.GetProcessList().processes) { // processprocessprocessprocessprocess
+                foreach(libdebug.Process process in geo.GetProcessList().processes) { // processprocessprocessprocessprocessprocessprocess
                     if(ExecutablesNames.Contains(process.name)) {
+
                         string title = geo.GetProcessInfo(process.pid).titleid;
+                        
                         if(title == "FLTZ00003" || title == "ITEM00003") {
                             Dev.DebugOut($"Skipping Lightning's Stuff {title}");
                             break;
                         } // Check To Avoid Connecting To HB Store Stuff
 
-                        Executable = process.pid;
-                        ProcessName = process.name;
-                        TitleID = geo.GetProcessInfo(process.pid).titleid;
-                        GameVersion = GetGameVersion();
+                        Executable   = process.pid;
+                        ProcessName  = process.name;
+                        TitleID      = geo.GetProcessInfo(process.pid).titleid;
+                        GameVersion  = GetGameVersion();
                         ProcessCount = geo.GetProcessList().processes.Length;
+
+
+                        try { // Base Addr Tst
+                            var tst = geo.GetProcessMaps(Executable).entries;
+                            foreach(var f in tst) {
+                                Dev.DebugOut($"{f.start:X}");
+                            }
+                        } catch(Exception _) { Dev.DebugOut("Tst Crashed"); }
+
 
                         ActiveForm?.Invoke(SetLabelText, $"Attached To {TitleID} ({GameVersion})");
                         WaitForConnection = false;
@@ -552,15 +563,17 @@ namespace Dobby {
             catch(Exception tabarnack) { if(!Dev.REL) MessageBox.Show($"{tabarnack.Message}\n{tabarnack.StackTrace}"); ActiveForm?.Invoke(SetLabelText, $"Connection To {PS4DebugPage.IP()} Failed"); }
         }
 
-        /// <summary>
-        /// Avoid Attempting To Toggle The Bool In Memory Before The Connection Process Is Finished
-        /// </summary>
+        /// <summary> Avoid Attempting To Toggle The Selected Bool In Memory Before The Connection Process Is Finished
+        ///</summary>
         /// <returns> System.Threading.Tasks.Task.CompletedTask </returns>
         public static Task CheckConnectionStatus() {
-            if(ConnectionThread.ThreadState == System.Threading.ThreadState.Unstarted) ConnectionThread.Start();
+            if(ConnectionThread.ThreadState == System.Threading.ThreadState.Unstarted)
+               ConnectionThread.Start();
 
-            else if(!PS4DebugIsConnected || geo?.GetProcessInfo(Executable).name != ProcessName || !ExecutablesNames.Contains(geo?.GetProcessInfo(Executable).name))
-            { PS4DebugIsConnected = false; WaitForConnection = true; Dev.DebugOut("CheckConnectionStatus Second Case, Now On WaitForConnection"); }
+            else if(!PS4DebugIsConnected || geo?.GetProcessInfo(Executable).name != ProcessName || !ExecutablesNames.Contains(geo?.GetProcessInfo(Executable).name)) {
+                PS4DebugIsConnected = false; WaitForConnection = true;
+                Dev.DebugOut("CheckConnectionStatus Second Case, Now On WaitForConnection");
+            }
 
             while(WaitForConnection) Thread.Sleep(2);
             return Task.CompletedTask;
@@ -886,7 +899,7 @@ namespace Dobby {
             await Task.Run(CheckConnectionStatus);
             if(IgnoreTitleID) TitleID = "CUSA00552";
             if(!GameVersion.Contains("Unknown"))
-                Toggle(new ulong[] { 0x1b8fa20, 0x1924a70, 0x1924a70, 0x1924a70 }, new string[] { "1.00", "1.09", "1.10", "1.11" });
+                Toggle(new ulong[] { 0x1B8FA20, 0x1924a70, 0x1924a70, 0x1924a70 }, new string[] { "1.00", "1.09", "1.10", "1.11" });
         }
         private async void T2Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);

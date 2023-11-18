@@ -457,6 +457,7 @@ namespace Dobby {
                     false,
                     false,
                     false,
+                    false,
                     (byte)10
                 };
 
@@ -467,6 +468,7 @@ namespace Dobby {
                     "MenuScaleBtn_f",
                     "MenuAlphaBtn_f",
                     "FOVBtn_f",
+                    "SwapCircleInDebugBtn_b",
                     "MenuShadowTextBtn_b",
                     "VersionTxtBtn_b",
                     "MenuRightAlignBtn_b",
@@ -477,6 +479,7 @@ namespace Dobby {
                     "Set Dev Menu Scale: ",             // default=0.60
                     "Set DMenu BG Opacity: ",           // default=0.85
                     "Adjust Non-ADS FOV: ",             // default=1.00
+                    "Swap Circle With Square In DMenu", // default=No
                     "Enable Debug Menu Text Shadow: ",  // default=No
                     "Disable Version Text: ",           // default=No
                     "Align Debug Menus To The Right: ", // default=No
@@ -491,6 +494,7 @@ namespace Dobby {
                     "Hint",
                     "Moves The Dev/Quick Menus To The Right Of The Screen",
                     "Hint",
+                    "Hint"
                 };
 
             /// <summary> Buttons For Game-Specific Debug Options Loaded Based On The Game Chosen <br/><br/>
