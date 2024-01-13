@@ -18,7 +18,6 @@ using System.Net.NetworkInformation;
 namespace Dobby {
     public class PkgCreationPage : Form {
         private void InitializeComponent() {
-            this.LoadFilesButton = new System.Windows.Forms.Button();
             this.InfoHelpBtn = new System.Windows.Forms.Button();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
             this.BackBtn = new System.Windows.Forms.Button();
@@ -30,39 +29,21 @@ namespace Dobby {
             this.MainLabel = new System.Windows.Forms.Label();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
             this.BorderBox = new System.Windows.Forms.GroupBox();
-            this.StartPkgCreationBtn = new System.Windows.Forms.Button();
+            this.LaunchOrbisPubCmdBtn = new System.Windows.Forms.Button();
             this.VerbosityBtn = new System.Windows.Forms.Button();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.TempDirectoryBtn = new System.Windows.Forms.Button();
             this.SeperatorLine3 = new System.Windows.Forms.Label();
             this.Gp4CreationPageBtn = new System.Windows.Forms.Button();
-            this.SeperatorLine4 = new System.Windows.Forms.Label();
             this.CmdPathLabel = new System.Windows.Forms.Label();
             this.CmdPathBtn = new System.Windows.Forms.Button();
             this.GP4PathLabel = new System.Windows.Forms.Label();
-            this.Gp4PathBtn = new System.Windows.Forms.Button();
-            this.OutputPathLabel = new System.Windows.Forms.Label();
+            this.GP4PathBtn = new System.Windows.Forms.Button();
+            this.OutputDirectoryLabel = new System.Windows.Forms.Label();
             this.OutputDirectoryBtn = new System.Windows.Forms.Button();
-            this.TMPPathLabel = new System.Windows.Forms.Label();
-            this.TmpDirectoryBtn = new System.Windows.Forms.Button();
+            this.TMPDirectoryLabel = new System.Windows.Forms.Label();
+            this.TMPDirectoryBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // LoadFilesButton
-            // 
-            this.LoadFilesButton.BackColor = System.Drawing.Color.DimGray;
-            this.LoadFilesButton.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.LoadFilesButton.FlatAppearance.BorderSize = 0;
-            this.LoadFilesButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LoadFilesButton.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.LoadFilesButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.LoadFilesButton.Location = new System.Drawing.Point(1, 218);
-            this.LoadFilesButton.Name = "LoadFilesButton";
-            this.LoadFilesButton.Size = new System.Drawing.Size(317, 23);
-            this.LoadFilesButton.TabIndex = 31;
-            this.LoadFilesButton.Text = "Browse For OrbisPubCmd And .gp4 Paths";
-            this.LoadFilesButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.LoadFilesButton.UseVisualStyleBackColor = false;
-            this.LoadFilesButton.Click += new System.EventHandler(this.LoadFilesButton_Click);
             // 
             // InfoHelpBtn
             // 
@@ -72,7 +53,7 @@ namespace Dobby {
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 288);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 248);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.Size = new System.Drawing.Size(317, 23);
             this.InfoHelpBtn.TabIndex = 15;
@@ -99,7 +80,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 338);
+            this.BackBtn.Location = new System.Drawing.Point(1, 298);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(317, 23);
             this.BackBtn.TabIndex = 13;
@@ -112,7 +93,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(4, 365);
+            this.Info.Location = new System.Drawing.Point(4, 325);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(313, 19);
             this.Info.TabIndex = 7;
@@ -126,7 +107,7 @@ namespace Dobby {
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 313);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 273);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(317, 23);
@@ -202,26 +183,26 @@ namespace Dobby {
             this.BorderBox.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.BorderBox.Location = new System.Drawing.Point(0, -6);
             this.BorderBox.Name = "BorderBox";
-            this.BorderBox.Size = new System.Drawing.Size(319, 396);
+            this.BorderBox.Size = new System.Drawing.Size(319, 355);
             this.BorderBox.TabIndex = 34;
             this.BorderBox.TabStop = false;
             // 
-            // StartPkgCreationBtn
+            // LaunchOrbisPubCmdBtn
             // 
-            this.StartPkgCreationBtn.BackColor = System.Drawing.Color.DimGray;
-            this.StartPkgCreationBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.StartPkgCreationBtn.FlatAppearance.BorderSize = 0;
-            this.StartPkgCreationBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.StartPkgCreationBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.StartPkgCreationBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.StartPkgCreationBtn.Location = new System.Drawing.Point(1, 33);
-            this.StartPkgCreationBtn.Name = "StartPkgCreationBtn";
-            this.StartPkgCreationBtn.Size = new System.Drawing.Size(317, 23);
-            this.StartPkgCreationBtn.TabIndex = 23;
-            this.StartPkgCreationBtn.Text = "Build .pkg File";
-            this.StartPkgCreationBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.StartPkgCreationBtn.UseVisualStyleBackColor = false;
-            this.StartPkgCreationBtn.Click += new System.EventHandler(this.StartPkgCreationBtn_Click);
+            this.LaunchOrbisPubCmdBtn.BackColor = System.Drawing.Color.DimGray;
+            this.LaunchOrbisPubCmdBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.LaunchOrbisPubCmdBtn.FlatAppearance.BorderSize = 0;
+            this.LaunchOrbisPubCmdBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LaunchOrbisPubCmdBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.LaunchOrbisPubCmdBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.LaunchOrbisPubCmdBtn.Location = new System.Drawing.Point(1, 33);
+            this.LaunchOrbisPubCmdBtn.Name = "LaunchOrbisPubCmdBtn";
+            this.LaunchOrbisPubCmdBtn.Size = new System.Drawing.Size(317, 23);
+            this.LaunchOrbisPubCmdBtn.TabIndex = 23;
+            this.LaunchOrbisPubCmdBtn.Text = "Build .pkg File";
+            this.LaunchOrbisPubCmdBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.LaunchOrbisPubCmdBtn.UseVisualStyleBackColor = false;
+            this.LaunchOrbisPubCmdBtn.Click += new System.EventHandler(this.LaunchOrbisPubCmdBtn_Click);
             // 
             // VerbosityBtn
             // 
@@ -265,13 +246,13 @@ namespace Dobby {
             this.TempDirectoryBtn.Text = "Use Custom Temp Directory: No";
             this.TempDirectoryBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.TempDirectoryBtn.UseVisualStyleBackColor = false;
-            this.TempDirectoryBtn.Click += new System.EventHandler(this.TempDirectoryBtn_Click);
+            this.TempDirectoryBtn.Click += new System.EventHandler(this.TMPDirectoryBtn_Click);
             // 
             // SeperatorLine3
             // 
             this.SeperatorLine3.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine3.Location = new System.Drawing.Point(2, 233);
+            this.SeperatorLine3.Location = new System.Drawing.Point(2, 230);
             this.SeperatorLine3.Name = "SeperatorLine3";
             this.SeperatorLine3.Size = new System.Drawing.Size(316, 20);
             this.SeperatorLine3.TabIndex = 40;
@@ -285,7 +266,7 @@ namespace Dobby {
             this.Gp4CreationPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Gp4CreationPageBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.Gp4CreationPageBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Gp4CreationPageBtn.Location = new System.Drawing.Point(1, 251);
+            this.Gp4CreationPageBtn.Location = new System.Drawing.Point(1, 218);
             this.Gp4CreationPageBtn.Name = "Gp4CreationPageBtn";
             this.Gp4CreationPageBtn.Size = new System.Drawing.Size(317, 23);
             this.Gp4CreationPageBtn.TabIndex = 41;
@@ -293,16 +274,6 @@ namespace Dobby {
             this.Gp4CreationPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Gp4CreationPageBtn.UseVisualStyleBackColor = false;
             this.Gp4CreationPageBtn.Click += new System.EventHandler(this.Gp4CreationPageBtn_Click);
-            // 
-            // SeperatorLine4
-            // 
-            this.SeperatorLine4.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
-            this.SeperatorLine4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine4.Location = new System.Drawing.Point(2, 267);
-            this.SeperatorLine4.Name = "SeperatorLine4";
-            this.SeperatorLine4.Size = new System.Drawing.Size(316, 20);
-            this.SeperatorLine4.TabIndex = 42;
-            this.SeperatorLine4.Text = "____________________________________________";
             // 
             // CmdPathLabel
             // 
@@ -314,6 +285,7 @@ namespace Dobby {
             this.CmdPathLabel.TabIndex = 50;
             this.CmdPathLabel.Text = "No Program Path Loaded";
             this.CmdPathLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.CmdPathLabel.Click += new System.EventHandler(this.CmdPathLabel_Click);
             // 
             // CmdPathBtn
             // 
@@ -330,6 +302,7 @@ namespace Dobby {
             this.CmdPathBtn.Text = "Browse";
             this.CmdPathBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CmdPathBtn.UseVisualStyleBackColor = false;
+            this.CmdPathBtn.Click += new System.EventHandler(this.CmdPathBtn_Click);
             // 
             // GP4PathLabel
             // 
@@ -342,33 +315,36 @@ namespace Dobby {
             this.GP4PathLabel.TabIndex = 53;
             this.GP4PathLabel.Text = "No .gp4 Selected";
             this.GP4PathLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.GP4PathLabel.Click += new System.EventHandler(this.GP4PathLabel_Click);
             // 
-            // Gp4PathBtn
+            // GP4PathBtn
             // 
-            this.Gp4PathBtn.BackColor = System.Drawing.Color.DimGray;
-            this.Gp4PathBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.Gp4PathBtn.FlatAppearance.BorderSize = 0;
-            this.Gp4PathBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Gp4PathBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F);
-            this.Gp4PathBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Gp4PathBtn.Location = new System.Drawing.Point(270, 136);
-            this.Gp4PathBtn.Name = "Gp4PathBtn";
-            this.Gp4PathBtn.Size = new System.Drawing.Size(46, 23);
-            this.Gp4PathBtn.TabIndex = 56;
-            this.Gp4PathBtn.Text = "Browse";
-            this.Gp4PathBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Gp4PathBtn.UseVisualStyleBackColor = false;
+            this.GP4PathBtn.BackColor = System.Drawing.Color.DimGray;
+            this.GP4PathBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.GP4PathBtn.FlatAppearance.BorderSize = 0;
+            this.GP4PathBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.GP4PathBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F);
+            this.GP4PathBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.GP4PathBtn.Location = new System.Drawing.Point(270, 136);
+            this.GP4PathBtn.Name = "GP4PathBtn";
+            this.GP4PathBtn.Size = new System.Drawing.Size(46, 23);
+            this.GP4PathBtn.TabIndex = 56;
+            this.GP4PathBtn.Text = "Browse";
+            this.GP4PathBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.GP4PathBtn.UseVisualStyleBackColor = false;
+            this.GP4PathBtn.Click += new System.EventHandler(this.GP4PathBtn_Click);
             // 
-            // OutputPathLabel
+            // OutputDirectoryLabel
             // 
-            this.OutputPathLabel.Font = new System.Drawing.Font("Georgia", 9.75F);
-            this.OutputPathLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.OutputPathLabel.Location = new System.Drawing.Point(2, 163);
-            this.OutputPathLabel.Name = "OutputPathLabel";
-            this.OutputPathLabel.Size = new System.Drawing.Size(266, 19);
-            this.OutputPathLabel.TabIndex = 51;
-            this.OutputPathLabel.Text = "Using Current Directory For .pkg Output";
-            this.OutputPathLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.OutputDirectoryLabel.Font = new System.Drawing.Font("Georgia", 9.75F);
+            this.OutputDirectoryLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.OutputDirectoryLabel.Location = new System.Drawing.Point(2, 163);
+            this.OutputDirectoryLabel.Name = "OutputDirectoryLabel";
+            this.OutputDirectoryLabel.Size = new System.Drawing.Size(266, 19);
+            this.OutputDirectoryLabel.TabIndex = 51;
+            this.OutputDirectoryLabel.Text = "Using Current Directory For .pkg Output";
+            this.OutputDirectoryLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.OutputDirectoryLabel.Click += new System.EventHandler(this.OutputDirectoryLabel_Click);
             // 
             // OutputDirectoryBtn
             // 
@@ -385,59 +361,60 @@ namespace Dobby {
             this.OutputDirectoryBtn.Text = "Browse";
             this.OutputDirectoryBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.OutputDirectoryBtn.UseVisualStyleBackColor = false;
+            this.OutputDirectoryBtn.Click += new System.EventHandler(this.OutputDirectoryBtn_Click);
             // 
-            // TMPPathLabel
+            // TMPDirectoryLabel
             // 
-            this.TMPPathLabel.Font = new System.Drawing.Font("Georgia", 9.75F);
-            this.TMPPathLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.TMPPathLabel.Location = new System.Drawing.Point(2, 189);
-            this.TMPPathLabel.Name = "TMPPathLabel";
-            this.TMPPathLabel.Size = new System.Drawing.Size(266, 19);
-            this.TMPPathLabel.TabIndex = 52;
-            this.TMPPathLabel.Text = "Using This PC\'s Default TMP Directory";
-            this.TMPPathLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.TMPDirectoryLabel.Font = new System.Drawing.Font("Georgia", 9.75F);
+            this.TMPDirectoryLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.TMPDirectoryLabel.Location = new System.Drawing.Point(2, 189);
+            this.TMPDirectoryLabel.Name = "TMPDirectoryLabel";
+            this.TMPDirectoryLabel.Size = new System.Drawing.Size(266, 19);
+            this.TMPDirectoryLabel.TabIndex = 52;
+            this.TMPDirectoryLabel.Text = "Using This PC\'s Default TMP Directory";
+            this.TMPDirectoryLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.TMPDirectoryLabel.Click += new System.EventHandler(this.TMPDirectoryLabel_Click);
             // 
-            // TmpDirectoryBtn
+            // TMPDirectoryBtn
             // 
-            this.TmpDirectoryBtn.BackColor = System.Drawing.Color.DimGray;
-            this.TmpDirectoryBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.TmpDirectoryBtn.FlatAppearance.BorderSize = 0;
-            this.TmpDirectoryBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.TmpDirectoryBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F);
-            this.TmpDirectoryBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.TmpDirectoryBtn.Location = new System.Drawing.Point(270, 187);
-            this.TmpDirectoryBtn.Name = "TmpDirectoryBtn";
-            this.TmpDirectoryBtn.Size = new System.Drawing.Size(46, 23);
-            this.TmpDirectoryBtn.TabIndex = 58;
-            this.TmpDirectoryBtn.Text = "Browse";
-            this.TmpDirectoryBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.TmpDirectoryBtn.UseVisualStyleBackColor = false;
+            this.TMPDirectoryBtn.BackColor = System.Drawing.Color.DimGray;
+            this.TMPDirectoryBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.TMPDirectoryBtn.FlatAppearance.BorderSize = 0;
+            this.TMPDirectoryBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.TMPDirectoryBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F);
+            this.TMPDirectoryBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.TMPDirectoryBtn.Location = new System.Drawing.Point(270, 187);
+            this.TMPDirectoryBtn.Name = "TMPDirectoryBtn";
+            this.TMPDirectoryBtn.Size = new System.Drawing.Size(46, 23);
+            this.TMPDirectoryBtn.TabIndex = 58;
+            this.TMPDirectoryBtn.Text = "Browse";
+            this.TMPDirectoryBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.TMPDirectoryBtn.UseVisualStyleBackColor = false;
+            this.TMPDirectoryBtn.Click += new System.EventHandler(this.TMPDirectoryBtn_Click);
             // 
             // PkgCreationPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 389);
+            this.ClientSize = new System.Drawing.Size(320, 348);
             this.Controls.Add(this.Gp4CreationPageBtn);
-            this.Controls.Add(this.LoadFilesButton);
-            this.Controls.Add(this.SeperatorLine4);
             this.Controls.Add(this.SeperatorLine3);
             this.Controls.Add(this.TempDirectoryBtn);
             this.Controls.Add(this.VerbosityBtn);
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.MinimizeBtn);
             this.Controls.Add(this.MainLabel);
-            this.Controls.Add(this.StartPkgCreationBtn);
+            this.Controls.Add(this.LaunchOrbisPubCmdBtn);
             this.Controls.Add(this.InfoHelpBtn);
             this.Controls.Add(this.BackBtn);
-            this.Controls.Add(this.TMPPathLabel);
-            this.Controls.Add(this.TmpDirectoryBtn);
+            this.Controls.Add(this.TMPDirectoryLabel);
+            this.Controls.Add(this.TMPDirectoryBtn);
             this.Controls.Add(this.CmdPathLabel);
             this.Controls.Add(this.CmdPathBtn);
             this.Controls.Add(this.GP4PathLabel);
-            this.Controls.Add(this.Gp4PathBtn);
-            this.Controls.Add(this.OutputPathLabel);
+            this.Controls.Add(this.GP4PathBtn);
+            this.Controls.Add(this.OutputDirectoryLabel);
             this.Controls.Add(this.OutputDirectoryBtn);
             this.Controls.Add(this.CreditsBtn);
             this.Controls.Add(this.Info);
@@ -466,23 +443,72 @@ namespace Dobby {
             }
         }
 
-        string
+        static public string
             GP4Path,
             TMPPath,
-            OrbisPubCmdPath,
+            OrbisPubCmdPath = "?",
             OutputDirectory = "?"
         ;
 
         bool VerboseOutput = true, SpecifyTMPDirectory = false, IsFirstOpen = true, IsBuildReady;
-        public Label CmdPathLabel;
-        private Button CmdPathBtn;
-        public Label GP4PathLabel;
-        private Button Gp4PathBtn;
-        public Label OutputPathLabel;
-        private Button OutputDirectoryBtn;
-        public Label TMPPathLabel;
-        private Button TmpDirectoryBtn;
 
+        void ScanForOrbisPubTools() {                                                                                                              //DirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectory
+            var FilesInCurrentDirectory   = Directory.GetFiles(Directory.GetCurrentDirectory());
+            var FoldersInCurrentDirectory = Directory.GetDirectories(Directory.GetCurrentDirectory());
+
+            FileStream stream;
+            byte[] Check = new byte[4];
+
+            CheckFiles:
+            foreach(var file in FilesInCurrentDirectory) {
+                stream = File.OpenRead(file);
+                
+                stream.Position = 0x100;
+                stream.Read(Check, 0, 4);
+
+                if(file.Contains("orbis-pub-cmd") || Check.SequenceEqual(new byte[] { 0x46, 0xD1, 0xB8 }) || Check.SequenceEqual(new byte[] { 0x50, 0x45, 0x00 })) {
+                    CmdPathLabel.Text = OrbisPubCmdPath = file;
+
+                    Dev.DebugOut();
+                    Dev.DebugOut($"{file}\\{OrbisPubCmdPath} Set As OrbisPubCmdPath");
+                    return;
+                }
+            }
+
+            foreach(var folder in FoldersInCurrentDirectory) {
+                if(folder.Contains("3.37") || folder.Contains("FPackage") || folder.Contains("3.87")) {
+                    FilesInCurrentDirectory = Directory.GetFiles(folder);
+                    goto CheckFiles;
+                }
+            }
+        }
+        private void HighlightPathLabel(object sender, EventArgs e) {
+            var Sender = sender as Control;
+            if (Sender.Font.Underline)
+            Sender.Font = new Font("Georgia", 9.75F);
+            else
+            Sender.Font = new Font("Georgia", 9.75F, FontStyle.Underline);
+        }
+
+
+
+        private void LaunchOrbisPubCmdBtn_Click(object sender, EventArgs e) {
+            if(!IsBuildReady) {
+                ScanForOrbisPubTools();
+                MessageBox.Show("orbis-pub-cmd.exe And A .gp4 Are Necessary For .pkg Creation");
+                return;
+            }
+
+            if(OutputDirectory == "?") {
+                OutputDirectory = GP4Path.Remove(GP4Path.LastIndexOf(@"\"));
+            }
+
+            string Parameters = $"img_create --oformat pkg  {(VerboseOutput ? "--no_progress_bar" : string.Empty)} --skip_digest {(SpecifyTMPDirectory ? $"--tmp_path \"{TMPPath}\"" : string.Empty)} \"{GP4Path}\" \"{OutputDirectory}\"";
+            System.Diagnostics.Process.Start(OrbisPubCmdPath, Parameters);
+            Dev.DebugOut(Parameters);
+
+            MessageBox.Show(".pkg Creation Started; If The CMD Window Closes Immediately, You Did Something Wrong. Check Info/Help Page -> Pkg Creation Page Help");
+        }
 
         /// <summary> Open A File Dialog Window To Select The orbis-pub-cmd.exe Binary And The Reqired .gp4 file
         /// </summary>
@@ -529,7 +555,7 @@ namespace Dobby {
         /// <summary> Edit Related Labels
         /// </summary>
         private bool LoadFilesFromSelectedPath(string Path) {
-            if(Path.Contains(".exe")) TMPPathLabel.Text = OrbisPubCmdPath = Path;
+            if(Path.Contains(".exe")) TMPDirectoryLabel.Text = OrbisPubCmdPath = Path;
             if(Path.Contains(".gp4")) GP4PathLabel.Text = GP4Path = Path;
 
             if(OrbisPubCmdPath != "" && GP4Path != "" && OutputDirectory != "") IsBuildReady = true;
@@ -537,59 +563,14 @@ namespace Dobby {
         }
 
 
-
-        private void StartPkgCreationBtn_Click(object sender, EventArgs e) {
-            if(!IsBuildReady) {
-                MessageBox.Show("orbis-pub-cmd.exe And A .gp4 Are Necessary For .pkg Creation");
-                return;
-            }
-
-            if(OutputDirectory == "?") {
-                OutputDirectory = GP4Path.Remove(GP4Path.LastIndexOf(@"\"));
-            }
-
-            string Parameters = $"img_create --oformat pkg  {(VerboseOutput ? "--no_progress_bar" : string.Empty)} --skip_digest {(SpecifyTMPDirectory ? $"--tmp_path \"{TMPPath}\"" : string.Empty)} \"{GP4Path}\" \"{OutputDirectory}\"";
-            System.Diagnostics.Process.Start(OrbisPubCmdPath, Parameters);
-            Dev.DebugOut(Parameters);
-
-            MessageBox.Show(".pkg Creation Started; If The CMD Window Closes Immediately, You Did Something Wrong. Check Info/Help Page -> Pkg Creation Page Help");
-        }
-
         private void VerbosityBtn_Click(object sender, EventArgs e) {
             VerboseOutput = !VerboseOutput;
             ((Control)sender).Text = ((Control)sender).Text.Remove(((Control)sender).Text.LastIndexOf(' ') + 1) + (VerboseOutput ? "Details" : "Bar");
         }
-        private void TempDirectoryBtn_Click(object sender, EventArgs e) {
-            ((Control)sender).Text = ((Control)sender).Text.Remove(((Control)sender).Text.LastIndexOf(' ') + 1) + (SpecifyTMPDirectory ? "No" : "Yes");
-            Refresh();
 
-            if(!SpecifyTMPDirectory) {
-                FolderBrowserDialog Folder = new FolderBrowserDialog {
-                    Description = "Select Your Preffered Temp Directory"
-                };
-                if(Folder.ShowDialog() == DialogResult.OK)
-                    TMPPathLabel.Text = TMPPath = Folder.SelectedPath;
-                else {
-                    ((Control)sender).Text = ((Control)sender).Text.Remove(((Control)sender).Text.LastIndexOf(' ') + 1) + (SpecifyTMPDirectory ? "Yes" : "No");
-                    return;
-                }
-            }
-            else {
-                TMPPath = "";
-                TMPPathLabel.Text = "Using This PC's Default TMP Directory";
-            }
 
-            SpecifyTMPDirectory = !SpecifyTMPDirectory;
-        }
 
-        private void HighlightPathLabel(object sender, EventArgs e) {
-            var Sender = sender as Control;
-            if (Sender.Font.Underline)
-            Sender.Font = new Font("Georgia", 9.75F);
-            else
-            Sender.Font = new Font("Georgia", 9.75F, FontStyle.Underline);
-        }
-
+        private void CmdPathBtn_Click(object sender, EventArgs e) => CmdPathLabel_Click(CmdPathBtn, null);
         private void CmdPathLabel_Click(object sender, EventArgs e) {
             FileDialog file = new OpenFileDialog {
                 Filter = "Executable|*.exe",
@@ -601,7 +582,7 @@ namespace Dobby {
             else return;
         }
 
-
+        private void GP4PathBtn_Click(object sender, EventArgs e) => GP4PathLabel_Click(GP4PathBtn, null);
         private void GP4PathLabel_Click(object sender, EventArgs e) {
             FileDialog file = new OpenFileDialog {
                 Filter = ".gp4 Project File|*.gp4",
@@ -613,7 +594,8 @@ namespace Dobby {
             else return;
         }
 
-        private void OutputDirectoryLabel_Click(object sender, EventArgs e) {
+        private void OutputDirectoryLabel_Click(object sender, EventArgs e) => OutputDirectoryBtn_Click(OutputDirectoryBtn, null);
+        private void OutputDirectoryBtn_Click(object sender, EventArgs e) {
             FolderBrowserDialog Folder = new FolderBrowserDialog {
                 Description = "Chose A Directory You Want The Finished .pkg To Go, Or Close This Window To Use The App Directory"
             };
@@ -625,8 +607,29 @@ namespace Dobby {
             }
         }
 
-        private void TMPPathLabel_Click(object sender, EventArgs e) => TempDirectoryBtn_Click(TempDirectoryBtn, null);
+        private void TMPDirectoryLabel_Click(object sender, EventArgs e) => TMPDirectoryBtn_Click(TempDirectoryBtn, null);
+        private void TMPDirectoryBtn_Click(object sender, EventArgs e) {
+            ((Control)sender).Text = ((Control)sender).Text.Remove(((Control)sender).Text.LastIndexOf(' ') + 1) + (SpecifyTMPDirectory ? "No" : "Yes");
+            Refresh();
 
+            if(!SpecifyTMPDirectory) {
+                FolderBrowserDialog Folder = new FolderBrowserDialog {
+                    Description = "Select Your Preffered Temp Directory"
+                };
+                if(Folder.ShowDialog() == DialogResult.OK)
+                    TMPDirectoryLabel.Text = TMPPath = Folder.SelectedPath;
+                else {
+                    ((Control)sender).Text = ((Control)sender).Text.Remove(((Control)sender).Text.LastIndexOf(' ') + 1) + (SpecifyTMPDirectory ? "Yes" : "No");
+                    return;
+                }
+            }
+            else {
+                TMPPath = "";
+                TMPDirectoryLabel.Text = "Using This PC's Default TMP Directory";
+            }
+
+            SpecifyTMPDirectory = !SpecifyTMPDirectory;
+        }
         private void Gp4CreationPageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.Gp4CreationPage);
 
 
@@ -648,13 +651,11 @@ namespace Dobby {
         ///--     PS4DebugPage Control Declarations     --\\\
         ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
         #region ControlDeclarations
-        private Button LoadFilesButton;
         private Button InfoHelpBtn;
         private Label SeperatorLine2;
         private Button BackBtn;
         private Label Info;
         private Label SeperatorLine3;
-        private Label SeperatorLine4;
         private Button Gp4CreationPageBtn;
         private Button CreditsBtn;
         private Button MinimizeBtn;
@@ -663,10 +664,23 @@ namespace Dobby {
         private Label MainLabel;
         private GroupBox BorderBox;
         private Button VerbosityBtn;
-        private Button StartPkgCreationBtn;
+        private Button LaunchOrbisPubCmdBtn;
         private Label SeperatorLine1;
         private Button TempDirectoryBtn;
         private Label SeperatorLine0;
+        private Label CmdPathLabel;
+        private Button CmdPathBtn;
+
+        private void OutputDirectoryLabel_Click_1(object sender, EventArgs e) {
+
+        }
+
+        private Label GP4PathLabel;
+        private Button GP4PathBtn;
+        private Label OutputDirectoryLabel;
+        private Button OutputDirectoryBtn;
+        private Label TMPDirectoryLabel;
+        private Button TMPDirectoryBtn;
         #endregion
     }
 }

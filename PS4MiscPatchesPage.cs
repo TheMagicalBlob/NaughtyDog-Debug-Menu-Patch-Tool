@@ -380,13 +380,6 @@ namespace Dobby {
             this.PerformLayout();
 
         }
-        private static void BorderFunc(Form form) {
-            BorderBox = new GroupBox();
-            BorderBox.Location = new Point(0, -6);
-            BorderBox.Name = "BorderBox";
-            BorderBox.Size = new Size(form.Size.Width, form.Size.Height + 7);
-            form.Controls.Add(BorderBox);
-        }
 
 
         ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\

@@ -203,9 +203,9 @@ namespace Dobby {
             this.NarcissismLabel.ForeColor = System.Drawing.SystemColors.Control;
             this.NarcissismLabel.Location = new System.Drawing.Point(1, 37);
             this.NarcissismLabel.Name = "NarcissismLabel";
-            this.NarcissismLabel.Size = new System.Drawing.Size(244, 36);
+            this.NarcissismLabel.Size = new System.Drawing.Size(244, 39);
             this.NarcissismLabel.TabIndex = 20;
-            this.NarcissismLabel.Text = "App And Game Patches Developed By:\r\nTheMagicalBlob";
+            this.NarcissismLabel.Text = "App And Game Patches Developed\r\nBy: TheMagicalBlob";
             this.NarcissismLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
             this.NarcissismLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             this.NarcissismLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);

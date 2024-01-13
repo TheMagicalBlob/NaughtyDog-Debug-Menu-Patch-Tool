@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{0769F6AF-F222-4543-BCC5-57C331D894C6}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>Dobby</RootNamespace>
     <AssemblyName>ND Debug Enabler</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
@@ -64,7 +64,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Gp4CreationPage.cs">
       <SubType>Form</SubType>
@@ -76,9 +75,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PS4MiscPatchesPage.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PCQOLPatchesPage.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PCDebugMenuPage.cs">
@@ -160,9 +156,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PCDebugMenuPage.resx">
       <DependentUpon>PCDebugMenuPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PCQOLPatchesPage.resx">
-      <DependentUpon>PCQOLPatchesPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

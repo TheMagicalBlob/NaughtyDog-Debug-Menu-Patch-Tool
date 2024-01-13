@@ -11,36 +11,15 @@ using System.Windows.Forms.VisualStyles;
 
 namespace Dobby {
     public class PkgCreationHelpPage : Form {
-        public PkgCreationHelpPage() {
-            InitializeComponent();
-            AddControlEventHandlers(Controls);
-
-            Question1Btn.Text = "- Button Text Here";
-            Question2Btn.Text = "- Button Text Here";
-            Question3Btn.Text = "- Button Text Here";
-            Question4Btn.Text = "- Button Text Here";
-        }
-
-        string[] headers = new string[] {
-            "                [Page Title]\n",
-            "                [Page Title]\n",
-            "                [Page Title]\n",
-            "                [Page Title]\n"
-        };
-
-        bool[] Questions = new bool[4];
-        bool DefaultQuestion = true;
-
-
         public void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PkgCreationHelpPage));
             this.ExitBtn = new System.Windows.Forms.Button();
             this.MinimizeBtn = new System.Windows.Forms.Button();
             this.MainLabel = new System.Windows.Forms.Label();
             this.MainBox = new System.Windows.Forms.GroupBox();
-            this.Question4Btn = new System.Windows.Forms.Button();
             this.Question3Btn = new System.Windows.Forms.Button();
             this.Question2Btn = new System.Windows.Forms.Button();
+            this.Question1Btn = new System.Windows.Forms.Button();
             this.SeperatorLine3 = new System.Windows.Forms.Label();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.PopupLabel = new System.Windows.Forms.Label();
@@ -49,7 +28,7 @@ namespace Dobby {
             this.BackBtn = new System.Windows.Forms.Button();
             this.DefaultQuestionBtn = new System.Windows.Forms.Label();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
-            this.Question1Btn = new System.Windows.Forms.Button();
+            this.Question0Btn = new System.Windows.Forms.Button();
             this.MainBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -107,9 +86,9 @@ namespace Dobby {
             // 
             // MainBox
             // 
-            this.MainBox.Controls.Add(this.Question4Btn);
             this.MainBox.Controls.Add(this.Question3Btn);
             this.MainBox.Controls.Add(this.Question2Btn);
+            this.MainBox.Controls.Add(this.Question1Btn);
             this.MainBox.Controls.Add(this.SeperatorLine3);
             this.MainBox.Controls.Add(this.ExitBtn);
             this.MainBox.Controls.Add(this.MinimizeBtn);
@@ -121,7 +100,7 @@ namespace Dobby {
             this.MainBox.Controls.Add(this.BackBtn);
             this.MainBox.Controls.Add(this.DefaultQuestionBtn);
             this.MainBox.Controls.Add(this.SeperatorLine2);
-            this.MainBox.Controls.Add(this.Question1Btn);
+            this.MainBox.Controls.Add(this.Question0Btn);
             this.MainBox.Location = new System.Drawing.Point(0, -6);
             this.MainBox.Name = "MainBox";
             this.MainBox.Size = new System.Drawing.Size(320, 483);
@@ -131,33 +110,19 @@ namespace Dobby {
             this.MainBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.MainBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             // 
-            // Question4Btn
-            // 
-            this.Question4Btn.FlatAppearance.BorderSize = 0;
-            this.Question4Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Question4Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
-            this.Question4Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Question4Btn.Location = new System.Drawing.Point(1, 379);
-            this.Question4Btn.Name = "Question4Btn";
-            this.Question4Btn.Size = new System.Drawing.Size(236, 24);
-            this.Question4Btn.TabIndex = 43;
-            this.Question4Btn.Text = "- Obtaining The Files Needed";
-            this.Question4Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.Question4Btn.Click += new System.EventHandler(this.Question4Btn_Click);
-            // 
             // Question3Btn
             // 
             this.Question3Btn.FlatAppearance.BorderSize = 0;
             this.Question3Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Question3Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
             this.Question3Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Question3Btn.Location = new System.Drawing.Point(1, 356);
+            this.Question3Btn.Location = new System.Drawing.Point(1, 379);
             this.Question3Btn.Name = "Question3Btn";
             this.Question3Btn.Size = new System.Drawing.Size(236, 24);
-            this.Question3Btn.TabIndex = 42;
+            this.Question3Btn.TabIndex = 43;
             this.Question3Btn.Text = "- Obtaining The Files Needed";
             this.Question3Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.Question3Btn.Click += new System.EventHandler(this.Question3Btn_Click);
+            this.Question3Btn.Click += new System.EventHandler(this.Question4Btn_Click);
             // 
             // Question2Btn
             // 
@@ -165,13 +130,27 @@ namespace Dobby {
             this.Question2Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Question2Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
             this.Question2Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Question2Btn.Location = new System.Drawing.Point(1, 332);
+            this.Question2Btn.Location = new System.Drawing.Point(1, 356);
             this.Question2Btn.Name = "Question2Btn";
             this.Question2Btn.Size = new System.Drawing.Size(236, 24);
-            this.Question2Btn.TabIndex = 41;
+            this.Question2Btn.TabIndex = 42;
             this.Question2Btn.Text = "- Obtaining The Files Needed";
             this.Question2Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.Question2Btn.Click += new System.EventHandler(this.Question2Btn_Click);
+            this.Question2Btn.Click += new System.EventHandler(this.Question3Btn_Click);
+            // 
+            // Question1Btn
+            // 
+            this.Question1Btn.FlatAppearance.BorderSize = 0;
+            this.Question1Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Question1Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
+            this.Question1Btn.ForeColor = System.Drawing.SystemColors.Control;
+            this.Question1Btn.Location = new System.Drawing.Point(1, 332);
+            this.Question1Btn.Name = "Question1Btn";
+            this.Question1Btn.Size = new System.Drawing.Size(236, 24);
+            this.Question1Btn.TabIndex = 41;
+            this.Question1Btn.Text = "- Obtaining The Files Needed";
+            this.Question1Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.Question1Btn.Click += new System.EventHandler(this.Question2Btn_Click);
             // 
             // SeperatorLine3
             // 
@@ -195,13 +174,13 @@ namespace Dobby {
             // 
             // PopupLabel
             // 
-            this.PopupLabel.Font = new System.Drawing.Font("Cambria", 9.5F, System.Drawing.FontStyle.Bold);
+            this.PopupLabel.Font = new System.Drawing.Font("Cambria", 9.5F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))));
             this.PopupLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.PopupLabel.Location = new System.Drawing.Point(7, 79);
+            this.PopupLabel.Location = new System.Drawing.Point(127, 81);
             this.PopupLabel.Name = "PopupLabel";
-            this.PopupLabel.Size = new System.Drawing.Size(57, 17);
+            this.PopupLabel.Size = new System.Drawing.Size(96, 16);
             this.PopupLabel.TabIndex = 36;
-            this.PopupLabel.Text = "*(Kupo)";
+            this.PopupLabel.Text = "orbis-pub-cmd";
             this.PopupLabel.Click += new System.EventHandler(this.PopupLabel_Click);
             this.PopupLabel.MouseEnter += new System.EventHandler(this.PopupLabelMH);
             this.PopupLabel.MouseLeave += new System.EventHandler(this.PopupLabelML);
@@ -271,19 +250,19 @@ namespace Dobby {
             this.SeperatorLine2.TabIndex = 38;
             this.SeperatorLine2.Text = "______________________________________________________________";
             // 
-            // Question1Btn
+            // Question0Btn
             // 
-            this.Question1Btn.FlatAppearance.BorderSize = 0;
-            this.Question1Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Question1Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
-            this.Question1Btn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Question1Btn.Location = new System.Drawing.Point(1, 309);
-            this.Question1Btn.Name = "Question1Btn";
-            this.Question1Btn.Size = new System.Drawing.Size(236, 24);
-            this.Question1Btn.TabIndex = 30;
-            this.Question1Btn.Text = resources.GetString("Question1Btn.Text");
-            this.Question1Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.Question1Btn.Click += new System.EventHandler(this.Question1Btn_Click);
+            this.Question0Btn.FlatAppearance.BorderSize = 0;
+            this.Question0Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Question0Btn.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
+            this.Question0Btn.ForeColor = System.Drawing.SystemColors.Control;
+            this.Question0Btn.Location = new System.Drawing.Point(1, 309);
+            this.Question0Btn.Name = "Question0Btn";
+            this.Question0Btn.Size = new System.Drawing.Size(236, 24);
+            this.Question0Btn.TabIndex = 30;
+            this.Question0Btn.Text = resources.GetString("Question0Btn.Text");
+            this.Question0Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.Question0Btn.Click += new System.EventHandler(this.Question1Btn_Click);
             // 
             // PkgCreationHelpPage
             // 
@@ -302,10 +281,31 @@ namespace Dobby {
             this.ResumeLayout(false);
 
         }
-        #region RepeatedButtonFunctions
+        public PkgCreationHelpPage() {
+            InitializeComponent();
+            AddControlEventHandlers(Controls);
+
+            Question0Btn.Text = "- Button Text Here";
+            Question1Btn.Text = "- Button Text Here";
+            Question2Btn.Text = "- Button Text Here";
+            Question3Btn.Text = "- Button Text Here";
+        }
+
+        string[] Headers = new string[] {
+            "                [Page Title]\n",
+            "                [Page Title]\n",
+            "                [Page Title]\n",
+            "                [Page Title]\n"
+        };
+
+        bool[] Questions = new bool[4];
+        bool DefaultQuestionIsActive = true;
+
+
         /////////////////\\\\\\\\\\\\\\\\\\
         ///--     Repeat Buttons      --\\\
         /////////////////\\\\\\\\\\\\\\\\\\\
+        #region RepeatedButtonFunctions
         public void MoveForm(object sender, MouseEventArgs e) => Common.MoveForm(sender, e);
         public void MouseUpFunc(object sender, MouseEventArgs e) => Common.MouseUpFunc(sender, e);
         public void MouseDownFunc(object sender, MouseEventArgs e) => Common.MouseDownFunc(sender, e);
@@ -321,13 +321,13 @@ namespace Dobby {
         #endregion
 
 
-        #region Page-Specific Functions
         //////////////////////\\\\\\\\\\\\\\\\\\\\\
         ///--     Page-Specific Functions     --\\\
         //////////////////////\\\\\\\\\\\\\\\\\\\\\
+        #region Page-Specific Functions
         void LoadQuestions(int Index) {
 
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EbootPatchHelpPage));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PkgCreationHelpPage));
 
             for(int i = 0; i < Questions.Length; i++) // Reset The Other Buttons
                 if(i != Index) Questions[i] = false;
@@ -335,23 +335,21 @@ namespace Dobby {
             Questions[Index] = !Questions[Index];
 
             if(Questions[Index] == false) {
-                DefaultQuestion = true;
+                DefaultQuestionIsActive = true;
                 DefaultQuestionBtn.Text = resources.GetString("DefaultQuestionBtn.Text");
                 return;
             }
-            else DefaultQuestion = false;
+            else DefaultQuestionIsActive = false;
 
-            DefaultQuestionBtn.Text = headers[Index] + resources.GetString($"Question{Index}Btn.Text");
-            PopupLabel.Visible = DefaultQuestion;
+            DefaultQuestionBtn.Text = Headers[Index] + resources.GetString($"Question{Index}Btn.Text");
+            PopupLabel.Visible = DefaultQuestionIsActive;
         }
         private void Question1Btn_Click(object sender, EventArgs e) => LoadQuestions(0);
         private void Question2Btn_Click(object sender, EventArgs e) => LoadQuestions(1);
         private void Question3Btn_Click(object sender, EventArgs e) => LoadQuestions(2);
         private void Question4Btn_Click(object sender, EventArgs e) => LoadQuestions(3);
 
-        private void PopupLabel_Click(object sender, EventArgs e) {
-
-        }
+        private void PopupLabel_Click(object sender, EventArgs e) { }
         private void PopupLabelMH(object sender, EventArgs e) => PopupLabel.ForeColor = Color.Aqua;
         private void PopupLabelML(object sender, EventArgs e) => PopupLabel.ForeColor = Color.White;
         #endregion
@@ -366,16 +364,16 @@ namespace Dobby {
         public GroupBox MainBox;
         public Button CreditsBtn;
         public Button BackBtn;
-        private Button Question1Btn;
+        private Button Question0Btn;
         public Button ExitBtn;
         private Label PopupLabel;
         public Label SeperatorLine1;
         public Label SeperatorLine2;
         public Label SeperatorLine3;
         private Label DefaultQuestionBtn;
-        private Button Question4Btn;
         private Button Question3Btn;
         private Button Question2Btn;
+        private Button Question1Btn;
         #endregion
     }
 }

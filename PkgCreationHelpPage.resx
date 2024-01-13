@@ -120,15 +120,12 @@
   <data name="DefaultQuestionBtn.Text" xml:space="preserve">
     <value>                                     [General Info]
 
-- {General Pkg Creation Page Info}
-
-- {General Pkg Creation Page Info}
-
-- {General Pkg Creation Page Info}
-
-- {General Pkg Creation Page Info}</value>
+- In Order To Build A fPKG With The
+   Pkg Creation Page, orbis-pub-cmd Is Required.
+   Google FakePkgTools To Find This, I Can't
+   Include Copyrighted Sony SDK Tools In My Apps.</value>
   </data>
-  <data name="Question1Btn.Text" xml:space="preserve">
+  <data name="Question0Btn.Text" xml:space="preserve">
     <value>To get the orbis-pub-cmd.exe and gengp4.exe required,
 you'll just have to grab them off of google yourself,
 I can't just include copyrighted Sony SDK tools in my apps.

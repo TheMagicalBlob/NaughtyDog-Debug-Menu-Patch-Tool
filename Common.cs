@@ -185,7 +185,10 @@ namespace Dobby {
           "* 3.35.126.349 | Main Page Control Spacing Fix",
           "* 3.35.126.350 | Added Warning To GP4 Creation Page As Base Game .pkg's Are Broken Still- I Haven't Got The Chunk Crap Added",
           "* 3.35.126.351 | Deleted Redundant Button On wip Form",
-          "* 3.35.130.358 | Different Help Page Fonts, Homebrew Store Link. Misc Background Changes, Comments"
+          "* 3.35.130.358 | Different Help Page Fonts, Homebrew Store Link. Misc Background Changes, Comments",
+          "* 3.35.131.360 | Label Fix, App was cutting out my own alias on the credits page, Misc Changes",
+          "* 3.35.133.363 | Deleted Unused Page; Deleted Unfinished Item. Replaced Border In PC Patch Page With Dynamic One. Added Border Func To Common.cs. Misc Changes",
+          "* 3.36.133.363 | Added Newer T2 Custom Menu Patch (1.08/1.09)"
 
             // TODO:
             // - Finish Adding Basic Dynamic Patch Application
@@ -282,6 +285,14 @@ namespace Dobby {
             }
         }
 
+
+        public static void BorderFunc(Form form) {
+            GroupBox BorderBox = new GroupBox();
+            BorderBox.Location = new Point(0, -6);
+            BorderBox.Name = "BorderBox";
+            BorderBox.Size = new Size(form.Size.Width, form.Size.Height + 7);
+            form.Controls.Add(BorderBox);
+        }
 
         public static RichTextBox CreateTextBox(string Title) {
             PopupGroupBox?.Dispose();
@@ -539,9 +550,8 @@ namespace Dobby {
                     MessageBox.Show("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
                     break;
                 case PageID.PlaceholderPage:
-                    PCQOLPatchesPage PCQOLPatches = new PCQOLPatchesPage();
-                    PCQOLPatches.Show();
-                    MessageBox.Show("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
+                    MessageBox.Show("Nani The Fuck?");
+                    Environment.Exit(1);
                     break;
                 case PageID.InfoHelpPage:
                     InfoHelpPage InfoHelp = new InfoHelpPage();
@@ -803,6 +813,7 @@ namespace Dobby {
             MainStream.WriteByte(data);
             MainStream.Flush();
             DebugOut($"Wrote {data:X} at {offset:X}");
+            MainStream.Flush();
         }
         public static void WriteByte(int offset, object data) {
             TypeConverter conv = new TypeConverter();
@@ -1341,7 +1352,7 @@ namespace Dobby {
 
             Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIIIIIIGHT
                 WindowHeight = 35; SetWindowPosition(0, 0);
-                OutputStrings = new string[WindowHeight - 16];
+                OutputStrings = new string[WindowHeight - 18];
                 CursorVisible = false;
                 Point OriginalConsoleScale = new Point(WindowHeight, WindowWidth);
                 if(ActiveForm != null && !TimerThreadStarted) { ActiveForm.Invoke(TimerThread); TimerThreadStarted = true; }

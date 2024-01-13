@@ -13,7 +13,9 @@ namespace Dobby {
     internal class PCDebugMenuPage : Form {
         public PCDebugMenuPage() {
             InitializeComponent();
+            BorderFunc(this);
             AddControlEventHandlers(Controls);
+            
 
             if (ActiveFilePath != null && IsActiveFilePCExe)
                 ExecutablePathBox.Text = ActiveFilePath;
@@ -32,16 +34,13 @@ namespace Dobby {
             this.InfoHelpBtn = new System.Windows.Forms.Button();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
-            this.BorderBox = new System.Windows.Forms.GroupBox();
             this.GameInfoLabel = new System.Windows.Forms.Label();
             this.BackBtn = new System.Windows.Forms.Button();
             this.BrowseButton = new System.Windows.Forms.Button();
             this.ExecutablePathBox = new System.Windows.Forms.TextBox();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.BaseDebugBtn = new System.Windows.Forms.Button();
-            this.DownloadIllusionPluginBtn = new System.Windows.Forms.Button();
             this.DisableDebugBtn = new System.Windows.Forms.Button();
-            this.BorderBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainLabel
@@ -100,7 +99,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(9, 272);
+            this.Info.Location = new System.Drawing.Point(9, 241);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
@@ -117,7 +116,7 @@ namespace Dobby {
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 223);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 192);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
@@ -135,7 +134,7 @@ namespace Dobby {
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 198);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 167);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.InfoHelpBtn.Size = new System.Drawing.Size(147, 23);
@@ -159,32 +158,17 @@ namespace Dobby {
             // 
             this.SeperatorLine2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(3, 172);
+            this.SeperatorLine2.Location = new System.Drawing.Point(3, 141);
             this.SeperatorLine2.Name = "SeperatorLine2";
             this.SeperatorLine2.Size = new System.Drawing.Size(316, 16);
             this.SeperatorLine2.TabIndex = 32;
             this.SeperatorLine2.Text = "______________________________________________________________";
             // 
-            // BorderBox
-            // 
-            this.BorderBox.Controls.Add(this.GameInfoLabel);
-            this.BorderBox.Controls.Add(this.BackBtn);
-            this.BorderBox.Controls.Add(this.BrowseButton);
-            this.BorderBox.Controls.Add(this.ExecutablePathBox);
-            this.BorderBox.Controls.Add(this.Info);
-            this.BorderBox.Controls.Add(this.InfoHelpBtn);
-            this.BorderBox.Controls.Add(this.CreditsBtn);
-            this.BorderBox.Location = new System.Drawing.Point(0, -6);
-            this.BorderBox.Name = "BorderBox";
-            this.BorderBox.Size = new System.Drawing.Size(320, 295);
-            this.BorderBox.TabIndex = 34;
-            this.BorderBox.TabStop = false;
-            // 
             // GameInfoLabel
             // 
             this.GameInfoLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.GameInfoLabel.Location = new System.Drawing.Point(2, 163);
+            this.GameInfoLabel.Location = new System.Drawing.Point(2, 131);
             this.GameInfoLabel.Name = "GameInfoLabel";
             this.GameInfoLabel.Size = new System.Drawing.Size(316, 19);
             this.GameInfoLabel.TabIndex = 40;
@@ -199,7 +183,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 248);
+            this.BackBtn.Location = new System.Drawing.Point(1, 217);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.BackBtn.Size = new System.Drawing.Size(75, 23);
@@ -217,7 +201,7 @@ namespace Dobby {
             this.BrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BrowseButton.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BrowseButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.BrowseButton.Location = new System.Drawing.Point(239, 137);
+            this.BrowseButton.Location = new System.Drawing.Point(239, 99);
             this.BrowseButton.Name = "BrowseButton";
             this.BrowseButton.Size = new System.Drawing.Size(75, 23);
             this.BrowseButton.TabIndex = 39;
@@ -231,7 +215,7 @@ namespace Dobby {
             this.ExecutablePathBox.BackColor = System.Drawing.Color.Gray;
             this.ExecutablePathBox.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.ExecutablePathBox.ForeColor = System.Drawing.SystemColors.Window;
-            this.ExecutablePathBox.Location = new System.Drawing.Point(7, 137);
+            this.ExecutablePathBox.Location = new System.Drawing.Point(7, 99);
             this.ExecutablePathBox.Name = "ExecutablePathBox";
             this.ExecutablePathBox.Size = new System.Drawing.Size(233, 23);
             this.ExecutablePathBox.TabIndex = 38;
@@ -241,7 +225,7 @@ namespace Dobby {
             // 
             this.SeperatorLine1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 103);
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 75);
             this.SeperatorLine1.Name = "SeperatorLine1";
             this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
             this.SeperatorLine1.TabIndex = 36;
@@ -263,23 +247,6 @@ namespace Dobby {
             this.BaseDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BaseDebugBtn.UseVisualStyleBackColor = false;
             this.BaseDebugBtn.Click += new System.EventHandler(this.BaseDebugBtn_Click);
-            // 
-            // DownloadIllusionPluginBtn
-            // 
-            this.DownloadIllusionPluginBtn.BackColor = System.Drawing.Color.DimGray;
-            this.DownloadIllusionPluginBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.DownloadIllusionPluginBtn.FlatAppearance.BorderSize = 0;
-            this.DownloadIllusionPluginBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DownloadIllusionPluginBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.DownloadIllusionPluginBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.DownloadIllusionPluginBtn.Location = new System.Drawing.Point(1, 85);
-            this.DownloadIllusionPluginBtn.Name = "DownloadIllusionPluginBtn";
-            this.DownloadIllusionPluginBtn.Size = new System.Drawing.Size(318, 23);
-            this.DownloadIllusionPluginBtn.TabIndex = 37;
-            this.DownloadIllusionPluginBtn.Text = "Download Illusion\'s Restored Menu Plugin...";
-            this.DownloadIllusionPluginBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.DownloadIllusionPluginBtn.UseVisualStyleBackColor = false;
-            this.DownloadIllusionPluginBtn.Click += new System.EventHandler(this.DownloadIllusionPluginBtn_Click);
             // 
             // DisableDebugBtn
             // 
@@ -303,25 +270,29 @@ namespace Dobby {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(320, 288);
-            this.Controls.Add(this.DownloadIllusionPluginBtn);
+            this.ClientSize = new System.Drawing.Size(320, 261);
+            this.Controls.Add(this.GameInfoLabel);
+            this.Controls.Add(this.SeperatorLine2);
+            this.Controls.Add(this.BaseDebugBtn);
             this.Controls.Add(this.DisableDebugBtn);
             this.Controls.Add(this.SeperatorLine1);
-            this.Controls.Add(this.BaseDebugBtn);
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.MinimizeBtn);
             this.Controls.Add(this.MainLabel);
             this.Controls.Add(this.SeperatorLine0);
-            this.Controls.Add(this.SeperatorLine2);
-            this.Controls.Add(this.BorderBox);
+            this.Controls.Add(this.BackBtn);
+            this.Controls.Add(this.BrowseButton);
+            this.Controls.Add(this.ExecutablePathBox);
+            this.Controls.Add(this.Info);
+            this.Controls.Add(this.InfoHelpBtn);
+            this.Controls.Add(this.CreditsBtn);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PCDebugMenuPage";
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            this.BorderBox.ResumeLayout(false);
-            this.BorderBox.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -554,10 +525,6 @@ Read:       MainStream.Position = TmpAddr;
             }
             WriteByte(DebugAddr, 0x8F);
         }
-        private void DownloadIllusionPluginBtn_Click(object sender, EventArgs e) { //!
-            //  System.Diagnostics.Process.Start("Download Link Here");
-            MessageBox.Show("W.I.P., I Was Too Lazy To Find The Link So Here's A Temp Message Box Explaining It", "Temp Message Box");
-        }
         #endregion
 
         #region ControlDeclarations
@@ -572,12 +539,10 @@ Read:       MainStream.Position = TmpAddr;
         public Button MinimizeBtn;
         public Label SeperatorLine0;
         public Label SeperatorLine2;
-        private GroupBox BorderBox;
         public Label SeperatorLine1;
         public Label GameInfoLabel;
         private Button BrowseButton;
         private TextBox ExecutablePathBox;
-        public Button DownloadIllusionPluginBtn;
         public Button BackBtn;
         public Button DisableDebugBtn;
         public Button BaseDebugBtn;

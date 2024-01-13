@@ -836,6 +836,12 @@ namespace Dobby {
                         }
                         else if(AddressIndex != Addresses.Length - 1) AddressIndex++;
                 }
+                else {
+                    Dev.DebugOut (
+                        $"Error Toggling Byte.\nPS4Debug {(PS4DebugIsConnected ? "" : "Not " )}Connected\n"
+                        + $"{geo.GetProcessInfo(Executable).name} {(geo.GetProcessInfo(Executable).name == ProcessName ? "=" : "!" )}= {ProcessName}"
+                    );
+                }
             }
             catch(Exception tabarnack) { Dev.DebugOut(tabarnack.Message); }
         }
