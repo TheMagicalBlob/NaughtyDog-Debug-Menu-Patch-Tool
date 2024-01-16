@@ -190,7 +190,8 @@ namespace Dobby {
           "* 3.35.133.363 | Deleted Unused Page; Deleted Unfinished Item. Replaced Border In PC Patch Page With Dynamic One. Added Border Func To Common.cs. Misc Changes",
           "* 3.36.133.363 | Added Newer T2 Custom Menu Patch (1.08/1.09)",
           "* 3.36.133.364 | Font Fix",
-          "* 3.36.136.365 | Updated T2 Custom Debug, Added Formatting Script to Source JIC; Other Misc Changes"
+          "* 3.36.136.365 | Updated T2 Custom Debug, Added Formatting Script to Source JIC; Other Misc Changes",
+          "* 3.36.137.366 | Fixed EbootPatchPage Action Info Output So It's Not Applied To The Hover Info Label Instead of The Game Info One, Other Changes (I'm Forgetful, who cares)"
 
             // TODO:
             // - PS4DebugPage Consistency Fix

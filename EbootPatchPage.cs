@@ -536,7 +536,12 @@ namespace Dobby {
                 default:           DebugAddressForSelectedGame = 0xBADBEEF;         return $"UnknownGame {Game}";
             }
         }
-        
+
+
+        /// <summary> Update GameInfoLabel Text To Reflect Last Action Taken </summary>
+        /// <param name="str"> Text To Apply </param>
+        public void SetGameInfoLabelText(string str) { if(ActiveForm != null) GameInfoLabel.Text = str; }
+
 
         /// <summary> 0: Disable | 1: Enable | 2: Restored | 3: Custom 
         /// </summary>
@@ -620,7 +625,7 @@ namespace Dobby {
                     break;
             }
 
-            SetInfoLabelText($"{ActiveGameID} {ResultStrings[PatchType]}");
+            SetGameInfoLabelText($"{ActiveGameID} {ResultStrings[PatchType]}");
 
         }
 
