@@ -517,7 +517,7 @@ namespace Dobby {
 
                 Dev.DebugOut($"Connecting To Console at {IP()}");
                 ActiveForm?.Invoke(SetLabelText, "Connecting To Console");
-                Dev.DebugOut($"P?: {PS4DebugIsConnected} | {geo?.GetProcessInfo(Executable).name != ProcessName} | {geo?.GetProcessList().processes.Length == ProcessCount}");
+                Dev.DebugOut($"PDIC?: {PS4DebugIsConnected} | {geo?.GetProcessInfo(Executable).name != ProcessName} | {geo?.GetProcessList().processes.Length == ProcessCount}");
 
                 geo = new PS4DBG(IP());
                 geo.Connect();
@@ -538,14 +538,6 @@ namespace Dobby {
                         TitleID      = geo.GetProcessInfo(process.pid).titleid;
                         GameVersion  = GetGameVersion();
                         ProcessCount = geo.GetProcessList().processes.Length;
-
-
-                        try { // Base Addr Tst
-                            var tst = geo.GetProcessMaps(Executable).entries;
-                            foreach(var f in tst) {
-                                Dev.DebugOut($"{f.start:X}");
-                            }
-                        } catch(Exception _) { Dev.DebugOut("Tst Crashed"); }
 
 
                         ActiveForm?.Invoke(SetLabelText, $"Attached To {TitleID} ({GameVersion})");
@@ -589,6 +581,7 @@ namespace Dobby {
                     
                     // Determine The Game That's Running
                     if (!IgnoreTitleID) // Skip In Case The User's Using A fPKG With An Altered TitleID
+
                     switch(TitleID) {
                         case "CUSA00552":
                         case "CUSA00554":
@@ -912,6 +905,7 @@ namespace Dobby {
             if(IgnoreTitleID) TitleID = "CUSA10249";
             if(!GameVersion.Contains("Unknown"))
             Toggle(new ulong[] { 0x3b61900, 0x3b62d00, 0x3b67130, 0x3b67530, 0x3b675b0, 0x3b7b430, 0x3b7b430 }, new string[] { "1.00", "1.01", "1.02", "1.05", "1.07", "1.08", "1.09" });
+            else Dev.DebugOut("Unknown Game Version");
         }
         private async void UC1Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);

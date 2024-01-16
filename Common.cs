@@ -188,15 +188,17 @@ namespace Dobby {
           "* 3.35.130.358 | Different Help Page Fonts, Homebrew Store Link. Misc Background Changes, Comments",
           "* 3.35.131.360 | Label Fix, App was cutting out my own alias on the credits page, Misc Changes",
           "* 3.35.133.363 | Deleted Unused Page; Deleted Unfinished Item. Replaced Border In PC Patch Page With Dynamic One. Added Border Func To Common.cs. Misc Changes",
-          "* 3.36.133.363 | Added Newer T2 Custom Menu Patch (1.08/1.09)"
+          "* 3.36.133.363 | Added Newer T2 Custom Menu Patch (1.08/1.09)",
+          "* 3.36.133.364 | Font Fix",
+          "* 3.36.136.365 | Updated T2 Custom Debug, Added Formatting Script to Source JIC; Other Misc Changes"
 
             // TODO:
+            // - PS4DebugPage Consistency Fix
             // - Finish Adding Basic Dynamic Patch Application
             // - Update PKG Creation Page To Be More Like GP4 Creation Page
             // - Standardize Help Page Fonts For Readability
             // - Standardize Info Label And Back Button Positioning, As Well As Space Betweeen Buttons
             // - Improve/Finish Help Pages
-            // - Replace InfoHover Functionality With Alternative, Prefferably One Recreating Native HoverInfo BS That Doesn't Work For Most Controls
         };
         public static string Build = ChangeList[ChangeList.Length - 1].Substring(2).Substring(0, ChangeList[ChangeList.Length - 1].IndexOf('|') - 3); // Trims The Last ChangeList String For Latest The Build Number
 
@@ -745,7 +747,7 @@ namespace Dobby {
             "big4-final-pgo-lto.elf",
             "eboot-mp.elf",
         };
-        public static string ProcessName = "Jack Shit", GameVersion = "UnknownGameVersion", TitleID;
+        public static string ProcessName = "Jack Shit", GameVersion = "UnknownGameVersion", TitleID = "?";
         #endregion
 
 
@@ -784,7 +786,7 @@ namespace Dobby {
 
         public static FileStream MainStream;
 
-        public static string ActiveFilePath, ActiveGameID;
+        public static string ActiveFilePath, ActiveGameID = "?";
 
         public static bool IsActiveFilePCExe, MainStreamIsOpen;
 
@@ -1370,9 +1372,10 @@ namespace Dobby {
                             $"Form: {(ActiveForm != null ? $"{ActiveForm.Name} | Form Position: {ActiveForm.Location}" : "Console")}",
                             $"Pages: {Pages?[0]}, {Pages?[1]}, {Pages?[2]}, {Pages?[3]}",
                             $"Active Page ID: {Page} | InfoHasImportantString: {InfoHasImportantStr}",
-                            $"TitleID: {TitleID} | Game Version: {GameVersion}",
-                            $"GameID: {ActiveGameID}",
-                            $"processname: {ProcessName} | PIC {PS4DebugIsConnected} | WFC {WaitForConnection}",
+                            "",
+                            $"TitleID: {(TitleID == "?" ? "UNK" : TitleID)} | Game Version: {GameVersion}",
+                            $"GameID: {(ActiveGameID == "?" ? "UNK" : ActiveGameID)}",
+                            $"ProcessName: {ProcessName} | PDbg Connected: {PS4DebugIsConnected} | WaitingForCon: {WaitForConnection}",
                             "",
                             $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled} | MousePos: {MousePosition}",
                             $"Control: {HoveredControl.Name} | {ControlType.Substring(ControlType.LastIndexOf('.') + 1)}",
@@ -1480,7 +1483,7 @@ namespace Dobby {
                             if(prc.name == id) {
                                 string title = geo.GetProcessInfo(prc.pid).titleid;
                                 if(title == "FLTZ00003" || title == "ITEM00003") {
-                                    Dev.DebugOut($"Skipping Lightning's Stuff {title}");
+                                    DebugOut($"Skipping Lightning's Stuff {title}");
                                     break;
                                 } // Code To Avoid Connecting To HB Store Stuff
 
@@ -1488,7 +1491,6 @@ namespace Dobby {
                                 ProcessName = prc.name;
                                 TitleID = geo.GetProcessInfo(prc.pid).titleid;
                                 PS4DebugIsConnected = true;
-                                Dev.DebugOut($"{ProcessName} | pid: {Executable} | PS4DebugIsConnected == {PS4DebugIsConnected}");
                             }
                         }
                     }
