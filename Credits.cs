@@ -270,7 +270,7 @@ namespace Dobby {
         void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
 
         void BackBtn_Click(object sender, EventArgs e) {
-            BackFunc();
+            ReturnToPreviousPage();
             HoverLeave((Control)sender, false);
         }
         public void BlobGithubBtn_RightClick(object sender, MouseEventArgs e) {

@@ -353,7 +353,7 @@ namespace Dobby {
         public void MinimizeBtn_Click(object sender, EventArgs e) => ActiveForm.WindowState = FormWindowState.Minimized;
         public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
-        void BackBtn_Click(object sender, EventArgs e) => BackFunc();
+        void BackBtn_Click(object sender, EventArgs e) => ReturnToPreviousPage();
         #endregion
 
         #region ControlDeclarations

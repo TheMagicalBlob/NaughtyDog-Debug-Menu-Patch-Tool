@@ -319,7 +319,7 @@ namespace Dobby {
         public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
         public void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
-        private void BackBtn_Click(object sender, EventArgs e) => BackFunc();
+        private void BackBtn_Click(object sender, EventArgs e) => ReturnToPreviousPage();
         #endregion
 
 

@@ -191,7 +191,8 @@ namespace Dobby {
           "* 3.36.133.363 | Added Newer T2 Custom Menu Patch (1.08/1.09)",
           "* 3.36.133.364 | Font Fix",
           "* 3.36.136.365 | Updated T2 Custom Debug, Added Formatting Script to Source JIC; Other Misc Changes",
-          "* 3.36.137.366 | Fixed EbootPatchPage Action Info Output So It's Not Applied To The Hover Info Label Instead of The Game Info One, Other Changes (I'm Forgetful, who cares)"
+          "* 3.36.137.366 | Fixed EbootPatchPage Action Info Output So It's Not Applied To The Hover Info Label Instead of The Game Info One, Other Changes (I'm Forgetful, who cares)",
+          "* 3.36.138.370 | EbootPatchHelpPage Tweaks, Minor background changes"
 
             // TODO:
             // - PS4DebugPage Consistency Fix
@@ -490,9 +491,9 @@ namespace Dobby {
         /// <param name="Page"> Page To Change To </param>
         /// <param name="IsPageGoingBack"> Whether We're Returning Or Loading A New Page </param>
         public static void ChangeForm(PageID Page) {
-
             LastPos = ActiveForm.Location;
             var ClosingForm = ActiveForm;
+            
             if(!IsPageGoingBack) {
                 for(int i = 0; i < 5; i++) {
                     if(Pages[i] == null) {
@@ -501,90 +502,107 @@ namespace Dobby {
                     }
                 }
             }
+            else IsPageGoingBack ^= true;
+
             Common.Page = Page;
+            
             switch(Page) {
-                default:
-                    DebugOut($"{Page} Is Not A Page!");
-                    break;
                 case PageID.MainPage:
                     MainForm.Show();
                     break;
+
                 case PageID.PS4DebugPage:
                     PS4DebugPage PS4Debug = new PS4DebugPage();
                     PS4Debug.Show();
                     break;
+
                 case PageID.PS4DebugHelpPage:
                     PS4DebugHelpPage PS4DebugHelp = new PS4DebugHelpPage();
                     PS4DebugHelp.Show();
                     break;
+
                 case PageID.EbootPatchPage:
                     EbootPatchPage EbootPatch = new EbootPatchPage();
                     EbootPatch.Show();
                     break;
+
                 case PageID.EbootPatchHelpPage:
                     EbootPatchHelpPage EbootPatchHelp = new EbootPatchHelpPage();
                     EbootPatchHelp.Show();
                     break;
+
                 case PageID.PS4MiscPage:
                     PS4MiscPatchesPage PS4MiscPage = new PS4MiscPatchesPage();
                     PS4MiscPage.Show();
                     break;
+
                 case PageID.PS4MiscPatchesHelpPage:
                     //PS4MiscPatchesHelpPage PS4MiscPatchesHelpPage = new PS4MiscPatchesHelpPage();
                     //PS4MiscPatchesHelpPage.Show();
                     break;
+
                 case PageID.PkgCreationPage:
                     PkgCreationPage PkgCreation = new PkgCreationPage();
                     PkgCreation.Show();
                     break;
+
                 case PageID.PkgCreationHelpPage:
                     PkgCreationHelpPage PkgCreationHelp = new PkgCreationHelpPage();
                     PkgCreationHelp.Show();
                     break;
+
                 case PageID.Gp4CreationPage:
                     Gp4CreationPage Gp4Creation = new Gp4CreationPage();
                     Gp4Creation.Show();
                     break;
+
                 case PageID.Gp4CreationHelpPage:
                     break;
+
                 case PageID.PCDebugMenuPage:
                     PCDebugMenuPage PCDebugMenu = new PCDebugMenuPage();
                     PCDebugMenu.Show();
                     MessageBox.Show("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
                     break;
+
                 case PageID.PlaceholderPage:
                     MessageBox.Show("Nani The Fuck?");
                     Environment.Exit(1);
                     break;
+
                 case PageID.InfoHelpPage:
                     InfoHelpPage InfoHelp = new InfoHelpPage();
                     InfoHelp.Show();
                     break;
+
                 case PageID.CreditsPage:
                     CreditsPage Credits = new CreditsPage();
                     Credits.Show();
                     break;
+
+                default: DebugOut($"{Page} Is Not A Page!"); break;
             }
+
             YellowInformationLabel = ActiveForm.Controls.Find("Info", true)[0];
             ActiveForm.Location = LastPos;
-            if(ClosingForm.Name != "Dobby") {
-                ClosingForm.Close();
+
+            if(ClosingForm.Name == "Dobby") {
+                MainForm = ClosingForm;
+                ClosingForm.Hide();
                 return;
             }
-            MainForm = ClosingForm;
-            ClosingForm.Hide();
+            ClosingForm.Close();
         }
 
-        public static void BackFunc() {
-            IsPageGoingBack = true;
-            for(int i = 4; i >= 0; i--)
+        public static void ReturnToPreviousPage() {
+            IsPageGoingBack ^= true;
 
-                if(Pages[i] != null) {
-                    ChangeForm((PageID)Pages[i]);
-                    Pages[i] = null;
-                    break;
-                }
-            IsPageGoingBack = false;
+            for(int i = 4; i >= 0; i--)
+            if(Pages[i] != null) {
+                ChangeForm((PageID)Pages[i]);
+                Pages[i] = null;
+                break;
+            }
         }
 
         public static void AddControlEventHandlers(Control.ControlCollection Controls) { // Got Sick of Manually Editing InitializeComponent()
@@ -1217,6 +1235,7 @@ namespace Dobby {
             UC2102Novis = new byte[] { 0xCB, 0x0D, 0x05, 0x01 }, // 0x1450dcb
             UC3100Novis = new byte[] { 0x34, 0xFA, 0x42, 0x01 }, // 0x182FA34
             UC3102Novis = new byte[] { 0x8B, 0x80, 0x6E, 0x01 }, // 0x1ae808b
+         // UC4100Novis = new byte[] { }, // 
             UC4101Novis = new byte[] { }, // 
             UC4133Novis = new byte[] { }, // 
           UC4133MPNovis = new byte[] { }, // 
@@ -1233,7 +1252,7 @@ namespace Dobby {
             T2102Novis  = new byte[] { }, // 
             T2105Novis  = new byte[] { }, // 
             T2107Novis  = new byte[] { 0x2C, 0x60, 0x01, 0x03 }, // 0x341602c
-            T2108Novis  = new byte[] { }, // 
+            T2108Novis  = new byte[] { 0x2C, 0x9E, 0x04, 0x03 }, // 0x3449e2c
             T2109Novis  = new byte[] { 0x2C, 0x9E, 0x04, 0x03 }  // 0x3449e2c
         ;
         #endregion

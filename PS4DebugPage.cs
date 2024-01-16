@@ -1023,7 +1023,7 @@ namespace Dobby {
         ///--     Repeat Buttons      --\\\
         /////////////////\\\\\\\\\\\\\\\\\\\
         public void BackBtn_Click(object sender, EventArgs e) {
-            BackFunc();
+            ReturnToPreviousPage();
             HoverLeave(BackBtn, false); // What Did This Fix, Again?
         }
         private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);

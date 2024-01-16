@@ -157,11 +157,12 @@ Every Game. For These, The Button's Disabled</value>
    Then Sending The Dumper Payload To
    The PS4 With An Ext HDD/SSD Connected.
 
-- fPKG/.pkg: Open orbis-pub-chk And Import The .pkg
-  You Want To Extract By Dragging It, Or With The
-  "Add Image" Button. Select The eboot.bin
-  And Choose An Output Directory, Then Extract
-  (fpkg Password's 32 Zeros)</value>
+- fPKG/.pkg: Open orbis-pub-chk And
+  Import The .pkg You Want To Extract
+  By Dragging It, Or With The "Add Image" Button.
+  Select The eboot.bin And Choose An Output
+  Directory, And Then Extract.
+  (fPKG Passcode Is 32 Zeros)</value>
   </data>
   <data name="DefaultQuestionBtn.Text" xml:space="preserve">
     <value>                                     [General Info]
@@ -183,7 +184,8 @@ Every Game. For These, The Button's Disabled</value>
   And Either Send The FTP Payload To Your PS4,
   Or Enable FTP In GoldHEN's Settings.
   Then, Go To mnt/sandbox/CUSAXXXXX/app0,
-  You Game's Executables And Other Files Will Be There.
+  You Game's Executables And
+  Other Files Will Be There.
 
 - App Dumper: Dump The App Via The
   Homebrew Store, Or Vortex Dumper

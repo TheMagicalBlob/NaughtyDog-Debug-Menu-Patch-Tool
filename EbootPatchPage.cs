@@ -1497,7 +1497,7 @@ namespace Dobby {
 
         public void BackBtn_Click(object sender, EventArgs e) {
             LabelShouldFlash = false;
-            BackFunc();
+            ReturnToPreviousPage();
         }
 
         private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);
