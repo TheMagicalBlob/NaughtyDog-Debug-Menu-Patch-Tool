@@ -192,15 +192,22 @@ namespace Dobby {
           "* 3.36.133.364 | Font Fix",
           "* 3.36.136.365 | Updated T2 Custom Debug, Added Formatting Script to Source JIC; Other Misc Changes",
           "* 3.36.137.366 | Fixed EbootPatchPage Action Info Output So It's Not Applied To The Hover Info Label Instead of The Game Info One, Other Changes (I'm Forgetful, who cares)",
-          "* 3.36.138.370 | EbootPatchHelpPage Tweaks, Minor background changes"
+          "* 3.36.138.370 | EbootPatchHelpPage Tweaks, Minor background changes",
+          "* 3.36.140.372 | PS4MiscPatchesPage Work, EbootPatchHelpPage: fixed double file load",
+          "* 3.36.141.375 | More PS4MiscPatchesPage Work, Tweaks To Related EbootPatchPage, Removed Redundant Variable Assignment. My bad."
 
             // TODO:
-            // - PS4DebugPage Consistency Fix
-            // - Finish Adding Basic Dynamic Patch Application
-            // - Update PKG Creation Page To Be More Like GP4 Creation Page
-            // - Standardize Help Page Fonts For Readability
-            // - Standardize Info Label And Back Button Positioning, As Well As Space Betweeen Buttons
-            // - Improve/Finish Help Pages
+            // * MAJOR
+            //  - Finish Adding Basic Dynamic Patch Application
+            //  - Create Remaining Two Help Pages
+            //  - 
+            //  - 
+            // * MINOR 
+            //  - Update PKG Creation Page To Be More Like GP4 Creation Page
+            //  - Standardize Help Page Fonts For Readability
+            //  - Standardize Info Label And Back Button Positioning, As Well As Space Between Controls
+            //  - Improve/Finish Help Pages
+            //  - PS4DebugPage Consistency Fix (?)
         };
         public static string Build = ChangeList[ChangeList.Length - 1].Substring(2).Substring(0, ChangeList[ChangeList.Length - 1].IndexOf('|') - 3); // Trims The Last ChangeList String For Latest The Build Number
 
@@ -290,12 +297,13 @@ namespace Dobby {
         }
 
 
-        public static void BorderFunc(Form form) {
+        public static GroupBox BorderFunc(Form form) {
             GroupBox BorderBox = new GroupBox();
             BorderBox.Location = new Point(0, -6);
             BorderBox.Name = "BorderBox";
             BorderBox.Size = new Size(form.Size.Width, form.Size.Height + 7);
             form.Controls.Add(BorderBox);
+            return BorderBox;
         }
 
         public static RichTextBox CreateTextBox(string Title) {

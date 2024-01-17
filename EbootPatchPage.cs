@@ -332,19 +332,27 @@ namespace Dobby {
 
         /// <summary> Open A File Dialog Window To Select A File For Checking/Patching </summary>
         private void BrowseButton_Click(object sender, EventArgs e) {
-            FileDialog file = new OpenFileDialog {
+            FileDialog fileDialog = new OpenFileDialog {
                 Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
                 Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned / Decrypted (The First 4 Bytes Will Be .elf If It Is)"
             };
 
-            if(file.ShowDialog() == DialogResult.OK) {
-                ExecutablePathBox.Text = file.FileName;
-                LoadFileToBePatched(file.FileName);
+            if(fileDialog.ShowDialog() == DialogResult.OK) {
+                BrowseButtonOverride ^= true;
+                ExecutablePathBox.Text = fileDialog.FileName;
+
+                LoadFileToBePatched(fileDialog.FileName);
+                fileDialog.Dispose();
             }
         }
-
+        bool BrowseButtonOverride = false;
         /// <summary> Load A File For Checking/Patching If The Path In The ExecutablePathBox Exists </summary>
         private void ExecutablePathBox_TextChanged(object sender, EventArgs e) {
+            if(BrowseButtonOverride) {
+                BrowseButtonOverride ^= true;
+                return;
+            }
+
             var TextBoxData = (((Control)sender).Text.Replace("\"", ""));
 
             if(File.Exists(TextBoxData))
@@ -364,7 +372,7 @@ namespace Dobby {
                 MainStream = new FileStream(FilePath, FileMode.Open, FileAccess.ReadWrite);
             }
             catch(IOException Oop) {
-                Dev.DebugOut(Oop.Message); SetInfoLabelText("Access Denied, File In Use Elsewhere");
+                Dev.DebugOut(Oop.Message); SetGameInfoLabelText("Access Denied, File In Use Elsewhere");
                 return;
             }
 
@@ -386,13 +394,6 @@ namespace Dobby {
         /// <returns> The New Button Text </returns>
         public string GetMenuPatchTypeAvailability() {
             switch(Game) {
-                ////
-                // Games That Aren't The Right Fucking Game You Dumbass
-                ////
-                default:
-                    RestoredDebugBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Strikeout);
-                    RestoredDebugBtn.Enabled = false; return " -!Restored/Custom";
-
                 ///
                 // Games I've Only Made Debug Mode Toggles For
                 ///
@@ -442,11 +443,14 @@ namespace Dobby {
                     RestoredDebugBtn.Enabled = false; return " Restored/Custom";
 
                 ////
-                // Games I've Made Restorations For
+                // Games I've Made Customizations For
                 ////
                 case T2109:
                     RestoredDebugBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
-                    RestoredDebugBtn.Enabled = true; return " Restored/Custom";
+                    RestoredDebugBtn.Enabled = true; return " Custom";
+                ////
+                // Games I've Made Restorations For
+                ////
                 case T1R110:
                 case T1R111:
                 case UC1100:
@@ -458,6 +462,13 @@ namespace Dobby {
                 case UC4117:
                 case UC4MP133:
                     return " Restored";
+                ////
+                // Games That Aren't The Right Fucking Game You Dumbass
+                ////
+                default:
+                    Dev.DebugOut($"Unknown Game Selected (GetGameID()) Game: {Game}");
+                    RestoredDebugBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Strikeout);
+                    RestoredDebugBtn.Enabled = false; return " Invalid Game";
             }
         }
         /// <summary> Add A Summary, You Lazy Fuck </summary>
@@ -467,8 +478,10 @@ namespace Dobby {
             LocalExecutableCheck = new byte[160];
 
             // Make Sure The File's Actually Even A .elf
+            MainStream.Position = 0;
             MainStream.Read(LocalExecutableCheck, 0, 4);
-            if(BitConverter.ToInt32(LocalExecutableCheck, 0) != 1179403647) return $"Executable Still Encrypted | Must Be Decrypted/Unsigned";
+            if(BitConverter.ToInt32(LocalExecutableCheck, 0) != 1179403647)
+                return $"Executable Still Encrypted (self) | Must Be Decrypted/Unsigned";
 
 
             MainStream.Position = 0x5100; MainStream.Read(LocalExecutableCheck, 0, 160);
@@ -477,63 +490,63 @@ namespace Dobby {
             Game = BitConverter.ToInt32(HashArray, 0);
 
             switch(Game) {
-                case UC1100:       DebugAddressForSelectedGame = UC1100Debug;       return "Uncharted 1 1.00";
-                case UC1102:       DebugAddressForSelectedGame = UC1102Debug;       return "Uncharted 1 1.02";
-                case UC2100:       DebugAddressForSelectedGame = UC2100Debug;       return "Uncharted 2 1.00";
-                case UC2102:       DebugAddressForSelectedGame = UC2102Debug;       return "Uncharted 2 1.02";
-                case UC3100:       DebugAddressForSelectedGame = UC3100Debug;       return "Uncharted 3 1.00";
-                case UC3102:       DebugAddressForSelectedGame = UC3102Debug;       return "Uncharted 3 1.02";
-                case UC4100:       DebugAddressForSelectedGame = UC4100Debug;       return "Uncharted 4 1.00";
-                case UC4101:       DebugAddressForSelectedGame = UC4101_106Debug;   return "Uncharted 4 1.01";
-                case UC4102:       DebugAddressForSelectedGame = UC4101_106Debug;   return "Uncharted 4 1.02";
-                case UC4103:       DebugAddressForSelectedGame = UC4101_106Debug;   return "Uncharted 4 1.03";
-                case UC4104:       DebugAddressForSelectedGame = UC4101_106Debug;   return "Uncharted 4 1.04";
-                case UC4105:       DebugAddressForSelectedGame = UC4101_106Debug;   return "Uncharted 4 1.05";
-                case UC4106:       DebugAddressForSelectedGame = UC4101_106Debug;   return "Uncharted 4 1.06";
-                case UC4108:       DebugAddressForSelectedGame = UC4108_111Debug;   return "Uncharted 4 1.08";
-                case UC4110:       DebugAddressForSelectedGame = UC4108_111Debug;   return "Uncharted 4 1.10";
-                case UC4111:       DebugAddressForSelectedGame = UC4108_111Debug;   return "Uncharted 4 1.11";
-                case UC4112:       DebugAddressForSelectedGame = UC4112_113Debug;   return "Uncharted 4 1.12";
-                case UC4113:       DebugAddressForSelectedGame = UC4112_113Debug;   return "Uncharted 4 1.13";
-                case UC4115:       DebugAddressForSelectedGame = UC4115Debug;       return "Uncharted 4 1.15";
-                case UC4116:       DebugAddressForSelectedGame = UC4116Debug;       return "Uncharted 4 1.16";
-                case UC4117:       DebugAddressForSelectedGame = UC4117Debug;       return "Uncharted 4 1.17";
-                case UC4118:       DebugAddressForSelectedGame = UC4118_119Debug;   return "Uncharted 4 1.18 SP/MP";
-                case UC4119:       DebugAddressForSelectedGame = UC4118_119Debug;   return "Uncharted 4 1.19 SP/MP";
-                case UC4MP120:     DebugAddressForSelectedGame = UC4120MPDebug;     return "Uncharted 4 1.20 MP";
-                case UC4SP120:     DebugAddressForSelectedGame = UC4120SPDebug;     return "Uncharted 4 1.20 SP";
-                case UC4MP121:     DebugAddressForSelectedGame = UC4121MPDebug;     return "Uncharted 4 1.21 MP";
-                case UC4SP121:     DebugAddressForSelectedGame = UC4121SPDebug;     return "Uncharted 4 1.21 SP";
-                case UC4MP122:     DebugAddressForSelectedGame = UC4122_125MPDebug; return "Uncharted 4 1.22 MP";
-                case UC4SP122_23:  DebugAddressForSelectedGame = UC4122_125SPDebug; return "Uncharted 4 1.22/23 SP";
-                case UC4MP123:     DebugAddressForSelectedGame = UC4122_125MPDebug; return "Uncharted 4 1.23 MP";
-                case UC4MP124:     DebugAddressForSelectedGame = UC4122_125MPDebug; return "Uncharted 4 1.24 MP";
-                case UC4SP124_25:  DebugAddressForSelectedGame = UC4122_125SPDebug; return "Uncharted 4 1.24/25 SP";
-                case UC4MP125:     DebugAddressForSelectedGame = UC4122_125MPDebug; return "Uncharted 4 1.25 MP";
-                case UC4MP127_28:  DebugAddressForSelectedGame = UC4127_132MPDebug; return "Uncharted 4 1.27/28 MP";
-                case UC4SP127:     DebugAddressForSelectedGame = UC4127_133SPDebug; return "Uncharted 4 1.27+ SP";
-                case UC4MP129:     DebugAddressForSelectedGame = UC4127_132MPDebug; return "Uncharted 4 1.29 MP";
-                case UC4MP130:     DebugAddressForSelectedGame = UC4127_132MPDebug; return "Uncharted 4 1.30 MP";
-                case UC4MP131:     DebugAddressForSelectedGame = UC4127_132MPDebug; return "Uncharted 4 1.31 MP";
-                case UC4MP132:     DebugAddressForSelectedGame = UC4127_132MPDebug; return "Uncharted 4 1.32/TLL 1.08 MP";
-                case UC4MP133:     DebugAddressForSelectedGame = UC4133MPDebug;     return "Uncharted 4 1.33/TLL 1.09 MP";
-                case UC4MPBETA100: DebugAddressForSelectedGame = UC4MPBETA100Debug; return "Uncharted 4 MP Beta 1.00";
-                case UC4MPBETA109: DebugAddressForSelectedGame = UC4MPBETA109Debug; return "Uncharted 4 MP Beta 1.09";
-                case TLLMP100:     DebugAddressForSelectedGame = TLL100MPDebug;     return "Uncharted Lost Legacy 1.00 MP";
-                case TLLSP100:     DebugAddressForSelectedGame = TLL100Debug;       return "Uncharted Lost Legacy 1.00 SP";
-                case TLLSP10X:     DebugAddressForSelectedGame = TLL10XDebug;       return "Uncharted Lost Legacy 1.08 SP";
-                case T1R100:       DebugAddressForSelectedGame = T1R100Debug;       return "The Last Of Us 1.00";
-                case T1R109:       DebugAddressForSelectedGame = T1R109Debug;       return "The Last Of Us 1.09";
-                case T1R110:       DebugAddressForSelectedGame = T1R110Debug;       return "The Last Of Us 1.10";
-                case T1R111:       DebugAddressForSelectedGame = T1R111Debug;       return "The Last Of Us 1.11";
-                case T2100:        DebugAddressForSelectedGame = T2100Debug;        return "The Last Of Us 2 1.00";
-                case T2101:        DebugAddressForSelectedGame = T2101Debug;        return "The Last Of Us 2 1.01";
-                case T2102:        DebugAddressForSelectedGame = T2102Debug;        return "The Last Of Us 2 1.02";
-                case T2105:        DebugAddressForSelectedGame = T2105Debug;        return "The Last Of Us 2 1.05";
-                case T2107:        DebugAddressForSelectedGame = T2107Debug;        return "The Last Of Us 2 1.07";
-                case T2108:        DebugAddressForSelectedGame = T2108Debug;        return "The Last Of Us 2 1.08";
-                case T2109:        DebugAddressForSelectedGame = T2109Debug;        return "The Last Of Us 2 1.09";
-                default:           DebugAddressForSelectedGame = 0xBADBEEF;         return $"UnknownGame {Game}";
+                case UC1100:       DebugAddressForSelectedGame = UC1100Debug;       PS4MiscPatchesPage.GameIndex = 0;  return "Uncharted 1 1.00";
+                case UC1102:       DebugAddressForSelectedGame = UC1102Debug;       PS4MiscPatchesPage.GameIndex = 1;  return "Uncharted 1 1.02";
+                case UC2100:       DebugAddressForSelectedGame = UC2100Debug;       PS4MiscPatchesPage.GameIndex = 2;  return "Uncharted 2 1.00";
+                case UC2102:       DebugAddressForSelectedGame = UC2102Debug;       PS4MiscPatchesPage.GameIndex = 3;  return "Uncharted 2 1.02";
+                case UC3100:       DebugAddressForSelectedGame = UC3100Debug;       PS4MiscPatchesPage.GameIndex = 4;  return "Uncharted 3 1.00";
+                case UC3102:       DebugAddressForSelectedGame = UC3102Debug;       PS4MiscPatchesPage.GameIndex = 5;  return "Uncharted 3 1.02";
+                case UC4100:       DebugAddressForSelectedGame = UC4100Debug;       PS4MiscPatchesPage.GameIndex = 6;  return "Uncharted 4 1.00";
+                case UC4101:       DebugAddressForSelectedGame = UC4101_106Debug;   PS4MiscPatchesPage.GameIndex = 7;  return "Uncharted 4 1.01";
+                case UC4102:       DebugAddressForSelectedGame = UC4101_106Debug;   PS4MiscPatchesPage.GameIndex = 8;  return "Uncharted 4 1.02";
+                case UC4103:       DebugAddressForSelectedGame = UC4101_106Debug;   PS4MiscPatchesPage.GameIndex = 9;  return "Uncharted 4 1.03";
+                case UC4104:       DebugAddressForSelectedGame = UC4101_106Debug;   PS4MiscPatchesPage.GameIndex = 10; return "Uncharted 4 1.04";
+                case UC4105:       DebugAddressForSelectedGame = UC4101_106Debug;   PS4MiscPatchesPage.GameIndex = 11; return "Uncharted 4 1.05";
+                case UC4106:       DebugAddressForSelectedGame = UC4101_106Debug;   PS4MiscPatchesPage.GameIndex = 12; return "Uncharted 4 1.06";
+                case UC4108:       DebugAddressForSelectedGame = UC4108_111Debug;   PS4MiscPatchesPage.GameIndex = 13; return "Uncharted 4 1.08";
+                case UC4110:       DebugAddressForSelectedGame = UC4108_111Debug;   PS4MiscPatchesPage.GameIndex = 14; return "Uncharted 4 1.10";
+                case UC4111:       DebugAddressForSelectedGame = UC4108_111Debug;   PS4MiscPatchesPage.GameIndex = 15; return "Uncharted 4 1.11";
+                case UC4112:       DebugAddressForSelectedGame = UC4112_113Debug;   PS4MiscPatchesPage.GameIndex = 16; return "Uncharted 4 1.12";
+                case UC4113:       DebugAddressForSelectedGame = UC4112_113Debug;   PS4MiscPatchesPage.GameIndex = 17; return "Uncharted 4 1.13";
+                case UC4115:       DebugAddressForSelectedGame = UC4115Debug;       PS4MiscPatchesPage.GameIndex = 18; return "Uncharted 4 1.15";
+                case UC4116:       DebugAddressForSelectedGame = UC4116Debug;       PS4MiscPatchesPage.GameIndex = 19; return "Uncharted 4 1.16";
+                case UC4117:       DebugAddressForSelectedGame = UC4117Debug;       PS4MiscPatchesPage.GameIndex = 20; return "Uncharted 4 1.17";
+                case UC4118:       DebugAddressForSelectedGame = UC4118_119Debug;   PS4MiscPatchesPage.GameIndex = 21; return "Uncharted 4 1.18 SP/MP";
+                case UC4119:       DebugAddressForSelectedGame = UC4118_119Debug;   PS4MiscPatchesPage.GameIndex = 22; return "Uncharted 4 1.19 SP/MP";
+                case UC4MP120:     DebugAddressForSelectedGame = UC4120MPDebug;     PS4MiscPatchesPage.GameIndex = 23; return "Uncharted 4 1.20 MP";
+                case UC4SP120:     DebugAddressForSelectedGame = UC4120SPDebug;     PS4MiscPatchesPage.GameIndex = 24; return "Uncharted 4 1.20 SP";
+                case UC4MP121:     DebugAddressForSelectedGame = UC4121MPDebug;     PS4MiscPatchesPage.GameIndex = 25; return "Uncharted 4 1.21 MP";
+                case UC4SP121:     DebugAddressForSelectedGame = UC4121SPDebug;     PS4MiscPatchesPage.GameIndex = 26; return "Uncharted 4 1.21 SP";
+                case UC4MP122:     DebugAddressForSelectedGame = UC4122_125MPDebug; PS4MiscPatchesPage.GameIndex = 27; return "Uncharted 4 1.22 MP";
+                case UC4SP122_23:  DebugAddressForSelectedGame = UC4122_125SPDebug; PS4MiscPatchesPage.GameIndex = 28; return "Uncharted 4 1.22/23 SP";
+                case UC4MP123:     DebugAddressForSelectedGame = UC4122_125MPDebug; PS4MiscPatchesPage.GameIndex = 29; return "Uncharted 4 1.23 MP";
+                case UC4MP124:     DebugAddressForSelectedGame = UC4122_125MPDebug; PS4MiscPatchesPage.GameIndex = 30; return "Uncharted 4 1.24 MP";
+                case UC4SP124_25:  DebugAddressForSelectedGame = UC4122_125SPDebug; PS4MiscPatchesPage.GameIndex = 31; return "Uncharted 4 1.24/25 SP";
+                case UC4MP125:     DebugAddressForSelectedGame = UC4122_125MPDebug; PS4MiscPatchesPage.GameIndex = 32; return "Uncharted 4 1.25 MP";
+                case UC4MP127_28:  DebugAddressForSelectedGame = UC4127_132MPDebug; PS4MiscPatchesPage.GameIndex = 33; return "Uncharted 4 1.27/28 MP";
+                case UC4SP127:     DebugAddressForSelectedGame = UC4127_133SPDebug; PS4MiscPatchesPage.GameIndex = 34; return "Uncharted 4 1.27+ SP";
+                case UC4MP129:     DebugAddressForSelectedGame = UC4127_132MPDebug; PS4MiscPatchesPage.GameIndex = 35; return "Uncharted 4 1.29 MP";
+                case UC4MP130:     DebugAddressForSelectedGame = UC4127_132MPDebug; PS4MiscPatchesPage.GameIndex = 36; return "Uncharted 4 1.30 MP";
+                case UC4MP131:     DebugAddressForSelectedGame = UC4127_132MPDebug; PS4MiscPatchesPage.GameIndex = 37; return "Uncharted 4 1.31 MP";
+                case UC4MP132:     DebugAddressForSelectedGame = UC4127_132MPDebug; PS4MiscPatchesPage.GameIndex = 38; return "Uncharted 4 1.32/TLL 1.08 MP";
+                case UC4MP133:     DebugAddressForSelectedGame = UC4133MPDebug;     PS4MiscPatchesPage.GameIndex = 39; return "Uncharted 4 1.33/TLL 1.09 MP";
+                case UC4MPBETA100: DebugAddressForSelectedGame = UC4MPBETA100Debug; PS4MiscPatchesPage.GameIndex = 40; return "Uncharted 4 MP Beta 1.00";
+                case UC4MPBETA109: DebugAddressForSelectedGame = UC4MPBETA109Debug; PS4MiscPatchesPage.GameIndex = 41; return "Uncharted 4 MP Beta 1.09";
+                case TLLMP100:     DebugAddressForSelectedGame = TLL100MPDebug;     PS4MiscPatchesPage.GameIndex = 42; return "Uncharted Lost Legacy 1.00 MP";
+                case TLLSP100:     DebugAddressForSelectedGame = TLL100Debug;       PS4MiscPatchesPage.GameIndex = 43; return "Uncharted Lost Legacy 1.00 SP";
+                case TLLSP10X:     DebugAddressForSelectedGame = TLL10XDebug;       PS4MiscPatchesPage.GameIndex = 44; return "Uncharted Lost Legacy 1.08 SP";
+                case T1R100:       DebugAddressForSelectedGame = T1R100Debug;       PS4MiscPatchesPage.GameIndex = 45; return "The Last Of Us 1.00";
+                case T1R109:       DebugAddressForSelectedGame = T1R109Debug;       PS4MiscPatchesPage.GameIndex = 46; return "The Last Of Us 1.09";
+                case T1R110:       DebugAddressForSelectedGame = T1R110Debug;       PS4MiscPatchesPage.GameIndex = 47; return "The Last Of Us 1.10";
+                case T1R111:       DebugAddressForSelectedGame = T1R111Debug;       PS4MiscPatchesPage.GameIndex = 48; return "The Last Of Us 1.11";
+                case T2100:        DebugAddressForSelectedGame = T2100Debug;        PS4MiscPatchesPage.GameIndex = 49; return "The Last Of Us 2 1.00";
+                case T2101:        DebugAddressForSelectedGame = T2101Debug;        PS4MiscPatchesPage.GameIndex = 50; return "The Last Of Us 2 1.01";
+                case T2102:        DebugAddressForSelectedGame = T2102Debug;        PS4MiscPatchesPage.GameIndex = 51; return "The Last Of Us 2 1.02";
+                case T2105:        DebugAddressForSelectedGame = T2105Debug;        PS4MiscPatchesPage.GameIndex = 52; return "The Last Of Us 2 1.05";
+                case T2107:        DebugAddressForSelectedGame = T2107Debug;        PS4MiscPatchesPage.GameIndex = 53; return "The Last Of Us 2 1.07";
+                case T2108:        DebugAddressForSelectedGame = T2108Debug;        PS4MiscPatchesPage.GameIndex = 54; return "The Last Of Us 2 1.08";
+                case T2109:        DebugAddressForSelectedGame = T2109Debug;        PS4MiscPatchesPage.GameIndex = 55; return "The Last Of Us 2 1.09";
+                default:           DebugAddressForSelectedGame =       PS4MiscPatchesPage.GameIndex =       0xBADBEEF; return $"UnknownGame {Game}";
             }
         }
 

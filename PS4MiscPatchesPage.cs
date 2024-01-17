@@ -4,17 +4,18 @@ using System.Drawing;
 using System.Threading;
 using static Dobby.Common;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace Dobby {
     internal class PS4MiscPatchesPage : Form {
         public PS4MiscPatchesPage() {
             InitializeComponent();
-            BorderFunc(this);
+            BorderBox = BorderFunc(this);
             AddControlEventHandlers(Controls);
 #if DEBUG
             if (FormResetThread.ThreadState != ThreadState.Running)
             FormResetThread.Start();
-            if (DebugOutputOverrideThread.ThreadState != ThreadState.Running)
+            if(DebugOutputOverrideThread.ThreadState != ThreadState.Running)
                 DebugOutputOverrideThread.Start();
 
 #endif
@@ -399,6 +400,7 @@ namespace Dobby {
             RB_StartPos
         ;
 
+        public static int GameIndex;
         /// <summary>
         /// MenuScaleBtn        <br/>
         /// MenuAlphaBtn        <br/>
@@ -510,7 +512,7 @@ namespace Dobby {
                 Buttons = new Button[Text.Length + 1];
                 if(buttons == null) goto EnableAll;
 
-                foreach(int id in buttons) {
+                foreach(int id in buttons.Select(v => (int)v)) {
                     Buttons[id] = new Button();
                     ActiveForm.Controls.Add(Buttons[id]);
                     AmountOfButtonsEnabled++;
@@ -527,7 +529,7 @@ namespace Dobby {
 
             /// <summary> Enable A Specific Button
             /// </summary>
-            public void EnableDynamicPatchButtons(IDS button) {
+            public void EnableDynamicPatchButton(IDS button) {
                 Buttons = new Button[Text.Length + 1];
 
                 Buttons[(int)button] = new Button();
@@ -536,7 +538,7 @@ namespace Dobby {
             }
             public static void ResetCustomOptions() => ResetCustomOptions(null, null);
             public static void ResetCustomOptions(object _, EventArgs __) {
-                if(Game == 0) return;
+                if(Game == 0 || true) return;
 #if DEBUG
                 FormShouldReset = false;
                 Dev.DebugOut("Resetting Form And Main Stream");
@@ -740,11 +742,9 @@ namespace Dobby {
             if(OpenedFile.ShowDialog() == DialogResult.OK) {
                 DynamicPatchButtons.ResetCustomOptions();
                 ActiveFilePath = ExecutablePathBox.Text = OpenedFile.FileName;
-                LocalExecutableCheck = new byte[4];
+                LocalExecutableCheck = new byte[160];
 
                 MainStream = File.Open(OpenedFile.FileName, FileMode.Open, FileAccess.ReadWrite);
-                MainStream.Position = 0x60; MainStream.Read(LocalExecutableCheck, 0, 4);
-                Game = BitConverter.ToInt32(LocalExecutableCheck, 0);
 
                 GameInfoLabel.Text = EbootPatchPage.GetGameId();
 
@@ -794,35 +794,35 @@ namespace Dobby {
 
             // Enable Buttons Based On Which Patches Are Available For The Current Game
             switch (Game) {
-                case UC1100: gsButtons.EnableDynamicPatchButtons(IDS.VersionTxtBtn);
+                case UC1100: gsButtons.EnableDynamicPatchButton(IDS.VersionTxtBtn);
                     Dev.DebugOut("UC1 1.00");
                     break;
-                case UC1102: gsButtons.EnableDynamicPatchButtons(IDS.VersionTxtBtn);
+                case UC1102: gsButtons.EnableDynamicPatchButton(IDS.VersionTxtBtn);
                     Dev.DebugOut("UC1 1.02");
                     break;
-                case UC2100: gsButtons.EnableDynamicPatchButtons(IDS.VersionTxtBtn);
+                case UC2100: gsButtons.EnableDynamicPatchButton(IDS.VersionTxtBtn);
                     Dev.DebugOut("UC2 1.00");
                     break;
-                case UC2102: gsButtons.EnableDynamicPatchButtons(IDS.VersionTxtBtn);
+                case UC2102: gsButtons.EnableDynamicPatchButton(IDS.VersionTxtBtn);
                     Dev.DebugOut("UC2 1.02");
                     break;
-                case UC3100: gsButtons.EnableDynamicPatchButtons(IDS.VersionTxtBtn);
+                case UC3100: gsButtons.EnableDynamicPatchButton(IDS.VersionTxtBtn);
                     Dev.DebugOut("UC3 1.00");
                     break;
-                case UC3102: gsButtons.EnableDynamicPatchButtons(IDS.VersionTxtBtn);
+                case UC3102: gsButtons.EnableDynamicPatchButton(IDS.VersionTxtBtn);
                     Dev.DebugOut("UC3 1.02");
                     break;
-                case T1R100: gsButtons.EnableDynamicPatchButtons(IDS.VersionTxtBtn);
+                case T1R100: gsButtons.EnableDynamicPatchButton(IDS.VersionTxtBtn);
                     Dev.DebugOut("T1R 1.00");
                     break;
-                case T1R109: gsButtons.EnableDynamicPatchButtons(IDS.VersionTxtBtn);
+                case T1R109: gsButtons.EnableDynamicPatchButton(IDS.VersionTxtBtn);
                     Dev.DebugOut("T1R 1.09");
                     break;
                 case T1R110:
-                case T1R111: gsButtons.EnableDynamicPatchButtons(IDS.VersionTxtBtn);
+                case T1R111: gsButtons.EnableDynamicPatchButton(IDS.VersionTxtBtn);
                     Dev.DebugOut("T1R 1.1X");
                     break;
-                case T2100: gsButtons.EnableDynamicPatchButtons(IDS.VersionTxtBtn);
+                case T2100: gsButtons.EnableDynamicPatchButton(IDS.VersionTxtBtn);
                     Dev.DebugOut("Tlou 2 1.00");
                     break;
                 case T2101: gsButtons.EnableDynamicPatchButtons(new IDS[] { IDS.MenuScaleBtn, IDS.MenuShadowedTextBtn });
@@ -1137,7 +1137,13 @@ namespace Dobby {
             return new byte[] { 0x00, 0x00, 0x00, 0x00 };
         }
 
-        private static byte[] GetBootSettingsBytes() {
+
+        /// <summary>
+        /// Returns a byte[] containing the custom bootsettings function
+        /// </summary>
+        /// <param name="GameIndex"></param>
+        /// <returns></returns>
+        private static byte[] GetBootSettingsBytes(int GameIndex) {
             byte[] BootSettingsData = new byte[41];
 
             byte[][] BootSettingsBaseAdressPointers = new byte[][] {
@@ -1168,7 +1174,7 @@ namespace Dobby {
             };
 
             Buffer.BlockCopy(new byte[] { 0x41, 0x56, 0x48, 0x8d, 0x05 }, 0, BootSettingsData, 0, 5);
-            Buffer.BlockCopy(BootSettingsBaseAdressPointers[0], 0, BootSettingsData, 0, 4);
+            Buffer.BlockCopy(BootSettingsBaseAdressPointers[GameIndex], 0, BootSettingsData, 0, 4);
             Buffer.BlockCopy(new byte[] { 0x48, 0x8d, 0x0d, 0x19, 0x00, 0x00, 0x00, 0x4c, 0x8b, 0x31, 0x49, 0x83, 0xfe, 0x00, 0x74, 0x0d, 0x49, 0x01, 0xc6, 0x41, 0x80, 0x36, 0x01, 0x48, 0x8d, 0x49, 0x08, 0xeb, 0xea, 0x41, 0x5e, 0xc3 },
                 0, BootSettingsData, 0, 32
             );
