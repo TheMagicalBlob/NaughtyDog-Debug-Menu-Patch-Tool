@@ -7,19 +7,23 @@ using System.Windows.Forms;
 using System.Linq;
 
 namespace Dobby {
-    internal class PS4MiscPatchesPage : Form {
-        public PS4MiscPatchesPage() {
+    internal class PS4MenuSettingsPage : Form {
+        public PS4MenuSettingsPage() {
             InitializeComponent();
             BorderBox = BorderFunc(this);
             AddControlEventHandlers(Controls);
 #if DEBUG
             if (FormResetThread.ThreadState != ThreadState.Running)
             FormResetThread.Start();
-            if(DebugOutputOverrideThread.ThreadState != ThreadState.Running)
-                DebugOutputOverrideThread.Start();
+          //if(DebugOutputOverrideThread.ThreadState != ThreadState.Running)
+          //    DebugOutputOverrideThread.Start();
 
 #endif
+
+            PausedIconBtn.Text = AppendControlVariable(PausedIconBtn.Text, UniversalDebugBooleans[1], PausedIconBtn.Font);
+
         }
+
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
             this.ExitBtn = new System.Windows.Forms.Button();
@@ -155,7 +159,7 @@ namespace Dobby {
             this.ProgPauseOnCloseBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.ProgPauseOnCloseBtn.Location = new System.Drawing.Point(1, 122);
             this.ProgPauseOnCloseBtn.Name = "ProgPauseOnCloseBtn";
-            this.ProgPauseOnCloseBtn.Size = new System.Drawing.Size(286, 23);
+            this.ProgPauseOnCloseBtn.Size = new System.Drawing.Size(315, 23);
             this.ProgPauseOnCloseBtn.TabIndex = 56;
             this.ProgPauseOnCloseBtn.Text = "Disable Debug Pause On Menu Close: ";
             this.ProgPauseOnCloseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -205,7 +209,7 @@ namespace Dobby {
             this.ProgPauseOnOpenBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.ProgPauseOnOpenBtn.Location = new System.Drawing.Point(1, 99);
             this.ProgPauseOnOpenBtn.Name = "ProgPauseOnOpenBtn";
-            this.ProgPauseOnOpenBtn.Size = new System.Drawing.Size(283, 23);
+            this.ProgPauseOnOpenBtn.Size = new System.Drawing.Size(315, 23);
             this.ProgPauseOnOpenBtn.TabIndex = 51;
             this.ProgPauseOnOpenBtn.Text = "Disable Debug Pause On Menu Open: ";
             this.ProgPauseOnOpenBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -232,7 +236,7 @@ namespace Dobby {
             this.DisableDebugTextBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.DisableDebugTextBtn.Location = new System.Drawing.Point(1, 53);
             this.DisableDebugTextBtn.Name = "DisableDebugTextBtn";
-            this.DisableDebugTextBtn.Size = new System.Drawing.Size(267, 23);
+            this.DisableDebugTextBtn.Size = new System.Drawing.Size(315, 23);
             this.DisableDebugTextBtn.TabIndex = 46;
             this.DisableDebugTextBtn.Text = "Disable 2D Debug Text On Startup: ";
             this.DisableDebugTextBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -268,12 +272,12 @@ namespace Dobby {
             this.PausedIconBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.PausedIconBtn.Location = new System.Drawing.Point(1, 76);
             this.PausedIconBtn.Name = "PausedIconBtn";
-            this.PausedIconBtn.Size = new System.Drawing.Size(230, 23);
+            this.PausedIconBtn.Size = new System.Drawing.Size(315, 23);
             this.PausedIconBtn.TabIndex = 49;
             this.PausedIconBtn.Text = "Disable Debug PAUSED Icon: ";
             this.PausedIconBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PausedIconBtn.UseVisualStyleBackColor = false;
-            this.PausedIconBtn.Click += new System.EventHandler(this.MenuRightAlignBtn_Click);
+            this.PausedIconBtn.Click += new System.EventHandler(this.PausedIconBtn_Click);
             // 
             // BrowseButton
             // 
@@ -348,7 +352,7 @@ namespace Dobby {
             this.GameInfoLabel.Text = "No File Selected";
             this.GameInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // PS4MiscPatchesPage
+            // PS4MenuSettingsPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -376,7 +380,7 @@ namespace Dobby {
             this.Controls.Add(this.MainLabel);
             this.Controls.Add(this.SeperatorLine0);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "PS4MiscPatchesPage";
+            this.Name = "PS4MenuSettingsPage";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -440,10 +444,11 @@ namespace Dobby {
             /// 0: Menu Scale <br/>
             /// 1: Menu Alpha <br/>
             /// 2: Non-ADS FOV <br/>
-            /// 3: Menu Shadowed Text <br/>
-            /// 4: Version Text <br/>
-            /// 5: Align Menus Right <br/>
-            /// 6: Right Margin <br/>
+            /// 3: Swap Square & Circle In Debug <br/>
+            /// 4: Menu Shadowed Text <br/>
+            /// 5: Version Text <br/>
+            /// 6: Align Menus Right <br/>
+            /// 7: Right Margin <br/>
             /// </summary>
             public static object[] PatchValues = new object[] {
                     0.60f,
@@ -470,15 +475,15 @@ namespace Dobby {
                     "RightMarginBtn_i"
                 };
 
-            private static readonly string[] Text = new string[] {
-                    "Set Dev Menu Scale: ",             // default=0.60
-                    "Set DMenu BG Opacity: ",           // default=0.85
-                    "Adjust Non-ADS FOV: ",             // default=1.00
-                    "Swap Circle With Square In DMenu", // default=No
-                    "Enable Debug Menu Text Shadow: ",  // default=No
-                    "Disable Version Text: ",           // default=No
-                    "Align Debug Menus To The Right: ", // default=No
-                    "Set Distance From Right Side: "    // default=10
+            private static readonly string[] ControlText = new string[] {
+                    "Set Dev Menu Scale:               ", // default=0.60
+                    "Set DMenu BG Opacity:             ", // default=0.85
+                    "Adjust Non-ADS FOV:               ", // default=1.00
+                    "Swap Circle With Square In DMenu  ", // default=No
+                    "Enable Debug Menu Text Shadow:    ", // default=No
+                    "Disable Version Text:             ", // default=No
+                    "Align Debug Menus To The Right:   ", // default=No
+                    "Set Distance From Right Side:     "  // default=10
                 };
 
             private static readonly string[] Hint = new string[] {
@@ -493,23 +498,28 @@ namespace Dobby {
                 };
 
             /// <summary> Buttons For Game-Specific Debug Options Loaded Based On The Game Chosen <br/><br/>
-            /// 1: MenuScaleBtn                                                                        <br/>
-            /// 2: MenuScaleBtn                                                                        <br/>
-            /// 3: MenuShadowTextBtn                                                                   <br/>
-            /// 4: FOVBtn                                                                              <br/>
-            /// 5: VersionTxtBtn
+            /// 0: MenuScaleBtn                                                                        <br/>
+            /// 1: MenuAlphaBtn                                                                        <br/>
+            /// 2: FOVBtn                                                                              <br/>
+            /// 3: SwapCircleInDebugBtn                                                                <br/>
+            /// 4: MenuShadowTextBtn                                                                   <br/>
+            /// 5: VersionTxtBtn                                                                       <br/>
+            /// 6: RightAlignBtn                                                                       <br/>
+            /// 7: RightMarginBtn
             /// </summary>
             public static Button[] Buttons { get; private set; } // Initialized Once An Executable's Selected
+
 
 
             /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\
             ///--     Dynamic Buttons Main Functions    --\\\
             /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\
             #region Dynamic Buttons Main Functions
+
             /// <summary> Enable Specific Buttons
-            /// </summary>
+            ///</summary>
             public void EnableDynamicPatchButtons(IDS[] buttons) {
-                Buttons = new Button[Text.Length + 1];
+                Buttons = new Button[ControlText.Length + 1];
                 if(buttons == null) goto EnableAll;
 
                 foreach(int id in buttons.Select(v => (int)v)) {
@@ -528,17 +538,19 @@ namespace Dobby {
             }
 
             /// <summary> Enable A Specific Button
-            /// </summary>
+            ///</summary>
             public void EnableDynamicPatchButton(IDS button) {
-                Buttons = new Button[Text.Length + 1];
+                Buttons = new Button[ControlText.Length + 1];
 
                 Buttons[(int)button] = new Button();
                 ActiveForm.Controls.Add(Buttons[(int)button]);
                 AmountOfButtonsEnabled = 1;
             }
+
+
             public static void ResetCustomOptions() => ResetCustomOptions(null, null);
             public static void ResetCustomOptions(object _, EventArgs __) {
-                if(Game == 0 || true) return;
+                if(Game == 0) return;
 #if DEBUG
                 FormShouldReset = false;
                 Dev.DebugOut("Resetting Form And Main Stream");
@@ -550,19 +562,19 @@ namespace Dobby {
                 ActiveForm.Size = OriginalFormScale;
                 OriginalFormScale = Size.Empty;
 
-                // Move Controls Back To Their Original Positions
-                for(; index < ControlsToMove.Length; index++)
-                    ControlsToMove[index].Location = OriginalControlPositions[index];
+                // Kill MainStream
+                MainStreamIsOpen = false;
+                MainStream?.Dispose();
 
                 // Nuke Dynamic Patch Buttons
                 foreach(Button button in Buttons)
                     button?.Dispose();
 
-                // Kill MainStream
-                MainStreamIsOpen = false;
-                MainStream?.Dispose();
+                // Move Controls Back To Their Original Positions
+                for(; index < ControlsToMove.Length; index++)
+                    ControlsToMove[index].Location = OriginalControlPositions[index];
 
-                // Reset Remaining Controls
+                // Nudge Remaining Controls Back To Their Default Positions
                 ActiveForm.Controls.Find("ResetBtn", true)[0].Dispose();
                 ActiveForm.Controls.Find("ConfirmPatchesBtn", true)[0].Dispose();
                 ActiveForm.Controls.Find("CustomDebugOptionsLabel", true)[0].Visible = true;
@@ -573,18 +585,23 @@ namespace Dobby {
 #endif
             }
 
+
             public void AddDynamicButtonsToForm(Form activeForm, int ButtonsVerticalStartPos) { // A Bit Odd, But It Works And There Are So Many Other Things That Need Work More
-                if(AmountOfButtonsEnabled == 1) goto OneButton;
+                
+                // Only Needed If Multiple Buttons Are Being Added, As The Form Can Already Fit One More After hiding The Label
+                if(AmountOfButtonsEnabled > 1) {
 
-                // Set The Amount of Pixels To Move Shit Based On How Much Shit Has Been Shat.                                                                                                                  shit
-                foreach(Control control in Buttons)
-                    if(control != null) ButtonsVerticalLen += 23;
-                ButtonsVerticalLen -= 23;
+                    // Set The Amount of Pixels To Move Shit Based On How Much Shit Has Been Shat.                                                                                                                  shit
+                    foreach(Control control in Buttons)
+                        if(control != null) ButtonsVerticalLen += 23;
+                    ButtonsVerticalLen -= 23;
 
-                // Move Each Control, Then Resize The BorderBox & Form
-                foreach(Control A in ControlsToMove)
-                    A.Location = new Point(A.Location.X, A.Location.Y + ButtonsVerticalLen);
-    OneButton:
+                    // Move Each Control, Then Resize The BorderBox & Form
+                    foreach(Control A in ControlsToMove)
+                        A.Location = new Point(A.Location.X, A.Location.Y + ButtonsVerticalLen);
+                }
+
+
                 BorderBox.Size = new Size(BorderBox.Size.Width, BorderBox.Size.Height + ButtonsVerticalLen + 46);
                 activeForm.Size = new Size(activeForm.Size.Width, activeForm.Size.Height + ButtonsVerticalLen + 46);
 
@@ -603,13 +620,13 @@ namespace Dobby {
                     goto RunCheck;
                 }
 
-
+                // Create The Button
                 Buttons[ButtonIndex].Name = Name[ButtonIndex];
                 Buttons[ButtonIndex].TabIndex = ButtonIndex;
                 Buttons[ButtonIndex].Location = new Point(1, ButtonsVerticalStartPos);
                 Buttons[ButtonIndex].Size = new Size(ActiveForm.Width - 11, 23);
                 Buttons[ButtonIndex].Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
-                Buttons[ButtonIndex].Text = $"{Text[ButtonIndex]}{PatchValues[ButtonIndex]}";
+                Buttons[ButtonIndex].Text = $"{ControlText[ButtonIndex]}{AppendControlVariable(ControlText[ButtonIndex], PatchValues[ButtonIndex], Buttons[ButtonIndex].Font)}";
                 Buttons[ButtonIndex].TextAlign = ContentAlignment.MiddleLeft;
                 Buttons[ButtonIndex].FlatAppearance.BorderSize = 0;
                 Buttons[ButtonIndex].FlatStyle = FlatStyle.Flat;
@@ -622,6 +639,7 @@ namespace Dobby {
                 Buttons[ButtonIndex].MouseEnter += HoverString;
                 Buttons[ButtonIndex].MouseLeave += ControlLeave;
                 Buttons[ButtonIndex].BringToFront();
+                
 
                 if(PatchValues[ButtonIndex].GetType() == typeof(bool))
                     Buttons[ButtonIndex].Click += DBtn_Click;
@@ -705,6 +723,27 @@ namespace Dobby {
 
 
 
+        /// <summary>
+        /// TMP
+        /// </summary>
+        /// <param name="ControlText"></param>
+        /// <param name="VariableText"></param>
+        /// <param name="ControlFont"></param>
+        /// <returns></returns>
+        public static string AppendControlVariable(string ControlText, object VariableText, Font ControlFont) {
+            var inc = TextRenderer.MeasureText(" ", ControlFont).Width;
+
+            var StringLen = TextRenderer.MeasureText(ControlText, ControlFont);
+            var VarLen = TextRenderer.MeasureText(VariableText.ToString(), ControlFont);
+            var buffer = (ActiveForm.Size.Width - 2) - StringLen.Width - VarLen.Width;
+
+            inc = buffer / inc;
+
+            var padding = new string(' ', inc);
+            return $"{ControlText}{padding}{VariableText}";
+        }
+
+
         #region Event Handlers For Basic Patches Available For Each Game
         ///////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///--     Event Handlers For Basic Patches Available For Each Game     --\\\
@@ -714,7 +753,7 @@ namespace Dobby {
             MouseScrolled = 1;
         }
         private void DisableDebugTextBtn_Click(object sender, EventArgs e) => Invert((Control)sender, 0);
-        private void MenuRightAlignBtn_Click(object sender, EventArgs e)   => Invert((Control)sender, 1);
+        private void PausedIconBtn_Click(object sender, EventArgs e)       => Invert((Control)sender, 1);
         private void ProgPauseOnOpenBtn_Click(object sender, EventArgs e)  => Invert((Control)sender, 2);
         private void ProgPauseOnCloseBtn_Click(object sender, EventArgs e) => Invert((Control)sender, 3);
 
@@ -759,6 +798,8 @@ namespace Dobby {
             }
         }
 
+        /// <summary> Resize Form And Move Buttons, Then Add Enabled Custom Buttons To Form Based On The Current Game And Patch
+        ///</summary>
         public void LoadGameSpecificMenuOptions() {
             DynamicPatchButtons gsButtons = new DynamicPatchButtons();
 
@@ -782,12 +823,12 @@ namespace Dobby {
                 OriginalBorderScale = ActiveForm.Controls.Find("BorderBox", true)[0].Size;
                 OriginalControlPositions = new Point[ControlsToMove.Length];
 
-                for(index = 0; index < ControlsToMove.Length; index++)
+                for(index = 0; index < ControlsToMove.Length; index++) // Save Original Y Loc Of Controls
                 OriginalControlPositions[index] = ControlsToMove[index].Location;
             }
 
             RB_StartPos = GameInfoLabel.Location.Y + GameInfoLabel.Size.Height + 1; // Right Below The GameInfoLabel
-            CustomDebugOptionsLabel.Visible = false;
+            CustomDebugOptionsLabel.Visible = false;                                // Label Hide
 
             // In Case Of Repeat Uses
             ButtonsVerticalLen = ButtonIndex = 0;
@@ -845,7 +886,10 @@ namespace Dobby {
                     break;
             }
 
-            gsButtons.AddDynamicButtonsToForm(this, (GameSpecificPatchesLabel.Location.Y + GameSpecificPatchesLabel.Size.Height + 1));
+            gsButtons.AddDynamicButtonsToForm (
+                this,
+                GameSpecificPatchesLabel.Location.Y + GameSpecificPatchesLabel.Size.Height + 1
+            );
 
 
 
@@ -894,15 +938,16 @@ namespace Dobby {
         private static void ConfirmBtn_Click(object sender, EventArgs e) {
             using (MainStream) {
                 index = 0;
-                int BootSettingsCallerAddress,
-
-                // Write BootSettings Function's Assembly To Game Executable
-                BootSettingsAddress = GetAddressToWriteBootSettings();
-                WriteBytes(BootSettingsAddress, GetBootSettingsBytes());
+                int BootSettingsAddress,
 
                 // Write Function Call To Call BootSettings
                 BootSettingsCallerAddress = GetAddressToCallBootSettings();
                 WriteBytes(BootSettingsCallerAddress, GetBytesToCallBootSettings());
+
+                // Write BootSettings Function's Assembly To Game Executable
+                BootSettingsAddress = GetAddressToWriteBootSettings();
+                WriteBytes(BootSettingsAddress, GetBootSettingsBytes(GameIndex));
+
 
                 // Universal Options
                 while(index < UniversalDebugBooleans.Length)
@@ -918,6 +963,10 @@ namespace Dobby {
                     BootSettingsAddress += 8;
                 }
             }
+
+            if(MainStream == null && !MainStreamIsOpen) {
+                MessageBox.Show("Gone");
+            }
         }
 
 
@@ -925,7 +974,7 @@ namespace Dobby {
         ///  0: Disable FPS<br/>
         ///  1: Align Menus Right<br/>
         ///  2: Prog Pause On Menu Open<br/>
-        ///  3: Prog Pause On Menu Close (The Former + 1)<br/>
+        ///  3: Prog Pause On Menu Close<br/>
         ///  4: Swap Circle
         /// </summary>
         /// <param name="PatchIndex"> The Patch To Get The Pointer For
@@ -1147,6 +1196,7 @@ namespace Dobby {
             byte[] BootSettingsData = new byte[41];
 
             byte[][] BootSettingsBaseAdressPointers = new byte[][] {
+                new byte [] { 0xDE, 0xAD, 0xBE, 0xEF }, // Default
                 new byte [] { 0x96, 0x52, 0x6b, 0xff }, // UC1 1.00
                 new byte [] { 0xc6, 0xea, 0x6e, 0xff }, // UC1 1.02
                 new byte [] { 0x00, 0x00, 0x00, 0x00 }, // UC2 1.00
@@ -1169,8 +1219,7 @@ namespace Dobby {
                 new byte [] { 0x00, 0x00, 0x00, 0x00 }, // T1R 1.06
                 new byte [] { 0x00, 0x00, 0x00, 0x00 }, // T1R 1.08
                 new byte [] { 0x00, 0x00, 0x00, 0x00 }, // T1R 1.10
-                new byte [] { 0x00, 0x00, 0x00, 0x00 }, // T1R 1.11
-                new byte [] { 0x00, 0x00, 0x00, 0x00 }
+                new byte [] { 0x00, 0x00, 0x00, 0x00 }  // T1R 1.11
             };
 
             Buffer.BlockCopy(new byte[] { 0x41, 0x56, 0x48, 0x8d, 0x05 }, 0, BootSettingsData, 0, 5);
@@ -1353,25 +1402,26 @@ namespace Dobby {
             string YN(object In) { return (bool)In == true ? "Yes" : "No"; }
 
             // Create alt debugout that writes to specific spot in the array
-            for(int i = 12; ;) {
+            for(int i = 13; ;) {
                 Console.CursorLeft = 0;
                 Dev.DebugOut(Dev.BlankSpace($"| Disable FPS:     {YN(UniversalDebugBooleans[0])}"), 0);
                 Dev.DebugOut(Dev.BlankSpace($"| Paused Icon:     {YN(UniversalDebugBooleans[1])}"), 1);
                 Dev.DebugOut(Dev.BlankSpace($"| ProgPauseOnOpen: {YN(UniversalDebugBooleans[2])}"), 2);
                 Dev.DebugOut(Dev.BlankSpace($"| ProgPauseOnExit: {YN(UniversalDebugBooleans[3])}"), 3);
 
-                Dev.DebugOut(Dev.BlankSpace($"| Menu Scale:    {DynamicPatchButtons.PatchValues[0]}"), 4);
-                Dev.DebugOut(Dev.BlankSpace($"| Menu Alpha:    {DynamicPatchButtons.PatchValues[1]}"), 5);
-                Dev.DebugOut(Dev.BlankSpace($"| Non-ADS FOV:   {DynamicPatchButtons.PatchValues[2]}"), 6);
-                Dev.DebugOut(Dev.BlankSpace($"| Shadowed Text: {YN(DynamicPatchButtons.PatchValues[3])}"), 7);
-                Dev.DebugOut(Dev.BlankSpace($"| Version Text:  {YN(DynamicPatchButtons.PatchValues[4])}"), 8);
-                Dev.DebugOut(Dev.BlankSpace($"| Right Align:   {YN(DynamicPatchButtons.PatchValues[5])}"), 9);
-                Dev.DebugOut(Dev.BlankSpace($"| Right Margin:  {DynamicPatchButtons.PatchValues[6]}"));
+                Dev.DebugOut(Dev.BlankSpace($"| Menu Scale:             {DynamicPatchButtons.PatchValues[0]}"), 4);
+                Dev.DebugOut(Dev.BlankSpace($"| Menu Alpha:             {DynamicPatchButtons.PatchValues[1]}"), 5);
+                Dev.DebugOut(Dev.BlankSpace($"| Non-ADS FOV:            {DynamicPatchButtons.PatchValues[2]}"), 6);
+                Dev.DebugOut(Dev.BlankSpace($"| Swap Square And Circle: {YN(DynamicPatchButtons.PatchValues[3])}"), 7);
+                Dev.DebugOut(Dev.BlankSpace($"| Shadowed Text:          {YN(DynamicPatchButtons.PatchValues[4])}"), 8);
+                Dev.DebugOut(Dev.BlankSpace($"| Version Text:           {YN(DynamicPatchButtons.PatchValues[5])}"), 9);
+                Dev.DebugOut(Dev.BlankSpace($"| Right Align:      {YN(DynamicPatchButtons.PatchValues[6])}"), 10);
+                Dev.DebugOut(Dev.BlankSpace($"|    Right Margin:  {DynamicPatchButtons.PatchValues[7]}"), 11);
                 
                 if (DynamicPatchButtons.Buttons != null)
                 foreach(Control c in DynamicPatchButtons.Buttons)
                     if(c != null) Dev.DebugOut(Dev.BlankSpace($"{c.Name} | {c.Location} | {c.TabIndex}"), i++);
-                i = 12;
+                i = 13;
             }
         }
 #endif

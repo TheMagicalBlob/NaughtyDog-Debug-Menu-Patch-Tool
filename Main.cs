@@ -41,7 +41,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.Info = new System.Windows.Forms.Label();
             this.PS4DebugPageBtn = new System.Windows.Forms.Button();
             this.EbootPatchPageBtn = new System.Windows.Forms.Button();
-            this.PS4QOLPageBtn = new System.Windows.Forms.Button();
+            this.PS4MenuSettingsPageBtn = new System.Windows.Forms.Button();
             this.CreditsBtn = new System.Windows.Forms.Button();
             this.InfoHelpBtn = new System.Windows.Forms.Button();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
@@ -143,23 +143,23 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.EbootPatchPageBtn.UseVisualStyleBackColor = false;
             this.EbootPatchPageBtn.Click += new System.EventHandler(this.EbootPatchPageBtn_Click);
             // 
-            // PS4QOLPageBtn
+            // PS4MenuSettingsPageBtn
             // 
-            this.PS4QOLPageBtn.BackColor = System.Drawing.Color.DimGray;
-            this.PS4QOLPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.PS4QOLPageBtn.FlatAppearance.BorderSize = 0;
-            this.PS4QOLPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PS4QOLPageBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.PS4QOLPageBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.PS4QOLPageBtn.Location = new System.Drawing.Point(1, 102);
-            this.PS4QOLPageBtn.Name = "PS4QOLPageBtn";
-            this.PS4QOLPageBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.PS4QOLPageBtn.Size = new System.Drawing.Size(202, 23);
-            this.PS4QOLPageBtn.TabIndex = 27;
-            this.PS4QOLPageBtn.Text = "Misc. Debug Menu Patches...";
-            this.PS4QOLPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.PS4QOLPageBtn.UseVisualStyleBackColor = false;
-            this.PS4QOLPageBtn.Click += new System.EventHandler(this.MiscPatchesBtn_Click);
+            this.PS4MenuSettingsPageBtn.BackColor = System.Drawing.Color.DimGray;
+            this.PS4MenuSettingsPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.PS4MenuSettingsPageBtn.FlatAppearance.BorderSize = 0;
+            this.PS4MenuSettingsPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PS4MenuSettingsPageBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.PS4MenuSettingsPageBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.PS4MenuSettingsPageBtn.Location = new System.Drawing.Point(1, 102);
+            this.PS4MenuSettingsPageBtn.Name = "PS4MenuSettingsPageBtn";
+            this.PS4MenuSettingsPageBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.PS4MenuSettingsPageBtn.Size = new System.Drawing.Size(203, 23);
+            this.PS4MenuSettingsPageBtn.TabIndex = 27;
+            this.PS4MenuSettingsPageBtn.Text = "Misc. Debug Menu Settings...";
+            this.PS4MenuSettingsPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.PS4MenuSettingsPageBtn.UseVisualStyleBackColor = false;
+            this.PS4MenuSettingsPageBtn.Click += new System.EventHandler(this.MiscPatchesBtn_Click);
             // 
             // CreditsBtn
             // 
@@ -325,7 +325,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.Controls.Add(this.SeperatorLine1);
             this.Controls.Add(this.PS4DebugPageBtn);
             this.Controls.Add(this.EbootPatchPageBtn);
-            this.Controls.Add(this.PS4QOLPageBtn);
+            this.Controls.Add(this.PS4MenuSettingsPageBtn);
             this.Controls.Add(this.Info);
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.MinimizeBtn);
@@ -367,7 +367,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
         public Label MainLabel;
         public Button PS4DebugPageBtn;
         public Button EbootPatchPageBtn;
-        public Button PS4QOLPageBtn;
+        public Button PS4MenuSettingsPageBtn;
         public Button CreditsBtn;
         public Button InfoHelpBtn;
         public Label Info;

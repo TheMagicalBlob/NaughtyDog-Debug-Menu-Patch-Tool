@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.Remoting.Channels;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
@@ -194,7 +195,8 @@ namespace Dobby {
           "* 3.36.137.366 | Fixed EbootPatchPage Action Info Output So It's Not Applied To The Hover Info Label Instead of The Game Info One, Other Changes (I'm Forgetful, who cares)",
           "* 3.36.138.370 | EbootPatchHelpPage Tweaks, Minor background changes",
           "* 3.36.140.372 | PS4MiscPatchesPage Work, EbootPatchHelpPage: fixed double file load",
-          "* 3.36.141.375 | More PS4MiscPatchesPage Work, Tweaks To Related EbootPatchPage, Removed Redundant Variable Assignment. My bad."
+          "* 3.36.141.375 | More PS4MiscPatchesPage Work, Tweaks To Related EbootPatchPage, Removed Redundant Variable Assignment. My bad.",
+          "* 3.36.143.380 | Renamed W.I.P. Page (PS4MiscPatchesPage => PS4MenuSettingsPage) And Related Controls, As Well As A Few Unrelated Ones. Misc. Changes"
 
             // TODO:
             // * MAJOR
@@ -207,9 +209,19 @@ namespace Dobby {
             //  - Standardize Help Page Fonts For Readability
             //  - Standardize Info Label And Back Button Positioning, As Well As Space Between Controls
             //  - Improve/Finish Help Pages
-            //  - PS4DebugPage Consistency Fix (?)
+            //  - PS4DebugPage Consistency Fix (Can't Seem To Reproduce? [The Bug, I Mean. Not That I Don't Want The Other Thing])
         };
         public static string Build = ChangeList[ChangeList.Length - 1].Substring(2).Substring(0, ChangeList[ChangeList.Length - 1].IndexOf('|') - 3); // Trims The Last ChangeList String For Latest The Build Number
+
+
+
+        //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///--              Design Bullshit              --\\\
+        ///                                               \\\
+        /// * FONT USAGE: (Use Bold For Both)             \\\
+        /// - Use Franklin Gothic 10pt For Basic Controls \\\
+        /// - Use Cambria 9.75pt For Information Pages    \\\
+        //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
         #region Designer Related
         private IContainer components = null;
@@ -360,7 +372,7 @@ namespace Dobby {
 
         /// <summary> Sets The Info Label String Based On The Currently Hovered Control </summary>
         /// <param name="Sender">The Hovered Control</param>
-        public static void SetInfoLabelStringOnControlHover(Control Sender) { // SetInfo
+        public static void SetInfoLabelStringOnControlHover(Control Sender, float FontAdjustment = 10f) { // SetInfo
             string InfoLabelString = "";
             switch(Sender.Name) {
                 default: return;
@@ -420,6 +432,7 @@ namespace Dobby {
                     InfoLabelString = "Sends ctn123's Port Of PS4Debug";
                     break;
                 case "ManualConnectBtn":
+                    YellowInformationLabel.Font = new Font(YellowInformationLabel.Font.FontFamily, 9F);
                     InfoLabelString = "Tool Also Auto-Connects When An Option's Selected";
                     break;
                 case "IgnoreTitleIDBtn":
@@ -540,7 +553,7 @@ namespace Dobby {
                     break;
 
                 case PageID.PS4MiscPage:
-                    PS4MiscPatchesPage PS4MiscPage = new PS4MiscPatchesPage();
+                    PS4MenuSettingsPage PS4MiscPage = new PS4MenuSettingsPage();
                     PS4MiscPage.Show();
                     break;
 
@@ -1325,7 +1338,7 @@ namespace Dobby {
                                 Wait:
                                     if(ActiveForm == null) goto Wait;
                                     DebugOut("FormShouldReset = true");
-                                    PS4MiscPatchesPage.FormShouldReset = true;
+                                    PS4MenuSettingsPage.FormShouldReset = true;
                                 }
                             }
                             break;
