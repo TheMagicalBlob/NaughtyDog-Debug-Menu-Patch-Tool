@@ -196,7 +196,8 @@ namespace Dobby {
           "* 3.36.138.370 | EbootPatchHelpPage Tweaks, Minor background changes",
           "* 3.36.140.372 | PS4MiscPatchesPage Work, EbootPatchHelpPage: fixed double file load",
           "* 3.36.141.375 | More PS4MiscPatchesPage Work, Tweaks To Related EbootPatchPage, Removed Redundant Variable Assignment. My bad.",
-          "* 3.36.143.380 | Renamed W.I.P. Page (PS4MiscPatchesPage => PS4MenuSettingsPage) And Related Controls, As Well As A Few Unrelated Ones. Misc. Changes"
+          "* 3.36.143.380 | Renamed W.I.P. Page (PS4MiscPatchesPage => PS4MenuSettingsPage) And Related Controls, As Well As A Few Unrelated Ones. Misc. Changes",
+          "* 3.36.144.180 | AppendControlVariable POC"
 
             // TODO:
             // * MAJOR
@@ -369,6 +370,8 @@ namespace Dobby {
         }
         private static void KillTextBox(object sender, MouseEventArgs e) => PopupGroupBox?.Dispose();
         
+        public static string FormatBool(bool b) { return b ? "Yes" : "No"; }
+
 
         /// <summary> Sets The Info Label String Based On The Currently Hovered Control </summary>
         /// <param name="Sender">The Hovered Control</param>
@@ -653,8 +656,9 @@ namespace Dobby {
                         Child.MouseMove += new MouseEventHandler(MoveForm);
 
                         if($"{Child.GetType()}" == "System.Windows.Forms.Button" && !Blacklist.Contains(Child.Name)) {
-                            Child.MouseEnter += new EventHandler(ControlHover);
-                            Child.MouseLeave += new EventHandler(ControlLeave);
+                            Child.MouseEnter  += new EventHandler(ControlHover);
+                            Child.MouseLeave  += new EventHandler(ControlLeave);
+                            Child.TextChanged += new EventHandler(ControlLeave);
                         }
 #if DEBUG
                         Child.MouseEnter += new EventHandler(DebugControlHover);
@@ -687,8 +691,10 @@ namespace Dobby {
             catch(IndexOutOfRangeException) { DebugOut("Form Lacks MinimizeBtn And / Or ExitBtn"); }
         }
 
+
         /// <summary> Set The Text of The Yellow Label At The Bottom Of The Form </summary>
         public static void SetInfoLabelText(string s) { if(ActiveForm != null) YellowInformationLabel.Text = s; }
+
 
         /// <summary> Highlights A Control In Yellow With A > Preceeding It When Hovered Over </summary>
         /// <param name="PassedControl">The Control To Highlight</param>
@@ -697,7 +703,7 @@ namespace Dobby {
             CurrentControl = PassedControl.Name;
             PassedControl.ForeColor = EventIsMouseEnter ? Color.FromArgb(255, 227, 0) : Color.FromArgb(255, 255, 255);
             PassedControl.Text = EventIsMouseEnter ? $">{PassedControl.Text}" : PassedControl.Text.Substring(PassedControl.Text.IndexOf('>') + 1);
-            PassedControl.Size = new Size(EventIsMouseEnter ? PassedControl.Width + 9 : PassedControl.Width - 9, PassedControl.Height);
+          //PassedControl.Size = new Size(EventIsMouseEnter ? PassedControl.Width + 9 : PassedControl.Width - 9, PassedControl.Height);
 
             if(!InfoHasImportantStr & !EventIsMouseEnter) SetInfoLabelText("");
             if(!EventIsMouseEnter) { MouseScrolled = 0; return; }
@@ -706,6 +712,8 @@ namespace Dobby {
             HoveredControl = PassedControl;
 #endif
         }
+
+
 
         delegate void LabelFlashDelegate();
         static readonly LabelFlashDelegate Yellow = new LabelFlashDelegate(FlashYellow);
@@ -1395,7 +1403,7 @@ namespace Dobby {
 
             Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIIIIIIGHT
                 WindowHeight = 35; SetWindowPosition(0, 0);
-                OutputStrings = new string[WindowHeight - 18];
+                OutputStrings = new string[WindowHeight - 20];
                 CursorVisible = false;
                 Point OriginalConsoleScale = new Point(WindowHeight, WindowWidth);
                 if(ActiveForm != null && !TimerThreadStarted) { ActiveForm.Invoke(TimerThread); TimerThreadStarted = true; }
@@ -1411,8 +1419,8 @@ namespace Dobby {
                             $"Build: {Build} | ~{Interval}ms | {PS4DebugDev}",
                             "",
                             $"Form: {(ActiveForm != null ? $"{ActiveForm.Name} | Form Position: {ActiveForm.Location}" : "Console")}",
-                            $"Pages: {Pages?[0]}, {Pages?[1]}, {Pages?[2]}, {Pages?[3]}",
-                            $"Active Page ID: {Page} | InfoHasImportantString: {InfoHasImportantStr}",
+                            $"Parents: {Pages?[0]}, {Pages?[1]}, {Pages?[2]}, {Pages?[3]}",
+                            Pages[0] == null ? "" : $"Child Name: {Page}",
                             "",
                             $"TitleID: {(TitleID == "?" ? "UNK" : TitleID)} | Game Version: {GameVersion}",
                             $"GameID: {(ActiveGameID == "?" ? "UNK" : ActiveGameID)}",

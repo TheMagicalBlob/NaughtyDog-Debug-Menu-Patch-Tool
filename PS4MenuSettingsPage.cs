@@ -11,7 +11,6 @@ namespace Dobby {
         public PS4MenuSettingsPage() {
             InitializeComponent();
             BorderBox = BorderFunc(this);
-            AddControlEventHandlers(Controls);
 #if DEBUG
             if (FormResetThread.ThreadState != ThreadState.Running)
             FormResetThread.Start();
@@ -20,8 +19,12 @@ namespace Dobby {
 
 #endif
 
-            PausedIconBtn.Text = AppendControlVariable(PausedIconBtn.Text, UniversalDebugBooleans[1], PausedIconBtn.Font);
+            DisableDebugTextBtn.Text = AppendControlVariable(DisableDebugTextBtn, FormatBool(UniversalDebugBooleans[0]));
+            PausedIconBtn.Text = AppendControlVariable(PausedIconBtn, FormatBool(UniversalDebugBooleans[1]));
+            ProgPauseOnOpenBtn.Text = AppendControlVariable(ProgPauseOnOpenBtn, FormatBool(UniversalDebugBooleans[2]));
+            ProgPauseOnCloseBtn.Text = AppendControlVariable(ProgPauseOnCloseBtn, FormatBool(UniversalDebugBooleans[3]));
 
+            AddControlEventHandlers(Controls);
         }
 
         public void InitializeComponent() {
@@ -159,7 +162,7 @@ namespace Dobby {
             this.ProgPauseOnCloseBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.ProgPauseOnCloseBtn.Location = new System.Drawing.Point(1, 122);
             this.ProgPauseOnCloseBtn.Name = "ProgPauseOnCloseBtn";
-            this.ProgPauseOnCloseBtn.Size = new System.Drawing.Size(315, 23);
+            this.ProgPauseOnCloseBtn.Size = new System.Drawing.Size(314, 23);
             this.ProgPauseOnCloseBtn.TabIndex = 56;
             this.ProgPauseOnCloseBtn.Text = "Disable Debug Pause On Menu Close: ";
             this.ProgPauseOnCloseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -209,7 +212,7 @@ namespace Dobby {
             this.ProgPauseOnOpenBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.ProgPauseOnOpenBtn.Location = new System.Drawing.Point(1, 99);
             this.ProgPauseOnOpenBtn.Name = "ProgPauseOnOpenBtn";
-            this.ProgPauseOnOpenBtn.Size = new System.Drawing.Size(315, 23);
+            this.ProgPauseOnOpenBtn.Size = new System.Drawing.Size(314, 23);
             this.ProgPauseOnOpenBtn.TabIndex = 51;
             this.ProgPauseOnOpenBtn.Text = "Disable Debug Pause On Menu Open: ";
             this.ProgPauseOnOpenBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -236,7 +239,7 @@ namespace Dobby {
             this.DisableDebugTextBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.DisableDebugTextBtn.Location = new System.Drawing.Point(1, 53);
             this.DisableDebugTextBtn.Name = "DisableDebugTextBtn";
-            this.DisableDebugTextBtn.Size = new System.Drawing.Size(315, 23);
+            this.DisableDebugTextBtn.Size = new System.Drawing.Size(317, 23);
             this.DisableDebugTextBtn.TabIndex = 46;
             this.DisableDebugTextBtn.Text = "Disable 2D Debug Text On Startup: ";
             this.DisableDebugTextBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -270,11 +273,12 @@ namespace Dobby {
             this.PausedIconBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PausedIconBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.PausedIconBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.PausedIconBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PausedIconBtn.Location = new System.Drawing.Point(1, 76);
             this.PausedIconBtn.Name = "PausedIconBtn";
-            this.PausedIconBtn.Size = new System.Drawing.Size(315, 23);
+            this.PausedIconBtn.Size = new System.Drawing.Size(317, 23);
             this.PausedIconBtn.TabIndex = 49;
-            this.PausedIconBtn.Text = "Disable Debug PAUSED Icon: ";
+            this.PausedIconBtn.Text = "Disable Debug PAUSED Icon:";
             this.PausedIconBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PausedIconBtn.UseVisualStyleBackColor = false;
             this.PausedIconBtn.Click += new System.EventHandler(this.PausedIconBtn_Click);
@@ -476,14 +480,14 @@ namespace Dobby {
                 };
 
             private static readonly string[] ControlText = new string[] {
-                    "Set Dev Menu Scale:               ", // default=0.60
-                    "Set DMenu BG Opacity:             ", // default=0.85
-                    "Adjust Non-ADS FOV:               ", // default=1.00
-                    "Swap Circle With Square In DMenu  ", // default=No
-                    "Enable Debug Menu Text Shadow:    ", // default=No
-                    "Disable Version Text:             ", // default=No
-                    "Align Debug Menus To The Right:   ", // default=No
-                    "Set Distance From Right Side:     "  // default=10
+                    "Set Dev Menu Scale:",               // default=0.60
+                    "Set DMenu BG Opacity:",             // default=0.85
+                    "Adjust Non-ADS FOV:",               // default=1.00
+                    "Swap Circle With Square In DMenu:", // default=No
+                    "Enable Debug Menu Text Shadow:",    // default=No
+                    "Disable Version Text:",             // default=No
+                    "Align Debug Menus To The Right:",   // default=No
+                    "Set Distance From Right Side:"      // default=10
                 };
 
             private static readonly string[] Hint = new string[] {
@@ -626,7 +630,8 @@ namespace Dobby {
                 Buttons[ButtonIndex].Location = new Point(1, ButtonsVerticalStartPos);
                 Buttons[ButtonIndex].Size = new Size(ActiveForm.Width - 11, 23);
                 Buttons[ButtonIndex].Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
-                Buttons[ButtonIndex].Text = $"{ControlText[ButtonIndex]}{AppendControlVariable(ControlText[ButtonIndex], PatchValues[ButtonIndex], Buttons[ButtonIndex].Font)}";
+                Buttons[ButtonIndex].Text = $"{ControlText[ButtonIndex]}"; //! Maybe Fix The Way The Append Func Works lol
+                Buttons[ButtonIndex].Text = AppendControlVariable(Buttons[ButtonIndex], PatchValues[ButtonIndex]);
                 Buttons[ButtonIndex].TextAlign = ContentAlignment.MiddleLeft;
                 Buttons[ButtonIndex].FlatAppearance.BorderSize = 0;
                 Buttons[ButtonIndex].FlatStyle = FlatStyle.Flat;
@@ -723,24 +728,19 @@ namespace Dobby {
 
 
 
-        /// <summary>
-        /// TMP
-        /// </summary>
-        /// <param name="ControlText"></param>
-        /// <param name="VariableText"></param>
-        /// <param name="ControlFont"></param>
-        /// <returns></returns>
-        public static string AppendControlVariable(string ControlText, object VariableText, Font ControlFont) {
-            var inc = TextRenderer.MeasureText(" ", ControlFont).Width;
+        /// <summary> Takes A Control & Variable, and Appends The Variable (As A String) To The Right Of The Control
+        ///</summary>
+        /// <param name="Variable"> The Variable To Append To The Right Side </param>
+        /// <returns>Formatted String</returns>
+        public static string AppendControlVariable(Control control, object Variable) {
+            var padding = string.Empty;
 
-            var StringLen = TextRenderer.MeasureText(ControlText, ControlFont);
-            var VarLen = TextRenderer.MeasureText(VariableText.ToString(), ControlFont);
-            var buffer = (ActiveForm.Size.Width - 2) - StringLen.Width - VarLen.Width;
+            var buffer = control.Size - TextRenderer.MeasureText(control.Text, control.Font) - TextRenderer.MeasureText($"{Variable}", control.Font);
 
-            inc = buffer / inc;
+            for(; TextRenderer.MeasureText(padding, control.Font).Width < buffer.Width; )
+            padding+=" ";
 
-            var padding = new string(' ', inc);
-            return $"{ControlText}{padding}{VariableText}";
+            return $"{control.Text}{padding}{Variable}";
         }
 
 
@@ -762,7 +762,8 @@ namespace Dobby {
             if(MouseScrolled == 1 || MouseIsDown == 0 || CurrentControl != Control.Name) return;
 
             UniversalDebugBooleans[OptionIndex] = !UniversalDebugBooleans[OptionIndex];
-            Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {(UniversalDebugBooleans[OptionIndex] ? "Yes" : "No")}";
+            Control.Text = Control.Text.Remove(Control.Text.LastIndexOf(':') + 1);
+            Control.Text = AppendControlVariable(Control, FormatBool(UniversalDebugBooleans[OptionIndex]));
         }
         #endregion
 

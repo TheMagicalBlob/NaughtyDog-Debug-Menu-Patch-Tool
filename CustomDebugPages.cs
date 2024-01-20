@@ -10,6 +10,7 @@ namespace Dobby {
     /// This Class File Contains All The Custom Debug Options Pages
     /// </summary>
     public class T2CustomOptionsDebug : Form {
+#if DEBUG
         public T2CustomOptionsDebug() { if (Dev.REL) return;
             InitializeComponent();
             AddControlEventHandlers(Controls);
@@ -853,5 +854,6 @@ namespace Dobby {
         public System.Windows.Forms.Button Option11Btn;
         public System.Windows.Forms.Button Option12Btn;
         public System.Windows.Forms.Button Option13Btn;
+#endif
     }
 }
