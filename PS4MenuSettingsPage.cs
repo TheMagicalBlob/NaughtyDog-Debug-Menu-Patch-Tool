@@ -5,6 +5,7 @@ using System.Threading;
 using static Dobby.Common;
 using System.Windows.Forms;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Dobby {
     internal class PS4MenuSettingsPage : Form {
@@ -18,14 +19,16 @@ namespace Dobby {
           //    DebugOutputOverrideThread.Start();
 
 #endif
-
+            /*
             DisableDebugTextBtn.Text = AppendControlVariable(DisableDebugTextBtn, FormatBool(UniversalDebugBooleans[0]));
             PausedIconBtn.Text = AppendControlVariable(PausedIconBtn, FormatBool(UniversalDebugBooleans[1]));
             ProgPauseOnOpenBtn.Text = AppendControlVariable(ProgPauseOnOpenBtn, FormatBool(UniversalDebugBooleans[2]));
             ProgPauseOnCloseBtn.Text = AppendControlVariable(ProgPauseOnCloseBtn, FormatBool(UniversalDebugBooleans[3]));
-
+            */
             AddControlEventHandlers(Controls);
         }
+
+
 
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
@@ -51,6 +54,10 @@ namespace Dobby {
             this.MenuScaleBtn = new System.Windows.Forms.Button();
             this.MenuAlphaBtn = new System.Windows.Forms.Button();
             this.GameInfoLabel = new System.Windows.Forms.Label();
+            this.ProgPauseOnCloseVBtn = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // MainLabel
@@ -162,12 +169,13 @@ namespace Dobby {
             this.ProgPauseOnCloseBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.ProgPauseOnCloseBtn.Location = new System.Drawing.Point(1, 122);
             this.ProgPauseOnCloseBtn.Name = "ProgPauseOnCloseBtn";
-            this.ProgPauseOnCloseBtn.Size = new System.Drawing.Size(314, 23);
+            this.ProgPauseOnCloseBtn.Size = new System.Drawing.Size(259, 23);
             this.ProgPauseOnCloseBtn.TabIndex = 56;
             this.ProgPauseOnCloseBtn.Text = "Disable Debug Pause On Menu Close: ";
             this.ProgPauseOnCloseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ProgPauseOnCloseBtn.UseVisualStyleBackColor = false;
             this.ProgPauseOnCloseBtn.Click += new System.EventHandler(this.ProgPauseOnCloseBtn_Click);
+            this.ProgPauseOnCloseBtn.Paint += new System.Windows.Forms.PaintEventHandler(this.ProgPauseOnCloseBtn_Paint);
             // 
             // CustomDebugOptionsLabel
             // 
@@ -356,12 +364,80 @@ namespace Dobby {
             this.GameInfoLabel.Text = "No File Selected";
             this.GameInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // ProgPauseOnCloseVBtn
+            // 
+            this.ProgPauseOnCloseVBtn.BackColor = System.Drawing.Color.DimGray;
+            this.ProgPauseOnCloseVBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.ProgPauseOnCloseVBtn.FlatAppearance.BorderSize = 0;
+            this.ProgPauseOnCloseVBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ProgPauseOnCloseVBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.ProgPauseOnCloseVBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.ProgPauseOnCloseVBtn.Location = new System.Drawing.Point(274, 122);
+            this.ProgPauseOnCloseVBtn.Name = "ProgPauseOnCloseVBtn";
+            this.ProgPauseOnCloseVBtn.Size = new System.Drawing.Size(45, 23);
+            this.ProgPauseOnCloseVBtn.TabIndex = 57;
+            this.ProgPauseOnCloseVBtn.Text = "Tmp";
+            this.ProgPauseOnCloseVBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ProgPauseOnCloseVBtn.UseVisualStyleBackColor = false;
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.DimGray;
+            this.button1.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.button1.ForeColor = System.Drawing.SystemColors.Control;
+            this.button1.Location = new System.Drawing.Point(274, 53);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(45, 23);
+            this.button1.TabIndex = 58;
+            this.button1.Text = "Tmp";
+            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button1.UseVisualStyleBackColor = false;
+            // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.DimGray;
+            this.button2.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.button2.ForeColor = System.Drawing.SystemColors.Control;
+            this.button2.Location = new System.Drawing.Point(274, 76);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(45, 23);
+            this.button2.TabIndex = 59;
+            this.button2.Text = "Tmp";
+            this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button2.UseVisualStyleBackColor = false;
+            // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.DimGray;
+            this.button3.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.button3.FlatAppearance.BorderSize = 0;
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.button3.ForeColor = System.Drawing.SystemColors.Control;
+            this.button3.Location = new System.Drawing.Point(274, 99);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(45, 23);
+            this.button3.TabIndex = 60;
+            this.button3.Text = "Tmp";
+            this.button3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button3.UseVisualStyleBackColor = false;
+            // 
             // PS4MenuSettingsPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
             this.ClientSize = new System.Drawing.Size(320, 370);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.ProgPauseOnCloseVBtn);
             this.Controls.Add(this.ProgPauseOnCloseBtn);
             this.Controls.Add(this.MinimizeBtn);
             this.Controls.Add(this.CustomDebugOptionsLabel);
@@ -409,6 +485,11 @@ namespace Dobby {
         ;
 
         public static int GameIndex;
+        private Button ProgPauseOnCloseVBtn;
+        private Button button1;
+        private Button button2;
+        private Button button3;
+
         /// <summary>
         /// MenuScaleBtn        <br/>
         /// MenuAlphaBtn        <br/>
@@ -630,8 +711,7 @@ namespace Dobby {
                 Buttons[ButtonIndex].Location = new Point(1, ButtonsVerticalStartPos);
                 Buttons[ButtonIndex].Size = new Size(ActiveForm.Width - 11, 23);
                 Buttons[ButtonIndex].Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
-                Buttons[ButtonIndex].Text = $"{ControlText[ButtonIndex]}"; //! Maybe Fix The Way The Append Func Works lol
-                Buttons[ButtonIndex].Text = AppendControlVariable(Buttons[ButtonIndex], PatchValues[ButtonIndex]);
+                Buttons[ButtonIndex].Text = $"{ControlText[ButtonIndex]} {PatchValues[ButtonIndex]}";
                 Buttons[ButtonIndex].TextAlign = ContentAlignment.MiddleLeft;
                 Buttons[ButtonIndex].FlatAppearance.BorderSize = 0;
                 Buttons[ButtonIndex].FlatStyle = FlatStyle.Flat;
@@ -728,6 +808,9 @@ namespace Dobby {
 
 
 
+        /* Only Gonna Be Useful If I End Up Using A Monospace Font
+         * *
+         *  
         /// <summary> Takes A Control & Variable, and Appends The Variable (As A String) To The Right Of The Control
         ///</summary>
         /// <param name="Variable"> The Variable To Append To The Right Side </param>
@@ -742,7 +825,7 @@ namespace Dobby {
 
             return $"{control.Text}{padding}{Variable}";
         }
-
+        */
 
         #region Event Handlers For Basic Patches Available For Each Game
         ///////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -756,14 +839,46 @@ namespace Dobby {
         private void PausedIconBtn_Click(object sender, EventArgs e)       => Invert((Control)sender, 1);
         private void ProgPauseOnOpenBtn_Click(object sender, EventArgs e)  => Invert((Control)sender, 2);
         private void ProgPauseOnCloseBtn_Click(object sender, EventArgs e) => Invert((Control)sender, 3);
+        private void ProgPauseOnCloseBtn_Paint(object sender, PaintEventArgs e) { var c = sender as Button;
+
+                // Create string to draw.
+                String drawString = "Sample Text";
+
+                // Create font and brush.
+                Font drawFont = new Font("Arial", 16);
+                SolidBrush drawBrush = new SolidBrush(Color.Black);
+
+                // Create rectangle for drawing.
+                float x = 150.0F;
+                float y = 150.0F;
+                float width = 200.0F;
+                float height = 50.0F;
+                RectangleF drawRect = new RectangleF(x, y, width, height);
+
+                // Draw rectangle to screen.
+                Pen blackPen = new Pen(Color.Black);
+                e.Graphics.DrawRectangle(blackPen, x, y, width, height);
+
+                // Set format of string.
+                StringFormat drawFormat = new StringFormat();
+                drawFormat.Alignment = StringAlignment.Center;
+
+                // Draw string to screen.
+                e.Graphics.DrawString(drawString, drawFont, drawBrush, drawRect, drawFormat);
+
+            var b = e.Graphics;
+
+            b.DrawString("GEY", c.Font, Brushes.BlueViolet, new Point(ActiveForm.Location.X - TextRenderer.MeasureText("GET", c.Font).Width, c.Location.Y));
+            Dev.DebugOut(":()");
+        }
+
 
 
         void Invert(Control Control, int OptionIndex) {
             if(MouseScrolled == 1 || MouseIsDown == 0 || CurrentControl != Control.Name) return;
 
             UniversalDebugBooleans[OptionIndex] = !UniversalDebugBooleans[OptionIndex];
-            Control.Text = Control.Text.Remove(Control.Text.LastIndexOf(':') + 1);
-            Control.Text = AppendControlVariable(Control, FormatBool(UniversalDebugBooleans[OptionIndex]));
+            //Control.Text = Control.Text.Remove(Control.Text.LastIndexOf(':') + 1);
         }
         #endregion
 
