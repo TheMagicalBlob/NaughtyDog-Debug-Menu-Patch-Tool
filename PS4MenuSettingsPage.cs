@@ -17,24 +17,16 @@ namespace Dobby {
             //    DebugOutputOverrideThread.Start();
 
 #endif
-            /*
-            DisableDebugTextBtn.Text = AppendControlVariable(DisableDebugTextBtn, FormatBool(UniversalDebugBooleans[0]));
-            PausedIconBtn.Text = AppendControlVariable(PausedIconBtn, FormatBool(UniversalDebugBooleans[1]));
-            ProgPauseOnOpenBtn.Text = AppendControlVariable(ProgPauseOnOpenBtn, FormatBool(UniversalDebugBooleans[2]));
-            ProgPauseOnCloseBtn.Text = AppendControlVariable(ProgPauseOnCloseBtn, FormatBool(UniversalDebugBooleans[3]));
-            */
-
             DisableDebugTextBtn.Variable  = UniversalDebugBooleans[0];
             DisablePausedIconBtn.Variable = UniversalDebugBooleans[1];
             ProgPauseOnOpenBtn.Variable   = UniversalDebugBooleans[2];
             ProgPauseOnCloseBtn.Variable  = UniversalDebugBooleans[3];
+        
             AddControlEventHandlers(Controls);
             
-            if(Game != 0)
-            DynamicPatchButtons.ResetCustomOptions();
+            if(Game != 0) DynamicPatchButtons.ResetCustomOptions();
             FormActive = true;
         }
-
 
 
         public void InitializeComponent() {
@@ -415,7 +407,6 @@ namespace Dobby {
         /// </summary>
         private static int
             ButtonIndex = 0,
-            ButtonsVerticalLen = 46,
             RB_StartPos
         ;
 
@@ -670,7 +661,7 @@ namespace Dobby {
 
 
                 if(PatchValues[ButtonIndex].GetType() == typeof(bool))
-                    Buttons[ButtonIndex].Click += DBtn_Click;
+                    Buttons[ButtonIndex].Click += DynamicBtn_Click;
 
                 else if(PatchValues[ButtonIndex].GetType() == typeof(float)) {
                     Buttons[ButtonIndex].MouseWheel += FloatFunc;
@@ -692,56 +683,63 @@ namespace Dobby {
             ///--     Event Handlers And Functions For Dynamic Button   --\\\
             /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
             #region Event Handlers And Functions For Dynamic Button
-            private void DBtn_Click(object sender, EventArgs e) => ToggleFunc((Control)sender, ((Control)sender).TabIndex);
-            private void ToggleFunc(Control Control, int ButtonIndex) {
+            private void DynamicBtn_Click(object sender, EventArgs e) => ToggleFunc((vButton)sender, ((Control)sender).TabIndex);
+            private void ToggleFunc(vButton Control, int ButtonIndex) {
                 if(MouseScrolled == 1 || MouseIsDown == 0 || CurrentControl != Control.Name) return;
 
                 PatchValues[ButtonIndex] = !(bool)PatchValues[ButtonIndex];
-                Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {(bool)PatchValues[ButtonIndex]}";
+                Control.Variable = PatchValues[ButtonIndex];
+                Control.Refresh();
             }
 
 
-            private void FloatClick(object sender, MouseEventArgs e) => FloatClickFunc((Control)sender, ((Control)sender).TabIndex, e.Button);
-            private void FloatClickFunc(Control Control, int ButtonIndex, MouseButtons Button) {
+            private void FloatClick(object sender, MouseEventArgs e) => FloatClickFunc((vButton)sender, ((vButton)sender).TabIndex, e.Button);
+            private void FloatClickFunc(vButton Control, int ButtonIndex, MouseButtons Button) {
                 if(CurrentControl != Control.Name) return;
                 var currentFloat = (float)PatchValues[ButtonIndex]; // Avoid CS0445
 
                 if(Button == MouseButtons.Left) PatchValues[ButtonIndex] = (float)Math.Round(currentFloat += 0.1f, 4);
                 else PatchValues[ButtonIndex] = (float)Math.Round(currentFloat -= 0.1f, 4);
 
-                Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {PatchValues[ButtonIndex]}";
+                Control.Variable = PatchValues[ButtonIndex];
+                Control.Refresh();
             }
 
-            private void FloatFunc(object sender, MouseEventArgs e) => FloatScrollFunc((Control)sender, ((Control)sender).TabIndex, e.Delta);
-            private void FloatScrollFunc(Control Control, int ButtonIndex, int WheelDelta) {
+            private void FloatFunc(object sender, MouseEventArgs e) => FloatScrollFunc((vButton)sender, ((vButton)sender).TabIndex, e.Delta);
+            private void FloatScrollFunc(vButton Control, int ButtonIndex, int WheelDelta) {
                 if(CurrentControl != Control.Name) return;
                 var currentFloat = (float)PatchValues[ButtonIndex]; // Avoid CS0445
 
                 PatchValues[ButtonIndex] = (float)Math.Round(currentFloat += WheelDelta / 12000.0F, 4);
-                Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {PatchValues[ButtonIndex]}";
+                Control.Variable = PatchValues[ButtonIndex];
+                Control.Refresh();
             }
 
 
-            private void IntClick(object sender, MouseEventArgs e) => IntClickFunc((Control)sender, ((Control)sender).TabIndex, e.Button);
-            private void IntClickFunc(Control Control, int ButtonIndex, MouseButtons Button) {
+            private void IntClick(object sender, MouseEventArgs e) => IntClickFunc((vButton)sender, ((vButton)sender).TabIndex, e.Button);
+            private void IntClickFunc(vButton Control, int ButtonIndex, MouseButtons Button) {
                 if(CurrentControl != Control.Name) return;
                 var currentInt = (byte)PatchValues[ButtonIndex]; // Avoid CS0445
 
                 if(Button == MouseButtons.Left) currentInt += 5;
                 else currentInt -= 5;
+
                 PatchValues[ButtonIndex] = currentInt;
-                Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {PatchValues[ButtonIndex]}";
+             
+                Control.Variable = PatchValues[ButtonIndex];
+                Control.Refresh();
             }
 
-            private void IntFunc(object sender, MouseEventArgs e) => IntScrollFunc((Control)sender, ((Control)sender).TabIndex, e.Delta);
-            private void IntScrollFunc(Control Control, int ButtonIndex, int WheelDelta) {
+            private void IntFunc(object sender, MouseEventArgs e) => IntScrollFunc((vButton)sender, ((vButton)sender).TabIndex, e.Delta);
+            private void IntScrollFunc(vButton Control, int ButtonIndex, int WheelDelta) {
                 if(CurrentControl != Control.Name) return;
                 var currentInt = (byte)PatchValues[ButtonIndex]; // Avoid CS0445
 
                 currentInt += (byte)(WheelDelta / 120);
                 PatchValues[ButtonIndex] = currentInt;
 
-                Control.Text = $"{Control.Text.Remove(Control.Text.LastIndexOf(' '))} {PatchValues[ButtonIndex]}";
+                Control.Variable = PatchValues[ButtonIndex];
+                Control.Refresh();
             }
 
             private void HoverString(object sender, EventArgs e) => SetInfoLabelText(Hint[((Control)sender).TabIndex]);
@@ -858,7 +856,7 @@ namespace Dobby {
             CustomDebugOptionsLabel.Visible = false;                                // Label Hide
 
             // In Case Of Repeat Uses
-            ButtonsVerticalLen = ButtonIndex = 0;
+            ButtonIndex = 0;
 
             // Enable Buttons Based On Which Patches Are Available For The Current Game
             switch(Game) {

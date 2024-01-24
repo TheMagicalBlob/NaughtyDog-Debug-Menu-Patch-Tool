@@ -199,7 +199,7 @@ namespace Dobby {
           "* 3.36.144.180 | AppendControlVariable POC",
           "* 3.36.145.183 | Added Tlou 2 1.07 Custom Menu, Other Misc Changes",
           "* 3.37.147.188 | Slightly Darkened All Form Background Colours, Added Button Class \"Overload\" (vButton) To Store Button Variables For Simpler Access. Created DrawButtonVar() Function For Appending Variables To vButtons. Dynamic Button Function Work. Other Random Crap",
-          "* 3.37.147.191 | More Dynamic Patch Button Work"
+          "* 3.37.148.192 | More Dynamic Patch Button Work"
 
             // TODO:
             // * MAJOR
