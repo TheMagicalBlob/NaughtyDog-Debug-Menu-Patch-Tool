@@ -198,7 +198,8 @@ namespace Dobby {
           "* 3.36.143.380 | Renamed W.I.P. Page (PS4MiscPatchesPage => PS4MenuSettingsPage) And Related Controls, As Well As A Few Unrelated Ones. Misc. Changes",
           "* 3.36.144.180 | AppendControlVariable POC",
           "* 3.36.145.183 | Added Tlou 2 1.07 Custom Menu, Other Misc Changes",
-          "* 3.37.147.188 | Slightly Darkened All Form Background Colours, Added Button Class \"Overload\" (vButton) To Store Button Variables For Simpler Access. Created DrawButtonVar() Function For Appending Variables To vButtons. Dynamic Button Function Work. Other Random Crap"
+          "* 3.37.147.188 | Slightly Darkened All Form Background Colours, Added Button Class \"Overload\" (vButton) To Store Button Variables For Simpler Access. Created DrawButtonVar() Function For Appending Variables To vButtons. Dynamic Button Function Work. Other Random Crap",
+          "* 3.37.147.191 | More Dynamic Patch Button Work"
 
             // TODO:
             // * MAJOR
@@ -279,7 +280,7 @@ namespace Dobby {
         public static int index;
         public static PageID Page;
         public static PageID?[] Pages = new PageID?[5];
-        public static bool InfoHasImportantStr, IsPageGoingBack = false, LastDebugOutputWasInfoString = false, LabelShouldFlash = false, FlashThreadHasStarted = false;
+        public static bool FormActive, InfoHasImportantStr, IsPageGoingBack = false, LastDebugOutputWasInfoString = false, LabelShouldFlash = false, FlashThreadHasStarted = false;
         public static byte[] buffer;
 
         public static Point LastPos, MousePos, MouseDif;
@@ -337,13 +338,14 @@ namespace Dobby {
 #endif
         }
 
-
+        /// <summary> addme
+        ///</summary>
         public static void DrawButtonVar(object sender, PaintEventArgs e) {
             var control = sender as vButton;
             var Variable = control.Variable?.ToString();
 
             var x = (int)(control.Width - e.Graphics.MeasureString(Variable, control.Font).Width - 5);
-            e.Graphics.DrawString(Variable, control.Font, Brushes.LightGreen, new Point(x, 2));
+            e.Graphics.DrawString(Variable, control.Font, Brushes.LightGreen, new Point(x, 5));
         }
 
 
@@ -482,6 +484,7 @@ namespace Dobby {
                 Pages[i] = null;
                 break;
             }
+            FormActive = false;
         }
 
         public static void AddControlEventHandlers(Control.ControlCollection Controls) { // Got Sick of Manually Editing InitializeComponent()

@@ -29,6 +29,10 @@ namespace Dobby {
             ProgPauseOnOpenBtn.Variable   = UniversalDebugBooleans[2];
             ProgPauseOnCloseBtn.Variable  = UniversalDebugBooleans[3];
             AddControlEventHandlers(Controls);
+            
+            if(Game != 0)
+            DynamicPatchButtons.ResetCustomOptions();
+            FormActive = true;
         }
 
 
@@ -524,7 +528,7 @@ namespace Dobby {
 #if DEBUG
             public static vButton[] Buttons = new vButton[ControlText.Length + 1];
 #else
-            private static vButton[] Buttons; // Initialized Once An Executable's Selected
+            private static vButton[] Buttons = new vButton[ControlText.Length + 1]; // Initialized Once An Executable's Selected
 #endif
 
 
@@ -555,14 +559,18 @@ namespace Dobby {
                 foreach(Button button in Buttons)
                     button?.Dispose();
 
+                Buttons = new vButton[ControlText.Length + 1];
+
                 // Move Controls Back To Their Original Positions
                 for(; index < ControlsToMove.Length; index++)
                     ControlsToMove[index].Location = OriginalControlPositions[index];
 
                 // Nudge Remaining Controls Back To Their Default Positions
-                ActiveForm.Controls.Find("ResetBtn", true)[0].Dispose();
-                ActiveForm.Controls.Find("ConfirmPatchesBtn", true)[0].Dispose();
-                ActiveForm.Controls.Find("CustomDebugOptionsLabel", true)[0].Visible = true;
+                if(FormActive) {
+                    ActiveForm.Controls.Find("ResetBtn", true)[0]?.Dispose();
+                    ActiveForm.Controls.Find("ConfirmPatchesBtn", true)[0]?.Dispose();
+                    ActiveForm.Controls.Find("CustomDebugOptionsLabel", true)[0].Visible = true;
+                }
                 
                 Game = 0;
                 MultipleButtonsEnabled = false;
@@ -601,6 +609,7 @@ namespace Dobby {
 
             public void AddDynamicButtonsToForm(Form activeForm, int ButtonsVerticalStartPos) { // A Bit Odd, But It Works And There Are So Many Other Things That Need Work More
                 index = 0;
+
                 // Only Needed If Multiple Buttons Are Being Added, As The Form Can Already Fit One More After hiding The Label
                 if(MultipleButtonsEnabled) {
 
@@ -892,8 +901,6 @@ namespace Dobby {
                 this,
                 GameSpecificPatchesLabel.Location.Y + GameSpecificPatchesLabel.Size.Height + 1
             );
-
-
 
             // Create Confirm And Reset Buttons Once The Rest Are Created
             RB_StartPos = GameInfoLabel.Location.Y + GameInfoLabel.Size.Height + 1; // Right Below The GameInfoLabel
