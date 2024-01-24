@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.Remoting.Channels;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
@@ -198,7 +197,8 @@ namespace Dobby {
           "* 3.36.141.375 | More PS4MiscPatchesPage Work, Tweaks To Related EbootPatchPage, Removed Redundant Variable Assignment. My bad.",
           "* 3.36.143.380 | Renamed W.I.P. Page (PS4MiscPatchesPage => PS4MenuSettingsPage) And Related Controls, As Well As A Few Unrelated Ones. Misc. Changes",
           "* 3.36.144.180 | AppendControlVariable POC",
-          "* 3.36.145.183 | Added Tlou 2 1.07 Custom Menu, Other Misc Changes"
+          "* 3.36.145.183 | Added Tlou 2 1.07 Custom Menu, Other Misc Changes",
+          "* 3.37.147.188 | Slightly Darkened All Form Background Colours, Added Button Class \"Overload\" (vButton) To Store Button Variables For Simpler Access. Created DrawButtonVar() Function For Appending Variables To vButtons. Dynamic Button Function Work. Other Random Crap"
 
             // TODO:
             // * MAJOR
@@ -215,8 +215,6 @@ namespace Dobby {
         };
         public static string Build = ChangeList[ChangeList.Length - 1].Substring(2).Substring(0, ChangeList[ChangeList.Length - 1].IndexOf('|') - 3); // Trims The Last ChangeList String For Latest The Build Number
 
-
-
         //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///--              Design Bullshit              --\\\
         ///                                               \\\
@@ -224,6 +222,15 @@ namespace Dobby {
         /// - Use Franklin Gothic 10pt For Basic Controls \\\
         /// - Use Cambria 9.75pt For Information Pages    \\\
         //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+
+
+
+        //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///--  MAIN APPLICATION VARIABLES & Functions  --\\\
+        //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
+        #region Application-Wide Functions And Variable Declarations
 
         #region Designer Related
         private IContainer components = null;
@@ -233,24 +240,8 @@ namespace Dobby {
         }
         #endregion
 
-        #region Application-Wide Functions And Variable Declarations
-        //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///--  MAIN APPLICATION VARIABLES & Functions  --\\\
-        //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
+        public class vButton : Button { public object Variable; }
 
-        public static string CurrentControl, TempStringStore;
-
-        /// <summary> Buttons To Avoid Applying Hpver Arrow To </summary>
-        public static string[] Blacklist = new string[] {
-            "ExitBtn",
-            "MinimizeBtn",
-            "IPLabelBtn",
-            "PortLabelBtn",
-            "CmdPathBtn",
-            "Gp4PathBtn",
-            "OutputDirectoryBtn",
-            "TmpDirectoryBtn"
-        };
 
         public enum PageID : int {
             MainPage = 0,
@@ -269,6 +260,21 @@ namespace Dobby {
             CreditsPage = 8,
             PlaceholderPage = 111111111
         }
+        
+        
+        public static string CurrentControl, TempStringStore;
+
+        /// <summary> Buttons To Avoid Applying Hpver Arrow To </summary>
+        public static string[] Blacklist = new string[] {
+            "ExitBtn",
+            "MinimizeBtn",
+            "IPLabelBtn",
+            "PortLabelBtn",
+            "CmdPathBtn",
+            "Gp4PathBtn",
+            "OutputDirectoryBtn",
+            "TmpDirectoryBtn"
+        };
 
         public static int index;
         public static PageID Page;
@@ -289,7 +295,8 @@ namespace Dobby {
         public static TcpClient tcp_client;
         public static NetworkStream net_stream;
 
-        public static Font MainFont = new Font("Franklin Gothic Medium", 6.5F, FontStyle.Bold);
+        public static Font MainFont = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
+        public static Color MainColour = Color.FromArgb(100, 100, 100);
         public static void ExitBtn_Click(object sender, EventArgs e) { MainStream?.Dispose(); Environment.Exit(0); }
         public static void ExitBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
         public static void ExitBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
@@ -304,209 +311,56 @@ namespace Dobby {
         }
         public static void MouseUpFunc(object sender, MouseEventArgs e) => MouseScrolled = MouseIsDown = 0;
         public static void MoveForm(object sender, MouseEventArgs e) {
-            if(MouseIsDown != 0) {
-                ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
-                ActiveForm.Update();
-            }
+            if(MouseIsDown == 0)
+                return;
+
+            ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
+            ActiveForm.Update();
         }
 
 
+        /// <summary> Highlights A Control In Yellow With A > Preceeding It When Hovered Over </summary>
+        /// <param name="PassedControl">The Control To Highlight</param>
+        /// <param name="EventIsMouseEnter">Highlight If True</param>
+        public static void HoverLeave(Control PassedControl, bool EventIsMouseEnter) {
+            CurrentControl = PassedControl.Name;
+            PassedControl.ForeColor = EventIsMouseEnter ? Color.FromArgb(255, 227, 0) : Color.FromArgb(255, 255, 255);
+            PassedControl.Text = EventIsMouseEnter ? $">{PassedControl.Text}" : PassedControl.Text.Substring(PassedControl.Text.IndexOf('>') + 1);
+            if(PassedControl.GetType() != typeof(vButton))
+                PassedControl.Size = new Size(EventIsMouseEnter ? PassedControl.Width + 9 : PassedControl.Width - 9, PassedControl.Height);
+
+            if(!InfoHasImportantStr & !EventIsMouseEnter) SetInfoLabelText("");
+            if(!EventIsMouseEnter) { MouseScrolled = 0; return; }
+            else SetInfoLabelStringOnControlHover(PassedControl);
+#if DEBUG
+            HoveredControl = PassedControl;
+#endif
+        }
+
+
+        public static void DrawButtonVar(object sender, PaintEventArgs e) {
+            var control = sender as vButton;
+            var Variable = control.Variable?.ToString();
+
+            var x = (int)(control.Width - e.Graphics.MeasureString(Variable, control.Font).Width - 5);
+            e.Graphics.DrawString(Variable, control.Font, Brushes.LightGreen, new Point(x, 2));
+        }
+
+
+
+        /// <summary>
+        /// Create And Apply A Thin Border To The Form Using A GroupBox Control
+        /// </summary>
+        /// <returns> The GroupBox Handle </returns>
         public static GroupBox BorderFunc(Form form) {
-            GroupBox BorderBox = new GroupBox();
-            BorderBox.Location = new Point(0, -6);
-            BorderBox.Name = "BorderBox";
-            BorderBox.Size = new Size(form.Size.Width, form.Size.Height + 7);
+            GroupBox BorderBox = new GroupBox() {
+                Location = new Point(0, -6),
+                Name = "BorderBox",
+                Size = new Size(form.Size.Width, form.Size.Height + 7)
+            };
+
             form.Controls.Add(BorderBox);
             return BorderBox;
-        }
-
-        public static RichTextBox CreateTextBox(string Title) {
-            PopupGroupBox?.Dispose();
-
-            PopupGroupBox = new GroupBox() {
-                Cursor = Cursors.Cross,
-                Size = new Size(250, ActiveForm.Size.Height - 65),
-                Location = new Point(35, ActiveForm.Controls.Find("SeperatorLine0", true)[0].Location.Y + 8),
-                BackColor = Color.FromArgb(255, Color.DimGray)
-            };
-            var popupBoxLabel = new Label() {
-                Text = Title,
-                Font = new Font("Microsoft YaHei UI", 7.5F),
-                Size = new Size(217, 21),
-                Location = new Point(4, 8),
-                ForeColor = SystemColors.Control,
-                BackColor = Color.DimGray
-            };
-            var closeBtn = new Button() {
-                Text = "X",
-                Cursor = Cursors.Cross,
-                Size = new Size(19, 19),
-                BackColor = Color.DimGray,
-                FlatStyle = FlatStyle.Flat,
-                Location = new Point(228, 9),
-                ForeColor = SystemColors.Control,
-                TextAlign = ContentAlignment.MiddleRight,
-                Font = new Font("Franklin Gothic Medium", 6.5F)
-                
-            };
-            var textBox = new RichTextBox() {
-                ReadOnly = true,
-                Cursor = Cursors.Cross,
-                Size = new Size(242, PopupGroupBox.Size.Height - 35),
-                Location = new Point(4, 29),
-                BackColor = Color.FromArgb(255, Color.DarkGray)
-            };
-
-            closeBtn.FlatAppearance.BorderSize = 0;
-            closeBtn.MouseClick += KillTextBox;
-            PopupGroupBox.Controls.Add(textBox);
-            PopupGroupBox.Controls.Add(closeBtn);
-            PopupGroupBox.Controls.Add(popupBoxLabel);
-            ActiveForm.Controls.Add(PopupGroupBox);
-
-            PopupGroupBox.BringToFront(); textBox.BringToFront();
-            closeBtn.BringToFront(); popupBoxLabel.BringToFront();
-
-            return textBox;
-        }
-        private static void KillTextBox(object sender, MouseEventArgs e) => PopupGroupBox?.Dispose();
-        
-        public static string FormatBool(bool b) { return b ? "Yes" : "No"; }
-
-
-        /// <summary> Sets The Info Label String Based On The Currently Hovered Control </summary>
-        /// <param name="Sender">The Hovered Control</param>
-        public static void SetInfoLabelStringOnControlHover(Control Sender, float FontAdjustment = 10f) { // SetInfo
-            string InfoLabelString = "";
-            switch(Sender.Name) {
-                default: return;
-                //
-                // Const
-                //
-                case "CreditsBtn":
-                    InfoLabelString = "View Credits For The Tool And Included Patches";
-                    break;
-                case "InfoHelpBtn":
-                    YellowInformationLabel.Font = new Font(YellowInformationLabel.Font.FontFamily, 9.5F);
-                    InfoLabelString = "View Help For Each Page As Well As The App Itself";
-                    break;
-                case "BackBtn":
-                    InfoLabelString = "Return To The Previous Page";
-                    break;
-                // _______________
-                //
-                // Main Page
-                //
-                case "PS4DebugPageBtn":
-                    YellowInformationLabel.Font = new Font(YellowInformationLabel.Font.FontFamily, 9F);
-                    InfoLabelString = "Use A Lan Or Wifi Connection To Enable The Debug Mode";
-                    break;
-                case "EbootPatchPageBtn":
-                    InfoLabelString = "Patch An Executable To Be Added To A .pkg";
-                    break;
-                case "DownloadSourceBtn":
-                    InfoLabelString = "This Opens An External Link";
-                    break;
-                case "PCDebugMenuPageBtn":
-                    InfoLabelString = "Enable The Default Or Restored Debug Menu";
-                    break;
-                case "PCQOLPageBtn":
-                    InfoLabelString = "Enable The Default Or Restored Debug Menu";
-                    break;
-                // _______________
-                //
-                // PS4DebugPage
-                //
-                case "UC1Btn":
-                    break;
-                case "UC2Btn":
-                    break;
-                case "UC3Btn":
-                    break;
-                case "UC4Btn":
-                    break;
-                case "UC4MPBetaBtn":
-                    InfoLabelString = "Supports: 1.09 - Use .bin Patch For 1.00";
-                    break;
-                case "T1RBtn":
-                    break;
-                case "T2Btn":
-                    break;
-                case "DebugPayloadBtn":
-                    InfoLabelString = "Sends ctn123's Port Of PS4Debug";
-                    break;
-                case "ManualConnectBtn":
-                    YellowInformationLabel.Font = new Font(YellowInformationLabel.Font.FontFamily, 9F);
-                    InfoLabelString = "Tool Also Auto-Connects When An Option's Selected";
-                    break;
-                case "IgnoreTitleIDBtn":
-                    InfoLabelString = "Enable This If You've Changed The Title ID";
-                    break;
-                // _______________
-                //
-                // EbootPatchPage
-                //
-                case "EnableDebugBtn":
-                    InfoLabelString = "Enable Debug Mode As-Is With No Edits";
-                    break;
-                case "DisableDebugBtn":
-                    InfoLabelString = "Disable Debug Mode. Doesn't Undo Other Patches";
-                    break;
-                case "RestoredDebugBtn":
-                    InfoLabelString = "Restores The Menu As Authentically As Possible";
-                    break;
-                case "CustomDebugBtn":
-                    InfoLabelString = "Patches In My Customized Version Of The Debug Menu";
-                    break;
-                case "CustomOptDebugBtn":
-                    InfoLabelString = REL ? "Temporarily Disabled" : "change me //!";
-                    break;
-                // _______________
-                //
-                // PkgCreationPage
-                //
-                // _______________
-                //
-                // PkgCreationHelpPage
-                //
-                // _______________
-                //
-                // Gp4CreationPage
-                //
-                case "Gp4CreationPageBtn":
-                    InfoLabelString = "A .gp4 Is Required For .pkg Creation";
-                    break;
-                //
-                // Gp4CreationHelpPage
-                //
-                // _______________
-                //
-                // PS4MiscPatchesPage
-                //
-                // _______________
-                //
-                // PCExePatchPage
-                //
-                // _______________
-                //
-                // PCQOLPatchPage
-                //
-                // _______________
-                //
-                // InfoHelpPage
-                //
-                // _______________
-                //
-                // CreditsPage
-                //
-                // _______________
-                //
-                // PCQOLPatchPage
-                //
-                // _______________
-
-            }
-            SetInfoLabelText(InfoLabelString);
         }
 
 
@@ -656,9 +510,12 @@ namespace Dobby {
                         if (!Child.Name.Contains("PathBox")) // So You Can Drag Select The Text Lol
                         Child.MouseMove += new MouseEventHandler(MoveForm);
 
-                        if(Child.GetType() == typeof(Button) && !Blacklist.Contains(Child.Name)) {
-                            Child.MouseEnter  += new EventHandler(ControlHover);
-                            Child.MouseLeave  += new EventHandler(ControlLeave);
+                        if((Child.GetType() == typeof(Button) || Child.GetType() == typeof(vButton)) && !Blacklist.Contains(Child.Name)) {
+                            Child.MouseEnter += new EventHandler(ControlHover);
+                            Child.MouseLeave += new EventHandler(ControlLeave);
+                            if(Child.GetType() == typeof(vButton)) {
+                                Child.Paint += DrawButtonVar;
+                            }
                         }
 #if DEBUG
                         Child.MouseEnter += new EventHandler(DebugControlHover);
@@ -672,9 +529,12 @@ namespace Dobby {
                 if(!Item.Name.Contains("PathBox")) // So You Can Drag Select The Text Lol
                     Item.MouseMove += new MouseEventHandler(MoveForm);
 
-                if(Item.GetType() == typeof(Button) && !Blacklist.Contains(Item.Name)) {
+                if((Item.GetType() == typeof(Button) || Item.GetType() == typeof(vButton)) && !Blacklist.Contains(Item.Name)) {
                     Item.MouseEnter += new EventHandler(ControlHover);
                     Item.MouseLeave += new EventHandler(ControlLeave);
+                    if(Item.GetType() == typeof(vButton)) {
+                        Item.Paint += DrawButtonVar;
+                    }
                 }
 #if DEBUG
                 Item.MouseEnter += new EventHandler(DebugControlHover);
@@ -696,22 +556,194 @@ namespace Dobby {
         public static void SetInfoLabelText(string s) { if(ActiveForm != null) YellowInformationLabel.Text = s; }
 
 
-        /// <summary> Highlights A Control In Yellow With A > Preceeding It When Hovered Over </summary>
-        /// <param name="PassedControl">The Control To Highlight</param>
-        /// <param name="EventIsMouseEnter">Highlight If True</param>
-        public static void HoverLeave(Control PassedControl, bool EventIsMouseEnter) {
-            CurrentControl = PassedControl.Name;
-            PassedControl.ForeColor = EventIsMouseEnter ? Color.FromArgb(255, 227, 0) : Color.FromArgb(255, 255, 255);
-            PassedControl.Text = EventIsMouseEnter ? $">{PassedControl.Text}" : PassedControl.Text.Substring(PassedControl.Text.IndexOf('>') + 1);
-            PassedControl.Size = new Size(EventIsMouseEnter ? PassedControl.Width + 9 : PassedControl.Width - 9, PassedControl.Height);
 
-            if(!InfoHasImportantStr & !EventIsMouseEnter) SetInfoLabelText("");
-            if(!EventIsMouseEnter) { MouseScrolled = 0; return; }
-            else SetInfoLabelStringOnControlHover(PassedControl);
-#if DEBUG
-            HoveredControl = PassedControl;
-#endif
+        // TODO: this is fucking stupid, change it.
+        /// <summary> Sets The Info Label String Based On The Currently Hovered Control </summary>
+        /// <param name="Sender">The Hovered Control</param>
+        public static void SetInfoLabelStringOnControlHover(Control Sender, float FontAdjustment = 10f) { // SetInfo
+            string InfoLabelString = "";
+            switch(Sender.Name) {
+                default: return;
+                //
+                // Const
+                //
+                case "CreditsBtn":
+                    InfoLabelString = "View Credits For The Tool And Included Patches";
+                    break;
+                case "InfoHelpBtn":
+                    YellowInformationLabel.Font = new Font(YellowInformationLabel.Font.FontFamily, 9.5F);
+                    InfoLabelString = "View Help For Each Page As Well As The App Itself";
+                    break;
+                case "BackBtn":
+                    InfoLabelString = "Return To The Previous Page";
+                    break;
+                // _______________
+                //
+                // Main Page
+                //
+                case "PS4DebugPageBtn":
+                    YellowInformationLabel.Font = new Font(YellowInformationLabel.Font.FontFamily, 9F);
+                    InfoLabelString = "Use A Lan Or Wifi Connection To Enable The Debug Mode";
+                    break;
+                case "EbootPatchPageBtn":
+                    InfoLabelString = "Patch An Executable To Be Added To A .pkg";
+                    break;
+                case "DownloadSourceBtn":
+                    InfoLabelString = "This Opens An External Link";
+                    break;
+                case "PCDebugMenuPageBtn":
+                    InfoLabelString = "Enable The Default Or Restored Debug Menu";
+                    break;
+                case "PCQOLPageBtn":
+                    InfoLabelString = "Enable The Default Or Restored Debug Menu";
+                    break;
+                // _______________
+                //
+                // PS4DebugPage
+                //
+                case "UC1Btn":
+                    break;
+                case "UC2Btn":
+                    break;
+                case "UC3Btn":
+                    break;
+                case "UC4Btn":
+                    break;
+                case "UC4MPBetaBtn":
+                    InfoLabelString = "Supports: 1.09 - Use .bin Patch For 1.00";
+                    break;
+                case "T1RBtn":
+                    break;
+                case "T2Btn":
+                    break;
+                case "DebugPayloadBtn":
+                    InfoLabelString = "Sends ctn123's Port Of PS4Debug";
+                    break;
+                case "ManualConnectBtn":
+                    YellowInformationLabel.Font = new Font(YellowInformationLabel.Font.FontFamily, 9F);
+                    InfoLabelString = "Tool Also Auto-Connects When An Option's Selected";
+                    break;
+                case "IgnoreTitleIDBtn":
+                    InfoLabelString = "Enable This If You've Changed The Title ID";
+                    break;
+                // _______________
+                //
+                // EbootPatchPage
+                //
+                case "EnableDebugBtn":
+                    InfoLabelString = "Enable Debug Mode As-Is With No Edits";
+                    break;
+                case "DisableDebugBtn":
+                    InfoLabelString = "Disable Debug Mode. Doesn't Undo Other Patches";
+                    break;
+                case "RestoredDebugBtn":
+                    InfoLabelString = "Restores The Menu As Authentically As Possible";
+                    break;
+                case "CustomDebugBtn":
+                    InfoLabelString = "Patches In My Customized Version Of The Debug Menu";
+                    break;
+                case "CustomOptDebugBtn":
+                    InfoLabelString = REL ? "Temporarily Disabled" : "change me //!";
+                    break;
+                // _______________
+                //
+                // PkgCreationPage
+                //
+                // _______________
+                //
+                // PkgCreationHelpPage
+                //
+                // _______________
+                //
+                // Gp4CreationPage
+                //
+                case "Gp4CreationPageBtn":
+                    InfoLabelString = "A .gp4 Is Required For .pkg Creation";
+                    break;
+                    //
+                    // Gp4CreationHelpPage
+                    //
+                    // _______________
+                    //
+                    // PS4MiscPatchesPage
+                    //
+                    // _______________
+                    //
+                    // PCExePatchPage
+                    //
+                    // _______________
+                    //
+                    // PCQOLPatchPage
+                    //
+                    // _______________
+                    //
+                    // InfoHelpPage
+                    //
+                    // _______________
+                    //
+                    // CreditsPage
+                    //
+                    // _______________
+                    //
+                    // PCQOLPatchPage
+                    //
+                    // _______________
+
+            }
+            SetInfoLabelText(InfoLabelString);
         }
+
+        public static RichTextBox CreateTextBox(string Title) {
+            PopupGroupBox?.Dispose();
+
+            PopupGroupBox = new GroupBox() {
+                Cursor = Cursors.Cross,
+                Size = new Size(250, ActiveForm.Size.Height - 65),
+                Location = new Point(35, ActiveForm.Controls.Find("SeperatorLine0", true)[0].Location.Y + 8),
+                BackColor = Color.FromArgb(255, Color.FromArgb(100, 100, 100))
+            };
+            var popupBoxLabel = new Label() {
+                Text = Title,
+                Font = new Font("Microsoft YaHei UI", 7.5F),
+                Size = new Size(217, 21),
+                Location = new Point(4, 8),
+                ForeColor = SystemColors.Control,
+                BackColor = Color.FromArgb(100, 100, 100)
+            };
+            var closeBtn = new Button() {
+                Text = "X",
+                Cursor = Cursors.Cross,
+                Size = new Size(19, 19),
+                BackColor = Color.FromArgb(100, 100, 100),
+                FlatStyle = FlatStyle.Flat,
+                Location = new Point(228, 9),
+                ForeColor = SystemColors.Control,
+                TextAlign = ContentAlignment.MiddleRight,
+                Font = new Font("Franklin Gothic Medium", 6.5F)
+
+            };
+            var textBox = new RichTextBox() {
+                ReadOnly = true,
+                Cursor = Cursors.Cross,
+                Size = new Size(242, PopupGroupBox.Size.Height - 35),
+                Location = new Point(4, 29),
+                BackColor = Color.FromArgb(255, Color.DarkGray)
+            };
+
+            closeBtn.FlatAppearance.BorderSize = 0;
+            closeBtn.MouseClick += KillTextBox;
+            PopupGroupBox.Controls.Add(textBox);
+            PopupGroupBox.Controls.Add(closeBtn);
+            PopupGroupBox.Controls.Add(popupBoxLabel);
+            ActiveForm.Controls.Add(PopupGroupBox);
+
+            PopupGroupBox.BringToFront(); textBox.BringToFront();
+            closeBtn.BringToFront(); popupBoxLabel.BringToFront();
+
+            return textBox;
+        }
+
+        private static void KillTextBox(object sender, MouseEventArgs e) => PopupGroupBox?.Dispose();
 
 
 
@@ -1303,7 +1335,7 @@ namespace Dobby {
 
             public static bool OverrideDebugOut;
 
-            static int tst_int = 0, DebugMemoryWrites;
+            static int DebugMemoryWrites;
 
             static int TimerTicks = 0, OutputStringIndex = 0;
 
@@ -1428,6 +1460,7 @@ namespace Dobby {
                             "",
                             $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled} | MousePos: {MousePosition}",
                             $"Control: {HoveredControl.Name} | {ControlType.Substring(ControlType.LastIndexOf('.') + 1)}",
+                            $"{(HoveredControl.GetType() == typeof(vButton) ? ((vButton)HoveredControl).Variable : "")}",
                             $" Size: {HoveredControl.Size} | Pos: {HoveredControl.Location}",
                             $" Parent {HoveredControl.Parent?.Name}",
                             "",

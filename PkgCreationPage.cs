@@ -47,7 +47,7 @@ namespace Dobby {
             // 
             // InfoHelpBtn
             // 
-            this.InfoHelpBtn.BackColor = System.Drawing.Color.DimGray;
+            this.InfoHelpBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.InfoHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.InfoHelpBtn.FlatAppearance.BorderSize = 0;
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -74,7 +74,7 @@ namespace Dobby {
             // 
             // BackBtn
             // 
-            this.BackBtn.BackColor = System.Drawing.Color.DimGray;
+            this.BackBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.BackBtn.FlatAppearance.BorderSize = 0;
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -101,7 +101,7 @@ namespace Dobby {
             // 
             // CreditsBtn
             // 
-            this.CreditsBtn.BackColor = System.Drawing.Color.DimGray;
+            this.CreditsBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.CreditsBtn.FlatAppearance.BorderSize = 0;
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -119,7 +119,7 @@ namespace Dobby {
             // 
             // MinimizeBtn
             // 
-            this.MinimizeBtn.BackColor = System.Drawing.Color.DimGray;
+            this.MinimizeBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -135,7 +135,7 @@ namespace Dobby {
             // 
             // ExitBtn
             // 
-            this.ExitBtn.BackColor = System.Drawing.Color.DimGray;
+            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -189,7 +189,7 @@ namespace Dobby {
             // 
             // LaunchOrbisPubCmdBtn
             // 
-            this.LaunchOrbisPubCmdBtn.BackColor = System.Drawing.Color.DimGray;
+            this.LaunchOrbisPubCmdBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.LaunchOrbisPubCmdBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.LaunchOrbisPubCmdBtn.FlatAppearance.BorderSize = 0;
             this.LaunchOrbisPubCmdBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -206,7 +206,7 @@ namespace Dobby {
             // 
             // VerbosityBtn
             // 
-            this.VerbosityBtn.BackColor = System.Drawing.Color.DimGray;
+            this.VerbosityBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.VerbosityBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.VerbosityBtn.FlatAppearance.BorderSize = 0;
             this.VerbosityBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -233,7 +233,7 @@ namespace Dobby {
             // 
             // TempDirectoryBtn
             // 
-            this.TempDirectoryBtn.BackColor = System.Drawing.Color.DimGray;
+            this.TempDirectoryBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.TempDirectoryBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.TempDirectoryBtn.FlatAppearance.BorderSize = 0;
             this.TempDirectoryBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -260,7 +260,7 @@ namespace Dobby {
             // 
             // Gp4CreationPageBtn
             // 
-            this.Gp4CreationPageBtn.BackColor = System.Drawing.Color.DimGray;
+            this.Gp4CreationPageBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.Gp4CreationPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.Gp4CreationPageBtn.FlatAppearance.BorderSize = 0;
             this.Gp4CreationPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -289,7 +289,7 @@ namespace Dobby {
             // 
             // CmdPathBtn
             // 
-            this.CmdPathBtn.BackColor = System.Drawing.Color.DimGray;
+            this.CmdPathBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.CmdPathBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.CmdPathBtn.FlatAppearance.BorderSize = 0;
             this.CmdPathBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -319,7 +319,7 @@ namespace Dobby {
             // 
             // GP4PathBtn
             // 
-            this.GP4PathBtn.BackColor = System.Drawing.Color.DimGray;
+            this.GP4PathBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.GP4PathBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.GP4PathBtn.FlatAppearance.BorderSize = 0;
             this.GP4PathBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -348,7 +348,7 @@ namespace Dobby {
             // 
             // OutputDirectoryBtn
             // 
-            this.OutputDirectoryBtn.BackColor = System.Drawing.Color.DimGray;
+            this.OutputDirectoryBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.OutputDirectoryBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.OutputDirectoryBtn.FlatAppearance.BorderSize = 0;
             this.OutputDirectoryBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -377,7 +377,7 @@ namespace Dobby {
             // 
             // TMPDirectoryBtn
             // 
-            this.TMPDirectoryBtn.BackColor = System.Drawing.Color.DimGray;
+            this.TMPDirectoryBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.TMPDirectoryBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.TMPDirectoryBtn.FlatAppearance.BorderSize = 0;
             this.TMPDirectoryBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -396,7 +396,7 @@ namespace Dobby {
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.DimGray;
+            this.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.ClientSize = new System.Drawing.Size(320, 348);
             this.Controls.Add(this.Gp4CreationPageBtn);
             this.Controls.Add(this.SeperatorLine3);

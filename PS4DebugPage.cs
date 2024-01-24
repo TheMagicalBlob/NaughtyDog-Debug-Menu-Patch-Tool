@@ -72,7 +72,7 @@ namespace Dobby {
             // 
             // TLLBtn
             // 
-            this.TLLBtn.BackColor = System.Drawing.Color.DimGray;
+            this.TLLBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.TLLBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.TLLBtn.FlatAppearance.BorderSize = 0;
             this.TLLBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -97,7 +97,7 @@ namespace Dobby {
             // 
             // MinimizeBtn
             // 
-            this.MinimizeBtn.BackColor = System.Drawing.Color.DimGray;
+            this.MinimizeBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -113,7 +113,7 @@ namespace Dobby {
             // 
             // ExitBtn
             // 
-            this.ExitBtn.BackColor = System.Drawing.Color.DimGray;
+            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -139,7 +139,7 @@ namespace Dobby {
             // 
             // ManualConnectBtn
             // 
-            this.ManualConnectBtn.BackColor = System.Drawing.Color.DimGray;
+            this.ManualConnectBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.ManualConnectBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ManualConnectBtn.FlatAppearance.BorderSize = 0;
             this.ManualConnectBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -157,7 +157,7 @@ namespace Dobby {
             // 
             // IPBOX
             // 
-            this.IPBOX.BackColor = System.Drawing.Color.DimGray;
+            this.IPBOX.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.IPBOX.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.IPBOX.Cursor = System.Windows.Forms.Cursors.Cross;
             this.IPBOX.ForeColor = System.Drawing.SystemColors.Control;
@@ -181,7 +181,7 @@ namespace Dobby {
             // 
             // T1RBtn
             // 
-            this.T1RBtn.BackColor = System.Drawing.Color.DimGray;
+            this.T1RBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.T1RBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.T1RBtn.FlatAppearance.BorderSize = 0;
             this.T1RBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -198,7 +198,7 @@ namespace Dobby {
             // 
             // T2Btn
             // 
-            this.T2Btn.BackColor = System.Drawing.Color.DimGray;
+            this.T2Btn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.T2Btn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.T2Btn.FlatAppearance.BorderSize = 0;
             this.T2Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -215,7 +215,7 @@ namespace Dobby {
             // 
             // UC4Btn
             // 
-            this.UC4Btn.BackColor = System.Drawing.Color.DimGray;
+            this.UC4Btn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.UC4Btn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.UC4Btn.FlatAppearance.BorderSize = 0;
             this.UC4Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -232,7 +232,7 @@ namespace Dobby {
             // 
             // BackBtn
             // 
-            this.BackBtn.BackColor = System.Drawing.Color.DimGray;
+            this.BackBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.BackBtn.FlatAppearance.BorderSize = 0;
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -249,7 +249,7 @@ namespace Dobby {
             // 
             // UC1Btn
             // 
-            this.UC1Btn.BackColor = System.Drawing.Color.DimGray;
+            this.UC1Btn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.UC1Btn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.UC1Btn.FlatAppearance.BorderSize = 0;
             this.UC1Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -266,7 +266,7 @@ namespace Dobby {
             // 
             // UC2Btn
             // 
-            this.UC2Btn.BackColor = System.Drawing.Color.DimGray;
+            this.UC2Btn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.UC2Btn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.UC2Btn.FlatAppearance.BorderSize = 0;
             this.UC2Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -283,7 +283,7 @@ namespace Dobby {
             // 
             // UC3Btn
             // 
-            this.UC3Btn.BackColor = System.Drawing.Color.DimGray;
+            this.UC3Btn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.UC3Btn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.UC3Btn.FlatAppearance.BorderSize = 0;
             this.UC3Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -310,7 +310,7 @@ namespace Dobby {
             // 
             // PS4DebugPayloadBtn
             // 
-            this.PS4DebugPayloadBtn.BackColor = System.Drawing.Color.DimGray;
+            this.PS4DebugPayloadBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.PS4DebugPayloadBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PS4DebugPayloadBtn.FlatAppearance.BorderSize = 0;
             this.PS4DebugPayloadBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -327,7 +327,7 @@ namespace Dobby {
             // 
             // PortBox
             // 
-            this.PortBox.BackColor = System.Drawing.Color.DimGray;
+            this.PortBox.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.PortBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.PortBox.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PortBox.ForeColor = System.Drawing.SystemColors.Control;
@@ -341,7 +341,7 @@ namespace Dobby {
             // 
             // IPLabelBtn
             // 
-            this.IPLabelBtn.BackColor = System.Drawing.Color.DimGray;
+            this.IPLabelBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.IPLabelBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.IPLabelBtn.FlatAppearance.BorderSize = 0;
             this.IPLabelBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -358,7 +358,7 @@ namespace Dobby {
             // 
             // PortLabelBtn
             // 
-            this.PortLabelBtn.BackColor = System.Drawing.Color.DimGray;
+            this.PortLabelBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.PortLabelBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PortLabelBtn.FlatAppearance.BorderSize = 0;
             this.PortLabelBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -385,7 +385,7 @@ namespace Dobby {
             // 
             // InfoHelpBtn
             // 
-            this.InfoHelpBtn.BackColor = System.Drawing.Color.DimGray;
+            this.InfoHelpBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.InfoHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.InfoHelpBtn.FlatAppearance.BorderSize = 0;
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -402,7 +402,7 @@ namespace Dobby {
             // 
             // CreditsBtn
             // 
-            this.CreditsBtn.BackColor = System.Drawing.Color.DimGray;
+            this.CreditsBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.CreditsBtn.FlatAppearance.BorderSize = 0;
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -420,7 +420,7 @@ namespace Dobby {
             // 
             // UC4MPBetaBtn
             // 
-            this.UC4MPBetaBtn.BackColor = System.Drawing.Color.DimGray;
+            this.UC4MPBetaBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.UC4MPBetaBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.UC4MPBetaBtn.FlatAppearance.BorderSize = 0;
             this.UC4MPBetaBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -447,7 +447,7 @@ namespace Dobby {
             // 
             // IgnoreTitleIDBtn
             // 
-            this.IgnoreTitleIDBtn.BackColor = System.Drawing.Color.DimGray;
+            this.IgnoreTitleIDBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.IgnoreTitleIDBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.IgnoreTitleIDBtn.FlatAppearance.BorderSize = 0;
             this.IgnoreTitleIDBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -466,7 +466,7 @@ namespace Dobby {
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.DimGray;
+            this.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.ClientSize = new System.Drawing.Size(320, 440);
             this.Controls.Add(this.IgnoreTitleIDBtn);
             this.Controls.Add(this.ManualConnectBtn);

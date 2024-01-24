@@ -78,7 +78,7 @@ namespace Dobby {
             // 
             // InfoHelpBtn
             // 
-            this.InfoHelpBtn.BackColor = System.Drawing.Color.DimGray;
+            this.InfoHelpBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.InfoHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.InfoHelpBtn.FlatAppearance.BorderSize = 0;
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -105,7 +105,7 @@ namespace Dobby {
             // 
             // BackBtn
             // 
-            this.BackBtn.BackColor = System.Drawing.Color.DimGray;
+            this.BackBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.BackBtn.FlatAppearance.BorderSize = 0;
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -132,7 +132,7 @@ namespace Dobby {
             // 
             // CreditsBtn
             // 
-            this.CreditsBtn.BackColor = System.Drawing.Color.DimGray;
+            this.CreditsBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.CreditsBtn.FlatAppearance.BorderSize = 0;
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -150,7 +150,7 @@ namespace Dobby {
             // 
             // MinimizeBtn
             // 
-            this.MinimizeBtn.BackColor = System.Drawing.Color.DimGray;
+            this.MinimizeBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -166,7 +166,7 @@ namespace Dobby {
             // 
             // ExitBtn
             // 
-            this.ExitBtn.BackColor = System.Drawing.Color.DimGray;
+            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -224,7 +224,7 @@ namespace Dobby {
             // 
             // Gp4FilterBrowseBtn
             // 
-            this.Gp4FilterBrowseBtn.BackColor = System.Drawing.Color.DimGray;
+            this.Gp4FilterBrowseBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.Gp4FilterBrowseBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.Gp4FilterBrowseBtn.FlatAppearance.BorderSize = 0;
             this.Gp4FilterBrowseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -241,7 +241,7 @@ namespace Dobby {
             // 
             // SourcePkgPathBrowseBtn
             // 
-            this.SourcePkgPathBrowseBtn.BackColor = System.Drawing.Color.DimGray;
+            this.SourcePkgPathBrowseBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.SourcePkgPathBrowseBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.SourcePkgPathBrowseBtn.FlatAppearance.BorderSize = 0;
             this.SourcePkgPathBrowseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -258,7 +258,7 @@ namespace Dobby {
             // 
             // OutputPathBrowseBtn
             // 
-            this.OutputPathBrowseBtn.BackColor = System.Drawing.Color.DimGray;
+            this.OutputPathBrowseBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.OutputPathBrowseBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.OutputPathBrowseBtn.FlatAppearance.BorderSize = 0;
             this.OutputPathBrowseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -275,7 +275,7 @@ namespace Dobby {
             // 
             // GamedataFolderBrowseBtn
             // 
-            this.GamedataFolderBrowseBtn.BackColor = System.Drawing.Color.DimGray;
+            this.GamedataFolderBrowseBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.GamedataFolderBrowseBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.GamedataFolderBrowseBtn.FlatAppearance.BorderSize = 0;
             this.GamedataFolderBrowseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -292,7 +292,7 @@ namespace Dobby {
             // 
             // StartGp4CreationBtn
             // 
-            this.StartGp4CreationBtn.BackColor = System.Drawing.Color.DimGray;
+            this.StartGp4CreationBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.StartGp4CreationBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.StartGp4CreationBtn.FlatAppearance.BorderSize = 0;
             this.StartGp4CreationBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -382,7 +382,7 @@ namespace Dobby {
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.DimGray;
+            this.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.ClientSize = new System.Drawing.Size(320, 354);
             this.Controls.Add(this.PasscodeLabel);
             this.Controls.Add(this.OutputPathLabel);

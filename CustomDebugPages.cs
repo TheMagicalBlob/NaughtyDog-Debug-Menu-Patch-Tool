@@ -153,7 +153,7 @@ namespace Dobby {
             // 
             // ExitBtn
             // 
-            this.ExitBtn.BackColor = Color.DimGray;
+            this.ExitBtn.BackColor = Color.FromArgb(100, 100, 100);
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -172,7 +172,7 @@ namespace Dobby {
             // 
             // MinimizeBtn
             // 
-            this.MinimizeBtn.BackColor = Color.DimGray;
+            this.MinimizeBtn.BackColor = Color.FromArgb(100, 100, 100);
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -191,7 +191,7 @@ namespace Dobby {
             // 
             // Option1Btn
             // 
-            this.Option1Btn.BackColor = Color.DimGray;
+            this.Option1Btn.BackColor = Color.FromArgb(100, 100, 100);
             this.Option1Btn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.Option1Btn.FlatAppearance.BorderSize = 0;
             this.Option1Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -211,7 +211,7 @@ namespace Dobby {
             // 
             // Option2Btn
             // 
-            this.Option2Btn.BackColor = Color.DimGray;
+            this.Option2Btn.BackColor = Color.FromArgb(100, 100, 100);
             this.Option2Btn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.Option2Btn.FlatAppearance.BorderSize = 0;
             this.Option2Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -231,7 +231,7 @@ namespace Dobby {
             // 
             // Option3Btn
             // 
-            this.Option3Btn.BackColor = Color.DimGray;
+            this.Option3Btn.BackColor = Color.FromArgb(100, 100, 100);
             this.Option3Btn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.Option3Btn.FlatAppearance.BorderSize = 0;
             this.Option3Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -251,7 +251,7 @@ namespace Dobby {
             // 
             // Option4Btn
             // 
-            this.Option4Btn.BackColor = Color.DimGray;
+            this.Option4Btn.BackColor = Color.FromArgb(100, 100, 100);
             this.Option4Btn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.Option4Btn.FlatAppearance.BorderSize = 0;
             this.Option4Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -271,7 +271,7 @@ namespace Dobby {
             // 
             // Option5Btn
             // 
-            this.Option5Btn.BackColor = Color.DimGray;
+            this.Option5Btn.BackColor = Color.FromArgb(100, 100, 100);
             this.Option5Btn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.Option5Btn.FlatAppearance.BorderSize = 0;
             this.Option5Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -291,7 +291,7 @@ namespace Dobby {
             // 
             // Option6Btn
             // 
-            this.Option6Btn.BackColor = Color.DimGray;
+            this.Option6Btn.BackColor = Color.FromArgb(100, 100, 100);
             this.Option6Btn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.Option6Btn.FlatAppearance.BorderSize = 0;
             this.Option6Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -311,7 +311,7 @@ namespace Dobby {
             // 
             // Option7Btn
             // 
-            this.Option7Btn.BackColor = Color.DimGray;
+            this.Option7Btn.BackColor = Color.FromArgb(100, 100, 100);
             this.Option7Btn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.Option7Btn.FlatAppearance.BorderSize = 0;
             this.Option7Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -331,7 +331,7 @@ namespace Dobby {
             // 
             // Option8Btn
             // 
-            this.Option8Btn.BackColor = Color.DimGray;
+            this.Option8Btn.BackColor = Color.FromArgb(100, 100, 100);
             this.Option8Btn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.Option8Btn.FlatAppearance.BorderSize = 0;
             this.Option8Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -351,7 +351,7 @@ namespace Dobby {
             // 
             // Option9Btn
             // 
-            this.Option9Btn.BackColor = Color.DimGray;
+            this.Option9Btn.BackColor = Color.FromArgb(100, 100, 100);
             this.Option9Btn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.Option9Btn.FlatAppearance.BorderSize = 0;
             this.Option9Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -371,7 +371,7 @@ namespace Dobby {
             // 
             // Option10Btn
             // 
-            this.Option10Btn.BackColor = Color.DimGray;
+            this.Option10Btn.BackColor = Color.FromArgb(100, 100, 100);
             this.Option10Btn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.Option10Btn.FlatAppearance.BorderSize = 0;
             this.Option10Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -391,7 +391,7 @@ namespace Dobby {
             // 
             // Option11Btn
             // 
-            this.Option11Btn.BackColor = Color.DimGray;
+            this.Option11Btn.BackColor = Color.FromArgb(100, 100, 100);
             this.Option11Btn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.Option11Btn.FlatAppearance.BorderSize = 0;
             this.Option11Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -411,7 +411,7 @@ namespace Dobby {
             // 
             // Option12Btn
             // 
-            this.Option12Btn.BackColor = Color.DimGray;
+            this.Option12Btn.BackColor = Color.FromArgb(100, 100, 100);
             this.Option12Btn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.Option12Btn.FlatAppearance.BorderSize = 0;
             this.Option12Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -431,7 +431,7 @@ namespace Dobby {
             // 
             // Option13Btn
             // 
-            this.Option13Btn.BackColor = Color.DimGray;
+            this.Option13Btn.BackColor = Color.FromArgb(100, 100, 100);
             this.Option13Btn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.Option13Btn.FlatAppearance.BorderSize = 0;
             this.Option13Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -451,7 +451,7 @@ namespace Dobby {
             // 
             // ConfirmBtn
             // 
-            this.ConfirmBtn.BackColor = Color.DimGray;
+            this.ConfirmBtn.BackColor = Color.FromArgb(100, 100, 100);
             this.ConfirmBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ConfirmBtn.FlatAppearance.BorderSize = 0;
             this.ConfirmBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -500,7 +500,7 @@ namespace Dobby {
             // 
             this.AutoScaleDimensions = new SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = Color.DimGray;
+            this.BackColor = Color.FromArgb(100, 100, 100);
             this.ClientSize = new Size(319, 397);
             this.Controls.Add(this.ConfirmBtn);
             this.Controls.Add(this.Option13Btn);
