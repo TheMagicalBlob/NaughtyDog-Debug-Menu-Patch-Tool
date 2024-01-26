@@ -29,7 +29,7 @@ namespace Dobby {
         private Label SeperatorLabel0;
 
         public void Invert(Control Control, int OptionIndex) {
-            if (MouseScrolled == 1 || MouseIsDown == 0 || CurrentControl != Control.Name) {
+            if (MouseScrolled || MouseIsDown == 0 || CurrentControl != Control.Name) {
                 Dev.DebugOut($"MouseScrolled: {MouseScrolled}\nMouseIsDown: {MouseIsDown}\n CurrentControl: {CurrentControl}\nC.Name: {Control.Name}");
                 return;
             }
@@ -543,52 +543,52 @@ namespace Dobby {
         public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
 
         public void Option1Btn_SClick(object sender, EventArgs e) {
-            Option1Btn_Click(sender, e); MouseScrolled = 1;
+            Option1Btn_Click(sender, e); MouseScrolled = true;
         }
         public void Option1Btn_Click(object sender, EventArgs e) => Invert(Option1Btn, 0);
 
         public void Option2Btn_SClick(object sender, EventArgs e) {
-            Option2Btn_Click(sender, e); MouseScrolled = 1;
+            Option2Btn_Click(sender, e); MouseScrolled = true;
         }
         public void Option2Btn_Click(object sender, EventArgs e) => Invert(Option2Btn, 1);
 
         public void Option3Btn_SClick(object sender, EventArgs e) {
-            Option3Btn_Click(sender, e); MouseScrolled = 1;
+            Option3Btn_Click(sender, e); MouseScrolled = true;
         }
         public void Option3Btn_Click(object sender, EventArgs e) => Invert(Option3Btn, 2);
 
         public void Option4Btn_SClick(object sender, EventArgs e) {
-            Option4Btn_Click(sender, e); MouseScrolled = 1;
+            Option4Btn_Click(sender, e); MouseScrolled = true;
         }
         public void Option4Btn_Click(object sender, EventArgs e) => Invert(Option4Btn, 3);
 
         public void Option5Btn_SClick(object sender, EventArgs e) {
-            Option5Btn_Click(sender, e); MouseScrolled = 1;
+            Option5Btn_Click(sender, e); MouseScrolled = true;
         }
         public void Option5Btn_Click(object sender, EventArgs e) => Invert(Option5Btn, 4);
 
         public void Option6Btn_SClick(object sender, EventArgs e) {
-            Option6Btn_Click(sender, e); MouseScrolled = 1;
+            Option6Btn_Click(sender, e); MouseScrolled = true;
         }
         public void Option6Btn_Click(object sender, EventArgs e) => Invert(Option6Btn, 5);
 
         public void Option7Btn_SClick(object sender, EventArgs e) {
-            Option7Btn_Click(sender, e); MouseScrolled = 1;
+            Option7Btn_Click(sender, e); MouseScrolled = true;
         }
         public void Option7Btn_Click(object sender, EventArgs e) => Invert(Option7Btn, 6);
 
         public void Option8Btn_SClick(object sender, EventArgs e) {
-            Option8Btn_Click(sender, e); MouseScrolled = 1;
+            Option8Btn_Click(sender, e); MouseScrolled = true;
         }
         public void Option8Btn_Click(object sender, EventArgs e) => Invert(Option8Btn, 7);
 
         public void Option9Btn_SClick(object sender, EventArgs e) {
-            Option9Btn_Click(sender, e); MouseScrolled = 1;
+            Option9Btn_Click(sender, e); MouseScrolled = true;
         }
         public void Option9Btn_Click(object sender, EventArgs e) => Invert(Option9Btn, 8);
 
         public void Option10Btn_Click(object sender, EventArgs e) {
-            if (MouseScrolled == 1) return;
+            if (MouseScrolled) return;
             if (MenuScale < 2) {
                 MenuScale++;
             }
@@ -615,7 +615,7 @@ namespace Dobby {
         public void Option10Btn_Scroll(object sender, MouseEventArgs e) {
             if (MouseIsDown == 0 || CurrentControl != "Option10Btn") return;
 
-            MouseScrolled = 1;
+            MouseScrolled = true;
             if (e.Delta < 0) {
                 MenuScale--;
                 if (MenuScale < 0 || MenuScale == 2) {
@@ -661,7 +661,7 @@ namespace Dobby {
         }
 
         public void Option11Btn_Click(object sender, EventArgs e) {
-            if (MouseScrolled == 1 || CurrentControl != "Option11Btn") return;
+            if (MouseScrolled || CurrentControl != "Option11Btn") return;
 
             MenuOpacity++;
 
@@ -692,7 +692,7 @@ namespace Dobby {
         public void Option11Btn_Scroll(object sender, MouseEventArgs e) {
             if (MouseIsDown == 0 || CurrentControl != "Option11Btn") return;
 
-            MouseScrolled = 1;
+            MouseScrolled = true;
             if (e.Delta < 0) {
                 MenuOpacity--;
                 if (MenuOpacity < 0 || MenuOpacity == 4) {
@@ -748,12 +748,12 @@ namespace Dobby {
         }
 
         public void Option12Btn_SClick(object sender, EventArgs e) {
-            Option12Btn_Click(sender, e); MouseScrolled = 1; // Can Ya Tell I Don't Know What The Hell I'm Doing Yet?
+            Option12Btn_Click(sender, e); MouseScrolled = true; // Can Ya Tell I Don't Know What The Hell I'm Doing Yet?
         }
         public void Option12Btn_Click(object sender, EventArgs e) => Invert(Option12Btn, 9);
 
         public void Option13Btn_Click(object sender, EventArgs e) {
-            if (MouseScrolled == 1 || CurrentControl != "Option13Btn") return;
+            if (MouseScrolled || CurrentControl != "Option13Btn") return;
 
             FPSMode++;
 
@@ -780,7 +780,7 @@ namespace Dobby {
         public void Option13Btn_Scroll(object sender, MouseEventArgs e) {
             if (MouseIsDown == 0 || CurrentControl != "Option13Btn") return;
 
-            MouseScrolled = 1;
+            MouseScrolled = true;
             if (e.Delta < 0) {
                 FPSMode--;
                 if (FPSMode < 0 || FPSMode >= 3) {

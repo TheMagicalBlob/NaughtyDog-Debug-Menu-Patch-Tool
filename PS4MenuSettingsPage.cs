@@ -69,7 +69,7 @@ namespace Dobby {
             this.ProgPauseOnCloseBtn.Text = "Disable Debug Pause On Menu Close: ";
             this.ProgPauseOnCloseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ProgPauseOnCloseBtn.UseVisualStyleBackColor = false;
-            this.ProgPauseOnCloseBtn.Click += new System.EventHandler(this.ProgPauseOnCloseBtn_Click);
+            this.ProgPauseOnCloseBtn.MouseClick += new MouseEventHandler(this.ProgPauseOnCloseBtn_Click);
             // 
             // ProgPauseOnOpenBtn
             // 
@@ -86,7 +86,7 @@ namespace Dobby {
             this.ProgPauseOnOpenBtn.Text = "Disable Debug Pause On Menu Open: ";
             this.ProgPauseOnOpenBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ProgPauseOnOpenBtn.UseVisualStyleBackColor = false;
-            this.ProgPauseOnOpenBtn.Click += new System.EventHandler(this.ProgPauseOnOpenBtn_Click);
+            this.ProgPauseOnOpenBtn.MouseClick += new MouseEventHandler(this.ProgPauseOnOpenBtn_Click);
             // 
             // DisableDebugTextBtn
             // 
@@ -103,8 +103,8 @@ namespace Dobby {
             this.DisableDebugTextBtn.Text = "Disable 2D Debug Text On Startup: ";
             this.DisableDebugTextBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisableDebugTextBtn.UseVisualStyleBackColor = false;
-            this.DisableDebugTextBtn.Click += new System.EventHandler(this.DisableDebugTextBtn_Click);
-            this.DisableDebugTextBtn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.DisableDebugTextBtn_SClick);
+            this.DisableDebugTextBtn.MouseClick += new MouseEventHandler(this.DisableDebugTextBtn_Click);
+            this.DisableDebugTextBtn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.DisableDebugTextBtn_Click);
             // 
             // DisablePausedIconBtn
             // 
@@ -122,7 +122,7 @@ namespace Dobby {
             this.DisablePausedIconBtn.Text = "Disable Debug PAUSED Icon:";
             this.DisablePausedIconBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisablePausedIconBtn.UseVisualStyleBackColor = false;
-            this.DisablePausedIconBtn.Click += new System.EventHandler(this.PausedIconBtn_Click);
+            this.DisablePausedIconBtn.MouseClick += new MouseEventHandler(this.PausedIconBtn_Click);
             // 
             // MenuScaleBtn
             // 
@@ -409,6 +409,23 @@ namespace Dobby {
             RB_StartPos
         ;
 
+        /// <summary>
+        /// UC1100<br/>
+        /// UC1102<br/>
+        /// UC2100<br/>
+        /// UC2102<br/>
+        /// UC3100<br/>
+        /// UC3102<br/>
+        /// UC4100<br/>
+        /// UC4101<br/>
+        /// UC4133<br/>
+        /// UC4133MP<br/>
+        /// TLL100<br/>
+        /// TLL108<br/>
+        /// TLL109<br/>
+        /// UC1100<br/>
+        /// UC1100<br/>
+        /// </summary>
         public static int GameIndex;
 
         /// <summary>
@@ -438,18 +455,55 @@ namespace Dobby {
         /// </summary>
         private static bool[] UniversalDebugBooleans = new bool[4];
 
+        /// <summary>
+        /// 0: Menu Scale <br/>
+        /// 1: Menu Alpha <br/>
+        /// 2: Non-ADS FOV <br/>
+        /// 3: Swap Square & Circle In Debug <br/>
+        /// 4: Menu Shadowed Text <br/>
+        /// 5: Version Text <br/>
+        /// 6: Align Menus Right <br/>
+        /// 7: Right Margin <br/>
+        /// </summary>
+        public static object[] GameSpecificPatchValues = new object[] {
+                    0.60f,
+                    0.85f,
+                    1f,
+                    false,
+                    false,
+                    false,
+                    false,
+                    (byte)10
+        };
 
-        #region BootSettingsPointers
+        private readonly object[] DefaultPatchValues = GameSpecificPatchValues;
+
+
         ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///-- QUALITY OF LIFE/BOOTSETTINGS OFFSET POINTERS  --\\\
         ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        #region BootSettingsPointers
 
         /// <summary>
         /// Byte arrays to be used as pointers with the BootSettings custom function<br/><br/>
         /// 32-Bit Ones Are Pointers To Data In Executable Space.<br/>
         /// Chunky Fucks Are a 32-bit Pointer to A 64-bit Pointer + An Offset to Add.
+        /// <br/><br/>
+        /// Patch Type Index:<br/>
+        ///   0:  Disable FPS<br/>
+        ///   1:  Suppress Active task Display<br/>
+        ///   2:  Shadow Menu Text<br/>
+        ///   3:  ProgPauseOnMenuOpen<br/>
+        ///   4:  ProgPauseOnMenuClose<br/>
+        ///   5:  Show Paused Indicator<br/>
+        ///   6:  Swap Circle And Square<br/>
+        ///   7:  Right Margin<br/>
+        ///   8:  Right Align<br/>
+        ///   9:  Menu Alpha<br/>
+        ///   10: Menu Scale<br/>
+        ///   11: novis<br/>
         ///</summary>
-        byte[][][] BootSettingsPointers = new byte[][][] {  // fill null bytes just in case of repeat uses with alternate options
+        private static readonly byte[][][] BootSettingsPointers = new byte[][][] {  // fill null bytes just in case of repeat uses with alternate options
             
 
             /////////\\\\\\\\
@@ -468,7 +522,7 @@ namespace Dobby {
                 new byte[] {  }, // UC3133
                 new byte[] {  }, // UC3133MP
                 new byte[] {  }, // TLL100
-                new byte[] {  }, // TLL107
+                new byte[] {  }, // TLL109
                 new byte[] { 0xff, 0x30, 0xb4, 0x77, 0x03, 0xb8, 0x3a, 0x00, 0x00 }, // T2108
                 new byte[] { 0xff, 0x30, 0xb4, 0x77, 0x03, 0xb8, 0x3a, 0x00, 0x00 }  // T2109
             },
@@ -487,9 +541,6 @@ namespace Dobby {
                 new byte[] {  }, // 0x | UC4133
                 new byte[] {  }, // 0x | UC4133MP
                 new byte[] {  }, // 0x | TLL100
-                new byte[] {  }, // 0x | TLL107
-                new byte[] {  }, // 0x | TLL108
-                new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
@@ -519,8 +570,6 @@ namespace Dobby {
                 new byte[] {  }, // UC4133
                 new byte[] {  }, // UC4133MP
                 new byte[] {  }, // TLL100
-                new byte[] {  }, // TLL107
-                new byte[] {  }, // TLL108
                 new byte[] {  }, // TLL109
                 new byte[] {  }, // T1R100
                 new byte[] {  }, // T1R109
@@ -544,8 +593,6 @@ namespace Dobby {
                 new byte[] {  }, // UC4133
                 new byte[] {  }, // UC4133MP
                 new byte[] {  }, // TLL100
-                new byte[] {  }, // TLL107
-                new byte[] {  }, // TLL108
                 new byte[] {  }, // TLL109
                 new byte[] {  }, // T1R100
                 new byte[] {  }, // T1R109
@@ -556,7 +603,7 @@ namespace Dobby {
                 new byte[] { 0x39, 0xA6, 0x25, 0x03 }  // 0x365a639 | T2109
             },
 
-            //|ProgPauseOnMenuExit
+            //|ProgPauseOnMenuClose
             new byte[][] {
                 new byte[] { 0x8C, 0xF9, 0xA9, 0x00 }, // 0xE9F98C  | UC1100
                 new byte[] { 0x89, 0x38, 0xA6, 0x00 }, // 0xE63889  | UC1102
@@ -568,8 +615,6 @@ namespace Dobby {
                 new byte[] {  }, // 0x | UC4133
                 new byte[] {  }, // 0x | UC4133MP
                 new byte[] {  }, // 0x | TLL100
-                new byte[] {  }, // 0x | TLL107
-                new byte[] {  }, // 0x | TLL108
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | T1R100
@@ -646,9 +691,6 @@ namespace Dobby {
                 new byte[] {  }, // 0x | UC4133
                 new byte[] {  }, // 0x | UC4133MP
                 new byte[] {  }, // 0x | TLL100
-                new byte[] {  }, // 0x | TLL107
-                new byte[] {  }, // 0x | TLL108
-                new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
@@ -672,9 +714,6 @@ namespace Dobby {
                 new byte[] {  }, // 0x | UC4133
                 new byte[] {  }, // 0x | UC4133MP
                 new byte[] {  }, // 0x | TLL100
-                new byte[] {  }, // 0x | TLL107
-                new byte[] {  }, // 0x | TLL108
-                new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
@@ -698,40 +737,18 @@ namespace Dobby {
 
             private static bool MultipleButtonsEnabled;
 
-
-            /// <summary>
-            /// 0: Menu Scale <br/>
-            /// 1: Menu Alpha <br/>
-            /// 2: Non-ADS FOV <br/>
-            /// 3: Swap Square & Circle In Debug <br/>
-            /// 4: Menu Shadowed Text <br/>
-            /// 5: Version Text <br/>
-            /// 6: Align Menus Right <br/>
-            /// 7: Right Margin <br/>
-            /// </summary>
-            public static object[] PatchValues = new object[] {
-                    0.60f,
-                    0.85f,
-                    1f,
-                    false,
-                    false,
-                    false,
-                    false,
-                    (byte)10
-                };
-
             /// <summary>
             /// Variable Used In Dynamic Button Cration For Game-Specific Patches
             /// </summary>
             private static readonly string[] Name = new string[] {
-                    "MenuScaleBtn_f",
-                    "MenuAlphaBtn_f",
-                    "FOVBtn_f",
-                    "SwapCircleInDebugBtn_b",
-                    "MenuShadowTextBtn_b",
-                    "VersionTxtBtn_b",
-                    "MenuRightAlignBtn_b",
-                    "RightMarginBtn_i"
+                    "MenuScaleBtn",
+                    "MenuAlphaBtn",
+                    "FOVBtn",
+                    "SwapCircleInDebugBtn",
+                    "MenuShadowTextBtn",
+                    "VersionTxtBtn",
+                    "MenuRightAlignBtn",
+                    "RightMarginBtn"
                 };
 
             private static readonly string[] ControlText = new string[] {
@@ -892,7 +909,7 @@ namespace Dobby {
                 Buttons[ButtonIndex].Size = new Size(ActiveForm.Width - 2, 23);
                 Buttons[ButtonIndex].Font = MainFont;
                 Buttons[ButtonIndex].Text = ControlText[ButtonIndex];
-                Buttons[ButtonIndex].Variable = PatchValues[ButtonIndex];
+                Buttons[ButtonIndex].Variable = GameSpecificPatchValues[ButtonIndex];
                 Buttons[ButtonIndex].TextAlign = ContentAlignment.MiddleLeft;
                 Buttons[ButtonIndex].FlatAppearance.BorderSize = 0;
                 Buttons[ButtonIndex].FlatStyle = FlatStyle.Flat;
@@ -908,15 +925,15 @@ namespace Dobby {
                 Buttons[ButtonIndex].BringToFront();
 
 
-                if(PatchValues[ButtonIndex].GetType() == typeof(bool))
+                if(GameSpecificPatchValues[ButtonIndex].GetType() == typeof(bool))
                     Buttons[ButtonIndex].Click += DynamicBtn_Click;
 
-                else if(PatchValues[ButtonIndex].GetType() == typeof(float)) {
+                else if(GameSpecificPatchValues[ButtonIndex].GetType() == typeof(float)) {
                     Buttons[ButtonIndex].MouseWheel += FloatFunc;
                     Buttons[ButtonIndex].MouseDown += FloatClick;
                 }
 
-                else if(PatchValues[ButtonIndex].GetType() == typeof(int)) {
+                else if(GameSpecificPatchValues[ButtonIndex].GetType() == typeof(byte)) {
                     Buttons[ButtonIndex].MouseWheel += IntFunc;
                     Buttons[ButtonIndex].MouseDown += IntClick;
                 }
@@ -933,10 +950,10 @@ namespace Dobby {
             #region Event Handlers And Functions For Dynamic Button
             private void DynamicBtn_Click(object sender, EventArgs e) => ToggleFunc((vButton)sender, ((Control)sender).TabIndex);
             private void ToggleFunc(vButton Control, int ButtonIndex) {
-                if(MouseScrolled == 1 || MouseIsDown == 0 || CurrentControl != Control.Name) return;
+                if(MouseScrolled || MouseIsDown == 0 || CurrentControl != Control.Name) return;
 
-                PatchValues[ButtonIndex] = !(bool)PatchValues[ButtonIndex];
-                Control.Variable = PatchValues[ButtonIndex];
+                GameSpecificPatchValues[ButtonIndex] = !(bool)GameSpecificPatchValues[ButtonIndex];
+                Control.Variable = GameSpecificPatchValues[ButtonIndex];
                 Control.Refresh();
             }
 
@@ -944,22 +961,22 @@ namespace Dobby {
             private void FloatClick(object sender, MouseEventArgs e) => FloatClickFunc((vButton)sender, ((vButton)sender).TabIndex, e.Button);
             private void FloatClickFunc(vButton Control, int ButtonIndex, MouseButtons Button) {
                 if(CurrentControl != Control.Name) return;
-                var currentFloat = (float)PatchValues[ButtonIndex]; // Avoid CS0445
+                var currentFloat = (float)GameSpecificPatchValues[ButtonIndex]; // Avoid CS0445
 
-                if(Button == MouseButtons.Left) PatchValues[ButtonIndex] = (float)Math.Round(currentFloat += 0.1f, 4);
-                else PatchValues[ButtonIndex] = (float)Math.Round(currentFloat -= 0.1f, 4);
+                if(Button == MouseButtons.Left) GameSpecificPatchValues[ButtonIndex] = (float)Math.Round(currentFloat += 0.1f, 4);
+                else GameSpecificPatchValues[ButtonIndex] = (float)Math.Round(currentFloat -= 0.1f, 4);
 
-                Control.Variable = PatchValues[ButtonIndex];
+                Control.Variable = GameSpecificPatchValues[ButtonIndex];
                 Control.Refresh();
             }
 
             private void FloatFunc(object sender, MouseEventArgs e) => FloatScrollFunc((vButton)sender, ((vButton)sender).TabIndex, e.Delta);
             private void FloatScrollFunc(vButton Control, int ButtonIndex, int WheelDelta) {
                 if(CurrentControl != Control.Name) return;
-                var currentFloat = (float)PatchValues[ButtonIndex]; // Avoid CS0445
+                var currentFloat = (float)GameSpecificPatchValues[ButtonIndex]; // Avoid CS0445
 
-                PatchValues[ButtonIndex] = (float)Math.Round(currentFloat += WheelDelta / 12000.0F, 4);
-                Control.Variable = PatchValues[ButtonIndex];
+                GameSpecificPatchValues[ButtonIndex] = (float)Math.Round(currentFloat += WheelDelta / 12000.0F, 4);
+                Control.Variable = GameSpecificPatchValues[ButtonIndex];
                 Control.Refresh();
             }
 
@@ -967,26 +984,26 @@ namespace Dobby {
             private void IntClick(object sender, MouseEventArgs e) => IntClickFunc((vButton)sender, ((vButton)sender).TabIndex, e.Button);
             private void IntClickFunc(vButton Control, int ButtonIndex, MouseButtons Button) {
                 if(CurrentControl != Control.Name) return;
-                var currentInt = (byte)PatchValues[ButtonIndex]; // Avoid CS0445
+                var currentInt = (byte)GameSpecificPatchValues[ButtonIndex]; // Avoid CS0445
 
                 if(Button == MouseButtons.Left) currentInt += 5;
                 else currentInt -= 5;
 
-                PatchValues[ButtonIndex] = currentInt;
+                GameSpecificPatchValues[ButtonIndex] = currentInt;
              
-                Control.Variable = PatchValues[ButtonIndex];
+                Control.Variable = GameSpecificPatchValues[ButtonIndex];
                 Control.Refresh();
             }
 
             private void IntFunc(object sender, MouseEventArgs e) => IntScrollFunc((vButton)sender, ((vButton)sender).TabIndex, e.Delta);
             private void IntScrollFunc(vButton Control, int ButtonIndex, int WheelDelta) {
                 if(CurrentControl != Control.Name) return;
-                var currentInt = (byte)PatchValues[ButtonIndex]; // Avoid CS0445
+                var currentInt = (byte)GameSpecificPatchValues[ButtonIndex]; // Avoid CS0445
 
                 currentInt += (byte)(WheelDelta / 120);
-                PatchValues[ButtonIndex] = currentInt;
+                GameSpecificPatchValues[ButtonIndex] = currentInt;
 
-                Control.Variable = PatchValues[ButtonIndex];
+                Control.Variable = GameSpecificPatchValues[ButtonIndex];
                 Control.Refresh();
             }
 
@@ -995,6 +1012,29 @@ namespace Dobby {
         }
         #endregion
 
+        ///////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Event Handlers For Basic Patches Available For Each Game     --\\\
+        ///////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        #region Event Handlers For Basic Patches Available For Each Game
+        private void DisableDebugTextBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((vButton)sender, e.Delta != 0, 0);
+
+        private void PausedIconBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((vButton)sender, e.Delta != 0, 1);
+
+        private void ProgPauseOnOpenBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((vButton)sender, e.Delta != 0, 2);
+        
+        private void ProgPauseOnCloseBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((vButton)sender, e.Delta != 0, 3);
+
+        private void DefaultButtonClick(vButton cnt, bool scrolled, int PatchIndex) { ToggleBool(cnt, PatchIndex); MouseScrolled = scrolled; }
+
+        private void ToggleBool(vButton Control, int OptionIndex) {
+            if(MouseScrolled || MouseIsDown == 0 || CurrentControl != Control.Name)
+                return;
+
+            UniversalDebugBooleans[OptionIndex] = !UniversalDebugBooleans[OptionIndex];
+            Control.Variable = UniversalDebugBooleans[OptionIndex];
+            Control.Refresh();
+        }
+        #endregion
 
 #if DEBUG
         // Only Gonna Be Useful If I End Up Using A Monospace Font
@@ -1013,33 +1053,6 @@ namespace Dobby {
             return $"{control.Text}{padding}{Variable}";
         }
 #endif
-
-        #region Event Handlers For Basic Patches Available For Each Game
-        ///////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     Event Handlers For Basic Patches Available For Each Game     --\\\
-        ///////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        private void DisableDebugTextBtn_SClick(object sender, EventArgs e) {
-            DisableDebugTextBtn_Click(sender, e);
-            MouseScrolled = 1;
-        }
-        private void DisableDebugTextBtn_Click(object sender, EventArgs e) => Invert((vButton)sender, 0);
-        private void PausedIconBtn_Click(object sender, EventArgs e) => Invert((vButton)sender, 1);
-        private void ProgPauseOnOpenBtn_Click(object sender, EventArgs e) => Invert((vButton)sender, 2);
-        private void ProgPauseOnCloseBtn_Click(object sender, EventArgs e) => Invert((vButton)sender, 3);
-
-
-
-        void Invert(vButton Control, int OptionIndex) {
-            if(MouseScrolled == 1 || MouseIsDown == 0 || CurrentControl != Control.Name)
-                return;
-
-            UniversalDebugBooleans[OptionIndex] = !UniversalDebugBooleans[OptionIndex];
-            Control.Variable = UniversalDebugBooleans[OptionIndex];
-            Control.Refresh();
-        }
-        #endregion
-
-
 
         //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
         ///--     Misc Patches Page Main Functions    --\\\
@@ -1216,7 +1229,7 @@ namespace Dobby {
                 }
 
                 // Game-Specific Options
-                for(index = 0; index < DynamicPatchButtons.PatchValues.Length - 1; index++) {
+                for(index = 0; index < GameSpecificPatchValues.Length - 1; index++) {
                     if(DynamicPatchButtons.Buttons[index] != null) {
                         WriteBytes(BootSettingsDataAddress, GetPatchBytes(index));
                         BootSettingsAddress += GetPatchBytes(index).Length;
@@ -1243,210 +1256,7 @@ namespace Dobby {
         /// The Desired Address, Based On The Current Game Value (Determined by bytes read at 0x60 in the selected executable), <br/>
         /// as well as PatchIndex for the type of patch
         /// </returns>
-        private static byte[] GetPatchBytes(int PatchIndex) {
-            switch(Game) {
-                case UC1100:
-                    switch(PatchIndex) {
-                        default: Dev.DebugOut($"Game Was UC1 1.00, But Patch Index Was Invalid ({PatchIndex})"); return null;
-                        case 0: return UC1100DisableFPS;
-                        case 1: return UC1100PausedIcon;
-                        case 2: return UC1100ProgPause;
-                        case 3: return UC1100ProgPauseOnExit;
-                    }
-
-                case UC1102:
-                    switch(PatchIndex) {
-                        default: Dev.DebugOut($"Game Was UC1 1.02, But Patch Index Was Invalid ({PatchIndex})"); return null;
-                        case 0: return UC1102DisableFPS;
-                        case 1: return UC1102PausedIcon;
-                        case 2: return UC1102ProgPause;
-                        case 3: return UC1102ProgPauseOnExit;
-                    }
-
-                case UC2100:
-                    switch(PatchIndex) {
-                        default: Dev.DebugOut($"Game Was UC2 1.00, But Patch Index Was Invalid ({PatchIndex})"); return null;
-                        case 0: return UC2100DisableFPS;
-                        case 1: return UC2100PausedIcon;
-                        case 2: return UC2100ProgPause;
-                        case 3: return UC2100ProgPauseOnExit;
-                    }
-
-                case UC2102:
-                    switch(PatchIndex) {
-                        default: Dev.DebugOut($"Game Was UC2 1.02, But Patch Index Was Invalid ({PatchIndex})"); return null;
-                        case 0: return UC2102DisableFPS;
-                        case 1: return UC2102PausedIcon;
-                        case 2: return UC2102ProgPause;
-                        case 3: return UC2102ProgPauseOnExit;
-                    }
-
-                case UC3100:
-                    switch(PatchIndex) {
-                        default: Dev.DebugOut($"Game Was UC3 1.00, But Patch Index Was Invalid ({PatchIndex})"); return null;
-                        case 0: return UC3100DisableFPS;
-                        case 1: return UC3100RightAlign;
-                        case 2: return UC3100ProgPause;
-                        case 3: return UC3100ProgPauseOnExit;
-                    }
-
-                case UC3102:
-                    switch(PatchIndex) {
-                        default: Dev.DebugOut($"Game Was UC3 1.02, But Patch Index Was Invalid ({PatchIndex})"); return null;
-                        case 0: return UC3102DisableFPS;
-                        case 1: return UC3102RightAlign;
-                        case 2: return UC3102ProgPause;
-                        case 3: return UC3102ProgPauseOnExit;
-                    }
-
-                case T1R100:
-                    break;
-
-                case T1R109:
-                    break;
-
-                case T1R110:
-                case T1R111:
-                    break;
-
-                case T2100:
-                    switch(PatchIndex) {
-                        default: Dev.DebugOut($"Game Was T2 1.00, But Patch Index Was Invalid ({PatchIndex})"); return null;
-                        case 0: return T2100DisableFPS;
-                        case 1: return T2100RightAlign;
-                        case 2: return T2100ProgPause;
-                        case 3: return T2100ProgPauseOnExit;
-                        case 4: return T2100SwapCircle;
-                    }
-
-                case T2107:
-                    switch(PatchIndex) {
-                        default: Dev.DebugOut($"Game Was T2 1.07, But Patch Index Was Invalid ({PatchIndex})"); return null;
-                        case 0: return T2107DisableFPS;
-                        case 1: return T2107RightAlign;
-                        case 2: return T2107ProgPause;
-                        case 3: return T2107ProgPauseOnExit;
-                        case 4: return T2107SwapCircle;
-                    }
-
-                case T2108:
-                case T2109:
-                    switch(PatchIndex) {
-                        default: Dev.DebugOut($"Game Was T2 1.09, But Patch Index Was Invalid ({PatchIndex})"); return null;
-                        case 0: return T2109DisableFPS;
-                        case 1: return T2109RightAlign;
-                        case 2: return T2109ProgPause;
-                        case 3: return T2109ProgPauseOnExit;
-                        case 4: return T2109SwapCircle;
-                    }
-            }
-
-            return new byte[] { 0x00, 0x00, 0x00, 0x00 };
-        }
-
-        private static byte[] GetGameSpecificPatchBytes(int PatchIndex) {
-
-            return Array.Empty<byte>();
-
-            switch(Game) {
-                case UC1100:
-                    switch(PatchIndex) {
-                        default: Dev.DebugOut($"Game Was UC1 1.00, But Patch Index Was Invalid ({PatchIndex})"); return null;
-                        case 0: return UC1100DisableFPS;
-                        case 1: return UC1100PausedIcon;
-                        case 2: return UC1100ProgPause;
-                        case 3: return UC1100ProgPauseOnExit;
-                    }
-
-                case UC1102:
-                    switch(PatchIndex) {
-                        default: Dev.DebugOut($"Game Was UC1 1.02, But Patch Index Was Invalid ({PatchIndex})"); return null;
-                        case 0: return UC1102DisableFPS;
-                        case 1: return UC1102PausedIcon;
-                        case 2: return UC1102ProgPause;
-                        case 3: return UC1102ProgPauseOnExit;
-                    }
-
-                case UC2100:
-                    switch(PatchIndex) {
-                        default: Dev.DebugOut($"Game Was UC2 1.00, But Patch Index Was Invalid ({PatchIndex})"); return null;
-                        case 0: return UC2100DisableFPS;
-                        case 1: return UC2100PausedIcon;
-                        case 2: return UC2100ProgPause;
-                        case 3: return UC2100ProgPauseOnExit;
-                    }
-
-                case UC2102:
-                    switch(PatchIndex) {
-                        default: Dev.DebugOut($"Game Was UC2 1.02, But Patch Index Was Invalid ({PatchIndex})"); return null;
-                        case 0: return UC2102DisableFPS;
-                        case 1: return UC2102PausedIcon;
-                        case 2: return UC2102ProgPause;
-                        case 3: return UC2102ProgPauseOnExit;
-                    }
-
-                case UC3100:
-                    switch(PatchIndex) {
-                        default: Dev.DebugOut($"Game Was UC3 1.00, But Patch Index Was Invalid ({PatchIndex})"); return null;
-                        case 0: return UC3100DisableFPS;
-                        case 1: return UC3100RightAlign;
-                        case 2: return UC3100ProgPause;
-                        case 3: return UC3100ProgPauseOnExit;
-                    }
-
-                case UC3102:
-                    switch(PatchIndex) {
-                        default: Dev.DebugOut($"Game Was UC3 1.02, But Patch Index Was Invalid ({PatchIndex})"); return null;
-                        case 0: return UC3102DisableFPS;
-                        case 1: return UC3102RightAlign;
-                        case 2: return UC3102ProgPause;
-                        case 3: return UC3102ProgPauseOnExit;
-                    }
-
-                case T1R100:
-                    break;
-
-                case T1R109:
-                    break;
-
-                case T1R110:
-                case T1R111:
-                    break;
-
-                case T2100:
-                    switch(PatchIndex) {
-                        default: Dev.DebugOut($"Game Was T2 1.00, But Patch Index Was Invalid ({PatchIndex})"); return null;
-                        case 0: return T2100DisableFPS;
-                        case 1: return T2100RightAlign;
-                        case 2: return T2100ProgPause;
-                        case 3: return T2100ProgPauseOnExit;
-                        case 4: return T2100SwapCircle;
-                    }
-
-                case T2107:
-                    switch(PatchIndex) {
-                        default: Dev.DebugOut($"Game Was T2 1.07, But Patch Index Was Invalid ({PatchIndex})"); return null;
-                        case 0: return T2107DisableFPS;
-                        case 1: return T2107RightAlign;
-                        case 2: return T2107ProgPause;
-                        case 3: return T2107ProgPauseOnExit;
-                        case 4: return T2107SwapCircle;
-                    }
-
-                case T2109:
-                    switch(PatchIndex) {
-                        default: Dev.DebugOut($"Game Was T2 1.09, But Patch Index Was Invalid ({PatchIndex})"); return null;
-                        case 0: return T2109DisableFPS;
-                        case 1: return T2109RightAlign;
-                        case 2: return T2109ProgPause;
-                        case 3: return T2109ProgPauseOnExit;
-                        case 4: return T2109SwapCircle;
-                    }
-            }
-
-            return new byte[] { 0x00, 0x00, 0x00, 0x00 };
-        }
-
+        private static byte[] GetPatchBytes(int PatchIndex) { return BootSettingsPointers[GameIndex][PatchIndex]; }
 
         /// <summary>
         /// Returns a byte[] containing the custom bootsettings function
@@ -1676,14 +1486,14 @@ namespace Dobby {
                 Dev.DebugOut(Dev.BlankSpace($"| ProgPauseOnOpen: {YN(UniversalDebugBooleans[2])}"), 2);
                 Dev.DebugOut(Dev.BlankSpace($"| ProgPauseOnExit: {YN(UniversalDebugBooleans[3])}"), 3);
 
-                Dev.DebugOut(Dev.BlankSpace($"| Menu Scale:             {DynamicPatchButtons.PatchValues[0]}"), 4);
-                Dev.DebugOut(Dev.BlankSpace($"| Menu Alpha:             {DynamicPatchButtons.PatchValues[1]}"), 5);
-                Dev.DebugOut(Dev.BlankSpace($"| Non-ADS FOV:            {DynamicPatchButtons.PatchValues[2]}"), 6);
-                Dev.DebugOut(Dev.BlankSpace($"| Swap Square And Circle: {YN(DynamicPatchButtons.PatchValues[3])}"), 7);
-                Dev.DebugOut(Dev.BlankSpace($"| Shadowed Text:          {YN(DynamicPatchButtons.PatchValues[4])}"), 8);
-                Dev.DebugOut(Dev.BlankSpace($"| Version Text:           {YN(DynamicPatchButtons.PatchValues[5])}"), 9);
-                Dev.DebugOut(Dev.BlankSpace($"| Right Align:      {YN(DynamicPatchButtons.PatchValues[6])}"), 10);
-                Dev.DebugOut(Dev.BlankSpace($"|    Right Margin:  {DynamicPatchButtons.PatchValues[7]}"), 11);
+                Dev.DebugOut(Dev.BlankSpace($"| Menu Scale:             {GameSpecificPatchValues[0]}"), 4);
+                Dev.DebugOut(Dev.BlankSpace($"| Menu Alpha:             {GameSpecificPatchValues[1]}"), 5);
+                Dev.DebugOut(Dev.BlankSpace($"| Non-ADS FOV:            {GameSpecificPatchValues[2]}"), 6);
+                Dev.DebugOut(Dev.BlankSpace($"| Swap Square And Circle: {YN(GameSpecificPatchValues[3])}"), 7);
+                Dev.DebugOut(Dev.BlankSpace($"| Shadowed Text:          {YN(GameSpecificPatchValues[4])}"), 8);
+                Dev.DebugOut(Dev.BlankSpace($"| Version Text:           {YN(GameSpecificPatchValues[5])}"), 9);
+                Dev.DebugOut(Dev.BlankSpace($"| Right Align:      {YN(GameSpecificPatchValues[6])}"), 10);
+                Dev.DebugOut(Dev.BlankSpace($"|    Right Margin:  {GameSpecificPatchValues[7]}"), 11);
 
                 if(DynamicPatchButtons.Buttons != null)
                     foreach(Control c in DynamicPatchButtons.Buttons)

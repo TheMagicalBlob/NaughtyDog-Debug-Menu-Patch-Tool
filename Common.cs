@@ -200,7 +200,8 @@ namespace Dobby {
           "* 3.36.145.383 | Added Tlou 2 1.07 Custom Menu, Other Misc Changes",
           "* 3.37.147.388 | Slightly Darkened All Form Background Colours, Added Button Class \"Overload\" (vButton) To Store Button Variables For Simpler Access. Created DrawButtonVar() Function For Appending Variables To vButtons. Dynamic Button Function Work. Other Random Crap",
           "* 3.37.148.392 | More Dynamic Patch Button Work",
-          "* 3.37.150.403 | Added Many Pointers And Created Jagged Array To Store Them Better"
+          "* 3.37.150.403 | Added Many Pointers And Created Jagged Array To Store Them Better",
+          "* 3.37.152.405 | Reworked Misc Patch Page Event Handlers, Other Misc Changes"
 
             // TODO:
             // * MAJOR
@@ -311,7 +312,8 @@ namespace Dobby {
             MouseIsDown = 1; LastPos = ActiveForm.Location;
             MouseDif = new Point(MousePosition.X - ActiveForm.Location.X, MousePosition.Y - ActiveForm.Location.Y);
         }
-        public static void MouseUpFunc(object sender, MouseEventArgs e) => MouseScrolled = MouseIsDown = 0;
+        public static void MouseUpFunc(object sender, MouseEventArgs e) { MouseScrolled = false; MouseIsDown = 0; }
+
         public static void MoveForm(object sender, MouseEventArgs e) {
             if(MouseIsDown == 0)
                 return;
@@ -328,11 +330,12 @@ namespace Dobby {
             CurrentControl = PassedControl.Name;
             PassedControl.ForeColor = EventIsMouseEnter ? Color.FromArgb(255, 227, 0) : Color.FromArgb(255, 255, 255);
             PassedControl.Text = EventIsMouseEnter ? $">{PassedControl.Text}" : PassedControl.Text.Substring(PassedControl.Text.IndexOf('>') + 1);
+
             if(PassedControl.GetType() != typeof(vButton))
                 PassedControl.Size = new Size(EventIsMouseEnter ? PassedControl.Width + 9 : PassedControl.Width - 9, PassedControl.Height);
 
             if(!InfoHasImportantStr & !EventIsMouseEnter) SetInfoLabelText("");
-            if(!EventIsMouseEnter) { MouseScrolled = 0; return; }
+            if(!EventIsMouseEnter) { MouseScrolled = false; return; }
             else SetInfoLabelStringOnControlHover(PassedControl);
 #if DEBUG
             HoveredControl = PassedControl;
@@ -863,16 +866,13 @@ namespace Dobby {
             T2DebugOff = new byte[] { 0xb2, 0x01, 0x31, 0xc0 }
         ;
 
-        public static byte
-            MouseScrolled,
-            MouseIsDown
-        ;
+        public static byte MouseIsDown;
 
         public static FileStream MainStream;
 
         public static string ActiveFilePath, ActiveGameID = "?";
 
-        public static bool IsActiveFilePCExe, MainStreamIsOpen;
+        public static bool IsActiveFilePCExe, MainStreamIsOpen, MouseScrolled;
 
         public static int Game, DebugAddressForSelectedGame;
 
