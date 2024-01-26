@@ -30,7 +30,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             AddControlEventHandlers(Controls);
 
 #if !DEBUG
-            //PS4MenuSettingsPageBtn.Enabled = false;
+            PS4MenuSettingsPageBtn.Enabled = false;
 #endif
         }
 
