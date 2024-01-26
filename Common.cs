@@ -196,10 +196,11 @@ namespace Dobby {
           "* 3.36.140.372 | PS4MiscPatchesPage Work, EbootPatchHelpPage: fixed double file load",
           "* 3.36.141.375 | More PS4MiscPatchesPage Work, Tweaks To Related EbootPatchPage, Removed Redundant Variable Assignment. My bad.",
           "* 3.36.143.380 | Renamed W.I.P. Page (PS4MiscPatchesPage => PS4MenuSettingsPage) And Related Controls, As Well As A Few Unrelated Ones. Misc. Changes",
-          "* 3.36.144.180 | AppendControlVariable POC",
-          "* 3.36.145.183 | Added Tlou 2 1.07 Custom Menu, Other Misc Changes",
-          "* 3.37.147.188 | Slightly Darkened All Form Background Colours, Added Button Class \"Overload\" (vButton) To Store Button Variables For Simpler Access. Created DrawButtonVar() Function For Appending Variables To vButtons. Dynamic Button Function Work. Other Random Crap",
-          "* 3.37.148.192 | More Dynamic Patch Button Work"
+          "* 3.36.144.380 | AppendControlVariable POC",
+          "* 3.36.145.383 | Added Tlou 2 1.07 Custom Menu, Other Misc Changes",
+          "* 3.37.147.388 | Slightly Darkened All Form Background Colours, Added Button Class \"Overload\" (vButton) To Store Button Variables For Simpler Access. Created DrawButtonVar() Function For Appending Variables To vButtons. Dynamic Button Function Work. Other Random Crap",
+          "* 3.37.148.392 | More Dynamic Patch Button Work",
+          "* 3.37.150.403 | Added Many Pointers And Created Jagged Array To Store Them Better"
 
             // TODO:
             // * MAJOR
