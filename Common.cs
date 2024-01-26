@@ -1080,10 +1080,17 @@ namespace Dobby {
         ;
         #endregion
 
+        /*
         #region BootSettingsPointers
         ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///-- QUALITY OF LIFE/BOOTSETTINGS OFFSET POINTERS  --\\\
         ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        
+         
+        // 32-Bit Ones Are Pointers To Data In Executable Space 
+        // Chunky Fucks Are a 32-bit Pointer to A 64-bit Pointer + an offset to add
+
+
         /// <summary> Byte arrays to be used as pointers with the BootSettings custom function </summary>
         public static readonly byte[]
             UC1100DisableFPS = new byte[] { 0x70, 0x89, 0x99, 0x00 }, // fill null bytes just in case of repeat uses with alternate options
@@ -1108,8 +1115,8 @@ namespace Dobby {
             T2102DisableFPS  = new byte[] { }, // 
             T2105DisableFPS  = new byte[] { }, // 
             T2107DisableFPS  = new byte[] { }, // 
-            T2108DisableFPS  = new byte[] { }, // 
-            T2109DisableFPS  = new byte[] { }  // 
+            T2108DisableFPS  = new byte[] { 0xff, 0x30, 0xb4, 0x77, 0x03, 0xb8, 0x3a, 0x00, 0x00 }, 
+            T2109DisableFPS  = new byte[] { 0xff, 0x30, 0xb4, 0x77, 0x03, 0xb8, 0x3a, 0x00, 0x00 }
         ;
 
         /// <summary> ProgPauseOnOpen Offsets </summary>
@@ -1135,7 +1142,7 @@ namespace Dobby {
             T2101ProgPause  = new byte[] { }, // 
             T2102ProgPause  = new byte[] { }, // 
             T2105ProgPause  = new byte[] { }, // 
-            T2107ProgPause  = new byte[] { }, // 
+            T2107ProgPause  = new byte[] { 0xB9, 0x67, 0x24, 0x03 }, // 0x36467b9
             T2108ProgPause  = new byte[] { }, // 
             T2109ProgPause  = new byte[] { }  // 
         ;
@@ -1163,7 +1170,7 @@ namespace Dobby {
             T2101ProgPauseOnExit  = new byte[] { }, // 
             T2102ProgPauseOnExit  = new byte[] { }, // 
             T2105ProgPauseOnExit  = new byte[] { }, // 
-            T2107ProgPauseOnExit  = new byte[] { }, // 
+            T2107ProgPauseOnExit  = new byte[] { 0xBA, 0x67, 0x24, 0x03 }, // 0x36467ba
             T2108ProgPauseOnExit  = new byte[] { }, // 
             T2109ProgPauseOnExit  = new byte[] { } // 
         ;
@@ -1216,6 +1223,28 @@ namespace Dobby {
             T2107SwapCircle  = new byte[] { }, // 
             T2108SwapCircle  = new byte[] { }, // 
             T2109SwapCircle  = new byte[] { }  // 
+        ;
+
+        /// <summary> Swap Circle And Square Offsets </summary>
+        public static readonly byte[]
+            UC4100ShadowMenuText = new byte[] { }, // 
+            UC4133ShadowMenuText = new byte[] { }, // 
+          UC4133MPShadowMenuText = new byte[] { }, // 
+            TLL100ShadowMenuText = new byte[] { }, // 
+            TLL107ShadowMenuText = new byte[] { }, // 
+            TLL108ShadowMenuText = new byte[] { }, // 
+            TLL109ShadowMenuText = new byte[] { }, // 
+            T1R100ShadowMenuText = new byte[] { }, // 
+            T1R109ShadowMenuText = new byte[] { }, // 
+            T1R110ShadowMenuText = new byte[] { }, // 
+            T1R111ShadowMenuText = new byte[] { }, // 
+            T2100ShadowMenuText  = new byte[] { }, // 
+            T2101ShadowMenuText  = new byte[] { }, // 
+            T2102ShadowMenuText  = new byte[] { }, // 
+            T2105ShadowMenuText  = new byte[] { }, // 
+            T2107ShadowMenuText  = new byte[] { }, // 
+            T2108ShadowMenuText  = new byte[] { }, // 
+            T2109ShadowMenuText  = new byte[] { 0xfe, 0x3d, 0xa6, 0x25, 0x03 }  // 
         ;
 
 
@@ -1320,7 +1349,7 @@ namespace Dobby {
             T2109Novis  = new byte[] { 0x2C, 0x9E, 0x04, 0x03 }  // 0x3449e2c
         ;
         #endregion
-
+        */
 
         #region Debug Class
         public class Dev {
