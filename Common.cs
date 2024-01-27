@@ -7,8 +7,9 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Security.Cryptography;
 using System.Threading;
+using System.Security.Cryptography;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static Dobby.Common.Dev;
 using static System.Console;
@@ -201,7 +202,8 @@ namespace Dobby {
           "* 3.37.147.388 | Slightly Darkened All Form Background Colours, Added Button Class \"Overload\" (vButton) To Store Button Variables For Simpler Access. Created DrawButtonVar() Function For Appending Variables To vButtons. Dynamic Button Function Work. Other Random Crap",
           "* 3.37.148.392 | More Dynamic Patch Button Work",
           "* 3.37.150.403 | Added Many Pointers And Created Jagged Array To Store Them Better",
-          "* 3.37.152.405 | Reworked Misc Patch Page Event Handlers, Other Misc Changes"
+          "* 3.37.152.405 | Reworked Misc Patch Page Event Handlers, Other Misc Changes",
+          "* 3.38.154.440 | Debug Output Overhaul, Misc Changes"
 
             // TODO:
             // * MAJOR
@@ -349,7 +351,8 @@ namespace Dobby {
             var Variable = control.Variable?.ToString();
 
             var x = (int)(control.Width - e.Graphics.MeasureString(Variable, control.Font).Width - 5);
-            e.Graphics.DrawString(Variable, control.Font, Brushes.LightGreen, new Point(x, 5));
+            
+            e.Graphics.DrawString(Variable, MainFont, Brushes.LightGreen, new Point(x, 5));
         }
 
 
@@ -368,7 +371,6 @@ namespace Dobby {
             form.Controls.Add(BorderBox);
             return BorderBox;
         }
-
 
         /// <summary>
         /// Loads The Specified Page From The PageId Group (E.g. ChangeForm(PageID.PS4MiscPageId))
@@ -476,6 +478,7 @@ namespace Dobby {
                 ClosingForm.Hide();
                 return;
             }
+
             ClosingForm.Close();
         }
 
@@ -494,6 +497,7 @@ namespace Dobby {
         public static void AddControlEventHandlers(Control.ControlCollection Controls) { // Got Sick of Manually Editing InitializeComponent()
             #region DebugLabel
 #if DEBUG
+            if(Controls.Owner.Name == "LogWindow") goto Log;
             Label DebugLabel = new Label();
             DebugLabel.Size = new Size(36, 19);
             DebugLabel.Location = new Point(230, 1);
@@ -504,6 +508,7 @@ namespace Dobby {
             DebugLabel.Click += new EventHandler(MiscDebugFunc);
             Controls.Add(DebugLabel);
             DebugLabel.BringToFront();
+            Log:
 #endif
             #endregion
 
@@ -916,17 +921,6 @@ namespace Dobby {
                 MainStream.WriteByte(data);
                 DebugOut($"Wrote {data:X} at {ofs:X}");
             }
-        }
-        public static byte ReadByte(int offset) {
-            MainStream.Position = offset;
-            return (byte)MainStream.ReadByte();
-        }
-        /// <summary> Compares The Bytes At The Give Address To The One Given
-        /// </summary>
-        /// <returns> True If The Bytes Match </returns>
-        public static bool ByteCmp(int Address, byte ByteToCompare) {
-            MainStream.Position = Address;
-            return (byte)MainStream.ReadByte() == ByteToCompare;
         }
         /// <summary> Compare Data Read At The Given Address
         /// </summary>
@@ -1372,21 +1366,8 @@ namespace Dobby {
 
             static int TimerTicks = 0, OutputStringIndex = 0;
 
-            static string PS4DebugDev = "";
+            public static string PS4DebugDev = "";
 
-            public delegate void TimerDelegate();
-            public static TimerDelegate TimerThread = new TimerDelegate(StartTimer);
-            public static System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-
-            public static void Timer_Tick(object sender, EventArgs e) => TimerTicks++;
-            static void StartTimer() {
-                if(ActiveForm != null) ActiveForm.Location = new Point(10, 10);
-                if(!timer.Enabled) {
-                    timer.Interval = 1;
-                    timer.Tick += Timer_Tick;
-                    timer.Start();
-                }
-            }
 
 
             public static Thread InputThread = new Thread(new ThreadStart(ReadInput));
@@ -1456,69 +1437,169 @@ namespace Dobby {
             public static int ShiftIndex = 0;
 
 
-            public static Thread DebuggerThread = new Thread(new ThreadStart(UpdateConsoleOutput));
-            public static void StartDebugOutputThread() => DebuggerThread.Start();
             public static Control HoveredControl = new Label(); // Just so the debugger doesn't bitch
 
-            public static void UpdateConsoleOutput() {
-                if(OverrideDebugOut) return;
-#if DEBUG
-                bool TimerThreadStarted = false;
-                int Interval = 0;
+            public delegate void Rendering(Control control);
 
-            Begin_Again:    // IN THE NIIIIIIGGGHHHTTT, LET'S    SWAAAAAAYYYY AGAIIN, TONIIIIIIGHT
-                WindowHeight = 35; SetWindowPosition(0, 0);
-                OutputStrings = new string[WindowHeight - 20];
-                CursorVisible = false;
-                Point OriginalConsoleScale = new Point(WindowHeight, WindowWidth);
-                if(ActiveForm != null && !TimerThreadStarted) { ActiveForm.Invoke(TimerThread); TimerThreadStarted = true; }
-                try {
-                    while(OriginalConsoleScale == new Point(WindowHeight, WindowWidth) & !OverrideDebugOut) {
+            public static Rendering RenderPause = new Rendering(PauseRendering);
+            public static Rendering RenderResume = new Rendering(ResumeRendering);
 
-                        CursorLeft = 0;
-                        
-                        int StartTime = TimerTicks, Cursor = 0, String = 0; Form frm = ActiveForm;
-                        string ControlType = HoveredControl.GetType().ToString();
+            private static void PauseRendering(Control control) => UpdateRendering((IntPtr)0, control);
+            private static void ResumeRendering(Control control) => UpdateRendering((IntPtr)1, control);
+            private static void UpdateRendering(IntPtr toggle, Control control) {
+                var Window = NativeWindow.FromHandle(control.Handle);
+                var Msg = Message.Create(control.Handle, 11, toggle, IntPtr.Zero);
 
-                        string[] Output = new string[] {
-                            $"Build: {Build} | ~{Interval}ms | {PS4DebugDev}",
-                            "",
-                            $"Form: {(ActiveForm != null ? $"{ActiveForm.Name} | Form Position: {ActiveForm.Location}" : "Console")}",
-                            $"Parents: {Pages?[0]}, {Pages?[1]}, {Pages?[2]}, {Pages?[3]}",
-                            Pages[0] == null ? "" : $"Child Name: {Page}",
-                            "",
-                            $"TitleID: {(TitleID == "?" ? "UNK" : TitleID)} | Game Version: {GameVersion}",
-                            $"GameID: {(ActiveGameID == "?" ? "UNK" : ActiveGameID)}",
-                            $"ProcessName: {ProcessName} | PDbg Connected: {PS4DebugIsConnected} | WaitingForCon: {WaitForConnection}",
-                            "",
-                            $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled} | MousePos: {MousePosition}",
-                            $"Control: {HoveredControl.Name} | {ControlType.Substring(ControlType.LastIndexOf('.') + 1)}",
-                            $"{(HoveredControl.GetType() == typeof(vButton) ? ((vButton)HoveredControl).Variable : "")}",
-                            $" Size: {HoveredControl.Size} | Pos: {HoveredControl.Location}",
-                            $" Parent {HoveredControl.Parent?.Name}",
-                            "",
-                            $"MainStream: {(MainStreamIsOpen ? MainStream.Name : "null")}",
-                            $"{(MainStreamIsOpen ? $"Length: {(MainStream.Length.ToString().Length > 6 ? $"{MainStream.Length.ToString().Remove(2)}MB" : $"{MainStream.Length} bytes")} | Read: {MainStream.CanRead} | Write: {MainStream.CanWrite}" : null)}"
-                        };
+                Window.DefWndProc(ref Msg);
 
-                        for(; String < Output.Length; String++) { CursorTop = Cursor++; Write(BlankSpace(Output[String])); }
+                if((int)toggle != 0) {
+                    control.Update();
+                }
+            }
 
-                        CursorTop = MainStreamIsOpen ? Cursor += 1 : Cursor;
-                        for(int i = 0; i <= OutputStringIndex;) {
-                            CursorLeft = 0;
-                            Write(BlankSpace(OutputStrings[i++]));
-                            Cursor++;
-                        }
+            public partial class LogWindow : Form {
+                public LogWindow() {
+                    InitializeComponent();
 
-                        Interval = TimerTicks - StartTime;
+                    MouseDown += MouseDownFunc;
+                    MouseEnter += DebugControlHover;
+                    MouseUp += MouseUpFunc;
+                    MouseMove += MoveForm;
+
+                    AppRef = this;
+                    rend = CreateGraphics();
+
+                    AddControlEventHandlers(Controls);
+                    logThread.Start();
+                }
+
+                private static Form AppRef;
+                private static Graphics rend;
+                private static Size formScale;
+
+                #region timer crap
+                private static int Interval = 0;
+                private static bool TimerThreadStarted = false;
+                private static System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+                private static Thread TimerThread = new Thread(StartTimer);
+                private static void Timer_Tick(object sender, EventArgs e) => TimerTicks++;
+                private static void StartTimer() {
+                    if(!timer.Enabled) {
+                        timer.Interval = 1;
+                        timer.Tick += Timer_Tick;
+                        timer.Start();
                     }
                 }
-                catch(System.ObjectDisposedException) { }
-                Clear();
-                if(OverrideDebugOut) return;
-                goto Begin_Again;
+#endregion
+
+                private void InitializeComponent() {
+                    BackColor = Color.FromArgb(100, 100, 100);
+                    FormBorderStyle = FormBorderStyle.None;
+                    Name = "LogWindow";
+                }
+                #region Movement
+                private void MouseDownFunc(object sender, MouseEventArgs e) {
+                    MouseIsDown = 1; LastPos = ActiveForm.Location;
+                    MouseDif = new Point(MousePosition.X - ActiveForm.Location.X, MousePosition.Y - ActiveForm.Location.Y);
+                }
+                private void MouseUpFunc(object sender, MouseEventArgs e) { MouseScrolled = false; MouseIsDown = 0; }
+                private void MoveForm(object sender, MouseEventArgs e) {
+                    if(MouseIsDown == 0)
+                        return;
+
+                    ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
+                    ActiveForm.Update();
+                }
+                #endregion
+
+                public delegate void Scaling();
+
+                public static Scaling resize = new Scaling(ResizeLog);
+
+                private static void ResizeLog() {
+                    AppRef.Size = formScale;
+                    rend = AppRef.CreateGraphics();
+                }
+
+
+                private static Thread logThread = new Thread(new ThreadStart(UpdateConsoleOutput));
+                public static void UpdateConsoleOutput() {
+#if DEBUG
+                    if(ActiveForm != null && !TimerThreadStarted) {
+                        TimerThread.Start(); TimerThreadStarted = true;
+                    }
+                    string Out = string.Empty; string[] chk = Array.Empty<string>();
+                    int PaddingSize = TextRenderer.MeasureText("\n", MainFont).Height;
+                    Pen pen = new Pen(Color.White);
+
+                    while(true) {
+                        try {
+                            int StartTime = TimerTicks;
+                            string ControlType = HoveredControl?.GetType().ToString();
+                            Out = string.Empty;
+
+                            string[] Output = new string[] {
+                                $"Build: {Build} | ~{Interval}ms ",
+                                " ",
+                                $"Form: {(ActiveForm != null ? $"{ActiveForm?.Name} | Form Position: {ActiveForm?.Location}" : "Console")}",
+                                $"Parents: {Pages?[0]}, {Pages?[1]}, {Pages?[2]}, {Pages?[3]}",
+                                Pages[0] == null ? " " : $"Child Name: {Page}",
+                                " ",
+                                $"TitleID: {(TitleID == "?" ? "UNK" : TitleID)} | Game Version: {GameVersion}",
+                                $"GameID: {(ActiveGameID == "?" ? "UNK" : ActiveGameID)}",
+                                $"ProcessName: {ProcessName} | PDbg Connected: {PS4DebugIsConnected}",
+                                " ",
+                                $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}",
+                                $"Control: {HoveredControl?.Name} | {ControlType?.Substring(ControlType.LastIndexOf('.') + 1)}",
+                                $"{(HoveredControl?.GetType() == typeof(vButton) ? ((vButton)HoveredControl)?.Variable : " ")}",
+                                $" Size: {HoveredControl?.Size} | Pos: {HoveredControl?.Location}",
+                                $" Parent {HoveredControl?.Parent?.Name}",
+                                " ",
+                                $"MainStream: {(MainStreamIsOpen ? MainStream.Name : "null")}",
+                                $"{(MainStreamIsOpen ? $"Length: {(MainStream.Length.ToString().Length > 6 ? $"{MainStream.Length.ToString().Remove(2)}MB" : $"{MainStream.Length} bytes")} | Read: {MainStream.CanRead} | Write: {MainStream.CanWrite}" : null)}",
+                                " "
+                            };
+
+                            if(!chk.SequenceEqual(Output)) {
+                                chk = Output;
+                                Size TextSize;
+                                formScale = Size.Empty;
+                                Point[] Border = new Point[] {
+                                    new Point(1, 0),
+                                    new Point(AppRef.Width-1, 0),
+                                    new Point(AppRef.Width-1, AppRef.Height-1),
+                                    new Point(1, AppRef.Height-1),
+                                    new Point(1, 0)
+                                };
+
+                                foreach(string line in Output) {
+                                    TextSize = TextRenderer.MeasureText(line, MainFont);
+
+                                    if(TextSize.Width > formScale.Width)
+                                    formScale.Width = TextSize.Width + 10;
+                                    formScale.Height += TextSize.Height;
+
+                                    Out = string.Join("\n", Output);
+                                }
+
+                                AppRef.Invoke(resize);
+                                
+                                rend.Clear(Color.FromArgb(100, 100, 100));
+                                rend.DrawLines(pen, Border);
+                                TextRenderer.DrawText(rend, Out, MainFont, new Point(5, 6), Color.White);
+                            }
+
+                            Interval = TimerTicks - StartTime;
+
+                        }
+                        catch(System.ObjectDisposedException) { }
+                    }
 #endif
+                }
             }
+
+
+
 #endif
             public static void DebugOut() => DebugOut(" ");
             public static void DebugOut(object obj, int NewCursorTop) {
@@ -1529,6 +1610,14 @@ namespace Dobby {
             }
             public static void DebugOut(object obj) {
 #if DEBUG
+                try {
+                    Console.WriteLine(obj);
+                }
+                catch(Exception _) { /* Not In Console Mode */}
+
+
+                return; // Rest Of This Freezes The PS4DebugPage After The Output Overhaul And Isn't Used Anyway
+
                 if(OverrideDebugOut) return; string s = obj.ToString();
                 if(s.Contains("\n")) {
                     s = s.Replace("\n", "");

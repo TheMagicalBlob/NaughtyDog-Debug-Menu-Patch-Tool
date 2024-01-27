@@ -10,13 +10,7 @@ namespace Dobby {
         public PS4MenuSettingsPage() {
             InitializeComponent();
             BorderBox = BorderFunc(this);
-#if DEBUG
-            if(FormResetThread.ThreadState != ThreadState.Running)
-                FormResetThread.Start();
-            //if(DebugOutputOverrideThread.ThreadState != ThreadState.Running)
-            //    DebugOutputOverrideThread.Start();
 
-#endif
             DisableDebugTextBtn.Variable = UniversalDebugBooleans[0];
             DisablePausedIconBtn.Variable = UniversalDebugBooleans[1];
             ProgPauseOnOpenBtn.Variable = UniversalDebugBooleans[2];
@@ -488,6 +482,7 @@ namespace Dobby {
         /// Byte arrays to be used as pointers with the BootSettings custom function<br/><br/>
         /// 32-Bit Ones Are Pointers To Data In Executable Space.<br/>
         /// Chunky Fucks Are a 32-bit Pointer to A 64-bit Pointer + An Offset to Add.
+        /// 0 to UC1100 - UC4100
         /// <br/><br/>
         /// Patch Type Index:<br/>
         ///   0:  Disable FPS<br/>
@@ -804,6 +799,7 @@ namespace Dobby {
 
                 // Reset Form Size
                 ActiveForm.Controls.Find("BorderBox", true)[0].Size = OriginalBorderScale;
+                if (ActiveForm.Name != "Dobby") //! Lazy Fix 
                 ActiveForm.Size = OriginalFormScale;
                 OriginalFormScale = Size.Empty;
 
@@ -830,9 +826,6 @@ namespace Dobby {
                 
                 Game = 0;
                 MultipleButtonsEnabled = false;
-#if DEBUG
-                Console.Clear();
-#endif
             }
 
 
@@ -1054,6 +1047,8 @@ namespace Dobby {
         }
 #endif
 
+
+
         //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
         ///--     Misc Patches Page Main Functions    --\\\
         //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -1079,8 +1074,6 @@ namespace Dobby {
                 if(OriginalFormScale != Size.Empty)
                     DynamicPatchButtons.ResetCustomOptions(null, null);
                 LoadGameSpecificMenuOptions();
-
-                if(!Dev.REL) Console.Clear();
             }
         }
 
@@ -1222,41 +1215,24 @@ namespace Dobby {
                 // Universal Options
                 while(index < UniversalDebugBooleans.Length) {
                     if(UniversalDebugBooleans[index]) {
-                        WriteBytes(BootSettingsDataAddress, GetPatchBytes(index));
-                        BootSettingsAddress += GetPatchBytes(index).Length;
+                        WriteBytes(BootSettingsDataAddress, BootSettingsPointers[index][GameIndex]);
+                        BootSettingsAddress += BootSettingsPointers[index][GameIndex].Length;
                     }
                     index++;
                 }
 
+                return;
+
                 // Game-Specific Options
                 for(index = 0; index < GameSpecificPatchValues.Length - 1; index++) {
                     if(DynamicPatchButtons.Buttons[index] != null) {
-                        WriteBytes(BootSettingsDataAddress, GetPatchBytes(index));
-                        BootSettingsAddress += GetPatchBytes(index).Length;
+                        WriteBytes(BootSettingsDataAddress, BootSettingsPointers[index][GameIndex]);
+                        BootSettingsAddress += BootSettingsPointers[index][GameIndex].Length;
                     }
                 }
             }
-
-            if(MainStream == null && !MainStreamIsOpen) {
-                MessageBox.Show("Gone");
-            }
         }
 
-
-        /// <summary>
-        ///  0: Disable FPS<br/>
-        ///  1: Align Menus Right<br/>
-        ///  2: Prog Pause On Menu Open<br/>
-        ///  3: Prog Pause On Menu Close<br/>
-        ///  4: Swap Circle
-        /// </summary>
-        /// <param name="PatchIndex"> The Patch To Get The Pointer For
-        /// </param>
-        /// <returns>
-        /// The Desired Address, Based On The Current Game Value (Determined by bytes read at 0x60 in the selected executable), <br/>
-        /// as well as PatchIndex for the type of patch
-        /// </returns>
-        private static byte[] GetPatchBytes(int PatchIndex) { return BootSettingsPointers[GameIndex][PatchIndex]; }
 
         /// <summary>
         /// Returns a byte[] containing the custom bootsettings function

@@ -9,6 +9,7 @@ using System.Threading;
 using System.Net.Sockets;
 using System.Windows.Forms;
 using static Dobby.Common;
+using static Dobby.Common.Dev;
 
 namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
     public partial class Dobby : Form {
@@ -19,8 +20,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
                     Console.WindowWidth = 75; Console.BufferWidth = 75;
                 }
                 catch (Exception) { } // These Caused A Crash I Couldn't Recreate, So I Got Lazy Put Them In A Try/Catch
-                Dev.StartDebugOutputThread();
-                Dev.StartInputReadThread();
             }
 #endif
             InitializeComponent();
@@ -31,6 +30,9 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
 
 #if !DEBUG
             PS4MenuSettingsPageBtn.Enabled = false;
+#else
+            var Log = new LogWindow();
+            Log.Show();
 #endif
         }
 
@@ -40,7 +42,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.ExitBtn = new System.Windows.Forms.Button();
             this.MinimizeBtn = new System.Windows.Forms.Button();
             this.Info = new System.Windows.Forms.Label();
-            this.PS4DebugPageBtn = new Button();
+            this.PS4DebugPageBtn = new System.Windows.Forms.Button();
             this.EbootPatchPageBtn = new System.Windows.Forms.Button();
             this.PS4MenuSettingsPageBtn = new System.Windows.Forms.Button();
             this.CreditsBtn = new System.Windows.Forms.Button();
@@ -70,7 +72,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             // 
             // ExitBtn
             // 
-            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -86,7 +88,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             // 
             // MinimizeBtn
             // 
-            this.MinimizeBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.MinimizeBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -112,7 +114,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             // 
             // PS4DebugPageBtn
             // 
-            this.PS4DebugPageBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.PS4DebugPageBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.PS4DebugPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PS4DebugPageBtn.FlatAppearance.BorderSize = 0;
             this.PS4DebugPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -129,7 +131,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             // 
             // EbootPatchPageBtn
             // 
-            this.EbootPatchPageBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.EbootPatchPageBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.EbootPatchPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.EbootPatchPageBtn.FlatAppearance.BorderSize = 0;
             this.EbootPatchPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -146,7 +148,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             // 
             // PS4MenuSettingsPageBtn
             // 
-            this.PS4MenuSettingsPageBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.PS4MenuSettingsPageBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.PS4MenuSettingsPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PS4MenuSettingsPageBtn.FlatAppearance.BorderSize = 0;
             this.PS4MenuSettingsPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -164,7 +166,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             // 
             // CreditsBtn
             // 
-            this.CreditsBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.CreditsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.CreditsBtn.FlatAppearance.BorderSize = 0;
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -182,7 +184,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             // 
             // InfoHelpBtn
             // 
-            this.InfoHelpBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.InfoHelpBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.InfoHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.InfoHelpBtn.FlatAppearance.BorderSize = 0;
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -233,7 +235,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             // 
             // DownloadSourceBtn
             // 
-            this.DownloadSourceBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.DownloadSourceBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.DownloadSourceBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.DownloadSourceBtn.FlatAppearance.BorderSize = 0;
             this.DownloadSourceBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -270,10 +272,11 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.Playstation4Label.Size = new System.Drawing.Size(86, 19);
             this.Playstation4Label.TabIndex = 36;
             this.Playstation4Label.Text = "Playstation 4";
+            this.Playstation4Label.Click += new System.EventHandler(this.Playstation4Label_Click);
             // 
             // PkgPageBtn
             // 
-            this.PkgPageBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.PkgPageBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.PkgPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PkgPageBtn.FlatAppearance.BorderSize = 0;
             this.PkgPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -300,7 +303,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             // 
             // PCDebugMenuPageBtn
             // 
-            this.PCDebugMenuPageBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.PCDebugMenuPageBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.PCDebugMenuPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PCDebugMenuPageBtn.FlatAppearance.BorderSize = 0;
             this.PCDebugMenuPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -319,7 +322,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ClientSize = new System.Drawing.Size(320, 303);
             this.Controls.Add(this.PCDebugMenuPageBtn);
             this.Controls.Add(this.PkgPageBtn);
@@ -380,5 +383,10 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
         private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
         private void DownloadSourceBtn_Click(object sender, EventArgs e) => System.Diagnostics.Process.Start(@"https://github.com/TheMagicalBlob/NaughtyDog-Debug-Menu-Patch-Tool/archive/refs/heads/master.zip");
         #endregion
+
+        // debug
+        private void Playstation4Label_Click(object sender, EventArgs e) {
+
+        }
     }
 }

@@ -20,8 +20,8 @@ namespace Dobby {
 
         public PS4DebugPage() {
             InitializeComponent();
-            IPBOX.Text = IP();
             PortBox.Text = Port().ToString();
+            IPBOX.Text = IP();
             AddControlEventHandlers(Controls);
         }
 
@@ -557,7 +557,6 @@ namespace Dobby {
 
         /// <summary> Avoid Attempting To Toggle The Selected Bool In Memory Before The Connection Process Is Finished
         ///</summary>
-        /// <returns> System.Threading.Tasks.Task.CompletedTask </returns>
         public static Task CheckConnectionStatus() {
             if(ConnectionThread.ThreadState == System.Threading.ThreadState.Unstarted)
                ConnectionThread.Start();
