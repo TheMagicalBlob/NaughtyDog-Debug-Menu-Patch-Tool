@@ -26,6 +26,13 @@ namespace Dobby
         #region Windows Form Designer generated code
 
         #endregion
+
+        public Button CreditsBtn;
+        public Button InfoHelpBtn;
+        public Label Playstation4Label;
+        public Label PCLabel;
+        public Button DownloadSourceBtn;
+        private GroupBox BorderBox;
     }
 }
 

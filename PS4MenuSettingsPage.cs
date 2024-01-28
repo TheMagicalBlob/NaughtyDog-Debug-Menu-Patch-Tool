@@ -9,7 +9,8 @@ namespace Dobby {
     internal class PS4MenuSettingsPage : Form {
         public PS4MenuSettingsPage() {
             InitializeComponent();
-            BorderBox = BorderFunc(this);
+            //BorderBox = BorderFunc(this);
+            Paint += PaintBorder;
 
             DisableDebugTextBtn.Variable = UniversalDebugBooleans[0];
             DisablePausedIconBtn.Variable = UniversalDebugBooleans[1];
@@ -798,7 +799,6 @@ namespace Dobby {
                 index = 0;
 
                 // Reset Form Size
-                ActiveForm.Controls.Find("BorderBox", true)[0].Size = OriginalBorderScale;
                 if (ActiveForm.Name != "Dobby") //! Lazy Fix 
                 ActiveForm.Size = OriginalFormScale;
                 OriginalFormScale = Size.Empty;
@@ -870,14 +870,12 @@ namespace Dobby {
                                 foreach(Control A in ControlsToMove)
                                     A.Location = new Point(A.Location.X, A.Location.Y + 23);
 
-                                BorderBox.Size = new Size(BorderBox.Size.Width, BorderBox.Size.Height + 23);
                                 activeForm.Size = new Size(activeForm.Size.Width, activeForm.Size.Height + 23);
                             }
                         }
                 }
 
 
-                BorderBox.Size = new Size(BorderBox.Size.Width, BorderBox.Size.Height + 46);
                 activeForm.Size = new Size(activeForm.Size.Width, activeForm.Size.Height + 46);
 
 
@@ -1099,7 +1097,6 @@ namespace Dobby {
                     ActiveForm.Controls.Find("Info", true)[0]
                 };
                 OriginalFormScale = Size;
-                OriginalBorderScale = ActiveForm.Controls.Find("BorderBox", true)[0].Size;
                 OriginalControlPositions = new Point[ControlsToMove.Length];
 
                 for(index = 0; index < ControlsToMove.Length; index++) // Save Original Y Loc Of Controls

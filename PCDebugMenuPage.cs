@@ -13,7 +13,7 @@ namespace Dobby {
     internal class PCDebugMenuPage : Form {
         public PCDebugMenuPage() {
             InitializeComponent();
-            BorderFunc(this);
+            Paint += PaintBorder;
             AddControlEventHandlers(Controls);
             
 

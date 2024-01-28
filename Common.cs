@@ -203,7 +203,8 @@ namespace Dobby {
           "* 3.37.148.392 | More Dynamic Patch Button Work",
           "* 3.37.150.403 | Added Many Pointers And Created Jagged Array To Store Them Better",
           "* 3.37.152.405 | Reworked Misc Patch Page Event Handlers, Other Misc Changes",
-          "* 3.38.154.440 | Debug Output Overhaul, Misc Changes"
+          "* 3.38.154.440 | Debug Output Overhaul, Misc Changes",
+          "* 3.38.155.441 | Replaced BorderFunc"
 
             // TODO:
             // * MAJOR
@@ -356,20 +357,24 @@ namespace Dobby {
         }
 
 
+        /// <summary> Form Border Pen </summary>
+        public static Pen pen = new Pen(Color.White);
 
-        /// <summary>
-        /// Create And Apply A Thin Border To The Form Using A GroupBox Control
-        /// </summary>
-        /// <returns> The GroupBox Handle </returns>
-        public static GroupBox BorderFunc(Form form) {
-            GroupBox BorderBox = new GroupBox() {
-                Location = new Point(0, -6),
-                Name = "BorderBox",
-                Size = new Size(form.Size.Width, form.Size.Height + 7)
+        /// <summary> Create And Apply A Thin Border To The Form
+        ///</summary>
+        public static void PaintBorder(object sender, PaintEventArgs e) {
+            var AppRef = (Form)sender;
+
+            Point[] Border = new Point[] {
+                Point.Empty,
+                new Point(AppRef.Width-1, 0),
+                new Point(AppRef.Width-1, AppRef.Height-1),
+                new Point(0, AppRef.Height-1),
+                Point.Empty
             };
 
-            form.Controls.Add(BorderBox);
-            return BorderBox;
+            e.Graphics.Clear(Color.FromArgb(100, 100, 100));
+            e.Graphics.DrawLines(pen, Border);
         }
 
         /// <summary>
@@ -1471,6 +1476,7 @@ namespace Dobby {
 
                     AddControlEventHandlers(Controls);
                     logThread.Start();
+                    this.Location = Point.Empty;
                 }
 
                 private static Form AppRef;
@@ -1496,6 +1502,7 @@ namespace Dobby {
                     BackColor = Color.FromArgb(100, 100, 100);
                     FormBorderStyle = FormBorderStyle.None;
                     Name = "LogWindow";
+                    Location = Point.Empty;
                 }
                 #region Movement
                 private void MouseDownFunc(object sender, MouseEventArgs e) {
@@ -1513,21 +1520,20 @@ namespace Dobby {
                 #endregion
 
                 public delegate void Scaling();
-
                 public static Scaling resize = new Scaling(ResizeLog);
-
                 private static void ResizeLog() {
                     AppRef.Size = formScale;
                     rend = AppRef.CreateGraphics();
                 }
 
 
-                private static Thread logThread = new Thread(new ThreadStart(UpdateConsoleOutput));
+                private static readonly Thread logThread = new Thread(new ThreadStart(UpdateConsoleOutput));
                 public static void UpdateConsoleOutput() {
 #if DEBUG
                     if(ActiveForm != null && !TimerThreadStarted) {
                         TimerThread.Start(); TimerThreadStarted = true;
                     }
+
                     string Out = string.Empty; string[] chk = Array.Empty<string>();
                     int PaddingSize = TextRenderer.MeasureText("\n", MainFont).Height;
                     Pen pen = new Pen(Color.White);
@@ -1565,11 +1571,11 @@ namespace Dobby {
                                 Size TextSize;
                                 formScale = Size.Empty;
                                 Point[] Border = new Point[] {
-                                    new Point(1, 0),
+                                    Point.Empty,
                                     new Point(AppRef.Width-1, 0),
                                     new Point(AppRef.Width-1, AppRef.Height-1),
-                                    new Point(1, AppRef.Height-1),
-                                    new Point(1, 0)
+                                    new Point(0, AppRef.Height-1),
+                                    Point.Empty
                                 };
 
                                 foreach(string line in Output) {
@@ -1582,8 +1588,11 @@ namespace Dobby {
                                     Out = string.Join("\n", Output);
                                 }
 
-                                AppRef.Invoke(resize);
-                                
+                                try {
+                                    AppRef.Invoke(resize);
+                                }
+                                catch(InvalidOperationException) { }
+
                                 rend.Clear(Color.FromArgb(100, 100, 100));
                                 rend.DrawLines(pen, Border);
                                 TextRenderer.DrawText(rend, Out, MainFont, new Point(5, 6), Color.White);
@@ -1610,10 +1619,6 @@ namespace Dobby {
             }
             public static void DebugOut(object obj) {
 #if DEBUG
-                try {
-                    Console.WriteLine(obj);
-                }
-                catch(Exception _) { /* Not In Console Mode */}
 
 
                 return; // Rest Of This Freezes The PS4DebugPage After The Output Overhaul And Isn't Used Anyway

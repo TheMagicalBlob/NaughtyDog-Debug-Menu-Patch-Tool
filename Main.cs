@@ -45,17 +45,17 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.PS4DebugPageBtn = new System.Windows.Forms.Button();
             this.EbootPatchPageBtn = new System.Windows.Forms.Button();
             this.PS4MenuSettingsPageBtn = new System.Windows.Forms.Button();
-            this.CreditsBtn = new System.Windows.Forms.Button();
-            this.InfoHelpBtn = new System.Windows.Forms.Button();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
             this.SeperatorLine3 = new System.Windows.Forms.Label();
-            this.BorderBox = new System.Windows.Forms.GroupBox();
-            this.DownloadSourceBtn = new System.Windows.Forms.Button();
-            this.PCLabel = new System.Windows.Forms.Label();
-            this.Playstation4Label = new System.Windows.Forms.Label();
             this.PkgPageBtn = new System.Windows.Forms.Button();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.PCDebugMenuPageBtn = new System.Windows.Forms.Button();
+            this.CreditsBtn = new System.Windows.Forms.Button();
+            this.InfoHelpBtn = new System.Windows.Forms.Button();
+            this.Playstation4Label = new System.Windows.Forms.Label();
+            this.PCLabel = new System.Windows.Forms.Label();
+            this.DownloadSourceBtn = new System.Windows.Forms.Button();
+            this.BorderBox = new System.Windows.Forms.GroupBox();
             this.BorderBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -164,42 +164,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.PS4MenuSettingsPageBtn.UseVisualStyleBackColor = false;
             this.PS4MenuSettingsPageBtn.Click += new System.EventHandler(this.MiscPatchesBtn_Click);
             // 
-            // CreditsBtn
-            // 
-            this.CreditsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.CreditsBtn.FlatAppearance.BorderSize = 0;
-            this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 240);
-            this.CreditsBtn.Name = "CreditsBtn";
-            this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
-            this.CreditsBtn.TabIndex = 28;
-            this.CreditsBtn.Text = "Credits...";
-            this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.CreditsBtn.UseVisualStyleBackColor = false;
-            this.CreditsBtn.Click += new System.EventHandler(this.CreditsBtn_Click);
-            // 
-            // InfoHelpBtn
-            // 
-            this.InfoHelpBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.InfoHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.InfoHelpBtn.FlatAppearance.BorderSize = 0;
-            this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
-            this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 216);
-            this.InfoHelpBtn.Name = "InfoHelpBtn";
-            this.InfoHelpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.InfoHelpBtn.Size = new System.Drawing.Size(147, 23);
-            this.InfoHelpBtn.TabIndex = 29;
-            this.InfoHelpBtn.Text = "Information / Help...";
-            this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.InfoHelpBtn.UseVisualStyleBackColor = false;
-            this.InfoHelpBtn.Click += new System.EventHandler(this.InfoHelpBtn_Click);
-            // 
             // SeperatorLine0
             // 
             this.SeperatorLine0.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
@@ -219,60 +183,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.SeperatorLine3.Size = new System.Drawing.Size(316, 16);
             this.SeperatorLine3.TabIndex = 32;
             this.SeperatorLine3.Text = "______________________________________________________________";
-            // 
-            // BorderBox
-            // 
-            this.BorderBox.Controls.Add(this.DownloadSourceBtn);
-            this.BorderBox.Controls.Add(this.PCLabel);
-            this.BorderBox.Controls.Add(this.Playstation4Label);
-            this.BorderBox.Controls.Add(this.InfoHelpBtn);
-            this.BorderBox.Controls.Add(this.CreditsBtn);
-            this.BorderBox.Location = new System.Drawing.Point(0, -6);
-            this.BorderBox.Name = "BorderBox";
-            this.BorderBox.Size = new System.Drawing.Size(320, 310);
-            this.BorderBox.TabIndex = 34;
-            this.BorderBox.TabStop = false;
-            // 
-            // DownloadSourceBtn
-            // 
-            this.DownloadSourceBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.DownloadSourceBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.DownloadSourceBtn.FlatAppearance.BorderSize = 0;
-            this.DownloadSourceBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DownloadSourceBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
-            this.DownloadSourceBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.DownloadSourceBtn.Location = new System.Drawing.Point(1, 264);
-            this.DownloadSourceBtn.Name = "DownloadSourceBtn";
-            this.DownloadSourceBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.DownloadSourceBtn.Size = new System.Drawing.Size(292, 23);
-            this.DownloadSourceBtn.TabIndex = 30;
-            this.DownloadSourceBtn.Text = "Download Latest Source Code (Download Link)";
-            this.DownloadSourceBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.DownloadSourceBtn.UseVisualStyleBackColor = false;
-            this.DownloadSourceBtn.Click += new System.EventHandler(this.DownloadSourceBtn_Click);
-            // 
-            // PCLabel
-            // 
-            this.PCLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.PCLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
-            this.PCLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.PCLabel.Location = new System.Drawing.Point(146, 166);
-            this.PCLabel.Name = "PCLabel";
-            this.PCLabel.Size = new System.Drawing.Size(24, 19);
-            this.PCLabel.TabIndex = 37;
-            this.PCLabel.Text = "PC";
-            // 
-            // Playstation4Label
-            // 
-            this.Playstation4Label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Playstation4Label.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
-            this.Playstation4Label.ForeColor = System.Drawing.SystemColors.Control;
-            this.Playstation4Label.Location = new System.Drawing.Point(116, 38);
-            this.Playstation4Label.Name = "Playstation4Label";
-            this.Playstation4Label.Size = new System.Drawing.Size(86, 19);
-            this.Playstation4Label.TabIndex = 36;
-            this.Playstation4Label.Text = "Playstation 4";
-            this.Playstation4Label.Click += new System.EventHandler(this.Playstation4Label_Click);
             // 
             // PkgPageBtn
             // 
@@ -317,6 +227,96 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.PCDebugMenuPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PCDebugMenuPageBtn.UseVisualStyleBackColor = false;
             this.PCDebugMenuPageBtn.Click += new System.EventHandler(this.PCDebugMenuPageBtn_Click);
+            // 
+            // CreditsBtn
+            // 
+            this.CreditsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.CreditsBtn.FlatAppearance.BorderSize = 0;
+            this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 240);
+            this.CreditsBtn.Name = "CreditsBtn";
+            this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
+            this.CreditsBtn.TabIndex = 28;
+            this.CreditsBtn.Text = "Credits...";
+            this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.CreditsBtn.UseVisualStyleBackColor = false;
+            this.CreditsBtn.Click += new System.EventHandler(this.CreditsBtn_Click);
+            // 
+            // InfoHelpBtn
+            // 
+            this.InfoHelpBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.InfoHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.InfoHelpBtn.FlatAppearance.BorderSize = 0;
+            this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 216);
+            this.InfoHelpBtn.Name = "InfoHelpBtn";
+            this.InfoHelpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.InfoHelpBtn.Size = new System.Drawing.Size(147, 23);
+            this.InfoHelpBtn.TabIndex = 29;
+            this.InfoHelpBtn.Text = "Information / Help...";
+            this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.InfoHelpBtn.UseVisualStyleBackColor = false;
+            this.InfoHelpBtn.Click += new System.EventHandler(this.InfoHelpBtn_Click);
+            // 
+            // Playstation4Label
+            // 
+            this.Playstation4Label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Playstation4Label.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
+            this.Playstation4Label.ForeColor = System.Drawing.SystemColors.Control;
+            this.Playstation4Label.Location = new System.Drawing.Point(116, 38);
+            this.Playstation4Label.Name = "Playstation4Label";
+            this.Playstation4Label.Size = new System.Drawing.Size(86, 19);
+            this.Playstation4Label.TabIndex = 36;
+            this.Playstation4Label.Text = "Playstation 4";
+            this.Playstation4Label.Click += new System.EventHandler(this.Playstation4Label_Click);
+            // 
+            // PCLabel
+            // 
+            this.PCLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.PCLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
+            this.PCLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.PCLabel.Location = new System.Drawing.Point(146, 166);
+            this.PCLabel.Name = "PCLabel";
+            this.PCLabel.Size = new System.Drawing.Size(24, 19);
+            this.PCLabel.TabIndex = 37;
+            this.PCLabel.Text = "PC";
+            // 
+            // DownloadSourceBtn
+            // 
+            this.DownloadSourceBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.DownloadSourceBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.DownloadSourceBtn.FlatAppearance.BorderSize = 0;
+            this.DownloadSourceBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DownloadSourceBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
+            this.DownloadSourceBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.DownloadSourceBtn.Location = new System.Drawing.Point(1, 264);
+            this.DownloadSourceBtn.Name = "DownloadSourceBtn";
+            this.DownloadSourceBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.DownloadSourceBtn.Size = new System.Drawing.Size(292, 23);
+            this.DownloadSourceBtn.TabIndex = 30;
+            this.DownloadSourceBtn.Text = "Download Latest Source Code (Download Link)";
+            this.DownloadSourceBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.DownloadSourceBtn.UseVisualStyleBackColor = false;
+            this.DownloadSourceBtn.Click += new System.EventHandler(this.DownloadSourceBtn_Click);
+            // 
+            // BorderBox
+            // 
+            this.BorderBox.Controls.Add(this.DownloadSourceBtn);
+            this.BorderBox.Controls.Add(this.PCLabel);
+            this.BorderBox.Controls.Add(this.Playstation4Label);
+            this.BorderBox.Controls.Add(this.InfoHelpBtn);
+            this.BorderBox.Controls.Add(this.CreditsBtn);
+            this.BorderBox.Location = new System.Drawing.Point(0, -6);
+            this.BorderBox.Name = "BorderBox";
+            this.BorderBox.Size = new System.Drawing.Size(320, 310);
+            this.BorderBox.TabIndex = 34;
+            this.BorderBox.TabStop = false;
             // 
             // Dobby
             // 
@@ -365,18 +365,12 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
         public Button PS4DebugPageBtn;
         public Button EbootPatchPageBtn;
         public Button PS4MenuSettingsPageBtn;
-        public Button CreditsBtn;
-        public Button InfoHelpBtn;
         public Label Info;
         public Button ExitBtn;
         public Button MinimizeBtn;
         public Label SeperatorLine0;
         public Label SeperatorLine3;
-        private GroupBox BorderBox;
-        public Button DownloadSourceBtn;
         public Button PkgPageBtn;
-        public Label PCLabel;
-        public Label Playstation4Label;
         public Label SeperatorLine1;
         public Button PCDebugMenuPageBtn;
         private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);
