@@ -9,7 +9,6 @@ namespace Dobby {
     internal class PS4MenuSettingsPage : Form {
         public PS4MenuSettingsPage() {
             InitializeComponent();
-            //BorderBox = BorderFunc(this);
             Paint += PaintBorder;
 
             DisableDebugTextBtn.Variable = UniversalDebugBooleans[0];
@@ -393,16 +392,16 @@ namespace Dobby {
         #region Misc Patches Page Variables
 
         /// <summary> Array of Controls to Move When Loading >1 Game-Specific Debug Options
-        /// </summary>
+        ///</summary>
         private static Control[] ControlsToMove;
-
-        private static GroupBox BorderBox;
+        
         /// <summary> Variable Used When Adjusting Form Scale And Control Positions
-        /// </summary>
+        ///</summary>
         private static int
             ButtonIndex = 0,
             RB_StartPos
         ;
+
 
         /// <summary>
         /// UC1100<br/>
@@ -423,6 +422,7 @@ namespace Dobby {
         /// </summary>
         public static int GameIndex;
 
+
         /// <summary>
         /// MenuScaleBtn        <br/>
         /// MenuAlphaBtn        <br/>
@@ -442,24 +442,27 @@ namespace Dobby {
             RightMarginBtn
         }
 
+        
         /// <summary>
         ///      0: Disable FPS
         ///<br/> 1: Paused Icon
         ///<br/> 2: Prog Pause On Open 
         ///<br/> 3: Prog Pause On Close
         /// </summary>
+        
         private static bool[] UniversalDebugBooleans = new bool[4];
 
         /// <summary>
         /// 0: Menu Scale <br/>
         /// 1: Menu Alpha <br/>
         /// 2: Non-ADS FOV <br/>
-        /// 3: Swap Square & Circle In Debug <br/>
+        /// 3: Swap Square And Circle In Debug <br/>
         /// 4: Menu Shadowed Text <br/>
         /// 5: Version Text <br/>
         /// 6: Align Menus Right <br/>
         /// 7: Right Margin <br/>
         /// </summary>
+        
         public static object[] GameSpecificPatchValues = new object[] {
                     0.60f,
                     0.85f,
@@ -471,7 +474,7 @@ namespace Dobby {
                     (byte)10
         };
 
-        private readonly object[] DefaultPatchValues = GameSpecificPatchValues;
+        private static readonly object[] DefaultPatchValues = GameSpecificPatchValues;
 
 
         ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -515,11 +518,16 @@ namespace Dobby {
                 new byte[] { 0xC9, 0x66, 0x43, 0x01 }, // UC3100
                 new byte[] { 0x69, 0xAF, 0x7B, 0x01 }, // UC3102
                 new byte[] {  }, // UC4100
+                new byte[] {  }, // UC4101
                 new byte[] {  }, // UC3133
                 new byte[] {  }, // UC3133MP
                 new byte[] {  }, // TLL100
                 new byte[] {  }, // TLL109
-                new byte[] { 0xff, 0x30, 0xb4, 0x77, 0x03, 0xb8, 0x3a, 0x00, 0x00 }, // T2108
+                new byte[] {  }, // T1R100
+                new byte[] {  }, // T1R109
+                new byte[] {  }, // T1R111
+                new byte[] {  }, // T2100
+                new byte[] {  }, // T2107
                 new byte[] { 0xff, 0x30, 0xb4, 0x77, 0x03, 0xb8, 0x3a, 0x00, 0x00 }  // T2109
             },
             
@@ -542,8 +550,7 @@ namespace Dobby {
                 new byte[] {  }, // 0x | T1R109
                 new byte[] {  }, // 0x | T1R111
                 new byte[] {  }, // 0x | T2100
-                new byte[] { 0xB0, 0x75, 0x76, 0x03 }, // 0x | T2107
-                new byte[] { 0xff, 0x30, 0xb4, 0x77, 0x03, 0xcd, 0x3a, 0x00, 0x00 }, // T2108
+                new byte[] {  }, // T2107
                 new byte[] { 0xff, 0x30, 0xb4, 0x77, 0x03, 0xcd, 0x3a, 0x00, 0x00 }  // T2109
             },
 
@@ -572,7 +579,6 @@ namespace Dobby {
                 new byte[] {  }, // T1R111
                 new byte[] {  }, // T2100
                 new byte[] { 0xB8, 0x67, 0x24, 0x03 }, // 0x36467b8 | T2107
-                new byte[] { 0x38, 0xA6, 0x25, 0x03 }, // 0x365a638 | T2108 
                 new byte[] { 0x38, 0xA6, 0x25, 0x03 }  // 0x365a638 | T2109
             },
             
@@ -595,7 +601,6 @@ namespace Dobby {
                 new byte[] {  }, // T1R111
                 new byte[] {  }, // T2100
                 new byte[] { 0xB9, 0x67, 0x24, 0x03 }, // 0x36467b9 | T2107
-                new byte[] { 0x39, 0xA6, 0x25, 0x03 }, // 0x365a639 | T2108 
                 new byte[] { 0x39, 0xA6, 0x25, 0x03 }  // 0x365a639 | T2109
             },
 
@@ -618,7 +623,6 @@ namespace Dobby {
                 new byte[] {  }, // 0x | T1R111
                 new byte[] {  }, // 0x | T2100
                 new byte[] { 0xBA, 0x67, 0x24, 0x03 }, // 0x36467ba | T2107
-                new byte[] { 0x3a, 0xA6, 0x25, 0x03 }, // 0x365a63a | T2108
                 new byte[] { 0x3a, 0xA6, 0x25, 0x03 }  // 0x365a63a | T2109
             },
 
@@ -630,47 +634,127 @@ namespace Dobby {
                 new byte[] { 0xE2, 0x95, 0x05, 0x00 }, // 0x14595e2 | UC2102
                 new byte[] { 0x32, 0xFA, 0x42, 0x00 }, // 0x182fa32 | UC3100
                 new byte[] { 0x52, 0x4A, 0x7B, 0x00 }, // 0x1bb4a52 | UC3102
+                new byte[] {  }, // 0x | UC4100
+                new byte[] {  }, // 0x | UC4101
+                new byte[] {  }, // 0x | UC4133
+                new byte[] {  }, // 0x | UC4133MP
+                new byte[] {  }, // 0x | TLL100
+                new byte[] {  }, // 0x | TLL109
+                new byte[] {  }, // 0x | T1R100
+                new byte[] {  }, // 0x | T1R109
+                new byte[] {  }, // 0x | T1R111
+                new byte[] {  }, // 0x | T2100
                 new byte[] { 0xBB, 0x67, 0x24, 0x03 }, // 0x36467bb | T2107
-                new byte[] { 0x3B, 0xA6, 0x25, 0x03 }, // 0x365a63b | T2108
                 new byte[] { 0x3B, 0xA6, 0x25, 0x03 }  // 0x365a63b | T2109
             },
 
             //|Swap Circle & Square
             new byte[][] {
+                new byte[] {  }, // 0x | UC1100
+                new byte[] {  }, // 0x | UC1102
+                new byte[] {  }, // 0x | UC2100
+                new byte[] {  }, // 0x | UC2102
+                new byte[] {  }, // 0x | UC3100
+                new byte[] {  }, // 0x | UC3102
+                new byte[] {  }, // 0x | UC4100
+                new byte[] {  }, // 0x | UC4101
+                new byte[] {  }, // 0x | UC4133
+                new byte[] {  }, // 0x | UC4133MP
+                new byte[] {  }, // 0x | TLL100
+                new byte[] {  }, // 0x | TLL109
+                new byte[] {  }, // 0x | T1R100
+                new byte[] {  }, // 0x | T1R109
+                new byte[] {  }, // 0x | T1R111
+                new byte[] {  }, // 0x | T2100
                 new byte[] { 0xBD, 0x67, 0x24, 0x03 }, // 0x36467bd | T2107
-                new byte[] { 0x3D, 0xA6, 0x25, 0x03 }, // 0x365a63d | T2108
                 new byte[] { 0x3D, 0xA6, 0x25, 0x03 }  // 0x365a63d | T2109
             },
 
             //|Right Align
             new byte[][] {
+                new byte[] {  }, // 0x | UC1100
+                new byte[] {  }, // 0x | UC1102
+                new byte[] {  }, // 0x | UC2100
+                new byte[] {  }, // 0x | UC2102
                 new byte[] { 0x34, 0xFA, 0x42, 0x01 }, // 0x182FA34 | UC3100
                 new byte[] { 0x54, 0x4A, 0x7B, 0x01 }, // 0x1bb4a54 | UC3102
+                new byte[] {  }, // 0x | UC4100
+                new byte[] {  }, // 0x | UC4101
+                new byte[] {  }, // 0x | UC4133
+                new byte[] {  }, // 0x | UC4133MP
+                new byte[] {  }, // 0x | TLL100
+                new byte[] {  }, // 0x | TLL109
+                new byte[] {  }, // 0x | T1R100
+                new byte[] {  }, // 0x | T1R109
+                new byte[] {  }, // 0x | T1R111
+                new byte[] {  }, // 0x | T2100
                 new byte[] { 0xBE, 0x67, 0x24, 0x03 }, // 0x36467be | T2107
-                new byte[] { 0x3E, 0xA6, 0x25, 0x03 }, // 0x365a63e | T2108
                 new byte[] { 0x3E, 0xA6, 0x25, 0x03 }  // 0x365a63e | T2109
             },
             
             //|Right Margin
             new byte[][] {
+                new byte[] {  }, // 0x | UC1100
+                new byte[] {  }, // 0x | UC1102
+                new byte[] {  }, // 0x | UC2100
+                new byte[] {  }, // 0x | UC2102
                 new byte[] { 0x38, 0xFA, 0x42, 0x01 }, // 0x182FA38 | UC3100
                 new byte[] { 0x58, 0x4A, 0x7B, 0x01 }, // 0x1bb4a58 | UC3102
+                new byte[] {  }, // 0x | UC4100
+                new byte[] {  }, // 0x | UC4101
+                new byte[] {  }, // 0x | UC4133
+                new byte[] {  }, // 0x | UC4133MP
+                new byte[] {  }, // 0x | TLL100
+                new byte[] {  }, // 0x | TLL109
+                new byte[] {  }, // 0x | T1R100
+                new byte[] {  }, // 0x | T1R109
+                new byte[] {  }, // 0x | T1R111
+                new byte[] {  }, // 0x | T2100
                 new byte[] { 0xC0, 0x67, 0x24, 0x03 }, // 0x36467c0 | T2107
-                new byte[] { 0x40, 0xA6, 0x25, 0x03 }, // 0x365a640 | T2108
                 new byte[] { 0x40, 0xA6, 0x25, 0x03 }  // 0x365a640 | T2109
             },
 
             //|Menu Alpha
             new byte[][] {
+                new byte[] {  }, // 0x | UC1100
+                new byte[] {  }, // 0x | UC1102
+                new byte[] {  }, // 0x | UC2100
+                new byte[] {  }, // 0x | UC2102
+                new byte[] {  }, // 0x | UC3100
+                new byte[] {  }, // 0x | UC3102
+                new byte[] {  }, // 0x | UC4100
+                new byte[] {  }, // 0x | UC4101
+                new byte[] {  }, // 0x | UC4133
+                new byte[] {  }, // 0x | UC4133MP
+                new byte[] {  }, // 0x | TLL100
+                new byte[] {  }, // 0x | TLL109
+                new byte[] {  }, // 0x | T1R100
+                new byte[] {  }, // 0x | T1R109
+                new byte[] {  }, // 0x | T1R111
+                new byte[] {  }, // 0x | T2100
                 new byte[] { 0xC4, 0x67, 0x24, 0x03 }, // 0x36467c4 | T2107
-                new byte[] { 0x44, 0xA6, 0x25, 0x03 }, // 0x365a644 | T2108
                 new byte[] { 0x44, 0xA6, 0x25, 0x03 }  // 0x365a644 | T2109
             },
 
             //|Menu Scale
             new byte[][] {
+                new byte[] {  }, // 0x | UC1100
+                new byte[] {  }, // 0x | UC1102
+                new byte[] {  }, // 0x | UC2100
+                new byte[] {  }, // 0x | UC2102
+                new byte[] {  }, // 0x | UC3100
+                new byte[] {  }, // 0x | UC3102
+                new byte[] {  }, // 0x | UC4100
+                new byte[] {  }, // 0x | UC4101
+                new byte[] {  }, // 0x | UC4133
+                new byte[] {  }, // 0x | UC4133MP
+                new byte[] {  }, // 0x | TLL100
+                new byte[] {  }, // 0x | TLL109
+                new byte[] {  }, // 0x | T1R100
+                new byte[] {  }, // 0x | T1R109
+                new byte[] {  }, // 0x | T1R111
+                new byte[] {  }, // 0x | T2100
                 new byte[] { 0xC8, 0x67, 0x24, 0x03 }, // 0x36467c8 | T2107
-                new byte[] { 0x48, 0xA6, 0x25, 0x03 }, // 0x365a648 | T2108
                 new byte[] { 0x48, 0xA6, 0x25, 0x03 }  // 0x365a648 | T2109
             },
 
@@ -693,7 +777,6 @@ namespace Dobby {
                 new byte[] {  }, // 0x | T1R111
                 new byte[] { 0x2C, 0x62, 0x01, 0x03 }, // 0x341622c | T2100
                 new byte[] { 0x2C, 0x60, 0x01, 0x03 }, // 0x341602c | T2107
-                new byte[] { 0x2C, 0x9E, 0x04, 0x03 }, // 0x3449e2c | T2108
                 new byte[] { 0x2C, 0x9E, 0x04, 0x03 }  // 0x3449e2c | T2109
             }
 
@@ -716,7 +799,6 @@ namespace Dobby {
                 new byte[] {  }, // 0x | T1R111
                 new byte[] {  }, // 0x | T2100
                 new byte[] {  }, // 0x | T2107
-                new byte[] {  }, // 0x | T2108
                 new byte[] {  }  // 0x | T2109
             }
             */
@@ -1220,11 +1302,10 @@ namespace Dobby {
 
                 return;
 
-                // Game-Specific Options
-                for(index = 0; index < GameSpecificPatchValues.Length - 1; index++) {
-                    if(DynamicPatchButtons.Buttons[index] != null) {
-                        WriteBytes(BootSettingsDataAddress, BootSettingsPointers[index][GameIndex]);
-                        BootSettingsAddress += BootSettingsPointers[index][GameIndex].Length;
+                index = 0;
+                foreach(var val in GameSpecificPatchValues) {
+                    if(val != DefaultPatchValues[index]) {
+                        WriteBytes(BootSettingsAddress, BootSettingsPointers[index][GameIndex]);
                     }
                 }
             }

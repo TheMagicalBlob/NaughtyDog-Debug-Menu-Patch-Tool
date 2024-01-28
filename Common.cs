@@ -204,7 +204,7 @@ namespace Dobby {
           "* 3.37.150.403 | Added Many Pointers And Created Jagged Array To Store Them Better",
           "* 3.37.152.405 | Reworked Misc Patch Page Event Handlers, Other Misc Changes",
           "* 3.38.154.440 | Debug Output Overhaul, Misc Changes",
-          "* 3.38.155.441 | Replaced BorderFunc"
+          "* 3.38.159.445 | Replaced BorderFunc And Replaced All Static Borders, Moved Platform Labels, Other Crap I've Forgotten"
 
             // TODO:
             // * MAJOR

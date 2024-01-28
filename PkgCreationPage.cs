@@ -17,6 +17,18 @@ using System.Net.NetworkInformation;
 
 namespace Dobby {
     public class PkgCreationPage : Form {
+        public PkgCreationPage() {
+            InitializeComponent();
+            Paint += PaintBorder;
+            AddControlEventHandlers(Controls);
+
+            foreach(Control control in Controls) {
+                if(control.Name.Contains("PathLabel")) {
+                    control.MouseEnter += new EventHandler(HighlightPathLabel);
+                    control.MouseLeave += new EventHandler(HighlightPathLabel);
+                }
+            }
+        }
         private void InitializeComponent() {
             this.InfoHelpBtn = new System.Windows.Forms.Button();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
@@ -25,10 +37,8 @@ namespace Dobby {
             this.CreditsBtn = new System.Windows.Forms.Button();
             this.MinimizeBtn = new System.Windows.Forms.Button();
             this.ExitBtn = new System.Windows.Forms.Button();
-            this.MainBox = new System.Windows.Forms.GroupBox();
             this.MainLabel = new System.Windows.Forms.Label();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
-            this.BorderBox = new System.Windows.Forms.GroupBox();
             this.LaunchOrbisPubCmdBtn = new System.Windows.Forms.Button();
             this.VerbosityBtn = new System.Windows.Forms.Button();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
@@ -149,14 +159,6 @@ namespace Dobby {
             this.ExitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ExitBtn.UseVisualStyleBackColor = false;
             // 
-            // MainBox
-            // 
-            this.MainBox.Location = new System.Drawing.Point(1, -4);
-            this.MainBox.Name = "MainBox";
-            this.MainBox.Size = new System.Drawing.Size(318, 32);
-            this.MainBox.TabIndex = 5;
-            this.MainBox.TabStop = false;
-            // 
             // MainLabel
             // 
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -177,15 +179,6 @@ namespace Dobby {
             this.SeperatorLine0.Size = new System.Drawing.Size(316, 20);
             this.SeperatorLine0.TabIndex = 33;
             this.SeperatorLine0.Text = "____________________________________________";
-            // 
-            // BorderBox
-            // 
-            this.BorderBox.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.BorderBox.Location = new System.Drawing.Point(0, -6);
-            this.BorderBox.Name = "BorderBox";
-            this.BorderBox.Size = new System.Drawing.Size(319, 355);
-            this.BorderBox.TabIndex = 34;
-            this.BorderBox.TabStop = false;
             // 
             // LaunchOrbisPubCmdBtn
             // 
@@ -421,7 +414,6 @@ namespace Dobby {
             this.Controls.Add(this.SeperatorLine2);
             this.Controls.Add(this.SeperatorLine1);
             this.Controls.Add(this.SeperatorLine0);
-            this.Controls.Add(this.BorderBox);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
@@ -430,17 +422,6 @@ namespace Dobby {
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.ResumeLayout(false);
 
-        }
-        public PkgCreationPage() {
-            InitializeComponent();
-            AddControlEventHandlers(Controls);
-
-            foreach(Control control in Controls) {
-                if(control.Name.Contains("PathLabel")) {
-                    control.MouseEnter += new EventHandler(HighlightPathLabel);
-                    control.MouseLeave += new EventHandler(HighlightPathLabel);
-                }
-            }
         }
 
         static public string
@@ -660,9 +641,9 @@ namespace Dobby {
         private Button CreditsBtn;
         private Button MinimizeBtn;
         private Button ExitBtn;
-        private GroupBox MainBox;
+        
         private Label MainLabel;
-        private GroupBox BorderBox;
+        
         private Button VerbosityBtn;
         private Button LaunchOrbisPubCmdBtn;
         private Label SeperatorLine1;

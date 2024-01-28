@@ -11,6 +11,16 @@ using System.Windows.Forms.VisualStyles;
 
 namespace Dobby {
     public class PkgCreationHelpPage : Form {
+        public PkgCreationHelpPage() {
+            InitializeComponent();
+            Paint += PaintBorder;
+            AddControlEventHandlers(Controls);
+
+            Question0Btn.Text = "- Button Text Here";
+            Question1Btn.Text = "- Button Text Here";
+            Question2Btn.Text = "- Button Text Here";
+            Question3Btn.Text = "- Button Text Here";
+        }
         public void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PkgCreationHelpPage));
             this.ExitBtn = new System.Windows.Forms.Button();
@@ -29,7 +39,7 @@ namespace Dobby {
             this.DefaultQuestionBtn = new System.Windows.Forms.Label();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
             this.Question0Btn = new System.Windows.Forms.Button();
-            this.MainBox.SuspendLayout();
+            this.SuspendLayout();
             this.SuspendLayout();
             // 
             // ExitBtn
@@ -86,29 +96,29 @@ namespace Dobby {
             // 
             // MainBox
             // 
-            this.MainBox.Controls.Add(this.Question3Btn);
-            this.MainBox.Controls.Add(this.Question2Btn);
-            this.MainBox.Controls.Add(this.Question1Btn);
-            this.MainBox.Controls.Add(this.SeperatorLine3);
-            this.MainBox.Controls.Add(this.ExitBtn);
-            this.MainBox.Controls.Add(this.MinimizeBtn);
-            this.MainBox.Controls.Add(this.MainLabel);
-            this.MainBox.Controls.Add(this.SeperatorLine1);
-            this.MainBox.Controls.Add(this.PopupLabel);
-            this.MainBox.Controls.Add(this.Info);
-            this.MainBox.Controls.Add(this.CreditsBtn);
-            this.MainBox.Controls.Add(this.BackBtn);
-            this.MainBox.Controls.Add(this.DefaultQuestionBtn);
-            this.MainBox.Controls.Add(this.SeperatorLine2);
-            this.MainBox.Controls.Add(this.Question0Btn);
-            this.MainBox.Location = new System.Drawing.Point(0, -6);
-            this.MainBox.Name = "MainBox";
-            this.MainBox.Size = new System.Drawing.Size(320, 483);
-            this.MainBox.TabIndex = 5;
-            this.MainBox.TabStop = false;
-            this.MainBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MainBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            this.MainBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
+            this.Controls.Add(this.Question3Btn);
+            this.Controls.Add(this.Question2Btn);
+            this.Controls.Add(this.Question1Btn);
+            this.Controls.Add(this.SeperatorLine3);
+            this.Controls.Add(this.ExitBtn);
+            this.Controls.Add(this.MinimizeBtn);
+            this.Controls.Add(this.MainLabel);
+            this.Controls.Add(this.SeperatorLine1);
+            this.Controls.Add(this.PopupLabel);
+            this.Controls.Add(this.Info);
+            this.Controls.Add(this.CreditsBtn);
+            this.Controls.Add(this.BackBtn);
+            this.Controls.Add(this.DefaultQuestionBtn);
+            this.Controls.Add(this.SeperatorLine2);
+            this.Controls.Add(this.Question0Btn);
+            this.Location = new System.Drawing.Point(0, -6);
+            this.Name = "MainBox";
+            this.Size = new System.Drawing.Size(320, 483);
+            this.TabIndex = 5;
+            this.TabStop = false;
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             // 
             // Question3Btn
             // 
@@ -277,18 +287,9 @@ namespace Dobby {
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            this.MainBox.ResumeLayout(false);
+            this.ResumeLayout(false);
             this.ResumeLayout(false);
 
-        }
-        public PkgCreationHelpPage() {
-            InitializeComponent();
-            AddControlEventHandlers(Controls);
-
-            Question0Btn.Text = "- Button Text Here";
-            Question1Btn.Text = "- Button Text Here";
-            Question2Btn.Text = "- Button Text Here";
-            Question3Btn.Text = "- Button Text Here";
         }
 
         string[] Headers = new string[] {

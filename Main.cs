@@ -23,6 +23,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             }
 #endif
             InitializeComponent();
+            Paint += PaintBorder;
             YellowInformationLabel = Info;
             Info.Text = "";
             Page = 0;
@@ -55,8 +56,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.Playstation4Label = new System.Windows.Forms.Label();
             this.PCLabel = new System.Windows.Forms.Label();
             this.DownloadSourceBtn = new System.Windows.Forms.Button();
-            this.BorderBox = new System.Windows.Forms.GroupBox();
-            this.BorderBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainLabel
@@ -269,7 +268,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.Playstation4Label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Playstation4Label.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.Playstation4Label.ForeColor = System.Drawing.SystemColors.Control;
-            this.Playstation4Label.Location = new System.Drawing.Point(116, 38);
+            this.Playstation4Label.Location = new System.Drawing.Point(116, 32);
             this.Playstation4Label.Name = "Playstation4Label";
             this.Playstation4Label.Size = new System.Drawing.Size(86, 19);
             this.Playstation4Label.TabIndex = 36;
@@ -281,7 +280,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.PCLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.PCLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.PCLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.PCLabel.Location = new System.Drawing.Point(146, 166);
+            this.PCLabel.Location = new System.Drawing.Point(146, 160);
             this.PCLabel.Name = "PCLabel";
             this.PCLabel.Size = new System.Drawing.Size(24, 19);
             this.PCLabel.TabIndex = 37;
@@ -305,25 +304,17 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.DownloadSourceBtn.UseVisualStyleBackColor = false;
             this.DownloadSourceBtn.Click += new System.EventHandler(this.DownloadSourceBtn_Click);
             // 
-            // BorderBox
-            // 
-            this.BorderBox.Controls.Add(this.DownloadSourceBtn);
-            this.BorderBox.Controls.Add(this.PCLabel);
-            this.BorderBox.Controls.Add(this.Playstation4Label);
-            this.BorderBox.Controls.Add(this.InfoHelpBtn);
-            this.BorderBox.Controls.Add(this.CreditsBtn);
-            this.BorderBox.Location = new System.Drawing.Point(0, -6);
-            this.BorderBox.Name = "BorderBox";
-            this.BorderBox.Size = new System.Drawing.Size(320, 310);
-            this.BorderBox.TabIndex = 34;
-            this.BorderBox.TabStop = false;
-            // 
             // Dobby
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ClientSize = new System.Drawing.Size(320, 303);
+            this.Controls.Add(this.DownloadSourceBtn);
+            this.Controls.Add(this.PCLabel);
+            this.Controls.Add(this.Playstation4Label);
+            this.Controls.Add(this.InfoHelpBtn);
+            this.Controls.Add(this.CreditsBtn);
             this.Controls.Add(this.PCDebugMenuPageBtn);
             this.Controls.Add(this.PkgPageBtn);
             this.Controls.Add(this.SeperatorLine1);
@@ -336,10 +327,8 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.Controls.Add(this.MainLabel);
             this.Controls.Add(this.SeperatorLine0);
             this.Controls.Add(this.SeperatorLine3);
-            this.Controls.Add(this.BorderBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Dobby";
-            this.BorderBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

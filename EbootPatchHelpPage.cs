@@ -9,6 +9,7 @@ namespace Dobby {
     public class EbootPatchHelpPage : Form {
         public EbootPatchHelpPage() {
             InitializeComponent();
+            Paint += PaintBorder;
             AddControlEventHandlers(Controls);
 
             Question0Btn.Text = "- How Do I Get My Game's eboot.bin?";
@@ -37,7 +38,6 @@ namespace Dobby {
             this.ExitBtn = new System.Windows.Forms.Button();
             this.MinimizeBtn = new System.Windows.Forms.Button();
             this.MainLabel = new System.Windows.Forms.Label();
-            this.MainBox = new System.Windows.Forms.GroupBox();
             this.Question3Btn = new System.Windows.Forms.Button();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
@@ -50,7 +50,6 @@ namespace Dobby {
             this.DefaultQuestionBtn = new System.Windows.Forms.Label();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.Question0Btn = new System.Windows.Forms.Button();
-            this.MainBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // ExitBtn
@@ -104,32 +103,6 @@ namespace Dobby {
             this.MainLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
             this.MainLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             this.MainLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            // 
-            // MainBox
-            // 
-            this.MainBox.Controls.Add(this.Question3Btn);
-            this.MainBox.Controls.Add(this.SeperatorLine2);
-            this.MainBox.Controls.Add(this.ExitBtn);
-            this.MainBox.Controls.Add(this.MinimizeBtn);
-            this.MainBox.Controls.Add(this.MainLabel);
-            this.MainBox.Controls.Add(this.SeperatorLine0);
-            this.MainBox.Controls.Add(this.WithSomeExceptionsLabel);
-            this.MainBox.Controls.Add(this.Question2Btn);
-            this.MainBox.Controls.Add(this.Question1Btn);
-            this.MainBox.Controls.Add(this.Info);
-            this.MainBox.Controls.Add(this.CreditsBtn);
-            this.MainBox.Controls.Add(this.BackBtn);
-            this.MainBox.Controls.Add(this.DefaultQuestionBtn);
-            this.MainBox.Controls.Add(this.SeperatorLine1);
-            this.MainBox.Controls.Add(this.Question0Btn);
-            this.MainBox.Location = new System.Drawing.Point(0, -6);
-            this.MainBox.Name = "MainBox";
-            this.MainBox.Size = new System.Drawing.Size(320, 507);
-            this.MainBox.TabIndex = 5;
-            this.MainBox.TabStop = false;
-            this.MainBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MainBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            this.MainBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             // 
             // Question3Btn
             // 
@@ -287,18 +260,31 @@ namespace Dobby {
             // 
             // EbootPatchHelpPage
             // 
+            Controls.Add(this.Question3Btn);
+            Controls.Add(this.SeperatorLine2);
+            Controls.Add(this.ExitBtn);
+            Controls.Add(this.MinimizeBtn);
+            Controls.Add(this.MainLabel);
+            Controls.Add(this.SeperatorLine0);
+            Controls.Add(this.WithSomeExceptionsLabel);
+            Controls.Add(this.Question2Btn);
+            Controls.Add(this.Question1Btn);
+            Controls.Add(this.Info);
+            Controls.Add(this.CreditsBtn);
+            Controls.Add(this.BackBtn);
+            Controls.Add(this.DefaultQuestionBtn);
+            Controls.Add(this.SeperatorLine1);
+            Controls.Add(this.Question0Btn);
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.ClientSize = new System.Drawing.Size(320, 500);
-            this.Controls.Add(this.MainBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "EbootPatchHelpPage";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            this.MainBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -383,7 +369,6 @@ namespace Dobby {
         public Button MinimizeBtn;
         public Label Info;
         public Label MainLabel;
-        public GroupBox MainBox;
         public Button CreditsBtn;
         public Button BackBtn;
         private Button Question0Btn;

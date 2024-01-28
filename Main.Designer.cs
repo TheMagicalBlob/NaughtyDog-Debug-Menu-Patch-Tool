@@ -32,7 +32,7 @@ namespace Dobby
         public Label Playstation4Label;
         public Label PCLabel;
         public Button DownloadSourceBtn;
-        private GroupBox BorderBox;
+        
     }
 }
 

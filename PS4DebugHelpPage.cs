@@ -11,6 +11,7 @@ namespace Dobby {
     public class PS4DebugHelpPage : Form {
         public PS4DebugHelpPage() {
             InitializeComponent();
+            Paint += PaintBorder;
             AddControlEventHandlers(Controls);
         }
         public void InitializeComponent() {
@@ -18,7 +19,6 @@ namespace Dobby {
             this.ExitBtn = new System.Windows.Forms.Button();
             this.MinimizeBtn = new System.Windows.Forms.Button();
             this.MainLabel = new System.Windows.Forms.Label();
-            this.MainBox = new System.Windows.Forms.GroupBox();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.PS4DebugAnswerLabel = new System.Windows.Forms.Label();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
@@ -27,7 +27,6 @@ namespace Dobby {
             this.Info = new System.Windows.Forms.Label();
             this.CreditsBtn = new System.Windows.Forms.Button();
             this.BackBtn = new System.Windows.Forms.Button();
-            this.MainBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // ExitBtn
@@ -78,25 +77,6 @@ namespace Dobby {
             this.MainLabel.Size = new System.Drawing.Size(259, 22);
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "PS4Debug Page Information";
-            // 
-            // MainBox
-            // 
-            this.MainBox.Controls.Add(this.SeperatorLine1);
-            this.MainBox.Controls.Add(this.ExitBtn);
-            this.MainBox.Controls.Add(this.MinimizeBtn);
-            this.MainBox.Controls.Add(this.MainLabel);
-            this.MainBox.Controls.Add(this.PS4DebugAnswerLabel);
-            this.MainBox.Controls.Add(this.SeperatorLine2);
-            this.MainBox.Controls.Add(this.SeperatorLine0);
-            this.MainBox.Controls.Add(this.PS4DebugQuestionLabel);
-            this.MainBox.Controls.Add(this.Info);
-            this.MainBox.Controls.Add(this.CreditsBtn);
-            this.MainBox.Controls.Add(this.BackBtn);
-            this.MainBox.Location = new System.Drawing.Point(0, -6);
-            this.MainBox.Name = "MainBox";
-            this.MainBox.Size = new System.Drawing.Size(320, 421);
-            this.MainBox.TabIndex = 5;
-            this.MainBox.TabStop = false;
             // 
             // SeperatorLine1
             // 
@@ -196,15 +176,24 @@ namespace Dobby {
             // 
             // PS4DebugHelpPage
             // 
+            this.Controls.Add(this.SeperatorLine1);
+            this.Controls.Add(this.ExitBtn);
+            this.Controls.Add(this.MinimizeBtn);
+            this.Controls.Add(this.MainLabel);
+            this.Controls.Add(this.PS4DebugAnswerLabel);
+            this.Controls.Add(this.SeperatorLine2);
+            this.Controls.Add(this.SeperatorLine0);
+            this.Controls.Add(this.PS4DebugQuestionLabel);
+            this.Controls.Add(this.Info);
+            this.Controls.Add(this.CreditsBtn);
+            this.Controls.Add(this.BackBtn);
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.ClientSize = new System.Drawing.Size(320, 414);
-            this.Controls.Add(this.MainBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PS4DebugHelpPage";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.MainBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -225,14 +214,13 @@ namespace Dobby {
         private void BackBtn_Click(object sender, EventArgs e) => ReturnToPreviousPage();
         #endregion
 
-        #region ControlDeclarations
         ////////////////////\\\\\\\\\\\\\\\\\\\\
         ///--     Control Declarations     --\\\
         ////////////////////\\\\\\\\\\\\\\\\\\\\
+        #region ControlDeclarations
         public Button MinimizeBtn;
         public Label Info;
         public Label MainLabel;
-        public GroupBox MainBox;
         public Button CreditsBtn;
         public Button BackBtn;
         private Label PS4DebugQuestionLabel;

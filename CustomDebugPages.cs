@@ -13,6 +13,7 @@ namespace Dobby {
 #if DEBUG
         public T2CustomOptionsDebug() { if (Dev.REL) return;
             InitializeComponent();
+            Paint += PaintBorder;
             AddControlEventHandlers(Controls);
         }
 
@@ -115,7 +116,7 @@ namespace Dobby {
             this.SeperatorLabel0 = new System.Windows.Forms.Label();
             this.SeperatorLabel1 = new System.Windows.Forms.Label();
             this.SeperatorLabel2 = new System.Windows.Forms.Label();
-            this.MainBox.SuspendLayout();
+            this.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainLabel
@@ -131,15 +132,15 @@ namespace Dobby {
             // 
             // MainBox
             // 
-            this.MainBox.Controls.Add(this.SeperatorLabel2);
-            this.MainBox.Controls.Add(this.SeperatorLabel1);
-            this.MainBox.Controls.Add(this.MainLabel);
-            this.MainBox.Controls.Add(this.SeperatorLabel0);
-            this.MainBox.Location = new Point(0, -6);
-            this.MainBox.Name = "MainBox";
-            this.MainBox.Size = new Size(319, 404);
-            this.MainBox.TabIndex = 5;
-            this.MainBox.TabStop = false;
+            this.Controls.Add(this.SeperatorLabel2);
+            this.Controls.Add(this.SeperatorLabel1);
+            this.Controls.Add(this.MainLabel);
+            this.Controls.Add(this.SeperatorLabel0);
+            this.Location = new Point(0, -6);
+            this.Name = "MainBox";
+            this.Size = new Size(319, 404);
+            this.TabIndex = 5;
+            this.TabStop = false;
             // 
             // Info
             // 
@@ -527,7 +528,7 @@ namespace Dobby {
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormMouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FormMouseUp);
-            this.MainBox.ResumeLayout(false);
+            this.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

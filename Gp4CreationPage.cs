@@ -14,6 +14,7 @@ namespace Dobby {
 
         public Gp4CreationPage() {
             InitializeComponent();
+            Paint += PaintBorder;
             AddControlEventHandlers(Controls);
 
 
@@ -46,10 +47,8 @@ namespace Dobby {
             this.CreditsBtn = new System.Windows.Forms.Button();
             this.MinimizeBtn = new System.Windows.Forms.Button();
             this.ExitBtn = new System.Windows.Forms.Button();
-            this.MainBox = new System.Windows.Forms.GroupBox();
             this.MainLabel = new System.Windows.Forms.Label();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
-            this.BorderBox = new System.Windows.Forms.GroupBox();
             this.Gp4FilterBrowseBtn = new System.Windows.Forms.Button();
             this.SourcePkgPathBrowseBtn = new System.Windows.Forms.Button();
             this.OutputPathBrowseBtn = new System.Windows.Forms.Button();
@@ -61,7 +60,6 @@ namespace Dobby {
             this.OutputPathLabel = new System.Windows.Forms.Label();
             this.FilterArrayLabel = new System.Windows.Forms.Label();
             this.PasscodeLabel = new System.Windows.Forms.Label();
-            this.BorderBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // GamedataPathLabel
@@ -180,14 +178,6 @@ namespace Dobby {
             this.ExitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ExitBtn.UseVisualStyleBackColor = false;
             // 
-            // MainBox
-            // 
-            this.MainBox.Location = new System.Drawing.Point(1, -4);
-            this.MainBox.Name = "MainBox";
-            this.MainBox.Size = new System.Drawing.Size(318, 32);
-            this.MainBox.TabIndex = 5;
-            this.MainBox.TabStop = false;
-            // 
             // MainLabel
             // 
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -208,19 +198,6 @@ namespace Dobby {
             this.SeperatorLine0.Size = new System.Drawing.Size(316, 20);
             this.SeperatorLine0.TabIndex = 33;
             this.SeperatorLine0.Text = "____________________________________________";
-            // 
-            // BorderBox
-            // 
-            this.BorderBox.Controls.Add(this.Gp4FilterBrowseBtn);
-            this.BorderBox.Controls.Add(this.SourcePkgPathBrowseBtn);
-            this.BorderBox.Controls.Add(this.OutputPathBrowseBtn);
-            this.BorderBox.Controls.Add(this.GamedataFolderBrowseBtn);
-            this.BorderBox.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.BorderBox.Location = new System.Drawing.Point(0, -6);
-            this.BorderBox.Name = "BorderBox";
-            this.BorderBox.Size = new System.Drawing.Size(319, 361);
-            this.BorderBox.TabIndex = 34;
-            this.BorderBox.TabStop = false;
             // 
             // Gp4FilterBrowseBtn
             // 
@@ -401,14 +378,16 @@ namespace Dobby {
             this.Controls.Add(this.SeperatorLine2);
             this.Controls.Add(this.SeperatorLine1);
             this.Controls.Add(this.SeperatorLine0);
-            this.Controls.Add(this.BorderBox);
+            this.Controls.Add(this.Gp4FilterBrowseBtn);
+            this.Controls.Add(this.SourcePkgPathBrowseBtn);
+            this.Controls.Add(this.OutputPathBrowseBtn);
+            this.Controls.Add(this.GamedataFolderBrowseBtn);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Gp4CreationPage";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.BorderBox.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -554,10 +533,10 @@ namespace Dobby {
         private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
         #endregion
 
-        #region Control Declarations
         ////////////////////\\\\\\\\\\\\\\\\\\\\
         ///--     Control Declarations     --\\\
         ////////////////////\\\\\\\\\\\\\\\\\\\\
+        #region Control Declarations
         public Label GamedataPathLabel;
         private Button InfoHelpBtn;
         private Label SeperatorLine2;
@@ -571,9 +550,7 @@ namespace Dobby {
         private Button GamedataFolderBrowseBtn;
         private Button MinimizeBtn;
         private Button ExitBtn;
-        private GroupBox MainBox;
         private Label MainLabel;
-        private GroupBox BorderBox;
         private Button StartGp4CreationBtn;
         public Label SourcePkgPathLabel;
         private TextBox FilterArrayTextBox;

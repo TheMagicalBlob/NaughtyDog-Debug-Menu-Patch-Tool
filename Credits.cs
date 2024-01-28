@@ -8,30 +8,16 @@ namespace Dobby {
     internal class CreditsPage : Form {
         public CreditsPage() {
             InitializeComponent();
+            Paint += PaintBorder;
             AddControlEventHandlers(Controls);
             foreach (Control control in Controls)
                 control.TabStop = false;
         }
-        public Button ExitBtn;
-        public Button MinimizeBtn;
-        public GroupBox MainBox;
-        public Label MainLabel;
-        public Label NarcissismLabel;
-        public Label BlobGithubBtn;
-        public Label IllusionBlogBtn;
-        public Label ContributorsLabel;
-        public Button BackBtn;
-        public Label SeperatorLine1;
-        public Label Info;
-        public Label label2;
-        public Label label1;
-        public Label label3;
 
         public void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreditsPage));
             this.MainLabel = new System.Windows.Forms.Label();
             this.BackBtn = new System.Windows.Forms.Button();
-            this.MainBox = new System.Windows.Forms.GroupBox();
             this.ExitBtn = new System.Windows.Forms.Button();
             this.MinimizeBtn = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -43,7 +29,6 @@ namespace Dobby {
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.BlobGithubBtn = new System.Windows.Forms.Label();
             this.Info = new System.Windows.Forms.Label();
-            this.MainBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainLabel
@@ -76,29 +61,6 @@ namespace Dobby {
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
             this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
-            // 
-            // MainBox
-            // 
-            this.MainBox.Controls.Add(this.MainLabel);
-            this.MainBox.Controls.Add(this.ExitBtn);
-            this.MainBox.Controls.Add(this.MinimizeBtn);
-            this.MainBox.Controls.Add(this.label3);
-            this.MainBox.Controls.Add(this.IllusionBlogBtn);
-            this.MainBox.Controls.Add(this.label2);
-            this.MainBox.Controls.Add(this.ContributorsLabel);
-            this.MainBox.Controls.Add(this.label1);
-            this.MainBox.Controls.Add(this.NarcissismLabel);
-            this.MainBox.Controls.Add(this.SeperatorLine1);
-            this.MainBox.Controls.Add(this.BlobGithubBtn);
-            this.MainBox.Controls.Add(this.BackBtn);
-            this.MainBox.Location = new System.Drawing.Point(0, -6);
-            this.MainBox.Name = "MainBox";
-            this.MainBox.Size = new System.Drawing.Size(320, 360);
-            this.MainBox.TabIndex = 5;
-            this.MainBox.TabStop = false;
-            this.MainBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MainBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            this.MainBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             // 
             // ExitBtn
             // 
@@ -247,7 +209,19 @@ namespace Dobby {
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
             this.ClientSize = new System.Drawing.Size(320, 353);
-            this.Controls.Add(this.MainBox);
+            // 
+            Controls.Add(this.MainLabel);
+            Controls.Add(this.ExitBtn);
+            Controls.Add(this.MinimizeBtn);
+            Controls.Add(this.label3);
+            Controls.Add(this.IllusionBlogBtn);
+            Controls.Add(this.label2);
+            Controls.Add(this.ContributorsLabel);
+            Controls.Add(this.label1);
+            Controls.Add(this.NarcissismLabel);
+            Controls.Add(this.SeperatorLine1);
+            Controls.Add(this.BlobGithubBtn);
+            Controls.Add(this.BackBtn);
             this.Controls.Add(this.Info);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "CreditsPage";
@@ -255,7 +229,6 @@ namespace Dobby {
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            this.MainBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -287,5 +260,26 @@ namespace Dobby {
         }
         public void IllusionBlogBtnMH(object sender, EventArgs e) => IllusionBlogBtn.ForeColor = Color.MediumBlue;
         public void IllusionBlogBtnML(object sender, EventArgs e) => IllusionBlogBtn.ForeColor = Color.White;
+
+
+
+        ////////////////////\\\\\\\\\\\\\\\\\\\\
+        ///--     Control Declarations     --\\\
+        ////////////////////\\\\\\\\\\\\\\\\\\\\
+        #region Control Declarations
+        public Button ExitBtn;
+        public Button MinimizeBtn;
+        public Label MainLabel;
+        public Label NarcissismLabel;
+        public Label BlobGithubBtn;
+        public Label IllusionBlogBtn;
+        public Label ContributorsLabel;
+        public Button BackBtn;
+        public Label SeperatorLine1;
+        public Label Info;
+        public Label label2;
+        public Label label1;
+        public Label label3;
+        #endregion
     }
 }

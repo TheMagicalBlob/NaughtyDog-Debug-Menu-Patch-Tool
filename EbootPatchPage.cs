@@ -19,6 +19,7 @@ namespace Dobby {
 
         public EbootPatchPage() {
             InitializeComponent();
+            Paint += PaintBorder;
             AddControlEventHandlers(Controls);
             if (ActiveFilePath != null && !IsActiveFilePCExe)
                 ExecutablePathBox.Text = ActiveFilePath;
@@ -42,10 +43,8 @@ namespace Dobby {
             this.CreditsBtn = new System.Windows.Forms.Button();
             this.MinimizeBtn = new System.Windows.Forms.Button();
             this.ExitBtn = new System.Windows.Forms.Button();
-            this.MainBox = new System.Windows.Forms.GroupBox();
             this.MainLabel = new System.Windows.Forms.Label();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.SuspendLayout();
             // 
             // GameInfoLabel
@@ -61,7 +60,7 @@ namespace Dobby {
             // 
             // BrowseButton
             // 
-            this.BrowseButton.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.BrowseButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.BrowseButton.Cursor = System.Windows.Forms.Cursors.Cross;
             this.BrowseButton.FlatAppearance.BorderSize = 0;
             this.BrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -100,7 +99,7 @@ namespace Dobby {
             // 
             // RestoredDebugBtn
             // 
-            this.RestoredDebugBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.RestoredDebugBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.RestoredDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.RestoredDebugBtn.FlatAppearance.BorderSize = 0;
             this.RestoredDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -117,7 +116,7 @@ namespace Dobby {
             // 
             // InfoHelpBtn
             // 
-            this.InfoHelpBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.InfoHelpBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.InfoHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.InfoHelpBtn.FlatAppearance.BorderSize = 0;
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -144,7 +143,7 @@ namespace Dobby {
             // 
             // BackBtn
             // 
-            this.BackBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.BackBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.BackBtn.FlatAppearance.BorderSize = 0;
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -161,7 +160,7 @@ namespace Dobby {
             // 
             // DisableDebugBtn
             // 
-            this.DisableDebugBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.DisableDebugBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.DisableDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.DisableDebugBtn.FlatAppearance.BorderSize = 0;
             this.DisableDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -178,7 +177,7 @@ namespace Dobby {
             // 
             // EnableDebugBtn
             // 
-            this.EnableDebugBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.EnableDebugBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.EnableDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.EnableDebugBtn.FlatAppearance.BorderSize = 0;
             this.EnableDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -205,7 +204,7 @@ namespace Dobby {
             // 
             // CreditsBtn
             // 
-            this.CreditsBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.CreditsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.CreditsBtn.FlatAppearance.BorderSize = 0;
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -223,7 +222,7 @@ namespace Dobby {
             // 
             // MinimizeBtn
             // 
-            this.MinimizeBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.MinimizeBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -239,7 +238,7 @@ namespace Dobby {
             // 
             // ExitBtn
             // 
-            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -252,14 +251,6 @@ namespace Dobby {
             this.ExitBtn.Text = "X";
             this.ExitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ExitBtn.UseVisualStyleBackColor = false;
-            // 
-            // MainBox
-            // 
-            this.MainBox.Location = new System.Drawing.Point(1, -4);
-            this.MainBox.Name = "MainBox";
-            this.MainBox.Size = new System.Drawing.Size(318, 32);
-            this.MainBox.TabIndex = 5;
-            this.MainBox.TabStop = false;
             // 
             // MainLabel
             // 
@@ -282,19 +273,11 @@ namespace Dobby {
             this.SeperatorLine0.TabIndex = 33;
             this.SeperatorLine0.Text = "____________________________________________";
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Location = new System.Drawing.Point(0, -6);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(319, 282);
-            this.groupBox1.TabIndex = 34;
-            this.groupBox1.TabStop = false;
-            // 
             // EbootPatchPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ClientSize = new System.Drawing.Size(320, 276);
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.MinimizeBtn);
@@ -312,7 +295,6 @@ namespace Dobby {
             this.Controls.Add(this.SeperatorLine1);
             this.Controls.Add(this.EnableDebugBtn);
             this.Controls.Add(this.SeperatorLine0);
-            this.Controls.Add(this.groupBox1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
@@ -352,7 +334,6 @@ namespace Dobby {
             }
         }
 
-        
         bool BrowseButtonOverride = false;
         /// <summary> Load A File For Checking/Patching If The Path In The ExecutablePathBox Exists </summary>
         private void ExecutablePathBox_TextChanged(object sender, EventArgs e) {
@@ -1624,9 +1605,7 @@ namespace Dobby {
         private Button CreditsBtn;
         private Button MinimizeBtn;
         private Button ExitBtn;
-        private GroupBox MainBox;
         private Label MainLabel;
-        private GroupBox groupBox1;
         private Label SeperatorLine0;
         #endregion
     }
