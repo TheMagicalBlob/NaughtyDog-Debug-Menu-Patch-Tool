@@ -12,8 +12,8 @@ using static Dobby.Common;
 using static Dobby.Dev;
 
 namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
-    public partial class Dobby : Form {
-        public Dobby() {
+    public partial class Main : Form {
+        public Main() {
 #if DEBUG
             if (Pages[1] == null) {
                 try {
@@ -36,7 +36,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             Log.Show();
 #endif
         }
-
 
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();

@@ -5,7 +5,7 @@ using static Dobby.Common;
 
 namespace Dobby
 {
-    public partial class Dobby
+    public partial class Main
     {
         /// <summary>
         /// Required designer variable.

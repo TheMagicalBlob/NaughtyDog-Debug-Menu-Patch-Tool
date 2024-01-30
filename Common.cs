@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using static Dobby.Dev;
 
 namespace Dobby {
-    public class Common : Dobby {
+    public class Common : Main {
         //#error version
 
         // Spacing:
@@ -204,7 +204,8 @@ namespace Dobby {
           "* 3.38.161.447 | Removed Unused Page Function, Other Work",
           "* 3.39.165.451 | Reworked Several Functions, Moved Dev Class In TO Seperate File. Other Blah Blah Blah",
           "* 3.40.166.455 | Deleted Page, Moved More Crap",
-          "* 3.40.172.470 | Large Code Cleaup, Deleted Resource, Reworked And Cleaned Up PCDebugMenuPatchPage, Added PaintBorder() Function Call Inside Of EventHandler Func And Removed All Instances That Came Before Said Function Originally, Many Minor Tweaks/Changes"
+          "* 3.40.172.470 | Large Code Cleaup, Deleted Resource, Reworked And Cleaned Up PCDebugMenuPatchPage, Added PaintBorder() Function Call Inside Of EventHandler Func And Removed All Instances That Came Before Said Function Originally, Many Minor Tweaks/Changes",
+          "* 3.40.175.474 | PS4MenuSettingsPatchPage Work (Reworked Page Structure, Made Some Other Minor Changes). Fixed Designer Bs With vButton class"
 
             // TODO:
             // * MAJOR
@@ -247,7 +248,6 @@ namespace Dobby {
         #endregion
 
         public class vButton : Button { public object Variable; }
-
 
         public enum PageID : int {
             MainPage = 0,

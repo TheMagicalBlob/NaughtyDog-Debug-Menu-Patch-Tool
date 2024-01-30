@@ -2,7 +2,9 @@
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 using static Dobby.Common;
 
 namespace Dobby {
@@ -19,18 +21,17 @@ namespace Dobby {
             AddControlEventHandlers(Controls);
 
 
-
-            if(Game != 0) DynamicPatchButtons.ResetCustomOptions();
+            if(Game != 0 && gsButtons.Buttons != null) ResetCustomDebugOptions();
             FormActive = true;
         }
 
         private void InitializeComponent() {
-            this.ProgPauseOnCloseBtn = new Common.vButton();
-            this.ProgPauseOnOpenBtn = new Common.vButton();
-            this.DisableDebugTextBtn = new Common.vButton();
-            this.DisablePausedIconBtn = new Common.vButton();
-            this.MenuScaleBtn = new Common.vButton();
-            this.MenuAlphaBtn = new Common.vButton();
+            this.ProgPauseOnCloseBtn = new Dobby.Common.vButton();
+            this.ProgPauseOnOpenBtn = new Dobby.Common.vButton();
+            this.DisableDebugTextBtn = new Dobby.Common.vButton();
+            this.DisablePausedIconBtn = new Dobby.Common.vButton();
+            this.MenuScaleBtn = new Dobby.Common.vButton();
+            this.MenuAlphaBtn = new Dobby.Common.vButton();
             this.MainLabel = new System.Windows.Forms.Label();
             this.ExitBtn = new System.Windows.Forms.Button();
             this.MinimizeBtn = new System.Windows.Forms.Button();
@@ -320,7 +321,7 @@ namespace Dobby {
             this.ExecutablePathBox.Name = "ExecutablePathBox";
             this.ExecutablePathBox.Size = new System.Drawing.Size(233, 23);
             this.ExecutablePathBox.TabIndex = 38;
-            this.ExecutablePathBox.Text = " Select An exe To Modify";
+            this.ExecutablePathBox.Text = " Select A .elf To Patch";
             // 
             // SeperatorLine1
             // 
@@ -396,7 +397,9 @@ namespace Dobby {
         /// <summary> Array of Controls to Move When Loading >1 Game-Specific Debug Options
         ///</summary>
         private static Control[] ControlsToMove;
-        
+        private static FileStream MainStream;
+        private static DynamicPatchButtons gsButtons;
+
         /// <summary> Variable Used When Adjusting Form Scale And Control Positions
         ///</summary>
         private static int
@@ -405,7 +408,10 @@ namespace Dobby {
             Game
         ;
 
-        private static bool PathBoxHasDefaultText = true;
+        private static bool
+            PathBoxHasDefaultText = true,
+            MultipleButtonsEnabled
+        ;
 
         private static string[] ResultStrings = new string[] {
             "Debug Menus Disabled",
@@ -414,63 +420,17 @@ namespace Dobby {
             "Custom Menu Applied",
         };
 
-        private static byte MouseIsDown;
-        private static byte[]
-            LocalExecutableCheck,
-            E9Jump = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 },
-            DebugDat = new byte[] { 0x8a, 0x8f, 0xf2, 0x3e, 0x00, 0x00, 0x84, 0xc9, 0x0f, 0x94, 0xc2, 0x84, 0xc9, 0x0f, 0x95, 0xc1, 0x88, 0x8f, 0x3d, 0x3f, 0x00, 0x00, 0x88, 0x97, 0x2f, 0x3f, 0x00, 0x00 }, // Used To Find Debug Mode Addr In PC Executables, From What I Remember
-            T2Debug = new byte[] { 0xb2, 0x00, 0xb0, 0x01 }, // Turns "Disable Debug Rendering" Off (b2 00) & Debug Mode On (b0 01)
-            T2DebugOff = new byte[] { 0xb2, 0x01, 0x31, 0xc0 }
-        ;
+        private static byte[] LocalExecutableCheck;
 
 
-        private static FileStream MainStream;
 
-        private static string ActiveFilePath, ActiveGameID = "?";
+        private static string ActiveFilePath;
 
         private static bool IsActiveFilePCExe, MainStreamIsOpen;
-
-        private static int DebugAddressForSelectedGame;
 
         public static void WriteBytes(int offset, byte[] data) {
             MainStream.Position = offset;
             MainStream.Write(data, 0, data.Length);
-        }
-        public static void WriteBytes(int[] offset, byte[] data) {
-            foreach(int ofs in offset) {
-                MainStream.Position = ofs;
-                MainStream.Write(data, 0, data.Length);
-            }
-        }
-        public static void WriteBytes(int[] offset, byte[][] data) {
-            int i = 0;
-            foreach(byte[] bytes in data) {
-                MainStream.Position = offset[i];
-                MainStream.Write(bytes, 0, data.Length);
-                i++;
-            }
-        }
-        public static void WriteByte(int offset, byte data) {
-            MainStream.Position = offset;
-            MainStream.WriteByte(data);
-            MainStream.Flush();
-            Dev.DebugOut($"Wrote {data:X} at {offset:X}");
-            MainStream.Flush();
-        }
-        public static void WriteByte(int offset, object data) {
-
-            byte[] bytes = (byte[])data;
-            MainStream.Position = offset;
-            MainStream.Write(bytes, 0, bytes.Length);
-            MainStream.Flush();
-            Dev.DebugOut($"Wrote {data:X} at {offset:X}");
-        }
-        public static void WriteByte(int[] offset, byte data) {
-            foreach(int ofs in offset) {
-                MainStream.Position = ofs;
-                MainStream.WriteByte(data);
-                Dev.DebugOut($"Wrote {data:X} at {ofs:X}");
-            }
         }
         /// <summary> Compare Data Read At The Given Address
         /// </summary>
@@ -906,8 +866,15 @@ namespace Dobby {
         /// <summary> Struct For Creating Dynamic Patch Buttons
         /// </summary>
         private struct DynamicPatchButtons {
+            public DynamicPatchButtons(IDS[] Ids, int VerticalStartIndex = 0) {
+                Buttons = new vButton[ControlText.Length + 1];
+                ButtonsVerticalStartPos = VerticalStartIndex;
 
-            private static bool MultipleButtonsEnabled;
+                if(Ids != null && Ids.Length < 2)
+                    EnableDynamicPatchButton(Ids[0]);
+                else
+                    EnableDynamicPatchButtons(Ids);
+            }
 
             /// <summary>
             /// Variable Used In Dynamic Button Cration For Game-Specific Patches
@@ -944,7 +911,8 @@ namespace Dobby {
                     "Hint",
                     "Hint"
                 };
-            
+
+            private int ButtonsVerticalStartPos;
 
 
             /// <summary> Buttons For Game-Specific Debug Options Loaded Based On The Game Chosen <br/><br/>
@@ -957,52 +925,13 @@ namespace Dobby {
             /// 6: RightAlignBtn                                                                       <br/>
             /// 7: RightMarginBtn
             /// </summary>
-            public static vButton[] Buttons = new vButton[ControlText.Length + 1]; // Initialized Once An Executable's Selected
+            public vButton[] Buttons; // Initialized Once An Executable's Selected
 
 
             /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\
             ///--     Dynamic Buttons Main Functions    --\\\
             /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\
             #region Dynamic Buttons Main Functions
-
-            public static void ResetCustomOptions() => ResetCustomOptions(null, null);
-            public static void ResetCustomOptions(object _, EventArgs __) {
-                if(Game == 0) return;
-#if DEBUG
-                Dev.DebugOut("Resetting Form And Main Stream");
-#endif
-                index = 0;
-
-                // Reset Form Size
-                if (ActiveForm.Name != "Dobby") //! Lazy Fix 
-                ActiveForm.Size = OriginalFormScale;
-                OriginalFormScale = Size.Empty;
-
-                // Kill MainStream
-                MainStreamIsOpen = false;
-                MainStream?.Dispose();
-
-                // Nuke Dynamic Patch Buttons
-                foreach(Button button in Buttons)
-                    button?.Dispose();
-
-                Buttons = new vButton[ControlText.Length + 1];
-
-                // Move Controls Back To Their Original Positions
-                for(; index < ControlsToMove.Length; index++)
-                    ControlsToMove[index].Location = OriginalControlPositions[index];
-
-                // Nudge Remaining Controls Back To Their Default Positions
-                if(FormActive) {
-                    ActiveForm.Controls.Find("ResetBtn", true)[0]?.Dispose();
-                    ActiveForm.Controls.Find("ConfirmPatchesBtn", true)[0]?.Dispose();
-                    ActiveForm.Controls.Find("CustomDebugOptionsLabel", true)[0].Visible = true;
-                }
-                
-                Game = 0;
-                MultipleButtonsEnabled = false;
-            }
-
 
             /// <summary> Enable A Specific Button
             ///</summary>
@@ -1013,7 +942,14 @@ namespace Dobby {
 
             /// <summary> Enable Specific Buttons
             ///</summary>
-            public void EnableDynamicPatchButtons(IDS[] buttons) { Dev.DebugOut($"Enabling {buttons.Length} Buttons");
+            public void EnableDynamicPatchButtons(IDS[] buttons) {
+                if(buttons == null) {
+                    EnableDynamicPatchButtons();
+                    return;
+                }
+
+
+                Dev.DebugOut($"Enabling {buttons.Length} Buttons");
                 foreach(int id in buttons) {
                     Buttons[id] = new vButton();
                     ActiveForm.Controls.Add(Buttons[id]);
@@ -1031,39 +967,21 @@ namespace Dobby {
                 MultipleButtonsEnabled = true;
             }
 
-            public void AddDynamicButtonsToForm(Form activeForm, int ButtonsVerticalStartPos) { // A Bit Odd, But It Works And There Are So Many Other Things That Need Work More
-                index = 0;
+            /// <summary> Nuke Dynamic Patch Buttons
+            ///</summary>
+            public void Reset() {
+                foreach(Button button in Buttons)
+                    button?.Dispose();
 
-                // Only Needed If Multiple Buttons Are Being Added, As The Form Can Already Fit One More After hiding The Label
-                if(MultipleButtonsEnabled) {
+                Buttons = null;
+            }
 
-                    // Set The Amount of Pixels To Move Shit Based On How Much Shit Has Been Shat.                                                                                                                  shit
-                    foreach(Control control in Buttons)
-                        if(control != null) {
-                            if(index++ != 0) {
-                                // Move Each Control, Then Resize The BorderBox & Form
-                                foreach(Control A in ControlsToMove)
-                                    A.Location = new Point(A.Location.X, A.Location.Y + 23);
+            public Button[] CreateDynamicButtons() {
+            RunCheck:
+                if(ButtonIndex >= gsButtons.Buttons.Length - 1) return Buttons;
 
-                                activeForm.Size = new Size(activeForm.Size.Width, activeForm.Size.Height + 23);
-                            }
-                        }
-                }
-
-
-                activeForm.Size = new Size(activeForm.Size.Width, activeForm.Size.Height + 46);
-
-
-                // Move The Controls Below The Confirm And Reset Buttons A Bit Farther Down To Make Room For Them
-                for(int i = 4; i < ControlsToMove.Length; i++)
-                    ControlsToMove[i].Location = new Point(ControlsToMove[i].Location.X, ControlsToMove[i].Location.Y + 46);
-
-
-                RunCheck:
-                if(ButtonIndex >= Buttons.Length - 1) return;
-                
                 // Skip disabled buttons or return if the end of the collection is reached
-                if(Buttons[ButtonIndex] == null) {
+                if(gsButtons.Buttons[ButtonIndex] == null) {
                     ButtonIndex++;
                     goto RunCheck;
                 }
@@ -1116,7 +1034,7 @@ namespace Dobby {
             #region Event Handlers And Functions For Dynamic Button
             private void DynamicBtn_Click(object sender, EventArgs e) => ToggleFunc((vButton)sender, ((Control)sender).TabIndex);
             private void ToggleFunc(vButton Control, int ButtonIndex) {
-                if(MouseScrolled || MouseIsDown == 0 || CurrentControl != Control.Name) return;
+                if(MouseScrolled || !MouseIsDown || CurrentControl != Control.Name) return;
 
                 GameSpecificPatchValues[ButtonIndex] = !(bool)GameSpecificPatchValues[ButtonIndex];
                 Control.Variable = GameSpecificPatchValues[ButtonIndex];
@@ -1193,11 +1111,11 @@ namespace Dobby {
         private void DefaultButtonClick(vButton cnt, bool scrolled, int PatchIndex) { ToggleBool(cnt, PatchIndex); MouseScrolled = scrolled; }
 
         private void ToggleBool(vButton Control, int OptionIndex) {
-            if(MouseScrolled || MouseIsDown == 0 || CurrentControl != Control.Name)
+            if(MouseScrolled || !MouseIsDown || CurrentControl != Control.Name)
                 return;
 
-            GameSpecificPatchValues[OptionIndex] = !(bool)GameSpecificPatchValues[OptionIndex];
-            Control.Variable = GameSpecificPatchValues[OptionIndex];
+            UniversalDebugBooleans[OptionIndex] = !(bool)UniversalDebugBooleans[OptionIndex];
+            Control.Variable = UniversalDebugBooleans[OptionIndex];
             Control.Refresh();
         }
         #endregion
@@ -1227,17 +1145,18 @@ namespace Dobby {
         //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
         #region Misc Patches Page Main Functions
         private void BrowseButton_Click(object sender, EventArgs e) {
-
             FileDialog OpenedFile = new OpenFileDialog {
                 Filter = "Executable|*.elf;*.bin",
                 Title = "Select Either Of The Game's Executables"
             };
-            if(OpenedFile.ShowDialog() == DialogResult.OK) {
-                DynamicPatchButtons.ResetCustomOptions();
-                ActiveFilePath = ExecutablePathBox.Text = OpenedFile.FileName;
-                LocalExecutableCheck = new byte[160];
 
+            if(OpenedFile.ShowDialog() == DialogResult.OK) {
+                if(OriginalFormScale != Size.Empty)
+                    ResetCustomDebugOptions();
+                
+                ExecutablePathBox.Text = OpenedFile.FileName;
                 MainStream = File.Open(OpenedFile.FileName, FileMode.Open, FileAccess.ReadWrite);
+
 
                 Game = GetGameID(MainStream);
                 GameInfoLabel.Text = GetGameLabelFromID(Game);
@@ -1245,16 +1164,52 @@ namespace Dobby {
                 MainStreamIsOpen = true;
                 CustomDebugOptionsLabel.Visible = IsActiveFilePCExe = false;
 
-                if(OriginalFormScale != Size.Empty)
-                    DynamicPatchButtons.ResetCustomOptions(null, null);
                 LoadGameSpecificMenuOptions();
             }
+        }
+
+
+
+        private static void ResetCustomDebugOptions(object _ = null, EventArgs __ = null) {
+            if(Game == 0) return;
+#if DEBUG
+            Dev.DebugOut("Resetting Form And Main Stream");
+#endif
+            index = 0;
+
+            // Reset Form Size
+            if(ActiveForm.Name != "Dobby") //! Lazy Fix 
+                ActiveForm.Size = OriginalFormScale;
+            OriginalFormScale = Size.Empty;
+
+            // Kill MainStream
+            MainStreamIsOpen = false;
+            MainStream?.Dispose();
+
+            // Nuke Dynamic Patch Buttons
+            gsButtons.Reset();
+
+            // Move Controls Back To Their Original Positions
+            for(; index < ControlsToMove.Length; index++)
+                ControlsToMove[index].Location = OriginalControlPositions[index];
+
+            // Nudge Remaining Controls Back To Their Default Positions
+            if(FormActive) {
+                ActiveForm.Controls.Find("ResetBtn", true)[0]?.Dispose();
+                ActiveForm.Controls.Find("ConfirmPatchesBtn", true)[0]?.Dispose();
+                ActiveForm.Controls.Find("CustomDebugOptionsLabel", true)[0].Visible = true;
+                ActiveForm.Controls.Find("ExecutablePathBox", true)[0].Text = " Select A .elf To Patch";
+            }
+
+            Game = 0;
+            ActiveFilePath = null;
+            MultipleButtonsEnabled = false;
+            GameSpecificPatchValues = DefaultPatchValues;
         }
 
         /// <summary> Resize Form And Move Buttons, Then Add Enabled Custom Buttons To Form Based On The Current Game And Patch
         ///</summary>
         public void LoadGameSpecificMenuOptions() {
-            DynamicPatchButtons gsButtons = new DynamicPatchButtons();
 
             // Assign values to variables made to keep track of the default form size/control postions for the reset button. Doing it on page init is annoying 'cause designer memes
             if(OriginalFormScale == Size.Empty) {
@@ -1262,15 +1217,15 @@ namespace Dobby {
 
                 // Every Control Below The "Game Specific Patches" Label
                 ControlsToMove = new Control[] {
-                    ActiveForm.Controls.Find("SeperatorLine2", true)[0],
-                    ActiveForm.Controls.Find("BrowseButton", true)[0],
-                    ActiveForm.Controls.Find("ExecutablePathBox", true)[0],
-                    ActiveForm.Controls.Find("GameInfoLabel", true)[0],
-                    ActiveForm.Controls.Find("SeperatorLine3", true)[0],
-                    ActiveForm.Controls.Find("InfoHelpBtn", true)[0],
-                    ActiveForm.Controls.Find("CreditsBtn", true)[0],
-                    ActiveForm.Controls.Find("BackBtn", true)[0],
-                    ActiveForm.Controls.Find("Info", true)[0]
+                    Controls.Find("SeperatorLine2", true)[0],
+                    Controls.Find("BrowseButton", true)[0],
+                    Controls.Find("ExecutablePathBox", true)[0],
+                    Controls.Find("GameInfoLabel", true)[0],
+                    Controls.Find("SeperatorLine3", true)[0],
+                    Controls.Find("InfoHelpBtn", true)[0],
+                    Controls.Find("CreditsBtn", true)[0],
+                    Controls.Find("BackBtn", true)[0],
+                    Controls.Find("Info", true)[0]
                 };
                 OriginalFormScale = Size;
                 OriginalControlPositions = new Point[ControlsToMove.Length];
@@ -1285,6 +1240,7 @@ namespace Dobby {
             // In Case Of Repeat Uses
             ButtonIndex = 0;
 
+            IDS[] GameButtonIds = new IDS[1];
             // Enable Buttons Based On Which Patches Are Available For The Current Game
             switch(Game) {
                 case UC1100:
@@ -1293,48 +1249,76 @@ namespace Dobby {
                 case UC2102:
                 case UC3100:
                 case UC3102:
-                    gsButtons.EnableDynamicPatchButton(IDS.VersionTxtBtn);
+                    GameButtonIds[0] = IDS.VersionTxtBtn;
                     break;
 
                 case T1R100:
                 case T1R109:
                 case T1R110:
                 case T1R111:
-                    gsButtons.EnableDynamicPatchButton(IDS.VersionTxtBtn);
+                    GameButtonIds[0] = IDS.VersionTxtBtn;
                     break;
 
                 case T2100:
-                    gsButtons.EnableDynamicPatchButton(IDS.VersionTxtBtn);
+                    GameButtonIds[0] = IDS.VersionTxtBtn;
                     break;
                 case T2101:
-                    gsButtons.EnableDynamicPatchButtons(new IDS[] { IDS.MenuScaleBtn, IDS.MenuShadowedTextBtn });
+                    GameButtonIds = new IDS[] { IDS.MenuScaleBtn, IDS.MenuShadowedTextBtn };
                     break;
                 case T2102:
-                    gsButtons.EnableDynamicPatchButtons(new IDS[] { IDS.MenuScaleBtn, IDS.MenuShadowedTextBtn, IDS.VersionTxtBtn });
+                    GameButtonIds = new IDS[] { IDS.MenuScaleBtn, IDS.MenuShadowedTextBtn, IDS.VersionTxtBtn };
                     break;
                 case T2105:
-                    gsButtons.EnableDynamicPatchButtons(new IDS[] { IDS.MenuScaleBtn, IDS.MenuShadowedTextBtn, IDS.VersionTxtBtn, IDS.RightAlignBtn });
+                    GameButtonIds = new IDS[] { IDS.MenuScaleBtn, IDS.MenuShadowedTextBtn, IDS.VersionTxtBtn, IDS.RightAlignBtn };
                     break;
                 case T2107:
                 case T2108:
                 case T2109:
-                    gsButtons.EnableDynamicPatchButtons();
+                    GameButtonIds = null;
                     break;
             }
 
-            gsButtons.AddDynamicButtonsToForm(
-                this,
-                GameSpecificPatchesLabel.Location.Y + GameSpecificPatchesLabel.Size.Height + 1
-            );
+            gsButtons = new DynamicPatchButtons(GameButtonIds, GameSpecificPatchesLabel.Location.Y + GameSpecificPatchesLabel.Size.Height + 1);
+
+            foreach (var Btn in gsButtons.CreateDynamicButtons())
+
+
+            index = 0;
+
+            // Only Needed If Multiple Buttons Are Being Added, As The Form Can Already Fit One More After hiding The Label
+            if(MultipleButtonsEnabled) {
+
+                // Set The Amount of Pixels To Move Shit Based On How Much Shit Has Been Shat.                                                                                                                  shit
+                foreach(Control control in gsButtons.Buttons)
+                    if(control != null) {
+                        if(index++ != 0) {
+                            // Move Each Control, Then Resize The BorderBox & Form
+                            foreach(Control A in ControlsToMove)
+                                A.Location = new Point(A.Location.X, A.Location.Y + 23);
+
+                            Size = new Size(Size.Width, Size.Height + 23);
+                        }
+                    }
+            }
+
+
+            Size = new Size(Size.Width, Size.Height + 46);
+
+
+            // Move The Controls Below The Confirm And Reset Buttons A Bit Farther Down To Make Room For Them
+            for(int i = 4; i < ControlsToMove.Length; i++)
+                ControlsToMove[i].Location = new Point(ControlsToMove[i].Location.X, ControlsToMove[i].Location.Y + 46);
+
+
 
             // Create Confirm And Reset Buttons Once The Rest Are Created
             RB_StartPos = GameInfoLabel.Location.Y + GameInfoLabel.Size.Height + 1; // Right Below The GameInfoLabel
             Button ConfirmPatchesBtn = new Button();
-            ActiveForm.Controls.Add(ConfirmPatchesBtn);
+            Controls.Add(ConfirmPatchesBtn);
             ConfirmPatchesBtn.TabIndex = ButtonIndex;
             ConfirmPatchesBtn.Name = "ConfirmPatchesBtn";
             ConfirmPatchesBtn.Location = new Point(1, RB_StartPos);
-            ConfirmPatchesBtn.Size = new Size(ActiveForm.Width - 11, 23);
+            ConfirmPatchesBtn.Size = new Size(Width - 11, 23);
             ConfirmPatchesBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
             ConfirmPatchesBtn.Text = "Confirm And Apply Patches";
             ConfirmPatchesBtn.TextAlign = ContentAlignment.MiddleLeft;
@@ -1349,7 +1333,7 @@ namespace Dobby {
             ConfirmPatchesBtn.BringToFront();
 
             Button ResetBtn = new Button();
-            ActiveForm.Controls.Add(ResetBtn);
+            Controls.Add(ResetBtn);
             ResetBtn.BackColor = Color.FromArgb(100, 100, 100);
             ResetBtn.Cursor = Cursors.Cross;
             ResetBtn.FlatAppearance.BorderSize = 0;
@@ -1359,11 +1343,11 @@ namespace Dobby {
             ResetBtn.ImageAlign = ContentAlignment.TopRight;
             ResetBtn.Location = new Point(1, RB_StartPos + 24);
             ResetBtn.Name = "ResetBtn";
-            ResetBtn.Size = new Size(ActiveForm.Width - 11, 23);
+            ResetBtn.Size = new Size(Width - 11, 23);
             ResetBtn.Text = "Reset";
             ResetBtn.TextAlign = ContentAlignment.MiddleLeft;
             ResetBtn.UseVisualStyleBackColor = false;
-            ResetBtn.Click += new EventHandler(DynamicPatchButtons.ResetCustomOptions);
+            ResetBtn.Click += new EventHandler(ResetCustomDebugOptions);
             ResetBtn.MouseEnter += ControlHover;
             ResetBtn.MouseLeave += ControlLeave;
             ResetBtn.BringToFront();
