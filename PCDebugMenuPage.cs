@@ -13,17 +13,8 @@ namespace Dobby {
     internal class PCDebugMenuPage : Form {
         public PCDebugMenuPage() {
             InitializeComponent();
-            
             AddControlEventHandlers(Controls);
         }
-
-        private FileStream MainStream;
-        private Thread DebugScanThread = new Thread(new ThreadStart(ScanForDebugAddr));
-
-        private int
-            GuessedDebug,
-            Game
-        ;
 
         /////////////////\\\\\\\\\\\\\\\\\\
         ///--     Repeat Buttons      --\\\
@@ -289,44 +280,59 @@ namespace Dobby {
         private void BackBtn_Click(object sender, EventArgs e) => ReturnToPreviousPage();
         #endregion
 
+
+        //////////////////////\\\\\\\\\\\\\\\\\\\\\
+        ///--     Page-Specific Variables     --\\\
+        //////////////////////\\\\\\\\\\\\\\\\\\\\\
+#region Page-Specific Variables
+
+        public static FileStream MainStream { get; private set; }
+        private Thread DebugScanThread;
+        public static bool IsActiveFilePCExe, MainStreamIsOpen;
+
+        private static string ActiveFilePath;
+
+        private int
+            GuessedDebug,
+            Game
+        ;
+
+        /// <summary> Byte Array Used To Find The Address To Enable The Debug Mode In T1X PC </summary>
+        private readonly byte[]
+            DebugDat = new byte[] { 0x8a, 0x8f, 0xf2, 0x3e, 0x00, 0x00, 0x84, 0xc9, 0x0f, 0x94, 0xc2, 0x84, 0xc9, 0x0f, 0x95, 0xc1, 0x88, 0x8f, 0x3d, 0x3f, 0x00, 0x00, 0x88, 0x97, 0x2f, 0x3f, 0x00, 0x00 }
+        ;
+
+        private byte[] LocalExecutableCheck;
+
+#endregion
+
         //////////////////////\\\\\\\\\\\\\\\\\\\\\
         ///--     Page-Specific Functions     --\\\
         //////////////////////\\\\\\\\\\\\\\\\\\\\\
-        #region Page-Specific Functions
+#region Page-Specific Functions
 
         private void BrowseButton_Click(object sender, EventArgs e) {
-            FileDialog fileDialog = new OpenFileDialog {
-                Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
-                Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned / Decrypted (The First 4 Bytes Will Be .elf If It Is)"
-            };
-
-            if(fileDialog.ShowDialog() == DialogResult.OK) {
-                BrowseButtonOverride ^= true;
-                ExecutablePathBox.Text = fileDialog.FileName;
-
-                LoadFileToBePatched(fileDialog.FileName);
-                fileDialog.Dispose();
-            }
-            if(e == null) {
-                GameInfoLabel.Text = "Select An Executable To Patch First.";
-                Refresh();
-            }
-            FileDialog f = new OpenFileDialog {
+            FileDialog FileDialog = new OpenFileDialog {
                 Filter = "Executable|*.exe",
                 Title = "Select Either Of The Game's Executables"
             };
-            if(f.ShowDialog() == DialogResult.OK) {
-                ActiveFilePath = ExecutablePathBox.Text = f.FileName;
-                MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite);
+
+            if(FileDialog.ShowDialog() == DialogResult.OK) {
+                BrowseButtonOverride ^= true;
+                LocalExecutableCheck = new byte[8];
+                ActiveFilePath = ExecutablePathBox.Text = FileDialog.FileName;
+                FileDialog.Dispose();
+
+                MainStream = new FileStream(FileDialog.FileName, FileMode.Open, FileAccess.ReadWrite);
+
+                MainStreamIsOpen = true;
 
                 MainStream.Position = 0x1EC; MainStream.Read(LocalExecutableCheck, 0, 4);
                 Game = BitConverter.ToInt32(LocalExecutableCheck, 0);
                 MainStream.Position = 0x1F8; MainStream.Read(LocalExecutableCheck, 0, 4);
                 Game += BitConverter.ToInt32(LocalExecutableCheck, 0);
 
-                GameInfoLabel.Text = UpdateGameInfoLabel();
-                IsActiveFilePCExe = true;
-                MainStreamIsOpen = true;
+                Common.ActiveGameID = GameInfoLabel.Text = UpdateGameInfoLabel();
             }
         }
 
@@ -338,39 +344,57 @@ namespace Dobby {
                 return;
             }
 
-            var TextBoxData = (((Control)sender).Text.Replace("\"", ""));
+            var TextBoxData = ((Control)sender).Text.Replace("\"", "");
+            if(!File.Exists(TextBoxData))
+                return;
 
-
-            ActiveFilePath = ExecutablePathBox.Text = f.FileName;
-            MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite);
-
+            ActiveFilePath = TextBoxData;
+            MainStream = new FileStream(ActiveFilePath, FileMode.Open, FileAccess.ReadWrite);
+            MainStreamIsOpen = true;
+            
+            var LocalExecutableCheck = new byte[8];
             MainStream.Position = 0x1EC; MainStream.Read(LocalExecutableCheck, 0, 4);
             Game = BitConverter.ToInt32(LocalExecutableCheck, 0);
             MainStream.Position = 0x1F8; MainStream.Read(LocalExecutableCheck, 0, 4);
             Game += BitConverter.ToInt32(LocalExecutableCheck, 0);
 
             GameInfoLabel.Text = UpdateGameInfoLabel();
-            IsActiveFilePCExe = true;
-            MainStreamIsOpen = true;
-
-            if(File.Exists(TextBoxData))
-                LoadFileToBePatched(TextBoxData);
         }
+
+        /// <summary> Compare Data Read At The Given Address
+        /// </summary>
+        /// <returns> True If The Data Read Matches The Array Given </returns>
+        public bool ArrayCmp(int Address, byte[] DataToCompare) {
+            var DataPresent = new byte[DataToCompare.Length];
+
+            MainStream.Position = Address;
+            MainStream.Read(DataPresent, 0, DataToCompare.Length);
+
+            return DataPresent.SequenceEqual(DataToCompare);
+        }
+        public void WriteByte(int offset, byte data) {
+            MainStream.Position = offset;
+            MainStream.WriteByte(data);
+
+            for(var i=0;i!=12;i++)
+            MainStream.Flush();
+        }
+
         private void ScanForDebugAddr() { 
             int TmpAddr = 0;
-            var LocalExecutableCheck = new byte[28];
+            LocalExecutableCheck = new byte[28];
             string StartTime = DateTime.Now.ToString();
-Read:       MainStream.Position = TmpAddr;
+
+Read:       MainStream.Position = TmpAddr++;
             MainStream.Read(LocalExecutableCheck, 0, 28);
-            TmpAddr++;
-            if (LocalExecutableCheck.SequenceEqual(Array.Empty<byte>())) { //! Add Debug Data
-                GuessedDebug = (int)MainStream.Position - 5;
-                MainStream.Position = GuessedDebug;
-                MainStream.WriteByte(0x8F);
-                if (Dev.REL)
-                    MessageBox.Show($"0x8F Written At {GuessedDebug:X}\nStart Time: {StartTime} -> End Time: {DateTime.Now}");
-            }
-            else goto Read;
+            if (LocalExecutableCheck.SequenceEqual(DebugDat))
+                goto Read;
+
+            GuessedDebug = (int)MainStream.Position - 5;
+            MainStream.Position = GuessedDebug;
+            MainStream.WriteByte(0x8F);
+            
+            MessageBox.Show($"0x8F Written At {GuessedDebug:X}\nStart Time: {StartTime} -> End Time: {DateTime.Now}", "That Should Work");
         }
 
         public string UpdateGameInfoLabel() { //!
@@ -378,9 +402,14 @@ Read:       MainStream.Position = TmpAddr;
 
             switch (Game) {
                 default:
-                    MessageBoxButtons MBB = MessageBoxButtons.YesNo;
-                    if (MessageBox.Show("Couldn't Determine The Version You Selected, So The Debug Offset Can't Be Guessed.\nScan Exe For Dev Menu Offset Instead?\n\n(If nothing's found after ~5 minutes, it probably never will.)", "This Might Take A Couple Minutes", MBB) == DialogResult.Yes)
-                        DebugScanThread.Start();
+
+                    var MBB = MessageBoxButtons.YesNo;
+                    if(MessageBox.Show("Couldn't Determine The Version You Selected, So The Debug Offset Can't Be Guessed.\nScan Exe For Dev Menu Offset Instead?\n\n(If nothing's found after ~5 minutes, it probably never will.)", "This Might Take A Couple Minutes", MBB)
+                        == DialogResult.No)
+                        break;
+                        
+                    DebugScanThread = new Thread(new ThreadStart(ScanForDebugAddr));
+                    DebugScanThread.Start();
 
                     break;
                 case T1X101:
@@ -494,7 +523,7 @@ Read:       MainStream.Position = TmpAddr;
                 }
                 LabelShouldFlash = true;
                 SetInfoLabelText("Please Select A Game's Executable First");
-                Common.InfoHasImportantStr = true;
+                InfoHasImportantStr = true;
                 return;
             }
 
@@ -534,12 +563,13 @@ Read:       MainStream.Position = TmpAddr;
             }
             WriteByte(DebugAddr, 0x8F);
         }
-        #endregion
+#endregion
+
 
         ////////////////////\\\\\\\\\\\\\\\\\\\\
         ///--     Control Declarations     --\\\
         ////////////////////\\\\\\\\\\\\\\\\\\\\
-        #region ControlDeclarations
+#region ControlDeclarations
         public Label MainLabel;
         public Button CreditsBtn;
         public Button InfoHelpBtn;
@@ -555,6 +585,6 @@ Read:       MainStream.Position = TmpAddr;
         public Button BackBtn;
         public Button DisableDebugBtn;
         public Button BaseDebugBtn;
-        #endregion
+#endregion
     }
 }

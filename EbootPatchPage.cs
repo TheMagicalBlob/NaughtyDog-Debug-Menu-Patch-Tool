@@ -1,16 +1,9 @@
 ﻿using System;
 using System.IO;
-using System.Net;
-using System.Text;
-using System.Linq;
 using System.Drawing;
 using Dobby.Properties;
-using System.Threading;
 using static Dobby.Common;
 using System.Windows.Forms;
-using System.Threading.Tasks;
-using System.Security.Cryptography;
-using System.ComponentModel;
 
 namespace Dobby {
     public class EbootPatchPage : Form {
@@ -306,20 +299,19 @@ namespace Dobby {
         /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
         #region EbootPatchPage Variables & Functions
 
-        private static bool IsActiveFilePCExe, MainStreamIsOpen, MouseScrolled;
-        private byte[] E9Jump = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 };
+        public static bool IsActiveFilePCExe, MainStreamIsOpen;
+        private readonly byte[] E9Jump = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 };
 
         private static int
-            MenuScale,
-            MenuOpacity = 2,
             Game,
             DebugAddressForSelectedGame
         ;
         
-        private static FileStream MainStream;
+        public static FileStream MainStream { get; private set; }
         
+
         private static string ActiveFilePath, ActiveGameID = "?";
-        private static string[] ResultStrings = new string[] {
+        private static readonly string[] ResultStrings = new string[] {
             "Debug Menus Disabled",
             "Debug Menus Enabled",
             "Restored Menu Applied",
@@ -351,28 +343,11 @@ namespace Dobby {
             MainStream.Flush();
             MainStream.Flush();
         }
-        public static void WriteByte(int offset, object data) {
-            TypeConverter conv = new TypeConverter();
-
-            byte[] bytes = (byte[])conv.ConvertTo(data, typeof(byte[]));
-            MainStream.Position = offset;
-            MainStream.Write(bytes, 0, bytes.Length);
-            MainStream.Flush();
-        }
         public static void WriteByte(int[] offset, byte data) {
             foreach(int ofs in offset) {
                 MainStream.Position = ofs;
                 MainStream.WriteByte(data);
             }
-        }
-        /// <summary> Compare Data Read At The Given Address
-        /// </summary>
-        /// <returns> True If The Data Read Matches The Array Given </returns>
-        public static bool ArrayCmp(int Address, byte[] DataToCompare) {
-            MainStream.Position = Address;
-            byte[] DataPresent = new byte[DataToCompare.Length];
-            MainStream.Read(DataPresent, 0, DataToCompare.Length);
-            return DataPresent.SequenceEqual<byte>(DataToCompare);
         }
         #endregion
 

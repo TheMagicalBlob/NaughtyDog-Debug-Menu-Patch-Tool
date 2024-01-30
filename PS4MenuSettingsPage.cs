@@ -1,10 +1,7 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Text;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
 using static Dobby.Common;
 
@@ -28,12 +25,12 @@ namespace Dobby {
         }
 
         private void InitializeComponent() {
-            this.ProgPauseOnCloseBtn = new vButton();
-            this.ProgPauseOnOpenBtn = new vButton();
-            this.DisableDebugTextBtn = new vButton();
-            this.DisablePausedIconBtn = new vButton();
-            this.MenuScaleBtn = new vButton();
-            this.MenuAlphaBtn = new vButton();
+            this.ProgPauseOnCloseBtn = new Common.vButton();
+            this.ProgPauseOnOpenBtn = new Common.vButton();
+            this.DisableDebugTextBtn = new Common.vButton();
+            this.DisablePausedIconBtn = new Common.vButton();
+            this.MenuScaleBtn = new Common.vButton();
+            this.MenuAlphaBtn = new Common.vButton();
             this.MainLabel = new System.Windows.Forms.Label();
             this.ExitBtn = new System.Windows.Forms.Button();
             this.MinimizeBtn = new System.Windows.Forms.Button();
@@ -140,7 +137,7 @@ namespace Dobby {
             // MainLabel
             // 
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MainLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 12.25F, System.Drawing.FontStyle.Bold);
+            this.MainLabel.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold);
             this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
             this.MainLabel.Location = new System.Drawing.Point(2, 3);
             this.MainLabel.Name = "MainLabel";
@@ -196,12 +193,12 @@ namespace Dobby {
             this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.CreditsBtn.FlatAppearance.BorderSize = 0;
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.CreditsBtn.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.CreditsBtn.Location = new System.Drawing.Point(1, 296);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.CreditsBtn.Size = new System.Drawing.Size(75, 22);
+            this.CreditsBtn.Size = new System.Drawing.Size(85, 22);
             this.CreditsBtn.TabIndex = 28;
             this.CreditsBtn.Text = "Credits...";
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -214,12 +211,12 @@ namespace Dobby {
             this.InfoHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.InfoHelpBtn.FlatAppearance.BorderSize = 0;
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.InfoHelpBtn.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.InfoHelpBtn.Location = new System.Drawing.Point(1, 274);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.InfoHelpBtn.Size = new System.Drawing.Size(147, 22);
+            this.InfoHelpBtn.Size = new System.Drawing.Size(162, 22);
             this.InfoHelpBtn.TabIndex = 29;
             this.InfoHelpBtn.Text = "Information / Help...";
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -242,12 +239,12 @@ namespace Dobby {
             this.BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.BackBtn.FlatAppearance.BorderSize = 0;
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.BackBtn.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.BackBtn.Location = new System.Drawing.Point(1, 318);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.BackBtn.Size = new System.Drawing.Size(75, 22);
+            this.BackBtn.Size = new System.Drawing.Size(65, 22);
             this.BackBtn.TabIndex = 41;
             this.BackBtn.Text = "Back...";
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -257,7 +254,7 @@ namespace Dobby {
             // CustomDebugOptionsLabel
             // 
             this.CustomDebugOptionsLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.CustomDebugOptionsLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CustomDebugOptionsLabel.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
             this.CustomDebugOptionsLabel.ForeColor = System.Drawing.SystemColors.Control;
             this.CustomDebugOptionsLabel.Location = new System.Drawing.Point(3, 179);
             this.CustomDebugOptionsLabel.Name = "CustomDebugOptionsLabel";
@@ -268,22 +265,22 @@ namespace Dobby {
             // UniversalPatchesLabel
             // 
             this.UniversalPatchesLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.UniversalPatchesLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F, System.Drawing.FontStyle.Bold);
+            this.UniversalPatchesLabel.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Bold);
             this.UniversalPatchesLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.UniversalPatchesLabel.Location = new System.Drawing.Point(105, 32);
+            this.UniversalPatchesLabel.Location = new System.Drawing.Point(102, 31);
             this.UniversalPatchesLabel.Name = "UniversalPatchesLabel";
-            this.UniversalPatchesLabel.Size = new System.Drawing.Size(102, 19);
+            this.UniversalPatchesLabel.Size = new System.Drawing.Size(111, 14);
             this.UniversalPatchesLabel.TabIndex = 53;
             this.UniversalPatchesLabel.Text = "Universal Patches";
             // 
             // GameSpecificPatchesLabel
             // 
             this.GameSpecificPatchesLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.GameSpecificPatchesLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F, System.Drawing.FontStyle.Bold);
+            this.GameSpecificPatchesLabel.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Bold);
             this.GameSpecificPatchesLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.GameSpecificPatchesLabel.Location = new System.Drawing.Point(96, 155);
+            this.GameSpecificPatchesLabel.Location = new System.Drawing.Point(88, 152);
             this.GameSpecificPatchesLabel.Name = "GameSpecificPatchesLabel";
-            this.GameSpecificPatchesLabel.Size = new System.Drawing.Size(127, 19);
+            this.GameSpecificPatchesLabel.Size = new System.Drawing.Size(136, 15);
             this.GameSpecificPatchesLabel.TabIndex = 52;
             this.GameSpecificPatchesLabel.Text = "Game-Specific Patches";
             // 
@@ -317,7 +314,7 @@ namespace Dobby {
             // ExecutablePathBox
             // 
             this.ExecutablePathBox.BackColor = System.Drawing.Color.Gray;
-            this.ExecutablePathBox.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.ExecutablePathBox.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
             this.ExecutablePathBox.ForeColor = System.Drawing.SystemColors.Window;
             this.ExecutablePathBox.Location = new System.Drawing.Point(3, 218);
             this.ExecutablePathBox.Name = "ExecutablePathBox";
@@ -347,7 +344,7 @@ namespace Dobby {
             // 
             // GameInfoLabel
             // 
-            this.GameInfoLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.5F);
+            this.GameInfoLabel.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
             this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
             this.GameInfoLabel.Location = new System.Drawing.Point(2, 244);
             this.GameInfoLabel.Name = "GameInfoLabel";
@@ -429,11 +426,11 @@ namespace Dobby {
 
         private static FileStream MainStream;
 
-        public static string ActiveFilePath, ActiveGameID = "?";
+        private static string ActiveFilePath, ActiveGameID = "?";
 
-        public static bool IsActiveFilePCExe, MainStreamIsOpen, MouseScrolled;
+        private static bool IsActiveFilePCExe, MainStreamIsOpen;
 
-        public static int DebugAddressForSelectedGame;
+        private static int DebugAddressForSelectedGame;
 
         public static void WriteBytes(int offset, byte[] data) {
             MainStream.Position = offset;

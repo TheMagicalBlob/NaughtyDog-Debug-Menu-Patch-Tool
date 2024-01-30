@@ -1,18 +1,14 @@
-﻿using Dobby.Properties;
-using libdebug;
+﻿using libdebug;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Security.Cryptography;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using static Dobby.Dev;
-using static System.Console;
 
 namespace Dobby {
     public class Common : Dobby {
@@ -208,7 +204,7 @@ namespace Dobby {
           "* 3.38.161.447 | Removed Unused Page Function, Other Work",
           "* 3.39.165.451 | Reworked Several Functions, Moved Dev Class In TO Seperate File. Other Blah Blah Blah",
           "* 3.40.166.455 | Deleted Page, Moved More Crap",
-          "* 3.40.166.456 | Deleted Resource"
+          "* 3.40.172.470 | Large Code Cleaup, Deleted Resource, Reworked And Cleaned Up PCDebugMenuPatchPage, Added PaintBorder() Function Call Inside Of EventHandler Func And Removed All Instances That Came Before Said Function Originally, Many Minor Tweaks/Changes"
 
             // TODO:
             // * MAJOR
@@ -285,6 +281,8 @@ namespace Dobby {
             "OutputDirectoryBtn",
             "TmpDirectoryBtn"
         };
+
+        public static string ActiveGameID = "UNK";
 
         public static int index;
         public static PageID Page;

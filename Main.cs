@@ -105,7 +105,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(7, 282);
+            this.Info.Location = new System.Drawing.Point(7, 286);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
@@ -235,7 +235,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 240);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 233);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
@@ -253,7 +253,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 216);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 210);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.InfoHelpBtn.Size = new System.Drawing.Size(147, 23);
@@ -294,7 +294,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.DownloadSourceBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DownloadSourceBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
             this.DownloadSourceBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.DownloadSourceBtn.Location = new System.Drawing.Point(1, 264);
+            this.DownloadSourceBtn.Location = new System.Drawing.Point(1, 257);
             this.DownloadSourceBtn.Name = "DownloadSourceBtn";
             this.DownloadSourceBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.DownloadSourceBtn.Size = new System.Drawing.Size(292, 23);
@@ -309,7 +309,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ClientSize = new System.Drawing.Size(320, 303);
+            this.ClientSize = new System.Drawing.Size(320, 309);
             this.Controls.Add(this.DownloadSourceBtn);
             this.Controls.Add(this.PCLabel);
             this.Controls.Add(this.Playstation4Label);

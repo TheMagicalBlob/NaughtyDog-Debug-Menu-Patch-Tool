@@ -34,16 +34,10 @@ namespace Dobby {
 
         public static bool OverrideDebugOut;
 
-        static int TimerTicks = 0, OutputStringIndex = 0;
+        private static int OutputStringIndex = 0;
 
-        public static string PS4DebugDev = "";
+        private static float TimerTicks = 0;
 
-
-
-        public static Thread InputThread = new Thread(new ThreadStart(ReadInput));
-        public static void StartInputReadThread() => InputThread.Start();
-        static void ReadInput() {
-        }
 
         public static string[] OutputStrings;
         public static int ShiftIndex = 0;
@@ -83,7 +77,7 @@ namespace Dobby {
 
                 AddControlEventHandlers(Controls);
                 logThread.Start();
-                this.Location = Point.Empty;
+                Location = Point.Empty;
             }
 
             private static Form AppRef;
@@ -91,11 +85,11 @@ namespace Dobby {
             private static Size formScale;
 
             #region timer crap
-            private static int Interval = 0;
+            private static float Delay = 0;
             private static bool TimerThreadStarted = false;
-            private static System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-            private static Thread TimerThread = new Thread(StartTimer);
-            private static void Timer_Tick(object sender, EventArgs e) => TimerTicks++;
+            private static readonly System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+            private static readonly Thread TimerThread = new Thread(StartTimer);
+            private static void Timer_Tick(object sender, EventArgs e) => TimerTicks+= 0.0001f;
             private static void StartTimer() {
                 if(!timer.Enabled) {
                     timer.Interval = 1;
@@ -113,12 +107,12 @@ namespace Dobby {
             }
             #region Movement
             private void MouseDownFunc(object sender, MouseEventArgs e) {
-                MouseIsDown = 1; LastPos = ActiveForm.Location;
+                MouseIsDown = true; LastPos = ActiveForm.Location;
                 MouseDif = new Point(MousePosition.X - ActiveForm.Location.X, MousePosition.Y - ActiveForm.Location.Y);
             }
-            private void MouseUpFunc(object sender, MouseEventArgs e) { MouseScrolled = false; MouseIsDown = 0; }
+            private void MouseUpFunc(object sender, MouseEventArgs e) { MouseScrolled = false; MouseIsDown = false; }
             private void MoveForm(object sender, MouseEventArgs e) {
-                if(MouseIsDown == 0)
+                if(!MouseIsDown)
                     return;
 
                 ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
@@ -149,7 +143,8 @@ namespace Dobby {
 
                 while(true) {
                     try {
-                        int StartTime = TimerTicks;
+                        float StartTime = TimerTicks;
+
                         string ControlType = HoveredControl?.GetType().ToString();
                         Out = string.Empty;
 
@@ -172,14 +167,12 @@ namespace Dobby {
 
                         else
                         Output = new string[] {
-                            $"Build: {Build} | ~{Interval}ms ",
+                            $"Build: {Build}                   [Delay: ~{Delay}ms]",
                             " ",
-                            $"Form: {(ActiveForm != null ? $"{ActiveForm?.Name} | Form Position: {ActiveForm?.Location}" : "Console")}",
-                            $"Parents: {Pages?[0]}, {Pages?[1]}, {Pages?[2]}, {Pages?[3]}",
-                            Pages[0] == null ? " " : $"Child Name: {Page}",
+                            $"Parent Form: {(ActiveForm != null ? $"{ActiveForm?.Name} | # Of Children: {ActiveForm?.Controls?.Count}" : "Console")}",
                             " ",
                             $"TitleID: {(TitleID == "?" ? "UNK" : TitleID)} | Game Version: {GameVersion}",
-                            $"GameID: {(ActiveGameID == "?" ? "UNK" : ActiveGameID)}",
+                            $"GameID: {ActiveGameID}",
                             $"ProcessName: {ProcessName} | PDbg Connected: {PS4DebugIsConnected}",
                             " ",
                             $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}",
@@ -187,9 +180,12 @@ namespace Dobby {
                             $"{(HoveredControl?.GetType() == typeof(vButton) ? ((vButton)HoveredControl)?.Variable : " ")}",
                             $" Size: {HoveredControl?.Size} | Pos: {HoveredControl?.Location}",
                             $" Parent [{HoveredControl?.Parent?.Name}]",
-                            " ",
-                            $"MainStream: {(MainStreamIsOpen ? MainStream.Name : "null")}",
-                            $"{(MainStreamIsOpen ? $"Length: {(MainStream.Length.ToString().Length > 6 ? $"{MainStream.Length.ToString().Remove(2)}MB" : $"{MainStream.Length} bytes")} | Read: {MainStream.CanRead} | Write: {MainStream.CanWrite}" : null)}",
+                            (PCDebugMenuPage.MainStreamIsOpen || EbootPatchPage.MainStreamIsOpen ? " " : null),
+                            $"{(EbootPatchPage.MainStreamIsOpen ? $"PS4Stream: {EbootPatchPage.MainStream.Name}" : (PCDebugMenuPage.MainStreamIsOpen ? " " : null))}",
+                            $"{(EbootPatchPage.MainStreamIsOpen ? $"Length: {(EbootPatchPage.MainStream.Length.ToString().Length > 6 ? $"{EbootPatchPage.MainStream.Length.ToString().Remove(2)}MB" : $"{EbootPatchPage.MainStream.Length} bytes")} | Read: {EbootPatchPage.MainStream.CanRead} | Write: {EbootPatchPage.MainStream.CanWrite}" : (PCDebugMenuPage.MainStreamIsOpen ? " " : null))}",
+                            (PCDebugMenuPage.MainStreamIsOpen ? " " : null),
+                            $"{(PCDebugMenuPage.MainStreamIsOpen ? $"PCStream: {PCDebugMenuPage.MainStream.Name}" : null)}",
+                            $"{(PCDebugMenuPage.MainStreamIsOpen ? $"Length: {(PCDebugMenuPage.MainStream.Length.ToString().Length > 6 ? $"{PCDebugMenuPage.MainStream.Length.ToString().Remove(2)}MB" : $"{PCDebugMenuPage.MainStream.Length} bytes")} | Read: {PCDebugMenuPage.MainStream.CanRead} | Write: {PCDebugMenuPage.MainStream.CanWrite}" : null)}",
                         };
 
                         if(!chk.SequenceEqual(Output)) {
@@ -207,6 +203,7 @@ namespace Dobby {
 
                                 Out = string.Join("\n", Output);
                             }
+                            formScale.Height += 12;
 
                             try {
                                 AppRef.Invoke(resize);
@@ -223,10 +220,10 @@ namespace Dobby {
 
                             rend.Clear(Color.FromArgb(100, 100, 100));
                             rend.DrawLines(pen, Border);
-                            rend.DrawString(Out, MainFont, Brushes.White, new Point(2, 2));
+                            rend.DrawString(Out, MainFont, Brushes.White, new Point(6, 6));
                         }
 
-                        Interval = TimerTicks - StartTime;
+                        Delay = TimerTicks - StartTime;
 
                     }
                     catch(System.ObjectDisposedException) { }
@@ -267,13 +264,7 @@ namespace Dobby {
         }
 #if DEBUG
 
-        public static void DebugMemoryWrite(ulong address) {
-            if(PS4DebugIsConnected || DebugConnect() == 0)
-                PS4DebugPage.Toggle((ulong)address);
-            PS4DebugDev = "";
-        }
         public static void DebugFunctionCall() {
-            return;
             DebugConnect();
             DebugOut(geo.Call(Executable, geo.InstallRPC(Executable), 0x52e060, new object[] { 0x105f83d240, 4 })); // 0x105f83d240
         }
