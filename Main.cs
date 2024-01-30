@@ -23,7 +23,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             }
 #endif
             InitializeComponent();
-            Paint += PaintBorder;
+            
             YellowInformationLabel = Info;
             Info.Text = "";
             Page = 0;

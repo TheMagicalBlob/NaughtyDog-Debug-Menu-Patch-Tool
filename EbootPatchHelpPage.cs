@@ -9,7 +9,7 @@ namespace Dobby {
     public class EbootPatchHelpPage : Form {
         public EbootPatchHelpPage() {
             InitializeComponent();
-            Paint += PaintBorder;
+            
             AddControlEventHandlers(Controls);
 
             Question0Btn.Text = "- How Do I Get My Game's eboot.bin?";

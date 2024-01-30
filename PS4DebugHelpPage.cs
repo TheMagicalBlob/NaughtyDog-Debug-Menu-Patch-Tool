@@ -11,7 +11,7 @@ namespace Dobby {
     public class PS4DebugHelpPage : Form {
         public PS4DebugHelpPage() {
             InitializeComponent();
-            Paint += PaintBorder;
+            
             AddControlEventHandlers(Controls);
         }
         public void InitializeComponent() {

@@ -16,7 +16,7 @@ namespace Dobby {
     public class InfoHelpPage : Form {
         public InfoHelpPage() {
             InitializeComponent();
-            Paint += PaintBorder;
+            
             AddControlEventHandlers(Controls);
             BuildLabel.Text += Build;
         }

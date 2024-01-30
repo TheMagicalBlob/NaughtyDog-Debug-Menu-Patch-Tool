@@ -13,18 +13,22 @@ namespace Dobby {
     internal class PCDebugMenuPage : Form {
         public PCDebugMenuPage() {
             InitializeComponent();
-            Paint += PaintBorder;
-            AddControlEventHandlers(Controls);
             
-
-            if (ActiveFilePath != null && IsActiveFilePCExe)
-                ExecutablePathBox.Text = ActiveFilePath;
+            AddControlEventHandlers(Controls);
         }
 
+        private FileStream MainStream;
+        private Thread DebugScanThread = new Thread(new ThreadStart(ScanForDebugAddr));
 
-        public static int GuessedDebug, Game;
-        public static Thread DebugScanThread = new Thread(new ThreadStart(ScanForDebugAddr));
+        private int
+            GuessedDebug,
+            Game
+        ;
 
+        /////////////////\\\\\\\\\\\\\\\\\\
+        ///--     Repeat Buttons      --\\\
+        /////////////////\\\\\\\\\\\\\\\\\\\
+        #region RepeatedButtonFunctions
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
             this.ExitBtn = new System.Windows.Forms.Button();
@@ -53,13 +57,10 @@ namespace Dobby {
             this.MainLabel.Size = new System.Drawing.Size(314, 22);
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "PC Debug Menu Page";
-            this.MainLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MainLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.MainLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             // 
             // ExitBtn
             // 
-            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -72,13 +73,10 @@ namespace Dobby {
             this.ExitBtn.Text = "X";
             this.ExitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ExitBtn.UseVisualStyleBackColor = false;
-            this.ExitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
-            this.ExitBtn.MouseEnter += new System.EventHandler(this.ExitBtnMH);
-            this.ExitBtn.MouseLeave += new System.EventHandler(this.ExitBtnML);
             // 
             // MinimizeBtn
             // 
-            this.MinimizeBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.MinimizeBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -91,9 +89,6 @@ namespace Dobby {
             this.MinimizeBtn.Text = "--";
             this.MinimizeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.MinimizeBtn.UseVisualStyleBackColor = false;
-            this.MinimizeBtn.Click += new System.EventHandler(this.MinimizeBtn_Click);
-            this.MinimizeBtn.MouseEnter += new System.EventHandler(this.MinimizeBtnMH);
-            this.MinimizeBtn.MouseLeave += new System.EventHandler(this.MinimizeBtnML);
             // 
             // Info
             // 
@@ -104,13 +99,10 @@ namespace Dobby {
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
             this.Info.Text = "=====================================";
-            this.Info.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.Info.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.Info.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             // 
             // CreditsBtn
             // 
-            this.CreditsBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.CreditsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.CreditsBtn.FlatAppearance.BorderSize = 0;
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -128,7 +120,7 @@ namespace Dobby {
             // 
             // InfoHelpBtn
             // 
-            this.InfoHelpBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.InfoHelpBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.InfoHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.InfoHelpBtn.FlatAppearance.BorderSize = 0;
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -177,7 +169,7 @@ namespace Dobby {
             // 
             // BackBtn
             // 
-            this.BackBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.BackBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.BackBtn.FlatAppearance.BorderSize = 0;
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -195,7 +187,7 @@ namespace Dobby {
             // 
             // BrowseButton
             // 
-            this.BrowseButton.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.BrowseButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.BrowseButton.Cursor = System.Windows.Forms.Cursors.Cross;
             this.BrowseButton.FlatAppearance.BorderSize = 0;
             this.BrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -233,7 +225,7 @@ namespace Dobby {
             // 
             // BaseDebugBtn
             // 
-            this.BaseDebugBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.BaseDebugBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.BaseDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.BaseDebugBtn.FlatAppearance.BorderSize = 0;
             this.BaseDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -250,7 +242,7 @@ namespace Dobby {
             // 
             // DisableDebugBtn
             // 
-            this.DisableDebugBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.DisableDebugBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.DisableDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.DisableDebugBtn.FlatAppearance.BorderSize = 0;
             this.DisableDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -269,7 +261,7 @@ namespace Dobby {
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ClientSize = new System.Drawing.Size(320, 261);
             this.Controls.Add(this.GameInfoLabel);
             this.Controls.Add(this.SeperatorLine2);
@@ -288,41 +280,33 @@ namespace Dobby {
             this.Controls.Add(this.CreditsBtn);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PCDebugMenuPage";
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
-
-
-        #region RepeatedButtonFunctions
-        /////////////////\\\\\\\\\\\\\\\\\\
-        ///--     Repeat Buttons      --\\\
-        /////////////////\\\\\\\\\\\\\\\\\\\
-        public void MoveForm(object sender, MouseEventArgs e) => Common.MoveForm(sender, e);
-        public void MouseUpFunc(object sender, MouseEventArgs e) => Common.MouseUpFunc(sender, e);
-        public void MouseDownFunc(object sender, MouseEventArgs e) => Common.MouseDownFunc(sender, e);
-
-        public void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
-        public void ExitBtnMH(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 227, 0);
-        public void ExitBtnML(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 255, 255);
-
-        public void MinimizeBtn_Click(object sender, EventArgs e) => ActiveForm.WindowState = FormWindowState.Minimized;
-        public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
-        public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
-
         private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);
         private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
         private void BackBtn_Click(object sender, EventArgs e) => ReturnToPreviousPage();
         #endregion
 
-        #region Page-Specific Functions
         //////////////////////\\\\\\\\\\\\\\\\\\\\\
         ///--     Page-Specific Functions     --\\\
         //////////////////////\\\\\\\\\\\\\\\\\\\\\
+        #region Page-Specific Functions
+
         private void BrowseButton_Click(object sender, EventArgs e) {
+            FileDialog fileDialog = new OpenFileDialog {
+                Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
+                Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned / Decrypted (The First 4 Bytes Will Be .elf If It Is)"
+            };
+
+            if(fileDialog.ShowDialog() == DialogResult.OK) {
+                BrowseButtonOverride ^= true;
+                ExecutablePathBox.Text = fileDialog.FileName;
+
+                LoadFileToBePatched(fileDialog.FileName);
+                fileDialog.Dispose();
+            }
             if(e == null) {
                 GameInfoLabel.Text = "Select An Executable To Patch First.";
                 Refresh();
@@ -343,23 +327,48 @@ namespace Dobby {
                 GameInfoLabel.Text = UpdateGameInfoLabel();
                 IsActiveFilePCExe = true;
                 MainStreamIsOpen = true;
-                if(!Dev.REL) Console.Clear();
             }
         }
 
-        private static void ScanForDebugAddr() { 
+        bool BrowseButtonOverride = false;
+        /// <summary> Load A File For Checking/Patching If The Path In The ExecutablePathBox Exists </summary>
+        private void ExecutablePathBox_TextChanged(object sender, EventArgs e) {
+            if(BrowseButtonOverride) {
+                BrowseButtonOverride ^= true;
+                return;
+            }
+
+            var TextBoxData = (((Control)sender).Text.Replace("\"", ""));
+
+
+            ActiveFilePath = ExecutablePathBox.Text = f.FileName;
+            MainStream = new FileStream(f.FileName, FileMode.Open, FileAccess.ReadWrite);
+
+            MainStream.Position = 0x1EC; MainStream.Read(LocalExecutableCheck, 0, 4);
+            Game = BitConverter.ToInt32(LocalExecutableCheck, 0);
+            MainStream.Position = 0x1F8; MainStream.Read(LocalExecutableCheck, 0, 4);
+            Game += BitConverter.ToInt32(LocalExecutableCheck, 0);
+
+            GameInfoLabel.Text = UpdateGameInfoLabel();
+            IsActiveFilePCExe = true;
+            MainStreamIsOpen = true;
+
+            if(File.Exists(TextBoxData))
+                LoadFileToBePatched(TextBoxData);
+        }
+        private void ScanForDebugAddr() { 
             int TmpAddr = 0;
-            LocalExecutableCheck = new byte[28];
+            var LocalExecutableCheck = new byte[28];
             string StartTime = DateTime.Now.ToString();
 Read:       MainStream.Position = TmpAddr;
             MainStream.Read(LocalExecutableCheck, 0, 28);
             TmpAddr++;
-            if (LocalExecutableCheck.SequenceEqual(DebugDat)) {
+            if (LocalExecutableCheck.SequenceEqual(Array.Empty<byte>())) { //! Add Debug Data
                 GuessedDebug = (int)MainStream.Position - 5;
                 MainStream.Position = GuessedDebug;
                 MainStream.WriteByte(0x8F);
-                MessageBox.Show($"0x8F Written At {GuessedDebug:X}\nStart Time: {StartTime} -> End Time: {DateTime.Now}");
-                return;
+                if (Dev.REL)
+                    MessageBox.Show($"0x8F Written At {GuessedDebug:X}\nStart Time: {StartTime} -> End Time: {DateTime.Now}");
             }
             else goto Read;
         }
@@ -527,10 +536,10 @@ Read:       MainStream.Position = TmpAddr;
         }
         #endregion
 
-        #region ControlDeclarations
         ////////////////////\\\\\\\\\\\\\\\\\\\\
         ///--     Control Declarations     --\\\
         ////////////////////\\\\\\\\\\\\\\\\\\\\
+        #region ControlDeclarations
         public Label MainLabel;
         public Button CreditsBtn;
         public Button InfoHelpBtn;

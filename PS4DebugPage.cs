@@ -20,7 +20,7 @@ namespace Dobby {
 
         public PS4DebugPage() {
             InitializeComponent();
-            Paint += PaintBorder;
+            
             PortBox.Text = Port().ToString();
             IPBOX.Text = IP();
             AddControlEventHandlers(Controls);

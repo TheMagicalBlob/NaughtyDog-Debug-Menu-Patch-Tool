@@ -8,7 +8,7 @@ namespace Dobby {
     internal class CreditsPage : Form {
         public CreditsPage() {
             InitializeComponent();
-            Paint += PaintBorder;
+            
             AddControlEventHandlers(Controls);
             foreach (Control control in Controls)
                 control.TabStop = false;

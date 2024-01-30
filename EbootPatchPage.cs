@@ -16,7 +16,7 @@ namespace Dobby {
     public class EbootPatchPage : Form {
         public EbootPatchPage() {
             InitializeComponent();
-            Paint += PaintBorder;
+            
             AddControlEventHandlers(Controls);
             if (ActiveFilePath != null && !IsActiveFilePCExe)
                 ExecutablePathBox.Text = ActiveFilePath;
@@ -306,38 +306,26 @@ namespace Dobby {
         /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
         #region EbootPatchPage Variables & Functions
 
-        public static bool[] CDO = new bool[11]; // Custom Debug Options - 11th is For Eventually Keeping Track Of Whether The Options Were Left Default (true if changed)
+        private static bool IsActiveFilePCExe, MainStreamIsOpen, MouseScrolled;
+        private byte[] E9Jump = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 };
 
-        public static bool PathBoxHasDefaultText = true;
-
-        public static int
+        private static int
             MenuScale,
-            MenuOpacity = 2
+            MenuOpacity = 2,
+            Game,
+            DebugAddressForSelectedGame
         ;
-        public static string[] ResultStrings = new string[] {
+        
+        private static FileStream MainStream;
+        
+        private static string ActiveFilePath, ActiveGameID = "?";
+        private static string[] ResultStrings = new string[] {
             "Debug Menus Disabled",
             "Debug Menus Enabled",
             "Restored Menu Applied",
             "Custom Menu Applied",
         };
 
-        public static byte[]
-            LocalExecutableCheck,
-            E9Jump = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 },
-            DebugDat = new byte[] { 0x8a, 0x8f, 0xf2, 0x3e, 0x00, 0x00, 0x84, 0xc9, 0x0f, 0x94, 0xc2, 0x84, 0xc9, 0x0f, 0x95, 0xc1, 0x88, 0x8f, 0x3d, 0x3f, 0x00, 0x00, 0x88, 0x97, 0x2f, 0x3f, 0x00, 0x00 }, // Used To Find Debug Mode Addr In PC Executables, From What I Remember
-            T2Debug = new byte[] { 0xb2, 0x00, 0xb0, 0x01 }, // Turns "Disable Debug Rendering" Off (b2 00) & Debug Mode On (b0 01)
-            T2DebugOff = new byte[] { 0xb2, 0x01, 0x31, 0xc0 }
-        ;
-
-        public static byte MouseIsDown;
-
-        public static FileStream MainStream;
-
-        public static string ActiveFilePath, ActiveGameID = "?";
-
-        public static bool IsActiveFilePCExe, MainStreamIsOpen, MouseScrolled;
-
-        public static int DebugAddressForSelectedGame;
 
         public static void WriteBytes(int offset, byte[] data) {
             MainStream.Position = offset;
@@ -449,7 +437,7 @@ namespace Dobby {
 
             ActiveFilePath = FilePath;
 
-            Game = GetGameID();
+            Game = GetGameID(MainStream);
 
             GameInfoLabel.Text = ActiveGameID = GetGameLabelFromID(Game);
                 

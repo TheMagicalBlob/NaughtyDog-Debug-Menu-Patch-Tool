@@ -289,7 +289,17 @@ namespace Dobby {
         public static int index;
         public static PageID Page;
         public static PageID?[] Pages = new PageID?[5];
-        public static bool FormActive, InfoHasImportantStr, IsPageGoingBack = false, LastDebugOutputWasInfoString = false, LabelShouldFlash = false, FlashThreadHasStarted = false;
+        public static bool
+            MouseScrolled = false,
+            MouseIsDown = false,
+            FormActive,
+            InfoHasImportantStr,
+            IsPageGoingBack = false,
+            LastDebugOutputWasInfoString = false,
+            LabelShouldFlash = false,
+            FlashThreadHasStarted = false
+        ;
+
         public static byte[] buffer;
 
         public static Point LastPos, MousePos, MouseDif;
@@ -307,6 +317,9 @@ namespace Dobby {
 
         public static Font MainFont = new Font("Consolas", 9.75F, FontStyle.Bold);
         public static Color MainColour = Color.FromArgb(100, 100, 100);
+
+
+
         public static void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
         public static void ExitBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
         public static void ExitBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
@@ -316,13 +329,13 @@ namespace Dobby {
         public static void ControlHover(object sender, EventArgs e) => HoverLeave((Control)sender, true);
         public static void ControlLeave(object sender, EventArgs e) => HoverLeave((Control)sender, false);
         public static void MouseDownFunc(object sender, MouseEventArgs e) {
-            MouseIsDown = 1; LastPos = ActiveForm.Location;
+            MouseIsDown = true; LastPos = ActiveForm.Location;
             MouseDif = new Point(MousePosition.X - ActiveForm.Location.X, MousePosition.Y - ActiveForm.Location.Y);
         }
-        public static void MouseUpFunc(object sender, MouseEventArgs e) { MouseScrolled = false; MouseIsDown = 0; }
+        public static void MouseUpFunc(object sender, MouseEventArgs e) { MouseScrolled = false; MouseIsDown = false; }
 
         public static void MoveForm(object sender, MouseEventArgs e) {
-            if(MouseIsDown == 0)
+            if(!MouseIsDown)
                 return;
 
             ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
@@ -520,6 +533,9 @@ namespace Dobby {
             Log:
 #endif
             #endregion
+
+            
+            Controls.Owner.Paint += PaintBorder;
 
             foreach(Control Item in Controls) {
                 if(Item.HasChildren) { // Designer Added Some Things To The Form, And Some To The Group Box Used To Make The Border. This is me bing lazy. as long as it's not noticably slower
@@ -769,18 +785,18 @@ namespace Dobby {
 
         /// <summary> Add A Summary, You Lazy Fuck </summary>
         /// <returns> The Game Name And App Version Respectively </returns>
-        public static int GetGameID() {
+        public static int GetGameID(FileStream stream) {
 
-            LocalExecutableCheck = new byte[160];
+            byte[] LocalExecutableCheck = new byte[160];
 
             // Make Sure The File's Actually Even A .elf
-            MainStream.Position = 0;
-            MainStream.Read(LocalExecutableCheck, 0, 4);
+            stream.Position = 0;
+            stream.Read(LocalExecutableCheck, 0, 4);
             if(BitConverter.ToInt32(LocalExecutableCheck, 0) != 1179403647)
                 MessageBox.Show( $"Executable Still Encrypted (self) | Must Be Decrypted/Unsigned");
 
 
-            MainStream.Position = 0x5100; MainStream.Read(LocalExecutableCheck, 0, 160);
+            stream.Position = 0x5100; stream.Read(LocalExecutableCheck, 0, 160);
             var Hash = SHA256.Create();
             var HashArray = Hash.ComputeHash(LocalExecutableCheck);
             return BitConverter.ToInt32(HashArray, 0);

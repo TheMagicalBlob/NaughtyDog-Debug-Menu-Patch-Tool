@@ -14,7 +14,7 @@ namespace Dobby {
 
         public Gp4CreationPage() {
             InitializeComponent();
-            Paint += PaintBorder;
+            
             AddControlEventHandlers(Controls);
 
 

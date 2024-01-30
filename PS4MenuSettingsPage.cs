@@ -12,7 +12,7 @@ namespace Dobby {
     internal class PS4MenuSettingsPage : Form {
         public PS4MenuSettingsPage() {
             InitializeComponent();
-            Paint += PaintBorder;
+            
 
             DisableDebugTextBtn.Variable = UniversalDebugBooleans[0];
             DisablePausedIconBtn.Variable = UniversalDebugBooleans[1];
@@ -1242,7 +1242,7 @@ namespace Dobby {
 
                 MainStream = File.Open(OpenedFile.FileName, FileMode.Open, FileAccess.ReadWrite);
 
-                Game = GetGameID();
+                Game = GetGameID(MainStream);
                 GameInfoLabel.Text = GetGameLabelFromID(Game);
 
                 MainStreamIsOpen = true;

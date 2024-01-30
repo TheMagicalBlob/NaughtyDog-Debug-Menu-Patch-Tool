@@ -13,7 +13,7 @@ namespace Dobby {
     public class PkgCreationHelpPage : Form {
         public PkgCreationHelpPage() {
             InitializeComponent();
-            Paint += PaintBorder;
+            
             AddControlEventHandlers(Controls);
 
             Question0Btn.Text = "- Button Text Here";

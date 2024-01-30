@@ -19,7 +19,7 @@ namespace Dobby {
     public class PkgCreationPage : Form {
         public PkgCreationPage() {
             InitializeComponent();
-            Paint += PaintBorder;
+            
             AddControlEventHandlers(Controls);
 
             foreach(Control control in Controls) {
