@@ -207,7 +207,8 @@ namespace Dobby {
           "* 3.38.159.445 | Replaced BorderFunc And Replaced All Static Borders, Moved Platform Labels, Other Crap I've Forgotten",
           "* 3.38.161.447 | Removed Unused Page Function, Other Work",
           "* 3.39.165.451 | Reworked Several Functions, Moved Dev Class In TO Seperate File. Other Blah Blah Blah",
-          "* 3.40.166.455 | Deleted Page, Moved More Crap"
+          "* 3.40.166.455 | Deleted Page, Moved More Crap",
+          "* 3.40.166.456 | Deleted Resource"
 
             // TODO:
             // * MAJOR
