@@ -175,7 +175,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Resources\debug.ttf" />
     <None Include="Resources\PS4Debug1.1.15.bin" />
   </ItemGroup>
   <ItemGroup>
