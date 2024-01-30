@@ -75,6 +75,9 @@
     <Compile Include="PkgCreationPage.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Properties\Dev.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="PS4MenuSettingsPage.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,9 +107,6 @@
     <Compile Include="InfoHelpPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CustomDebugPages.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -120,9 +120,6 @@
     </Compile>
     <EmbeddedResource Include="Common.resx">
       <DependentUpon>Common.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CustomDebugPages.resx">
-      <DependentUpon>CustomDebugPages.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EbootPatchHelpPage.resx">
       <DependentUpon>EbootPatchHelpPage.cs</DependentUpon>
@@ -178,6 +175,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\debug.ttf" />
     <None Include="Resources\PS4Debug1.1.15.bin" />
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Text;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using static Dobby.Common;
@@ -18,11 +21,13 @@ namespace Dobby {
 
             AddControlEventHandlers(Controls);
 
+
+
             if(Game != 0) DynamicPatchButtons.ResetCustomOptions();
             FormActive = true;
         }
 
-        public void InitializeComponent() {
+        private void InitializeComponent() {
             this.ProgPauseOnCloseBtn = new vButton();
             this.ProgPauseOnOpenBtn = new vButton();
             this.DisableDebugTextBtn = new vButton();
@@ -54,16 +59,16 @@ namespace Dobby {
             this.ProgPauseOnCloseBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ProgPauseOnCloseBtn.FlatAppearance.BorderSize = 0;
             this.ProgPauseOnCloseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ProgPauseOnCloseBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.ProgPauseOnCloseBtn.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
             this.ProgPauseOnCloseBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ProgPauseOnCloseBtn.Location = new System.Drawing.Point(1, 122);
+            this.ProgPauseOnCloseBtn.Location = new System.Drawing.Point(1, 116);
             this.ProgPauseOnCloseBtn.Name = "ProgPauseOnCloseBtn";
-            this.ProgPauseOnCloseBtn.Size = new System.Drawing.Size(318, 23);
+            this.ProgPauseOnCloseBtn.Size = new System.Drawing.Size(318, 24);
             this.ProgPauseOnCloseBtn.TabIndex = 56;
             this.ProgPauseOnCloseBtn.Text = "Disable Debug Pause On Menu Close: ";
             this.ProgPauseOnCloseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ProgPauseOnCloseBtn.UseVisualStyleBackColor = false;
-            this.ProgPauseOnCloseBtn.MouseClick += new MouseEventHandler(this.ProgPauseOnCloseBtn_Click);
+            this.ProgPauseOnCloseBtn.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ProgPauseOnCloseBtn_Click);
             // 
             // ProgPauseOnOpenBtn
             // 
@@ -71,16 +76,16 @@ namespace Dobby {
             this.ProgPauseOnOpenBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ProgPauseOnOpenBtn.FlatAppearance.BorderSize = 0;
             this.ProgPauseOnOpenBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ProgPauseOnOpenBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.ProgPauseOnOpenBtn.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
             this.ProgPauseOnOpenBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ProgPauseOnOpenBtn.Location = new System.Drawing.Point(1, 99);
+            this.ProgPauseOnOpenBtn.Location = new System.Drawing.Point(1, 94);
             this.ProgPauseOnOpenBtn.Name = "ProgPauseOnOpenBtn";
-            this.ProgPauseOnOpenBtn.Size = new System.Drawing.Size(318, 23);
+            this.ProgPauseOnOpenBtn.Size = new System.Drawing.Size(318, 24);
             this.ProgPauseOnOpenBtn.TabIndex = 51;
             this.ProgPauseOnOpenBtn.Text = "Disable Debug Pause On Menu Open: ";
             this.ProgPauseOnOpenBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ProgPauseOnOpenBtn.UseVisualStyleBackColor = false;
-            this.ProgPauseOnOpenBtn.MouseClick += new MouseEventHandler(this.ProgPauseOnOpenBtn_Click);
+            this.ProgPauseOnOpenBtn.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ProgPauseOnOpenBtn_Click);
             // 
             // DisableDebugTextBtn
             // 
@@ -88,16 +93,16 @@ namespace Dobby {
             this.DisableDebugTextBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.DisableDebugTextBtn.FlatAppearance.BorderSize = 0;
             this.DisableDebugTextBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DisableDebugTextBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.DisableDebugTextBtn.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
             this.DisableDebugTextBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.DisableDebugTextBtn.Location = new System.Drawing.Point(1, 53);
+            this.DisableDebugTextBtn.Location = new System.Drawing.Point(1, 52);
             this.DisableDebugTextBtn.Name = "DisableDebugTextBtn";
-            this.DisableDebugTextBtn.Size = new System.Drawing.Size(318, 23);
+            this.DisableDebugTextBtn.Size = new System.Drawing.Size(318, 24);
             this.DisableDebugTextBtn.TabIndex = 46;
             this.DisableDebugTextBtn.Text = "Disable 2D Debug Text On Startup: ";
             this.DisableDebugTextBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisableDebugTextBtn.UseVisualStyleBackColor = false;
-            this.DisableDebugTextBtn.MouseClick += new MouseEventHandler(this.DisableDebugTextBtn_Click);
+            this.DisableDebugTextBtn.MouseClick += new System.Windows.Forms.MouseEventHandler(this.DisableDebugTextBtn_Click);
             this.DisableDebugTextBtn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.DisableDebugTextBtn_Click);
             // 
             // DisablePausedIconBtn
@@ -106,17 +111,17 @@ namespace Dobby {
             this.DisablePausedIconBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.DisablePausedIconBtn.FlatAppearance.BorderSize = 0;
             this.DisablePausedIconBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DisablePausedIconBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.DisablePausedIconBtn.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
             this.DisablePausedIconBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.DisablePausedIconBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.DisablePausedIconBtn.Location = new System.Drawing.Point(1, 76);
+            this.DisablePausedIconBtn.Location = new System.Drawing.Point(1, 73);
             this.DisablePausedIconBtn.Name = "DisablePausedIconBtn";
-            this.DisablePausedIconBtn.Size = new System.Drawing.Size(318, 23);
+            this.DisablePausedIconBtn.Size = new System.Drawing.Size(318, 24);
             this.DisablePausedIconBtn.TabIndex = 49;
             this.DisablePausedIconBtn.Text = "Disable Debug PAUSED Icon:";
             this.DisablePausedIconBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisablePausedIconBtn.UseVisualStyleBackColor = false;
-            this.DisablePausedIconBtn.MouseClick += new MouseEventHandler(this.PausedIconBtn_Click);
+            this.DisablePausedIconBtn.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PausedIconBtn_Click);
             // 
             // MenuScaleBtn
             // 
@@ -179,7 +184,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(5, 348);
+            this.Info.Location = new System.Drawing.Point(5, 344);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
@@ -193,7 +198,7 @@ namespace Dobby {
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 300);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 296);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(75, 22);
@@ -211,7 +216,7 @@ namespace Dobby {
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 278);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 274);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.InfoHelpBtn.Size = new System.Drawing.Size(147, 22);
@@ -239,7 +244,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 322);
+            this.BackBtn.Location = new System.Drawing.Point(1, 318);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.BackBtn.Size = new System.Drawing.Size(75, 22);
@@ -254,7 +259,7 @@ namespace Dobby {
             this.CustomDebugOptionsLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.CustomDebugOptionsLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CustomDebugOptionsLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.CustomDebugOptionsLabel.Location = new System.Drawing.Point(3, 183);
+            this.CustomDebugOptionsLabel.Location = new System.Drawing.Point(3, 179);
             this.CustomDebugOptionsLabel.Name = "CustomDebugOptionsLabel";
             this.CustomDebugOptionsLabel.Size = new System.Drawing.Size(316, 19);
             this.CustomDebugOptionsLabel.TabIndex = 54;
@@ -265,7 +270,7 @@ namespace Dobby {
             this.UniversalPatchesLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.UniversalPatchesLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F, System.Drawing.FontStyle.Bold);
             this.UniversalPatchesLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.UniversalPatchesLabel.Location = new System.Drawing.Point(105, 34);
+            this.UniversalPatchesLabel.Location = new System.Drawing.Point(105, 32);
             this.UniversalPatchesLabel.Name = "UniversalPatchesLabel";
             this.UniversalPatchesLabel.Size = new System.Drawing.Size(102, 19);
             this.UniversalPatchesLabel.TabIndex = 53;
@@ -276,7 +281,7 @@ namespace Dobby {
             this.GameSpecificPatchesLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.GameSpecificPatchesLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F, System.Drawing.FontStyle.Bold);
             this.GameSpecificPatchesLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.GameSpecificPatchesLabel.Location = new System.Drawing.Point(96, 159);
+            this.GameSpecificPatchesLabel.Location = new System.Drawing.Point(96, 155);
             this.GameSpecificPatchesLabel.Name = "GameSpecificPatchesLabel";
             this.GameSpecificPatchesLabel.Size = new System.Drawing.Size(127, 19);
             this.GameSpecificPatchesLabel.TabIndex = 52;
@@ -286,7 +291,7 @@ namespace Dobby {
             // 
             this.SeperatorLine3.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine3.Location = new System.Drawing.Point(2, 259);
+            this.SeperatorLine3.Location = new System.Drawing.Point(2, 255);
             this.SeperatorLine3.Name = "SeperatorLine3";
             this.SeperatorLine3.Size = new System.Drawing.Size(316, 16);
             this.SeperatorLine3.TabIndex = 32;
@@ -298,11 +303,11 @@ namespace Dobby {
             this.BrowseButton.Cursor = System.Windows.Forms.Cursors.Cross;
             this.BrowseButton.FlatAppearance.BorderSize = 0;
             this.BrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BrowseButton.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.BrowseButton.Font = new System.Drawing.Font("Consolas", 8.5F, System.Drawing.FontStyle.Bold);
             this.BrowseButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.BrowseButton.Location = new System.Drawing.Point(237, 222);
+            this.BrowseButton.Location = new System.Drawing.Point(237, 218);
             this.BrowseButton.Name = "BrowseButton";
-            this.BrowseButton.Size = new System.Drawing.Size(75, 23);
+            this.BrowseButton.Size = new System.Drawing.Size(78, 23);
             this.BrowseButton.TabIndex = 39;
             this.BrowseButton.Text = "Browse...";
             this.BrowseButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -314,7 +319,7 @@ namespace Dobby {
             this.ExecutablePathBox.BackColor = System.Drawing.Color.Gray;
             this.ExecutablePathBox.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.ExecutablePathBox.ForeColor = System.Drawing.SystemColors.Window;
-            this.ExecutablePathBox.Location = new System.Drawing.Point(3, 222);
+            this.ExecutablePathBox.Location = new System.Drawing.Point(3, 218);
             this.ExecutablePathBox.Name = "ExecutablePathBox";
             this.ExecutablePathBox.Size = new System.Drawing.Size(233, 23);
             this.ExecutablePathBox.TabIndex = 38;
@@ -324,7 +329,7 @@ namespace Dobby {
             // 
             this.SeperatorLine1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 137);
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 133);
             this.SeperatorLine1.Name = "SeperatorLine1";
             this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
             this.SeperatorLine1.TabIndex = 37;
@@ -334,7 +339,7 @@ namespace Dobby {
             // 
             this.SeperatorLine2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(2, 197);
+            this.SeperatorLine2.Location = new System.Drawing.Point(2, 193);
             this.SeperatorLine2.Name = "SeperatorLine2";
             this.SeperatorLine2.Size = new System.Drawing.Size(316, 16);
             this.SeperatorLine2.TabIndex = 36;
@@ -344,7 +349,7 @@ namespace Dobby {
             // 
             this.GameInfoLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.5F);
             this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.GameInfoLabel.Location = new System.Drawing.Point(2, 248);
+            this.GameInfoLabel.Location = new System.Drawing.Point(2, 244);
             this.GameInfoLabel.Name = "GameInfoLabel";
             this.GameInfoLabel.Size = new System.Drawing.Size(316, 19);
             this.GameInfoLabel.TabIndex = 40;
@@ -356,7 +361,7 @@ namespace Dobby {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ClientSize = new System.Drawing.Size(320, 370);
+            this.ClientSize = new System.Drawing.Size(320, 365);
             this.Controls.Add(this.ProgPauseOnCloseBtn);
             this.Controls.Add(this.MinimizeBtn);
             this.Controls.Add(this.CustomDebugOptionsLabel);
@@ -399,26 +404,105 @@ namespace Dobby {
         ///</summary>
         private static int
             ButtonIndex = 0,
-            RB_StartPos
+            RB_StartPos,
+            Game
+        ;
+
+        private static bool PathBoxHasDefaultText = true;
+
+        private static string[] ResultStrings = new string[] {
+            "Debug Menus Disabled",
+            "Debug Menus Enabled",
+            "Restored Menu Applied",
+            "Custom Menu Applied",
+        };
+
+        private static byte MouseIsDown;
+        private static byte[]
+            LocalExecutableCheck,
+            E9Jump = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 },
+            DebugDat = new byte[] { 0x8a, 0x8f, 0xf2, 0x3e, 0x00, 0x00, 0x84, 0xc9, 0x0f, 0x94, 0xc2, 0x84, 0xc9, 0x0f, 0x95, 0xc1, 0x88, 0x8f, 0x3d, 0x3f, 0x00, 0x00, 0x88, 0x97, 0x2f, 0x3f, 0x00, 0x00 }, // Used To Find Debug Mode Addr In PC Executables, From What I Remember
+            T2Debug = new byte[] { 0xb2, 0x00, 0xb0, 0x01 }, // Turns "Disable Debug Rendering" Off (b2 00) & Debug Mode On (b0 01)
+            T2DebugOff = new byte[] { 0xb2, 0x01, 0x31, 0xc0 }
         ;
 
 
+        private static FileStream MainStream;
+
+        public static string ActiveFilePath, ActiveGameID = "?";
+
+        public static bool IsActiveFilePCExe, MainStreamIsOpen, MouseScrolled;
+
+        public static int DebugAddressForSelectedGame;
+
+        public static void WriteBytes(int offset, byte[] data) {
+            MainStream.Position = offset;
+            MainStream.Write(data, 0, data.Length);
+        }
+        public static void WriteBytes(int[] offset, byte[] data) {
+            foreach(int ofs in offset) {
+                MainStream.Position = ofs;
+                MainStream.Write(data, 0, data.Length);
+            }
+        }
+        public static void WriteBytes(int[] offset, byte[][] data) {
+            int i = 0;
+            foreach(byte[] bytes in data) {
+                MainStream.Position = offset[i];
+                MainStream.Write(bytes, 0, data.Length);
+                i++;
+            }
+        }
+        public static void WriteByte(int offset, byte data) {
+            MainStream.Position = offset;
+            MainStream.WriteByte(data);
+            MainStream.Flush();
+            Dev.DebugOut($"Wrote {data:X} at {offset:X}");
+            MainStream.Flush();
+        }
+        public static void WriteByte(int offset, object data) {
+
+            byte[] bytes = (byte[])data;
+            MainStream.Position = offset;
+            MainStream.Write(bytes, 0, bytes.Length);
+            MainStream.Flush();
+            Dev.DebugOut($"Wrote {data:X} at {offset:X}");
+        }
+        public static void WriteByte(int[] offset, byte data) {
+            foreach(int ofs in offset) {
+                MainStream.Position = ofs;
+                MainStream.WriteByte(data);
+                Dev.DebugOut($"Wrote {data:X} at {ofs:X}");
+            }
+        }
+        /// <summary> Compare Data Read At The Given Address
+        /// </summary>
+        /// <returns> True If The Data Read Matches The Array Given </returns>
+        public static bool ArrayCmp(int Address, byte[] DataToCompare) {
+            MainStream.Position = Address;
+            byte[] DataPresent = new byte[DataToCompare.Length];
+            MainStream.Read(DataPresent, 0, DataToCompare.Length);
+            return DataPresent.SequenceEqual<byte>(DataToCompare);
+        }
+        #endregion
+
         /// <summary>
-        /// UC1100<br/>
-        /// UC1102<br/>
-        /// UC2100<br/>
-        /// UC2102<br/>
-        /// UC3100<br/>
-        /// UC3102<br/>
-        /// UC4100<br/>
-        /// UC4101<br/>
-        /// UC4133<br/>
-        /// UC4133MP<br/>
-        /// TLL100<br/>
-        /// TLL108<br/>
-        /// TLL109<br/>
-        /// UC1100<br/>
-        /// UC1100<br/>
+        /// 0:  UC1100<br/>
+        /// 1:  UC1102<br/>
+        /// 2:  UC2100<br/>
+        /// 3:  UC2102<br/>
+        /// 4:  UC3100<br/>
+        /// 5:  UC3102<br/>
+        /// 6:  UC4100<br/>
+        /// 7:  UC4101<br/>
+        /// 8:  UC4133<br/>
+        /// 9:  UC4133MP<br/>
+        /// 10: TLL100<br/>
+        /// 11: TLL108<br/>
+        /// 12: TLL109<br/>
+        /// 13: T2100<br/>
+        /// 14: T2107<br/>
+        /// 15: T2109<br/>
         /// </summary>
         public static int GameIndex;
 
@@ -450,7 +534,7 @@ namespace Dobby {
         ///<br/> 3: Prog Pause On Close
         /// </summary>
         
-        private static bool[] UniversalDebugBooleans = new bool[4];
+        public static bool[] UniversalDebugBooleans { get; private set; } = new bool[4];
 
         /// <summary>
         /// 0: Menu Scale <br/>
@@ -525,6 +609,7 @@ namespace Dobby {
                 new byte[] {  }, // TLL109
                 new byte[] {  }, // T1R100
                 new byte[] {  }, // T1R109
+                new byte[] {  }, // T1R110
                 new byte[] {  }, // T1R111
                 new byte[] {  }, // T2100
                 new byte[] {  }, // T2107
@@ -548,6 +633,7 @@ namespace Dobby {
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
+                new byte[] {  }, // 0x | T1R110
                 new byte[] {  }, // 0x | T1R111
                 new byte[] {  }, // 0x | T2100
                 new byte[] {  }, // T2107
@@ -576,6 +662,7 @@ namespace Dobby {
                 new byte[] {  }, // TLL109
                 new byte[] {  }, // T1R100
                 new byte[] {  }, // T1R109
+                new byte[] {  }, // T1R110
                 new byte[] {  }, // T1R111
                 new byte[] {  }, // T2100
                 new byte[] { 0xB8, 0x67, 0x24, 0x03 }, // 0x36467b8 | T2107
@@ -598,6 +685,7 @@ namespace Dobby {
                 new byte[] {  }, // TLL109
                 new byte[] {  }, // T1R100
                 new byte[] {  }, // T1R109
+                new byte[] {  }, // T1R110
                 new byte[] {  }, // T1R111
                 new byte[] {  }, // T2100
                 new byte[] { 0xB9, 0x67, 0x24, 0x03 }, // 0x36467b9 | T2107
@@ -620,6 +708,7 @@ namespace Dobby {
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
+                new byte[] {  }, // 0x | T1R110
                 new byte[] {  }, // 0x | T1R111
                 new byte[] {  }, // 0x | T2100
                 new byte[] { 0xBA, 0x67, 0x24, 0x03 }, // 0x36467ba | T2107
@@ -642,6 +731,7 @@ namespace Dobby {
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
+                new byte[] {  }, // 0x | T1R110
                 new byte[] {  }, // 0x | T1R111
                 new byte[] {  }, // 0x | T2100
                 new byte[] { 0xBB, 0x67, 0x24, 0x03 }, // 0x36467bb | T2107
@@ -664,6 +754,7 @@ namespace Dobby {
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
+                new byte[] {  }, // 0x | T1R110
                 new byte[] {  }, // 0x | T1R111
                 new byte[] {  }, // 0x | T2100
                 new byte[] { 0xBD, 0x67, 0x24, 0x03 }, // 0x36467bd | T2107
@@ -685,6 +776,7 @@ namespace Dobby {
                 new byte[] {  }, // 0x | TLL100
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | T1R100
+                new byte[] {  }, // 0x | T1R110
                 new byte[] {  }, // 0x | T1R109
                 new byte[] {  }, // 0x | T1R111
                 new byte[] {  }, // 0x | T2100
@@ -708,6 +800,7 @@ namespace Dobby {
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
+                new byte[] {  }, // 0x | T1R110
                 new byte[] {  }, // 0x | T1R111
                 new byte[] {  }, // 0x | T2100
                 new byte[] { 0xC0, 0x67, 0x24, 0x03 }, // 0x36467c0 | T2107
@@ -730,6 +823,7 @@ namespace Dobby {
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
+                new byte[] {  }, // 0x | T1R110
                 new byte[] {  }, // 0x | T1R111
                 new byte[] {  }, // 0x | T2100
                 new byte[] { 0xC4, 0x67, 0x24, 0x03 }, // 0x36467c4 | T2107
@@ -752,6 +846,7 @@ namespace Dobby {
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
+                new byte[] {  }, // 0x | T1R110
                 new byte[] {  }, // 0x | T1R111
                 new byte[] {  }, // 0x | T2100
                 new byte[] { 0xC8, 0x67, 0x24, 0x03 }, // 0x36467c8 | T2107
@@ -774,6 +869,7 @@ namespace Dobby {
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
+                new byte[] {  }, // 0x | T1R110
                 new byte[] {  }, // 0x | T1R111
                 new byte[] { 0x2C, 0x62, 0x01, 0x03 }, // 0x341622c | T2100
                 new byte[] { 0x2C, 0x60, 0x01, 0x03 }, // 0x341602c | T2107
@@ -796,6 +892,7 @@ namespace Dobby {
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
+                new byte[] {  }, // 0x | T1R110
                 new byte[] {  }, // 0x | T1R111
                 new byte[] {  }, // 0x | T2100
                 new byte[] {  }, // 0x | T2107
@@ -875,7 +972,6 @@ namespace Dobby {
             public static void ResetCustomOptions(object _, EventArgs __) {
                 if(Game == 0) return;
 #if DEBUG
-                FormShouldReset = false;
                 Dev.DebugOut("Resetting Form And Main Stream");
 #endif
                 index = 0;
@@ -1083,7 +1179,7 @@ namespace Dobby {
             private void HoverString(object sender, EventArgs e) => SetInfoLabelText(Hint[((Control)sender).TabIndex]);
             #endregion
         }
-        #endregion
+
 
         ///////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///--     Event Handlers For Basic Patches Available For Each Game     --\\\
@@ -1103,13 +1199,13 @@ namespace Dobby {
             if(MouseScrolled || MouseIsDown == 0 || CurrentControl != Control.Name)
                 return;
 
-            UniversalDebugBooleans[OptionIndex] = !UniversalDebugBooleans[OptionIndex];
-            Control.Variable = UniversalDebugBooleans[OptionIndex];
+            GameSpecificPatchValues[OptionIndex] = !(bool)GameSpecificPatchValues[OptionIndex];
+            Control.Variable = GameSpecificPatchValues[OptionIndex];
             Control.Refresh();
         }
         #endregion
 
-#if DEBUG
+#if false
         // Only Gonna Be Useful If I End Up Using A Monospace Font
         /// <summary> Takes A Control & Variable, and Appends The Variable (As A String) To The Right Of The Control
         ///</summary>
@@ -1146,7 +1242,8 @@ namespace Dobby {
 
                 MainStream = File.Open(OpenedFile.FileName, FileMode.Open, FileAccess.ReadWrite);
 
-                GameInfoLabel.Text = EbootPatchPage.GetGameId();
+                Game = GetGameID();
+                GameInfoLabel.Text = GetGameLabelFromID(Game);
 
                 MainStreamIsOpen = true;
                 CustomDebugOptionsLabel.Visible = IsActiveFilePCExe = false;
@@ -1290,8 +1387,8 @@ namespace Dobby {
                 var BootSettingsDataAddress = BootSettingsAddress + 0x57;
 
 
-                index = 0;
                 // Universal Options
+                index = 0;
                 while(index < UniversalDebugBooleans.Length) {
                     if(UniversalDebugBooleans[index]) {
                         WriteBytes(BootSettingsDataAddress, BootSettingsPointers[index][GameIndex]);
@@ -1300,8 +1397,7 @@ namespace Dobby {
                     index++;
                 }
 
-                return;
-
+                // Game-Specific Options
                 index = 0;
                 foreach(var val in GameSpecificPatchValues) {
                     if(val != DefaultPatchValues[index]) {
@@ -1312,12 +1408,11 @@ namespace Dobby {
         }
 
 
-        /// <summary>
-        /// Returns a byte[] containing the custom bootsettings function
+        /// <summary> Returns a byte[] containing the constructed bootsettings function data
         /// </summary>
-        /// <param name="GameIndex"></param>
+        /// <param name="GameIndex">  </param>
         /// <returns></returns>
-        private static byte[] GetBootSettingsBytes(int GameIndex) {
+        private static byte[] GetBootSettingsBytes(int GameIndex = 18) {
             byte[] BootSettingsData = new byte[200],
                    BootSettingsFunction = new byte[] { 0x48, 0x8d, 0x0d, 0x43, 0x00, 0x00, 0x00, 0x80, 0x3c, 0x21, 0xfe, 0x75, 0x12, 0x8a, 0x59, 0x05, 0x8b, 0x54, 0x21, 0x01, 0x01, 0xc2, 0x67, 0x88, 0x1a, 0x48, 0x83, 0xc1, 0x06, 0xeb, 0xe8, 0x80, 0x3c, 0x21, 0xff, 0x75, 0x23, 0x8b, 0x94, 0x21, 0x01, 0x00, 0x00, 0x00, 0x01, 0xc2, 0x48, 0x8d, 0x14, 0x22, 0x48, 0x8b, 0x12, 0x8b, 0x5c, 0x21, 0x05, 0x48, 0x01, 0xda, 0x8a, 0x59, 0x09, 0x40, 0x88, 0x1a, 0x48, 0x83, 0xc1, 0x0a, 0xeb, 0xbf, 0x5b, 0xc3 }
             ;
@@ -1503,59 +1598,6 @@ namespace Dobby {
         private Label GameInfoLabel;
         private Label MainLabel;
         private Label Info;
-        #endregion
-
-        ////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     Debug Output Override For Misc Patches Page     --\\\
-        ////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        #region Debug Output Override For Misc Patches Page
-#if DEBUG
-        public delegate void ResetDelegate();
-        public static ResetDelegate ResetDelegateInstance = new ResetDelegate(DynamicPatchButtons.ResetCustomOptions);
-        public static bool FormShouldReset;
-
-
-        public static Thread FormResetThread = new Thread(new ThreadStart(Wait));
-        public static void Wait() {
-            for(; ; ) {
-                if(FormShouldReset) {
-                    Dev.DebugOut("Initiating Reset");
-                    ActiveForm.Invoke(ResetDelegateInstance);
-                }
-            }
-        }
-
-
-        public static Thread DebugOutputOverrideThread = new Thread(new ThreadStart(DebugOutputOverride));
-        public static void DebugOutputOverride() {
-            Dev.OverrideDebugOut = true;
-            Console.Clear();
-            string YN(object In) { return (bool)In == true ? "Yes" : "No"; }
-
-            // Create alt debugout that writes to specific spot in the array
-            for(int i = 13; ;) {
-                Console.CursorLeft = 0;
-                Dev.DebugOut(Dev.BlankSpace($"| Disable FPS:     {YN(UniversalDebugBooleans[0])}"), 0);
-                Dev.DebugOut(Dev.BlankSpace($"| Paused Icon:     {YN(UniversalDebugBooleans[1])}"), 1);
-                Dev.DebugOut(Dev.BlankSpace($"| ProgPauseOnOpen: {YN(UniversalDebugBooleans[2])}"), 2);
-                Dev.DebugOut(Dev.BlankSpace($"| ProgPauseOnExit: {YN(UniversalDebugBooleans[3])}"), 3);
-
-                Dev.DebugOut(Dev.BlankSpace($"| Menu Scale:             {GameSpecificPatchValues[0]}"), 4);
-                Dev.DebugOut(Dev.BlankSpace($"| Menu Alpha:             {GameSpecificPatchValues[1]}"), 5);
-                Dev.DebugOut(Dev.BlankSpace($"| Non-ADS FOV:            {GameSpecificPatchValues[2]}"), 6);
-                Dev.DebugOut(Dev.BlankSpace($"| Swap Square And Circle: {YN(GameSpecificPatchValues[3])}"), 7);
-                Dev.DebugOut(Dev.BlankSpace($"| Shadowed Text:          {YN(GameSpecificPatchValues[4])}"), 8);
-                Dev.DebugOut(Dev.BlankSpace($"| Version Text:           {YN(GameSpecificPatchValues[5])}"), 9);
-                Dev.DebugOut(Dev.BlankSpace($"| Right Align:      {YN(GameSpecificPatchValues[6])}"), 10);
-                Dev.DebugOut(Dev.BlankSpace($"|    Right Margin:  {GameSpecificPatchValues[7]}"), 11);
-
-                if(DynamicPatchButtons.Buttons != null)
-                    foreach(Control c in DynamicPatchButtons.Buttons)
-                        if(c != null) Dev.DebugOut(Dev.BlankSpace($"{c.Name} | {c.Location} | {c.TabIndex}"), i++);
-                i = 13;
-            }
-        }
-#endif
         #endregion
     }
 }

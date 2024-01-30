@@ -11,7 +11,7 @@ using System.Threading;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Dobby.Common.Dev;
+using static Dobby.Dev;
 using static System.Console;
 
 namespace Dobby {
@@ -204,7 +204,10 @@ namespace Dobby {
           "* 3.37.150.403 | Added Many Pointers And Created Jagged Array To Store Them Better",
           "* 3.37.152.405 | Reworked Misc Patch Page Event Handlers, Other Misc Changes",
           "* 3.38.154.440 | Debug Output Overhaul, Misc Changes",
-          "* 3.38.159.445 | Replaced BorderFunc And Replaced All Static Borders, Moved Platform Labels, Other Crap I've Forgotten"
+          "* 3.38.159.445 | Replaced BorderFunc And Replaced All Static Borders, Moved Platform Labels, Other Crap I've Forgotten",
+          "* 3.38.161.447 | Removed Unused Page Function, Other Work",
+          "* 3.39.165.451 | Reworked Several Functions, Moved Dev Class In TO Seperate File. Other Blah Blah Blah",
+          "* 3.40.166.455 | Deleted Page, Moved More Crap"
 
             // TODO:
             // * MAJOR
@@ -301,9 +304,9 @@ namespace Dobby {
         public static TcpClient tcp_client;
         public static NetworkStream net_stream;
 
-        public static Font MainFont = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
+        public static Font MainFont = new Font("Consolas", 9.75F, FontStyle.Bold);
         public static Color MainColour = Color.FromArgb(100, 100, 100);
-        public static void ExitBtn_Click(object sender, EventArgs e) { MainStream?.Dispose(); Environment.Exit(0); }
+        public static void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
         public static void ExitBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
         public static void ExitBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
         public static void MinimizeBtn_Click(object sender, EventArgs e) => ((Control)sender).FindForm().WindowState = FormWindowState.Minimized;
@@ -338,7 +341,7 @@ namespace Dobby {
                 PassedControl.Size = new Size(EventIsMouseEnter ? PassedControl.Width + 9 : PassedControl.Width - 9, PassedControl.Height);
 
             if(!InfoHasImportantStr & !EventIsMouseEnter) SetInfoLabelText("");
-            if(!EventIsMouseEnter) { MouseScrolled = false; return; }
+            if(!EventIsMouseEnter) { MouseScrolled = EventIsMouseEnter; return; }
             else SetInfoLabelStringOnControlHover(PassedControl);
 #if DEBUG
             HoveredControl = PassedControl;
@@ -763,6 +766,86 @@ namespace Dobby {
         private static void KillTextBox(object sender, MouseEventArgs e) => PopupGroupBox?.Dispose();
 
 
+        /// <summary> Add A Summary, You Lazy Fuck </summary>
+        /// <returns> The Game Name And App Version Respectively </returns>
+        public static int GetGameID() {
+
+            LocalExecutableCheck = new byte[160];
+
+            // Make Sure The File's Actually Even A .elf
+            MainStream.Position = 0;
+            MainStream.Read(LocalExecutableCheck, 0, 4);
+            if(BitConverter.ToInt32(LocalExecutableCheck, 0) != 1179403647)
+                MessageBox.Show( $"Executable Still Encrypted (self) | Must Be Decrypted/Unsigned");
+
+
+            MainStream.Position = 0x5100; MainStream.Read(LocalExecutableCheck, 0, 160);
+            var Hash = SHA256.Create();
+            var HashArray = Hash.ComputeHash(LocalExecutableCheck);
+            return BitConverter.ToInt32(HashArray, 0);
+        }
+
+        public static string GetGameLabelFromID(int GameID) {
+            switch(GameID) {
+                case UC1100:       return "Uncharted 1 1.00";
+                case UC1102:       return "Uncharted 1 1.02";
+                case UC2100:       return "Uncharted 2 1.00";
+                case UC2102:       return "Uncharted 2 1.02";
+                case UC3100:       return "Uncharted 3 1.00";
+                case UC3102:       return "Uncharted 3 1.02";
+                case UC4100:       return "Uncharted 4 1.00";
+                case UC4101:       return "Uncharted 4 1.01";
+                case UC4102:       return "Uncharted 4 1.02";
+                case UC4103:       return "Uncharted 4 1.03";
+                case UC4104:       return "Uncharted 4 1.04";
+                case UC4105:       return "Uncharted 4 1.05";
+                case UC4106:       return "Uncharted 4 1.06";
+                case UC4108:       return "Uncharted 4 1.08";
+                case UC4110:       return "Uncharted 4 1.10";
+                case UC4111:       return "Uncharted 4 1.11";
+                case UC4112:       return "Uncharted 4 1.12";
+                case UC4113:       return "Uncharted 4 1.13";
+                case UC4115:       return "Uncharted 4 1.15";
+                case UC4116:       return "Uncharted 4 1.16";
+                case UC4117:       return "Uncharted 4 1.17";
+                case UC4118:       return "Uncharted 4 1.18 SP/MP";
+                case UC4119:       return "Uncharted 4 1.19 SP/MP";
+                case UC4MP120:     return "Uncharted 4 1.20 MP";
+                case UC4SP120:     return "Uncharted 4 1.20 SP";
+                case UC4MP121:     return "Uncharted 4 1.21 MP";
+                case UC4SP121:     return "Uncharted 4 1.21 SP";
+                case UC4MP122:     return "Uncharted 4 1.22 MP";
+                case UC4SP122_23:  return "Uncharted 4 1.22/23 SP";
+                case UC4MP123:     return "Uncharted 4 1.23 MP";
+                case UC4MP124:     return "Uncharted 4 1.24 MP";
+                case UC4SP124_25:  return "Uncharted 4 1.24/25 SP";
+                case UC4MP125:     return "Uncharted 4 1.25 MP";
+                case UC4MP127_28:  return "Uncharted 4 1.27/28 MP";
+                case UC4SP127:     return "Uncharted 4 1.27+ SP";
+                case UC4MP129:     return "Uncharted 4 1.29 MP";
+                case UC4MP130:     return "Uncharted 4 1.30 MP";
+                case UC4MP131:     return "Uncharted 4 1.31 MP";
+                case UC4MP132:     return "Uncharted 4 1.32/TLL 1.08 MP";
+                case UC4MP133:     return "Uncharted 4 1.33/TLL 1.09 MP";
+                case UC4MPBETA100: return "Uncharted 4 MP Beta 1.00";
+                case UC4MPBETA109: return "Uncharted 4 MP Beta 1.09";
+                case TLLMP100:     return "Uncharted Lost Legacy 1.00 MP";
+                case TLLSP100:     return "Uncharted Lost Legacy 1.00 SP";
+                case TLLSP10X:     return "Uncharted Lost Legacy 1.08/9 SP";
+                case T1R100:       return "The Last Of Us 1.00";
+                case T1R109:       return "The Last Of Us 1.09";
+                case T1R110:       return "The Last Of Us 1.10";
+                case T1R111:       return "The Last Of Us 1.11";
+                case T2100:        return "The Last Of Us 2 1.00";
+                case T2101:        return "The Last Of Us 2 1.01";
+                case T2102:        return "The Last Of Us 2 1.02";
+                case T2105:        return "The Last Of Us 2 1.05";
+                case T2107:        return "The Last Of Us 2 1.07";
+                case T2108:        return "The Last Of Us 2 1.08";
+                case T2109:        return "The Last Of Us 2 1.09";
+                default:           return $"Unknown Game ({GameID})";
+            }
+        }
 
         delegate void LabelFlashDelegate();
         static readonly LabelFlashDelegate Yellow = new LabelFlashDelegate(FlashYellow);
@@ -804,10 +887,13 @@ namespace Dobby {
         }
         #endregion
 
-        #region PS4DBG_Variables
+
+
+
         ////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
         ///-- PS4 DEBUG OFFSETS AND OTHER VARIABLES --\\\
         ////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
+        #region PS4DBG_Variables
 
         public static PS4DBG geo;
         public delegate void LabelTextDel(string message);
@@ -848,101 +934,12 @@ namespace Dobby {
         #endregion
 
 
-        #region EbootPatchPage Variables & Functions
-        /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///-- EBOOTPATCHPAGE VARIABLES AND FUNCTIONS  --\\\
-        /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-        public static bool[] CDO = new bool[11]; // Custom Debug Options - 11th is For Eventually Keeping Track Of Whether The Options Were Left Default (true if changed)
-
-        public static bool PathBoxHasDefaultText = true;
-
-        public static int
-            MenuScale,
-            MenuOpacity = 2
-        ;
-        public static string[] ResultStrings = new string[] {
-            "Debug Menus Disabled",
-            "Debug Menus Enabled",
-            "Restored Menu Applied",
-            "Custom Menu Applied",
-        };
-
-        public static byte[]
-            LocalExecutableCheck,
-            E9Jump = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 },
-            DebugDat = new byte[] { 0x8a, 0x8f, 0xf2, 0x3e, 0x00, 0x00, 0x84, 0xc9, 0x0f, 0x94, 0xc2, 0x84, 0xc9, 0x0f, 0x95, 0xc1, 0x88, 0x8f, 0x3d, 0x3f, 0x00, 0x00, 0x88, 0x97, 0x2f, 0x3f, 0x00, 0x00 }, // Used To Find Debug Mode Addr In PC Executables, From What I Remember
-            T2Debug = new byte[] { 0xb2, 0x00, 0xb0, 0x01 }, // Turns "Disable Debug Rendering" Off (b2 00) & Debug Mode On (b0 01)
-            T2DebugOff = new byte[] { 0xb2, 0x01, 0x31, 0xc0 }
-        ;
-
-        public static byte MouseIsDown;
-
-        public static FileStream MainStream;
-
-        public static string ActiveFilePath, ActiveGameID = "?";
-
-        public static bool IsActiveFilePCExe, MainStreamIsOpen, MouseScrolled;
-
-        public static int Game, DebugAddressForSelectedGame;
-
-        public static void WriteBytes(int offset, byte[] data) {
-            MainStream.Position = offset;
-            MainStream.Write(data, 0, data.Length);
-        }
-        public static void WriteBytes(int[] offset, byte[] data) {
-            foreach(int ofs in offset) {
-                MainStream.Position = ofs;
-                MainStream.Write(data, 0, data.Length);
-            }
-        }
-        public static void WriteBytes(int[] offset, byte[][] data) {
-            int i = 0;
-            foreach(byte[] bytes in data) {
-                MainStream.Position = offset[i];
-                MainStream.Write(bytes, 0, data.Length);
-                i++;
-            }
-        }
-        public static void WriteByte(int offset, byte data) {
-            MainStream.Position = offset;
-            MainStream.WriteByte(data);
-            MainStream.Flush();
-            DebugOut($"Wrote {data:X} at {offset:X}");
-            MainStream.Flush();
-        }
-        public static void WriteByte(int offset, object data) {
-            TypeConverter conv = new TypeConverter();
-
-            byte[] bytes = (byte[])conv.ConvertTo(data, typeof(byte[]));
-            MainStream.Position = offset;
-            MainStream.Write(bytes, 0, bytes.Length);
-            MainStream.Flush();
-            DebugOut($"Wrote {data:X} at {offset:X}");
-        }
-        public static void WriteByte(int[] offset, byte data) {
-            foreach(int ofs in offset) {
-                MainStream.Position = ofs;
-                MainStream.WriteByte(data);
-                DebugOut($"Wrote {data:X} at {ofs:X}");
-            }
-        }
-        /// <summary> Compare Data Read At The Given Address
-        /// </summary>
-        /// <returns> True If The Data Read Matches The Array Given </returns>
-        public static bool ArrayCmp(int Address, byte[] DataToCompare) {
-            MainStream.Position = Address;
-            byte[] DataPresent = new byte[DataToCompare.Length];
-            MainStream.Read(DataPresent, 0, DataToCompare.Length);
-            return DataPresent.SequenceEqual<byte>(DataToCompare);
-        }
-        #endregion
 
 
-        #region Debug Offsets & Game Identifiers
         /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///-- DEBUG MODE OFFSETS AND GAME INDENTIFIERS --\\\
         /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        #region Debug Offsets & Game Identifiers
         public const int
             // Read 160 bytes at 0x5100 as SHA256 Then Checked As Int32 Because I'm An Idiot And Don't Feel Like Correcting It Since It Works
             UC1100 = -679355525,
@@ -1004,7 +1001,8 @@ namespace Dobby {
         ;
 
 
-        /// <summary> Debug Offsets For Various PS4 Naughty Dog Games (On:0xEB || Off:0x74) </summary>
+
+        /// <summary> .elf Addresses For Enabling The Debug Mode In Various PS4 Naughty Dog Games<br/>[On: 0xEB]<br/>[Off: 0x74]</summary>
         public const int
             T1R100Debug = 0x5C5A,
             T1R109Debug = 0x61A0,
@@ -1350,374 +1348,5 @@ namespace Dobby {
         ;
         #endregion
         */
-
-        #region Debug Class
-        public class Dev {
-            ////////////\\\\\\\\\\\\
-            ///-- DEBUG CLASS  --\\\
-            ////////////\\\\\\\\\\\\
-
-#if !DEBUG
-            public const bool REL = true;
-
-#elif DEBUG
-            public const bool REL = false;
-            public static void MiscDebugFunc(object sender, EventArgs e) => CreateTextBox("Test Box");
-            public static void DebugControlHover(object sender, EventArgs e) => HoveredControl = (Control)sender;
-
-            public static bool OverrideDebugOut;
-
-            static int DebugMemoryWrites;
-
-            static int TimerTicks = 0, OutputStringIndex = 0;
-
-            public static string PS4DebugDev = "";
-
-
-
-            public static Thread InputThread = new Thread(new ThreadStart(ReadInput));
-            public static void StartInputReadThread() => InputThread.Start();
-            static void ReadInput() {
-                while(true) {
-                    switch(ReadKey(true).Key) {
-                        case ConsoleKey.C:
-                            Clear();
-                            break;
-                        case ConsoleKey.R:
-                            OutputStrings = new string[OutputStrings.Length];
-                            OutputStringIndex = 0;
-                            Clear(); Thread.Sleep(42); Clear(); // First Clear Doesn't Get It All
-                            break;
-                        case ConsoleKey.M:
-                            if(MainStreamIsOpen) {
-                                MainStream.Dispose();
-                                MainStreamIsOpen = false;
-                                DebugOut("MainStream Closed");
-                                if(Page == (PageID)3) {
-                                Wait:
-                                    if(ActiveForm == null) goto Wait;
-                                    DebugOut("FormShouldReset = true");
-                                    PS4MenuSettingsPage.FormShouldReset = true;
-                                }
-                            }
-                            break;
-                        case ConsoleKey.W:
-                            PS4DebugDev = "Waiting For Address";
-                            var Line = ReadLine();
-                            PS4DebugDev = $"Writing To: {Line:X}";
-                            if(DebugMemoryWrites > 1) {
-                                OutputStrings = new string[OutputStrings.Length];
-                                OutputStringIndex = 0;
-                                Clear(); Thread.Sleep(42); Clear(); // First Clear Doesn't Get It All
-                                DebugMemoryWrites = 0;
-                            }
-                            if(Line == "S" || Line == "s") {
-                                PS4DebugDev = "Sending Payload";
-                                Socket S = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                                var file = File.OpenText(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB");
-                                string v = file.ReadToEnd(); file.Dispose();
-                                try {
-                                    S.Connect(new IPEndPoint(IPAddress.Parse(v.Remove(v.IndexOf(";"))), 9090));
-                                }
-                                catch(Exception) {
-                                    S.Connect(new IPEndPoint(IPAddress.Parse(v.Remove(v.IndexOf(";"))), 9020));
-                                }
-                                S.Send(Resources.PS4Debug1_1_15);
-                                S.Close();
-                                PS4DebugDev = "";
-                                break;
-                            }
-                            DebugMemoryWrite(ulong.Parse(Line, System.Globalization.NumberStyles.HexNumber));
-                            DebugMemoryWrites++;
-                            PS4DebugDev = "";
-                            break;
-                        case ConsoleKey.X:
-                            DebugFunctionCall();
-                            break;
-                    }
-                }
-            }
-
-            public static string[] OutputStrings;
-            public static int ShiftIndex = 0;
-
-
-            public static Control HoveredControl = new Label(); // Just so the debugger doesn't bitch
-
-            public delegate void Rendering(Control control);
-
-            public static Rendering RenderPause = new Rendering(PauseRendering);
-            public static Rendering RenderResume = new Rendering(ResumeRendering);
-
-            private static void PauseRendering(Control control) => UpdateRendering((IntPtr)0, control);
-            private static void ResumeRendering(Control control) => UpdateRendering((IntPtr)1, control);
-            private static void UpdateRendering(IntPtr toggle, Control control) {
-                var Window = NativeWindow.FromHandle(control.Handle);
-                var Msg = Message.Create(control.Handle, 11, toggle, IntPtr.Zero);
-
-                Window.DefWndProc(ref Msg);
-
-                if((int)toggle != 0) {
-                    control.Update();
-                }
-            }
-
-            public partial class LogWindow : Form {
-                public LogWindow() {
-                    InitializeComponent();
-
-                    MouseDown += MouseDownFunc;
-                    MouseEnter += DebugControlHover;
-                    MouseUp += MouseUpFunc;
-                    MouseMove += MoveForm;
-
-                    AppRef = this;
-                    rend = CreateGraphics();
-
-                    AddControlEventHandlers(Controls);
-                    logThread.Start();
-                    this.Location = Point.Empty;
-                }
-
-                private static Form AppRef;
-                private static Graphics rend;
-                private static Size formScale;
-
-                #region timer crap
-                private static int Interval = 0;
-                private static bool TimerThreadStarted = false;
-                private static System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-                private static Thread TimerThread = new Thread(StartTimer);
-                private static void Timer_Tick(object sender, EventArgs e) => TimerTicks++;
-                private static void StartTimer() {
-                    if(!timer.Enabled) {
-                        timer.Interval = 1;
-                        timer.Tick += Timer_Tick;
-                        timer.Start();
-                    }
-                }
-#endregion
-
-                private void InitializeComponent() {
-                    BackColor = Color.FromArgb(100, 100, 100);
-                    FormBorderStyle = FormBorderStyle.None;
-                    Name = "LogWindow";
-                    Location = Point.Empty;
-                }
-                #region Movement
-                private void MouseDownFunc(object sender, MouseEventArgs e) {
-                    MouseIsDown = 1; LastPos = ActiveForm.Location;
-                    MouseDif = new Point(MousePosition.X - ActiveForm.Location.X, MousePosition.Y - ActiveForm.Location.Y);
-                }
-                private void MouseUpFunc(object sender, MouseEventArgs e) { MouseScrolled = false; MouseIsDown = 0; }
-                private void MoveForm(object sender, MouseEventArgs e) {
-                    if(MouseIsDown == 0)
-                        return;
-
-                    ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
-                    ActiveForm.Update();
-                }
-                #endregion
-
-                public delegate void Scaling();
-                public static Scaling resize = new Scaling(ResizeLog);
-                private static void ResizeLog() {
-                    AppRef.Size = formScale;
-                    rend = AppRef.CreateGraphics();
-                }
-
-
-                private static readonly Thread logThread = new Thread(new ThreadStart(UpdateConsoleOutput));
-                public static void UpdateConsoleOutput() {
-#if DEBUG
-                    if(ActiveForm != null && !TimerThreadStarted) {
-                        TimerThread.Start(); TimerThreadStarted = true;
-                    }
-
-                    string Out = string.Empty; string[] chk = Array.Empty<string>();
-                    int PaddingSize = TextRenderer.MeasureText("\n", MainFont).Height;
-                    Pen pen = new Pen(Color.White);
-
-                    while(true) {
-                        try {
-                            int StartTime = TimerTicks;
-                            string ControlType = HoveredControl?.GetType().ToString();
-                            Out = string.Empty;
-
-                            string[] Output = new string[] {
-                                $"Build: {Build} | ~{Interval}ms ",
-                                " ",
-                                $"Form: {(ActiveForm != null ? $"{ActiveForm?.Name} | Form Position: {ActiveForm?.Location}" : "Console")}",
-                                $"Parents: {Pages?[0]}, {Pages?[1]}, {Pages?[2]}, {Pages?[3]}",
-                                Pages[0] == null ? " " : $"Child Name: {Page}",
-                                " ",
-                                $"TitleID: {(TitleID == "?" ? "UNK" : TitleID)} | Game Version: {GameVersion}",
-                                $"GameID: {(ActiveGameID == "?" ? "UNK" : ActiveGameID)}",
-                                $"ProcessName: {ProcessName} | PDbg Connected: {PS4DebugIsConnected}",
-                                " ",
-                                $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}",
-                                $"Control: {HoveredControl?.Name} | {ControlType?.Substring(ControlType.LastIndexOf('.') + 1)}",
-                                $"{(HoveredControl?.GetType() == typeof(vButton) ? ((vButton)HoveredControl)?.Variable : " ")}",
-                                $" Size: {HoveredControl?.Size} | Pos: {HoveredControl?.Location}",
-                                $" Parent {HoveredControl?.Parent?.Name}",
-                                " ",
-                                $"MainStream: {(MainStreamIsOpen ? MainStream.Name : "null")}",
-                                $"{(MainStreamIsOpen ? $"Length: {(MainStream.Length.ToString().Length > 6 ? $"{MainStream.Length.ToString().Remove(2)}MB" : $"{MainStream.Length} bytes")} | Read: {MainStream.CanRead} | Write: {MainStream.CanWrite}" : null)}",
-                                " "
-                            };
-
-                            if(!chk.SequenceEqual(Output)) {
-                                chk = Output;
-                                Size TextSize;
-                                formScale = Size.Empty;
-                                Point[] Border = new Point[] {
-                                    Point.Empty,
-                                    new Point(AppRef.Width-1, 0),
-                                    new Point(AppRef.Width-1, AppRef.Height-1),
-                                    new Point(0, AppRef.Height-1),
-                                    Point.Empty
-                                };
-
-                                foreach(string line in Output) {
-                                    TextSize = TextRenderer.MeasureText(line, MainFont);
-
-                                    if(TextSize.Width > formScale.Width)
-                                    formScale.Width = TextSize.Width + 10;
-                                    formScale.Height += TextSize.Height;
-
-                                    Out = string.Join("\n", Output);
-                                }
-
-                                try {
-                                    AppRef.Invoke(resize);
-                                }
-                                catch(InvalidOperationException) { }
-
-                                rend.Clear(Color.FromArgb(100, 100, 100));
-                                rend.DrawLines(pen, Border);
-                                TextRenderer.DrawText(rend, Out, MainFont, new Point(5, 6), Color.White);
-                            }
-
-                            Interval = TimerTicks - StartTime;
-
-                        }
-                        catch(System.ObjectDisposedException) { }
-                    }
-#endif
-                }
-            }
-
-
-
-#endif
-            public static void DebugOut() => DebugOut(" ");
-            public static void DebugOut(object obj, int NewCursorTop) {
-#if DEBUG
-                CursorTop = NewCursorTop;
-                WriteLine(obj);
-#endif
-            }
-            public static void DebugOut(object obj) {
-#if DEBUG
-
-
-                return; // Rest Of This Freezes The PS4DebugPage After The Output Overhaul And Isn't Used Anyway
-
-                if(OverrideDebugOut) return; string s = obj.ToString();
-                if(s.Contains("\n")) {
-                    s = s.Replace("\n", "");
-                    s += " (Use Seperate Calls For New Line!!!)";
-                }
-
-            Wait:
-                if(OutputStrings == null) goto Wait; // Try And Avoid Rare Crash On Boot In Dev Build When The App Doesn't Boot Fast Enough
-                if(OutputStringIndex != OutputStrings.Length - 1) {
-                    for(; OutputStringIndex < OutputStrings.Length - 1; OutputStringIndex++) {
-                        if(OutputStrings[OutputStringIndex] == null) {
-                            OutputStrings[OutputStringIndex] = s;
-                            break;
-                        }
-                    }
-                    return;
-                }
-                for(ShiftIndex = 0; ShiftIndex < OutputStrings.Length - 1; ShiftIndex++)
-                    OutputStrings[ShiftIndex] = OutputStrings[ShiftIndex + 1];
-                OutputStrings[ShiftIndex] = s;
-#endif
-            }
-#if DEBUG      
-
-            public static string BlankSpace(string String) {
-                if(String == null) return " ";
-                for(int i = BufferWidth - String.Length; i > 0; i--)
-                    String += " ";
-                return String;
-            }
-
-            public static void DebugOpenFile(string FilePath) {
-                if(MainStreamIsOpen) { MainStream.Dispose(); }
-                ActiveFilePath = FilePath;
-                LocalExecutableCheck = new byte[4];
-                MainStream = new FileStream(FilePath, FileMode.Open, FileAccess.ReadWrite);
-                MainStream.Position = 0x60; MainStream.Read(LocalExecutableCheck, 0, 4);
-                Game = BitConverter.ToInt32(LocalExecutableCheck, 0);
-                try {
-                    ActiveForm.Controls.Find("GameInfoLabel", true)[0].Text = EbootPatchPage.GetGameId();
-                    ActiveForm.Controls.Find("ResetBtn", true)[0].Visible = MainStreamIsOpen = true;
-                    ActiveForm.Controls.Find("CustomDebugOptionsLabel", true)[0].Visible = IsActiveFilePCExe = false;
-                }
-                catch(IndexOutOfRangeException) { }
-                MainStreamIsOpen = true;
-                Clear();
-            }
-
-
-
-            public static void DebugMemoryWrite(ulong address) {
-                if(PS4DebugIsConnected || DebugConnect() == 0)
-                    PS4DebugPage.Toggle((ulong)address);
-                PS4DebugDev = "";
-            }
-            public static void DebugFunctionCall() {
-                return;
-                DebugConnect();
-                DebugOut(geo.Call(Executable, geo.InstallRPC(Executable), 0x52e060, new object[] { 0x105f83d240, 4 })); // 0x105f83d240
-            }
-            public static byte DebugConnect() {
-                try {
-                    geo = new PS4DBG(PS4DebugPage.IP());
-                    geo.Connect();
-                    foreach(libdebug.Process prc in geo.GetProcessList().processes) {
-                        foreach(string id in ExecutablesNames) {
-                            if(prc.name == id) {
-                                string title = geo.GetProcessInfo(prc.pid).titleid;
-                                if(title == "FLTZ00003" || title == "ITEM00003") {
-                                    DebugOut($"Skipping Lightning's Stuff {title}");
-                                    break;
-                                } // Code To Avoid Connecting To HB Store Stuff
-
-                                Executable = prc.pid;
-                                ProcessName = prc.name;
-                                TitleID = geo.GetProcessInfo(prc.pid).titleid;
-                                PS4DebugIsConnected = true;
-                            }
-                        }
-                    }
-                    GameVersion = PS4DebugPage.GetGameVersion();
-                    return 0;
-                }
-                catch(Exception tabarnack) {
-                    MessageBox.Show(tabarnack.Message);
-                    return 1;
-                }
-            }
-
-#endif
-        }
-        /////////////\/\\\\\\\\\\\\
-        ///-- DEBUG CLASS END --\\\
-        /////////////\/\\\\\\\\\\\\
-        #endregion
-
     }
 }

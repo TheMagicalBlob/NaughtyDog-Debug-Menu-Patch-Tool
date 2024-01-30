@@ -450,7 +450,6 @@ namespace Dobby {
                 if(file.Contains("orbis-pub-cmd") || Check.SequenceEqual(new byte[] { 0x46, 0xD1, 0xB8 }) || Check.SequenceEqual(new byte[] { 0x50, 0x45, 0x00 })) {
                     CmdPathLabel.Text = OrbisPubCmdPath = file;
 
-                    Dev.DebugOut();
                     Dev.DebugOut($"{file}\\{OrbisPubCmdPath} Set As OrbisPubCmdPath");
                     return;
                 }
