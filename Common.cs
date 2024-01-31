@@ -205,15 +205,16 @@ namespace Dobby {
           "* 3.39.165.451 | Reworked Several Functions, Moved Dev Class In TO Seperate File. Other Blah Blah Blah",
           "* 3.40.166.455 | Deleted Page, Moved More Crap",
           "* 3.40.172.470 | Large Code Cleaup, Deleted Resource, Reworked And Cleaned Up PCDebugMenuPatchPage, Added PaintBorder() Function Call Inside Of EventHandler Func And Removed All Instances That Came Before Said Function Originally, Many Minor Tweaks/Changes",
-          "* 3.40.175.474 | PS4MenuSettingsPatchPage Work (Reworked Page Structure, Made Some Other Minor Changes). Fixed Designer Bs With vButton class"
+          "* 3.40.175.474 | PS4MenuSettingsPatchPage Work (Reworked Page Structure, Made Some Other Minor Changes). Fixed Designer Bs With vButton class",
+          "* 3.40.176.478 | Minor EbootPatchPage Fix, Debug Tweaks"
 
             // TODO:
             // * MAJOR
             //  - Finish Adding Basic Dynamic Patch Application
             //  - Create Remaining Two Help Pages
-            //  - 
-            //  - 
+            // 
             // * MINOR 
+            //  - Label Flash Stays On White If Inturrupted at the right time
             //  - Update PKG Creation Page To Be More Like GP4 Creation Page
             //  - Standardize Help Page Fonts For Readability
             //  - Standardize Info Label And Back Button Positioning, As Well As Space Between Controls
@@ -548,9 +549,9 @@ namespace Dobby {
                         if((Child.GetType() == typeof(Button) || Child.GetType() == typeof(vButton)) && !Blacklist.Contains(Child.Name)) {
                             Child.MouseEnter += new EventHandler(ControlHover);
                             Child.MouseLeave += new EventHandler(ControlLeave);
-                            if(Child.GetType() == typeof(vButton)) {
-                                Child.Paint += DrawButtonVar;
-                            }
+                        }
+                        if(Child.GetType() == typeof(vButton)) {
+                            Child.Paint += DrawButtonVar;
                         }
 #if DEBUG
                         Child.MouseEnter += new EventHandler(DebugControlHover);
@@ -567,9 +568,9 @@ namespace Dobby {
                 if((Item.GetType() == typeof(Button) || Item.GetType() == typeof(vButton)) && !Blacklist.Contains(Item.Name)) {
                     Item.MouseEnter += new EventHandler(ControlHover);
                     Item.MouseLeave += new EventHandler(ControlLeave);
-                    if(Item.GetType() == typeof(vButton)) {
-                        Item.Paint += DrawButtonVar;
-                    }
+                }
+                if(Item.GetType() == typeof(vButton)) {
+                    Item.Paint += DrawButtonVar;
                 }
 #if DEBUG
                 Item.MouseEnter += new EventHandler(DebugControlHover);

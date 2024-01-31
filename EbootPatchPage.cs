@@ -474,7 +474,7 @@ namespace Dobby {
                 case TLLMP100:
                 case TLLSP100:
                 case TLLSP10X:
-                    RestoredDebugBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Strikeout);
+                    RestoredDebugBtn.Font = new Font("Cambria", 9.75F, FontStyle.Strikeout);
                     RestoredDebugBtn.Enabled = false; return " Restored/Custom";
 
                 ////
@@ -483,7 +483,7 @@ namespace Dobby {
                 case T2107:
                 case T2108:
                 case T2109:
-                    RestoredDebugBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
+                    RestoredDebugBtn.Font = MainFont;
                     RestoredDebugBtn.Enabled = true; return " Custom";
                 ////
                 // Games I've Made Restorations For
@@ -498,13 +498,14 @@ namespace Dobby {
                 case UC3102:
                 case UC4117:
                 case UC4MP133:
-                    return " Restored";
+                    RestoredDebugBtn.Font = MainFont;
+                    RestoredDebugBtn.Enabled = true; return " Restored";
                 ////
                 // Games That Aren't The Right Fucking Game You Dumbass
                 ////
                 default:
                     Dev.DebugOut($"Unknown Game Selected (GetGameID()) Game: {GameID}");
-                    RestoredDebugBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Strikeout);
+                    RestoredDebugBtn.Font = new Font("Cambria", 9.75F, FontStyle.Strikeout);
                     RestoredDebugBtn.Enabled = false; return " Invalid Game";
             }
         }

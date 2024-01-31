@@ -148,21 +148,24 @@ namespace Dobby {
                         string ControlType = HoveredControl?.GetType().ToString();
                         Out = string.Empty;
 
+                        var DynamicVars = PS4MenuSettingsPage.PeekGameSpecificPatchValues();
+
                         if (OverrideDebugOut)
                         Output = new string[] {
-                                $"| Disable FPS:          {Bool(PS4MenuSettingsPage.UniversalDebugBooleans[0])}",
-                                $"| Paused Icon:          {Bool(PS4MenuSettingsPage.UniversalDebugBooleans[1])}",
-                                $"| ProgPauseOnOpen:      {Bool(PS4MenuSettingsPage.UniversalDebugBooleans[2])}",
-                                $"| ProgPauseOnExit:      {Bool(PS4MenuSettingsPage.UniversalDebugBooleans[3])}",
+                                $"| Disable FPS:          {Bool(PS4MenuSettingsPage.UniversaPatchValues[0])}|{Bool(PS4MenuSettingsPage.UniversaPatchValues[1])}",
+                                $"| Paused Icon:          {Bool(PS4MenuSettingsPage.UniversaPatchValues[2])}",
+                                $"| ProgPauseOnOpen:      {Bool(PS4MenuSettingsPage.UniversaPatchValues[3])}",
+                                $"| ProgPauseOnExit:      {Bool(PS4MenuSettingsPage.UniversaPatchValues[4])}",
+                                $"| Novis:                {Bool(PS4MenuSettingsPage.UniversaPatchValues[5])}",
                                  "| ",
-                                $"| Menu Scale:           {PS4MenuSettingsPage.GameSpecificPatchValues[0]}",
-                                $"| Menu Alpha:           {PS4MenuSettingsPage.GameSpecificPatchValues[1]}",
-                                $"| Non-ADS FOV:          {PS4MenuSettingsPage.GameSpecificPatchValues[2]}",
-                                $"| Swap Square & Circle: {Bool(PS4MenuSettingsPage.GameSpecificPatchValues[3])}",
-                                $"| Shadowed Text:        {Bool(PS4MenuSettingsPage.GameSpecificPatchValues[4])}",
-                                $"| Version Text:         {Bool(PS4MenuSettingsPage.GameSpecificPatchValues[5])}",
-                                $"| Right Align:          {Bool(PS4MenuSettingsPage.GameSpecificPatchValues[6])}",
-                                $"|    Right Margin:      {PS4MenuSettingsPage.GameSpecificPatchValues[7]}",
+                                $"| Menu Scale:           {DynamicVars[0]}",
+                                $"| Menu Alpha:           {DynamicVars[1]}",
+                                $"| Non-ADS FOV:          {DynamicVars[2]}",
+                                $"| Swap Square & Circle: {Bool(DynamicVars[3])}",
+                                $"| Shadowed Text:        {Bool(DynamicVars[4])}",
+                                $"| Version Text:         {Bool(DynamicVars[5])}",
+                                $"| Right Align:          {Bool(DynamicVars[6])}",
+                                $"|    Right Margin:      {DynamicVars[7]}",
                         };
 
                         else
@@ -193,7 +196,7 @@ namespace Dobby {
                             SizeF TextSize;
                             formScale = Size.Empty;
 
-
+                            // Resize LogWindow To Fit Rendered Text, With A Padding of 6 Pixels (Half Because It's Also Placed 6 Pixles In On Each Axis Below)
                             foreach(string line in Output) {
                                 TextSize = rend.MeasureString(line, MainFont);
 
@@ -205,11 +208,13 @@ namespace Dobby {
                             }
                             formScale.Height += 12;
 
+                            // Resize Form Back On Main LogWindow Thread
                             try {
                                 AppRef.Invoke(resize);
                             }
-                            catch(InvalidOperationException) { }
+                            catch(InvalidOperationException) { MessageBox.Show("Resize Error Noti"); }
 
+                            // Inlined PaintBorder Function Setup
                             Point[] Border = new Point[] {
                                     Point.Empty,
                                     new Point(AppRef.Width-1, 0),
@@ -218,6 +223,7 @@ namespace Dobby {
                                     Point.Empty
                             };
 
+                            // Clear Last "Frame", Draw Text And Border
                             rend.Clear(Color.FromArgb(100, 100, 100));
                             rend.DrawLines(pen, Border);
                             rend.DrawString(Out, MainFont, Brushes.White, new Point(6, 6));

@@ -13,10 +13,11 @@ namespace Dobby {
             InitializeComponent();
             
 
-            DisableDebugTextBtn.Variable = UniversalDebugBooleans[0];
-            DisablePausedIconBtn.Variable = UniversalDebugBooleans[1];
-            ProgPauseOnOpenBtn.Variable = UniversalDebugBooleans[2];
-            ProgPauseOnCloseBtn.Variable = UniversalDebugBooleans[3];
+            DisableDebugTextBtn.Variable = UniversaPatchValues[0];
+            DisablePausedIconBtn.Variable = UniversaPatchValues[2];
+            ProgPauseOnOpenBtn.Variable = UniversaPatchValues[3];
+            ProgPauseOnCloseBtn.Variable = UniversaPatchValues[4];
+            NovisBtn.Variable = UniversaPatchValues[5];
 
             AddControlEventHandlers(Controls);
 
@@ -30,8 +31,6 @@ namespace Dobby {
             this.ProgPauseOnOpenBtn = new Dobby.Common.vButton();
             this.DisableDebugTextBtn = new Dobby.Common.vButton();
             this.DisablePausedIconBtn = new Dobby.Common.vButton();
-            this.MenuScaleBtn = new Dobby.Common.vButton();
-            this.MenuAlphaBtn = new Dobby.Common.vButton();
             this.MainLabel = new System.Windows.Forms.Label();
             this.ExitBtn = new System.Windows.Forms.Button();
             this.MinimizeBtn = new System.Windows.Forms.Button();
@@ -49,6 +48,7 @@ namespace Dobby {
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
             this.GameInfoLabel = new System.Windows.Forms.Label();
+            this.NovisBtn = new Dobby.Common.vButton();
             this.SuspendLayout();
             // 
             // ProgPauseOnCloseBtn
@@ -59,7 +59,7 @@ namespace Dobby {
             this.ProgPauseOnCloseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ProgPauseOnCloseBtn.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
             this.ProgPauseOnCloseBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ProgPauseOnCloseBtn.Location = new System.Drawing.Point(1, 116);
+            this.ProgPauseOnCloseBtn.Location = new System.Drawing.Point(1, 119);
             this.ProgPauseOnCloseBtn.Name = "ProgPauseOnCloseBtn";
             this.ProgPauseOnCloseBtn.Size = new System.Drawing.Size(318, 24);
             this.ProgPauseOnCloseBtn.TabIndex = 56;
@@ -76,7 +76,7 @@ namespace Dobby {
             this.ProgPauseOnOpenBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ProgPauseOnOpenBtn.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
             this.ProgPauseOnOpenBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ProgPauseOnOpenBtn.Location = new System.Drawing.Point(1, 94);
+            this.ProgPauseOnOpenBtn.Location = new System.Drawing.Point(1, 96);
             this.ProgPauseOnOpenBtn.Name = "ProgPauseOnOpenBtn";
             this.ProgPauseOnOpenBtn.Size = new System.Drawing.Size(318, 24);
             this.ProgPauseOnOpenBtn.TabIndex = 51;
@@ -112,7 +112,7 @@ namespace Dobby {
             this.DisablePausedIconBtn.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
             this.DisablePausedIconBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.DisablePausedIconBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.DisablePausedIconBtn.Location = new System.Drawing.Point(1, 73);
+            this.DisablePausedIconBtn.Location = new System.Drawing.Point(1, 74);
             this.DisablePausedIconBtn.Name = "DisablePausedIconBtn";
             this.DisablePausedIconBtn.Size = new System.Drawing.Size(318, 24);
             this.DisablePausedIconBtn.TabIndex = 49;
@@ -121,26 +121,12 @@ namespace Dobby {
             this.DisablePausedIconBtn.UseVisualStyleBackColor = false;
             this.DisablePausedIconBtn.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PausedIconBtn_Click);
             // 
-            // MenuScaleBtn
-            // 
-            this.MenuScaleBtn.Location = new System.Drawing.Point(0, 0);
-            this.MenuScaleBtn.Name = "MenuScaleBtn";
-            this.MenuScaleBtn.Size = new System.Drawing.Size(75, 23);
-            this.MenuScaleBtn.TabIndex = 0;
-            // 
-            // MenuAlphaBtn
-            // 
-            this.MenuAlphaBtn.Location = new System.Drawing.Point(0, 0);
-            this.MenuAlphaBtn.Name = "MenuAlphaBtn";
-            this.MenuAlphaBtn.Size = new System.Drawing.Size(75, 23);
-            this.MenuAlphaBtn.TabIndex = 0;
-            // 
             // MainLabel
             // 
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MainLabel.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold);
             this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.MainLabel.Location = new System.Drawing.Point(2, 3);
+            this.MainLabel.Location = new System.Drawing.Point(1, 1);
             this.MainLabel.Name = "MainLabel";
             this.MainLabel.Size = new System.Drawing.Size(314, 24);
             this.MainLabel.TabIndex = 0;
@@ -170,7 +156,7 @@ namespace Dobby {
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinimizeBtn.Location = new System.Drawing.Point(270, 1);
+            this.MinimizeBtn.Location = new System.Drawing.Point(268, 1);
             this.MinimizeBtn.Name = "MinimizeBtn";
             this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
             this.MinimizeBtn.TabIndex = 19;
@@ -182,7 +168,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(5, 344);
+            this.Info.Location = new System.Drawing.Point(8, 366);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
@@ -196,7 +182,7 @@ namespace Dobby {
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 296);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 319);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(85, 22);
@@ -214,7 +200,7 @@ namespace Dobby {
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 274);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 297);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.InfoHelpBtn.Size = new System.Drawing.Size(162, 22);
@@ -242,7 +228,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 318);
+            this.BackBtn.Location = new System.Drawing.Point(1, 341);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.BackBtn.Size = new System.Drawing.Size(65, 22);
@@ -257,7 +243,7 @@ namespace Dobby {
             this.CustomDebugOptionsLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.CustomDebugOptionsLabel.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
             this.CustomDebugOptionsLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.CustomDebugOptionsLabel.Location = new System.Drawing.Point(3, 179);
+            this.CustomDebugOptionsLabel.Location = new System.Drawing.Point(3, 202);
             this.CustomDebugOptionsLabel.Name = "CustomDebugOptionsLabel";
             this.CustomDebugOptionsLabel.Size = new System.Drawing.Size(316, 19);
             this.CustomDebugOptionsLabel.TabIndex = 54;
@@ -268,7 +254,7 @@ namespace Dobby {
             this.UniversalPatchesLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.UniversalPatchesLabel.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Bold);
             this.UniversalPatchesLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.UniversalPatchesLabel.Location = new System.Drawing.Point(102, 31);
+            this.UniversalPatchesLabel.Location = new System.Drawing.Point(102, 33);
             this.UniversalPatchesLabel.Name = "UniversalPatchesLabel";
             this.UniversalPatchesLabel.Size = new System.Drawing.Size(111, 14);
             this.UniversalPatchesLabel.TabIndex = 53;
@@ -279,7 +265,7 @@ namespace Dobby {
             this.GameSpecificPatchesLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.GameSpecificPatchesLabel.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Bold);
             this.GameSpecificPatchesLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.GameSpecificPatchesLabel.Location = new System.Drawing.Point(88, 152);
+            this.GameSpecificPatchesLabel.Location = new System.Drawing.Point(88, 177);
             this.GameSpecificPatchesLabel.Name = "GameSpecificPatchesLabel";
             this.GameSpecificPatchesLabel.Size = new System.Drawing.Size(136, 15);
             this.GameSpecificPatchesLabel.TabIndex = 52;
@@ -289,7 +275,7 @@ namespace Dobby {
             // 
             this.SeperatorLine3.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine3.Location = new System.Drawing.Point(2, 255);
+            this.SeperatorLine3.Location = new System.Drawing.Point(2, 278);
             this.SeperatorLine3.Name = "SeperatorLine3";
             this.SeperatorLine3.Size = new System.Drawing.Size(316, 16);
             this.SeperatorLine3.TabIndex = 32;
@@ -303,7 +289,7 @@ namespace Dobby {
             this.BrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BrowseButton.Font = new System.Drawing.Font("Consolas", 8.5F, System.Drawing.FontStyle.Bold);
             this.BrowseButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.BrowseButton.Location = new System.Drawing.Point(237, 218);
+            this.BrowseButton.Location = new System.Drawing.Point(237, 241);
             this.BrowseButton.Name = "BrowseButton";
             this.BrowseButton.Size = new System.Drawing.Size(78, 23);
             this.BrowseButton.TabIndex = 39;
@@ -317,7 +303,7 @@ namespace Dobby {
             this.ExecutablePathBox.BackColor = System.Drawing.Color.Gray;
             this.ExecutablePathBox.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
             this.ExecutablePathBox.ForeColor = System.Drawing.SystemColors.Window;
-            this.ExecutablePathBox.Location = new System.Drawing.Point(3, 218);
+            this.ExecutablePathBox.Location = new System.Drawing.Point(3, 241);
             this.ExecutablePathBox.Name = "ExecutablePathBox";
             this.ExecutablePathBox.Size = new System.Drawing.Size(233, 23);
             this.ExecutablePathBox.TabIndex = 38;
@@ -327,7 +313,7 @@ namespace Dobby {
             // 
             this.SeperatorLine1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 133);
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 156);
             this.SeperatorLine1.Name = "SeperatorLine1";
             this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
             this.SeperatorLine1.TabIndex = 37;
@@ -337,7 +323,7 @@ namespace Dobby {
             // 
             this.SeperatorLine2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(2, 193);
+            this.SeperatorLine2.Location = new System.Drawing.Point(2, 216);
             this.SeperatorLine2.Name = "SeperatorLine2";
             this.SeperatorLine2.Size = new System.Drawing.Size(316, 16);
             this.SeperatorLine2.TabIndex = 36;
@@ -347,19 +333,36 @@ namespace Dobby {
             // 
             this.GameInfoLabel.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
             this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.GameInfoLabel.Location = new System.Drawing.Point(2, 244);
+            this.GameInfoLabel.Location = new System.Drawing.Point(2, 267);
             this.GameInfoLabel.Name = "GameInfoLabel";
             this.GameInfoLabel.Size = new System.Drawing.Size(316, 19);
             this.GameInfoLabel.TabIndex = 40;
             this.GameInfoLabel.Text = "No File Selected";
             this.GameInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // NovisBtn
+            // 
+            this.NovisBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.NovisBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.NovisBtn.FlatAppearance.BorderSize = 0;
+            this.NovisBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.NovisBtn.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
+            this.NovisBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.NovisBtn.Location = new System.Drawing.Point(1, 141);
+            this.NovisBtn.Name = "NovisBtn";
+            this.NovisBtn.Size = new System.Drawing.Size(318, 24);
+            this.NovisBtn.TabIndex = 57;
+            this.NovisBtn.Text = "Disable Culling Of Level Geometry:";
+            this.NovisBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.NovisBtn.UseVisualStyleBackColor = false;
+            // 
             // PS4MenuSettingsPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ClientSize = new System.Drawing.Size(320, 365);
+            this.ClientSize = new System.Drawing.Size(320, 387);
+            this.Controls.Add(this.NovisBtn);
             this.Controls.Add(this.ProgPauseOnCloseBtn);
             this.Controls.Add(this.MinimizeBtn);
             this.Controls.Add(this.CustomDebugOptionsLabel);
@@ -422,8 +425,6 @@ namespace Dobby {
 
         private static byte[] LocalExecutableCheck;
 
-
-
         private static string ActiveFilePath;
 
         private static bool IsActiveFilePCExe, MainStreamIsOpen;
@@ -431,6 +432,10 @@ namespace Dobby {
         public static void WriteBytes(int offset, byte[] data) {
             MainStream.Position = offset;
             MainStream.Write(data, 0, data.Length);
+        }
+        public static void WriteByte(int offset, byte data) {
+            MainStream.Position = offset;
+            MainStream.WriteByte(data);
         }
         /// <summary> Compare Data Read At The Given Address
         /// </summary>
@@ -483,45 +488,35 @@ namespace Dobby {
             RightMarginBtn
         }
 
-        
-        /// <summary>
-        ///      0: Disable FPS
-        ///<br/> 1: Paused Icon
-        ///<br/> 2: Prog Pause On Open 
-        ///<br/> 3: Prog Pause On Close
-        /// </summary>
-        
-        public static bool[] UniversalDebugBooleans { get; private set; } = new bool[4];
-
-        /// <summary>
-        /// 0: Menu Scale <br/>
-        /// 1: Menu Alpha <br/>
-        /// 2: Non-ADS FOV <br/>
-        /// 3: Swap Square And Circle In Debug <br/>
-        /// 4: Menu Shadowed Text <br/>
-        /// 5: Version Text <br/>
-        /// 6: Align Menus Right <br/>
-        /// 7: Right Margin <br/>
-        /// </summary>
-        
-        public static object[] GameSpecificPatchValues = new object[] {
-                    0.60f,
-                    0.85f,
-                    1f,
-                    false,
-                    false,
-                    false,
-                    false,
-                    (byte)10
-        };
-
-        private static readonly object[] DefaultPatchValues = GameSpecificPatchValues;
-
 
         ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///-- QUALITY OF LIFE/BOOTSETTINGS OFFSET POINTERS  --\\\
         ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         #region BootSettingsPointers
+        
+        /*|Template
+        new byte[][] {
+            new byte[] {  }, // 0x | UC1100
+            new byte[] {  }, // 0x | UC1102
+            new byte[] {  }, // 0x | UC2100
+            new byte[] {  }, // 0x | UC2102
+            new byte[] {  }, // 0x | UC3100
+            new byte[] {  }, // 0x | UC3102
+            new byte[] {  }, // 0x | UC4100
+            new byte[] {  }, // 0x | UC4101
+            new byte[] {  }, // 0x | UC4133
+            new byte[] {  }, // 0x | UC4133MP
+            new byte[] {  }, // 0x | TLL100
+            new byte[] {  }, // 0x | TLL109
+            new byte[] {  }, // 0x | T1R100
+            new byte[] {  }, // 0x | T1R109
+            new byte[] {  }, // 0x | T1R110
+            new byte[] {  }, // 0x | T1R111
+            new byte[] {  }, // 0x | T2100
+            new byte[] {  }, // 0x | T2107
+            new byte[] {  }  // 0x | T2109
+        }
+        */
 
         /// <summary>
         /// Byte arrays to be used as pointers with the BootSettings custom function<br/><br/>
@@ -532,24 +527,14 @@ namespace Dobby {
         /// Patch Type Index:<br/>
         ///   0:  Disable FPS<br/>
         ///   1:  Suppress Active task Display<br/>
-        ///   2:  Shadow Menu Text<br/>
+        ///   5:  Show Paused Indicator<br/>
         ///   3:  ProgPauseOnMenuOpen<br/>
         ///   4:  ProgPauseOnMenuClose<br/>
-        ///   5:  Show Paused Indicator<br/>
-        ///   6:  Swap Circle And Square<br/>
-        ///   7:  Right Margin<br/>
-        ///   8:  Right Align<br/>
-        ///   9:  Menu Alpha<br/>
-        ///   10: Menu Scale<br/>
         ///   11: novis<br/>
         ///</summary>
-        private static readonly byte[][][] BootSettingsPointers = new byte[][][] {  // fill null bytes just in case of repeat uses with alternate options
-            
+        private static readonly byte[][][] UniversalBootSettingsPointers = new byte[][][] {  // fill null bytes just in case of repeat uses with alternate options
+                // 4 = 0xfe | 8 = 0xff
 
-            /////////\\\\\\\\
-            // RAM Address \\
-            /////////\\\\\\\\
-                
             //|Disable FPS
             new byte[][] {
                 new byte[] { 0x70, 0x89, 0x99, 0x00 }, // UC1100
@@ -570,9 +555,8 @@ namespace Dobby {
                 new byte[] {  }, // T1R111
                 new byte[] {  }, // T2100
                 new byte[] {  }, // T2107
-                new byte[] { 0xff, 0x30, 0xb4, 0x77, 0x03, 0xb8, 0x3a, 0x00, 0x00 }  // T2109
+                new byte[] { 0x30, 0xb4, 0x77, 0x03, 0xb8, 0x3a, 0x00, 0x00 }  // T2109
             },
-            
             
             //|Suppress Active task Display
             new byte[][] {
@@ -597,35 +581,29 @@ namespace Dobby {
                 new byte[] { 0xff, 0x30, 0xb4, 0x77, 0x03, 0xcd, 0x3a, 0x00, 0x00 }  // T2109
             },
 
-
-            
-            /////////\\\\\\\\
-            // ELF Address \\
-            /////////\\\\\\\\
-                
-            //|Shadow Menu Text
+            //|Show Paused Indicator
             new byte[][] {
-                new byte[] { 0x87, 0xF9, 0xA9, 0x00 }, // 0xE9F988  | UC1100 
-                new byte[] { 0x87, 0x38, 0xA6, 0x00 }, // 0xE63888  | UC1102
-                new byte[] { 0x77, 0xC7, 0xEB, 0x00 }, // 0x12bc778 | UC2100
-                new byte[] { 0xDF, 0x95, 0x05, 0x01 }, // 0x14595df | UC2102
-                new byte[] { 0x2f, 0xFA, 0x42, 0x01 }, // 0x182fa2f | UC3100
-                new byte[] { 0x4f, 0x4A, 0x7B, 0x01 }, // 0x1bb4a4f | UC3102
-                new byte[] {  }, // UC4100
-                new byte[] {  }, // UC4101
-                new byte[] {  }, // UC4133
-                new byte[] {  }, // UC4133MP
-                new byte[] {  }, // TLL100
-                new byte[] {  }, // TLL109
-                new byte[] {  }, // T1R100
-                new byte[] {  }, // T1R109
-                new byte[] {  }, // T1R110
-                new byte[] {  }, // T1R111
-                new byte[] {  }, // T2100
-                new byte[] { 0xB8, 0x67, 0x24, 0x03 }, // 0x36467b8 | T2107
-                new byte[] { 0x38, 0xA6, 0x25, 0x03 }  // 0x365a638 | T2109
+                new byte[] { 0x8A, 0xF9, 0xA9, 0x00 }, // 0xD98970  | UC1100
+                new byte[] { 0x8A, 0x38, 0xA6, 0x00 }, // 0xE6388A  | UC1102
+                new byte[] { 0x7A, 0xC7, 0xEB, 0x00 }, // 0x12bc77a | UC2100
+                new byte[] { 0xE2, 0x95, 0x05, 0x00 }, // 0x14595e2 | UC2102
+                new byte[] { 0x32, 0xFA, 0x42, 0x00 }, // 0x182fa32 | UC3100
+                new byte[] { 0x52, 0x4A, 0x7B, 0x00 }, // 0x1bb4a52 | UC3102
+                new byte[] {  }, // 0x | UC4100
+                new byte[] {  }, // 0x | UC4101
+                new byte[] {  }, // 0x | UC4133
+                new byte[] {  }, // 0x | UC4133MP
+                new byte[] {  }, // 0x | TLL100
+                new byte[] {  }, // 0x | TLL109
+                new byte[] {  }, // 0x | T1R100
+                new byte[] {  }, // 0x | T1R109
+                new byte[] {  }, // 0x | T1R110
+                new byte[] {  }, // 0x | T1R111
+                new byte[] {  }, // 0x | T2100
+                new byte[] { 0xBB, 0x67, 0x24, 0x03 }, // 0x36467bb | T2107
+                new byte[] { 0x3B, 0xA6, 0x25, 0x03 }  // 0x365a63b | T2109
             },
-            
+
             //|ProgPauseOnMenuOpen
             new byte[][] {
                 new byte[] { 0x88, 0xF9, 0xA9, 0x00 }, // 0xE9F988  | UC1100 
@@ -672,14 +650,14 @@ namespace Dobby {
                 new byte[] { 0x3a, 0xA6, 0x25, 0x03 }  // 0x365a63a | T2109
             },
 
-            //|Show Paused Indicator
+            //|novis
             new byte[][] {
-                new byte[] { 0x8A, 0xF9, 0xA9, 0x00 }, // 0xD98970  | UC1100
-                new byte[] { 0x8A, 0x38, 0xA6, 0x00 }, // 0xE6388A  | UC1102
-                new byte[] { 0x7A, 0xC7, 0xEB, 0x00 }, // 0x12bc77a | UC2100
-                new byte[] { 0xE2, 0x95, 0x05, 0x00 }, // 0x14595e2 | UC2102
-                new byte[] { 0x32, 0xFA, 0x42, 0x00 }, // 0x182fa32 | UC3100
-                new byte[] { 0x52, 0x4A, 0x7B, 0x00 }, // 0x1bb4a52 | UC3102
+                new byte[] { 0x6B, 0xF9, 0x98, 0x00 }, // 0xd8f96b  | UC1100
+                new byte[] { 0x9B, 0x59, 0x95, 0x00 }, // 0xD5599B  | UC1102
+                new byte[] { 0xFB, 0x61, 0xE6, 0x00 }, // 0x12661fb | UC2100
+                new byte[] { 0xCB, 0x0D, 0x05, 0x01 }, // 0x1450dcb | UC2102
+                new byte[] { 0x34, 0xFA, 0x42, 0x01 }, // 0x182FA34 | UC3100
+                new byte[] { 0x8B, 0x80, 0x6E, 0x01 }, // 0x1ae808b | UC3102
                 new byte[] {  }, // 0x | UC4100
                 new byte[] {  }, // 0x | UC4101
                 new byte[] {  }, // 0x | UC4133
@@ -690,11 +668,51 @@ namespace Dobby {
                 new byte[] {  }, // 0x | T1R109
                 new byte[] {  }, // 0x | T1R110
                 new byte[] {  }, // 0x | T1R111
-                new byte[] {  }, // 0x | T2100
-                new byte[] { 0xBB, 0x67, 0x24, 0x03 }, // 0x36467bb | T2107
-                new byte[] { 0x3B, 0xA6, 0x25, 0x03 }  // 0x365a63b | T2109
-            },
+                new byte[] { 0x2C, 0x62, 0x01, 0x03 }, // 0x341622c | T2100
+                new byte[] { 0x2C, 0x60, 0x01, 0x03 }, // 0x341602c | T2107
+                new byte[] { 0x2C, 0x9E, 0x04, 0x03 }  // 0x3449e2c | T2109
+            }
+        };
 
+        /// <summary>
+        /// Byte arrays to be used as pointers with the BootSettings custom function<br/><br/>
+        /// 32-Bit Ones Are Pointers To Data In Executable Space.<br/>
+        /// Chunky Fucks Are a 32-bit Pointer to A 64-bit Pointer + An Offset to Add.
+        /// 0 to UC1100 - UC4100
+        /// <br/><br/>
+        /// Patch Type Index:<br/>
+        ///   2:  Shadow Menu Text<br/>
+        ///   6:  Swap Circle And Square<br/>
+        ///   7:  Right Margin<br/>
+        ///   8:  Right Align<br/>
+        ///   9:  Menu Alpha<br/>
+        ///   10: Menu Scale<br/>
+        ///</summary>
+        private static readonly byte[][][] GameSpecificBootSettingsPointers = new byte[][][] {  // fill null bytes just in case of repeat uses with alternate options
+                
+            //|Shadow Menu Text
+            new byte[][] {
+                new byte[] { 0x87, 0xF9, 0xA9, 0x00 }, // 0xE9F988  | UC1100 
+                new byte[] { 0x87, 0x38, 0xA6, 0x00 }, // 0xE63888  | UC1102
+                new byte[] { 0x77, 0xC7, 0xEB, 0x00 }, // 0x12bc778 | UC2100
+                new byte[] { 0xDF, 0x95, 0x05, 0x01 }, // 0x14595df | UC2102
+                new byte[] { 0x2f, 0xFA, 0x42, 0x01 }, // 0x182fa2f | UC3100
+                new byte[] { 0x4f, 0x4A, 0x7B, 0x01 }, // 0x1bb4a4f | UC3102
+                new byte[] {  }, // UC4100
+                new byte[] {  }, // UC4101
+                new byte[] {  }, // UC4133
+                new byte[] {  }, // UC4133MP
+                new byte[] {  }, // TLL100
+                new byte[] {  }, // TLL109
+                new byte[] {  }, // T1R100
+                new byte[] {  }, // T1R109
+                new byte[] {  }, // T1R110
+                new byte[] {  }, // T1R111
+                new byte[] {  }, // T2100
+                new byte[] { 0xB8, 0x67, 0x24, 0x03 }, // 0x36467b8 | T2107
+                new byte[] { 0x38, 0xA6, 0x25, 0x03 }  // 0x365a638 | T2109
+            },
+            
             //|Swap Circle & Square
             new byte[][] {
                 new byte[] {  }, // 0x | UC1100
@@ -808,63 +826,34 @@ namespace Dobby {
                 new byte[] {  }, // 0x | T2100
                 new byte[] { 0xC8, 0x67, 0x24, 0x03 }, // 0x36467c8 | T2107
                 new byte[] { 0x48, 0xA6, 0x25, 0x03 }  // 0x365a648 | T2109
-            },
-
-            //|novis
-            new byte[][] {
-                new byte[] { 0x6B, 0xF9, 0x98, 0x00 }, // 0xd8f96b  | UC1100
-                new byte[] { 0x9B, 0x59, 0x95, 0x00 }, // 0xD5599B  | UC1102
-                new byte[] { 0xFB, 0x61, 0xE6, 0x00 }, // 0x12661fb | UC2100
-                new byte[] { 0xCB, 0x0D, 0x05, 0x01 }, // 0x1450dcb | UC2102
-                new byte[] { 0x34, 0xFA, 0x42, 0x01 }, // 0x182FA34 | UC3100
-                new byte[] { 0x8B, 0x80, 0x6E, 0x01 }, // 0x1ae808b | UC3102
-                new byte[] {  }, // 0x | UC4100
-                new byte[] {  }, // 0x | UC4101
-                new byte[] {  }, // 0x | UC4133
-                new byte[] {  }, // 0x | UC4133MP
-                new byte[] {  }, // 0x | TLL100
-                new byte[] {  }, // 0x | TLL109
-                new byte[] {  }, // 0x | T1R100
-                new byte[] {  }, // 0x | T1R109
-                new byte[] {  }, // 0x | T1R110
-                new byte[] {  }, // 0x | T1R111
-                new byte[] { 0x2C, 0x62, 0x01, 0x03 }, // 0x341622c | T2100
-                new byte[] { 0x2C, 0x60, 0x01, 0x03 }, // 0x341602c | T2107
-                new byte[] { 0x2C, 0x9E, 0x04, 0x03 }  // 0x3449e2c | T2109
             }
-
-            /*|Template
-            new byte[][] {
-                new byte[] {  }, // 0x | UC1100
-                new byte[] {  }, // 0x | UC1102
-                new byte[] {  }, // 0x | UC2100
-                new byte[] {  }, // 0x | UC2102
-                new byte[] {  }, // 0x | UC3100
-                new byte[] {  }, // 0x | UC3102
-                new byte[] {  }, // 0x | UC4100
-                new byte[] {  }, // 0x | UC4101
-                new byte[] {  }, // 0x | UC4133
-                new byte[] {  }, // 0x | UC4133MP
-                new byte[] {  }, // 0x | TLL100
-                new byte[] {  }, // 0x | TLL109
-                new byte[] {  }, // 0x | T1R100
-                new byte[] {  }, // 0x | T1R109
-                new byte[] {  }, // 0x | T1R110
-                new byte[] {  }, // 0x | T1R111
-                new byte[] {  }, // 0x | T2100
-                new byte[] {  }, // 0x | T2107
-                new byte[] {  }  // 0x | T2109
-            }
-            */
         };
 
         #endregion
 
 
+        /// <summary>
+        ///      Booleans Used For Universal Patch Values
+        ///<br/> Defaults Are All False, So That's Nice. Simplifies Things
+        ///<br/>
+        ///<br/> 0: Disable FPS
+        ///<br/> 1: Suppress Active Task Display (Toggled Alongside FPS)
+        ///<br/> 2: Disable Paused Indicator
+        ///<br/> 3: Prog Pause On Open 
+        ///<br/> 4: Prog Pause On Close
+        ///<br/> 5: novis (Addme)
+        /// </summary>
+#if !DEBUG
+        private bool[] UniversaPatchValues = new bool[6];
+#else
+        public static object[] PeekGameSpecificPatchValues() { return DynamicPatchButtons.GameSpecificPatchValues; }
+        public static bool[] UniversaPatchValues { get; private set; } = new bool[6];
+#endif
 
         // this doesn't need to be a struct, but whatever
         /// <summary> Struct For Creating Dynamic Patch Buttons
         /// </summary>
+
         private struct DynamicPatchButtons {
             public DynamicPatchButtons(IDS[] Ids, int VerticalStartIndex = 0) {
                 Buttons = new vButton[ControlText.Length + 1];
@@ -875,6 +864,33 @@ namespace Dobby {
                 else
                     EnableDynamicPatchButtons(Ids);
             }
+
+
+
+
+            /// <summary>
+            /// 0: Menu Scale <br/>
+            /// 1: Menu Alpha <br/>
+            /// 2: Non-ADS FOV <br/>
+            /// 3: Swap Square And Circle In Debug <br/>
+            /// 4: Menu Shadowed Text <br/>
+            /// 5: Version Text <br/>
+            /// 6: Align Menus Right <br/>
+            /// 7: Right Margin <br/>
+            /// </summary>
+            
+            public static readonly object[] DefaultPatchValues = GameSpecificPatchValues;
+            public static object[] GameSpecificPatchValues { get; private set; } = new object[] {
+                0.60f,
+                0.85f,
+                1f,
+                false,
+                false,
+                false,
+                false,
+                (byte)10
+            };
+
 
             /// <summary>
             /// Variable Used In Dynamic Button Cration For Game-Specific Patches
@@ -888,7 +904,7 @@ namespace Dobby {
                     "VersionTxtBtn",
                     "MenuRightAlignBtn",
                     "RightMarginBtn"
-                };
+            };
 
             private static readonly string[] ControlText = new string[] {
                     "Set Dev Menu Scale:",               // default=0.60
@@ -899,7 +915,7 @@ namespace Dobby {
                     "Disable Version Text:",             // default=No
                     "Align Debug Menus To The Right:",   // default=No
                     "Set Distance From Right Side:"      // default=10
-                };
+            };
 
             private static readonly string[] Hint = new string[] {
                     "Hint",
@@ -910,7 +926,7 @@ namespace Dobby {
                     "Moves The Dev/Quick Menus To The Right Of The Screen",
                     "Hint",
                     "Hint"
-                };
+            };
 
             private int ButtonsVerticalStartPos;
 
@@ -967,13 +983,14 @@ namespace Dobby {
                 MultipleButtonsEnabled = true;
             }
 
-            /// <summary> Nuke Dynamic Patch Buttons
+            /// <summary> Nuke Dynamic Patch Buttons And Reset Option Variables
             ///</summary>
             public void Reset() {
                 foreach(Button button in Buttons)
                     button?.Dispose();
 
                 Buttons = null;
+                GameSpecificPatchValues = DefaultPatchValues;
             }
 
             public Button[] CreateDynamicButtons() {
@@ -1096,26 +1113,26 @@ namespace Dobby {
         }
 
 
+
         ///////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///--     Event Handlers For Basic Patches Available For Each Game     --\\\
         ///////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         #region Event Handlers For Basic Patches Available For Each Game
-        private void DisableDebugTextBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((vButton)sender, e.Delta != 0, 0);
-
+        private void DisableDebugTextBtn_Click(object sender, MouseEventArgs e) {
+            DefaultButtonClick((vButton)sender, e.Delta != 0, 0); // Disable FPS
+            DefaultButtonClick((vButton)sender, e.Delta != 0, 1); // Suppress Active Task Display
+        }
         private void PausedIconBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((vButton)sender, e.Delta != 0, 1);
-
         private void ProgPauseOnOpenBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((vButton)sender, e.Delta != 0, 2);
-        
         private void ProgPauseOnCloseBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((vButton)sender, e.Delta != 0, 3);
-
+        private void DisableAllVisibilityBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((vButton)sender, e.Delta != 0, 3);
         private void DefaultButtonClick(vButton cnt, bool scrolled, int PatchIndex) { ToggleBool(cnt, PatchIndex); MouseScrolled = scrolled; }
-
         private void ToggleBool(vButton Control, int OptionIndex) {
             if(MouseScrolled || !MouseIsDown || CurrentControl != Control.Name)
                 return;
 
-            UniversalDebugBooleans[OptionIndex] = !(bool)UniversalDebugBooleans[OptionIndex];
-            Control.Variable = UniversalDebugBooleans[OptionIndex];
+            UniversaPatchValues[OptionIndex] = !(bool)UniversaPatchValues[OptionIndex];
+            Control.Variable = UniversaPatchValues[OptionIndex];
             Control.Refresh();
         }
         #endregion
@@ -1204,7 +1221,6 @@ namespace Dobby {
             Game = 0;
             ActiveFilePath = null;
             MultipleButtonsEnabled = false;
-            GameSpecificPatchValues = DefaultPatchValues;
         }
 
         /// <summary> Resize Form And Move Buttons, Then Add Enabled Custom Buttons To Form Based On The Current Game And Patch
@@ -1353,9 +1369,10 @@ namespace Dobby {
             ResetBtn.BringToFront();
         }
 
-        private static void ConfirmBtn_Click(object sender, EventArgs e) {
+        private void ConfirmBtn_Click(object sender, EventArgs e) {
             using(MainStream) {
 
+                index = 0;
                 int BootSettingsAddress;
 
                 // Write Function Call To Call BootSettings
@@ -1367,23 +1384,29 @@ namespace Dobby {
 
                 var BootSettingsDataAddress = BootSettingsAddress + 0x57;
 
-
                 // Universal Options
-                index = 0;
-                while(index < UniversalDebugBooleans.Length) {
-                    if(UniversalDebugBooleans[index]) {
-                        WriteBytes(BootSettingsDataAddress, BootSettingsPointers[index][GameIndex]);
-                        BootSettingsAddress += BootSettingsPointers[index][GameIndex].Length;
-                    }
+                byte[] PatchData;
+                foreach(var Bool in UniversaPatchValues) {
+                    if(!Bool) continue;
+
+                    PatchData = UniversalBootSettingsPointers[index][GameIndex];
+                    WriteBytes(BootSettingsDataAddress, PatchData);
+                    BootSettingsDataAddress += PatchData.Length;
+                    WriteByte(BootSettingsDataAddress++, 1);
                     index++;
                 }
+                index = 0;
+
 
                 // Game-Specific Options
-                index = 0;
-                foreach(var val in GameSpecificPatchValues) {
-                    if(val != DefaultPatchValues[index]) {
-                        WriteBytes(BootSettingsAddress, BootSettingsPointers[index][GameIndex]);
-                    }
+                foreach(var val in DynamicPatchButtons.GameSpecificPatchValues) {
+                    if(val == DynamicPatchButtons.DefaultPatchValues[index]) continue;
+
+                    PatchData = GameSpecificBootSettingsPointers[index][GameIndex];
+                    WriteBytes(BootSettingsDataAddress, PatchData);
+                    BootSettingsDataAddress += PatchData.Length;
+                    WriteByte(BootSettingsDataAddress++, 1);
+                    index++;
                 }
             }
         }
@@ -1563,11 +1586,10 @@ namespace Dobby {
         private Button ExitBtn;
         private Button BackBtn;
         private vButton DisableDebugTextBtn;
+        private vButton DisablePausedIconBtn;
         private vButton ProgPauseOnCloseBtn;
         private vButton ProgPauseOnOpenBtn;
-        private vButton DisablePausedIconBtn;
-        private vButton MenuScaleBtn;
-        private vButton MenuAlphaBtn;
+        private vButton NovisBtn; 
         private TextBox ExecutablePathBox;
         private Label GameSpecificPatchesLabel;
         private Label CustomDebugOptionsLabel;
