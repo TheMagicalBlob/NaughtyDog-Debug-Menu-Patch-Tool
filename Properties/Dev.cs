@@ -39,7 +39,8 @@ namespace Dobby {
         private static float TimerTicks = 0;
 
 
-        public static string[] OutputStrings;
+        public static string[] OutputStrings = new string[20];
+
         public static int ShiftIndex = 0;
 
 
@@ -78,6 +79,7 @@ namespace Dobby {
                 AddControlEventHandlers(Controls);
                 logThread.Start();
                 Location = Point.Empty;
+                Click += DebugOut;
             }
 
             private static Form AppRef;
@@ -136,7 +138,7 @@ namespace Dobby {
                 }
 
                 string Out = string.Empty;
-                string[] Output, chk = Array.Empty<string>();
+                string[] Output, chk1 = Array.Empty<string>(), chk2 = Array.Empty<string>();
 
                 Pen pen = new Pen(Color.White);
 
@@ -151,6 +153,7 @@ namespace Dobby {
 
                         if (OverrideDebugOut)
                         Output = new string[] {
+                                $"| Game Index: {PS4MenuSettingsPage.GameIndex}",
                                 $"| Disable FPS:          {PS4MenuSettingsPage.UniversaPatchValues[0]}|{PS4MenuSettingsPage.UniversaPatchValues[1]}",
                                 $"| Paused Icon:          {PS4MenuSettingsPage.UniversaPatchValues[2]}",
                                 $"| ProgPauseOnOpen:      {PS4MenuSettingsPage.UniversaPatchValues[3]}",
@@ -163,7 +166,7 @@ namespace Dobby {
                                 $"| Swap Square & Circle: {DynamicVars[3]}",
                                 $"| Shadowed Text:        {DynamicVars[4]}",
                                 $"| Right Align:          {DynamicVars[5]}",
-                                $"|    Right Margin:      {DynamicVars[6]}",
+                                $"|    Right Margin:      {DynamicVars[6]}\n",
                         };
 
                         else
@@ -181,16 +184,21 @@ namespace Dobby {
                             $"{(HoveredControl?.GetType() == typeof(vButton) ? ((vButton)HoveredControl)?.Variable : " ")}",
                             $" Size: {HoveredControl?.Size} | Pos: {HoveredControl?.Location}",
                             $" Parent [{HoveredControl?.Parent?.Name}]",
-                            (PCDebugMenuPage.MainStreamIsOpen || EbootPatchPage.MainStreamIsOpen ? " " : null),
-                            $"{(EbootPatchPage.MainStreamIsOpen ? $"PS4Stream: {EbootPatchPage.MainStream.Name}" : (PCDebugMenuPage.MainStreamIsOpen ? " " : null))}",
-                            $"{(EbootPatchPage.MainStreamIsOpen ? $"Length: {(EbootPatchPage.MainStream.Length.ToString().Length > 6 ? $"{EbootPatchPage.MainStream.Length.ToString().Remove(2)}MB" : $"{EbootPatchPage.MainStream.Length} bytes")} | Read: {EbootPatchPage.MainStream.CanRead} | Write: {EbootPatchPage.MainStream.CanWrite}" : (PCDebugMenuPage.MainStreamIsOpen ? " " : null))}",
-                            (PCDebugMenuPage.MainStreamIsOpen ? " " : null),
-                            $"{(PCDebugMenuPage.MainStreamIsOpen ? $"PCStream: {PCDebugMenuPage.MainStream.Name}" : null)}",
-                            $"{(PCDebugMenuPage.MainStreamIsOpen ? $"Length: {(PCDebugMenuPage.MainStream.Length.ToString().Length > 6 ? $"{PCDebugMenuPage.MainStream.Length.ToString().Remove(2)}MB" : $"{PCDebugMenuPage.MainStream.Length} bytes")} | Read: {PCDebugMenuPage.MainStream.CanRead} | Write: {PCDebugMenuPage.MainStream.CanWrite}" : null)}",
+
+                            (EbootPatchPage.MainStreamIsOpen || PCDebugMenuPage.MainStreamIsOpen ? " ": ""),
+
+                            $"{(EbootPatchPage.MainStreamIsOpen ? $"PS4Stream: {EbootPatchPage.MainStream.Name}" : (PCDebugMenuPage.MainStreamIsOpen ? " " : ""))}",
+                            $"{(EbootPatchPage.MainStreamIsOpen ? $"Length: {(EbootPatchPage.MainStream.Length.ToString().Length > 6 ? $"{EbootPatchPage.MainStream.Length.ToString().Remove(2)}MB" : $"{EbootPatchPage.MainStream.Length} bytes")} | Read: {EbootPatchPage.MainStream.CanRead} | Write: {EbootPatchPage.MainStream.CanWrite}" : (PCDebugMenuPage.MainStreamIsOpen ? " " : ""))}",
+
+                            (PCDebugMenuPage.MainStreamIsOpen ? " ": ""),
+
+                            $"{(PCDebugMenuPage.MainStreamIsOpen ? $"PCStream: {PCDebugMenuPage.MainStream.Name}" : "")}",
+                            $"{(PCDebugMenuPage.MainStreamIsOpen ? $"Length: {(PCDebugMenuPage.MainStream.Length.ToString().Length > 6 ? $"{PCDebugMenuPage.MainStream.Length.ToString().Remove(2)}MB" : $"{PCDebugMenuPage.MainStream.Length} bytes")} | Read: {PCDebugMenuPage.MainStream.CanRead} | Write: {PCDebugMenuPage.MainStream.CanWrite}" : "")}",
                         };
 
-                        if(!chk.SequenceEqual(Output)) {
-                            chk = Output;
+                        if(!chk1.SequenceEqual(Output) || chk1 == null || !chk2.SequenceEqual(OutputStrings)) {
+                            chk1 = Output;
+                            chk2 = OutputStrings;
                             SizeF TextSize;
                             formScale = Size.Empty;
 
@@ -200,11 +208,30 @@ namespace Dobby {
 
                                 if(TextSize.Width > formScale.Width - 12)
                                     formScale.Width = (int)TextSize.Width + 12;
+
                                 formScale.Height += (int)TextSize.Height;
 
-                                Out = string.Join("\n", Output);
+                                if(line != "")
+                                    Out += $"{line}\n";
                             }
+
+                            Out += " \n";
+                            
+                            foreach(string line in OutputStrings) {
+                                TextSize = rend.MeasureString(line, MainFont);
+
+                                if(TextSize.Width > formScale.Width - 12)
+                                    formScale.Width = (int)TextSize.Width + 12;
+
+                                formScale.Height += (int)TextSize.Height;
+
+                                if(line != "")
+                                    Out += $"{line}\n";
+                            }
+
+
                             formScale.Height += 12;
+
 
                             // Resize Form Back On Main LogWindow Thread
                             try {
@@ -238,17 +265,16 @@ namespace Dobby {
 
 
 #endif
+        private static void DebugOut(object sender, EventArgs e) => DebugOut("Output Test");
+
         public static void DebugOut(object obj) {
 #if DEBUG
+            //return; // Rest Of This Freezes The PS4DebugPage After The Output Overhaul And Isn't Used Anyway
 
-
-            return; // Rest Of This Freezes The PS4DebugPage After The Output Overhaul And Isn't Used Anyway
-
-            if(OverrideDebugOut) return; string s = obj.ToString();
-            if(s.Contains("\n")) {
-                s = s.Replace("\n", "");
-                s += " (Use Seperate Calls For New Line!!!)";
-            }
+            string s = obj.ToString();
+            
+            if(s.Contains("\n"))
+                s = s.Replace("\n", "\n ");
 
         Wait:
             if(OutputStrings == null) goto Wait; // Try And Avoid Rare Crash On Boot In Dev Build When The App Doesn't Boot Fast Enough

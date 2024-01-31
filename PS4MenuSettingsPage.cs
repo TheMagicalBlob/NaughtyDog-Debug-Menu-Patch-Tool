@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -413,10 +414,7 @@ namespace Dobby {
             Game
         ;
 
-        private static bool
-            PathBoxHasDefaultText = true,
-            MultipleButtonsEnabled
-        ;
+        private static bool MultipleButtonsEnabled;
 
         private static string[] ResultStrings = new string[] {
             "Debug Menus Disabled",
@@ -430,14 +428,34 @@ namespace Dobby {
         private static string ActiveFilePath;
 
         private static bool IsActiveFilePCExe, MainStreamIsOpen;
-
-        public static void WriteBytes(int offset, byte[] data) {
-            MainStream.Position = offset;
+        private static readonly byte[] eugh = Array.Empty<byte>();
+        public static void WriteBytes(int? offset = null, byte[] data = null) {
+#if DEBUG
+            var msg = $"{BitConverter.ToString(data)} Written To ";
+            if(offset != null)
+                MainStream.Position = (int)offset;
+            msg += MainStream.Position; // trust issues
             MainStream.Write(data, 0, data.Length);
+            Dev.DebugOut(msg);
+#else
+            if (offset != null)
+            MainStream.Position = (int)offset;
+            MainStream.Write(data, 0, data.Length);
+#endif
         }
-        public static void WriteByte(int offset, byte data) {
-            MainStream.Position = offset;
+        public static void WriteByte(int? offset = null, byte data = 0) {
+#if DEBUG
+            var msg = $"{data} Written To ";
+            if(offset != null)
+                MainStream.Position = (int)offset;
+            msg += MainStream.Position; // trust issues
             MainStream.WriteByte(data);
+            Dev.DebugOut(msg);
+#else
+            if(offset != null)
+            MainStream.Position = (int)offset;
+            MainStream.WriteByte(data);
+#endif
         }
         /// <summary> Compare Data Read At The Given Address
         /// </summary>
@@ -448,7 +466,7 @@ namespace Dobby {
             MainStream.Read(DataPresent, 0, DataToCompare.Length);
             return DataPresent.SequenceEqual<byte>(DataToCompare);
         }
-        #endregion
+#endregion
 
         /// <summary>
         /// 0:  UC1100<br/>
@@ -462,7 +480,7 @@ namespace Dobby {
         /// 8:  UC4133<br/>
         /// 9:  UC4133MP<br/>
         /// 10: TLL100<br/>
-        /// 11: TLL109<br/>
+        /// 11: TLL10X<br/>
         /// 12: T1R100<br/>
         /// 13: T1R109<br/>
         /// 14: T1R11X<br/>
@@ -470,8 +488,11 @@ namespace Dobby {
         /// 16: T2107<br/>
         /// 17: T2109<br/>
         /// </summary>
+#if DEBUG
         public static int GameIndex;
-
+#else
+        private int GameIndex;
+#endif
 
         /// <summary>
         /// MenuAlphaBtn        <br/>
@@ -512,7 +533,7 @@ namespace Dobby {
             new byte[] {  }, // 0x | TLL109
             new byte[] {  }, // 0x | T1R100
             new byte[] {  }, // 0x | T1R109
-            new byte[] {  }, // 0x | T1R110
+            
             new byte[] {  }, // 0x | T1R111
             new byte[] {  }, // 0x | T2100
             new byte[] {  }, // 0x | T2107
@@ -524,7 +545,6 @@ namespace Dobby {
         /// Byte arrays to be used as pointers with the BootSettings custom function<br/><br/>
         /// 32-Bit Ones Are Pointers To Data In Executable Space.<br/>
         /// Chunky Fucks Are a 32-bit Pointer to A 64-bit Pointer + An Offset to Add.
-        /// 0 to UC1100 - UC4100
         /// <br/><br/>
         /// Patch Type Index:<br/>
         ///   0:  Disable FPS<br/>
@@ -547,13 +567,12 @@ namespace Dobby {
                 new byte[] { 0x69, 0xAF, 0x7B, 0x01 }, // UC3102
                 new byte[] {  }, // UC4100
                 new byte[] {  }, // UC4101
-                new byte[] {  }, // UC3133
-                new byte[] {  }, // UC3133MP
+                new byte[] {  }, // UC4133
+                new byte[] {  }, // UC4133MP
                 new byte[] {  }, // TLL100
                 new byte[] {  }, // TLL109
                 new byte[] {  }, // T1R100
                 new byte[] {  }, // T1R109
-                new byte[] {  }, // T1R110
                 new byte[] {  }, // T1R111
                 new byte[] {  }, // T2100
                 new byte[] {  }, // T2107
@@ -576,11 +595,10 @@ namespace Dobby {
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
-                new byte[] {  }, // 0x | T1R110
                 new byte[] {  }, // 0x | T1R111
                 new byte[] {  }, // 0x | T2100
                 new byte[] {  }, // T2107
-                new byte[] { 0xff, 0x30, 0xb4, 0x77, 0x03, 0xcd, 0x3a, 0x00, 0x00 }  // T2109
+                new byte[] { 0x30, 0xb4, 0x77, 0x03, 0xcd, 0x3a, 0x00, 0x00 }  // T2109
             },
 
             //|Show Paused Indicator
@@ -599,7 +617,6 @@ namespace Dobby {
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
-                new byte[] {  }, // 0x | T1R110
                 new byte[] {  }, // 0x | T1R111
                 new byte[] {  }, // 0x | T2100
                 new byte[] { 0xBB, 0x67, 0x24, 0x03 }, // 0x36467bb | T2107
@@ -645,7 +662,6 @@ namespace Dobby {
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
-                new byte[] {  }, // 0x | T1R110
                 new byte[] {  }, // 0x | T1R111
                 new byte[] {  }, // 0x | T2100
                 new byte[] { 0xBA, 0x67, 0x24, 0x03 }, // 0x36467ba | T2107
@@ -668,7 +684,6 @@ namespace Dobby {
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
-                new byte[] {  }, // 0x | T1R110
                 new byte[] {  }, // 0x | T1R111
                 new byte[] { 0x2C, 0x62, 0x01, 0x03 }, // 0x341622c | T2100
                 new byte[] { 0x2C, 0x60, 0x01, 0x03 }, // 0x341602c | T2107
@@ -710,7 +725,6 @@ namespace Dobby {
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
-                new byte[] {  }, // 0x | T1R110
                 new byte[] {  }, // 0x | T1R111
                 new byte[] {  }, // 0x | T2100
                 new byte[] { 0xC4, 0x67, 0x24, 0x03 }, // 0x36467c4 | T2107
@@ -733,7 +747,6 @@ namespace Dobby {
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
-                new byte[] {  }, // 0x | T1R110
                 new byte[] {  }, // 0x | T1R111
                 new byte[] {  }, // 0x | T2100
                 new byte[] { 0xC8, 0x67, 0x24, 0x03 }, // 0x36467c8 | T2107
@@ -756,7 +769,6 @@ namespace Dobby {
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
-                new byte[] {  }, // 0x | T1R110
                 new byte[] {  }, // 0x | T1R111
                 new byte[] {  }, // 0x | T2100
                 new byte[] {  }, // 0x | T2107
@@ -779,7 +791,6 @@ namespace Dobby {
                 new byte[] {  }, // TLL109
                 new byte[] {  }, // T1R100
                 new byte[] {  }, // T1R109
-                new byte[] {  }, // T1R110
                 new byte[] {  }, // T1R111
                 new byte[] {  }, // T2100
                 new byte[] { 0xB8, 0x67, 0x24, 0x03 }, // 0x36467b8 | T2107
@@ -802,7 +813,6 @@ namespace Dobby {
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
-                new byte[] {  }, // 0x | T1R110
                 new byte[] {  }, // 0x | T1R111
                 new byte[] {  }, // 0x | T2100
                 new byte[] { 0xBD, 0x67, 0x24, 0x03 }, // 0x36467bd | T2107
@@ -824,7 +834,6 @@ namespace Dobby {
                 new byte[] {  }, // 0x | TLL100
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | T1R100
-                new byte[] {  }, // 0x | T1R110
                 new byte[] {  }, // 0x | T1R109
                 new byte[] {  }, // 0x | T1R111
                 new byte[] {  }, // 0x | T2100
@@ -848,7 +857,6 @@ namespace Dobby {
                 new byte[] {  }, // 0x | TLL109
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
-                new byte[] {  }, // 0x | T1R110
                 new byte[] {  }, // 0x | T1R111
                 new byte[] {  }, // 0x | T2100
                 new byte[] { 0xC0, 0x67, 0x24, 0x03 }, // 0x36467c0 | T2107
@@ -1158,8 +1166,9 @@ namespace Dobby {
         }
         #endregion
 
-#if false
+
         // Only Gonna Be Useful If I End Up Using A Monospace Font
+#if false
         /// <summary> Takes A Control & Variable, and Appends The Variable (As A String) To The Right Of The Control
         ///</summary>
         /// <param name="Variable"> The Variable To Append To The Right Side </param>
@@ -1174,8 +1183,8 @@ namespace Dobby {
 
             return $"{control.Text}{padding}{Variable}";
         }
-#endif
 
+#endif
 
 
         //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -1197,6 +1206,7 @@ namespace Dobby {
 
 
                 Game = GetGameID(MainStream);
+                GameIndex = (int)GetBootSettingsGameIndexAndAddresses()[0];
                 GameInfoLabel.Text = GetGameLabelFromID(Game);
 
                 MainStreamIsOpen = true;
@@ -1387,19 +1397,22 @@ namespace Dobby {
         }
 
         private void ConfirmBtn_Click(object sender, EventArgs e) {
+            ApplyMenuSettings();
+        }
+
+
+        private int ApplyMenuSettings() {
+
             using(MainStream) {
 
 #if DEBUG
                 if(UniversaPatchValues.Length != UniversalBootSettingsPointers.Length || DynamicPatchButtons.GameSpecificPatchValues.Length != GameSpecificBootSettingsPointers.Length)
                     MessageBox.Show($"Universal:\n  Vars: {UniversaPatchValues.Length}\n  Pointers: {UniversalBootSettingsPointers.Length}\nDynamic:\n  Vars: {DynamicPatchButtons.GameSpecificPatchValues.Length}\n  Pointers: {GameSpecificBootSettingsPointers.Length}", "Mismatch In Array Value vs pointer Length.");
 #endif
-
                 index = 0;
                 byte ValueType = 0xf0;
                 int BootSettingsAddress;
-
                 var Addresses = GetBootSettingsGameIndexAndAddresses();
-                GameIndex = (int)Addresses[0];
 
                 // Write Function Call To Call BootSettings
                 WriteBytes((int)Addresses[1], GetBootSettingsFunctionCall());
@@ -1408,44 +1421,55 @@ namespace Dobby {
                 BootSettingsAddress = (int)Addresses[2];
                 WriteBytes(BootSettingsAddress, GetBootSettingsBytes(GameIndex));
 
-                var BootSettingsDataAddress = BootSettingsAddress + 0x57;
-
                 // Universal Options
                 byte[] PatchData;
                 foreach(var Bool in UniversaPatchValues) {
-                    if(!Bool) continue;
+                    if(!Bool)
+                        continue;
 
                     PatchData = UniversalBootSettingsPointers[index][GameIndex];
+                    Dev.DebugOut($"Index: {index}|Game: {GameIndex} | {BitConverter.ToString(PatchData)}");
 
                     if(PatchData.Length == 4) ValueType = 0xFE;
-                    else if(PatchData.Length == 8) ValueType = 0xFE;
-                    else continue;
+                    else if(PatchData.Length == 8) ValueType = 0xFF;
+                    else {
+                        Dev.DebugOut($"Invalid Data Size. ({PatchData.Length})");
+                        continue;
+                    }
 
-                    WriteByte(BootSettingsDataAddress++, ValueType);
 
-                    WriteBytes(BootSettingsDataAddress+=PatchData.Length, PatchData);
-                    WriteByte(BootSettingsDataAddress++, 1);
+                    WriteByte(data: ValueType);
+
+                    WriteBytes(data: PatchData);
+                    WriteByte(data: 0x69);
                     index++;
                 }
                 index = 0;
 
-
                 // Game-Specific Options
                 foreach(var val in DynamicPatchButtons.GameSpecificPatchValues) {
-                    if(val == DynamicPatchButtons.DefaultPatchValues[index]) continue;
 
-                    PatchData = GameSpecificBootSettingsPointers[index][GameIndex];
+                    if(val == DynamicPatchButtons.DefaultPatchValues[index])
+                        continue;
+                    
+                    else {
+                        PatchData = GameSpecificBootSettingsPointers[index][GameIndex];
+                        Dev.DebugOut($"Index: {index}|Game: {GameIndex} | {BitConverter.ToString(PatchData)}");
+                    }
 
                     if(PatchData.Length == 4) ValueType = 0xFE;
-                    else if(PatchData.Length == 8) ValueType = 0xFE;
+                    else if(PatchData.Length == 8) ValueType = 0xFF;
                     else continue;
 
-                    WriteByte(BootSettingsDataAddress++, ValueType);
+                    WriteByte(data: ValueType);
 
-                    WriteBytes(BootSettingsDataAddress += PatchData.Length, PatchData);
-                    WriteByte(BootSettingsDataAddress++, 1);
+                    WriteBytes(data: PatchData);
+                    WriteByte(data: 0x69);
+                    index++;
                 }
             }
+
+            return 1;
         }
 
 
@@ -1460,7 +1484,6 @@ namespace Dobby {
 
             // new byte { (Quick Menu Function Call), (Ptr to Base Addr) }
             byte[][] BootSettingsBaseAddressPointers = new byte[][] {
-                new byte [] { 0xDE, 0xAD, 0xBE, 0xEF, 0xBA, 0xDA, 0x55, 0x69 }, // Default
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC1 1.00 //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC1 1.02 //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC2 1.00 //!
@@ -1473,21 +1496,25 @@ namespace Dobby {
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC4 1.33 MP //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // TLL 1.00 //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // TLL 1.09 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T2 1.00  //!
-                new byte [] { 0xe8, 0xcb, 0xd0, 0x3d, 0x00, 0x53, 0x48, 0x8d, 0x05, 0xc3, 0x8c, 0xff, 0xff }, // T2 1.07  //!
-                new byte [] { 0xe8, 0x9b, 0x45, 0x82, 0x00, 0x53, 0x48, 0x8d, 0x05, 0x03, 0xea, 0xff, 0xff }, // T2 1.09  //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.00 //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.09 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }  // T1R 1.11 //!
+                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.11 //!
+                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T2 1.00  //!
+                new byte [] { 0xe8, 0xcb, 0xd0, 0x3d, 0x00, 0x53, 0x48, 0x8d, 0x05, 0xc3, 0x8c, 0xff, 0xff }, // T2 1.07  //!
+                new byte [] { 0xe8, 0x9b, 0x45, 0x82, 0x00, 0x53, 0x48, 0x8d, 0x05, 0x03, 0xea, 0xff, 0xff }  // T2 1.09  //!
             };
 
-            BootSettingsData = new byte[BootSettingsFunction.Length + BootSettingsBaseAddressPointers.Length];
+            BootSettingsData = new byte[BootSettingsFunction.Length + BootSettingsBaseAddressPointers[GameIndex].Length];
 
-            Buffer.BlockCopy(BootSettingsBaseAddressPointers[GameIndex], 0, BootSettingsData, 0, 13);
+            Buffer.BlockCopy(BootSettingsBaseAddressPointers[GameIndex], 0,
+                             BootSettingsData, 0,
+                             BootSettingsBaseAddressPointers[GameIndex].Length
+                             );
 
-            Buffer.BlockCopy(BootSettingsFunction,
-                0, BootSettingsData, 13, BootSettingsFunction.Length
-            );
+            Buffer.BlockCopy(BootSettingsFunction, 0,
+                             BootSettingsData, BootSettingsBaseAddressPointers[GameIndex].Length,
+                             BootSettingsFunction.Length
+                            );
 
             return BootSettingsData;
         }
@@ -1531,13 +1558,13 @@ namespace Dobby {
                 case T2107:
                     ret[0] = 16;
                     ret[1] = 0x1f217a; // 0x5ee17a
-                    ret[2] = 0xb330; // 0x407330
+                    ret[2] = 0xb330;   // 0x407330
                     break;
                 case T2108:
                 case T2109:
                     ret[0] = 17;
                     ret[1] = 0x633cba; // 0xa2fcba
-                    ret[2] = 0x55f0; // 0x4015f0
+                    ret[2] = 0x55f0;   // 0x4015f0
                     break;
             }
 
