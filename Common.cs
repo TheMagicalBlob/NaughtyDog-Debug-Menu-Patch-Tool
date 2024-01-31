@@ -206,7 +206,8 @@ namespace Dobby {
           "* 3.40.166.455 | Deleted Page, Moved More Crap",
           "* 3.40.172.470 | Large Code Cleaup, Deleted Resource, Reworked And Cleaned Up PCDebugMenuPatchPage, Added PaintBorder() Function Call Inside Of EventHandler Func And Removed All Instances That Came Before Said Function Originally, Many Minor Tweaks/Changes",
           "* 3.40.175.474 | PS4MenuSettingsPatchPage Work (Reworked Page Structure, Made Some Other Minor Changes). Fixed Designer Bs With vButton class",
-          "* 3.40.176.478 | Minor EbootPatchPage Fix, Debug Tweaks"
+          "* 3.40.176.478 | Minor EbootPatchPage Fix, Debug Tweaks",
+          "* 3.40.178.481 | PS4MenuSettingsPatchPage Work, Renamed Some Game Identifiers (Ones Used To Check Against GetGameID())"
 
             // TODO:
             // * MAJOR
@@ -826,28 +827,28 @@ namespace Dobby {
                 case UC4117:       return "Uncharted 4 1.17";
                 case UC4118:       return "Uncharted 4 1.18 SP/MP";
                 case UC4119:       return "Uncharted 4 1.19 SP/MP";
-                case UC4MP120:     return "Uncharted 4 1.20 MP";
-                case UC4SP120:     return "Uncharted 4 1.20 SP";
-                case UC4MP121:     return "Uncharted 4 1.21 MP";
-                case UC4SP121:     return "Uncharted 4 1.21 SP";
-                case UC4MP122:     return "Uncharted 4 1.22 MP";
-                case UC4SP122_23:  return "Uncharted 4 1.22/23 SP";
-                case UC4MP123:     return "Uncharted 4 1.23 MP";
-                case UC4MP124:     return "Uncharted 4 1.24 MP";
-                case UC4SP124_25:  return "Uncharted 4 1.24/25 SP";
-                case UC4MP125:     return "Uncharted 4 1.25 MP";
-                case UC4MP127_28:  return "Uncharted 4 1.27/28 MP";
-                case UC4SP127:     return "Uncharted 4 1.27+ SP";
-                case UC4MP129:     return "Uncharted 4 1.29 MP";
-                case UC4MP130:     return "Uncharted 4 1.30 MP";
-                case UC4MP131:     return "Uncharted 4 1.31 MP";
-                case UC4MP132:     return "Uncharted 4 1.32/TLL 1.08 MP";
-                case UC4MP133:     return "Uncharted 4 1.33/TLL 1.09 MP";
+                case UC4120MP:     return "Uncharted 4 1.20 MP";
+                case UC4120:     return "Uncharted 4 1.20 SP";
+                case UC4121MP:     return "Uncharted 4 1.21 MP";
+                case UC4121:     return "Uncharted 4 1.21 SP";
+                case UC4122MP:     return "Uncharted 4 1.22 MP";
+                case UC4122_23:  return "Uncharted 4 1.22/23 SP";
+                case UC4123MP:     return "Uncharted 4 1.23 MP";
+                case UC4124MP:     return "Uncharted 4 1.24 MP";
+                case UC4124_25:  return "Uncharted 4 1.24/25 SP";
+                case UC4125MP:     return "Uncharted 4 1.25 MP";
+                case UC4127_28MP:  return "Uncharted 4 1.27/28 MP";
+                case UC4127_133:     return "Uncharted 4 1.27+ SP";
+                case UC4129MP:     return "Uncharted 4 1.29 MP";
+                case UC4130MP:     return "Uncharted 4 1.30 MP";
+                case UC4131MP:     return "Uncharted 4 1.31 MP";
+                case UC4132MP:     return "Uncharted 4 1.32/TLL 1.08 MP";
+                case UC4133MP:     return "Uncharted 4 1.33/TLL 1.09 MP";
                 case UC4MPBETA100: return "Uncharted 4 MP Beta 1.00";
                 case UC4MPBETA109: return "Uncharted 4 MP Beta 1.09";
-                case TLLMP100:     return "Uncharted Lost Legacy 1.00 MP";
-                case TLLSP100:     return "Uncharted Lost Legacy 1.00 SP";
-                case TLLSP10X:     return "Uncharted Lost Legacy 1.08/9 SP";
+                case TLL100MP:     return "Uncharted Lost Legacy 1.00 MP";
+                case TLL100:     return "Uncharted Lost Legacy 1.00 SP";
+                case TLL10X:     return "Uncharted Lost Legacy 1.08/9 SP";
                 case T1R100:       return "The Last Of Us 1.00";
                 case T1R109:       return "The Last Of Us 1.09";
                 case T1R110:       return "The Last Of Us 1.10";
@@ -981,28 +982,28 @@ namespace Dobby {
             UC4117 = -2002709567,
             UC4118 = 1337597197,
             UC4119 = 853166708,
-            UC4MP120 = 948532543,
-            UC4SP120 = 1044003518,
-            UC4MP121 = 1404274247,
-            UC4SP121 = -538479879,
-            UC4MP122 = -605975924,
-            UC4SP122_23 = 1849401718,
-            UC4MP123 = -959800645,
-            UC4MP124 = 1301857603,
-            UC4SP124_25 = -1166682695,
-            UC4MP125 = -634367694,
-            UC4MP127_28 = -1449571981,
-            UC4SP127 = -400040687, // 1.27+, SP exe Never Changed After 1.27 Released
-            UC4MP129 = -1725079303,
-            UC4MP130 = 931397679,
-            UC4MP131 = 1212014389,
-            UC4MP132 = 1923471472, // Also The Lost Legacy 1.08 MP
-            UC4MP133 = 486460629,  // Also The Lost Legacy 1.09 MP
+            UC4120MP = 948532543,
+            UC4120 = 1044003518,
+            UC4121MP = 1404274247,
+            UC4121 = -538479879,
+            UC4122MP = -605975924,
+            UC4122_23 = 1849401718,
+            UC4123MP = -959800645,
+            UC4124MP = 1301857603,
+            UC4124_25 = -1166682695,
+            UC4125MP = -634367694,
+            UC4127_28MP = -1449571981,
+            UC4127_133 = -400040687, // 1.27+, SP exe Never Changed After 1.27 Released
+            UC4129MP = -1725079303,
+            UC4130MP = 931397679,
+            UC4131MP = 1212014389,
+            UC4132MP = 1923471472, // Also The Lost Legacy 1.08 MP
+            UC4133MP = 486460629,  // Also The Lost Legacy 1.09 MP
             UC4MPBETA100 = 1813169088,  // CUSA04051
             UC4MPBETA109 = -1103269419, // CUSA04051
-            TLLMP100 = 469274180,
-            TLLSP100 = -1269602830,
-            TLLSP10X = 2141223617,  // UCTLL 1.08/1.09 SP Identical
+            TLL100MP = 469274180,
+            TLL100 = -1269602830,
+            TLL10X = 2141223617,  // UCTLL 1.08/1.09 SP Identical
             T1R100 = 306377542,
             T1R109 = -1391237605,
             T1R110 = -915963582,

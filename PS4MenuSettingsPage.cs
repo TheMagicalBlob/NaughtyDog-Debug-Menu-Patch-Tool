@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -460,30 +461,30 @@ namespace Dobby {
         /// 8:  UC4133<br/>
         /// 9:  UC4133MP<br/>
         /// 10: TLL100<br/>
-        /// 11: TLL108<br/>
-        /// 12: TLL109<br/>
-        /// 13: T2100<br/>
-        /// 14: T2107<br/>
-        /// 15: T2109<br/>
+        /// 11: TLL109<br/>
+        /// 12: T1R100<br/>
+        /// 13: T1R109<br/>
+        /// 14: T1R11X<br/>
+        /// 15: T2100<br/>
+        /// 16: T2107<br/>
+        /// 17: T2109<br/>
         /// </summary>
         public static int GameIndex;
 
 
         /// <summary>
-        /// MenuScaleBtn        <br/>
         /// MenuAlphaBtn        <br/>
+        /// MenuScaleBtn        <br/>
         /// FOVBtn              <br/>
         /// MenuShadowedTextBtn <br/>
-        /// VersionTxtBtn       <br/>
         /// RightAlignBtn       <br/>
         /// RightMarginBtn
         /// </summary>
         private enum IDS {
-            MenuScaleBtn,
             MenuAlphaBtn,
+            MenuScaleBtn,
             FOVBtn,
             MenuShadowedTextBtn,
-            VersionTxtBtn,
             RightAlignBtn,
             RightMarginBtn
         }
@@ -527,10 +528,10 @@ namespace Dobby {
         /// Patch Type Index:<br/>
         ///   0:  Disable FPS<br/>
         ///   1:  Suppress Active task Display<br/>
-        ///   5:  Show Paused Indicator<br/>
+        ///   2:  Show Paused Indicator<br/>
         ///   3:  ProgPauseOnMenuOpen<br/>
         ///   4:  ProgPauseOnMenuClose<br/>
-        ///   11: novis<br/>
+        ///   5:  novis<br/>
         ///</summary>
         private static readonly byte[][][] UniversalBootSettingsPointers = new byte[][][] {  // fill null bytes just in case of repeat uses with alternate options
                 // 4 = 0xfe | 8 = 0xff
@@ -681,15 +682,86 @@ namespace Dobby {
         /// 0 to UC1100 - UC4100
         /// <br/><br/>
         /// Patch Type Index:<br/>
-        ///   2:  Shadow Menu Text<br/>
-        ///   6:  Swap Circle And Square<br/>
-        ///   7:  Right Margin<br/>
-        ///   8:  Right Align<br/>
-        ///   9:  Menu Alpha<br/>
-        ///   10: Menu Scale<br/>
+        ///   0:  Menu Alpha<br/>
+        ///   1:  Menu Scale<br/>
+        ///   2:  Main Camera Fov<br/>
+        ///   3:  Shadow Menu Text<br/>
+        ///   4:  Swap Circle And Square<br/>
+        ///   5:  Right Margin<br/>
+        ///   6:  Right Align<br/>
         ///</summary>
         private static readonly byte[][][] GameSpecificBootSettingsPointers = new byte[][][] {  // fill null bytes just in case of repeat uses with alternate options
                 
+
+            //|Menu Alpha
+            new byte[][] {
+                new byte[] {  }, // 0x | UC1100
+                new byte[] {  }, // 0x | UC1102
+                new byte[] {  }, // 0x | UC2100
+                new byte[] {  }, // 0x | UC2102
+                new byte[] {  }, // 0x | UC3100
+                new byte[] {  }, // 0x | UC3102
+                new byte[] {  }, // 0x | UC4100
+                new byte[] {  }, // 0x | UC4101
+                new byte[] {  }, // 0x | UC4133
+                new byte[] {  }, // 0x | UC4133MP
+                new byte[] {  }, // 0x | TLL100
+                new byte[] {  }, // 0x | TLL109
+                new byte[] {  }, // 0x | T1R100
+                new byte[] {  }, // 0x | T1R109
+                new byte[] {  }, // 0x | T1R110
+                new byte[] {  }, // 0x | T1R111
+                new byte[] {  }, // 0x | T2100
+                new byte[] { 0xC4, 0x67, 0x24, 0x03 }, // 0x36467c4 | T2107
+                new byte[] { 0x44, 0xA6, 0x25, 0x03 }  // 0x365a644 | T2109
+            },
+
+            //|Menu Scale
+            new byte[][] {
+                new byte[] {  }, // 0x | UC1100
+                new byte[] {  }, // 0x | UC1102
+                new byte[] {  }, // 0x | UC2100
+                new byte[] {  }, // 0x | UC2102
+                new byte[] {  }, // 0x | UC3100
+                new byte[] {  }, // 0x | UC3102
+                new byte[] {  }, // 0x | UC4100
+                new byte[] {  }, // 0x | UC4101
+                new byte[] {  }, // 0x | UC4133
+                new byte[] {  }, // 0x | UC4133MP
+                new byte[] {  }, // 0x | TLL100
+                new byte[] {  }, // 0x | TLL109
+                new byte[] {  }, // 0x | T1R100
+                new byte[] {  }, // 0x | T1R109
+                new byte[] {  }, // 0x | T1R110
+                new byte[] {  }, // 0x | T1R111
+                new byte[] {  }, // 0x | T2100
+                new byte[] { 0xC8, 0x67, 0x24, 0x03 }, // 0x36467c8 | T2107
+                new byte[] { 0x48, 0xA6, 0x25, 0x03 }  // 0x365a648 | T2109
+            },
+            
+            //|Main Camera Fov (camera-fov)
+            new byte[][] {
+                new byte[] {  }, // 0x | UC1100
+                new byte[] {  }, // 0x | UC1102
+                new byte[] {  }, // 0x | UC2100
+                new byte[] {  }, // 0x | UC2102
+                new byte[] {  }, // 0x | UC3100
+                new byte[] {  }, // 0x | UC3102
+                new byte[] {  }, // 0x | UC4100
+                new byte[] {  }, // 0x | UC4101
+                new byte[] {  }, // 0x | UC4133
+                new byte[] {  }, // 0x | UC4133MP
+                new byte[] {  }, // 0x | TLL100
+                new byte[] {  }, // 0x | TLL109
+                new byte[] {  }, // 0x | T1R100
+                new byte[] {  }, // 0x | T1R109
+                new byte[] {  }, // 0x | T1R110
+                new byte[] {  }, // 0x | T1R111
+                new byte[] {  }, // 0x | T2100
+                new byte[] {  }, // 0x | T2107
+                new byte[] {  }  // 0x | T2109
+            },
+
             //|Shadow Menu Text
             new byte[][] {
                 new byte[] { 0x87, 0xF9, 0xA9, 0x00 }, // 0xE9F988  | UC1100 
@@ -780,52 +852,6 @@ namespace Dobby {
                 new byte[] {  }, // 0x | T2100
                 new byte[] { 0xC0, 0x67, 0x24, 0x03 }, // 0x36467c0 | T2107
                 new byte[] { 0x40, 0xA6, 0x25, 0x03 }  // 0x365a640 | T2109
-            },
-
-            //|Menu Alpha
-            new byte[][] {
-                new byte[] {  }, // 0x | UC1100
-                new byte[] {  }, // 0x | UC1102
-                new byte[] {  }, // 0x | UC2100
-                new byte[] {  }, // 0x | UC2102
-                new byte[] {  }, // 0x | UC3100
-                new byte[] {  }, // 0x | UC3102
-                new byte[] {  }, // 0x | UC4100
-                new byte[] {  }, // 0x | UC4101
-                new byte[] {  }, // 0x | UC4133
-                new byte[] {  }, // 0x | UC4133MP
-                new byte[] {  }, // 0x | TLL100
-                new byte[] {  }, // 0x | TLL109
-                new byte[] {  }, // 0x | T1R100
-                new byte[] {  }, // 0x | T1R109
-                new byte[] {  }, // 0x | T1R110
-                new byte[] {  }, // 0x | T1R111
-                new byte[] {  }, // 0x | T2100
-                new byte[] { 0xC4, 0x67, 0x24, 0x03 }, // 0x36467c4 | T2107
-                new byte[] { 0x44, 0xA6, 0x25, 0x03 }  // 0x365a644 | T2109
-            },
-
-            //|Menu Scale
-            new byte[][] {
-                new byte[] {  }, // 0x | UC1100
-                new byte[] {  }, // 0x | UC1102
-                new byte[] {  }, // 0x | UC2100
-                new byte[] {  }, // 0x | UC2102
-                new byte[] {  }, // 0x | UC3100
-                new byte[] {  }, // 0x | UC3102
-                new byte[] {  }, // 0x | UC4100
-                new byte[] {  }, // 0x | UC4101
-                new byte[] {  }, // 0x | UC4133
-                new byte[] {  }, // 0x | UC4133MP
-                new byte[] {  }, // 0x | TLL100
-                new byte[] {  }, // 0x | TLL109
-                new byte[] {  }, // 0x | T1R100
-                new byte[] {  }, // 0x | T1R109
-                new byte[] {  }, // 0x | T1R110
-                new byte[] {  }, // 0x | T1R111
-                new byte[] {  }, // 0x | T2100
-                new byte[] { 0xC8, 0x67, 0x24, 0x03 }, // 0x36467c8 | T2107
-                new byte[] { 0x48, 0xA6, 0x25, 0x03 }  // 0x365a648 | T2109
             }
         };
 
@@ -869,22 +895,20 @@ namespace Dobby {
 
 
             /// <summary>
-            /// 0: Menu Scale <br/>
-            /// 1: Menu Alpha <br/>
+            /// 0: Menu Alpha <br/>
+            /// 1: Menu Scale <br/>
             /// 2: Non-ADS FOV <br/>
             /// 3: Swap Square And Circle In Debug <br/>
             /// 4: Menu Shadowed Text <br/>
-            /// 5: Version Text <br/>
-            /// 6: Align Menus Right <br/>
-            /// 7: Right Margin <br/>
+            /// 5: Align Menus Right <br/>
+            /// 6: Right Margin <br/>
             /// </summary>
-            
-            public static readonly object[] DefaultPatchValues = GameSpecificPatchValues;
+
+            public static object[] DefaultPatchValues;
             public static object[] GameSpecificPatchValues { get; private set; } = new object[] {
-                0.60f,
                 0.85f,
+                0.60f,
                 1f,
-                false,
                 false,
                 false,
                 false,
@@ -896,23 +920,21 @@ namespace Dobby {
             /// Variable Used In Dynamic Button Cration For Game-Specific Patches
             /// </summary>
             private static readonly string[] Name = new string[] {
-                    "MenuScaleBtn",
                     "MenuAlphaBtn",
+                    "MenuScaleBtn",
                     "FOVBtn",
                     "SwapCircleInDebugBtn",
                     "MenuShadowTextBtn",
-                    "VersionTxtBtn",
                     "MenuRightAlignBtn",
                     "RightMarginBtn"
             };
 
             private static readonly string[] ControlText = new string[] {
-                    "Set Dev Menu Scale:",               // default=0.60
                     "Set DMenu BG Opacity:",             // default=0.85
+                    "Set Dev Menu Scale:",               // default=0.60
                     "Adjust Non-ADS FOV:",               // default=1.00
                     "Swap Circle With Square In DMenu:", // default=No
                     "Enable Debug Menu Text Shadow:",    // default=No
-                    "Disable Version Text:",             // default=No
                     "Align Debug Menus To The Right:",   // default=No
                     "Set Distance From Right Side:"      // default=10
             };
@@ -921,7 +943,6 @@ namespace Dobby {
                     "Hint",
                     "Hint",
                     "Only Effects The Camera While Not Aiming",
-                    "Hint",
                     "Hint",
                     "Moves The Dev/Quick Menus To The Right Of The Screen",
                     "Hint",
@@ -932,14 +953,13 @@ namespace Dobby {
 
 
             /// <summary> Buttons For Game-Specific Debug Options Loaded Based On The Game Chosen <br/><br/>
-            /// 0: MenuScaleBtn                                                                        <br/>
-            /// 1: MenuAlphaBtn                                                                        <br/>
+            /// 0: MenuAlphaBtn                                                                        <br/>
+            /// 1: MenuScaleBtn                                                                        <br/>
             /// 2: FOVBtn                                                                              <br/>
             /// 3: SwapCircleInDebugBtn                                                                <br/>
             /// 4: MenuShadowTextBtn                                                                   <br/>
-            /// 5: VersionTxtBtn                                                                       <br/>
-            /// 6: RightAlignBtn                                                                       <br/>
-            /// 7: RightMarginBtn
+            /// 5: RightAlignBtn                                                                       <br/>
+            /// 6: RightMarginBtn
             /// </summary>
             public vButton[] Buttons; // Initialized Once An Executable's Selected
 
@@ -994,6 +1014,8 @@ namespace Dobby {
             }
 
             public Button[] CreateDynamicButtons() {
+                DefaultPatchValues = GameSpecificPatchValues;
+
             RunCheck:
                 if(ButtonIndex >= gsButtons.Buttons.Length - 1) return Buttons;
 
@@ -1265,27 +1287,23 @@ namespace Dobby {
                 case UC2102:
                 case UC3100:
                 case UC3102:
-                    GameButtonIds[0] = IDS.VersionTxtBtn;
-                    break;
 
                 case T1R100:
                 case T1R109:
                 case T1R110:
                 case T1R111:
-                    GameButtonIds[0] = IDS.VersionTxtBtn;
-                    break;
 
                 case T2100:
-                    GameButtonIds[0] = IDS.VersionTxtBtn;
                     break;
+
                 case T2101:
                     GameButtonIds = new IDS[] { IDS.MenuScaleBtn, IDS.MenuShadowedTextBtn };
                     break;
                 case T2102:
-                    GameButtonIds = new IDS[] { IDS.MenuScaleBtn, IDS.MenuShadowedTextBtn, IDS.VersionTxtBtn };
+                    GameButtonIds = new IDS[] { IDS.MenuScaleBtn, IDS.MenuShadowedTextBtn, IDS.FOVBtn };
                     break;
                 case T2105:
-                    GameButtonIds = new IDS[] { IDS.MenuScaleBtn, IDS.MenuShadowedTextBtn, IDS.VersionTxtBtn, IDS.RightAlignBtn };
+                    GameButtonIds = new IDS[] { IDS.MenuScaleBtn, IDS.MenuShadowedTextBtn, IDS.FOVBtn, IDS.RightAlignBtn };
                     break;
                 case T2107:
                 case T2108:
@@ -1372,14 +1390,23 @@ namespace Dobby {
         private void ConfirmBtn_Click(object sender, EventArgs e) {
             using(MainStream) {
 
+#if DEBUG
+                if(UniversaPatchValues.Length != UniversalBootSettingsPointers.Length || DynamicPatchButtons.GameSpecificPatchValues.Length != GameSpecificBootSettingsPointers.Length)
+                    MessageBox.Show($"Universal:\n  Vars: {UniversaPatchValues.Length}\n  Pointers: {UniversalBootSettingsPointers.Length}\nDynamic:\n  Vars: {DynamicPatchButtons.GameSpecificPatchValues.Length}\n  Pointers: {GameSpecificBootSettingsPointers.Length}", "Mismatch In Array Value vs pointer Length.");
+#endif
+
                 index = 0;
+                byte ValueType = 0xf0;
                 int BootSettingsAddress;
 
+                var Addresses = GetBootSettingsGameIndexAndAddresses();
+                GameIndex = (int)Addresses[0];
+
                 // Write Function Call To Call BootSettings
-                WriteBytes(GetAddressToCallBootSettings(), GetBootSettingsFuncCallBytes());
+                WriteBytes((int)Addresses[1], GetBootSettingsFunctionCall());
 
                 // Write BootSettings Function's Assembly To Game Executable
-                BootSettingsAddress = GetAddressToWriteBootSettings();
+                BootSettingsAddress = (int)Addresses[2];
                 WriteBytes(BootSettingsAddress, GetBootSettingsBytes(GameIndex));
 
                 var BootSettingsDataAddress = BootSettingsAddress + 0x57;
@@ -1390,8 +1417,14 @@ namespace Dobby {
                     if(!Bool) continue;
 
                     PatchData = UniversalBootSettingsPointers[index][GameIndex];
-                    WriteBytes(BootSettingsDataAddress, PatchData);
-                    BootSettingsDataAddress += PatchData.Length;
+
+                    if(PatchData.Length == 4) ValueType = 0xFE;
+                    else if(PatchData.Length == 8) ValueType = 0xFE;
+                    else continue;
+
+                    WriteByte(BootSettingsDataAddress++, ValueType);
+
+                    WriteBytes(BootSettingsDataAddress+=PatchData.Length, PatchData);
                     WriteByte(BootSettingsDataAddress++, 1);
                     index++;
                 }
@@ -1403,10 +1436,15 @@ namespace Dobby {
                     if(val == DynamicPatchButtons.DefaultPatchValues[index]) continue;
 
                     PatchData = GameSpecificBootSettingsPointers[index][GameIndex];
-                    WriteBytes(BootSettingsDataAddress, PatchData);
-                    BootSettingsDataAddress += PatchData.Length;
+
+                    if(PatchData.Length == 4) ValueType = 0xFE;
+                    else if(PatchData.Length == 8) ValueType = 0xFE;
+                    else continue;
+
+                    WriteByte(BootSettingsDataAddress++, ValueType);
+
+                    WriteBytes(BootSettingsDataAddress += PatchData.Length, PatchData);
                     WriteByte(BootSettingsDataAddress++, 1);
-                    index++;
                 }
             }
         }
@@ -1417,10 +1455,9 @@ namespace Dobby {
         /// <param name="GameIndex">  </param>
         /// <returns></returns>
         private static byte[] GetBootSettingsBytes(int GameIndex = 18) {
-            byte[] BootSettingsData = new byte[200],
+            byte[] BootSettingsData,
                    BootSettingsFunction = new byte[] { 0x48, 0x8d, 0x0d, 0x43, 0x00, 0x00, 0x00, 0x80, 0x3c, 0x21, 0xfe, 0x75, 0x12, 0x8a, 0x59, 0x05, 0x8b, 0x54, 0x21, 0x01, 0x01, 0xc2, 0x67, 0x88, 0x1a, 0x48, 0x83, 0xc1, 0x06, 0xeb, 0xe8, 0x80, 0x3c, 0x21, 0xff, 0x75, 0x23, 0x8b, 0x94, 0x21, 0x01, 0x00, 0x00, 0x00, 0x01, 0xc2, 0x48, 0x8d, 0x14, 0x22, 0x48, 0x8b, 0x12, 0x8b, 0x5c, 0x21, 0x05, 0x48, 0x01, 0xda, 0x8a, 0x59, 0x09, 0x40, 0x88, 0x1a, 0x48, 0x83, 0xc1, 0x0a, 0xeb, 0xbf, 0x5b, 0xc3 }
             ;
-
 
             // new byte { (Quick Menu Function Call), (Ptr to Base Addr) }
             byte[][] BootSettingsBaseAddressPointers = new byte[][] {
@@ -1440,7 +1477,7 @@ namespace Dobby {
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T2 1.01  //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T2 1.02  //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T2 1.05  //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T2 1.07  //!
+                new byte [] { 0xe8, 0xcb, 0xd0, 0x3d, 0x00, 0x53, 0x48, 0x8d, 0x05, 0xc3, 0x8c, 0xff, 0xff }, // T2 1.07  //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T2 1.08  //!
                 new byte [] { 0xe8, 0x9b, 0x45, 0x82, 0x00, 0x53, 0x48, 0x8d, 0x05, 0x03, 0xea, 0xff, 0xff }, // T2 1.09  //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.00 //!
@@ -1450,6 +1487,7 @@ namespace Dobby {
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }  // T1R 1.11 //!
             };
 
+            BootSettingsData = new byte[BootSettingsFunction.Length + BootSettingsBaseAddressPointers.Length];
 
             Buffer.BlockCopy(BootSettingsBaseAddressPointers[GameIndex], 0, BootSettingsData, 0, 13);
 
@@ -1460,77 +1498,62 @@ namespace Dobby {
             return BootSettingsData;
         }
 
-        /// <summary> Returns The Address For The BootSettings Function
-        /// </summary>
-        private static int GetAddressToWriteBootSettings() {
-            switch(Game) {
-                case UC1100: return 0; // 
-
-                case UC1102: return 0; // 
-
-                case UC2100: return 0; // 
-
-                case UC2102: return 0; // 
-
-                case UC3100: return 0; // 
-
-                case UC3102: return 0; // 
-
-                case T1R100: return 0; // 
-
-                case T1R109: return 0; // 
-
-                case T1R110:
-                case T1R111: return 0; // 
-
-                case T2100: return 0;  // 
-
-                case T2107: return 0xb330;  // 0x407330
-
-                case T2108:
-                case T2109: return 0x55f0;  // 0x4015f0
-            }
-            return 0;
-        }
-
         /// <summary>
-        /// Returns The Address To Write A Function Call For The BootSettings Function,<br/>
-        /// Ideally Replacing The Quick Menu Function Call
+        /// Merged A Few Functions With The Same Switch Case In To This Since There Wasn't Any Downside Anyway <br/>
+        /// 
+        /// Gets The "GameIndex" Of The Selected Game, Followed By The Address To Call, Then Write The BootSettings Function
         /// </summary>
-        private static int GetAddressToCallBootSettings() {
+        /// <returns>
+        ///      0: GameIndex
+        /// <br/>1: GetBootSettingsFunctionCallAddress
+        /// <br/>2: Address To Write Boot Settings
+        /// </returns>
+        private object[] GetBootSettingsGameIndexAndAddresses() {
+            var ret = new object[] { 0, 0, 0 };
+
+
             switch(Game) {
-                case UC1100: return 0; // 
+                default:
+                    ret[0] = 99999999999999;
+                    break;
 
-                case UC1102: return 0; // 
+                case UC1100:
+                case UC1102:
+                case UC2100:
+                case UC2102:
+                case UC3100:
+                case UC3102:
+                case UC4100:
+                case UC4101:
+                case UC4127_133:
+                case UC4133MP:
+                case TLL100:
+                case TLL10X:
 
-                case UC2100: return 0; // 
-
-                case UC2102: return 0; // 
-
-                case UC3100: return 0; // 
-
-                case UC3102: return 0; // 
-
-                case T1R100: return 0; // 
-
-                case T1R109: return 0; // 
-
-                case T1R110:
-                case T1R111: return 0; // 
-
-                case T2100: return 0; // 
-
-                case T2107: return 0x1f217a; // 0x5ee17a
-
+                case T1R100:
+                case T1R109:
+                case T1R110:case T1R111:
+                case T2100:
+                case T2107:
+                    ret[0] = 16;
+                    ret[1] = 0x1f217a; // 0x5ee17a
+                    ret[2] = 0xb330; // 0x407330
+                    break;
                 case T2108:
-                case T2109: return 0x633cba; // 0xa2fcba
+                case T2109:
+                    ret[0] = 17;
+                    ret[1] = 0x633cba; // 0xa2fcba
+                    ret[2] = 0x55f0; // 0x4015f0
+                    break;
             }
-            return 0;
+
+            return ret;
         }
 
-        /// <summary> Returns The Data For The Custom Function Used To Call BootSettings
-        /// </summary>
-        private static byte[] GetBootSettingsFuncCallBytes() {
+
+        /// <summary> Returns The Data For The Custom Function Used To Call BootSettings To Write Over The Quick Menu Function Call
+        ///</summary>
+        private static byte[] GetBootSettingsFunctionCall() {
             switch(Game) {
                 case UC1100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
 
@@ -1557,8 +1580,9 @@ namespace Dobby {
 
                 case T2108:
                 case T2109: return new byte[] { 0xe8, 0x31, 0x19, 0x9d, 0xff };  // CALL 0x4015f0
+                default:
+                    return Array.Empty<byte>();
             }
-            return Array.Empty<byte>();
         }
         #endregion
 

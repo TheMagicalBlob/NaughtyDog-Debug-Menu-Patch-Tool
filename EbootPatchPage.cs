@@ -455,25 +455,25 @@ namespace Dobby {
                 case UC4116:
                 case UC4118:
                 case UC4119:
-                case UC4SP120:
-                case UC4MP120:
-                case UC4SP121:
-                case UC4MP121:
-                case UC4SP122_23:
-                case UC4MP122:
-                case UC4MP123:
-                case UC4SP124_25:
-                case UC4MP124:
-                case UC4MP125:
-                case UC4SP127:
-                case UC4MP127_28:
-                case UC4MP129:
-                case UC4MP130:
-                case UC4MP131:
-                case UC4MP132:
-                case TLLMP100:
-                case TLLSP100:
-                case TLLSP10X:
+                case UC4120:
+                case UC4120MP:
+                case UC4121:
+                case UC4121MP:
+                case UC4122_23:
+                case UC4122MP:
+                case UC4123MP:
+                case UC4124_25:
+                case UC4124MP:
+                case UC4125MP:
+                case UC4127_133:
+                case UC4127_28MP:
+                case UC4129MP:
+                case UC4130MP:
+                case UC4131MP:
+                case UC4132MP:
+                case TLL100MP:
+                case TLL100:
+                case TLL10X:
                     RestoredDebugBtn.Font = new Font("Cambria", 9.75F, FontStyle.Strikeout);
                     RestoredDebugBtn.Enabled = false; return " Restored/Custom";
 
@@ -497,7 +497,7 @@ namespace Dobby {
                 case UC3100:
                 case UC3102:
                 case UC4117:
-                case UC4MP133:
+                case UC4133MP:
                     RestoredDebugBtn.Font = MainFont;
                     RestoredDebugBtn.Enabled = true; return " Restored";
                 ////
@@ -543,28 +543,28 @@ namespace Dobby {
                 case UC4117:       return UC4117Debug;
                 case UC4118:       return UC4118_119Debug;
                 case UC4119:       return UC4118_119Debug;
-                case UC4MP120:     return UC4120MPDebug;
-                case UC4SP120:     return UC4120SPDebug;
-                case UC4MP121:     return UC4121MPDebug;
-                case UC4SP121:     return UC4121SPDebug;
-                case UC4MP122:     return UC4122_125MPDebug;
-                case UC4SP122_23:  return UC4122_125SPDebug;
-                case UC4MP123:     return UC4122_125MPDebug;
-                case UC4MP124:     return UC4122_125MPDebug;
-                case UC4SP124_25:  return UC4122_125SPDebug;
-                case UC4MP125:     return UC4122_125MPDebug;
-                case UC4MP127_28:  return UC4127_132MPDebug;
-                case UC4SP127:     return UC4127_133SPDebug;
-                case UC4MP129:     return UC4127_132MPDebug;
-                case UC4MP130:     return UC4127_132MPDebug;
-                case UC4MP131:     return UC4127_132MPDebug;
-                case UC4MP132:     return UC4127_132MPDebug;
-                case UC4MP133:     return UC4133MPDebug;
+                case UC4120MP:     return UC4120MPDebug;
+                case UC4120:     return UC4120SPDebug;
+                case UC4121MP:     return UC4121MPDebug;
+                case UC4121:     return UC4121SPDebug;
+                case UC4122MP:     return UC4122_125MPDebug;
+                case UC4122_23:  return UC4122_125SPDebug;
+                case UC4123MP:     return UC4122_125MPDebug;
+                case UC4124MP:     return UC4122_125MPDebug;
+                case UC4124_25:  return UC4122_125SPDebug;
+                case UC4125MP:     return UC4122_125MPDebug;
+                case UC4127_28MP:  return UC4127_132MPDebug;
+                case UC4127_133:     return UC4127_133SPDebug;
+                case UC4129MP:     return UC4127_132MPDebug;
+                case UC4130MP:     return UC4127_132MPDebug;
+                case UC4131MP:     return UC4127_132MPDebug;
+                case UC4132MP:     return UC4127_132MPDebug;
+                case UC4133MP:     return UC4133MPDebug;
                 case UC4MPBETA100: return UC4MPBETA100Debug;
                 case UC4MPBETA109: return UC4MPBETA109Debug;
-                case TLLMP100:     return TLL100MPDebug;
-                case TLLSP100:     return TLL100Debug;
-                case TLLSP10X:     return TLL10XDebug;
+                case TLL100MP:     return TLL100MPDebug;
+                case TLL100:     return TLL100Debug;
+                case TLL10X:     return TLL10XDebug;
                 case T1R100:       return T1R100Debug;
                 case T1R109:       return T1R109Debug;
                 case T1R110:       return T1R110Debug;
@@ -649,19 +649,19 @@ namespace Dobby {
                 case UC4100:
                   //UC4SP100_CustomMenu();
                     break;
-                case UC4SP127:
+                case UC4127_133:
                   //UC4SP127_CustomMenu();
                     break;
-                case UC4MP133:
+                case UC4133MP:
                     UC4MP133_RestoredMenu();
                     break;
-                case TLLMP100:
+                case TLL100MP:
                   //TLLMP100_RestoredMenu();
                     break;
-                case TLLSP100:
+                case TLL100:
                   //TLLSP100_CustomMenu();
                     break;
-                case TLLSP10X:
+                case TLL10X:
                   //TLLMP100_RestoredMenu();
                     break;
             }
