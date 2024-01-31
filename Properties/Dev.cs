@@ -137,7 +137,6 @@ namespace Dobby {
 
                 string Out = string.Empty;
                 string[] Output, chk = Array.Empty<string>();
-                string Bool(object In) { return (bool)In == true ? "Enabled" : "Disabled"; }
 
                 Pen pen = new Pen(Color.White);
 
@@ -152,20 +151,19 @@ namespace Dobby {
 
                         if (OverrideDebugOut)
                         Output = new string[] {
-                                $"| Disable FPS:          {Bool(PS4MenuSettingsPage.UniversaPatchValues[0])}|{Bool(PS4MenuSettingsPage.UniversaPatchValues[1])}",
-                                $"| Paused Icon:          {Bool(PS4MenuSettingsPage.UniversaPatchValues[2])}",
-                                $"| ProgPauseOnOpen:      {Bool(PS4MenuSettingsPage.UniversaPatchValues[3])}",
-                                $"| ProgPauseOnExit:      {Bool(PS4MenuSettingsPage.UniversaPatchValues[4])}",
-                                $"| Novis:                {Bool(PS4MenuSettingsPage.UniversaPatchValues[5])}",
+                                $"| Disable FPS:          {PS4MenuSettingsPage.UniversaPatchValues[0]}|{PS4MenuSettingsPage.UniversaPatchValues[1]}",
+                                $"| Paused Icon:          {PS4MenuSettingsPage.UniversaPatchValues[2]}",
+                                $"| ProgPauseOnOpen:      {PS4MenuSettingsPage.UniversaPatchValues[3]}",
+                                $"| ProgPauseOnExit:      {PS4MenuSettingsPage.UniversaPatchValues[4]}",
+                                $"| Novis:                {PS4MenuSettingsPage.UniversaPatchValues[5]}",
                                  "| ",
                                 $"| Menu Scale:           {DynamicVars[0]}",
                                 $"| Menu Alpha:           {DynamicVars[1]}",
                                 $"| Non-ADS FOV:          {DynamicVars[2]}",
-                                $"| Swap Square & Circle: {Bool(DynamicVars[3])}",
-                                $"| Shadowed Text:        {Bool(DynamicVars[4])}",
-                                $"| Version Text:         {Bool(DynamicVars[5])}",
-                                $"| Right Align:          {Bool(DynamicVars[6])}",
-                                $"|    Right Margin:      {DynamicVars[7]}",
+                                $"| Swap Square & Circle: {DynamicVars[3]}",
+                                $"| Shadowed Text:        {DynamicVars[4]}",
+                                $"| Right Align:          {DynamicVars[5]}",
+                                $"|    Right Margin:      {DynamicVars[6]}",
                         };
 
                         else

@@ -207,7 +207,8 @@ namespace Dobby {
           "* 3.40.172.470 | Large Code Cleaup, Deleted Resource, Reworked And Cleaned Up PCDebugMenuPatchPage, Added PaintBorder() Function Call Inside Of EventHandler Func And Removed All Instances That Came Before Said Function Originally, Many Minor Tweaks/Changes",
           "* 3.40.175.474 | PS4MenuSettingsPatchPage Work (Reworked Page Structure, Made Some Other Minor Changes). Fixed Designer Bs With vButton class",
           "* 3.40.176.478 | Minor EbootPatchPage Fix, Debug Tweaks",
-          "* 3.40.178.481 | PS4MenuSettingsPatchPage Work, Renamed Some Game Identifiers (Ones Used To Check Against GetGameID())"
+          "* 3.40.178.481 | PS4MenuSettingsPatchPage Work, Renamed Some Game Identifiers (Ones Used To Check Against GetGameID())",
+          "* 3.40.179.484 | PS4MenuSettingsPatchPage Work, Event Handler Fix, Debug Text Fix"
 
             // TODO:
             // * MAJOR
