@@ -39,7 +39,7 @@ namespace Dobby {
         private static float TimerTicks = 0;
 
 
-        public static string[] OutputStrings = new string[20];
+        public static string[] OutputStrings = new string[30];
 
         public static int ShiftIndex = 0;
 
@@ -151,8 +151,10 @@ namespace Dobby {
 
                         var DynamicVars = PS4MenuSettingsPage.PeekGameSpecificPatchValues();
 
-                        if (OverrideDebugOut)
-                        Output = new string[] {
+                        try {
+
+                            if(OverrideDebugOut)
+                                Output = new string[] {
                                 $"| Game Index: {PS4MenuSettingsPage.GameIndex}",
                                 $"| Disable FPS:          {PS4MenuSettingsPage.UniversaPatchValues[0]}|{PS4MenuSettingsPage.UniversaPatchValues[1]}",
                                 $"| Paused Icon:          {PS4MenuSettingsPage.UniversaPatchValues[2]}",
@@ -169,8 +171,8 @@ namespace Dobby {
                                 $"|    Right Margin:      {DynamicVars[6]}\n",
                         };
 
-                        else
-                        Output = new string[] {
+                            else
+                                Output = new string[] {
                             $"Build: {Build}                   [Delay: ~{Delay}ms]",
                             " ",
                             $"Parent Form: {(ActiveForm != null ? $"{ActiveForm?.Name} | # Of Children: {ActiveForm?.Controls?.Count}" : "Console")}",
@@ -195,6 +197,8 @@ namespace Dobby {
                             $"{(PCDebugMenuPage.MainStreamIsOpen ? $"PCStream: {PCDebugMenuPage.MainStream.Name}" : "")}",
                             $"{(PCDebugMenuPage.MainStreamIsOpen ? $"Length: {(PCDebugMenuPage.MainStream.Length.ToString().Length > 6 ? $"{PCDebugMenuPage.MainStream.Length.ToString().Remove(2)}MB" : $"{PCDebugMenuPage.MainStream.Length} bytes")} | Read: {PCDebugMenuPage.MainStream.CanRead} | Write: {PCDebugMenuPage.MainStream.CanWrite}" : "")}",
                         };
+                        }
+                        catch(Exception e) { Output = new string[] { "Error", e.Message }; MessageBox.Show("Caught Misc Output Error", e.Message); }
 
                         if(!chk1.SequenceEqual(Output) || chk1 == null || !chk2.SequenceEqual(OutputStrings)) {
                             chk1 = Output;
@@ -267,11 +271,15 @@ namespace Dobby {
 #endif
         private static void DebugOut(object sender, EventArgs e) => DebugOut("Output Test");
 
-        public static void DebugOut(object obj) {
+        public static void DebugOut(object obj = null) {
 #if DEBUG
+            string s;
             //return; // Rest Of This Freezes The PS4DebugPage After The Output Overhaul And Isn't Used Anyway
-
-            string s = obj.ToString();
+            if(obj == null)
+                return;
+                //s = " ";
+            else
+                s = obj.ToString();
             
             if(s.Contains("\n"))
                 s = s.Replace("\n", "\n ");

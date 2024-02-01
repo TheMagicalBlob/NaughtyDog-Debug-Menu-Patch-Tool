@@ -424,19 +424,19 @@ namespace Dobby {
         };
 
         private static byte[] LocalExecutableCheck;
-
         private static string ActiveFilePath;
-
         private static bool IsActiveFilePCExe, MainStreamIsOpen;
-        private static readonly byte[] eugh = Array.Empty<byte>();
+        
         public static void WriteBytes(int? offset = null, byte[] data = null) {
 #if DEBUG
-            var msg = $"{BitConverter.ToString(data)} Written To ";
+            var msg = $"Data {BitConverter.ToString(data).Replace("-", "")} Written To ";
             if(offset != null)
                 MainStream.Position = (int)offset;
-            msg += MainStream.Position; // trust issues
+            msg += MainStream.Position.ToString("X"); // trust issues
+
             MainStream.Write(data, 0, data.Length);
             Dev.DebugOut(msg);
+            Dev.DebugOut();
 #else
             if (offset != null)
             MainStream.Position = (int)offset;
@@ -445,16 +445,48 @@ namespace Dobby {
         }
         public static void WriteByte(int? offset = null, byte data = 0) {
 #if DEBUG
-            var msg = $"{data} Written To ";
+            var msg = $"Byte {data:X} Written To ";
             if(offset != null)
                 MainStream.Position = (int)offset;
-            msg += MainStream.Position; // trust issues
+            msg += MainStream.Position.ToString("X"); // trust issues
+
             MainStream.WriteByte(data);
             Dev.DebugOut(msg);
 #else
             if(offset != null)
             MainStream.Position = (int)offset;
             MainStream.WriteByte(data);
+#endif
+        }
+        public static void WriteVar(int? offset = null, object data = null) {
+#if DEBUG
+            var msg = " Written To ";
+
+            if(offset != null)
+                MainStream.Position = (int)offset;
+            msg += MainStream.Position.ToString("X");
+
+
+            if(data.GetType() == typeof(byte) && data.GetType() == typeof(bool)) {
+                MainStream.WriteByte(BitConverter.GetBytes((byte)data)[0]);
+                msg = (byte)data + msg;
+            }
+
+            else {
+                MainStream.Write(BitConverter.GetBytes((float)data), 0, BitConverter.GetBytes((float)data).Length);
+                msg = (float)data + msg;
+            }
+            
+            Dev.DebugOut("var " + msg);
+
+#else
+            if(offset != null)
+                MainStream.Position = (int)offset;
+
+            if(data.GetType() != typeof(byte) && data.GetType() != typeof(bool))
+                MainStream.WriteByte(BitConverter.GetBytes((byte)data)[0]);
+            else
+                MainStream.Write(BitConverter.GetBytes((float)data), 0, BitConverter.GetBytes((float)data).Length);
 #endif
         }
         /// <summary> Compare Data Read At The Given Address
@@ -923,12 +955,20 @@ namespace Dobby {
                 (byte)10
             };
 
-            public static readonly object[] DefaultPatchValues = GameSpecificPatchValues;
+            public static readonly object[] DefaultPatchValues = new object[] {
+                0.85f,
+                0.60f,
+                1f,
+                false,
+                false,
+                false,
+                (byte)10
+            };
 
-            /// <summary>
-            /// Variable Used In Dynamic Button Cration For Game-Specific Patches
-            /// </summary>
-            private static readonly string[] Name = new string[] {
+        /// <summary>
+        /// Variable Used In Dynamic Button Cration For Game-Specific Patches
+        /// </summary>
+        private static readonly string[] Name = new string[] {
                     "MenuAlphaBtn",
                     "MenuScaleBtn",
                     "FOVBtn",
@@ -1198,7 +1238,7 @@ namespace Dobby {
             };
 
             if(OpenedFile.ShowDialog() == DialogResult.OK) {
-                if(OriginalFormScale != Size.Empty)
+                if(OriginalFormScale != Size.Empty || MainStreamIsOpen)
                     ResetCustomDebugOptions();
                 
                 ExecutablePathBox.Text = OpenedFile.FileName;
@@ -1428,7 +1468,6 @@ namespace Dobby {
                         continue;
 
                     PatchData = UniversalBootSettingsPointers[index][GameIndex];
-                    Dev.DebugOut($"Index: {index}|Game: {GameIndex} | {BitConverter.ToString(PatchData)}");
 
                     if(PatchData.Length == 4) ValueType = 0xFE;
                     else if(PatchData.Length == 8) ValueType = 0xFF;
@@ -1441,7 +1480,7 @@ namespace Dobby {
                     WriteByte(data: ValueType);
 
                     WriteBytes(data: PatchData);
-                    WriteByte(data: 0x69);
+                    WriteByte(data: 1);
                     index++;
                 }
                 index = 0;
@@ -1449,13 +1488,15 @@ namespace Dobby {
                 // Game-Specific Options
                 foreach(var val in DynamicPatchButtons.GameSpecificPatchValues) {
 
-                    if(val == DynamicPatchButtons.DefaultPatchValues[index])
+                    if(val == DynamicPatchButtons.DefaultPatchValues[index]) {
+                        Dev.DebugOut($"{val} == {DynamicPatchButtons.DefaultPatchValues[index]} (#{index})");
+                        index++;
                         continue;
-                    
-                    else {
-                        PatchData = GameSpecificBootSettingsPointers[index][GameIndex];
-                        Dev.DebugOut($"Index: {index}|Game: {GameIndex} | {BitConverter.ToString(PatchData)}");
                     }
+
+                    else Dev.DebugOut($"{val} != {DynamicPatchButtons.DefaultPatchValues[index]} (#{index})");
+
+                    PatchData = GameSpecificBootSettingsPointers[index][GameIndex];
 
                     if(PatchData.Length == 4) ValueType = 0xFE;
                     else if(PatchData.Length == 8) ValueType = 0xFF;
@@ -1464,9 +1505,11 @@ namespace Dobby {
                     WriteByte(data: ValueType);
 
                     WriteBytes(data: PatchData);
-                    WriteByte(data: 0x69);
+                    WriteVar(data: val);
                     index++;
                 }
+
+                WriteBytes(data: new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0x08 });
             }
 
             return 1;
