@@ -1496,7 +1496,7 @@ namespace Dobby {
 
                     else Dev.DebugOut($"{val} != {DynamicPatchButtons.DefaultPatchValues[index]} (#{index})");
 
-                    PatchData = GameSpecificBootSettingsPointers[index][GameIndex];
+                    PatchData = GameSpecificBootSettingsPointers[index++][GameIndex];
 
                     if(PatchData.Length == 4) ValueType = 0xFE;
                     else if(PatchData.Length == 8) ValueType = 0xFF;
@@ -1506,7 +1506,6 @@ namespace Dobby {
 
                     WriteBytes(data: PatchData);
                     WriteVar(data: val);
-                    index++;
                 }
 
                 WriteBytes(data: new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0x08 });
