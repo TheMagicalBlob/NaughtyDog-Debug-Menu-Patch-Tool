@@ -565,7 +565,6 @@ namespace Dobby {
             new byte[] {  }, // 0x | TLL109
             new byte[] {  }, // 0x | T1R100
             new byte[] {  }, // 0x | T1R109
-            
             new byte[] {  }, // 0x | T1R111
             new byte[] {  }, // 0x | T2100
             new byte[] {  }, // 0x | T2107
@@ -1505,7 +1504,7 @@ namespace Dobby {
                     WriteByte(data: ValueType);
 
                     WriteBytes(data: PatchData);
-                    Dev.DebugOut("var" + val);
+                    Dev.DebugOut("var " + val);
                     WriteVar(data: val);
                     index++;
                 }
