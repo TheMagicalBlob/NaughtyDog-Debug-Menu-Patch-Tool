@@ -44,7 +44,7 @@ namespace Dobby {
             // MainLabel
             // 
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MainLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 12.25F, System.Drawing.FontStyle.Bold);
+            this.MainLabel.Font = new System.Drawing.Font("Cambria", 12.25F, System.Drawing.FontStyle.Bold);
             this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
             this.MainLabel.Location = new System.Drawing.Point(2, 7);
             this.MainLabel.Name = "MainLabel";
@@ -72,7 +72,7 @@ namespace Dobby {
             this.PkgHelpPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PkgHelpPageBtn.FlatAppearance.BorderSize = 0;
             this.PkgHelpPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PkgHelpPageBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Strikeout))));
+            this.PkgHelpPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Strikeout))));
             this.PkgHelpPageBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.PkgHelpPageBtn.Location = new System.Drawing.Point(1, 346);
             this.PkgHelpPageBtn.Name = "PkgHelpPageBtn";
@@ -89,7 +89,7 @@ namespace Dobby {
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ExitBtn.Font = new System.Drawing.Font("Cambria", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.ExitBtn.Location = new System.Drawing.Point(293, 7);
             this.ExitBtn.Name = "ExitBtn";
@@ -108,7 +108,7 @@ namespace Dobby {
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MinimizeBtn.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.MinimizeBtn.Location = new System.Drawing.Point(270, 7);
             this.MinimizeBtn.Name = "MinimizeBtn";
@@ -123,7 +123,7 @@ namespace Dobby {
             // 
             // SeperatorLine0
             // 
-            this.SeperatorLine0.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.SeperatorLine0.Location = new System.Drawing.Point(2, 15);
             this.SeperatorLine0.Name = "SeperatorLine0";
@@ -137,7 +137,7 @@ namespace Dobby {
             this.PS4QOLPageHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PS4QOLPageHelpBtn.FlatAppearance.BorderSize = 0;
             this.PS4QOLPageHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PS4QOLPageHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Strikeout))));
+            this.PS4QOLPageHelpBtn.Font = new System.Drawing.Font("Cambria", 9.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Strikeout))));
             this.PS4QOLPageHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.PS4QOLPageHelpBtn.Location = new System.Drawing.Point(1, 323);
             this.PS4QOLPageHelpBtn.Name = "PS4QOLPageHelpBtn";
@@ -150,7 +150,7 @@ namespace Dobby {
             // 
             // SeperatorLine2
             // 
-            this.SeperatorLine2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.SeperatorLine2.Location = new System.Drawing.Point(2, 359);
             this.SeperatorLine2.Name = "SeperatorLine2";
@@ -161,7 +161,7 @@ namespace Dobby {
             // BuildLabel
             // 
             this.BuildLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.BuildLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
+            this.BuildLabel.Font = new System.Drawing.Font("Cambria", 10F, System.Drawing.FontStyle.Bold);
             this.BuildLabel.ForeColor = System.Drawing.SystemColors.Control;
             this.BuildLabel.Location = new System.Drawing.Point(1, 248);
             this.BuildLabel.Name = "BuildLabel";
@@ -174,7 +174,7 @@ namespace Dobby {
             // 
             // SeperatorLine1
             // 
-            this.SeperatorLine1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.SeperatorLine1.Location = new System.Drawing.Point(2, 256);
             this.SeperatorLine1.Name = "SeperatorLine1";
@@ -188,7 +188,7 @@ namespace Dobby {
             this.PS4DebugHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PS4DebugHelpBtn.FlatAppearance.BorderSize = 0;
             this.PS4DebugHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PS4DebugHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.PS4DebugHelpBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.PS4DebugHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.PS4DebugHelpBtn.Location = new System.Drawing.Point(1, 277);
             this.PS4DebugHelpBtn.Name = "PS4DebugHelpBtn";
@@ -202,7 +202,7 @@ namespace Dobby {
             // label4
             // 
             this.label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label4.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F, System.Drawing.FontStyle.Bold);
+            this.label4.Font = new System.Drawing.Font("Cambria", 10F, System.Drawing.FontStyle.Bold);
             this.label4.ForeColor = System.Drawing.SystemColors.Control;
             this.label4.Location = new System.Drawing.Point(84, 32);
             this.label4.Name = "label4";
@@ -216,7 +216,7 @@ namespace Dobby {
             this.EbootPatchPageHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.EbootPatchPageHelpBtn.FlatAppearance.BorderSize = 0;
             this.EbootPatchPageHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.EbootPatchPageHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.EbootPatchPageHelpBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.EbootPatchPageHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.EbootPatchPageHelpBtn.Location = new System.Drawing.Point(1, 299);
             this.EbootPatchPageHelpBtn.Name = "EbootPatchPageHelpBtn";
@@ -229,7 +229,7 @@ namespace Dobby {
             // 
             // Info
             // 
-            this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.Info.Font = new System.Drawing.Font("Cambria", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
             this.Info.Location = new System.Drawing.Point(1, 405);
             this.Info.Name = "Info";
@@ -243,7 +243,7 @@ namespace Dobby {
             this.BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.BackBtn.FlatAppearance.BorderSize = 0;
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.BackBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.BackBtn.Location = new System.Drawing.Point(1, 379);
             this.BackBtn.Name = "BackBtn";

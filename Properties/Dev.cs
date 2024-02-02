@@ -22,11 +22,18 @@ namespace Dobby {
 #if !DEBUG
             public const bool REL = true;
 
-#elif DEBUG
+#else
         public const bool REL = false;
 
         /// <summary> Dev Label Event Handler Function </summary>
         public static void MiscDebugFunc(object sender, EventArgs e) {
+            if(((Control)sender).Text == "&L") {
+                System.Diagnostics.Process.Start($"{Directory.GetCurrentDirectory()}\\out.txt");
+                Environment.Exit(0);
+                return;
+            }
+
+
             OverrideDebugOut ^= true;
         }
 
@@ -80,14 +87,13 @@ namespace Dobby {
                 logThread.Start();
                 Location = Point.Empty;
                 Click += DebugOut;
-
-                LogFile = File.CreateText($"{Directory.GetCurrentDirectory()}\\out.txt");
             }
 
             private static Form AppRef;
             private static Graphics rend;
             private static Size formScale;
             public static StreamWriter LogFile;
+            public static string[] LogBuffer;
 
             #region timer crap
             private static float Delay = 0;
@@ -136,7 +142,6 @@ namespace Dobby {
 
             private static readonly Thread logThread = new Thread(new ThreadStart(UpdateConsoleOutput));
             public static void UpdateConsoleOutput() {
-#if DEBUG
                 if(ActiveForm != null && !TimerThreadStarted) {
                     TimerThread.Start(); TimerThreadStarted = true;
                 }
@@ -156,53 +161,54 @@ namespace Dobby {
                         var DynamicVars = PS4MenuSettingsPage.PeekGameSpecificPatchValues();
 
                         try {
-
                             if(OverrideDebugOut)
                                 Output = new string[] {
-                                $"| Game Index: {PS4MenuSettingsPage.GameIndex}",
-                                $"| Disable FPS:          {PS4MenuSettingsPage.UniversaPatchValues[0]}|{PS4MenuSettingsPage.UniversaPatchValues[1]}",
-                                $"| Paused Icon:          {PS4MenuSettingsPage.UniversaPatchValues[2]}",
-                                $"| ProgPauseOnOpen:      {PS4MenuSettingsPage.UniversaPatchValues[3]}",
-                                $"| ProgPauseOnExit:      {PS4MenuSettingsPage.UniversaPatchValues[4]}",
-                                $"| Novis:                {PS4MenuSettingsPage.UniversaPatchValues[5]}",
-                                 "| ",
-                                $"| Menu Scale:           {DynamicVars[0]}",
-                                $"| Menu Alpha:           {DynamicVars[1]}",
-                                $"| Non-ADS FOV:          {DynamicVars[2]}",
-                                $"| Swap Square & Circle: {DynamicVars[3]}",
-                                $"| Shadowed Text:        {DynamicVars[4]}",
-                                $"| Right Align:          {DynamicVars[5]}",
-                                $"|    Right Margin:      {DynamicVars[6]}\n",
-                        };
-
+                                    $"| Game Index: {PS4MenuSettingsPage.GameIndex}",
+                                    $"| Disable FPS:          {PS4MenuSettingsPage.UniversaPatchValues[0]}|{PS4MenuSettingsPage.UniversaPatchValues[1]}",
+                                    $"| Paused Icon:          {PS4MenuSettingsPage.UniversaPatchValues[2]}",
+                                    $"| ProgPauseOnOpen:      {PS4MenuSettingsPage.UniversaPatchValues[3]}",
+                                    $"| ProgPauseOnExit:      {PS4MenuSettingsPage.UniversaPatchValues[4]}",
+                                    $"| Novis:                {PS4MenuSettingsPage.UniversaPatchValues[5]}",
+                                     "| ",
+                                    $"| Menu Scale:           {DynamicVars[0]}",
+                                    $"| Menu Alpha:           {DynamicVars[1]}",
+                                    $"| Non-ADS FOV:          {DynamicVars[2]}",
+                                    $"| Swap Square & Circle: {DynamicVars[3]}",
+                                    $"| Shadowed Text:        {DynamicVars[4]}",
+                                    $"| Right Align:          {DynamicVars[5]}",
+                                    $"|    Right Margin:      {DynamicVars[6]}\n"
+                                };
                             else
                                 Output = new string[] {
-                            $"Build: {Build}                   [Delay: ~{Delay}ms]",
-                            " ",
-                            $"Parent Form: {(ActiveForm != null ? $"{ActiveForm?.Name} | # Of Children: {ActiveForm?.Controls?.Count}" : "Console")}",
-                            " ",
-                            $"TitleID: {(TitleID == "?" ? "UNK" : TitleID)} | Game Version: {GameVersion}",
-                            $"GameID: {ActiveGameID}",
-                            $"ProcessName: {ProcessName} | PDbg Connected: {PS4DebugIsConnected}",
-                            " ",
-                            $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}",
-                            $"Control: {HoveredControl?.Name} | {ControlType?.Substring(ControlType.LastIndexOf('.') + 1)}",
-                            $"{(HoveredControl?.GetType() == typeof(vButton) ? ((vButton)HoveredControl)?.Variable : " ")}",
-                            $" Size: {HoveredControl?.Size} | Pos: {HoveredControl?.Location}",
-                            $" Parent [{HoveredControl?.Parent?.Name}]",
+                                    $"Build: {Build}                   [Delay: ~{Delay}ms]",
+                                    " ",
+                                    $"Parent Form: {(ActiveForm != null ? $"{ActiveForm?.Name} | # Of Children: {ActiveForm?.Controls?.Count}" : "Console")}",
+                                    " ",
+                                    $"TitleID: {(TitleID == "?" ? "UNK" : TitleID)} | Game Version: {GameVersion}",
+                                    $"GameID: {ActiveGameID}",
+                                    $"ProcessName: {ProcessName} | PDbg Connected: {PS4DebugIsConnected}",
+                                    " ",
+                                    $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}",
+                                    $"Control: {HoveredControl?.Name} | {ControlType?.Substring(ControlType.LastIndexOf('.') + 1)}",
+                                    $"{(HoveredControl?.GetType() == typeof(vButton) ? ((vButton)HoveredControl)?.Variable : " ")}",
+                                    $" Size: {HoveredControl?.Size} | Pos: {HoveredControl?.Location}",
+                                    $" Parent [{HoveredControl?.Parent?.Name}]",
 
-                            (EbootPatchPage.MainStreamIsOpen || PCDebugMenuPage.MainStreamIsOpen ? " ": ""),
+                                    (EbootPatchPage.MainStreamIsOpen || PCDebugMenuPage.MainStreamIsOpen ? " ": ""),
 
-                            $"{(EbootPatchPage.MainStreamIsOpen ? $"PS4Stream: {EbootPatchPage.MainStream.Name}" : (PCDebugMenuPage.MainStreamIsOpen ? " " : ""))}",
-                            $"{(EbootPatchPage.MainStreamIsOpen ? $"Length: {(EbootPatchPage.MainStream.Length.ToString().Length > 6 ? $"{EbootPatchPage.MainStream.Length.ToString().Remove(2)}MB" : $"{EbootPatchPage.MainStream.Length} bytes")} | Read: {EbootPatchPage.MainStream.CanRead} | Write: {EbootPatchPage.MainStream.CanWrite}" : (PCDebugMenuPage.MainStreamIsOpen ? " " : ""))}",
+                                    $"{(EbootPatchPage.MainStreamIsOpen ? $"PS4Stream: {EbootPatchPage.MainStream.Name}" : (PCDebugMenuPage.MainStreamIsOpen ? " " : ""))}",
+                                    $"{(EbootPatchPage.MainStreamIsOpen ? $"Length: {(EbootPatchPage.MainStream.Length.ToString().Length > 6 ? $"{EbootPatchPage.MainStream.Length.ToString().Remove(2)}MB" : $"{EbootPatchPage.MainStream.Length} bytes")} | Read: {EbootPatchPage.MainStream.CanRead} | Write: {EbootPatchPage.MainStream.CanWrite}" : (PCDebugMenuPage.MainStreamIsOpen ? " " : ""))}",
 
-                            (PCDebugMenuPage.MainStreamIsOpen ? " ": ""),
+                                    (PCDebugMenuPage.MainStreamIsOpen ? " ": ""),
 
-                            $"{(PCDebugMenuPage.MainStreamIsOpen ? $"PCStream: {PCDebugMenuPage.MainStream.Name}" : "")}",
-                            $"{(PCDebugMenuPage.MainStreamIsOpen ? $"Length: {(PCDebugMenuPage.MainStream.Length.ToString().Length > 6 ? $"{PCDebugMenuPage.MainStream.Length.ToString().Remove(2)}MB" : $"{PCDebugMenuPage.MainStream.Length} bytes")} | Read: {PCDebugMenuPage.MainStream.CanRead} | Write: {PCDebugMenuPage.MainStream.CanWrite}" : "")}",
-                        };
+                                    $"{(PCDebugMenuPage.MainStreamIsOpen ? $"PCStream: {PCDebugMenuPage.MainStream.Name}" : "")}",
+                                    $"{(PCDebugMenuPage.MainStreamIsOpen ? $"Length: {(PCDebugMenuPage.MainStream.Length.ToString().Length > 6 ? $"{PCDebugMenuPage.MainStream.Length.ToString().Remove(2)}MB" : $"{PCDebugMenuPage.MainStream.Length} bytes")} | Read: {PCDebugMenuPage.MainStream.CanRead} | Write: {PCDebugMenuPage.MainStream.CanWrite}" : "")}"
+                                };
                         }
-                        catch(Exception e) { Output = new string[] { "Error", e.Message }; MessageBox.Show("Caught Misc Output Error", e.Message); }
+                        catch(Exception e) {
+                            Output = new string[] { "Error", e.Message };
+                            MessageBox.Show(e.Message, "(Caught Misc Output Error)");
+                        }
 
                         if(RedrawLog || !chk1.SequenceEqual(Output) || chk1 == null || !chk2.SequenceEqual(OutputStrings)) {
                             RedrawLog ^= true;
@@ -268,13 +274,12 @@ namespace Dobby {
                     }
                     catch(System.ObjectDisposedException) { }
                 }
-#endif
             }
         }
 
+        private static void DebugOut(object sender, EventArgs e) => DebugOut("Output Test");
 
 #endif
-        private static void DebugOut(object sender, EventArgs e) => DebugOut("Output Test");
 
         public static void DebugOut(object obj = null) {
 #if DEBUG
@@ -288,8 +293,11 @@ namespace Dobby {
             if(s.Contains("\n"))
                 s = s.Replace("\n", "\n ");
 
-            LogWindow.LogFile?.WriteLine(s);
-            LogWindow.LogFile?.Flush();
+            if(LogWindow.LogFile == null)
+                LogWindow.LogFile = File.CreateText($"{Directory.GetCurrentDirectory()}\\out.txt");
+            
+            LogWindow.LogFile.WriteLine(s);
+            LogWindow.LogFile.Flush();
             LogWindow.RedrawLog = true;
 
         Wait:

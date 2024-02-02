@@ -61,7 +61,7 @@ namespace Dobby {
             this.InfoHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.InfoHelpBtn.FlatAppearance.BorderSize = 0;
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.InfoHelpBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.InfoHelpBtn.Location = new System.Drawing.Point(1, 248);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
@@ -74,7 +74,7 @@ namespace Dobby {
             // 
             // SeperatorLine2
             // 
-            this.SeperatorLine2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.SeperatorLine2.Location = new System.Drawing.Point(2, 200);
             this.SeperatorLine2.Name = "SeperatorLine2";
@@ -88,7 +88,7 @@ namespace Dobby {
             this.BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.BackBtn.FlatAppearance.BorderSize = 0;
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BackBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.BackBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.BackBtn.Location = new System.Drawing.Point(1, 298);
             this.BackBtn.Name = "BackBtn";
@@ -101,7 +101,7 @@ namespace Dobby {
             // 
             // Info
             // 
-            this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.Info.Font = new System.Drawing.Font("Cambria", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
             this.Info.Location = new System.Drawing.Point(4, 325);
             this.Info.Name = "Info";
@@ -115,7 +115,7 @@ namespace Dobby {
             this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.CreditsBtn.FlatAppearance.BorderSize = 0;
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.CreditsBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.CreditsBtn.Location = new System.Drawing.Point(1, 273);
             this.CreditsBtn.Name = "CreditsBtn";
@@ -133,7 +133,7 @@ namespace Dobby {
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MinimizeBtn.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.MinimizeBtn.Location = new System.Drawing.Point(273, 2);
             this.MinimizeBtn.Name = "MinimizeBtn";
@@ -149,7 +149,7 @@ namespace Dobby {
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ExitBtn.Font = new System.Drawing.Font("Cambria", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.ExitBtn.Location = new System.Drawing.Point(295, 2);
             this.ExitBtn.Name = "ExitBtn";
@@ -162,7 +162,7 @@ namespace Dobby {
             // MainLabel
             // 
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MainLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 12.25F, System.Drawing.FontStyle.Bold);
+            this.MainLabel.Font = new System.Drawing.Font("Cambria", 12.25F, System.Drawing.FontStyle.Bold);
             this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
             this.MainLabel.Location = new System.Drawing.Point(2, 3);
             this.MainLabel.Name = "MainLabel";
@@ -172,7 +172,7 @@ namespace Dobby {
             // 
             // SeperatorLine0
             // 
-            this.SeperatorLine0.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.SeperatorLine0.Location = new System.Drawing.Point(2, 12);
             this.SeperatorLine0.Name = "SeperatorLine0";
@@ -186,7 +186,7 @@ namespace Dobby {
             this.LaunchOrbisPubCmdBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.LaunchOrbisPubCmdBtn.FlatAppearance.BorderSize = 0;
             this.LaunchOrbisPubCmdBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LaunchOrbisPubCmdBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.LaunchOrbisPubCmdBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.LaunchOrbisPubCmdBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.LaunchOrbisPubCmdBtn.Location = new System.Drawing.Point(1, 33);
             this.LaunchOrbisPubCmdBtn.Name = "LaunchOrbisPubCmdBtn";
@@ -203,7 +203,7 @@ namespace Dobby {
             this.VerbosityBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.VerbosityBtn.FlatAppearance.BorderSize = 0;
             this.VerbosityBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VerbosityBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.VerbosityBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.VerbosityBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.VerbosityBtn.Location = new System.Drawing.Point(1, 56);
             this.VerbosityBtn.Name = "VerbosityBtn";
@@ -216,7 +216,7 @@ namespace Dobby {
             // 
             // SeperatorLine1
             // 
-            this.SeperatorLine1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.SeperatorLine1.Location = new System.Drawing.Point(2, 93);
             this.SeperatorLine1.Name = "SeperatorLine1";
@@ -230,7 +230,7 @@ namespace Dobby {
             this.TempDirectoryBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.TempDirectoryBtn.FlatAppearance.BorderSize = 0;
             this.TempDirectoryBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.TempDirectoryBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.TempDirectoryBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.TempDirectoryBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.TempDirectoryBtn.Location = new System.Drawing.Point(1, 81);
             this.TempDirectoryBtn.Name = "TempDirectoryBtn";
@@ -243,7 +243,7 @@ namespace Dobby {
             // 
             // SeperatorLine3
             // 
-            this.SeperatorLine3.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine3.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.SeperatorLine3.Location = new System.Drawing.Point(2, 230);
             this.SeperatorLine3.Name = "SeperatorLine3";
@@ -257,7 +257,7 @@ namespace Dobby {
             this.Gp4CreationPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.Gp4CreationPageBtn.FlatAppearance.BorderSize = 0;
             this.Gp4CreationPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Gp4CreationPageBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.Gp4CreationPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.Gp4CreationPageBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.Gp4CreationPageBtn.Location = new System.Drawing.Point(1, 218);
             this.Gp4CreationPageBtn.Name = "Gp4CreationPageBtn";
@@ -286,7 +286,7 @@ namespace Dobby {
             this.CmdPathBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.CmdPathBtn.FlatAppearance.BorderSize = 0;
             this.CmdPathBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CmdPathBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F);
+            this.CmdPathBtn.Font = new System.Drawing.Font("Cambria", 7F);
             this.CmdPathBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.CmdPathBtn.Location = new System.Drawing.Point(270, 112);
             this.CmdPathBtn.Name = "CmdPathBtn";
@@ -316,7 +316,7 @@ namespace Dobby {
             this.GP4PathBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.GP4PathBtn.FlatAppearance.BorderSize = 0;
             this.GP4PathBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.GP4PathBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F);
+            this.GP4PathBtn.Font = new System.Drawing.Font("Cambria", 7F);
             this.GP4PathBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.GP4PathBtn.Location = new System.Drawing.Point(270, 136);
             this.GP4PathBtn.Name = "GP4PathBtn";
@@ -345,7 +345,7 @@ namespace Dobby {
             this.OutputDirectoryBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.OutputDirectoryBtn.FlatAppearance.BorderSize = 0;
             this.OutputDirectoryBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.OutputDirectoryBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F);
+            this.OutputDirectoryBtn.Font = new System.Drawing.Font("Cambria", 7F);
             this.OutputDirectoryBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.OutputDirectoryBtn.Location = new System.Drawing.Point(270, 161);
             this.OutputDirectoryBtn.Name = "OutputDirectoryBtn";
@@ -374,7 +374,7 @@ namespace Dobby {
             this.TMPDirectoryBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.TMPDirectoryBtn.FlatAppearance.BorderSize = 0;
             this.TMPDirectoryBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.TMPDirectoryBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 7F);
+            this.TMPDirectoryBtn.Font = new System.Drawing.Font("Cambria", 7F);
             this.TMPDirectoryBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.TMPDirectoryBtn.Location = new System.Drawing.Point(270, 187);
             this.TMPDirectoryBtn.Name = "TMPDirectoryBtn";

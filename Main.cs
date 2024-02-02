@@ -60,7 +60,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             // MainLabel
             // 
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MainLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 12.25F, System.Drawing.FontStyle.Bold);
+            this.MainLabel.Font = new System.Drawing.Font("Cambria", 12.25F, System.Drawing.FontStyle.Bold);
             this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
             this.MainLabel.Location = new System.Drawing.Point(2, 4);
             this.MainLabel.Name = "MainLabel";
@@ -74,7 +74,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ExitBtn.Font = new System.Drawing.Font("Cambria", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.ExitBtn.Location = new System.Drawing.Point(293, 1);
             this.ExitBtn.Name = "ExitBtn";
@@ -90,7 +90,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MinimizeBtn.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.MinimizeBtn.Location = new System.Drawing.Point(270, 1);
             this.MinimizeBtn.Name = "MinimizeBtn";
@@ -102,7 +102,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             // 
             // Info
             // 
-            this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.Info.Font = new System.Drawing.Font("Cambria", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
             this.Info.Location = new System.Drawing.Point(7, 286);
             this.Info.Name = "Info";
@@ -116,7 +116,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.PS4DebugPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PS4DebugPageBtn.FlatAppearance.BorderSize = 0;
             this.PS4DebugPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PS4DebugPageBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.PS4DebugPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.PS4DebugPageBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.PS4DebugPageBtn.Location = new System.Drawing.Point(1, 51);
             this.PS4DebugPageBtn.Name = "PS4DebugPageBtn";
@@ -133,7 +133,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.EbootPatchPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.EbootPatchPageBtn.FlatAppearance.BorderSize = 0;
             this.EbootPatchPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.EbootPatchPageBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.EbootPatchPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.EbootPatchPageBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.EbootPatchPageBtn.Location = new System.Drawing.Point(1, 76);
             this.EbootPatchPageBtn.Name = "EbootPatchPageBtn";
@@ -150,7 +150,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.PS4MenuSettingsPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PS4MenuSettingsPageBtn.FlatAppearance.BorderSize = 0;
             this.PS4MenuSettingsPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PS4MenuSettingsPageBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.PS4MenuSettingsPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.PS4MenuSettingsPageBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.PS4MenuSettingsPageBtn.Location = new System.Drawing.Point(1, 102);
             this.PS4MenuSettingsPageBtn.Name = "PS4MenuSettingsPageBtn";
@@ -164,7 +164,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             // 
             // SeperatorLine0
             // 
-            this.SeperatorLine0.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.SeperatorLine0.Location = new System.Drawing.Point(2, 14);
             this.SeperatorLine0.Name = "SeperatorLine0";
@@ -174,7 +174,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             // 
             // SeperatorLine3
             // 
-            this.SeperatorLine3.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine3.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.SeperatorLine3.Location = new System.Drawing.Point(3, 192);
             this.SeperatorLine3.Name = "SeperatorLine3";
@@ -188,7 +188,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.PkgPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PkgPageBtn.FlatAppearance.BorderSize = 0;
             this.PkgPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PkgPageBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.PkgPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.PkgPageBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.PkgPageBtn.Location = new System.Drawing.Point(1, 128);
             this.PkgPageBtn.Name = "PkgPageBtn";
@@ -201,7 +201,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             // 
             // SeperatorLine1
             // 
-            this.SeperatorLine1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.SeperatorLine1.Location = new System.Drawing.Point(2, 142);
             this.SeperatorLine1.Name = "SeperatorLine1";
@@ -215,7 +215,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.PCDebugMenuPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PCDebugMenuPageBtn.FlatAppearance.BorderSize = 0;
             this.PCDebugMenuPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PCDebugMenuPageBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.PCDebugMenuPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.PCDebugMenuPageBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.PCDebugMenuPageBtn.Location = new System.Drawing.Point(1, 178);
             this.PCDebugMenuPageBtn.Name = "PCDebugMenuPageBtn";
@@ -232,7 +232,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.CreditsBtn.FlatAppearance.BorderSize = 0;
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CreditsBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.CreditsBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.CreditsBtn.Location = new System.Drawing.Point(1, 233);
             this.CreditsBtn.Name = "CreditsBtn";
@@ -250,7 +250,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.InfoHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.InfoHelpBtn.FlatAppearance.BorderSize = 0;
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InfoHelpBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.25F, System.Drawing.FontStyle.Bold);
+            this.InfoHelpBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.InfoHelpBtn.Location = new System.Drawing.Point(1, 210);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
@@ -265,7 +265,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             // Playstation4Label
             // 
             this.Playstation4Label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Playstation4Label.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
+            this.Playstation4Label.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold);
             this.Playstation4Label.ForeColor = System.Drawing.SystemColors.Control;
             this.Playstation4Label.Location = new System.Drawing.Point(116, 32);
             this.Playstation4Label.Name = "Playstation4Label";
@@ -277,7 +277,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             // PCLabel
             // 
             this.PCLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.PCLabel.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
+            this.PCLabel.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold);
             this.PCLabel.ForeColor = System.Drawing.SystemColors.Control;
             this.PCLabel.Location = new System.Drawing.Point(146, 160);
             this.PCLabel.Name = "PCLabel";
@@ -291,7 +291,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.DownloadSourceBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.DownloadSourceBtn.FlatAppearance.BorderSize = 0;
             this.DownloadSourceBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DownloadSourceBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
+            this.DownloadSourceBtn.Font = new System.Drawing.Font("Cambria", 9F, System.Drawing.FontStyle.Bold);
             this.DownloadSourceBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.DownloadSourceBtn.Location = new System.Drawing.Point(1, 257);
             this.DownloadSourceBtn.Name = "DownloadSourceBtn";

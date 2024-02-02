@@ -141,7 +141,7 @@ namespace Dobby {
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
             this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.ExitBtn.Location = new System.Drawing.Point(293, 1);
             this.ExitBtn.Name = "ExitBtn";
@@ -157,7 +157,7 @@ namespace Dobby {
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.MinimizeBtn.Location = new System.Drawing.Point(268, 1);
             this.MinimizeBtn.Name = "MinimizeBtn";
@@ -169,7 +169,7 @@ namespace Dobby {
             // 
             // Info
             // 
-            this.Info.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.Info.Font = new System.Drawing.Font("Cambria", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
             this.Info.Location = new System.Drawing.Point(8, 366);
             this.Info.Name = "Info";
@@ -215,7 +215,7 @@ namespace Dobby {
             // 
             // SeperatorLine0
             // 
-            this.SeperatorLine0.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.SeperatorLine0.Location = new System.Drawing.Point(2, 12);
             this.SeperatorLine0.Name = "SeperatorLine0";
@@ -276,7 +276,7 @@ namespace Dobby {
             // 
             // SeperatorLine3
             // 
-            this.SeperatorLine3.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine3.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.SeperatorLine3.Location = new System.Drawing.Point(2, 278);
             this.SeperatorLine3.Name = "SeperatorLine3";
@@ -314,7 +314,7 @@ namespace Dobby {
             // 
             // SeperatorLine1
             // 
-            this.SeperatorLine1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.SeperatorLine1.Location = new System.Drawing.Point(2, 156);
             this.SeperatorLine1.Name = "SeperatorLine1";
@@ -324,7 +324,7 @@ namespace Dobby {
             // 
             // SeperatorLine2
             // 
-            this.SeperatorLine2.Font = new System.Drawing.Font("Franklin Gothic Medium", 10F);
+            this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.SeperatorLine2.Location = new System.Drawing.Point(2, 216);
             this.SeperatorLine2.Name = "SeperatorLine2";
@@ -358,7 +358,7 @@ namespace Dobby {
             this.NovisBtn.Text = "Disable Culling Of Level Geometry:";
             this.NovisBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.NovisBtn.UseVisualStyleBackColor = false;
-            this.NovisBtn.MouseClick += new System.Windows.Forms.MouseEventHandler(DisableAllVisibilityBtn_Click);
+            this.NovisBtn.MouseClick += new System.Windows.Forms.MouseEventHandler(this.DisableAllVisibilityBtn_Click);
             // 
             // PS4MenuSettingsPage
             // 
@@ -1448,7 +1448,7 @@ namespace Dobby {
             ConfirmPatchesBtn.Name = "ConfirmPatchesBtn";
             ConfirmPatchesBtn.Location = new Point(1, RB_StartPos);
             ConfirmPatchesBtn.Size = new Size(Width - 11, 23);
-            ConfirmPatchesBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
+            ConfirmPatchesBtn.Font = new Font("Cambria", 9.25F, FontStyle.Bold);
             ConfirmPatchesBtn.Text = "Confirm And Apply Patches";
             ConfirmPatchesBtn.TextAlign = ContentAlignment.MiddleLeft;
             ConfirmPatchesBtn.FlatAppearance.BorderSize = 0;
@@ -1467,7 +1467,7 @@ namespace Dobby {
             ResetBtn.Cursor = Cursors.Cross;
             ResetBtn.FlatAppearance.BorderSize = 0;
             ResetBtn.FlatStyle = FlatStyle.Flat;
-            ResetBtn.Font = new Font("Franklin Gothic Medium", 9.25F, FontStyle.Bold);
+            ResetBtn.Font = new Font("Cambria", 9.25F, FontStyle.Bold);
             ResetBtn.ForeColor = SystemColors.Control;
             ResetBtn.ImageAlign = ContentAlignment.TopRight;
             ResetBtn.Location = new Point(1, RB_StartPos + 24);

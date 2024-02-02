@@ -211,7 +211,8 @@ namespace Dobby {
           "* 3.40.179.484 | PS4MenuSettingsPatchPage Work, Event Handler Fix, Debug Text Fix",
           "* 3.40.182.489 | PS4MenuSettingsPatchPage Work, Debug Output Fix",
           "* 3.40.182.491 | PS4MenuSettingsPatchPage Work, Removed Old Debug Output Calls",
-          "* 3.42.183.494 | PS4MenuSettingsPatchPage Now Functions, Pointers Still Need To Be Added For The Majority Of Cases, Debug Output Changes"
+          "* 3.42.183.494 | PS4MenuSettingsPatchPage Now Functions, Pointers Still Need To Be Added For The Majority Of Cases, Debug Output Changes",
+          "* 3.42.183.495 | , Debug Output Tweak",
 
             // TODO:
             // * MAJOR
@@ -275,18 +276,6 @@ namespace Dobby {
         
         
         public static string CurrentControl, TempStringStore;
-
-        /// <summary> Buttons To Avoid Applying Hpver Arrow To </summary>
-        public static string[] Blacklist = new string[] {
-            "ExitBtn",
-            "MinimizeBtn",
-            "IPLabelBtn",
-            "PortLabelBtn",
-            "CmdPathBtn",
-            "Gp4PathBtn",
-            "OutputDirectoryBtn",
-            "TmpDirectoryBtn"
-        };
 
         public static string ActiveGameID = "UNK";
 
@@ -520,26 +509,60 @@ namespace Dobby {
             FormActive = false;
         }
 
+        public static Size SizeControl(Control cunt) {
+            var size = TextRenderer.MeasureText(cunt.Text, cunt.Font);
+            return new Size(size.Width + 7, size.Height + 7);
+        }
+
         public static void AddControlEventHandlers(Control.ControlCollection Controls) { // Got Sick of Manually Editing InitializeComponent()
             #region DebugLabel
 #if DEBUG
-            if(Controls.Owner.Name == "LogWindow") goto Log;
-            Label DebugLabel = new Label();
-            DebugLabel.Size = new Size(36, 19);
-            DebugLabel.Location = new Point(230, 1);
-            DebugLabel.ForeColor = SystemColors.Control;
-            DebugLabel.BorderStyle = BorderStyle.FixedSingle;
-            DebugLabel.Font = new Font("Franklin Gothic Medium", 7F, FontStyle.Bold);
-            DebugLabel.Text = "(Dev)";
+            if(Controls.Owner.Name == "LogWindow") goto FormIsLogWindow;
+            Label DebugLabel = new Label {
+                Location = new Point(230, 1),
+                ForeColor = SystemColors.Control,
+                BorderStyle = BorderStyle.FixedSingle,
+                Font = new Font("Cambria", 7F, FontStyle.Bold),
+                Text = "(Dev)"
+            };
+            DebugLabel.Size = SizeControl(DebugLabel);
             DebugLabel.Click += new EventHandler(MiscDebugFunc);
             Controls.Add(DebugLabel);
             DebugLabel.BringToFront();
-            Log:
+
+            Button OpenLogAndQuit = new Button {
+                ForeColor = SystemColors.Control,
+                Font = new Font("Cambria", 7F, FontStyle.Bold),
+                Text = "&L",
+                Name = "!!!"
+            };
+            OpenLogAndQuit.Size = SizeControl(OpenLogAndQuit);
+            OpenLogAndQuit.Click += new EventHandler(MiscDebugFunc);
+            OpenLogAndQuit.FlatAppearance.BorderSize = 0;
+            OpenLogAndQuit.FlatStyle = FlatStyle.Flat;
+            Controls.Add(OpenLogAndQuit);
+            OpenLogAndQuit.Location = new Point(230 - OpenLogAndQuit.Width, 1);
+            OpenLogAndQuit.BringToFront();
+        FormIsLogWindow:;
 #endif
             #endregion
 
-            
-            Controls.Owner.Paint += PaintBorder;
+        Controls.Owner.Paint += PaintBorder;
+
+
+            /// <summary> Buttons To Avoid Applying Hover Arrow To </summary>
+            string[] Blacklist = new string[] {
+                "!!!",
+                "ExitBtn",
+                "MinimizeBtn",
+                "IPLabelBtn",
+                "PortLabelBtn",
+                "CmdPathBtn",
+                "Gp4PathBtn",
+                "OutputDirectoryBtn",
+                "TmpDirectoryBtn"
+            };
+
 
             foreach(Control Item in Controls) {
                 if(Item.HasChildren) { // Designer Added Some Things To The Form, And Some To The Group Box Used To Make The Border. This is me bing lazy. as long as it's not noticably slower
@@ -760,7 +783,7 @@ namespace Dobby {
                 Location = new Point(228, 9),
                 ForeColor = SystemColors.Control,
                 TextAlign = ContentAlignment.MiddleRight,
-                Font = new Font("Franklin Gothic Medium", 6.5F)
+                Font = new Font("Cambria", 6.5F)
 
             };
             var textBox = new RichTextBox() {
