@@ -1,5 +1,6 @@
 ﻿using System;
 using System.CodeDom;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -395,154 +396,6 @@ namespace Dobby {
         }
 
 
-        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     Misc Patches Page Variables    --\\\
-        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
-        #region Misc Patches Page Variables
-
-        /// <summary> Array of Controls to Move When Loading >1 Game-Specific Debug Options
-        ///</summary>
-        private static Control[] ControlsToMove;
-        private static FileStream MainStream;
-        private static DynamicPatchButtons gsButtons;
-
-        /// <summary> Variable Used When Adjusting Form Scale And Control Positions
-        ///</summary>
-        private static int
-            ButtonIndex = 0,
-            RB_StartPos,
-            Game
-        ;
-
-        private static bool MultipleButtonsEnabled;
-
-        private static string[] ResultStrings = new string[] {
-            "Debug Menus Disabled",
-            "Debug Menus Enabled",
-            "Restored Menu Applied",
-            "Custom Menu Applied",
-        };
-
-        private static byte[] LocalExecutableCheck;
-        private static string ActiveFilePath;
-        private static bool IsActiveFilePCExe, MainStreamIsOpen;
-        
-        public static void WriteBytes(int? offset = null, byte[] data = null) {
-#if DEBUG
-            var msg = $"Data {BitConverter.ToString(data).Replace("-", "")} Written To ";
-            if(offset != null)
-                MainStream.Position = (int)offset;
-            msg += MainStream.Position.ToString("X"); // trust issues
-
-            MainStream.Write(data, 0, data.Length);
-            Dev.DebugOut(msg);
-            Dev.DebugOut();
-#else
-            if (offset != null)
-            MainStream.Position = (int)offset;
-            MainStream.Write(data, 0, data.Length);
-#endif
-        }
-        public static void WriteByte(int? offset = null, byte data = 0) {
-#if DEBUG
-            var msg = $"Byte {data:X} Written To ";
-            if(offset != null)
-                MainStream.Position = (int)offset;
-            msg += MainStream.Position.ToString("X"); // trust issues
-
-            MainStream.WriteByte(data);
-            Dev.DebugOut(msg);
-#else
-            if(offset != null)
-            MainStream.Position = (int)offset;
-            MainStream.WriteByte(data);
-#endif
-        }
-        public static void WriteVar(int? offset = null, object data = null) {
-#if DEBUG
-            var msg = " Written To ";
-
-            if(offset != null)
-                MainStream.Position = (int)offset;
-            msg += MainStream.Position.ToString("X");
-
-
-            if(data.GetType() == typeof(byte) && data.GetType() == typeof(bool)) {
-                MainStream.WriteByte(BitConverter.GetBytes((byte)data)[0]);
-                msg = (byte)data + msg;
-            }
-
-            else {
-                MainStream.Write(BitConverter.GetBytes((float)data), 0, BitConverter.GetBytes((float)data).Length);
-                msg = (float)data + msg;
-            }
-            
-            Dev.DebugOut("var " + msg);
-
-#else
-            if(offset != null)
-                MainStream.Position = (int)offset;
-
-            if(data.GetType() != typeof(byte) && data.GetType() != typeof(bool))
-                MainStream.WriteByte(BitConverter.GetBytes((byte)data)[0]);
-            else
-                MainStream.Write(BitConverter.GetBytes((float)data), 0, BitConverter.GetBytes((float)data).Length);
-#endif
-        }
-        /// <summary> Compare Data Read At The Given Address
-        /// </summary>
-        /// <returns> True If The Data Read Matches The Array Given </returns>
-        public static bool ArrayCmp(int Address, byte[] DataToCompare) {
-            MainStream.Position = Address;
-            byte[] DataPresent = new byte[DataToCompare.Length];
-            MainStream.Read(DataPresent, 0, DataToCompare.Length);
-            return DataPresent.SequenceEqual<byte>(DataToCompare);
-        }
-#endregion
-
-        /// <summary>
-        /// 0:  UC1100<br/>
-        /// 1:  UC1102<br/>
-        /// 2:  UC2100<br/>
-        /// 3:  UC2102<br/>
-        /// 4:  UC3100<br/>
-        /// 5:  UC3102<br/>
-        /// 6:  UC4100<br/>
-        /// 7:  UC4101<br/>
-        /// 8:  UC4133<br/>
-        /// 9:  UC4133MP<br/>
-        /// 10: TLL100<br/>
-        /// 11: TLL10X<br/>
-        /// 12: T1R100<br/>
-        /// 13: T1R109<br/>
-        /// 14: T1R11X<br/>
-        /// 15: T2100<br/>
-        /// 16: T2107<br/>
-        /// 17: T2109<br/>
-        /// </summary>
-#if DEBUG
-        public static int GameIndex;
-#else
-        private int GameIndex;
-#endif
-
-        /// <summary>
-        /// MenuAlphaBtn        <br/>
-        /// MenuScaleBtn        <br/>
-        /// FOVBtn              <br/>
-        /// MenuShadowedTextBtn <br/>
-        /// RightAlignBtn       <br/>
-        /// RightMarginBtn
-        /// </summary>
-        private enum IDS {
-            MenuAlphaBtn,
-            MenuScaleBtn,
-            FOVBtn,
-            MenuShadowedTextBtn,
-            RightAlignBtn,
-            RightMarginBtn
-        }
-
 
         ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///-- QUALITY OF LIFE/BOOTSETTINGS OFFSET POINTERS  --\\\
@@ -606,7 +459,7 @@ namespace Dobby {
                 new byte[] {  }, // T1R109
                 new byte[] {  }, // T1R111
                 new byte[] {  }, // T2100
-                new byte[] {  }, // T2107
+                new byte[] { 0xB0, 0x75, 0x76, 0x03, 0xb8, 0x3a, 0x00, 0x00 }, // T2107
                 new byte[] { 0x30, 0xb4, 0x77, 0x03, 0xb8, 0x3a, 0x00, 0x00 }  // T2109
             },
             
@@ -628,7 +481,7 @@ namespace Dobby {
                 new byte[] {  }, // 0x | T1R109
                 new byte[] {  }, // 0x | T1R111
                 new byte[] {  }, // 0x | T2100
-                new byte[] {  }, // T2107
+                new byte[] { 0xB0, 0x75, 0x76, 0x03, 0xcd, 0x3a, 0x00, 0x00 }, // T2107
                 new byte[] { 0x30, 0xb4, 0x77, 0x03, 0xcd, 0x3a, 0x00, 0x00 }  // T2109
             },
 
@@ -802,8 +655,30 @@ namespace Dobby {
                 new byte[] {  }, // 0x | T1R109
                 new byte[] {  }, // 0x | T1R111
                 new byte[] {  }, // 0x | T2100
-                new byte[] {  }, // 0x | T2107
-                new byte[] {  }  // 0x | T2109
+                new byte[] { 0x00, 0x9A, 0x02, 0x03 }, // 0x | T2107
+                new byte[] { 0x00, 0xD8, 0x05, 0x03 }  // 0x | T2109
+            },
+
+            //|Main Camera X-Alignment (camera-distance)
+            new byte[][] {
+                new byte[] {  }, // 0x | UC1100
+                new byte[] {  }, // 0x | UC1102
+                new byte[] {  }, // 0x | UC2100
+                new byte[] {  }, // 0x | UC2102
+                new byte[] {  }, // 0x | UC3100
+                new byte[] {  }, // 0x | UC3102
+                new byte[] {  }, // 0x | UC4100
+                new byte[] {  }, // 0x | UC4101
+                new byte[] {  }, // 0x | UC4133
+                new byte[] {  }, // 0x | UC4133MP
+                new byte[] {  }, // 0x | TLL100
+                new byte[] {  }, // 0x | TLL109
+                new byte[] {  }, // 0x | T1R100
+                new byte[] {  }, // 0x | T1R109
+                new byte[] {  }, // 0x | T1R111
+                new byte[] {  }, // 0x | T2100
+                new byte[] { 0xFC, 0x99, 0x02, 0x03 }, // 0x | T2107
+                new byte[] { 0xFC, 0xD7, 0x05, 0x03 }  // 0x | T2109
             },
 
             //|Shadow Menu Text
@@ -898,6 +773,170 @@ namespace Dobby {
         #endregion
 
 
+
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Misc Patches Page Variables    --\\\
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+        #region Misc Patches Page Variables
+
+        /// <summary> Array of Controls to Move When Loading >1 Game-Specific Debug Options
+        ///</summary>
+        private static Control[] ControlsToMove;
+        private static FileStream MainStream;
+        private static DynamicPatchButtons gsButtons;
+
+        /// <summary> Variable Used When Adjusting Form Scale And Control Positions
+        ///</summary>
+        private static int
+            ButtonIndex = 0,
+            RB_StartPos,
+            Game
+        ;
+
+        private static bool MultipleButtonsEnabled;
+
+        private static string[] ResultStrings = new string[] {
+            "Debug Menus Disabled",
+            "Debug Menus Enabled",
+            "Restored Menu Applied",
+            "Custom Menu Applied",
+        };
+
+        private static byte[] LocalExecutableCheck;
+        private static string ActiveFilePath;
+        private static bool IsActiveFilePCExe, MainStreamIsOpen;
+
+        public static void WriteBytes(int? offset = null, byte[] data = null) {
+#if DEBUG
+            var msg = $"Data {BitConverter.ToString(data).Replace("-", "")} Written To ";
+            if(offset != null)
+                MainStream.Position = (int)offset;
+            msg += MainStream.Position.ToString("X"); // trust issues
+
+            MainStream.Write(data, 0, data.Length);
+            Dev.DebugOut(msg);
+            Dev.DebugOut();
+#else
+            if (offset != null)
+            MainStream.Position = (int)offset;
+            MainStream.Write(data, 0, data.Length);
+#endif
+        }
+        public static void WriteByte(int? offset = null, byte data = 0) {
+#if DEBUG
+            var msg = $"Byte {data:X} Written To ";
+            if(offset != null)
+                MainStream.Position = (int)offset;
+            msg += MainStream.Position.ToString("X"); // trust issues
+
+            MainStream.WriteByte(data);
+            Dev.DebugOut(msg);
+#else
+            if(offset != null)
+            MainStream.Position = (int)offset;
+            MainStream.WriteByte(data);
+#endif
+        }
+        public static void WriteVar(int? offset = null, object data = null) {
+#if DEBUG
+            var msg = " Written To ";
+
+            if(offset != null)
+                MainStream.Position = (int)offset;
+            msg += MainStream.Position.ToString("X");
+
+            try { // this is stupid
+                if(data.GetType() == typeof(byte)) {
+                    MainStream.WriteByte(BitConverter.GetBytes((byte)data)[0]);
+                    msg = (byte)data + msg;
+                }
+                else if(data.GetType() == typeof(bool)) {
+                    MainStream.WriteByte(BitConverter.GetBytes((bool)data)[0]);
+                    msg = (bool)data + msg;
+                }
+
+                else if(data.GetType() == typeof(float)) {
+                    MainStream.Write(BitConverter.GetBytes((float)data), 0, BitConverter.GetBytes((float)data).Length);
+                    msg = (float)data + msg;
+                }
+            }
+            catch (Exception) { Dev.DebugOut($"Error Writing Var: {data} ({data.GetType()})"); }
+
+            Dev.DebugOut($"var: {msg}");
+#else
+            if(offset != null)
+                MainStream.Position = (int)offset;
+
+            try { // this is stupid
+                if(data.GetType() == typeof(byte))
+                    MainStream.WriteByte(BitConverter.GetBytes((byte)data)[0]);
+                
+                else if(data.GetType() == typeof(bool))
+                    MainStream.WriteByte(BitConverter.GetBytes((bool)data)[0]);
+
+                else if(data.GetType() == typeof(float))
+                    MainStream.Write(BitConverter.GetBytes((float)data), 0, BitConverter.GetBytes((float)data).Length);
+            }
+            catch (Exception) {}
+#endif
+        }
+        /// <summary> Compare Data Read At The Given Address
+        /// </summary>
+        /// <returns> True If The Data Read Matches The Array Given </returns>
+        public static bool ArrayCmp(int Address, byte[] DataToCompare) {
+            MainStream.Position = Address;
+            byte[] DataPresent = new byte[DataToCompare.Length];
+            MainStream.Read(DataPresent, 0, DataToCompare.Length);
+            return DataPresent.SequenceEqual<byte>(DataToCompare);
+        }
+        #endregion
+
+        /// <summary>
+        /// 0:  UC1100<br/>
+        /// 1:  UC1102<br/>
+        /// 2:  UC2100<br/>
+        /// 3:  UC2102<br/>
+        /// 4:  UC3100<br/>
+        /// 5:  UC3102<br/>
+        /// 6:  UC4100<br/>
+        /// 7:  UC4101<br/>
+        /// 8:  UC4133<br/>
+        /// 9:  UC4133MP<br/>
+        /// 10: TLL100<br/>
+        /// 11: TLL10X<br/>
+        /// 12: T1R100<br/>
+        /// 13: T1R109<br/>
+        /// 14: T1R11X<br/>
+        /// 15: T2100<br/>
+        /// 16: T2107<br/>
+        /// 17: T2109<br/>
+        /// </summary>
+#if DEBUG
+        public static int GameIndex;
+#else
+        private int GameIndex;
+#endif
+
+        /// <summary>
+        /// MenuAlphaBtn        <br/>
+        /// MenuScaleBtn        <br/>
+        /// FOVBtn              <br/>
+        /// XAlignBtn
+        /// MenuShadowedTextBtn <br/>
+        /// RightAlignBtn       <br/>
+        /// RightMarginBtn
+        /// </summary>
+        private enum IDS {
+            MenuAlphaBtn,
+            MenuScaleBtn,
+            FOVBtn,
+            XAlignBtn,
+            MenuShadowedTextBtn,
+            RightAlignBtn,
+            RightMarginBtn
+        }
+
+
         /// <summary>
         ///      Booleans Used For Universal Patch Values
         ///<br/> Defaults Are All False, So That's Nice. Simplifies Things
@@ -938,15 +977,17 @@ namespace Dobby {
             /// 0: Menu Alpha <br/>
             /// 1: Menu Scale <br/>
             /// 2: Non-ADS FOV <br/>
-            /// 3: Swap Square And Circle In Debug <br/>
-            /// 4: Menu Shadowed Text <br/>
-            /// 5: Align Menus Right <br/>
-            /// 6: Right Margin <br/>
+            /// 3: Main Camera X-Alignment <br/>
+            /// 4: Swap Square And Circle In Debug <br/>
+            /// 5: Menu Shadowed Text <br/>
+            /// 6: Align Menus Right <br/>
+            /// 7: Right Margin <br/>
             /// </summary>
 
             public static object[] GameSpecificPatchValues { get; private set; } = new object[] {
                 0.85f,
                 0.60f,
+                1f,
                 1f,
                 false,
                 false,
@@ -957,6 +998,7 @@ namespace Dobby {
             public static readonly object[] DefaultPatchValues = new object[] {
                 0.85f,
                 0.60f,
+                1f,
                 1f,
                 false,
                 false,
@@ -971,6 +1013,7 @@ namespace Dobby {
                     "MenuAlphaBtn",
                     "MenuScaleBtn",
                     "FOVBtn",
+                    "XAlignBtn",
                     "SwapCircleInDebugBtn",
                     "MenuShadowTextBtn",
                     "MenuRightAlignBtn",
@@ -981,6 +1024,7 @@ namespace Dobby {
                     "Set DMenu BG Opacity:",             // default=0.85
                     "Set Dev Menu Scale:",               // default=0.60
                     "Adjust Non-ADS FOV:",               // default=1.00
+                    "Adjust Camera X-Alignment:",        // default=1.00
                     "Swap Circle With Square In DMenu:", // default=No
                     "Enable Debug Menu Text Shadow:",    // default=No
                     "Align Debug Menus To The Right:",   // default=No
@@ -991,6 +1035,7 @@ namespace Dobby {
                     "Hint",
                     "Hint",
                     "Only Effects The Camera While Not Aiming",
+                    "Adjust Camera Position On The X-Axis (smaller == left, larger == right)",
                     "Hint",
                     "Moves The Dev/Quick Menus To The Right Of The Screen",
                     "Hint",
@@ -1004,10 +1049,11 @@ namespace Dobby {
             /// 0: MenuAlphaBtn                                                                        <br/>
             /// 1: MenuScaleBtn                                                                        <br/>
             /// 2: FOVBtn                                                                              <br/>
-            /// 3: SwapCircleInDebugBtn                                                                <br/>
-            /// 4: MenuShadowTextBtn                                                                   <br/>
-            /// 5: RightAlignBtn                                                                       <br/>
-            /// 6: RightMarginBtn
+            /// 3: XAlign                                                                              <br/>
+            /// 4: SwapCircleInDebugBtn                                                                <br/>
+            /// 5: MenuShadowTextBtn                                                                   <br/>
+            /// 6: RightAlignBtn                                                                       <br/>
+            /// 7: RightMarginBtn
             /// </summary>
             public vButton[] Buttons; // Initialized Once An Executable's Selected
 
@@ -1362,8 +1408,9 @@ namespace Dobby {
 
             gsButtons = new DynamicPatchButtons(GameButtonIds, GameSpecificPatchesLabel.Location.Y + GameSpecificPatchesLabel.Size.Height + 1);
 
-            foreach (var Btn in gsButtons.CreateDynamicButtons())
-
+            foreach (var Btn in gsButtons.CreateDynamicButtons()) {
+                //!
+            }
 
             index = 0;
 
@@ -1470,6 +1517,11 @@ namespace Dobby {
 
                     if(PatchData.Length == 4) ValueType = 0xFE;
                     else if(PatchData.Length == 8) ValueType = 0xFF;
+
+                    else if(PatchData.Length == 0) {
+                        Dev.DebugOut($"Pointer #{index} Was Null");
+                        continue;
+                    }
                     else {
                         Dev.DebugOut($"Invalid Data Size. ({PatchData.Length})");
                         continue;
@@ -1477,39 +1529,56 @@ namespace Dobby {
 
 
                     WriteByte(data: ValueType);
-
                     WriteBytes(data: PatchData);
                     WriteByte(data: 1);
+                    Dev.DebugOut();
                     index++;
                 }
-                index = 0;
+                
 
                 // Game-Specific Options
-                foreach(var val in DynamicPatchButtons.GameSpecificPatchValues) {
+                for(index = 0; index < DynamicPatchButtons.GameSpecificPatchValues.Length; index++) {
 
-                    if(val == DynamicPatchButtons.DefaultPatchValues[index]) {
-                        Dev.DebugOut($"{val} == {DynamicPatchButtons.DefaultPatchValues[index]} (#{index})");
-                        index++;
+                    /// Update BootSettings Code To Sopport >8bit values
+                    if(DynamicPatchButtons.GameSpecificPatchValues[index].GetType() == typeof(float)) {
+                        Dev.DebugOut($"Skipping Float ({DynamicPatchButtons.GameSpecificPatchValues[index]}|{DynamicPatchButtons.DefaultPatchValues[index]})");
+                        Dev.DebugOut();
                         continue;
                     }
 
-                    else Dev.DebugOut($"{val} != {DynamicPatchButtons.DefaultPatchValues[index]} (#{index})");
+                    if(DynamicPatchButtons.GameSpecificPatchValues[index].Equals(DynamicPatchButtons.DefaultPatchValues[index])) {
+                        Dev.DebugOut($"{DynamicPatchButtons.GameSpecificPatchValues[index]} == {DynamicPatchButtons.DefaultPatchValues[index]} (#{index})");
+                        Dev.DebugOut();
+                        continue;
+                    }
+
+                    else Dev.DebugOut($"{DynamicPatchButtons.GameSpecificPatchValues[index]} != {DynamicPatchButtons.DefaultPatchValues[index]} (#{index})");
 
                     PatchData = GameSpecificBootSettingsPointers[index][GameIndex];
 
                     if(PatchData.Length == 4) ValueType = 0xFE;
                     else if(PatchData.Length == 8) ValueType = 0xFF;
-                    else continue;
-                    
-                    WriteByte(data: ValueType);
 
+                    else if(PatchData.Length == 0) {
+                        Dev.DebugOut($"Pointer #{index} Was Null");
+                    Dev.DebugOut();
+                        continue;
+                    }
+                    else {
+                        Dev.DebugOut($"Invalid Data Size. ({PatchData.Length})");
+                    Dev.DebugOut();
+                        continue;
+                    }
+
+                    WriteByte (data: ValueType);
                     WriteBytes(data: PatchData);
-                    Dev.DebugOut("var " + val);
-                    WriteVar(data: val);
-                    index++;
+                    WriteVar  (data: DynamicPatchButtons.GameSpecificPatchValues[index]);
+                    Dev.DebugOut();
                 }
 
                 WriteBytes(data: new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0x08 });
+
+                MessageBox.Show("Patches Applied\n\nNote:\nCertain Values Are Set Long After The BootSettings Function Is Run.\nIf A Selected Setting Hasn't Changed, Select The Following Option:\n[Dev Menu => Custom... => Re-Apply Boot Settings]", "Patches Applied Without Any Errors");
             }
 
             return 1;

@@ -209,7 +209,8 @@ namespace Dobby {
           "* 3.40.176.478 | Minor EbootPatchPage Fix, Debug Tweaks",
           "* 3.40.178.481 | PS4MenuSettingsPatchPage Work, Renamed Some Game Identifiers (Ones Used To Check Against GetGameID())",
           "* 3.40.179.484 | PS4MenuSettingsPatchPage Work, Event Handler Fix, Debug Text Fix",
-          "* 3.40.182.489 | PS4MenuSettingsPatchPage Work, Debug Output Fix"
+          "* 3.40.182.489 | PS4MenuSettingsPatchPage Work, Debug Output Fix",
+          "* 3.40.182.491 | PS4MenuSettingsPatchPage Work, Removed Old Debug Output Calls"
 
             // TODO:
             // * MAJOR

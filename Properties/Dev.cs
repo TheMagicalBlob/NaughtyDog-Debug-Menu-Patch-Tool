@@ -80,15 +80,19 @@ namespace Dobby {
                 logThread.Start();
                 Location = Point.Empty;
                 Click += DebugOut;
+
+                LogFile = File.CreateText($"{Directory.GetCurrentDirectory()}\\out.txt");
             }
 
             private static Form AppRef;
             private static Graphics rend;
             private static Size formScale;
+            public static StreamWriter LogFile;
 
             #region timer crap
             private static float Delay = 0;
             private static bool TimerThreadStarted = false;
+            public static bool RedrawLog;
             private static readonly System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
             private static readonly Thread TimerThread = new Thread(StartTimer);
             private static void Timer_Tick(object sender, EventArgs e) => TimerTicks+= 0.0001f;
@@ -200,7 +204,8 @@ namespace Dobby {
                         }
                         catch(Exception e) { Output = new string[] { "Error", e.Message }; MessageBox.Show("Caught Misc Output Error", e.Message); }
 
-                        if(!chk1.SequenceEqual(Output) || chk1 == null || !chk2.SequenceEqual(OutputStrings)) {
+                        if(RedrawLog || !chk1.SequenceEqual(Output) || chk1 == null || !chk2.SequenceEqual(OutputStrings)) {
+                            RedrawLog ^= true;
                             chk1 = Output;
                             chk2 = OutputStrings;
                             SizeF TextSize;
@@ -274,15 +279,18 @@ namespace Dobby {
         public static void DebugOut(object obj = null) {
 #if DEBUG
             string s;
-            //return; // Rest Of This Freezes The PS4DebugPage After The Output Overhaul And Isn't Used Anyway
+
             if(obj == null)
-                return;
-                //s = " ";
+                s = " ";
             else
                 s = obj.ToString();
             
             if(s.Contains("\n"))
                 s = s.Replace("\n", "\n ");
+
+            LogWindow.LogFile?.WriteLine(s);
+            LogWindow.LogFile?.Flush();
+            LogWindow.RedrawLog = true;
 
         Wait:
             if(OutputStrings == null) goto Wait; // Try And Avoid Rare Crash On Boot In Dev Build When The App Doesn't Boot Fast Enough

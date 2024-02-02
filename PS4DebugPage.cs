@@ -747,7 +747,6 @@ namespace Dobby {
             try {
                 var file = File.OpenText(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB");
                 string v = file.ReadToEnd(); file.Dispose();
-                Dev.DebugOut(v.Remove(v.IndexOf(";")));
                 return v.Remove(v.IndexOf(";"));
             }
             catch(FileNotFoundException) {
@@ -764,7 +763,6 @@ namespace Dobby {
             try {
                 using(FileStream f = new FileStream(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB", FileMode.Open, FileAccess.Write)) {
                     f.Write(Encoding.UTF8.GetBytes(IPBOX.Text + ";"), 0, IPBOX.Text.Length + 1);
-                  //if(IPBOX_E.Text.Length > 12) Dev.DebugOut($"Saved {IPBOX_E.Text} As I.P.");
                 }
             }
             catch(FileNotFoundException) { IP(); }
@@ -793,7 +791,6 @@ namespace Dobby {
             try {
                 using(FileStream f = new FileStream(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB", FileMode.Open, FileAccess.Write)) {
                     f.Position = 16; f.Write(BitConverter.GetBytes(int.Parse(PortBox.Text)), 0, 4);
-                    Dev.DebugOut($"Saved {PortBox.Text} As Port");
                 }
             }
             catch(Exception tabarnack) {
