@@ -1060,8 +1060,8 @@ namespace Dobby {
                     "Hint",
                     "Hint",
                     "Only Effects The Camera While Not Aiming",
-                    "Adjust Camera Position On The X-Axis (smaller == left, larger == right)",
                     "Hint",
+                    "Adjust Camera Position On The X-Axis (smaller == left, larger == right)",
                     "Moves The Dev/Quick Menus To The Right Of The Screen",
                     "Hint",
                     "Hint"
@@ -1327,41 +1327,314 @@ namespace Dobby {
         }
 
 
-
-        private static void ResetCustomDebugOptions(object _ = null, EventArgs __ = null) {
-            if(Game == 0) return;
-#if DEBUG
-            Dev.DebugOut("Resetting Form And Main Stream");
-#endif
-            index = 0;
-
-            // Reset Form Size
-            if(ActiveForm.Name != "Dobby") //! Lazy Fix 
-                ActiveForm.Size = OriginalFormScale;
-            OriginalFormScale = Size.Empty;
-
-            // Kill MainStream
-            MainStreamIsOpen = false;
-            MainStream?.Dispose();
-
-            // Nuke Dynamic Patch Buttons
-            gsButtons.Reset();
-
-            // Move Controls Back To Their Original Positions
-            for(; index < ControlsToMove.Length; index++)
-                ControlsToMove[index].Location = OriginalControlPositions[index];
-
-            // Nudge Remaining Controls Back To Their Default Positions
-            if(FormActive) {
-                ActiveForm.Controls.Find("ResetBtn", true)[0]?.Dispose();
-                ActiveForm.Controls.Find("ConfirmPatchesBtn", true)[0]?.Dispose();
-                ActiveForm.Controls.Find("CustomDebugOptionsLabel", true)[0].Visible = true;
-                ActiveForm.Controls.Find("ExecutablePathBox", true)[0].Text = " Select A .elf To Patch";
+        private void ConfirmBtn_Click(object sender, EventArgs e) {
+            if(GetGameIndex(Game) == null) {
+                MessageBox.Show("Selected Game Not Currently Supported", $"Patches For {GetGameLabelFromID(Game)} Not Added Yet");
+                return;
             }
 
-            Game = 0;
-            ActiveFilePath = null;
-            MultipleButtonsEnabled = false;
+            var Result = ApplyMenuSettings((int)GetGameIndex(Game));
+
+            if(Result.GetType() != typeof(string)) {
+                MessageBox.Show($"An Unexpected Error Occured While Applying The Patches, Please Ensure You're Running The Latest Release Build\nIf You Are, Report It To The Moron Typing Out This Error Message");
+                Dev.DebugOut("ApplyMenuSettings Returned Null");
+                return;
+            }
+
+            ResetCustomDebugOptions();
+            GameInfoLabel.Text += Result;
+        }
+
+
+        private object ApplyMenuSettings(int GameIndex) {
+            var Message = string.Empty;
+
+            using(MainStream) {
+                try {
+#if DEBUG
+                    if(UniversaPatchValues.Length != UniversalBootSettingsPointers.Length || DynamicPatchButtons.GameSpecificPatchValues.Length != GameSpecificBootSettingsPointers.Length)
+                        MessageBox.Show($"Universal:\n  Vars: {UniversaPatchValues.Length}\n  Pointers: {UniversalBootSettingsPointers.Length}\nDynamic:\n  Vars: {DynamicPatchButtons.GameSpecificPatchValues.Length}\n  Pointers: {GameSpecificBootSettingsPointers.Length}", "Mismatch In Array Value vs pointer Length.");
+#endif
+                    int BootSettingsAddress, PatchCount = 0;
+                    var Addresses = GetBootSettingsGameIndexAndAddresses();
+
+                    // Write Function Call To Call BootSettings
+                    WriteBytes((int)Addresses[1], GetBootSettingsFunctionCall());
+
+                    // Write BootSettings Function's Assembly To Game Executable
+                    BootSettingsAddress = (int)Addresses[2];
+                    WriteBytes(BootSettingsAddress, GetBootSettingsBytes(GameIndex));
+
+                    byte PointerType = 0x88;
+                    byte[] PatchData;
+                    PatchCount = 2;
+
+                    // Universal Options
+                    for(index = 0; index < UniversaPatchValues.Length; index++) {
+                        if(!UniversaPatchValues[index])
+                            continue;
+
+                        PatchData = UniversalBootSettingsPointers[index][GameIndex];
+
+                        if(PatchData.Length == 4) PointerType = 0xFE;
+                        else if(PatchData.Length == 8) PointerType = 0xFF;
+
+                        else if(PatchData.Length == 0) {
+                            Dev.DebugOut($"Pointer #{index} Was Null");
+                            continue;
+                        }
+                        else {
+                            Dev.DebugOut($"Invalid Data Size. ({PatchData.Length})");
+                            continue;
+                        }
+
+
+                        WriteByte(data: PointerType);
+                        WriteByte(data: 0);
+                        WriteBytes(data: PatchData);
+                        WriteByte(data: 1);
+                        Dev.DebugOut();
+                        PatchCount++; index++;
+                    }
+
+
+                    // Game-Specific Options
+                    for(index = 0; index < DynamicPatchButtons.GameSpecificPatchValues.Length; index++ ) {
+
+                        /// Update BootSettings Code To Sopport >8bit values
+                        if(DynamicPatchButtons.GameSpecificPatchValues[index].GetType() == typeof(float)) {
+                            Dev.DebugOut($"Skipping Float ({DynamicPatchButtons.GameSpecificPatchValues[index]}|{DynamicPatchButtons.DefaultPatchValues[index]})");
+                            Dev.DebugOut();
+                            continue;
+                        }
+
+                        if(DynamicPatchButtons.GameSpecificPatchValues[index].Equals(DynamicPatchButtons.DefaultPatchValues[index])) {
+                            Dev.DebugOut($"{DynamicPatchButtons.GameSpecificPatchValues[index]} == {DynamicPatchButtons.DefaultPatchValues[index]} (#{index})");
+                            Dev.DebugOut();
+                            continue;
+                        }
+
+                        else Dev.DebugOut($"{DynamicPatchButtons.GameSpecificPatchValues[index]} != {DynamicPatchButtons.DefaultPatchValues[index]} (#{index})");
+
+                        PatchData = GameSpecificBootSettingsPointers[index][GameIndex];
+
+                        if(PatchData.Length == 4) PointerType = 0xFE;
+                        else if(PatchData.Length == 8) PointerType = 0xFF;
+
+                        else if(PatchData.Length == 0) {
+                            Dev.DebugOut($"Pointer #{index} Was Null");
+                            Dev.DebugOut();
+                            continue;
+                        }
+                        else {
+                            Dev.DebugOut($"Invalid Data Size. ({PatchData.Length})");
+                            Dev.DebugOut();
+                            continue;
+                        }
+
+                        var PatchValue = DynamicPatchButtons.GameSpecificPatchValues[index];
+
+                        WriteByte(data: PointerType);
+                        WriteByte(data: (byte)(PatchValue.GetType() == typeof(byte) || PatchValue.GetType() == typeof(bool) ? 0 : 1));
+                        WriteBytes(data: PatchData);
+                        WriteVar(data: PatchValue);
+
+                        PatchCount++;
+                        Dev.DebugOut();
+                    }
+
+                    WriteBytes(data: new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0x08 }); // padding to avoid issues
+
+                    //MessageBox.Show("Patches Applied\n\nNote:\nCertain Values Are Set Long After The BootSettings Function Is Run.\nIf A Selected Setting Hasn't Changed, Select The Following Option:\n[Dev Menu => Custom... => Re-Apply Boot Settings]", "Patches Applied Without Any Errors");
+
+                    Message = $"{PatchCount} Patches Applied";
+                }
+                catch(Exception tabarnack) {
+                    Dev.DebugOut(tabarnack.Message);
+                    return $"{tabarnack.GetType()} | Error Applying Patches";
+                }
+            }
+
+            return (Message == string.Empty ? null : Message);
+        }
+
+        /// <summary> Get The MenuSettingsPage-Specific GameIndex Used For... Well, Take A Fking Guess.<br/><br/>Does Not Include Game Versions I Don't Indend To Support, Just Oldest And Latest<br/>(Plus A Couple Still Commonly Used In-Between Ones) </summary>
+        private int? GetGameIndex(int Game) {
+            switch(Game) {
+                default:
+                    return 999999999;
+
+                case UC1100:
+                case UC1102:
+                case UC2100:
+                case UC2102:
+                case UC3100:
+                case UC3102:
+                    return null;
+
+                case UC4100:
+                    return 6;
+                case UC4101:
+                    return 7;
+                case UC4127_133:
+                    return 8;
+                case UC4133MP:
+                    return null;
+                case TLL100:
+                    return 10;
+                case TLL10X:
+                    return 11;
+
+                case T1R100:
+                    return 11;
+                case T1R109:
+                    return 13;
+                case T1R110:
+                case T1R111:
+                    return 14;
+                case T2100:
+                    return 15;
+                case T2107:
+                    return 16;
+                case T2108:
+                case T2109:
+                    return 17;
+            }
+        }
+
+        /// <param name="GameIndex"> Index Of The Selected Game, Excluding Versions I Don't Plan To Suppport </param>
+        /// <returns> A byte[] containing the constructed bootsettings function data </returns>
+        private static byte[] GetBootSettingsBytes(int GameIndex = 18) {
+
+            // new byte { (Quick Menu Function Call), (Ptr to Base Addr) }
+            byte[][] BootSettingsBaseAddressPointers = new byte[][] {
+                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC1 1.00 //!
+                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC1 1.02 //!
+                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC2 1.00 //!
+                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC2 1.02 //!
+                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC3 1.00 //!
+                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC3 1.02 //!
+                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC4 1.00 //!
+                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC4 1.01 //!
+                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC4 1.33 //!
+                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC4 1.33 MP //!
+                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // TLL 1.00 //!
+                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // TLL 1.09 //!
+                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.00 //!
+                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.09 //!
+                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.11 //!
+                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T2 1.00  //!
+                new byte [] { 0xe8, 0xcb, 0xd0, 0x3d, 0x00, 0x53, 0x48, 0x8d, 0x05, 0xc3, 0x8c, 0xff, 0xff }, // T2 1.07  //!
+                new byte [] { 0xe8, 0x9b, 0x45, 0x82, 0x00, 0x53, 0x48, 0x8d, 0x05, 0x03, 0xea, 0xff, 0xff }  // T2 1.09  //!
+            };
+
+            byte[] 
+                BootSettingsFunction = new byte[] { 0x48, 0x8d, 0x0d, 0x64, 0x00, 0x00, 0x00, 0x80, 0x3c, 0x21, 0xfe, 0x75, 0x22, 0x8b, 0x54, 0x21, 0x02, 0x01, 0xc2, 0x80, 0x79, 0x01, 0x00, 0x75, 0x0b, 0x8a, 0x5a, 0x06, 0x88, 0x1a, 0x48, 0x83, 0xc1, 0x07, 0xeb, 0xe3, 0x8b, 0x59, 0x06, 0x89, 0x1a, 0x48, 0x83, 0xc1, 0x0a, 0xeb, 0xd8, 0x80, 0x39, 0xff, 0x75, 0x35, 0x8b, 0x94, 0x21, 0x02, 0x00, 0x00, 0x00, 0x01, 0xc2, 0x48, 0x8d, 0x14, 0x22, 0x48, 0x8b, 0x12, 0x8b, 0x5c, 0x21, 0x06, 0x48, 0x01, 0xda, 0x80, 0x79, 0x01, 0x00, 0x75, 0x0c, 0x8a, 0x59, 0x0a, 0x40, 0x88, 0x1a, 0x48, 0x83, 0xc1, 0x0b, 0xeb, 0xaa, 0x8b, 0x59, 0x0a, 0x48, 0x89, 0x1a, 0x48, 0x83, 0xc1, 0x0e, 0xeb, 0x9e, 0x5b, 0xc3 }
+               ,BootSettingsData
+            ;
+
+            BootSettingsData = new byte[BootSettingsFunction.Length + BootSettingsBaseAddressPointers[GameIndex].Length];
+
+            Buffer.BlockCopy(BootSettingsBaseAddressPointers[GameIndex], 0,
+                             BootSettingsData, 0,
+                             BootSettingsBaseAddressPointers[GameIndex].Length
+                             );
+
+            Buffer.BlockCopy(BootSettingsFunction, 0,
+                             BootSettingsData, BootSettingsBaseAddressPointers[GameIndex].Length,
+                             BootSettingsFunction.Length
+                            );
+
+            return BootSettingsData;
+        }
+
+        /// <summary>
+        /// Merged A Few Functions With The Same Switch Case In To This Since There Wasn't Any Downside Anyway <br/>
+        /// 
+        /// Gets The "GameIndex" Of The Selected Game, Followed By The Address To Call, Then Write The BootSettings Function
+        /// </summary>
+        /// <returns>
+        ///      0: GameIndex
+        /// <br/>1: GetBootSettingsFunctionCallAddress
+        /// <br/>2: Address To Write Boot Settings
+        /// </returns>
+        private object[] GetBootSettingsGameIndexAndAddresses() {
+            var ret = new object[] { 0, 0, 0 };
+
+
+            switch(Game) {
+                default:
+                    ret[0] = 99999999999999;
+                    break;
+
+                case UC1100:
+                case UC1102:
+                case UC2100:
+                case UC2102:
+                case UC3100:
+                case UC3102:
+                case UC4100:
+                case UC4101:
+                case UC4127_133:
+                case UC4133MP:
+                case TLL100:
+                case TLL10X:
+
+                case T1R100:
+                case T1R109:
+                case T1R110:case T1R111:
+                case T2100:
+                case T2107:
+                    ret[0] = 16;
+                    ret[1] = 0x1f217a; // 0x5ee17a
+                    ret[2] = 0xb330;   // 0x407330
+                    break;
+                case T2108:
+                case T2109:
+                    ret[0] = 17;
+                    ret[1] = 0x633cba; // 0xa2fcba
+                    ret[2] = 0x55f0;   // 0x4015f0
+                    break;
+            }
+
+            return ret;
+        }
+
+
+        /// <summary>
+        /// Returns The Data For The Custom Function Used To Call BootSettings To Write Over The Quick Menu Function Call<br/>
+        /// (Redirected Quick Menu Function Call Prepends BootSettings' Code)
+        ///</summary>
+        private static byte[] GetBootSettingsFunctionCall() {
+            switch(Game) {
+                case UC1100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+
+                case UC1102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+
+                case UC2100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+
+                case UC2102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+
+                case UC3100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+
+                case UC3102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+
+                case T1R100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+
+                case T1R109: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+
+                case T1R110:
+                case T1R111: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+
+                case T2100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 };  // 
+
+                case T2107: return new byte[] { 0xe8, 0xb1, 0x91, 0xe1, 0xff };  // CALL 0x407330
+
+                case T2108:
+                case T2109: return new byte[] { 0xe8, 0x31, 0x19, 0x9d, 0xff };  // CALL 0x4015f0
+                default:
+                    return Array.Empty<byte>();
+            }
         }
 
         /// <summary> Resize Form And Move Buttons, Then Add Enabled Custom Buttons To Form Based On The Current Game And Patch
@@ -1433,7 +1706,7 @@ namespace Dobby {
 
             gsButtons = new DynamicPatchButtons(GameButtonIds, GameSpecificPatchesLabel.Location.Y + GameSpecificPatchesLabel.Size.Height + 1);
 
-            foreach (var Btn in gsButtons.CreateDynamicButtons()) {
+            foreach(var Btn in gsButtons.CreateDynamicButtons()) {
                 //!
             }
 
@@ -1507,266 +1780,53 @@ namespace Dobby {
             ResetBtn.BringToFront();
         }
 
-        private void ConfirmBtn_Click(object sender, EventArgs e) {
-            ApplyMenuSettings();
-        }
-
-
-        private int ApplyMenuSettings() {
-
-            using(MainStream) {
-
+        private static void ResetCustomDebugOptions(object _ = null, EventArgs __ = null) {
+            if(Game == 0) return;
 #if DEBUG
-                if(UniversaPatchValues.Length != UniversalBootSettingsPointers.Length || DynamicPatchButtons.GameSpecificPatchValues.Length != GameSpecificBootSettingsPointers.Length)
-                    MessageBox.Show($"Universal:\n  Vars: {UniversaPatchValues.Length}\n  Pointers: {UniversalBootSettingsPointers.Length}\nDynamic:\n  Vars: {DynamicPatchButtons.GameSpecificPatchValues.Length}\n  Pointers: {GameSpecificBootSettingsPointers.Length}", "Mismatch In Array Value vs pointer Length.");
+            Dev.DebugOut("Resetting Form And Main Stream");
 #endif
-                index = 0;
-                byte PointerType = 0xf0,
-                     ValueType = 0x10;
-                
-                int BootSettingsAddress;
-                var Addresses = GetBootSettingsGameIndexAndAddresses();
+            index = 0;
 
-                // Write Function Call To Call BootSettings
-                WriteBytes((int)Addresses[1], GetBootSettingsFunctionCall());
+            // Reset Form Size
+            if(ActiveForm.Name != "Dobby") //! Lazy Fix 
+                ActiveForm.Size = OriginalFormScale;
+            OriginalFormScale = Size.Empty;
 
-                // Write BootSettings Function's Assembly To Game Executable
-                BootSettingsAddress = (int)Addresses[2];
-                WriteBytes(BootSettingsAddress, GetBootSettingsBytes(GameIndex));
+            // Kill MainStream
+            MainStreamIsOpen = false;
+            MainStream?.Dispose();
 
-                // Universal Options
-                byte[] PatchData;
-                foreach(var Bool in UniversaPatchValues) {
-                    if(!Bool)
-                        continue;
+            // Nuke Dynamic Patch Buttons
+            gsButtons.Reset();
 
-                    PatchData = UniversalBootSettingsPointers[index][GameIndex];
+            // Move Controls Back To Their Original Positions
+            for(; index < ControlsToMove.Length; index++)
+                ControlsToMove[index].Location = OriginalControlPositions[index];
 
-                    if(PatchData.Length == 4) PointerType = 0xFE;
-                    else if(PatchData.Length == 8) PointerType = 0xFF;
-
-                    else if(PatchData.Length == 0) {
-                        Dev.DebugOut($"Pointer #{index} Was Null");
-                        continue;
-                    }
-                    else {
-                        Dev.DebugOut($"Invalid Data Size. ({PatchData.Length})");
-                        continue;
-                    }
-
-
-                    WriteByte(data: PointerType);
-                    WriteByte(data: ValueType);
-                    WriteBytes(data: PatchData);
-                    WriteByte(data: 1);
-                    Dev.DebugOut();
-                    index++;
-                }
-                
-
-                // Game-Specific Options
-                for(index = 0; index < DynamicPatchButtons.GameSpecificPatchValues.Length; index++) {
-
-                    /// Update BootSettings Code To Sopport >8bit values
-                    if(DynamicPatchButtons.GameSpecificPatchValues[index].GetType() == typeof(float)) {
-                        Dev.DebugOut($"Skipping Float ({DynamicPatchButtons.GameSpecificPatchValues[index]}|{DynamicPatchButtons.DefaultPatchValues[index]})");
-                        Dev.DebugOut();
-                        continue;
-                    }
-
-                    if(DynamicPatchButtons.GameSpecificPatchValues[index].Equals(DynamicPatchButtons.DefaultPatchValues[index])) {
-                        Dev.DebugOut($"{DynamicPatchButtons.GameSpecificPatchValues[index]} == {DynamicPatchButtons.DefaultPatchValues[index]} (#{index})");
-                        Dev.DebugOut();
-                        continue;
-                    }
-
-                    else Dev.DebugOut($"{DynamicPatchButtons.GameSpecificPatchValues[index]} != {DynamicPatchButtons.DefaultPatchValues[index]} (#{index})");
-
-                    PatchData = GameSpecificBootSettingsPointers[index][GameIndex];
-
-                    if(PatchData.Length == 4) PointerType = 0xFE;
-                    else if(PatchData.Length == 8) PointerType = 0xFF;
-
-                    else if(PatchData.Length == 0) {
-                        Dev.DebugOut($"Pointer #{index} Was Null");
-                    Dev.DebugOut();
-                        continue;
-                    }
-                    else {
-                        Dev.DebugOut($"Invalid Data Size. ({PatchData.Length})");
-                    Dev.DebugOut();
-                        continue;
-                    }
-
-                    var PatchValue = DynamicPatchButtons.GameSpecificPatchValues[index];
-
-                    WriteByte (data: PointerType);
-                    WriteByte (data: (byte)(PatchValue.GetType() == typeof(byte) || PatchValue.GetType() == typeof(bool) ? 0x01 : 0));
-                    WriteBytes(data: PatchData);
-                    WriteVar  (data: PatchValue);
-                    Dev.DebugOut();
-                }
-
-                WriteBytes(data: new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0x08 });
-
-                MessageBox.Show("Patches Applied\n\nNote:\nCertain Values Are Set Long After The BootSettings Function Is Run.\nIf A Selected Setting Hasn't Changed, Select The Following Option:\n[Dev Menu => Custom... => Re-Apply Boot Settings]", "Patches Applied Without Any Errors");
+            // Nudge Remaining Controls Back To Their Default Positions
+            if(FormActive) {
+                ActiveForm.Controls.Find("ResetBtn", true)[0]?.Dispose();
+                ActiveForm.Controls.Find("ConfirmPatchesBtn", true)[0]?.Dispose();
+                ActiveForm.Controls.Find("CustomDebugOptionsLabel", true)[0].Visible = true;
+                ActiveForm.Controls.Find("ExecutablePathBox", true)[0].Text = " Select A .elf To Patch";
             }
 
-            return 1;
-        }
-
-
-        /// <summary> Returns a byte[] containing the constructed bootsettings function data
-        /// </summary>
-        /// <param name="GameIndex">  </param>
-        /// <returns></returns>
-        private static byte[] GetBootSettingsBytes(int GameIndex = 18) {
-            byte[] BootSettingsData,
-                   BootSettingsFunction = new byte[] { 0x48, 0x8d, 0x0d, 0x64, 0x00, 0x00, 0x00, 0x80, 0x3c, 0x21, 0xfe, 0x75, 0x22, 0x8b, 0x54, 0x21, 0x02, 0x01, 0xc2, 0x80, 0x79, 0x01, 0x00, 0x75, 0x0b, 0x8a, 0x5a, 0x06, 0x88, 0x1a, 0x48, 0x83, 0xc1, 0x07, 0xeb, 0xe3, 0x8b, 0x59, 0x06, 0x89, 0x1a, 0x48, 0x83, 0xc1, 0x0a, 0xeb, 0xd8, 0x80, 0x39, 0xff, 0x75, 0x35, 0x8b, 0x94, 0x21, 0x02, 0x00, 0x00, 0x00, 0x01, 0xc2, 0x48, 0x8d, 0x14, 0x22, 0x48, 0x8b, 0x12, 0x8b, 0x5c, 0x21, 0x06, 0x48, 0x01, 0xda, 0x80, 0x79, 0x01, 0x00, 0x75, 0x0c, 0x8a, 0x59, 0x0a, 0x40, 0x88, 0x1a, 0x48, 0x83, 0xc1, 0x0b, 0xeb, 0xaa, 0x8b, 0x59, 0x0a, 0x48, 0x89, 0x1a, 0x48, 0x83, 0xc1, 0x0e, 0xeb, 0x9e, 0x5b, 0xc3 }
-            ;
-
-            // new byte { (Quick Menu Function Call), (Ptr to Base Addr) }
-            byte[][] BootSettingsBaseAddressPointers = new byte[][] {
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC1 1.00 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC1 1.02 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC2 1.00 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC2 1.02 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC3 1.00 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC3 1.02 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC4 1.00 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC4 1.01 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC4 1.33 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC4 1.33 MP //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // TLL 1.00 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // TLL 1.09 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.00 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.09 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.11 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T2 1.00  //!
-                new byte [] { 0xe8, 0xcb, 0xd0, 0x3d, 0x00, 0x53, 0x48, 0x8d, 0x05, 0xc3, 0x8c, 0xff, 0xff }, // T2 1.07  //!
-                new byte [] { 0xe8, 0x9b, 0x45, 0x82, 0x00, 0x53, 0x48, 0x8d, 0x05, 0x03, 0xea, 0xff, 0xff }  // T2 1.09  //!
-            };
-
-            BootSettingsData = new byte[BootSettingsFunction.Length + BootSettingsBaseAddressPointers[GameIndex].Length];
-
-            Buffer.BlockCopy(BootSettingsBaseAddressPointers[GameIndex], 0,
-                             BootSettingsData, 0,
-                             BootSettingsBaseAddressPointers[GameIndex].Length
-                             );
-
-            Buffer.BlockCopy(BootSettingsFunction, 0,
-                             BootSettingsData, BootSettingsBaseAddressPointers[GameIndex].Length,
-                             BootSettingsFunction.Length
-                            );
-
-            return BootSettingsData;
-        }
-
-        /// <summary>
-        /// Merged A Few Functions With The Same Switch Case In To This Since There Wasn't Any Downside Anyway <br/>
-        /// 
-        /// Gets The "GameIndex" Of The Selected Game, Followed By The Address To Call, Then Write The BootSettings Function
-        /// </summary>
-        /// <returns>
-        ///      0: GameIndex
-        /// <br/>1: GetBootSettingsFunctionCallAddress
-        /// <br/>2: Address To Write Boot Settings
-        /// </returns>
-        private object[] GetBootSettingsGameIndexAndAddresses() {
-            var ret = new object[] { 0, 0, 0 };
-
-
-            switch(Game) {
-                default:
-                    ret[0] = 99999999999999;
-                    break;
-
-                case UC1100:
-                case UC1102:
-                case UC2100:
-                case UC2102:
-                case UC3100:
-                case UC3102:
-                case UC4100:
-                case UC4101:
-                case UC4127_133:
-                case UC4133MP:
-                case TLL100:
-                case TLL10X:
-
-                case T1R100:
-                case T1R109:
-                case T1R110:case T1R111:
-                case T2100:
-                case T2107:
-                    ret[0] = 16;
-                    ret[1] = 0x1f217a; // 0x5ee17a
-                    ret[2] = 0xb330;   // 0x407330
-                    break;
-                case T2108:
-                case T2109:
-                    ret[0] = 17;
-                    ret[1] = 0x633cba; // 0xa2fcba
-                    ret[2] = 0x55f0;   // 0x4015f0
-                    break;
-            }
-
-            return ret;
-        }
-
-
-        /// <summary> Returns The Data For The Custom Function Used To Call BootSettings To Write Over The Quick Menu Function Call
-        ///</summary>
-        private static byte[] GetBootSettingsFunctionCall() {
-            switch(Game) {
-                case UC1100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
-
-                case UC1102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
-
-                case UC2100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
-
-                case UC2102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
-
-                case UC3100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
-
-                case UC3102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
-
-                case T1R100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
-
-                case T1R109: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
-
-                case T1R110:
-                case T1R111: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
-
-                case T2100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 };  // 
-
-                case T2107: return new byte[] { 0xe8, 0xb1, 0x91, 0xe1, 0xff };  // CALL 0x407330
-
-                case T2108:
-                case T2109: return new byte[] { 0xe8, 0x31, 0x19, 0x9d, 0xff };  // CALL 0x4015f0
-                default:
-                    return Array.Empty<byte>();
-            }
+            Game = 0;
+            ActiveFilePath = null;
+            MultipleButtonsEnabled = false;
         }
         #endregion
 
 
 
-
-        //////////////////////\\\\\\\\\\\\\\\\\\\\\
-        ///--     Repeated Page Functions     --\\\
-        //////////////////////\\\\\\\\\\\\\\\\\\\\\
-        #region Repeated Page Functions
+        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Repeated Page Functions & Control Declarations     --\\\
+        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        #region Repeat Functions & Control Declarations
         private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);
         private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
         private void BackBtn_Click(object sender, EventArgs e) => ReturnToPreviousPage();
-        #endregion
 
-
-        ////////////////////\\\\\\\\\\\\\\\\\\\\
-        ///--     Control Declarations     --\\\
-        ////////////////////\\\\\\\\\\\\\\\\\\\\
-        #region Control Declarations
         private Button BrowseButton;
         private Button MinimizeBtn;
         private Button InfoHelpBtn;
