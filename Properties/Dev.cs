@@ -177,10 +177,11 @@ namespace Dobby {
                                     $"| Menu Scale:           {DynamicVars[0]}",
                                     $"| Menu Alpha:           {DynamicVars[1]}",
                                     $"| Non-ADS FOV:          {DynamicVars[2]}",
-                                    $"| Swap Square & Circle: {DynamicVars[3]}",
-                                    $"| Shadowed Text:        {DynamicVars[4]}",
-                                    $"| Right Align:          {DynamicVars[5]}",
-                                    $"|    Right Margin:      {DynamicVars[6]}\n"
+                                    $"| Camera X-Align:       {DynamicVars[3]}",
+                                    $"| Swap Square & Circle: {DynamicVars[4]}",
+                                    $"| Shadowed Text:        {DynamicVars[5]}",
+                                    $"| Right Align:          {DynamicVars[6]}",
+                                    $"|    Right Margin:      {DynamicVars[7]}\n"
                                 };
                             else
                                 Output = new string[] {

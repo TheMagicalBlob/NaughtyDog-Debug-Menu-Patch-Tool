@@ -65,7 +65,7 @@ namespace Dobby {
             this.ProgPauseOnCloseBtn.Location = new System.Drawing.Point(1, 119);
             this.ProgPauseOnCloseBtn.Name = "ProgPauseOnCloseBtn";
             this.ProgPauseOnCloseBtn.Size = new System.Drawing.Size(318, 24);
-            this.ProgPauseOnCloseBtn.TabIndex = 56;
+            this.ProgPauseOnCloseBtn.TabIndex = 45;
             this.ProgPauseOnCloseBtn.Text = "Disable Debug Pause On Menu Close: ";
             this.ProgPauseOnCloseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ProgPauseOnCloseBtn.UseVisualStyleBackColor = false;
@@ -82,7 +82,7 @@ namespace Dobby {
             this.ProgPauseOnOpenBtn.Location = new System.Drawing.Point(1, 96);
             this.ProgPauseOnOpenBtn.Name = "ProgPauseOnOpenBtn";
             this.ProgPauseOnOpenBtn.Size = new System.Drawing.Size(318, 24);
-            this.ProgPauseOnOpenBtn.TabIndex = 51;
+            this.ProgPauseOnOpenBtn.TabIndex = 44;
             this.ProgPauseOnOpenBtn.Text = "Disable Debug Pause On Menu Open: ";
             this.ProgPauseOnOpenBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ProgPauseOnOpenBtn.UseVisualStyleBackColor = false;
@@ -99,7 +99,7 @@ namespace Dobby {
             this.DisableDebugTextBtn.Location = new System.Drawing.Point(1, 52);
             this.DisableDebugTextBtn.Name = "DisableDebugTextBtn";
             this.DisableDebugTextBtn.Size = new System.Drawing.Size(318, 24);
-            this.DisableDebugTextBtn.TabIndex = 46;
+            this.DisableDebugTextBtn.TabIndex = 42;
             this.DisableDebugTextBtn.Text = "Disable 2D Debug Text On Startup: ";
             this.DisableDebugTextBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisableDebugTextBtn.UseVisualStyleBackColor = false;
@@ -118,7 +118,7 @@ namespace Dobby {
             this.DisablePausedIconBtn.Location = new System.Drawing.Point(1, 74);
             this.DisablePausedIconBtn.Name = "DisablePausedIconBtn";
             this.DisablePausedIconBtn.Size = new System.Drawing.Size(318, 24);
-            this.DisablePausedIconBtn.TabIndex = 49;
+            this.DisablePausedIconBtn.TabIndex = 43;
             this.DisablePausedIconBtn.Text = "Disable Debug PAUSED Icon:";
             this.DisablePausedIconBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisablePausedIconBtn.UseVisualStyleBackColor = false;
@@ -354,7 +354,7 @@ namespace Dobby {
             this.NovisBtn.Location = new System.Drawing.Point(1, 141);
             this.NovisBtn.Name = "NovisBtn";
             this.NovisBtn.Size = new System.Drawing.Size(318, 24);
-            this.NovisBtn.TabIndex = 57;
+            this.NovisBtn.TabIndex = 46;
             this.NovisBtn.Text = "Disable Culling Of Level Geometry:";
             this.NovisBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.NovisBtn.UseVisualStyleBackColor = false;
@@ -1034,7 +1034,12 @@ namespace Dobby {
         /// <summary>
         /// Variable Used In Dynamic Button Cration For Game-Specific Patches
         /// </summary>
-        private static readonly string[] Name = new string[] {
+#if DEBUG
+        public
+#else
+        private
+#endif
+            static readonly string[] Name = new string[] {
                     "MenuAlphaBtn",
                     "MenuScaleBtn",
                     "FOVBtn",
@@ -1057,18 +1062,15 @@ namespace Dobby {
             };
 
             private static readonly string[] Hint = new string[] {
-                    "Hint",
-                    "Hint",
+                    "Adjusts The Visibilty of The Debug Menu Backgrounds",
+                    "Adjusts The Debug Menu Scaling",
                     "Only Effects The Camera While Not Aiming",
-                    "Hint",
                     "Adjust Camera Position On The X-Axis (smaller == left, larger == right)",
+                    " ",
+                    "Improves Debug Menu Text Readability By Adding A Light Shadow Effect To The Text",
                     "Moves The Dev/Quick Menus To The Right Of The Screen",
-                    "Hint",
-                    "Hint"
+                    "Adjust the Menu's Distance From The Right Of The Screen",
             };
-
-            private int ButtonsVerticalStartPos;
-
 
             /// <summary> Buttons For Game-Specific Debug Options Loaded Based On The Game Chosen <br/><br/>
             /// 0: MenuAlphaBtn                                                                        <br/>
@@ -1081,6 +1083,9 @@ namespace Dobby {
             /// 7: RightMarginBtn
             /// </summary>
             public vButton[] Buttons; // Initialized Once An Executable's Selected
+
+            private int ButtonsVerticalStartPos;
+
 
 
             /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\
@@ -1388,33 +1393,33 @@ namespace Dobby {
                             continue;
                         }
 
-
+#if DEBUG
+                        string[] Ids = new string[] {
+                            "Disable FPS",
+                            "Disable Paused Indicator",
+                            "ProgPauseOnOpen",
+                            "ProgPauseOnExit",
+                            "Novis",
+                        };
+                        Dev.DebugOut(Ids[index]);
+#endif
                         WriteByte(data: PointerType);
                         WriteByte(data: 0);
                         WriteBytes(data: PatchData);
                         WriteByte(data: 1);
+
                         Dev.DebugOut();
-                        PatchCount++; index++;
+                        PatchCount++;
                     }
 
 
                     // Game-Specific Options
                     for(index = 0; index < DynamicPatchButtons.GameSpecificPatchValues.Length; index++ ) {
-
-                        /// Update BootSettings Code To Sopport >8bit values
-                        if(DynamicPatchButtons.GameSpecificPatchValues[index].GetType() == typeof(float)) {
-                            Dev.DebugOut($"Skipping Float ({DynamicPatchButtons.GameSpecificPatchValues[index]}|{DynamicPatchButtons.DefaultPatchValues[index]})");
-                            Dev.DebugOut();
-                            continue;
-                        }
-
                         if(DynamicPatchButtons.GameSpecificPatchValues[index].Equals(DynamicPatchButtons.DefaultPatchValues[index])) {
-                            Dev.DebugOut($"{DynamicPatchButtons.GameSpecificPatchValues[index]} == {DynamicPatchButtons.DefaultPatchValues[index]} (#{index})");
+                            Dev.DebugOut($"Skipping Patch (#{index})");
                             Dev.DebugOut();
                             continue;
                         }
-
-                        else Dev.DebugOut($"{DynamicPatchButtons.GameSpecificPatchValues[index]} != {DynamicPatchButtons.DefaultPatchValues[index]} (#{index})");
 
                         PatchData = GameSpecificBootSettingsPointers[index][GameIndex];
 
@@ -1432,8 +1437,10 @@ namespace Dobby {
                             continue;
                         }
 
-                        var PatchValue = DynamicPatchButtons.GameSpecificPatchValues[index];
 
+                        Dev.DebugOut($"[{DynamicPatchButtons.Name[index]}]");
+
+                        var PatchValue = DynamicPatchButtons.GameSpecificPatchValues[index];
                         WriteByte(data: PointerType);
                         WriteByte(data: (byte)(PatchValue.GetType() == typeof(byte) || PatchValue.GetType() == typeof(bool) ? 0 : 1));
                         WriteBytes(data: PatchData);
@@ -1504,7 +1511,7 @@ namespace Dobby {
 
         /// <param name="GameIndex"> Index Of The Selected Game, Excluding Versions I Don't Plan To Suppport </param>
         /// <returns> A byte[] containing the constructed bootsettings function data </returns>
-        private static byte[] GetBootSettingsBytes(int GameIndex = 18) {
+        private static byte[] GetBootSettingsBytes(int GameIndex = 16) {
 
             // new byte { (Quick Menu Function Call), (Ptr to Base Addr) }
             byte[][] BootSettingsBaseAddressPointers = new byte[][] {
