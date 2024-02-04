@@ -28,6 +28,10 @@ namespace Dobby {
         /// <summary> Dev Label Event Handler Function </summary>
         public static void MiscDebugFunc(object sender, EventArgs e) {
             if(((Control)sender).Text == "&L") {
+
+                if(MessageBox.Show("Open Log?", "", MessageBoxButtons.OKCancel) != DialogResult.OK)
+                    return;
+
                 System.Diagnostics.Process.Start($"{Directory.GetCurrentDirectory()}\\out.txt");
                 Environment.Exit(0);
                 return;
