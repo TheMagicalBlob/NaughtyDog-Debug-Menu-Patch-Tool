@@ -1396,6 +1396,7 @@ namespace Dobby {
 #if DEBUG
                         string[] Ids = new string[] {
                             "Disable FPS",
+                            "Fill",
                             "Disable Paused Indicator",
                             "ProgPauseOnOpen",
                             "ProgPauseOnExit",
@@ -1454,10 +1455,11 @@ namespace Dobby {
 
                     //MessageBox.Show("Patches Applied\n\nNote:\nCertain Values Are Set Long After The BootSettings Function Is Run.\nIf A Selected Setting Hasn't Changed, Select The Following Option:\n[Dev Menu => Custom... => Re-Apply Boot Settings]", "Patches Applied Without Any Errors");
 
-                    Message = $"{PatchCount} Patches Applied";
+                    Message = $" {PatchCount} Patches Applied";
                 }
                 catch(Exception tabarnack) {
                     Dev.DebugOut(tabarnack.Message);
+                    Dev.DebugOut(tabarnack.StackTrace);
                     return $"{tabarnack.GetType()} | Error Applying Patches";
                 }
             }
