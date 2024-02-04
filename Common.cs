@@ -212,7 +212,7 @@ namespace Dobby {
           "* 3.40.182.489 | PS4MenuSettingsPatchPage Work, Debug Output Fix",
           "* 3.40.182.491 | PS4MenuSettingsPatchPage Work, Removed Old Debug Output Calls",
           "* 3.42.183.494 | PS4MenuSettingsPatchPage Now Functions, Pointers Still Need To Be Added For The Majority Of Cases, Debug Output Changes",
-          "* 3.42.183.495 | , Debug Output Tweak",
+          "* 3.42.184.496 | Replaced BootSettings data with updated code, Debug Output Tweak",
 
             // TODO:
             // * MAJOR
