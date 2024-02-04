@@ -548,7 +548,6 @@ namespace Dobby {
                 new byte[] {  }, // TLL109
                 new byte[] {  }, // T1R100
                 new byte[] {  }, // T1R109
-                new byte[] {  }, // T1R110
                 new byte[] {  }, // T1R111
                 new byte[] {  }, // T2100
                 new byte[] { 0xB9, 0x67, 0x24, 0x03 }, // 0x36467b9 | T2107
