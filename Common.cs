@@ -214,7 +214,8 @@ namespace Dobby {
           "* 3.42.183.494 | PS4MenuSettingsPatchPage Now Functions, Pointers Still Need To Be Added For The Majority Of Cases, Debug Output Changes",
           "* 3.42.184.496 | Replaced BootSettings data with updated code, Debug Output Tweak",
           "* 3.42.186.501 | Small BootSettings Fix, Basic Formatting Changes",
-          "* 3.43.188.507 | Menu Settings Page Work."
+          "* 3.43.188.507 | Menu Settings Page Work.",
+          "* 3.43.190.510 | Added Newer T2 1.07 Custom Menu. Menu Settings Page Work."
 
 
             // TODO:

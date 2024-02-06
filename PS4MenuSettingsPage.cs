@@ -17,10 +17,10 @@ namespace Dobby {
             
 
             DisableDebugTextBtn.Variable = UniversaPatchValues[0];
-            DisablePausedIconBtn.Variable = UniversaPatchValues[2];
-            ProgPauseOnOpenBtn.Variable = UniversaPatchValues[3];
-            ProgPauseOnCloseBtn.Variable = UniversaPatchValues[4];
-            NovisBtn.Variable = UniversaPatchValues[5];
+            DisablePausedIconBtn.Variable = UniversaPatchValues[1];
+            ProgPauseOnOpenBtn.Variable = UniversaPatchValues[2];
+            ProgPauseOnCloseBtn.Variable = UniversaPatchValues[3];
+            NovisBtn.Variable = UniversaPatchValues[4];
 
             AddControlEventHandlers(Controls);
 
@@ -119,7 +119,7 @@ namespace Dobby {
             this.DisablePausedIconBtn.Name = "DisablePausedIconBtn";
             this.DisablePausedIconBtn.Size = new System.Drawing.Size(318, 24);
             this.DisablePausedIconBtn.TabIndex = 43;
-            this.DisablePausedIconBtn.Text = "Disable Debug PAUSED Icon:";
+            this.DisablePausedIconBtn.Text = "Show Debug PAUSED Icon:";
             this.DisablePausedIconBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisablePausedIconBtn.UseVisualStyleBackColor = false;
             this.DisablePausedIconBtn.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PausedIconBtn_Click);
@@ -464,6 +464,7 @@ namespace Dobby {
             },
             
             
+            /*
             //|Show Build Info
             new byte[][] {
                 new byte[] {  }, // 0x | UC1100
@@ -486,7 +487,6 @@ namespace Dobby {
                 new byte[] { 0x30, 0xb4, 0x77, 0x03, 0xcd, 0x3a, 0x00, 0x00 }  // T2109
             },
 
-            /*
             //|Suppress Active task Display
             new byte[][] {
                 new byte[] { 0x41, 0x7B, 0x99, 0x00 }, // 0xD97B41  | UC1100
@@ -966,16 +966,15 @@ namespace Dobby {
         ///<br/> Defaults Are All False, So That's Nice. Simplifies Things
         ///<br/>
         ///<br/> 0: Disable FPS
-        ///<br/> 1: Suppress Active Task Display (Toggled Alongside FPS)
-        ///<br/> 2: Disable Paused Indicator
-        ///<br/> 3: Prog Pause On Open 
-        ///<br/> 4: Prog Pause On Close
-        ///<br/> 5: novis (Addme)
+        ///<br/> 1: Disable Paused Indicator
+        ///<br/> 2: Prog Pause On Open 
+        ///<br/> 3: Prog Pause On Close
+        ///<br/> 4: novis (Addme)
         /// </summary>
 #if !DEBUG
         private bool[] UniversaPatchValues = new bool[6];
 #else
-        public static bool[] UniversaPatchValues { get; private set; } = new bool[6];
+        public static bool[] UniversaPatchValues { get; private set; } = new bool[5] { false, true, true, true, false };
         public static object[] PeekGameSpecificPatchValues() { return DynamicPatchButtons.GameSpecificPatchValues; }
 #endif
 
@@ -1261,14 +1260,11 @@ namespace Dobby {
         ///--     Event Handlers For Basic Patches Available For Each Game     --\\\
         ///////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         #region Event Handlers For Basic Patches Available For Each Game
-        private void DisableDebugTextBtn_Click(object sender, MouseEventArgs e) {
-            DefaultButtonClick((vButton)sender, e.Delta != 0, 0); // Disable FPS
-            DefaultButtonClick((vButton)sender, e.Delta != 0, 1); // Suppress Active Task Display
-        }
-        private void PausedIconBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((vButton)sender, e.Delta != 0, 2);
-        private void ProgPauseOnOpenBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((vButton)sender, e.Delta != 0, 3);
-        private void ProgPauseOnCloseBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((vButton)sender, e.Delta != 0, 4);
-        private void DisableAllVisibilityBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((vButton)sender, e.Delta != 0, 5);
+        private void DisableDebugTextBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((vButton)sender, e.Delta != 0, 0);
+        private void PausedIconBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((vButton)sender, e.Delta != 0, 1);
+        private void ProgPauseOnOpenBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((vButton)sender, e.Delta != 0, 2);
+        private void ProgPauseOnCloseBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((vButton)sender, e.Delta != 0, 3);
+        private void DisableAllVisibilityBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((vButton)sender, e.Delta != 0, 4);
         private void DefaultButtonClick(vButton cnt, bool scrolled, int PatchIndex) { ToggleBool(cnt, PatchIndex); MouseScrolled = scrolled; }
         private void ToggleBool(vButton Control, int OptionIndex) {
             if(MouseScrolled || !MouseIsDown || CurrentControl != Control.Name)
@@ -1437,9 +1433,9 @@ namespace Dobby {
                             continue;
                         }
 
-
+#if DEBUG
                         Dev.DebugOut($"[{DynamicPatchButtons.Name[index]}]");
-
+#endif
                         var PatchValue = DynamicPatchButtons.GameSpecificPatchValues[index];
                         WriteByte(data: PointerType);
                         WriteByte(data: (byte)(PatchValue.GetType() == typeof(byte) || PatchValue.GetType() == typeof(bool) ? 0 : 1));
@@ -1823,7 +1819,7 @@ namespace Dobby {
             ActiveFilePath = null;
             MultipleButtonsEnabled = false;
         }
-        #endregion
+#endregion
 
 
 
