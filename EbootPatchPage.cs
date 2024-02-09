@@ -78,11 +78,11 @@ namespace Dobby {
             // 
             this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 101);
+            this.SeperatorLine1.Location = new System.Drawing.Point(4, 101);
             this.SeperatorLine1.Name = "SeperatorLine1";
             this.SeperatorLine1.Size = new System.Drawing.Size(316, 20);
             this.SeperatorLine1.TabIndex = 29;
-            this.SeperatorLine1.Text = "____________________________________________";
+            this.SeperatorLine1.Text = "______________________________________________________________";
             // 
             // RestoredDebugBtn
             // 
@@ -122,7 +122,7 @@ namespace Dobby {
             // 
             this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(2, 158);
+            this.SeperatorLine2.Location = new System.Drawing.Point(4, 158);
             this.SeperatorLine2.Name = "SeperatorLine2";
             this.SeperatorLine2.Size = new System.Drawing.Size(316, 20);
             this.SeperatorLine2.TabIndex = 14;
@@ -254,7 +254,7 @@ namespace Dobby {
             // 
             this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine0.Location = new System.Drawing.Point(2, 16);
+            this.SeperatorLine0.Location = new System.Drawing.Point(4, 16);
             this.SeperatorLine0.Name = "SeperatorLine0";
             this.SeperatorLine0.Size = new System.Drawing.Size(316, 20);
             this.SeperatorLine0.TabIndex = 33;
@@ -299,13 +299,9 @@ namespace Dobby {
         /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
         #region EbootPatchPage Variables & Functions
 
-        public static bool IsActiveFilePCExe, MainStreamIsOpen;
         private readonly byte[] E9Jump = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 };
 
-        private static int
-            Game,
-            DebugAddressForSelectedGame
-        ;
+        private static int DebugAddressForSelectedGame;
         
         public static FileStream MainStream { get; private set; }
         

@@ -830,10 +830,6 @@ namespace Dobby {
             "Custom Menu Applied",
         };
 
-        private static byte[] LocalExecutableCheck;
-        private static string ActiveFilePath;
-        private static bool IsActiveFilePCExe, MainStreamIsOpen;
-
         public static void WriteBytes(int? offset = null, byte[] data = null) {
 #if DEBUG
             var msg = $"Data {BitConverter.ToString(data).Replace("-", "")} Written To ";
@@ -1477,7 +1473,7 @@ namespace Dobby {
 
         /// <param name="GameIndex"> Index Of The Selected Game, Excluding Versions I Don't Plan To Suppport </param>
         /// <returns> A byte[] containing the constructed bootsettings function data </returns>
-        private static byte[] GetBootSettingsBytes(int GameIndex = 16) {
+        private static byte[] GetBootSettingsBytes(int GameIndex) {
 
             // new byte { (Quick Menu Function Call), (Ptr to Base Addr) }
             byte[][] BootSettingsBaseAddressPointers = new byte[][] {
@@ -1497,8 +1493,8 @@ namespace Dobby {
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.09 //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.11 //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T2 1.00  //!
-                new byte [] { 0xe8, 0xcb, 0xd0, 0x3d, 0x00, 0x53, 0x48, 0x8d, 0x05, 0xc3, 0x8c, 0xff, 0xff }, // T2 1.07  //!
-                new byte [] { 0xe8, 0x9b, 0x45, 0x82, 0x00, 0x53, 0x48, 0x8d, 0x05, 0x03, 0xea, 0xff, 0xff }  // T2 1.09  //!
+                new byte [] { 0xe8, 0xcb, 0xd0, 0x3d, 0x00, 0x53, 0x48, 0x8d, 0x05, 0xc3, 0x8c, 0xff, 0xff }, // T2 1.07
+                new byte [] { 0xe8, 0x9b, 0x45, 0x82, 0x00, 0x53, 0x48, 0x8d, 0x05, 0x03, 0xea, 0xff, 0xff }  // T2 1.09
             };
 
             byte[] 
@@ -1829,7 +1825,6 @@ namespace Dobby {
             }
 
             Game = 0;
-            ActiveFilePath = null;
             MultipleButtonsEnabled = false;
         }
 #endregion
