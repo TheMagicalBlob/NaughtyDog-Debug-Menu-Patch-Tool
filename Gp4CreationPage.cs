@@ -465,7 +465,7 @@ namespace Dobby {
 
             if(file.ShowDialog() == DialogResult.OK) {
                 GamedataPathLabel.Text = file.FileName.Remove(file.FileName.LastIndexOf(@"\"));
-                Dev.DebugOut($"dta folder: {GamedataPathLabel.Text}");
+                Dev.MsgOut($"dta folder: {GamedataPathLabel.Text}");
                 gp4 = new GP4Creator(GamedataPathLabel.Text);
             }
 

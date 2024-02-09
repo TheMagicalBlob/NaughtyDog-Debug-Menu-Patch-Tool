@@ -27,6 +27,10 @@ namespace Dobby {
 
             if(Game != 0 && gsButtons.Buttons != null) ResetCustomDebugOptions();
             FormActive = true;
+
+
+            Dev.LineOut("Random-Ass Print Test");
+
         }
 
         private void InitializeComponent() {
@@ -838,8 +842,8 @@ namespace Dobby {
             msg += MainStream.Position.ToString("X"); // trust issues
 
             MainStream.Write(data, 0, data.Length);
-            Dev.DebugOut(msg);
-            Dev.DebugOut();
+            Dev.MsgOut(msg);
+            Dev.MsgOut();
 #else
             if (offset != null)
             MainStream.Position = (int)offset;
@@ -854,7 +858,7 @@ namespace Dobby {
             msg += MainStream.Position.ToString("X"); // trust issues
 
             MainStream.WriteByte(data);
-            Dev.DebugOut(msg);
+            Dev.MsgOut(msg);
 #else
             if(offset != null)
             MainStream.Position = (int)offset;
@@ -884,9 +888,9 @@ namespace Dobby {
                     msg = (float)data + msg;
                 }
             }
-            catch (Exception) { Dev.DebugOut($"Error Writing Var: {data} ({data.GetType()})"); }
+            catch (Exception) { Dev.MsgOut($"Error Writing Var: {data} ({data.GetType()})"); }
 
-            Dev.DebugOut($"var: {msg}");
+            Dev.MsgOut($"var: {msg}");
 #else
             if(offset != null)
                 MainStream.Position = (int)offset;
@@ -1107,7 +1111,7 @@ namespace Dobby {
                 }
 
 
-                Dev.DebugOut($"Enabling {buttons.Length} Buttons");
+                Dev.MsgOut($"Enabling {buttons.Length} Buttons");
                 foreach(int id in buttons) {
                     Buttons[id] = new vButton();
                     ActiveForm.Controls.Add(Buttons[id]);
@@ -1117,7 +1121,7 @@ namespace Dobby {
 
             /// <summary> Enable All Buttons
             ///</summary>
-            public void EnableDynamicPatchButtons() { Dev.DebugOut("Enabling All Buttons");
+            public void EnableDynamicPatchButtons() { Dev.MsgOut("Enabling All Buttons");
                 for(index = 0; index < Buttons.Length - 1; index++) {
                     Buttons[index] = new vButton();
                     ActiveForm.Controls.Add(Buttons[index]);
@@ -1335,9 +1339,9 @@ namespace Dobby {
 
             var Result = ApplyMenuSettings((int)GetGameIndex(Game));
 
-            if(Result.GetType() != typeof(string)) {
-                MessageBox.Show($"An Unexpected Error Occured While Applying The Patches, Please Ensure You're Running The Latest Release Build\nIf You Are, Report It To The Moron Typing Out This Error Message");
-                Dev.DebugOut("ApplyMenuSettings Returned Null");
+            if(Result.GetType() == typeof(int)) {
+                MessageBox.Show($"An Unexpected Error Occured While Applying The Patches, Please Ensure You're Running The Latest Release Build\nIf You Are, Report It To The Moron Typing Out This Error Message", $"ApplyMenuSettings() Error 0x{Result:X}");
+                Dev.MsgOut("ApplyMenuSettings Returned Null");
                 return;
             }
 
@@ -1357,6 +1361,11 @@ namespace Dobby {
 #endif
                     int BootSettingsAddress, PatchCount = 0;
                     var Addresses = GetBootSettingsGameIndexAndAddresses();
+
+                    if(Addresses[0] == 0 || Addresses[1] == 0) {
+                        Dev.MsgOut($"Game #{GameIndex} Has Is Missing An Address For Settings (0: {Addresses[0]} / 1: {Addresses[1]})");
+                        return 0;
+                    }
 
                     // Write Function Call To Call BootSettings
                     WriteBytes((int)Addresses[1], GetBootSettingsFunctionCall());
@@ -1380,11 +1389,11 @@ namespace Dobby {
                         else if(PatchData.Length == 8) PointerType = 0xFF;
 
                         else if(PatchData.Length == 0) {
-                            Dev.DebugOut($"Pointer #{index} Was Null");
+                            Dev.MsgOut($"Pointer #{index} Was Null");
                             continue;
                         }
                         else {
-                            Dev.DebugOut($"Invalid Data Size. ({PatchData.Length})");
+                            Dev.MsgOut($"Invalid Data Size. ({PatchData.Length})");
                             continue;
                         }
 
@@ -1397,14 +1406,14 @@ namespace Dobby {
                             "ProgPauseOnExit",
                             "Novis",
                         };
-                        Dev.DebugOut(Ids[index]);
+                        Dev.MsgOut(Ids[index]);
 #endif
                         WriteByte(data: PointerType);
                         WriteByte(data: 0);
                         WriteBytes(data: PatchData);
                         WriteByte(data: 1);
 
-                        Dev.DebugOut();
+                        Dev.MsgOut();
                         PatchCount++;
                     }
 
@@ -1412,8 +1421,8 @@ namespace Dobby {
                     // Game-Specific Options
                     for(index = 0; index < DynamicPatchButtons.GameSpecificPatchValues.Length; index++ ) {
                         if(DynamicPatchButtons.GameSpecificPatchValues[index].Equals(DynamicPatchButtons.DefaultPatchValues[index])) {
-                            Dev.DebugOut($"Skipping Patch (#{index})");
-                            Dev.DebugOut();
+                            Dev.MsgOut($"Skipping Patch (#{index})");
+                            Dev.MsgOut();
                             continue;
                         }
 
@@ -1423,18 +1432,18 @@ namespace Dobby {
                         else if(PatchData.Length == 8) PointerType = 0xFF;
 
                         else if(PatchData.Length == 0) {
-                            Dev.DebugOut($"Pointer #{index} Was Null");
-                            Dev.DebugOut();
+                            Dev.MsgOut($"Pointer #{index} Was Null");
+                            Dev.MsgOut();
                             continue;
                         }
                         else {
-                            Dev.DebugOut($"Invalid Data Size. ({PatchData.Length})");
-                            Dev.DebugOut();
+                            Dev.MsgOut($"Invalid Data Size. ({PatchData.Length})");
+                            Dev.MsgOut();
                             continue;
                         }
 
 #if DEBUG
-                        Dev.DebugOut($"[{DynamicPatchButtons.Name[index]}]");
+                        Dev.MsgOut($"[{DynamicPatchButtons.Name[index]}]");
 #endif
                         var PatchValue = DynamicPatchButtons.GameSpecificPatchValues[index];
                         WriteByte(data: PointerType);
@@ -1443,7 +1452,7 @@ namespace Dobby {
                         WriteVar(data: PatchValue);
 
                         PatchCount++;
-                        Dev.DebugOut();
+                        Dev.MsgOut();
                     }
 
                     WriteBytes(data: new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0x08 }); // padding to avoid issues
@@ -1453,58 +1462,18 @@ namespace Dobby {
                     Message = $" {PatchCount} Patches Applied";
                 }
                 catch(Exception tabarnack) {
-                    Dev.DebugOut(tabarnack.Message);
-                    Dev.DebugOut(tabarnack.StackTrace);
-                    return $"{tabarnack.GetType()} | Error Applying Patches";
+                    Dev.LineOut();
+                    Dev.MsgOut(tabarnack.Message);
+                    Dev.MsgOut(tabarnack.StackTrace);
+                    Dev.MsgOut($"{tabarnack.GetType()} | Error Applying Patches");
+                    Dev.LineOut();
+                    return 1;
                 }
             }
 
             return (Message == string.Empty ? null : Message);
         }
 
-        /// <summary> Get The MenuSettingsPage-Specific GameIndex Used For... Well, Take A Fking Guess.<br/><br/>Does Not Include Game Versions I Don't Indend To Support, Just Oldest And Latest<br/>(Plus A Couple Still Commonly Used In-Between Ones) </summary>
-        private int? GetGameIndex(int Game) {
-            switch(Game) {
-                default:
-                    return 999999999;
-
-                case UC1100:
-                case UC1102:
-                case UC2100:
-                case UC2102:
-                case UC3100:
-                case UC3102:
-                    return null;
-
-                case UC4100:
-                    return 6;
-                case UC4101:
-                    return 7;
-                case UC4127_133:
-                    return 8;
-                case UC4133MP:
-                    return null;
-                case TLL100:
-                    return 10;
-                case TLL10X:
-                    return 11;
-
-                case T1R100:
-                    return 11;
-                case T1R109:
-                    return 13;
-                case T1R110:
-                case T1R111:
-                    return 14;
-                case T2100:
-                    return 15;
-                case T2107:
-                    return 16;
-                case T2108:
-                case T2109:
-                    return 17;
-            }
-        }
 
         /// <param name="GameIndex"> Index Of The Selected Game, Excluding Versions I Don't Plan To Suppport </param>
         /// <returns> A byte[] containing the constructed bootsettings function data </returns>
@@ -1552,23 +1521,66 @@ namespace Dobby {
             return BootSettingsData;
         }
 
+
+        /// <summary> Get The MenuSettingsPage-Specific GameIndex Used For... Well, Take A Fking Guess.<br/><br/>Does Not Include Game Versions I Don't Indend To Support, Just Oldest And Latest<br/>(Plus A Couple Still Commonly Used In-Between Ones) </summary>
+        private int? GetGameIndex(int Game) {
+            switch(Game) {
+                default:
+                    return 999999999;
+
+                case UC1100:
+                case UC1102:
+                case UC2100:
+                case UC2102:
+                case UC3100:
+                case UC3102:
+                    return null;
+
+                case UC4100:
+                    return 6;
+                case UC4101:
+                    return 7;
+                case UC4127_133:
+                    return 8;
+                case UC4133MP:
+                    return null;
+                case TLL100:
+                    return 10;
+                case TLL10X:
+                    return 11;
+
+                case T1R100:
+                    return 11;
+                case T1R109:
+                    return 13;
+                case T1R110:
+                case T1R111:
+                    return 14;
+                case T2100:
+                    return 15;
+                case T2107:
+                    return 16;
+                case T2108:
+                case T2109:
+                    return 17;
+            }
+        }
+
         /// <summary>
         /// Merged A Few Functions With The Same Switch Case In To This Since There Wasn't Any Downside Anyway <br/>
         /// 
-        /// Gets The "GameIndex" Of The Selected Game, Followed By The Address To Call, Then Write The BootSettings Function
+        /// Gets The Address To Call, Then Write The Address To Write The BootSettings Function
         /// </summary>
         /// <returns>
-        ///      0: GameIndex
-        /// <br/>1: GetBootSettingsFunctionCallAddress
-        /// <br/>2: Address To Write Boot Settings
+        /// <br/>0: GetBootSettingsFunctionCallAddress
+        /// <br/>1: Address To Write Boot Settings
         /// </returns>
-        private object[] GetBootSettingsGameIndexAndAddresses() {
-            var ret = new object[] { 0, 0, 0 };
+        private int[] GetBootSettingsGameIndexAndAddresses() {
+            var ret = new int[2] { 0, 0 };
 
 
             switch(Game) {
                 default:
-                    ret[0] = 99999999999999;
                     break;
 
                 case UC1100:
@@ -1589,13 +1601,11 @@ namespace Dobby {
                 case T1R110:case T1R111:
                 case T2100:
                 case T2107:
-                    ret[0] = 16;
                     ret[1] = 0x1f217a; // 0x5ee17a
                     ret[2] = 0xb330;   // 0x407330
                     break;
                 case T2108:
                 case T2109:
-                    ret[0] = 17;
                     ret[1] = 0x633cba; // 0xa2fcba
                     ret[2] = 0x55f0;   // 0x4015f0
                     break;
@@ -1641,13 +1651,14 @@ namespace Dobby {
             }
         }
 
+
         /// <summary> Resize Form And Move Buttons, Then Add Enabled Custom Buttons To Form Based On The Current Game And Patch
         ///</summary>
         public void LoadGameSpecificMenuOptions() {
 
             // Assign values to variables made to keep track of the default form size/control postions for the reset button. Doing it on page init is annoying 'cause designer memes
             if(OriginalFormScale == Size.Empty) {
-                Dev.DebugOut("Setting Original Scale Variables");
+                Dev.MsgOut("Setting Original Scale Variables");
 
                 // Every Control Below The "Game Specific Patches" Label
                 ControlsToMove = new Control[] {
@@ -1673,6 +1684,8 @@ namespace Dobby {
 
             // In Case Of Repeat Uses
             ButtonIndex = 0;
+
+
 
             IDS[] GameButtonIds = new IDS[1];
             // Enable Buttons Based On Which Patches Are Available For The Current Game
@@ -1787,7 +1800,7 @@ namespace Dobby {
         private static void ResetCustomDebugOptions(object _ = null, EventArgs __ = null) {
             if(Game == 0) return;
 #if DEBUG
-            Dev.DebugOut("Resetting Form And Main Stream");
+            Dev.MsgOut("Resetting Form And Main Stream");
 #endif
             index = 0;
 

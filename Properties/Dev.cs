@@ -38,12 +38,12 @@ namespace Dobby {
             }
 
 
-            OverrideDebugOut ^= true;
+            OverrideMsgOut ^= true;
         }
 
         public static void DebugControlHover(object sender, EventArgs e) => HoveredControl = (Control)sender;
 
-        public static bool OverrideDebugOut;
+        public static bool OverrideMsgOut;
 
         private static int OutputStringIndex = 0;
 
@@ -90,12 +90,11 @@ namespace Dobby {
                 AddControlEventHandlers(Controls);
                 logThread.Start();
                 Location = Point.Empty;
-                Click += DebugOut;
             }
 
             private static Form AppRef;
             private static Graphics rend;
-            private static Size formScale;
+            public static Size formScale;
             public static StreamWriter LogFile;
             public static string[] LogBuffer;
 
@@ -165,7 +164,7 @@ namespace Dobby {
                         var DynamicVars = PS4MenuSettingsPage.PeekGameSpecificPatchValues();
 
                         try {
-                            if(OverrideDebugOut)
+                            if(OverrideMsgOut)
                                 Output = new string[] {
                                     $"| Game Index: {PS4MenuSettingsPage.GameIndex}",
                                     $"| Disable FPS:          {PS4MenuSettingsPage.UniversaPatchValues[0]}|{PS4MenuSettingsPage.UniversaPatchValues[1]}",
@@ -281,19 +280,30 @@ namespace Dobby {
                 }
             }
         }
-
-        private static void DebugOut(object sender, EventArgs e) => DebugOut("Output Test");
-
 #endif
 
-        public static void DebugOut(object obj = null) {
+        public static void LineOut(string StringToEnclose = null) {
+#if DEBUG
+            return;
+            var str = string.Empty;
+
+            if(StringToEnclose != null && LogWindow.formScale.Width < TextRenderer.MeasureText(StringToEnclose, MainFont).Width)
+                LogWindow.formScale.Width = TextRenderer.MeasureText(StringToEnclose, MainFont).Width;
+
+            while(TextRenderer.MeasureText(str, MainFont).Width < LogWindow.formScale.Width)
+                str += '-';
+
+            MsgOut($"\n{str}\n{StringToEnclose}\n{str}");
+#endif
+        }
+
+        public static void MsgOut(object obj = null) {
 #if DEBUG
             string s;
 
-            if(obj == null)
-                s = " ";
-            else
-                s = obj.ToString();
+            if(obj == null) s = " ";
+
+            else s = obj.ToString();
             
             if(s.Contains("\n"))
                 s = s.Replace("\n", "\n ");
@@ -325,7 +335,7 @@ namespace Dobby {
 
         public static void DebugFunctionCall() {
             DebugConnect();
-            DebugOut(geo.Call(Executable, geo.InstallRPC(Executable), 0x52e060, new object[] { 0x105f83d240, 4 })); // 0x105f83d240
+            MsgOut(geo.Call(Executable, geo.InstallRPC(Executable), 0x52e060, new object[] { 0x105f83d240, 4 })); // 0x105f83d240
         }
         public static byte DebugConnect() {
             try {
@@ -336,7 +346,7 @@ namespace Dobby {
                         if(prc.name == id) {
                             string title = geo.GetProcessInfo(prc.pid).titleid;
                             if(title == "FLTZ00003" || title == "ITEM00003") {
-                                DebugOut($"Skipping Lightning's Stuff {title}");
+                                MsgOut($"Skipping Lightning's Stuff {title}");
                                 break;
                             } // Code To Avoid Connecting To HB Store Stuff
 

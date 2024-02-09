@@ -217,7 +217,8 @@ namespace Dobby {
           "* 3.43.188.507 | Menu Settings Page Work.",
           "* 3.43.190.510 | Added Newer T2 1.07 Custom Menu. Menu Settings Page Work.",
           "* 3.43.191.511 | Fixed Issue With Boot Settings Func",
-          "* 3.43.191.514 | PS4 Menu Settings Page - Added Some More Pointers"
+          "* 3.43.192.516 | PS4 Menu Settings Page - Added Some More Pointers. Debug Edits",
+          "* 3.43.193.517 | EbootPatchPage Line Adjustment",
 
 
 
@@ -295,7 +296,7 @@ namespace Dobby {
             FormActive,
             InfoHasImportantStr,
             IsPageGoingBack = false,
-            LastDebugOutputWasInfoString = false,
+            LastMsgOutputWasInfoString = false,
             LabelShouldFlash = false,
             FlashThreadHasStarted = false
         ;
@@ -489,7 +490,7 @@ namespace Dobby {
                     Credits.Show();
                     break;
 
-                default: DebugOut($"{Page} Is Not A Page!"); break;
+                default: MsgOut($"{Page} Is Not A Page!"); break;
             }
 
             YellowInformationLabel = ActiveForm.Controls.Find("Info", true)[0];
@@ -619,7 +620,7 @@ namespace Dobby {
                 Controls.Find("ExitBtn", true)[0].MouseEnter += new EventHandler(ExitBtnMH);
                 Controls.Find("ExitBtn", true)[0].MouseLeave += new EventHandler(ExitBtnML);
             }
-            catch(IndexOutOfRangeException) { DebugOut("Form Lacks MinimizeBtn And / Or ExitBtn"); }
+            catch(IndexOutOfRangeException) { MsgOut("Form Lacks MinimizeBtn And / Or ExitBtn"); }
         }
 
 
@@ -913,7 +914,7 @@ namespace Dobby {
                 }
             }
             catch(Exception) {
-                DebugOut("Killing Label Flash");
+                MsgOut("Killing Label Flash");
             }
             LabelShouldFlash = false;
             FlashLabel();
@@ -924,7 +925,7 @@ namespace Dobby {
                 ActiveForm.Refresh();
             }
             catch(Exception) {
-                DebugOut("Killing Label Flash WH");
+                MsgOut("Killing Label Flash WH");
             }
         }
         static void FlashYellow() {
@@ -933,7 +934,7 @@ namespace Dobby {
                 ActiveForm.Refresh();
             }
             catch(Exception) {
-                DebugOut("Killing Label Flash YL");
+                MsgOut("Killing Label Flash YL");
             }
         }
         #endregion

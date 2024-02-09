@@ -126,7 +126,7 @@ namespace Dobby {
             this.SeperatorLine2.Name = "SeperatorLine2";
             this.SeperatorLine2.Size = new System.Drawing.Size(316, 20);
             this.SeperatorLine2.TabIndex = 14;
-            this.SeperatorLine2.Text = "____________________________________________";
+            this.SeperatorLine2.Text = "______________________________________________________________";
             // 
             // BackBtn
             // 
@@ -258,7 +258,7 @@ namespace Dobby {
             this.SeperatorLine0.Name = "SeperatorLine0";
             this.SeperatorLine0.Size = new System.Drawing.Size(316, 20);
             this.SeperatorLine0.TabIndex = 33;
-            this.SeperatorLine0.Text = "____________________________________________";
+            this.SeperatorLine0.Text = "______________________________________________________________";
             // 
             // EbootPatchPage
             // 
@@ -402,11 +402,11 @@ namespace Dobby {
         private void LoadFileToBePatched(string FilePath) {
             try { 
                 MainStream?.Dispose();
-                Dev.DebugOut(FilePath);
+                Dev.MsgOut(FilePath);
                 MainStream = new FileStream(FilePath, FileMode.Open, FileAccess.ReadWrite);
             }
             catch(IOException Oop) {
-                Dev.DebugOut(Oop.Message); SetGameInfoLabelText("Access Denied, File In Use Elsewhere");
+                Dev.MsgOut(Oop.Message); SetGameInfoLabelText("Access Denied, File In Use Elsewhere");
                 return;
             }
 
@@ -504,7 +504,7 @@ namespace Dobby {
                 // Games That Aren't The Right Fucking Game You Dumbass
                 ////
                 default:
-                    Dev.DebugOut($"Unknown Game Selected (GetGameID()) Game: {GameID}");
+                    Dev.MsgOut($"Unknown Game Selected (GetGameID()) Game: {GameID}");
                     RestoredDebugBtn.Font = new Font("Cambria", 9.75F, FontStyle.Strikeout);
                     RestoredDebugBtn.Enabled = false; return " Invalid Game";
             }
@@ -1413,7 +1413,7 @@ namespace Dobby {
             for(; i < CustomFunctions.Length; i++)
                 WriteBytes(Addresses[i], CustomFunctions[i]);
 
-            Dev.DebugOut($"Wrote {i} Patches To {MainStream.Name}");
+            Dev.MsgOut($"Wrote {i} Patches To {MainStream.Name}");
         }
 
 

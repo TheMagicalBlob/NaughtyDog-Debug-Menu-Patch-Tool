@@ -450,7 +450,7 @@ namespace Dobby {
                 if(file.Contains("orbis-pub-cmd") || Check.SequenceEqual(new byte[] { 0x46, 0xD1, 0xB8 }) || Check.SequenceEqual(new byte[] { 0x50, 0x45, 0x00 })) {
                     CmdPathLabel.Text = OrbisPubCmdPath = file;
 
-                    Dev.DebugOut($"{file}\\{OrbisPubCmdPath} Set As OrbisPubCmdPath");
+                    Dev.MsgOut($"{file}\\{OrbisPubCmdPath} Set As OrbisPubCmdPath");
                     return;
                 }
             }
@@ -485,7 +485,7 @@ namespace Dobby {
 
             string Parameters = $"img_create --oformat pkg  {(VerboseOutput ? "--no_progress_bar" : string.Empty)} --skip_digest {(SpecifyTMPDirectory ? $"--tmp_path \"{TMPPath}\"" : string.Empty)} \"{GP4Path}\" \"{OutputDirectory}\"";
             System.Diagnostics.Process.Start(OrbisPubCmdPath, Parameters);
-            Dev.DebugOut(Parameters);
+            Dev.MsgOut(Parameters);
 
             MessageBox.Show(".pkg Creation Started; If The CMD Window Closes Immediately, You Did Something Wrong. Check Info/Help Page -> Pkg Creation Page Help");
         }
