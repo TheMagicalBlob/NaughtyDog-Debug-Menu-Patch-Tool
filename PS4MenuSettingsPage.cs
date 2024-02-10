@@ -531,7 +531,7 @@ namespace Dobby {
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
                 new byte[] {  }, // 0x | T1R111
-                new byte[] {  }, // 0x | T2100
+                new byte[] { 0x9B, 0x68, 0x24, 0x03 }, // 0x364689B | T2100
                 new byte[] { 0xBB, 0x67, 0x24, 0x03 }, // 0x36467bb | T2107
                 new byte[] { 0x3B, 0xA6, 0x25, 0x03 }  // 0x365a63b | T2109
             },
@@ -553,7 +553,7 @@ namespace Dobby {
                 new byte[] {  }, // T1R100
                 new byte[] {  }, // T1R109
                 new byte[] {  }, // T1R111
-                new byte[] {  }, // T2100
+                new byte[] { 0x99, 0x68, 0x24, 0x03 }, // 0x3646899 | T2100
                 new byte[] { 0xB9, 0x67, 0x24, 0x03 }, // 0x36467b9 | T2107
                 new byte[] { 0x39, 0xA6, 0x25, 0x03 }  // 0x365a639 | T2109
             },
@@ -575,7 +575,7 @@ namespace Dobby {
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
                 new byte[] {  }, // 0x | T1R111
-                new byte[] {  }, // 0x | T2100
+                new byte[] { 0x9A, 0x68, 0x24, 0x03 }, // 0x364689a | T2100
                 new byte[] { 0xBA, 0x67, 0x24, 0x03 }, // 0x36467ba | T2107
                 new byte[] { 0x3a, 0xA6, 0x25, 0x03 }  // 0x365a63a | T2109
             },
@@ -638,7 +638,7 @@ namespace Dobby {
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
                 new byte[] {  }, // 0x | T1R111
-                new byte[] {  }, // 0x | T2100
+                new byte[] { 0xA4, 0x68, 0x24, 0x03 }, // 0x36468A4 | T2100
                 new byte[] { 0xC4, 0x67, 0x24, 0x03 }, // 0x36467c4 | T2107
                 new byte[] { 0x44, 0xA6, 0x25, 0x03 }  // 0x365a644 | T2109
             },
@@ -660,7 +660,7 @@ namespace Dobby {
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
                 new byte[] {  }, // 0x | T1R111
-                new byte[] {  }, // 0x | T2100
+                new byte[] { 0xA8, 0x68, 0x24, 0x03 }, // 0x36468A8 | T2100
                 new byte[] { 0xC8, 0x67, 0x24, 0x03 }, // 0x36467c8 | T2107
                 new byte[] { 0x48, 0xA6, 0x25, 0x03 }  // 0x365a648 | T2109
             },
@@ -682,9 +682,9 @@ namespace Dobby {
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
                 new byte[] {  }, // 0x | T1R111
-                new byte[] { 0x00, 0x9C, 0x02, 0x03 }, // 0x | T2100
-                new byte[] { 0x00, 0x9A, 0x02, 0x03 }, // 0x | T2107
-                new byte[] { 0x00, 0xD8, 0x05, 0x03 }  // 0x | T2109
+                new byte[] { 0x00, 0x9C, 0x02, 0x03 }, // 0x3429c00 | T2100
+                new byte[] { 0x00, 0x9A, 0x02, 0x03 }, // 0x3429a00 | T2107
+                new byte[] { 0x00, 0xD8, 0x05, 0x03 }  // 0x345d800 | T2109
             },
 
             //|Main Camera X-Alignment (camera-distance)
@@ -704,9 +704,9 @@ namespace Dobby {
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
                 new byte[] {  }, // 0x | T1R111
-                new byte[] { 0xFC, 0x9B, 0x02, 0x03 }, // 0x | T2100
-                new byte[] { 0xFC, 0x99, 0x02, 0x03 }, // 0x | T2107
-                new byte[] { 0xFC, 0xD7, 0x05, 0x03 }  // 0x | T2109
+                new byte[] { 0xFC, 0x9B, 0x02, 0x03 }, // 0x3429bfc | T2100
+                new byte[] { 0xFC, 0x99, 0x02, 0x03 }, // 0x34299fc | T2107
+                new byte[] { 0xFC, 0xD7, 0x05, 0x03 }  // 0x345d7fc | T2109
             },
 
             //|Shadow Menu Text
@@ -726,7 +726,7 @@ namespace Dobby {
                 new byte[] {  }, // T1R100
                 new byte[] {  }, // T1R109
                 new byte[] {  }, // T1R111
-                new byte[] {  }, // T2100
+                new byte[] { 0x98, 0x68, 0x24, 0x03 }, // 0x3646898 | T2100
                 new byte[] { 0xB8, 0x67, 0x24, 0x03 }, // 0x36467b8 | T2107
                 new byte[] { 0x38, 0xA6, 0x25, 0x03 }  // 0x365a638 | T2109
             },
@@ -748,7 +748,7 @@ namespace Dobby {
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
                 new byte[] {  }, // 0x | T1R111
-                new byte[] {  }, // 0x | T2100
+                new byte[] { 0x9D, 0x68, 0x24, 0x03 }, // 0x364689D | T2100
                 new byte[] { 0xBD, 0x67, 0x24, 0x03 }, // 0x36467bd | T2107
                 new byte[] { 0x3D, 0xA6, 0x25, 0x03 }  // 0x365a63d | T2109
             },
@@ -770,7 +770,7 @@ namespace Dobby {
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
                 new byte[] {  }, // 0x | T1R111
-                new byte[] {  }, // 0x | T2100
+                new byte[] { 0x9E, 0x68, 0x24, 0x03 }, // 0x364689E | T2100
                 new byte[] { 0xBE, 0x67, 0x24, 0x03 }, // 0x36467be | T2107
                 new byte[] { 0x3E, 0xA6, 0x25, 0x03 }  // 0x365a63e | T2109
             },
@@ -792,7 +792,7 @@ namespace Dobby {
                 new byte[] {  }, // 0x | T1R100
                 new byte[] {  }, // 0x | T1R109
                 new byte[] {  }, // 0x | T1R111
-                new byte[] {  }, // 0x | T2100
+                new byte[] { 0xA0, 0x68, 0x24, 0x03 }, // 0x36468A0 | T2100
                 new byte[] { 0xC0, 0x67, 0x24, 0x03 }, // 0x36467c0 | T2107
                 new byte[] { 0x40, 0xA6, 0x25, 0x03 }  // 0x365a640 | T2109
             }
@@ -1492,7 +1492,7 @@ namespace Dobby {
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.00 //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.09 //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.11 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T2 1.00  //!
+                new byte [] { 0xe8, 0x8b, 0x9e, 0x2d, 0x00, 0x53, 0x48, 0x8d, 0x05, 0xc3, 0x8e, 0xef, 0xff }, // T2 1.00  //!
                 new byte [] { 0xe8, 0xcb, 0xd0, 0x3d, 0x00, 0x53, 0x48, 0x8d, 0x05, 0xc3, 0x8c, 0xff, 0xff }, // T2 1.07
                 new byte [] { 0xe8, 0x9b, 0x45, 0x82, 0x00, 0x53, 0x48, 0x8d, 0x05, 0x03, 0xea, 0xff, 0xff }  // T2 1.09
             };
@@ -1636,7 +1636,7 @@ namespace Dobby {
                 case T1R110:
                 case T1R111: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
 
-                case T2100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 };  // 
+                case T2100: return new byte[] { 0xe8, 0x43, 0x93, 0xf1, 0xff };  // CALL 0x7e0fc0
 
                 case T2107: return new byte[] { 0xe8, 0xb1, 0x91, 0xe1, 0xff };  // CALL 0x407330
 
@@ -1683,7 +1683,7 @@ namespace Dobby {
 
 
 
-            IDS[] GameButtonIds = new IDS[1];
+            IDS[] _GameButtonIds = new IDS[1];
             // Enable Buttons Based On Which Patches Are Available For The Current Game
             switch(Game) {
                 case UC1100:
@@ -1699,25 +1699,23 @@ namespace Dobby {
                 case T1R111:
 
                 case T2100:
-                    break;
-
-                case T2101:
-                    GameButtonIds = new IDS[] { IDS.MenuScaleBtn, IDS.MenuShadowedTextBtn };
-                    break;
-                case T2102:
-                    GameButtonIds = new IDS[] { IDS.MenuScaleBtn, IDS.MenuShadowedTextBtn, IDS.FOVBtn };
-                    break;
-                case T2105:
-                    GameButtonIds = new IDS[] { IDS.MenuScaleBtn, IDS.MenuShadowedTextBtn, IDS.FOVBtn, IDS.RightAlignBtn };
-                    break;
                 case T2107:
                 case T2108:
                 case T2109:
-                    GameButtonIds = null;
+                    _GameButtonIds = null;
                     break;
             }
 
-            gsButtons = new DynamicPatchButtons(GameButtonIds, GameSpecificPatchesLabel.Location.Y + GameSpecificPatchesLabel.Size.Height + 1);
+            
+            for(int i = 0; i < GameSpecificBootSettingsPointers.Length ; i++) {
+                if(GameSpecificBootSettingsPointers[i][GameIndex].Length != 0) {
+
+                }
+
+                i++;
+            }
+
+            gsButtons = new DynamicPatchButtons(_GameButtonIds, GameSpecificPatchesLabel.Location.Y + GameSpecificPatchesLabel.Size.Height + 1);
 
             foreach(var Btn in gsButtons.CreateDynamicButtons()) {
                 //!
