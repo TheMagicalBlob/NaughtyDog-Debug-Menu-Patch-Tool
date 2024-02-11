@@ -50,7 +50,7 @@ namespace Dobby {
         private static float TimerTicks = 0;
 
 
-        public static string[] OutputStrings = new string[30];
+        public static string[] OutputStrings = new string[20];
 
         public static int ShiftIndex = 0;
 
@@ -75,6 +75,10 @@ namespace Dobby {
             }
         }
 
+
+        /// <summary>
+        /// Log Window Class
+        /// </summary>
         public partial class LogWindow : Form {
             public LogWindow() {
                 InitializeComponent();
@@ -90,7 +94,14 @@ namespace Dobby {
                 AddControlEventHandlers(Controls);
                 logThread.Start();
                 Location = Point.Empty;
+
+                MouseClick += RefreshLog;
             }
+
+            public delegate void DLog();
+            public static DLog RedrawLog = new DLog(RefreshLog);
+            private static void RefreshLog() => LogShouldRefresh = true;
+            private static void RefreshLog(object sender, MouseEventArgs e) => LogShouldRefresh = true;
 
             private static Form AppRef;
             private static Graphics rend;
@@ -101,7 +112,7 @@ namespace Dobby {
             #region timer crap
             private static float Delay = 0;
             private static bool TimerThreadStarted = false;
-            public static bool RedrawLog;
+            public static bool LogShouldRefresh;
             private static readonly System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
             private static readonly Thread TimerThread = new Thread(StartTimer);
             private static void Timer_Tick(object sender, EventArgs e) => TimerTicks+= 0.0001f;
@@ -149,7 +160,7 @@ namespace Dobby {
                     TimerThread.Start(); TimerThreadStarted = true;
                 }
 
-                string Out = string.Empty;
+                string Out;
                 string[] Output, chk1 = Array.Empty<string>(), chk2 = Array.Empty<string>();
 
                 Pen pen = new Pen(Color.White);
@@ -167,11 +178,11 @@ namespace Dobby {
                             if(OverrideMsgOut)
                                 Output = new string[] {
                                     $"| Game Index: {PS4MenuSettingsPage.GameIndex}",
-                                    $"| Disable FPS:          {PS4MenuSettingsPage.UniversaPatchValues[0]}|{PS4MenuSettingsPage.UniversaPatchValues[1]}",
-                                    $"| Paused Icon:          {PS4MenuSettingsPage.UniversaPatchValues[2]}",
-                                    $"| ProgPauseOnOpen:      {PS4MenuSettingsPage.UniversaPatchValues[3]}",
-                                    $"| ProgPauseOnExit:      {PS4MenuSettingsPage.UniversaPatchValues[4]}",
-                                    $"| Novis:                {PS4MenuSettingsPage.UniversaPatchValues[5]}",
+                                    $"| Disable FPS:          {PS4MenuSettingsPage.UniversaPatchValues[0]}",
+                                    $"| Paused Icon:          {PS4MenuSettingsPage.UniversaPatchValues[1]}",
+                                    $"| ProgPauseOnOpen:      {PS4MenuSettingsPage.UniversaPatchValues[2]}",
+                                    $"| ProgPauseOnExit:      {PS4MenuSettingsPage.UniversaPatchValues[3]}",
+                                    $"| Novis:                {PS4MenuSettingsPage.UniversaPatchValues[4]}",
                                      "| ",
                                     $"| Menu Scale:           {DynamicVars[0]}",
                                     $"| Menu Alpha:           {DynamicVars[1]}",
@@ -206,11 +217,10 @@ namespace Dobby {
                         }
                         catch(Exception e) {
                             Output = new string[] { "Error", e.Message };
-                            MessageBox.Show(e.Message, "(Caught Misc Output Error)");
                         }
 
-                        if(RedrawLog || !chk1.SequenceEqual(Output) || chk1 == null || !chk2.SequenceEqual(OutputStrings)) {
-                            RedrawLog ^= true;
+                        if(LogShouldRefresh || !chk1.SequenceEqual(Output) || chk1 == null || !chk2.SequenceEqual(OutputStrings)) {
+                            LogShouldRefresh = false;
                             chk1 = Output;
                             chk2 = OutputStrings;
                             SizeF TextSize;
@@ -241,6 +251,10 @@ namespace Dobby {
 
                                 if(line != "")
                                     Out += $"{line}\n";
+
+                                else
+                                    Out += "!\n";
+
                             }
 
 
@@ -276,10 +290,10 @@ namespace Dobby {
             }
         }
 #endif
+        public static void LogRefresh() => LogWindow.ActiveForm.Invoke(LogWindow.RedrawLog);
 
         public static void LineOut(string StringToEnclose = null) {
 #if DEBUG
-            return;
             var str = string.Empty;
 
             if(StringToEnclose != null && LogWindow.formScale.Width < TextRenderer.MeasureText(StringToEnclose, MainFont).Width)
@@ -308,10 +322,7 @@ namespace Dobby {
             
             LogWindow.LogFile.WriteLine(s);
             LogWindow.LogFile.Flush();
-            LogWindow.RedrawLog = true;
 
-        Wait:
-            if(OutputStrings == null) goto Wait; // Try And Avoid Rare Crash On Boot In Dev Build When The App Doesn't Boot Fast Enough
             if(OutputStringIndex != OutputStrings.Length - 1) {
                 for(; OutputStringIndex < OutputStrings.Length - 1; OutputStringIndex++) {
                     if(OutputStrings[OutputStringIndex] == null) {
@@ -324,6 +335,8 @@ namespace Dobby {
             for(ShiftIndex = 0; ShiftIndex < OutputStrings.Length - 1; ShiftIndex++)
                 OutputStrings[ShiftIndex] = OutputStrings[ShiftIndex + 1];
             OutputStrings[ShiftIndex] = s;
+
+            LogWindow.LogShouldRefresh = true;
 #endif
         }
 #if DEBUG

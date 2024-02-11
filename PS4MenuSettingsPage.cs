@@ -28,9 +28,7 @@ namespace Dobby {
             if(Game != 0 && gsButtons.Buttons != null) ResetCustomDebugOptions();
             FormActive = true;
 
-
-            Dev.LineOut("Random-Ass Print Test");
-
+            Dev.OverrideMsgOut = true;
         }
 
         private void InitializeComponent() {
@@ -942,26 +940,6 @@ namespace Dobby {
 #endif
 
         /// <summary>
-        /// MenuAlphaBtn        <br/>
-        /// MenuScaleBtn        <br/>
-        /// FOVBtn              <br/>
-        /// XAlignBtn
-        /// MenuShadowedTextBtn <br/>
-        /// RightAlignBtn       <br/>
-        /// RightMarginBtn
-        /// </summary>
-        private enum IDS {
-            MenuAlphaBtn,
-            MenuScaleBtn,
-            FOVBtn,
-            XAlignBtn,
-            MenuShadowedTextBtn,
-            RightAlignBtn,
-            RightMarginBtn
-        }
-
-
-        /// <summary>
         ///      Booleans Used For Universal Patch Values
         ///<br/> Defaults Are All False, So That's Nice. Simplifies Things
         ///<br/>
@@ -983,12 +961,12 @@ namespace Dobby {
         /// </summary>
 
         private struct DynamicPatchButtons {
-            public DynamicPatchButtons(IDS[] Ids, int VerticalStartIndex = 0) {
+            public DynamicPatchButtons(int?[] Ids, int VerticalStartIndex = 0) {
                 Buttons = new vButton[ControlText.Length + 1];
                 ButtonsVerticalStartPos = VerticalStartIndex;
 
                 if(Ids != null && Ids.Length < 2)
-                    EnableDynamicPatchButton(Ids[0]);
+                    EnableDynamicPatchButton((int)Ids[0]);
                 else
                     EnableDynamicPatchButtons(Ids);
             }
@@ -1093,34 +1071,18 @@ namespace Dobby {
 
             /// <summary> Enable A Specific Button
             ///</summary>
-            public void EnableDynamicPatchButton(IDS button) {
-                Buttons[(int)button] = new vButton();
-                ActiveForm.Controls.Add(Buttons[(int)button]);
-            }
+            public void EnableDynamicPatchButton(int button) => Buttons[button] = new vButton();
 
             /// <summary> Enable Specific Buttons
             ///</summary>
-            public void EnableDynamicPatchButtons(IDS[] buttons) {
-                if(buttons == null) {
-                    EnableDynamicPatchButtons();
-                    return;
-                }
-
+            public void EnableDynamicPatchButtons(int?[] buttons = null) {
 
                 Dev.MsgOut($"Enabling {buttons.Length} Buttons");
-                foreach(int id in buttons) {
-                    Buttons[id] = new vButton();
-                    ActiveForm.Controls.Add(Buttons[id]);
-                }
-                MultipleButtonsEnabled = true;
-            }
+                for(int i = 0; i < buttons.Length; i++) {
+                    if(buttons != null && buttons[i] == null) continue;
 
-            /// <summary> Enable All Buttons
-            ///</summary>
-            public void EnableDynamicPatchButtons() { Dev.MsgOut("Enabling All Buttons");
-                for(index = 0; index < Buttons.Length - 1; index++) {
-                    Buttons[index] = new vButton();
-                    ActiveForm.Controls.Add(Buttons[index]);
+                    Buttons[i] = new vButton();
+                    Dev.MsgOut($"Enabling {Buttons[i].Name}");
                 }
                 MultipleButtonsEnabled = true;
             }
@@ -1137,7 +1099,8 @@ namespace Dobby {
 
             public Button[] CreateDynamicButtons() {
             RunCheck:
-                if(ButtonIndex >= gsButtons.Buttons.Length - 1) return Buttons;
+                if(ButtonIndex >= gsButtons.Buttons.Length - 1)
+                    return Buttons;
 
                 // Skip disabled buttons or return if the end of the collection is reached
                 if(gsButtons.Buttons[ButtonIndex] == null) {
@@ -1167,6 +1130,7 @@ namespace Dobby {
                 Buttons[ButtonIndex].Paint += DrawButtonVar;
                 Buttons[ButtonIndex].BringToFront();
 
+                Dev.MsgOut(Buttons[ButtonIndex].Name);
 
                 if(GameSpecificPatchValues[ButtonIndex].GetType() == typeof(bool))
                     Buttons[ButtonIndex].Click += DynamicBtn_Click;
@@ -1316,23 +1280,21 @@ namespace Dobby {
 
 
                 Game = GetGameID(MainStream);
-                GameIndex = (int)GetBootSettingsGameIndexAndAddresses()[0];
                 GameInfoLabel.Text = GetGameLabelFromID(Game);
 
                 MainStreamIsOpen = true;
                 CustomDebugOptionsLabel.Visible = IsActiveFilePCExe = false;
 
-                LoadGameSpecificMenuOptions();
+                GameIndex = (int)GetGameIndex(Game);
+                if(GetGameIndex(Game) != null)
+                    LoadGameSpecificMenuOptions();
+
+                else MessageBox.Show("Selected Game Not Currently Supported", $"Patches For {GetGameLabelFromID(Game)} Not Added Yet");
             }
         }
 
 
         private void ConfirmBtn_Click(object sender, EventArgs e) {
-            if(GetGameIndex(Game) == null) {
-                MessageBox.Show("Selected Game Not Currently Supported", $"Patches For {GetGameLabelFromID(Game)} Not Added Yet");
-                return;
-            }
-
             var Result = ApplyMenuSettings((int)GetGameIndex(Game));
 
             if(Result.GetType() == typeof(int)) {
@@ -1394,7 +1356,7 @@ namespace Dobby {
                         }
 
 #if DEBUG
-                        string[] Ids = new string[] {
+                        string[] dstr = new string[] {
                             "Disable FPS",
                             "Fill",
                             "Disable Paused Indicator",
@@ -1402,7 +1364,7 @@ namespace Dobby {
                             "ProgPauseOnExit",
                             "Novis",
                         };
-                        Dev.MsgOut(Ids[index]);
+                        Dev.MsgOut(dstr[index]);
 #endif
                         WriteByte(data: PointerType);
                         WriteByte(data: 0);
@@ -1458,11 +1420,9 @@ namespace Dobby {
                     Message = $" {PatchCount} Patches Applied";
                 }
                 catch(Exception tabarnack) {
-                    Dev.LineOut();
                     Dev.MsgOut(tabarnack.Message);
                     Dev.MsgOut(tabarnack.StackTrace);
                     Dev.MsgOut($"{tabarnack.GetType()} | Error Applying Patches");
-                    Dev.LineOut();
                     return 1;
                 }
             }
@@ -1597,13 +1557,13 @@ namespace Dobby {
                 case T1R110:case T1R111:
                 case T2100:
                 case T2107:
-                    ret[1] = 0x1f217a; // 0x5ee17a
-                    ret[2] = 0xb330;   // 0x407330
+                    ret[0] = 0x1f217a; // 0x5ee17a
+                    ret[1] = 0xb330;   // 0x407330
                     break;
                 case T2108:
                 case T2109:
-                    ret[1] = 0x633cba; // 0xa2fcba
-                    ret[2] = 0x55f0;   // 0x4015f0
+                    ret[0] = 0x633cba; // 0xa2fcba
+                    ret[1] = 0x55f0;   // 0x4015f0
                     break;
             }
 
@@ -1675,6 +1635,7 @@ namespace Dobby {
                     OriginalControlPositions[index] = ControlsToMove[index].Location;
             }
 
+
             RB_StartPos = GameInfoLabel.Location.Y + GameInfoLabel.Size.Height + 1; // Right Below The GameInfoLabel
             CustomDebugOptionsLabel.Visible = false;                                // Label Hide
 
@@ -1682,66 +1643,32 @@ namespace Dobby {
             ButtonIndex = 0;
 
 
-
-            IDS[] _GameButtonIds = new IDS[1];
-            // Enable Buttons Based On Which Patches Are Available For The Current Game
-            switch(Game) {
-                case UC1100:
-                case UC1102:
-                case UC2100:
-                case UC2102:
-                case UC3100:
-                case UC3102:
-
-                case T1R100:
-                case T1R109:
-                case T1R110:
-                case T1R111:
-
-                case T2100:
-                case T2107:
-                case T2108:
-                case T2109:
-                    _GameButtonIds = null;
-                    break;
-            }
-
-            
+            int?[] IDS = new int?[GameSpecificBootSettingsPointers.Length];
             for(int i = 0; i < GameSpecificBootSettingsPointers.Length ; i++) {
-                if(GameSpecificBootSettingsPointers[i][GameIndex].Length != 0) {
-
-                }
-
-                i++;
+                IDS[i] = GameSpecificBootSettingsPointers[i][GameIndex].Length == 0 ? null : (int?)i;
+                Dev.MsgOut($"Enabling Button: #{i} ({IDS[i]})");
             }
 
-            gsButtons = new DynamicPatchButtons(_GameButtonIds, GameSpecificPatchesLabel.Location.Y + GameSpecificPatchesLabel.Size.Height + 1);
+            gsButtons = new DynamicPatchButtons(IDS, GameSpecificPatchesLabel.Location.Y + GameSpecificPatchesLabel.Size.Height + 1);
 
-            foreach(var Btn in gsButtons.CreateDynamicButtons()) {
-                //!
+            foreach(var btn in gsButtons.CreateDynamicButtons()) {
+                ActiveForm.Controls.Add(btn);
             }
 
             index = 0;
 
             // Only Needed If Multiple Buttons Are Being Added, As The Form Can Already Fit One More After hiding The Label
-            if(MultipleButtonsEnabled) {
-
-                // Set The Amount of Pixels To Move Shit Based On How Much Shit Has Been Shat.                                                                                                                  shit
+            if(MultipleButtonsEnabled)
                 foreach(Control control in gsButtons.Buttons)
-                    if(control != null) {
-                        if(index++ != 0) {
-                            // Move Each Control, Then Resize The BorderBox & Form
-                            foreach(Control A in ControlsToMove)
-                                A.Location = new Point(A.Location.X, A.Location.Y + 23);
+                    if(control != null && index++ != 0) {
+                        // Move Each Control, Then Resize The BorderBox & Form
+                        foreach(Control A in ControlsToMove)
+                            A.Location = new Point(A.Location.X, A.Location.Y + 23);
 
-                            Size = new Size(Size.Width, Size.Height + 23);
-                        }
+                        Size = new Size(Size.Width, Size.Height + 23);
                     }
-            }
-
 
             Size = new Size(Size.Width, Size.Height + 46);
-
 
             // Move The Controls Below The Confirm And Reset Buttons A Bit Farther Down To Make Room For Them
             for(int i = 4; i < ControlsToMove.Length; i++)
