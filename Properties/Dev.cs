@@ -50,7 +50,7 @@ namespace Dobby {
         private static float TimerTicks = 0;
 
 
-        public static string[] OutputStrings = new string[20];
+        public static string[] OutputStrings = new string[35];
 
         public static int ShiftIndex = 0;
 
@@ -91,17 +91,9 @@ namespace Dobby {
                 AppRef = this;
                 rend = CreateGraphics();
 
-                AddControlEventHandlers(Controls);
                 logThread.Start();
                 Location = Point.Empty;
-
-                MouseClick += RefreshLog;
             }
-
-            public delegate void DLog();
-            public static DLog RedrawLog = new DLog(RefreshLog);
-            private static void RefreshLog() => LogShouldRefresh = true;
-            private static void RefreshLog(object sender, MouseEventArgs e) => LogShouldRefresh = true;
 
             private static Form AppRef;
             private static Graphics rend;
@@ -159,6 +151,7 @@ namespace Dobby {
                 if(ActiveForm != null && !TimerThreadStarted) {
                     TimerThread.Start(); TimerThreadStarted = true;
                 }
+                int tmpdeleteme = 0;
 
                 string Out;
                 string[] Output, chk1 = Array.Empty<string>(), chk2 = Array.Empty<string>();
@@ -255,8 +248,9 @@ namespace Dobby {
                                 else
                                     Out += "!\n";
 
+                                Console.WriteLine($"[{tmpdeleteme}]| {line}");
                             }
-
+                            tmpdeleteme++;
 
                             formScale.Height += 12;
 
@@ -290,8 +284,6 @@ namespace Dobby {
             }
         }
 #endif
-        public static void LogRefresh() => LogWindow.ActiveForm.Invoke(LogWindow.RedrawLog);
-
         public static void LineOut(string StringToEnclose = null) {
 #if DEBUG
             var str = string.Empty;
@@ -315,7 +307,7 @@ namespace Dobby {
             else s = obj.ToString();
             
             if(s.Contains("\n"))
-                s = s.Replace("\n", "\n ");
+                s = s.Replace("\n", "\n "); // So It Still Has A Size (for log window scaling purposes)
 
             if(LogWindow.LogFile == null)
                 LogWindow.LogFile = File.CreateText($"{Directory.GetCurrentDirectory()}\\out.txt");

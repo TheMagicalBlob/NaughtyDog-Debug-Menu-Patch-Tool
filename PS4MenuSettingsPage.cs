@@ -27,8 +27,9 @@ namespace Dobby {
 
             if(Game != 0 && gsButtons.Buttons != null) ResetCustomDebugOptions();
             FormActive = true;
-
+#if DEBUG
             Dev.OverrideMsgOut = true;
+#endif
         }
 
         private void InitializeComponent() {

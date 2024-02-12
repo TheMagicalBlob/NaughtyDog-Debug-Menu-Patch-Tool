@@ -221,6 +221,7 @@ namespace Dobby {
           "* 3.43.193.517 | EbootPatchPage Line Adjustment",
           "* 3.43.194.519 | Moved Some Common Variables To Where They Should've Been, Deleted Useless Ones",
           "* 3.43.194.520 | Line Adjustment",
+          "* 3.43.195.522 | Log Window Fix (Was For Some Reason Calling AddControlEventHandlers(ControlCollection C) And The Border Function Was Deleting Things)",
 
 
 
