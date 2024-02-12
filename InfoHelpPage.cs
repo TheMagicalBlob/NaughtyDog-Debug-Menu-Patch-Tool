@@ -68,7 +68,7 @@ namespace Dobby {
             // 
             // PkgHelpPageBtn
             // 
-            this.PkgHelpPageBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.PkgHelpPageBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.PkgHelpPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PkgHelpPageBtn.FlatAppearance.BorderSize = 0;
             this.PkgHelpPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -85,13 +85,13 @@ namespace Dobby {
             // 
             // ExitBtn
             // 
-            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Cambria", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ExitBtn.Location = new System.Drawing.Point(293, 7);
+            this.ExitBtn.Location = new System.Drawing.Point(295, 2);
             this.ExitBtn.Name = "ExitBtn";
             this.ExitBtn.Size = new System.Drawing.Size(23, 23);
             this.ExitBtn.TabIndex = 18;
@@ -104,13 +104,13 @@ namespace Dobby {
             // 
             // MinimizeBtn
             // 
-            this.MinimizeBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.MinimizeBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeBtn.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinimizeBtn.Location = new System.Drawing.Point(270, 7);
+            this.MinimizeBtn.Location = new System.Drawing.Point(272, 2);
             this.MinimizeBtn.Name = "MinimizeBtn";
             this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
             this.MinimizeBtn.TabIndex = 19;
@@ -133,7 +133,7 @@ namespace Dobby {
             // 
             // PS4QOLPageHelpBtn
             // 
-            this.PS4QOLPageHelpBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.PS4QOLPageHelpBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.PS4QOLPageHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PS4QOLPageHelpBtn.FlatAppearance.BorderSize = 0;
             this.PS4QOLPageHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -184,7 +184,7 @@ namespace Dobby {
             // 
             // PS4DebugHelpBtn
             // 
-            this.PS4DebugHelpBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.PS4DebugHelpBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.PS4DebugHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PS4DebugHelpBtn.FlatAppearance.BorderSize = 0;
             this.PS4DebugHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -212,7 +212,7 @@ namespace Dobby {
             // 
             // EbootPatchPageHelpBtn
             // 
-            this.EbootPatchPageHelpBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.EbootPatchPageHelpBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.EbootPatchPageHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.EbootPatchPageHelpBtn.FlatAppearance.BorderSize = 0;
             this.EbootPatchPageHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -239,7 +239,7 @@ namespace Dobby {
             // 
             // BackBtn
             // 
-            this.BackBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.BackBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.BackBtn.FlatAppearance.BorderSize = 0;
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -270,6 +270,10 @@ namespace Dobby {
             // 
             // InfoHelpPage
             // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.ClientSize = new System.Drawing.Size(320, 417);
             this.Controls.Add(this.BlobLabel);
             this.Controls.Add(this.PkgHelpPageBtn);
             this.Controls.Add(this.ExitBtn);
@@ -286,10 +290,6 @@ namespace Dobby {
             this.Controls.Add(this.Info);
             this.Controls.Add(this.BackBtn);
             this.Controls.Add(this.GeneralInfoLabel);
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
-            this.ClientSize = new System.Drawing.Size(320, 417);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "InfoHelpPage";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;

@@ -213,7 +213,7 @@ namespace Dobby {
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeBtn.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.MinimizeBtn.Location = new System.Drawing.Point(273, 2);
             this.MinimizeBtn.Name = "MinimizeBtn";
@@ -229,7 +229,7 @@ namespace Dobby {
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Cambria", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.ExitBtn.Location = new System.Drawing.Point(295, 2);
             this.ExitBtn.Name = "ExitBtn";

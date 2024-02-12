@@ -54,13 +54,13 @@ namespace Dobby {
             // 
             // ExitBtn
             // 
-            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Cambria", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ExitBtn.Location = new System.Drawing.Point(293, 7);
+            this.ExitBtn.Location = new System.Drawing.Point(295, 2);
             this.ExitBtn.Name = "ExitBtn";
             this.ExitBtn.Size = new System.Drawing.Size(23, 23);
             this.ExitBtn.TabIndex = 8;
@@ -73,17 +73,17 @@ namespace Dobby {
             // 
             // MinimizeBtn
             // 
-            this.MinimizeBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.MinimizeBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeBtn.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinimizeBtn.Location = new System.Drawing.Point(270, 7);
+            this.MinimizeBtn.Location = new System.Drawing.Point(270, 2);
             this.MinimizeBtn.Name = "MinimizeBtn";
             this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
             this.MinimizeBtn.TabIndex = 7;
-            this.MinimizeBtn.Text = "--";
+            this.MinimizeBtn.Text = "---";
             this.MinimizeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.MinimizeBtn.UseVisualStyleBackColor = false;
             this.MinimizeBtn.Click += new System.EventHandler(this.MinimizeBtn_Click);
@@ -191,7 +191,7 @@ namespace Dobby {
             // 
             // CreditsBtn
             // 
-            this.CreditsBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.CreditsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.CreditsBtn.FlatAppearance.BorderSize = 0;
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -209,7 +209,7 @@ namespace Dobby {
             // 
             // BackBtn
             // 
-            this.BackBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.BackBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.BackBtn.FlatAppearance.BorderSize = 0;
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -260,25 +260,25 @@ namespace Dobby {
             // 
             // EbootPatchHelpPage
             // 
-            Controls.Add(this.Question3Btn);
-            Controls.Add(this.SeperatorLine2);
-            Controls.Add(this.ExitBtn);
-            Controls.Add(this.MinimizeBtn);
-            Controls.Add(this.MainLabel);
-            Controls.Add(this.SeperatorLine0);
-            Controls.Add(this.WithSomeExceptionsLabel);
-            Controls.Add(this.Question2Btn);
-            Controls.Add(this.Question1Btn);
-            Controls.Add(this.Info);
-            Controls.Add(this.CreditsBtn);
-            Controls.Add(this.BackBtn);
-            Controls.Add(this.DefaultQuestionBtn);
-            Controls.Add(this.SeperatorLine1);
-            Controls.Add(this.Question0Btn);
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ClientSize = new System.Drawing.Size(320, 500);
+            this.Controls.Add(this.Question3Btn);
+            this.Controls.Add(this.SeperatorLine2);
+            this.Controls.Add(this.ExitBtn);
+            this.Controls.Add(this.MinimizeBtn);
+            this.Controls.Add(this.MainLabel);
+            this.Controls.Add(this.SeperatorLine0);
+            this.Controls.Add(this.WithSomeExceptionsLabel);
+            this.Controls.Add(this.Question2Btn);
+            this.Controls.Add(this.Question1Btn);
+            this.Controls.Add(this.Info);
+            this.Controls.Add(this.CreditsBtn);
+            this.Controls.Add(this.BackBtn);
+            this.Controls.Add(this.DefaultQuestionBtn);
+            this.Controls.Add(this.SeperatorLine1);
+            this.Controls.Add(this.Question0Btn);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "EbootPatchHelpPage";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;

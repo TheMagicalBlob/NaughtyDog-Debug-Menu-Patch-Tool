@@ -36,7 +36,7 @@ namespace Dobby {
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MainLabel.Font = new System.Drawing.Font("Cambria", 12.25F, System.Drawing.FontStyle.Bold);
             this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.MainLabel.Location = new System.Drawing.Point(1, 9);
+            this.MainLabel.Location = new System.Drawing.Point(1, 4);
             this.MainLabel.Name = "MainLabel";
             this.MainLabel.Size = new System.Drawing.Size(268, 22);
             this.MainLabel.TabIndex = 0;
@@ -47,13 +47,13 @@ namespace Dobby {
             // 
             // BackBtn
             // 
-            this.BackBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.BackBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.BackBtn.FlatAppearance.BorderSize = 0;
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 328);
+            this.BackBtn.Location = new System.Drawing.Point(1, 326);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(60, 22);
             this.BackBtn.TabIndex = 14;
@@ -64,13 +64,13 @@ namespace Dobby {
             // 
             // ExitBtn
             // 
-            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Cambria", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ExitBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold);
             this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ExitBtn.Location = new System.Drawing.Point(296, 7);
+            this.ExitBtn.Location = new System.Drawing.Point(295, 2);
             this.ExitBtn.Name = "ExitBtn";
             this.ExitBtn.Size = new System.Drawing.Size(23, 23);
             this.ExitBtn.TabIndex = 18;
@@ -83,13 +83,13 @@ namespace Dobby {
             // 
             // MinimizeBtn
             // 
-            this.MinimizeBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.MinimizeBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeBtn.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MinimizeBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold);
             this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinimizeBtn.Location = new System.Drawing.Point(273, 7);
+            this.MinimizeBtn.Location = new System.Drawing.Point(272, 2);
             this.MinimizeBtn.Name = "MinimizeBtn";
             this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
             this.MinimizeBtn.TabIndex = 19;
@@ -104,7 +104,7 @@ namespace Dobby {
             // 
             this.label3.Font = new System.Drawing.Font("Cambria", 10F);
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label3.Location = new System.Drawing.Point(2, 16);
+            this.label3.Location = new System.Drawing.Point(4, 13);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(316, 16);
             this.label3.TabIndex = 39;
@@ -163,7 +163,7 @@ namespace Dobby {
             this.NarcissismLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.NarcissismLabel.Font = new System.Drawing.Font("Cambria", 10F, System.Drawing.FontStyle.Bold);
             this.NarcissismLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.NarcissismLabel.Location = new System.Drawing.Point(1, 37);
+            this.NarcissismLabel.Location = new System.Drawing.Point(1, 33);
             this.NarcissismLabel.Name = "NarcissismLabel";
             this.NarcissismLabel.Size = new System.Drawing.Size(244, 39);
             this.NarcissismLabel.TabIndex = 20;
@@ -207,21 +207,20 @@ namespace Dobby {
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ClientSize = new System.Drawing.Size(320, 353);
-            // 
-            Controls.Add(this.MainLabel);
-            Controls.Add(this.ExitBtn);
-            Controls.Add(this.MinimizeBtn);
-            Controls.Add(this.label3);
-            Controls.Add(this.IllusionBlogBtn);
-            Controls.Add(this.label2);
-            Controls.Add(this.ContributorsLabel);
-            Controls.Add(this.label1);
-            Controls.Add(this.NarcissismLabel);
-            Controls.Add(this.SeperatorLine1);
-            Controls.Add(this.BlobGithubBtn);
-            Controls.Add(this.BackBtn);
+            this.Controls.Add(this.MainLabel);
+            this.Controls.Add(this.ExitBtn);
+            this.Controls.Add(this.MinimizeBtn);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.IllusionBlogBtn);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.ContributorsLabel);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.NarcissismLabel);
+            this.Controls.Add(this.SeperatorLine1);
+            this.Controls.Add(this.BlobGithubBtn);
+            this.Controls.Add(this.BackBtn);
             this.Controls.Add(this.Info);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "CreditsPage";

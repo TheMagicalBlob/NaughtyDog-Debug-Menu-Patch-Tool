@@ -144,7 +144,7 @@ namespace Dobby {
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 9F, System.Drawing.FontStyle.Bold);
+            this.ExitBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold);
             this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.ExitBtn.Location = new System.Drawing.Point(293, 1);
             this.ExitBtn.Name = "ExitBtn";
@@ -435,11 +435,10 @@ namespace Dobby {
         /// <br/><br/>
         /// Patch Type Index:<br/>
         ///   0:  Disable FPS<br/>
-        ///   1:  Suppress Active task Display<br/>
-        ///   2:  Show Paused Indicator<br/>
-        ///   3:  ProgPauseOnMenuOpen<br/>
-        ///   4:  ProgPauseOnMenuClose<br/>
-        ///   5:  novis<br/>
+        ///   1:  Show Paused Indicator<br/>
+        ///   2:  ProgPauseOnMenuOpen<br/>
+        ///   3:  ProgPauseOnMenuClose<br/>
+        ///   4:  novis<br/>
         ///</summary>
         private static readonly byte[][][] UniversalBootSettingsPointers = new byte[][][] {  // fill null bytes just in case of repeat uses with alternate options
                 // 4 = 0xfe | 8 = 0xff
@@ -822,13 +821,6 @@ namespace Dobby {
 
         private static bool MultipleButtonsEnabled;
 
-        private static string[] ResultStrings = new string[] {
-            "Debug Menus Disabled",
-            "Debug Menus Enabled",
-            "Restored Menu Applied",
-            "Custom Menu Applied",
-        };
-
         public static void WriteBytes(int? offset = null, byte[] data = null) {
 #if DEBUG
             var msg = $"Data {BitConverter.ToString(data).Replace("-", "")} Written To ";
@@ -950,17 +942,19 @@ namespace Dobby {
         ///<br/> 3: Prog Pause On Close
         ///<br/> 4: novis (Addme)
         /// </summary>
-#if !DEBUG
-        private bool[] UniversaPatchValues = new bool[6];
-#else
-        public static bool[] UniversaPatchValues { get; private set; } = new bool[5] { false, true, true, true, false };
+#if DEBUG
         public static object[] PeekGameSpecificPatchValues() { return DynamicPatchButtons.GameSpecificPatchValues; }
+        public static bool[] UniversaPatchValues { get; private set; }
+#else
+        private bool[] UniversaPatchValues
 #endif
+         = new bool[5] { false, true, true, true, false };
+
+
 
         // this doesn't need to be a struct, but whatever
         /// <summary> Struct For Creating Dynamic Patch Buttons
         /// </summary>
-
         private struct DynamicPatchButtons {
             public DynamicPatchButtons(int?[] Ids, int VerticalStartIndex = 0) {
                 Buttons = new vButton[ControlText.Length + 1];

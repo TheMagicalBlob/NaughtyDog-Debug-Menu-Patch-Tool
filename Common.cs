@@ -222,6 +222,7 @@ namespace Dobby {
           "* 3.43.194.519 | Moved Some Common Variables To Where They Should've Been, Deleted Useless Ones",
           "* 3.43.194.520 | Line Adjustment",
           "* 3.43.195.522 | Log Window Fix (Was For Some Reason Calling AddControlEventHandlers(ControlCollection C) And The Border Function Was Deleting Things)",
+          "* 3.43.199.527 | Changed Exit And Minimize Button Fonts Back, Line Fix On Another Page. Misc Patches Page Work (Changing Method For Enabling Buttons To Be Based On What's Available, Rather Than Manually Specifying Each Button To Be Enabled For Each Case- Jfc What Was I Thinking Before)"
 
 
 
