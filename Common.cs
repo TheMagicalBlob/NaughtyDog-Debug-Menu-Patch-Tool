@@ -222,7 +222,8 @@ namespace Dobby {
           "* 3.43.194.519 | Moved Some Common Variables To Where They Should've Been, Deleted Useless Ones",
           "* 3.43.194.520 | Line Adjustment",
           "* 3.43.195.522 | Log Window Fix (Was For Some Reason Calling AddControlEventHandlers(ControlCollection C) And The Border Function Was Deleting Things)",
-          "* 3.43.199.527 | Changed Exit And Minimize Button Fonts Back, Line Fix On Another Page. Misc Patches Page Work (Changing Method For Enabling Buttons To Be Based On What's Available, Rather Than Manually Specifying Each Button To Be Enabled For Each Case- Jfc What Was I Thinking Before)"
+          "* 3.43.199.527 | Changed Exit And Minimize Button Fonts Back, Line Fix On Another Page. Misc Patches Page Work (Changing Method For Enabling Buttons To Be Based On What's Available, Rather Than Manually Specifying Each Button To Be Enabled For Each Case- Jfc What Was I Thinking Before)",
+          "* 3.43.203.540 | Debug Output Changes, Plenty Of Other Crap I Forgot. Go Away"
 
 
 
@@ -321,13 +322,18 @@ namespace Dobby {
 
         public static TcpClient tcp_client;
         public static NetworkStream net_stream;
+        public static FileStream MainStream;
 
         public static Font MainFont = new Font("Consolas", 9.75F, FontStyle.Bold);
         public static Color MainColour = Color.FromArgb(100, 100, 100);
 
 
 
-        public static void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
+        public static void ExitBtn_Click(object sender, EventArgs e) {
+            LogWindow.SewerSlide();
+            MainStream?.Dispose();
+            Environment.Exit(0);
+        }
         public static void ExitBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
         public static void ExitBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
         public static void MinimizeBtn_Click(object sender, EventArgs e) => ((Control)sender).FindForm().WindowState = FormWindowState.Minimized;
@@ -432,37 +438,32 @@ namespace Dobby {
                 }
             }
             else IsPageGoingBack ^= true;
+            Form NewPage = null;
 
             Common.Page = Page;
             
             switch(Page) {
                 case PageID.MainPage:
-                    MainForm.Show();
+                    NewPage = MainForm;
                     break;
-
                 case PageID.PS4DebugPage:
-                    PS4DebugPage PS4Debug = new PS4DebugPage();
-                    PS4Debug.Show();
+                    NewPage = new PS4DebugPage();
                     break;
 
                 case PageID.PS4DebugHelpPage:
-                    PS4DebugHelpPage PS4DebugHelp = new PS4DebugHelpPage();
-                    PS4DebugHelp.Show();
+                    NewPage = new PS4DebugHelpPage();
                     break;
 
                 case PageID.EbootPatchPage:
-                    EbootPatchPage EbootPatch = new EbootPatchPage();
-                    EbootPatch.Show();
+                    NewPage = new EbootPatchPage();
                     break;
 
                 case PageID.EbootPatchHelpPage:
-                    EbootPatchHelpPage EbootPatchHelp = new EbootPatchHelpPage();
-                    EbootPatchHelp.Show();
+                    NewPage = new EbootPatchHelpPage();
                     break;
 
                 case PageID.PS4MiscPage:
-                    PS4MenuSettingsPage PS4MiscPage = new PS4MenuSettingsPage();
-                    PS4MiscPage.Show();
+                    NewPage = new PS4MenuSettingsPage();
                     break;
 
                 case PageID.PS4MiscPatchesHelpPage:
@@ -471,26 +472,22 @@ namespace Dobby {
                     break;
 
                 case PageID.PkgCreationPage:
-                    PkgCreationPage PkgCreation = new PkgCreationPage();
-                    PkgCreation.Show();
+                    NewPage = new PkgCreationPage();
                     break;
 
                 case PageID.PkgCreationHelpPage:
-                    PkgCreationHelpPage PkgCreationHelp = new PkgCreationHelpPage();
-                    PkgCreationHelp.Show();
+                    NewPage = new PkgCreationHelpPage();
                     break;
 
                 case PageID.Gp4CreationPage:
-                    Gp4CreationPage Gp4Creation = new Gp4CreationPage();
-                    Gp4Creation.Show();
+                    NewPage = new Gp4CreationPage();
                     break;
 
                 case PageID.Gp4CreationHelpPage:
                     break;
 
                 case PageID.PCDebugMenuPage:
-                    PCDebugMenuPage PCDebugMenu = new PCDebugMenuPage();
-                    PCDebugMenu.Show();
+                    NewPage = new PCDebugMenuPage();
                     MessageBox.Show("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
                     break;
 
@@ -500,22 +497,23 @@ namespace Dobby {
                     break;
 
                 case PageID.InfoHelpPage:
-                    InfoHelpPage InfoHelp = new InfoHelpPage();
-                    InfoHelp.Show();
+                    NewPage = new InfoHelpPage();
                     break;
 
                 case PageID.CreditsPage:
-                    CreditsPage Credits = new CreditsPage();
-                    Credits.Show();
+                    NewPage = new CreditsPage();
                     break;
 
                 default: MsgOut($"{Page} Is Not A Page!"); break;
             }
 
+            NewPage?.Show();
+            LogWindow.SetParent(NewPage);
+
             YellowInformationLabel = ActiveForm.Controls.Find("Info", true)[0];
             ActiveForm.Location = LastPos;
 
-            if(ClosingForm.Name == "Dobby") {
+            if(ClosingForm.Name == "Main") {
                 MainForm = ClosingForm;
                 ClosingForm.Hide();
                 return;
@@ -541,6 +539,7 @@ namespace Dobby {
             return new Size(size.Width + 7, size.Height + 7);
         }
 
+        //! FIX ME, I LOOK LIKE SHITE
         public static void AddControlEventHandlers(Control.ControlCollection Controls) { // Got Sick of Manually Editing InitializeComponent()
             #region DebugLabel
 #if DEBUG

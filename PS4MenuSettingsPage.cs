@@ -1,10 +1,7 @@
 ﻿using System;
-using System.CodeDom;
-using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -724,6 +721,7 @@ namespace Dobby {
                 new byte[] {  }, // T1R100
                 new byte[] {  }, // T1R109
                 new byte[] {  }, // T1R111
+                //Array.Empty<byte>(),                         Test | T2100
                 new byte[] { 0x98, 0x68, 0x24, 0x03 }, // 0x3646898 | T2100
                 new byte[] { 0xB8, 0x67, 0x24, 0x03 }, // 0x36467b8 | T2107
                 new byte[] { 0x38, 0xA6, 0x25, 0x03 }  // 0x365a638 | T2109
@@ -808,7 +806,6 @@ namespace Dobby {
         /// <summary> Array of Controls to Move When Loading >1 Game-Specific Debug Options
         ///</summary>
         private static Control[] ControlsToMove;
-        private static FileStream MainStream;
         private static DynamicPatchButtons gsButtons;
 
         /// <summary> Variable Used When Adjusting Form Scale And Control Positions
@@ -820,6 +817,8 @@ namespace Dobby {
         ;
 
         private static bool MultipleButtonsEnabled;
+
+
 
         public static void WriteBytes(int? offset = null, byte[] data = null) {
 #if DEBUG
@@ -1015,8 +1014,8 @@ namespace Dobby {
                     "MenuScaleBtn",
                     "FOVBtn",
                     "XAlignBtn",
-                    "SwapCircleInDebugBtn",
                     "MenuShadowTextBtn",
+                    "SwapCircleInDebugBtn",
                     "MenuRightAlignBtn",
                     "RightMarginBtn"
             };
@@ -1026,8 +1025,8 @@ namespace Dobby {
                     "Set Dev Menu Scale:",               // default=0.60
                     "Adjust Non-ADS FOV:",               // default=1.00
                     "Adjust Camera X-Alignment:",        // default=1.00
-                    "Swap Circle With Square In DMenu:", // default=No
                     "Enable Debug Menu Text Shadow:",    // default=No
+                    "Swap Circle With Square In DMenu:", // default=No
                     "Align Debug Menus To The Right:",   // default=No
                     "Set Distance From Right Side:"      // default=10
             };
@@ -1037,8 +1036,8 @@ namespace Dobby {
                     "Adjusts The Debug Menu Scaling",
                     "Only Effects The Camera While Not Aiming",
                     "Adjust Camera Position On The X-Axis (smaller == left, larger == right)",
-                    " ",
                     "Improves Debug Menu Text Readability By Adding A Light Shadow Effect To The Text",
+                    " ",
                     "Moves The Dev/Quick Menus To The Right Of The Screen",
                     "Adjust the Menu's Distance From The Right Of The Screen",
             };
@@ -1048,13 +1047,12 @@ namespace Dobby {
             /// 1: MenuScaleBtn                                                                        <br/>
             /// 2: FOVBtn                                                                              <br/>
             /// 3: XAlign                                                                              <br/>
-            /// 4: SwapCircleInDebugBtn                                                                <br/>
-            /// 5: MenuShadowTextBtn                                                                   <br/>
+            /// 4: MenuShadowTextBtn                                                                   <br/>
+            /// 5: SwapCircleInDebugBtn                                                                <br/>
             /// 6: RightAlignBtn                                                                       <br/>
             /// 7: RightMarginBtn
             /// </summary>
             public vButton[] Buttons; // Initialized Once An Executable's Selected
-
             private int ButtonsVerticalStartPos;
 
 
@@ -1288,6 +1286,10 @@ namespace Dobby {
             }
         }
 
+        private void LoadPresentExecutableInStream() {
+
+        }
+
 
         private void ConfirmBtn_Click(object sender, EventArgs e) {
             var Result = ApplyMenuSettings((int)GetGameIndex(Game));
@@ -1313,7 +1315,7 @@ namespace Dobby {
                         MessageBox.Show($"Universal:\n  Vars: {UniversaPatchValues.Length}\n  Pointers: {UniversalBootSettingsPointers.Length}\nDynamic:\n  Vars: {DynamicPatchButtons.GameSpecificPatchValues.Length}\n  Pointers: {GameSpecificBootSettingsPointers.Length}", "Mismatch In Array Value vs pointer Length.");
 #endif
                     int BootSettingsAddress, PatchCount = 0;
-                    var Addresses = GetBootSettingsGameIndexAndAddresses();
+                    var Addresses = GetBootSettingsGameIndexAndAddresses(Game);
 
                     if(Addresses[0] == 0 || Addresses[1] == 0) {
                         Dev.MsgOut($"Game #{GameIndex} Has Is Missing An Address For Settings (0: {Addresses[0]} / 1: {Addresses[1]})");
@@ -1321,10 +1323,10 @@ namespace Dobby {
                     }
 
                     // Write Function Call To Call BootSettings
-                    WriteBytes((int)Addresses[1], GetBootSettingsFunctionCall());
+                    WriteBytes((int)Addresses[0], GetBootSettingsFunctionCall());
 
                     // Write BootSettings Function's Assembly To Game Executable
-                    BootSettingsAddress = (int)Addresses[2];
+                    BootSettingsAddress = (int)Addresses[1];
                     WriteBytes(BootSettingsAddress, GetBootSettingsBytes(GameIndex));
 
                     byte PointerType = 0x88;
@@ -1447,7 +1449,7 @@ namespace Dobby {
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.00 //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.09 //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.11 //!
-                new byte [] { 0xe8, 0x8b, 0x9e, 0x2d, 0x00, 0x53, 0x48, 0x8d, 0x05, 0xc3, 0x8e, 0xef, 0xff }, // T2 1.00  //!
+                new byte [] { 0xe8, 0x8b, 0x9c, 0x3d, 0x00, 0x53, 0x48, 0x8d, 0x05, 0xc3, 0x8c, 0xff, 0xff }, // T2 1.00  //!
                 new byte [] { 0xe8, 0xcb, 0xd0, 0x3d, 0x00, 0x53, 0x48, 0x8d, 0x05, 0xc3, 0x8c, 0xff, 0xff }, // T2 1.07
                 new byte [] { 0xe8, 0x9b, 0x45, 0x82, 0x00, 0x53, 0x48, 0x8d, 0x05, 0x03, 0xea, 0xff, 0xff }  // T2 1.09
             };
@@ -1526,7 +1528,7 @@ namespace Dobby {
         /// <br/>0: GetBootSettingsFunctionCallAddress
         /// <br/>1: Address To Write Boot Settings
         /// </returns>
-        private int[] GetBootSettingsGameIndexAndAddresses() {
+        private int[] GetBootSettingsGameIndexAndAddresses(int Game) {
             var ret = new int[2] { 0, 0 };
 
 
@@ -1551,6 +1553,9 @@ namespace Dobby {
                 case T1R109:
                 case T1R110:case T1R111:
                 case T2100:
+                    ret[0] = 0x1F1DE8; // 0x53dde8
+                    ret[1] = 0xB330;   // 0x407330
+                    break;
                 case T2107:
                     ret[0] = 0x1f217a; // 0x5ee17a
                     ret[1] = 0xb330;   // 0x407330
@@ -1591,7 +1596,7 @@ namespace Dobby {
                 case T1R110:
                 case T1R111: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
 
-                case T2100: return new byte[] { 0xe8, 0x43, 0x93, 0xf1, 0xff };  // CALL 0x7e0fc0
+                case T2100: return new byte[] { 0xe8, 0x43, 0x95, 0xe1, 0xff };  // CALL 0x7e0fc0
 
                 case T2107: return new byte[] { 0xe8, 0xb1, 0x91, 0xe1, 0xff };  // CALL 0x407330
 
@@ -1757,7 +1762,12 @@ namespace Dobby {
         #region Repeat Functions & Control Declarations
         private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);
         private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
-        private void BackBtn_Click(object sender, EventArgs e) => ReturnToPreviousPage();
+        private void BackBtn_Click(object sender, EventArgs e) {
+            ReturnToPreviousPage();
+#if DEBUG
+            Dev.OverrideMsgOut = false;
+#endif
+        }
 
         private Button BrowseButton;
         private Button MinimizeBtn;
@@ -1781,6 +1791,6 @@ namespace Dobby {
         private Label GameInfoLabel;
         private Label MainLabel;
         private Label Info;
-        #endregion
+#endregion
     }
 }

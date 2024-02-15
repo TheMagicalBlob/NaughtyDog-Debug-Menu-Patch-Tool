@@ -302,9 +302,6 @@ namespace Dobby {
         private readonly byte[] E9Jump = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 };
 
         private static int DebugAddressForSelectedGame;
-        
-        public static FileStream MainStream { get; private set; }
-        
 
         private static string ActiveFilePath, ActiveGameID = "?";
         private static readonly string[] ResultStrings = new string[] {

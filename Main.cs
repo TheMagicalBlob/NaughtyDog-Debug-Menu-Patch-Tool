@@ -32,7 +32,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
 #if !DEBUG
             //PS4MenuSettingsPageBtn.Enabled = false;
 #else
-            var Log = new LogWindow();
+            var Log = new LogWindow(this);
             Log.Show();
 #endif
         }

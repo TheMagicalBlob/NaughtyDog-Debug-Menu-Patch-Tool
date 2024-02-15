@@ -37,8 +37,10 @@ namespace Dobby {
                 return;
             }
 
+            bool a = true;
 
-            OverrideMsgOut ^= true;
+            Dev.MsgOut(a ^= a);
+
         }
 
         public static void DebugControlHover(object sender, EventArgs e) => HoveredControl = (Control)sender;
@@ -80,24 +82,30 @@ namespace Dobby {
         /// Log Window Class
         /// </summary>
         public partial class LogWindow : Form {
-            public LogWindow() {
-                InitializeComponent();
+            public LogWindow(Form Gaia) {
 
-                MouseDown += MouseDownFunc;
+                // LogWindow Form Style & Event Handlers
+                BackColor = Gaia.BackColor;
+                FormBorderStyle = FormBorderStyle.None;
+                Name = "LogWindow";
+                
                 MouseEnter += DebugControlHover;
-                MouseUp += MouseUpFunc;
-                MouseMove += MoveForm;
+                MouseDown  += MouseDownFunc;
+                MouseUp    += MouseUpFunc;
+                //\\
 
-                AppRef = this;
-                rend = CreateGraphics();
-
+                LogWindowRenderer = this.CreateGraphics();
+                LogWindowPtr = this;
+                ParentFormPtr = Gaia;
+                SetParent(Gaia);
                 logThread.Start();
-                Location = Point.Empty;
             }
 
-            private static Form AppRef;
-            private static Graphics rend;
+            private static Form LogWindowPtr, ParentFormPtr;
             public static Size formScale;
+
+            private static Graphics LogWindowRenderer;
+
             public static StreamWriter LogFile;
             public static string[] LogBuffer;
 
@@ -107,7 +115,7 @@ namespace Dobby {
             public static bool LogShouldRefresh;
             private static readonly System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
             private static readonly Thread TimerThread = new Thread(StartTimer);
-            private static void Timer_Tick(object sender, EventArgs e) => TimerTicks+= 0.0001f;
+            private static void Timer_Tick(object sender, EventArgs e) => TimerTicks+= 0.001f;
             private static void StartTimer() {
                 if(!timer.Enabled) {
                     timer.Interval = 1;
@@ -117,41 +125,37 @@ namespace Dobby {
             }
             #endregion
 
-            private void InitializeComponent() {
-                BackColor = Color.FromArgb(100, 100, 100);
-                FormBorderStyle = FormBorderStyle.None;
-                Name = "LogWindow";
-                Location = Point.Empty;
-            }
-            #region Movement
-            private void MouseDownFunc(object sender, MouseEventArgs e) {
-                MouseIsDown = true; LastPos = ActiveForm.Location;
-                MouseDif = new Point(MousePosition.X - ActiveForm.Location.X, MousePosition.Y - ActiveForm.Location.Y);
-            }
-            private void MouseUpFunc(object sender, MouseEventArgs e) { MouseScrolled = false; MouseIsDown = false; }
-            private void MoveForm(object sender, MouseEventArgs e) {
-                if(!MouseIsDown)
-                    return;
 
-                ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
-                ActiveForm.Update();
+            public static void SetParent(Form Parent) {
+                if(Parent == null)
+                    
+                Parent.LocationChanged -= MoveLogToAppEdge;
+                Parent.LocationChanged += MoveLogToAppEdge;
             }
-            #endregion
+            private void MouseDownFunc(object sender, MouseEventArgs e) => MouseIsDown = true;
+            private void MouseUpFunc(object sender, MouseEventArgs e) => MouseScrolled = MouseIsDown = false;
+            public static void MoveLogToAppEdge(object mommy, EventArgs e) => LogWindowPtr.Location = new Point(((Form)mommy).Location.X - LogWindowPtr.Size.Width, ((Form)mommy).Location.Y);
+
 
             public delegate void Scaling();
             public static Scaling resize = new Scaling(ResizeLog);
             private static void ResizeLog() {
-                AppRef.Size = formScale;
-                rend = AppRef.CreateGraphics();
+                LogWindowPtr.Size = formScale;
+                LogWindowRenderer = LogWindowPtr.CreateGraphics();
+
+                LogWindowPtr.Location = new Point(ParentFormPtr.Location.X - LogWindowPtr.Size.Width, ParentFormPtr.Location.Y);
+                LogWindowPtr.Update();
             }
 
+            public static void SewerSlide() {
+                logThread.Abort();
+            }
 
             private static readonly Thread logThread = new Thread(new ThreadStart(UpdateConsoleOutput));
             public static void UpdateConsoleOutput() {
                 if(ActiveForm != null && !TimerThreadStarted) {
                     TimerThread.Start(); TimerThreadStarted = true;
                 }
-                int tmpdeleteme = 0;
 
                 string Out;
                 string[] Output, chk1 = Array.Empty<string>(), chk2 = Array.Empty<string>();
@@ -181,8 +185,8 @@ namespace Dobby {
                                     $"| Menu Alpha:           {DynamicVars[1]}",
                                     $"| Non-ADS FOV:          {DynamicVars[2]}",
                                     $"| Camera X-Align:       {DynamicVars[3]}",
-                                    $"| Swap Square & Circle: {DynamicVars[4]}",
-                                    $"| Shadowed Text:        {DynamicVars[5]}",
+                                    $"| Shadowed Text:        {DynamicVars[4]}",
+                                    $"| Swap Square & Circle: {DynamicVars[5]}",
                                     $"| Right Align:          {DynamicVars[6]}",
                                     $"|    Right Margin:      {DynamicVars[7]}\n"
                                 };
@@ -204,8 +208,8 @@ namespace Dobby {
 
                                     (MainStreamIsOpen ? " " : ""),
 
-                                    $"{(MainStreamIsOpen ? $"PS4Stream: {EbootPatchPage.MainStream.Name}" : (PCDebugMenuPage.MainStreamIsOpen ? " " : ""))}",
-                                    $"{(MainStreamIsOpen ? $"Length: {(EbootPatchPage.MainStream.Length.ToString().Length > 6 ? $"{EbootPatchPage.MainStream.Length.ToString().Remove(2)}MB" : $"{EbootPatchPage.MainStream.Length} bytes")} | Read: {EbootPatchPage.MainStream.CanRead} | Write: {EbootPatchPage.MainStream.CanWrite}" : (PCDebugMenuPage.MainStreamIsOpen ? " " : ""))}",
+                                    $"{(MainStreamIsOpen ? $"PS4Stream: {MainStream.Name}" : (PCDebugMenuPage.MainStreamIsOpen ? " " : ""))}",
+                                    $"{(MainStreamIsOpen ? $"Length: {(MainStream.Length.ToString().Length > 6 ? $"{MainStream.Length.ToString().Remove(2)}MB" : $"{MainStream.Length} bytes")} | Read: {MainStream.CanRead} | Write: {MainStream.CanWrite}" : (PCDebugMenuPage.MainStreamIsOpen ? " " : ""))}",
                                 };
                         }
                         catch(Exception e) {
@@ -213,7 +217,6 @@ namespace Dobby {
                         }
 
                         if(LogShouldRefresh || !chk1.SequenceEqual(Output) || chk1 == null || !chk2.SequenceEqual(OutputStrings)) {
-                            LogShouldRefresh = false;
                             chk1 = Output;
                             chk2 = OutputStrings;
                             SizeF TextSize;
@@ -221,7 +224,7 @@ namespace Dobby {
 
                             // Resize LogWindow To Fit Rendered Text, With A Padding of 6 Pixels (Half Because It's Also Placed 6 Pixles In On Each Axis Below)
                             foreach(string line in Output) {
-                                TextSize = rend.MeasureString(line, MainFont);
+                                TextSize = LogWindowRenderer.MeasureString(line, MainFont);
 
                                 if(TextSize.Width > formScale.Width - 12)
                                     formScale.Width = (int)TextSize.Width + 12;
@@ -235,7 +238,7 @@ namespace Dobby {
                             Out += " \n";
                             
                             foreach(string line in OutputStrings) {
-                                TextSize = rend.MeasureString(line, MainFont);
+                                TextSize = LogWindowRenderer.MeasureString(line, MainFont);
 
                                 if(TextSize.Width > formScale.Width - 12)
                                     formScale.Width = (int)TextSize.Width + 12;
@@ -248,32 +251,32 @@ namespace Dobby {
                                 else
                                     Out += "!\n";
 
-                                Console.WriteLine($"[{tmpdeleteme}]| {line}");
                             }
-                            tmpdeleteme++;
 
                             formScale.Height += 12;
 
 
                             // Resize Form Back On Main LogWindow Thread
-                            try {
-                                AppRef.Invoke(resize);
-                            }
+                            try { LogWindowPtr.Invoke(resize); }
+
                             catch(InvalidOperationException) { MessageBox.Show("Resize Error Noti"); }
 
-                            // Inlined PaintBorder Function Setup
+
+                            // Border Setup
                             Point[] Border = new Point[] {
                                     Point.Empty,
-                                    new Point(AppRef.Width-1, 0),
-                                    new Point(AppRef.Width-1, AppRef.Height-1),
-                                    new Point(0, AppRef.Height-1),
+                                    new Point(LogWindowPtr.Width-1, 0),
+                                    new Point(LogWindowPtr.Width-1, LogWindowPtr.Height-1),
+                                    new Point(0, LogWindowPtr.Height-1),
                                     Point.Empty
                             };
 
                             // Clear Last "Frame", Draw Text And Border
-                            rend.Clear(Color.FromArgb(100, 100, 100));
-                            rend.DrawLines(pen, Border);
-                            rend.DrawString(Out, MainFont, Brushes.White, new Point(6, 6));
+                            LogWindowRenderer.Clear(Color.FromArgb(100, 100, 100));
+                            LogWindowRenderer.DrawLine(pen, 0f, 30f, (float)LogWindowPtr.Width, 30f);
+                            LogWindowRenderer.DrawLines(pen, Border);
+                            LogWindowRenderer.DrawString(Out, MainFont, Brushes.White, new Point(6, 6));
+                            LogShouldRefresh ^= LogShouldRefresh;
                         }
 
                         Delay = TimerTicks - StartTime;
@@ -315,6 +318,8 @@ namespace Dobby {
             LogWindow.LogFile.WriteLine(s);
             LogWindow.LogFile.Flush();
 
+            LogWindow.LogShouldRefresh = true;
+
             if(OutputStringIndex != OutputStrings.Length - 1) {
                 for(; OutputStringIndex < OutputStrings.Length - 1; OutputStringIndex++) {
                     if(OutputStrings[OutputStringIndex] == null) {
@@ -331,42 +336,6 @@ namespace Dobby {
             LogWindow.LogShouldRefresh = true;
 #endif
         }
-#if DEBUG
-
-        public static void DebugFunctionCall() {
-            DebugConnect();
-            MsgOut(geo.Call(Executable, geo.InstallRPC(Executable), 0x52e060, new object[] { 0x105f83d240, 4 })); // 0x105f83d240
-        }
-        public static byte DebugConnect() {
-            try {
-                geo = new PS4DBG(PS4DebugPage.IP());
-                geo.Connect();
-                foreach(libdebug.Process prc in geo.GetProcessList().processes) {
-                    foreach(string id in ExecutablesNames) {
-                        if(prc.name == id) {
-                            string title = geo.GetProcessInfo(prc.pid).titleid;
-                            if(title == "FLTZ00003" || title == "ITEM00003") {
-                                MsgOut($"Skipping Lightning's Stuff {title}");
-                                break;
-                            } // Code To Avoid Connecting To HB Store Stuff
-
-                            Executable = prc.pid;
-                            ProcessName = prc.name;
-                            TitleID = geo.GetProcessInfo(prc.pid).titleid;
-                            PS4DebugIsConnected = true;
-                        }
-                    }
-                }
-                GameVersion = PS4DebugPage.GetGameVersion();
-                return 0;
-            }
-            catch(Exception tabarnack) {
-                MessageBox.Show(tabarnack.Message);
-                return 1;
-            }
-        }
-
-#endif
     }
 }
 /*
