@@ -1,12 +1,11 @@
-﻿using libdebug;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
-using System.Threading;
 using System.Security.Cryptography;
+using System.Threading;
 using System.Windows.Forms;
 using static Dobby.Dev;
 
@@ -223,21 +222,22 @@ namespace Dobby {
           "* 3.43.194.520 | Line Adjustment",
           "* 3.43.195.522 | Log Window Fix (Was For Some Reason Calling AddControlEventHandlers(ControlCollection C) And The Border Function Was Deleting Things)",
           "* 3.43.199.527 | Changed Exit And Minimize Button Fonts Back, Line Fix On Another Page. Misc Patches Page Work (Changing Method For Enabling Buttons To Be Based On What's Available, Rather Than Manually Specifying Each Button To Be Enabled For Each Case- Jfc What Was I Thinking Before)",
-          "* 3.43.203.540 | Debug Output Changes, Plenty Of Other Crap I Forgot. Go Away"
+          "* 3.43.203.540 | Debug Output Changes, Plenty Of Other Crap I Forgot. Go Away",
+          "* 3.43.203.540 | PS4 Menu Settings Page Universal Patch Section Work, Removed Some Debug Output Calls For Finished Function",
+          "* 4.45.210.556 | PS4 Menu Settings Page Release, Code Restructuring FOr FOllowing Pages: [ PS4DebugPage (Moved Related Variables From Common.cs In To PS4DebugPage.cs), ",
 
 
 
             // TODO:
             // * MAJOR
-            //  - Finish Adding Basic Dynamic Patch Application
             //  - Create Remaining Two Help Pages
+            //  - Refactor EbootPatchPage Code. Check The Others, Too
             // 
             // * MINOR 
             //  - Label Flash Stays On White If Inturrupted at the right time
             //  - Update PKG Creation Page To Be More Like GP4 Creation Page
-            //  - Standardize Help Page Fonts For Readability
+            //  - Standardize Help Page Styles
             //  - Standardize Info Label And Back Button Positioning, As Well As Space Between Controls
-            //  - Improve/Finish Help Pages
             //  - PS4DebugPage Consistency Fix (Can't Seem To Reproduce? [The Bug, I Mean. Not That I Don't Want The Other Thing])
         };
         public static string Build = ChangeList[ChangeList.Length - 1].Substring(2).Substring(0, ChangeList[ChangeList.Length - 1].IndexOf('|') - 3); // Trims The Last ChangeList String For Latest The Build Number
@@ -286,8 +286,8 @@ namespace Dobby {
             CreditsPage = 8,
             PlaceholderPage = 111111111
         }
-        
-        
+
+
         public static string CurrentControl, TempStringStore;
 
         public static string ActiveGameID = "UNK";
@@ -329,8 +329,14 @@ namespace Dobby {
 
 
 
+        ////////////////////\\\\\\\\\\\\\\\\\\\
+        ///--  Basic Form Event Handlers  --\\\
+        ////////////////////\\\\\\\\\\\\\\\\\\\
+        #region Basic Form Event Handlers
         public static void ExitBtn_Click(object sender, EventArgs e) {
+#if DEBUG
             LogWindow.SewerSlide();
+#endif
             MainStream?.Dispose();
             Environment.Exit(0);
         }
@@ -354,8 +360,13 @@ namespace Dobby {
             ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
             ActiveForm.Update();
         }
+        #endregion
 
 
+        ///////////////////\\\\\\\\\\\\\\\\\\
+        ///--   Form Drawing Functions  --\\\
+        ///////////////////\\\\\\\\\\\\\\\\\\
+        #region Form Drawing Functions
         /// <summary> Highlights A Control In Yellow With A > Preceeding It When Hovered Over </summary>
         /// <param name="PassedControl">The Control To Highlight</param>
         /// <param name="EventIsMouseEnter">Highlight If True</param>
@@ -382,10 +393,9 @@ namespace Dobby {
             var Variable = control.Variable?.ToString();
 
             var x = (int)(control.Width - e.Graphics.MeasureString(Variable, control.Font).Width - 5);
-            
+
             e.Graphics.DrawString(Variable, MainFont, Brushes.LightGreen, new Point(x, 5));
         }
-
 
         /// <summary> Form Border Pen
         ///</summary>
@@ -406,19 +416,23 @@ namespace Dobby {
             e.Graphics.Clear(Color.FromArgb(100, 100, 100));
             e.Graphics.DrawLines(pen, Border);
         }
+
         /// <summary> Create And Apply A Thin Line From One End Of The Form To The Other (placeholder code atm)
         ///</summary>
-        public static void PaintLine(object sender, PaintEventArgs e) {
-            var AppRef = (Form)sender;
+        public static void PaintSeperatorLine(object sender, PaintEventArgs e) {
+            var AppRef = (Label)sender;
+            var LineVerticalPos = AppRef.Size.Height - 1;
 
             Point[] Line = new Point[] {
-                Point.Empty,
-                new Point(AppRef.Size.Width, 0)
+                new Point(1, LineVerticalPos),
+                new Point(AppRef.Parent.Size.Width - 1, LineVerticalPos)
             };
 
             e.Graphics.Clear(Color.FromArgb(100, 100, 100));
             e.Graphics.DrawLines(pen, Line);
         }
+        #endregion
+
 
         /// <summary>
         /// Loads The Specified Page From The PageId Group (E.g. ChangeForm(PageID.PS4MiscPageId))
@@ -428,7 +442,7 @@ namespace Dobby {
         public static void ChangeForm(PageID Page) {
             LastPos = ActiveForm.Location;
             var ClosingForm = ActiveForm;
-            
+
             if(!IsPageGoingBack) {
                 for(int i = 0; i < 5; i++) {
                     if(Pages[i] == null) {
@@ -441,7 +455,7 @@ namespace Dobby {
             Form NewPage = null;
 
             Common.Page = Page;
-            
+
             switch(Page) {
                 case PageID.MainPage:
                     NewPage = MainForm;
@@ -508,7 +522,9 @@ namespace Dobby {
             }
 
             NewPage?.Show();
+#if DEBUG
             LogWindow.SetParent(NewPage);
+#endif
 
             YellowInformationLabel = ActiveForm.Controls.Find("Info", true)[0];
             ActiveForm.Location = LastPos;
@@ -526,23 +542,97 @@ namespace Dobby {
             IsPageGoingBack ^= true;
 
             for(int i = 4; i >= 0; i--)
-            if(Pages[i] != null) {
-                ChangeForm((PageID)Pages[i]);
-                Pages[i] = null;
-                break;
-            }
+                if(Pages[i] != null) {
+                    ChangeForm((PageID)Pages[i]);
+                    Pages[i] = null;
+                    break;
+                }
             FormActive = false;
         }
 
-        public static Size SizeControl(Control cunt) {
+        /// <summary>
+        /// Calculates A Size Exactly Large Enough (Hopefully)
+        /// To Fit The Item's Text Content
+        /// </summary>
+        /// <returns> A New Size For cunt </returns>
+        public static Size FitControlText(Control cunt) {
             var size = TextRenderer.MeasureText(cunt.Text, cunt.Font);
             return new Size(size.Width + 7, size.Height + 7);
         }
 
-        //! FIX ME, I LOOK LIKE SHITE
-        public static void AddControlEventHandlers(Control.ControlCollection Controls) { // Got Sick of Manually Editing InitializeComponent()
-            #region DebugLabel
+
+        /// <summary> Buttons To Avoid Applying Hover Arrow To </summary>
+        private static readonly string[] Blacklist = new string[] {
+                "!!!",
+                "ExitBtn",
+                "MinimizeBtn",
+                "IPLabelBtn",
+                "PortLabelBtn",
+                "CmdPathBtn",
+                "Gp4PathBtn",
+                "OutputDirectoryBtn",
+                "TmpDirectoryBtn"
+        };
+
+        /// <summary>
+        /// Apply Basic Event Handlers To Form And It's Items
+        /// </summary>
+        public static void ApplyEventHandlersToControl(object sender) {
+            var Item = sender as Control;
+
+
+            Item.MouseDown += new MouseEventHandler(MouseDownFunc);
+            Item.MouseUp += new MouseEventHandler(MouseUpFunc);
+
+            if(Item.Name.Contains("Seperator") && sender.GetType() == typeof(Label)) {
+                MsgOut($"Adding Paint Func To Line On {Item.Parent.Name}");
+                Item.Paint += PaintSeperatorLine;
+            }
+
+            else if(!Item.Name.Contains("PathBox")) // So You Can Drag Select The Text Lol
+                Item.MouseMove += new MouseEventHandler(MoveForm);
+
+            else if((Item.GetType() == typeof(Button) || Item.GetType() == typeof(vButton)) && !Blacklist.Contains(Item.Name)) {
+                Item.MouseEnter += new EventHandler(ControlHover);
+                Item.MouseLeave += new EventHandler(ControlLeave);
+            }
+            else if(Item.GetType() == typeof(vButton))
+                Item.Paint += DrawButtonVar;
+
+            #if DEBUG
+            Item.MouseEnter += new EventHandler(DebugControlHover);
+            #endif
+        }
+
+        /// <summary>
+        /// Mass-Apply Basic Event Handlers To Form And It's Items
+        /// </summary>
+        /// <param name="Controls"></param>
+        public static void AddEventHandlersToControls(Control.ControlCollection Controls) { // Got Sick of Manually Editing InitializeComponent()
+
+            Controls.Owner.Paint += PaintBorder;
+
+            foreach(Control Item in Controls) {
+                ApplyEventHandlersToControl(Item);
+
+                if(Item.HasChildren) // Designer Adds Some Things To Other Controls Sometimes. I Am Lazy
+                    foreach(Control Child in Item.Controls)
+                        ApplyEventHandlersToControl(Child);
+            }
+
+            try {
+                Controls.Find("MinimizeBtn", true)[0].Click += new EventHandler(MinimizeBtn_Click);
+                Controls.Find("MinimizeBtn", true)[0].MouseEnter += new EventHandler(MinimizeBtnMH);
+                Controls.Find("MinimizeBtn", true)[0].MouseLeave += new EventHandler(MinimizeBtnML);
+
+                Controls.Find("ExitBtn", true)[0]    .Click += new EventHandler(ExitBtn_Click);
+                Controls.Find("ExitBtn", true)[0]    .MouseEnter += new EventHandler(ExitBtnMH);
+                Controls.Find("ExitBtn", true)[0]    .MouseLeave += new EventHandler(ExitBtnML);
+            }
+            catch(IndexOutOfRangeException) { MsgOut("Form Lacks MinimizeBtn And / Or ExitBtn"); }
+
 #if DEBUG
+            #region Debug Label
             if(Controls.Owner.Name == "LogWindow") goto FormIsLogWindow;
             Label DebugLabel = new Label {
                 Location = new Point(230, 1),
@@ -551,7 +641,7 @@ namespace Dobby {
                 Font = new Font("Cambria", 7F, FontStyle.Bold),
                 Text = "(Dev)"
             };
-            DebugLabel.Size = SizeControl(DebugLabel);
+            DebugLabel.Size = FitControlText(DebugLabel);
             DebugLabel.Click += new EventHandler(MiscDebugFunc);
             Controls.Add(DebugLabel);
             DebugLabel.BringToFront();
@@ -562,7 +652,7 @@ namespace Dobby {
                 Text = "&L",
                 Name = "!!!"
             };
-            OpenLogAndQuit.Size = SizeControl(OpenLogAndQuit);
+            OpenLogAndQuit.Size = FitControlText(OpenLogAndQuit);
             OpenLogAndQuit.Click += new EventHandler(MiscDebugFunc);
             OpenLogAndQuit.FlatAppearance.BorderSize = 0;
             OpenLogAndQuit.FlatStyle = FlatStyle.Flat;
@@ -570,81 +660,139 @@ namespace Dobby {
             OpenLogAndQuit.Location = new Point(230 - OpenLogAndQuit.Width, 1);
             OpenLogAndQuit.BringToFront();
         FormIsLogWindow:;
-#endif
             #endregion
-
-        Controls.Owner.Paint += PaintBorder;
-
-
-            /// <summary> Buttons To Avoid Applying Hover Arrow To </summary>
-            string[] Blacklist = new string[] {
-                "!!!",
-                "ExitBtn",
-                "MinimizeBtn",
-                "IPLabelBtn",
-                "PortLabelBtn",
-                "CmdPathBtn",
-                "Gp4PathBtn",
-                "OutputDirectoryBtn",
-                "TmpDirectoryBtn"
-            };
-
-
-            foreach(Control Item in Controls) {
-                if(Item.HasChildren) { // Designer Added Some Things To The Form, And Some To The Group Box Used To Make The Border. This is me bing lazy. as long as it's not noticably slower
-                    foreach(Control Child in Item.Controls) {
-
-                        Child.MouseDown += new MouseEventHandler(MouseDownFunc);
-                        Child.MouseUp += new MouseEventHandler(MouseUpFunc);
-
-                        if (!Child.Name.Contains("PathBox")) // So You Can Drag Select The Text Lol
-                        Child.MouseMove += new MouseEventHandler(MoveForm);
-
-                        if((Child.GetType() == typeof(Button) || Child.GetType() == typeof(vButton)) && !Blacklist.Contains(Child.Name)) {
-                            Child.MouseEnter += new EventHandler(ControlHover);
-                            Child.MouseLeave += new EventHandler(ControlLeave);
-                        }
-                        if(Child.GetType() == typeof(vButton)) {
-                            Child.Paint += DrawButtonVar;
-                        }
-#if DEBUG
-                        Child.MouseEnter += new EventHandler(DebugControlHover);
 #endif
-                    }
-                }
-
-                Item.MouseDown += new MouseEventHandler(MouseDownFunc);
-                Item.MouseUp += new MouseEventHandler(MouseUpFunc);
-
-                if(!Item.Name.Contains("PathBox")) // So You Can Drag Select The Text Lol
-                    Item.MouseMove += new MouseEventHandler(MoveForm);
-
-                if((Item.GetType() == typeof(Button) || Item.GetType() == typeof(vButton)) && !Blacklist.Contains(Item.Name)) {
-                    Item.MouseEnter += new EventHandler(ControlHover);
-                    Item.MouseLeave += new EventHandler(ControlLeave);
-                }
-                if(Item.GetType() == typeof(vButton)) {
-                    Item.Paint += DrawButtonVar;
-                }
-#if DEBUG
-                Item.MouseEnter += new EventHandler(DebugControlHover);
-#endif
-            }
-            try {
-                Controls.Find("MinimizeBtn", true)[0].Click += new EventHandler(MinimizeBtn_Click);
-                Controls.Find("MinimizeBtn", true)[0].MouseEnter += new EventHandler(MinimizeBtnMH);
-                Controls.Find("MinimizeBtn", true)[0].MouseLeave += new EventHandler(MinimizeBtnML);
-                Controls.Find("ExitBtn", true)[0].Click += new EventHandler(ExitBtn_Click);
-                Controls.Find("ExitBtn", true)[0].MouseEnter += new EventHandler(ExitBtnMH);
-                Controls.Find("ExitBtn", true)[0].MouseLeave += new EventHandler(ExitBtnML);
-            }
-            catch(IndexOutOfRangeException) { MsgOut("Form Lacks MinimizeBtn And / Or ExitBtn"); }
         }
 
 
-        /// <summary> Set The Text of The Yellow Label At The Bottom Of The Form </summary>
-        public static void SetInfoLabelText(string s) { if(ActiveForm != null) YellowInformationLabel.Text = s; }
+        /// <summary>
+        /// Set The Text of The Yellow Label At The Bottom Of The Form
+        /// </summary>
+        public static void SetInfoLabelText(string s) {
+            if(ActiveForm != null)
+            YellowInformationLabel.Text = s;
+        }
 
+
+        /// <summary> Add A Summary, You Lazy Fuck </summary>
+        /// <returns> The Game Name And App Version Respectively </returns>
+        public static int GetGameID(FileStream stream) {
+
+            byte[] LocalExecutableCheck = new byte[160];
+
+            // Make Sure The File's Actually Even A .elf
+            stream.Position = 0;
+            stream.Read(LocalExecutableCheck, 0, 4);
+            if(BitConverter.ToInt32(LocalExecutableCheck, 0) != 1179403647)
+                MessageBox.Show($"Executable Still Encrypted (self) | Must Be Decrypted/Unsigned");
+
+
+            stream.Position = 0x5100; stream.Read(LocalExecutableCheck, 0, 160);
+            var Hash = SHA256.Create();
+            var HashArray = Hash.ComputeHash(LocalExecutableCheck);
+            return BitConverter.ToInt32(HashArray, 0);
+        }
+
+        public static string GetGameLabelFromID(int GameID) {
+            switch(GameID) {
+                case UC1100: return "Uncharted 1 1.00";
+                case UC1102: return "Uncharted 1 1.02";
+                case UC2100: return "Uncharted 2 1.00";
+                case UC2102: return "Uncharted 2 1.02";
+                case UC3100: return "Uncharted 3 1.00";
+                case UC3102: return "Uncharted 3 1.02";
+                case UC4100: return "Uncharted 4 1.00";
+                case UC4101: return "Uncharted 4 1.01";
+                case UC4102: return "Uncharted 4 1.02";
+                case UC4103: return "Uncharted 4 1.03";
+                case UC4104: return "Uncharted 4 1.04";
+                case UC4105: return "Uncharted 4 1.05";
+                case UC4106: return "Uncharted 4 1.06";
+                case UC4108: return "Uncharted 4 1.08";
+                case UC4110: return "Uncharted 4 1.10";
+                case UC4111: return "Uncharted 4 1.11";
+                case UC4112: return "Uncharted 4 1.12";
+                case UC4113: return "Uncharted 4 1.13";
+                case UC4115: return "Uncharted 4 1.15";
+                case UC4116: return "Uncharted 4 1.16";
+                case UC4117: return "Uncharted 4 1.17";
+                case UC4118: return "Uncharted 4 1.18 SP/MP";
+                case UC4119: return "Uncharted 4 1.19 SP/MP";
+                case UC4120MP: return "Uncharted 4 1.20 MP";
+                case UC4120: return "Uncharted 4 1.20 SP";
+                case UC4121MP: return "Uncharted 4 1.21 MP";
+                case UC4121: return "Uncharted 4 1.21 SP";
+                case UC4122MP: return "Uncharted 4 1.22 MP";
+                case UC4122_23: return "Uncharted 4 1.22/23 SP";
+                case UC4123MP: return "Uncharted 4 1.23 MP";
+                case UC4124MP: return "Uncharted 4 1.24 MP";
+                case UC4124_25: return "Uncharted 4 1.24/25 SP";
+                case UC4125MP: return "Uncharted 4 1.25 MP";
+                case UC4127_28MP: return "Uncharted 4 1.27/28 MP";
+                case UC4127_133: return "Uncharted 4 1.27+ SP";
+                case UC4129MP: return "Uncharted 4 1.29 MP";
+                case UC4130MP: return "Uncharted 4 1.30 MP";
+                case UC4131MP: return "Uncharted 4 1.31 MP";
+                case UC4132MP: return "Uncharted 4 1.32/TLL 1.08 MP";
+                case UC4133MP: return "Uncharted 4 1.33/TLL 1.09 MP";
+                case UC4MPBETA100: return "Uncharted 4 MP Beta 1.00";
+                case UC4MPBETA109: return "Uncharted 4 MP Beta 1.09";
+                case TLL100MP: return "Uncharted Lost Legacy 1.00 MP";
+                case TLL100: return "Uncharted Lost Legacy 1.00 SP";
+                case TLL10X: return "Uncharted Lost Legacy 1.08/9 SP";
+                case T1R100: return "The Last Of Us 1.00";
+                case T1R109: return "The Last Of Us 1.09";
+                case T1R110: return "The Last Of Us 1.10";
+                case T1R111: return "The Last Of Us 1.11";
+                case T2100: return "The Last Of Us 2 1.00";
+                case T2101: return "The Last Of Us 2 1.01";
+                case T2102: return "The Last Of Us 2 1.02";
+                case T2105: return "The Last Of Us 2 1.05";
+                case T2107: return "The Last Of Us 2 1.07";
+                case T2108: return "The Last Of Us 2 1.08";
+                case T2109: return "The Last Of Us 2 1.09";
+                default: return $"Unknown Game ({GameID})";
+            }
+        }
+
+        delegate void LabelFlashDelegate();
+        static readonly LabelFlashDelegate Yellow = new LabelFlashDelegate(FlashYellow);
+        static readonly LabelFlashDelegate White = new LabelFlashDelegate(FlashWhite);
+        public static Thread FlashThread = new Thread(new ThreadStart(FlashLabel));
+        static void FlashLabel() {
+            while(!LabelShouldFlash) { Thread.Sleep(7); }
+            try {
+                for(int Flashes = 0; Flashes < 8; Flashes++) {
+                    ActiveForm?.Invoke(White);
+                    Thread.Sleep(135);
+                    ActiveForm?.Invoke(Yellow);
+                    Thread.Sleep(135);
+                }
+            }
+            catch(Exception) {
+                MsgOut("Killing Label Flash");
+            }
+            LabelShouldFlash = false;
+            FlashLabel();
+        }
+        static void FlashWhite() {
+            try {
+                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.White;
+                ActiveForm.Refresh();
+            }
+            catch(Exception) {
+                MsgOut("Killing Label Flash WH");
+            }
+        }
+        static void FlashYellow() {
+            try {
+                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.FromArgb(255, 227, 0);
+                ActiveForm.Refresh();
+            }
+            catch(Exception) {
+                MsgOut("Killing Label Flash YL");
+            }
+        }
 
 
         // TODO: this is fucking stupid, change it.
@@ -834,177 +982,14 @@ namespace Dobby {
         }
 
         private static void KillTextBox(object sender, MouseEventArgs e) => PopupGroupBox?.Dispose();
-
-
-        /// <summary> Add A Summary, You Lazy Fuck </summary>
-        /// <returns> The Game Name And App Version Respectively </returns>
-        public static int GetGameID(FileStream stream) {
-
-            byte[] LocalExecutableCheck = new byte[160];
-
-            // Make Sure The File's Actually Even A .elf
-            stream.Position = 0;
-            stream.Read(LocalExecutableCheck, 0, 4);
-            if(BitConverter.ToInt32(LocalExecutableCheck, 0) != 1179403647)
-                MessageBox.Show( $"Executable Still Encrypted (self) | Must Be Decrypted/Unsigned");
-
-
-            stream.Position = 0x5100; stream.Read(LocalExecutableCheck, 0, 160);
-            var Hash = SHA256.Create();
-            var HashArray = Hash.ComputeHash(LocalExecutableCheck);
-            return BitConverter.ToInt32(HashArray, 0);
-        }
-
-        public static string GetGameLabelFromID(int GameID) {
-            switch(GameID) {
-                case UC1100:       return "Uncharted 1 1.00";
-                case UC1102:       return "Uncharted 1 1.02";
-                case UC2100:       return "Uncharted 2 1.00";
-                case UC2102:       return "Uncharted 2 1.02";
-                case UC3100:       return "Uncharted 3 1.00";
-                case UC3102:       return "Uncharted 3 1.02";
-                case UC4100:       return "Uncharted 4 1.00";
-                case UC4101:       return "Uncharted 4 1.01";
-                case UC4102:       return "Uncharted 4 1.02";
-                case UC4103:       return "Uncharted 4 1.03";
-                case UC4104:       return "Uncharted 4 1.04";
-                case UC4105:       return "Uncharted 4 1.05";
-                case UC4106:       return "Uncharted 4 1.06";
-                case UC4108:       return "Uncharted 4 1.08";
-                case UC4110:       return "Uncharted 4 1.10";
-                case UC4111:       return "Uncharted 4 1.11";
-                case UC4112:       return "Uncharted 4 1.12";
-                case UC4113:       return "Uncharted 4 1.13";
-                case UC4115:       return "Uncharted 4 1.15";
-                case UC4116:       return "Uncharted 4 1.16";
-                case UC4117:       return "Uncharted 4 1.17";
-                case UC4118:       return "Uncharted 4 1.18 SP/MP";
-                case UC4119:       return "Uncharted 4 1.19 SP/MP";
-                case UC4120MP:     return "Uncharted 4 1.20 MP";
-                case UC4120:       return "Uncharted 4 1.20 SP";
-                case UC4121MP:     return "Uncharted 4 1.21 MP";
-                case UC4121:       return "Uncharted 4 1.21 SP";
-                case UC4122MP:     return "Uncharted 4 1.22 MP";
-                case UC4122_23:    return "Uncharted 4 1.22/23 SP";
-                case UC4123MP:     return "Uncharted 4 1.23 MP";
-                case UC4124MP:     return "Uncharted 4 1.24 MP";
-                case UC4124_25:    return "Uncharted 4 1.24/25 SP";
-                case UC4125MP:     return "Uncharted 4 1.25 MP";
-                case UC4127_28MP:  return "Uncharted 4 1.27/28 MP";
-                case UC4127_133:   return "Uncharted 4 1.27+ SP";
-                case UC4129MP:     return "Uncharted 4 1.29 MP";
-                case UC4130MP:     return "Uncharted 4 1.30 MP";
-                case UC4131MP:     return "Uncharted 4 1.31 MP";
-                case UC4132MP:     return "Uncharted 4 1.32/TLL 1.08 MP";
-                case UC4133MP:     return "Uncharted 4 1.33/TLL 1.09 MP";
-                case UC4MPBETA100: return "Uncharted 4 MP Beta 1.00";
-                case UC4MPBETA109: return "Uncharted 4 MP Beta 1.09";
-                case TLL100MP:     return "Uncharted Lost Legacy 1.00 MP";
-                case TLL100:       return "Uncharted Lost Legacy 1.00 SP";
-                case TLL10X:       return "Uncharted Lost Legacy 1.08/9 SP";
-                case T1R100:       return "The Last Of Us 1.00";
-                case T1R109:       return "The Last Of Us 1.09";
-                case T1R110:       return "The Last Of Us 1.10";
-                case T1R111:       return "The Last Of Us 1.11";
-                case T2100:        return "The Last Of Us 2 1.00";
-                case T2101:        return "The Last Of Us 2 1.01";
-                case T2102:        return "The Last Of Us 2 1.02";
-                case T2105:        return "The Last Of Us 2 1.05";
-                case T2107:        return "The Last Of Us 2 1.07";
-                case T2108:        return "The Last Of Us 2 1.08";
-                case T2109:        return "The Last Of Us 2 1.09";
-                default:           return $"Unknown Game ({GameID})";
-            }
-        }
-
-        delegate void LabelFlashDelegate();
-        static readonly LabelFlashDelegate Yellow = new LabelFlashDelegate(FlashYellow);
-        static readonly LabelFlashDelegate White = new LabelFlashDelegate(FlashWhite);
-        public static Thread FlashThread = new Thread(new ThreadStart(FlashLabel));
-        static void FlashLabel() {
-            while(!LabelShouldFlash) { Thread.Sleep(7); }
-            try {
-                for(int Flashes = 0; Flashes < 8; Flashes++) {
-                    ActiveForm?.Invoke(White);
-                    Thread.Sleep(135);
-                    ActiveForm?.Invoke(Yellow);
-                    Thread.Sleep(135);
-                }
-            }
-            catch(Exception) {
-                MsgOut("Killing Label Flash");
-            }
-            LabelShouldFlash = false;
-            FlashLabel();
-        }
-        static void FlashWhite() {
-            try {
-                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.White;
-                ActiveForm.Refresh();
-            }
-            catch(Exception) {
-                MsgOut("Killing Label Flash WH");
-            }
-        }
-        static void FlashYellow() {
-            try {
-                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.FromArgb(255, 227, 0);
-                ActiveForm.Refresh();
-            }
-            catch(Exception) {
-                MsgOut("Killing Label Flash YL");
-            }
-        }
         #endregion
 
 
 
-
-        ////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///-- PS4 DEBUG OFFSETS AND OTHER VARIABLES --\\\
-        ////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
-        #region PS4DBG_Variables
-
-        public static PS4DBG geo;
-        public delegate void LabelTextDel(string message);
-        public static LabelTextDel SetLabelText = SetInfoLabelText;
-        public static Thread ConnectionThread = new Thread(new ThreadStart(PS4DebugPage.Connect));
-        public static SHA256 hash;
-
-
-        public static readonly byte
-            on = 0x01, off = 0x00
-        ;
-        public static bool PS4DebugIsConnected, WaitForConnection = true, IgnoreTitleID = false;
-
-        public static int
-            Executable,   // Active PS4DBG Process ID
-            attempts = 0, // Connect() retries
-            ProcessCount = 0,
-            DebugModePointerOffset = 0xDEADDAD
-        ;
-
-        public static ulong BaseAddress;
-
-        public static readonly string[] ExecutablesNames = new string[] {
-            "eboot.bin",
-            "t2.elf",
-            "t2-rtm.elf",
-            "t2-final.elf",
-            "t2-final-pgo-lto.elf",
-            "big2-ps4_Shipping.elf",
-            "big3-ps4_Shipping.elf",
-            "big4.elf",
-            "big4-final.elf",
-            "big4-mp.elf",
-            "big4-final-pgo-lto.elf",
-            "eboot-mp.elf",
-        };
-        public static string ProcessName = "Jack Shit", GameVersion = "UnknownGameVersion", TitleID = "?";
-        #endregion
-
-
-
+        public static void LoadPresentExecutableInStream(string OpenedFile) {
+            MainStream?.Dispose();
+            MainStream = File.Open(OpenedFile, FileMode.Open, FileAccess.ReadWrite);
+        }
 
         /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///-- DEBUG MODE OFFSETS AND GAME INDENTIFIERS --\\\

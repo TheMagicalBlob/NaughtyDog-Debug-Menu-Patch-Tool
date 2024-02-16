@@ -20,7 +20,7 @@ namespace Dobby {
         public PkgCreationPage() {
             InitializeComponent();
             
-            AddControlEventHandlers(Controls);
+            AddEventHandlersToControls(Controls);
 
             foreach(Control control in Controls) {
                 if(control.Name.Contains("PathLabel")) {

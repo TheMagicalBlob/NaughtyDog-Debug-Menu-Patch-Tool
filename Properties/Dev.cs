@@ -196,9 +196,9 @@ namespace Dobby {
                                     " ",
                                     $"Parent Form: {(ActiveForm != null ? $"{ActiveForm?.Name} | # Of Children: {ActiveForm?.Controls?.Count}" : "Console")}",
                                     " ",
-                                    $"TitleID: {(TitleID == "?" ? "UNK" : TitleID)} | Game Version: {GameVersion}",
+                                    $"TitleID: {(PS4DebugPage.TitleID == "?" ? "UNK" : PS4DebugPage.TitleID)} | Game Version: {PS4DebugPage.GameVersion}",
                                     $"GameID: {ActiveGameID}",
-                                    $"ProcessName: {ProcessName} | PDbg Connected: {PS4DebugIsConnected}",
+                                    $"ProcessName: {PS4DebugPage.ProcessName} | PDbg Connected: {PS4DebugPage.PS4DebugIsConnected}",
                                     " ",
                                     $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}",
                                     $"Control: {HoveredControl?.Name} | {ControlType?.Substring(ControlType.LastIndexOf('.') + 1)}",
@@ -253,7 +253,7 @@ namespace Dobby {
 
                             }
 
-                            formScale.Height += 12;
+                            formScale.Height += 47; // Border Offset + Padding
 
 
                             // Resize Form Back On Main LogWindow Thread
@@ -275,7 +275,7 @@ namespace Dobby {
                             LogWindowRenderer.Clear(Color.FromArgb(100, 100, 100));
                             LogWindowRenderer.DrawLine(pen, 0f, 30f, (float)LogWindowPtr.Width, 30f);
                             LogWindowRenderer.DrawLines(pen, Border);
-                            LogWindowRenderer.DrawString(Out, MainFont, Brushes.White, new Point(6, 6));
+                            LogWindowRenderer.DrawString(Out, MainFont, Brushes.White, new PointF(6f, 35f));
                             LogShouldRefresh ^= LogShouldRefresh;
                         }
 

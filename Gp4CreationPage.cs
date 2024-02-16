@@ -15,7 +15,7 @@ namespace Dobby {
         public Gp4CreationPage() {
             InitializeComponent();
             
-            AddControlEventHandlers(Controls);
+            AddEventHandlersToControls(Controls);
 
 
             foreach(Control control in Controls) {

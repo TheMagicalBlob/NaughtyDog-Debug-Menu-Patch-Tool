@@ -19,7 +19,7 @@ namespace Dobby {
             ProgPauseOnCloseBtn.Variable = UniversaPatchValues[3];
             NovisBtn.Variable = UniversaPatchValues[4];
 
-            AddControlEventHandlers(Controls);
+            AddEventHandlersToControls(Controls);
 
 
             if(Game != 0 && gsButtons.Buttons != null) ResetCustomDebugOptions();
@@ -141,7 +141,7 @@ namespace Dobby {
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold);
+            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.ExitBtn.Location = new System.Drawing.Point(293, 1);
             this.ExitBtn.Name = "ExitBtn";
@@ -462,53 +462,6 @@ namespace Dobby {
                 new byte[] { 0x30, 0xb4, 0x77, 0x03, 0xb8, 0x3a, 0x00, 0x00 }  // T2109
             },
             
-            
-            /*
-            //|Show Build Info
-            new byte[][] {
-                new byte[] {  }, // 0x | UC1100
-                new byte[] {  }, // 0x | UC1102
-                new byte[] {  }, // 0x | UC2100
-                new byte[] {  }, // 0x | UC2102
-                new byte[] {  }, // 0x | UC3100
-                new byte[] {  }, // 0x | UC3102
-                new byte[] {  }, // 0x | UC4100
-                new byte[] {  }, // 0x | UC4101
-                new byte[] {  }, // 0x | UC4133
-                new byte[] {  }, // 0x | UC4133MP
-                new byte[] {  }, // 0x | TLL100
-                new byte[] {  }, // 0x | TLL109
-                new byte[] {  }, // 0x | T1R100
-                new byte[] {  }, // 0x | T1R109
-                new byte[] {  }, // 0x | T1R111
-                new byte[] {  }, // 0x | T2100
-                new byte[] { 0xB0, 0x75, 0x76, 0x03, 0xcd, 0x3a, 0x00, 0x00 }, // T2107
-                new byte[] { 0x30, 0xb4, 0x77, 0x03, 0xcd, 0x3a, 0x00, 0x00 }  // T2109
-            },
-
-            //|Suppress Active task Display
-            new byte[][] {
-                new byte[] { 0x41, 0x7B, 0x99, 0x00 }, // 0xD97B41  | UC1100
-                new byte[] { 0x41, 0x7B, 0x99, 0x00 }, // 0xFA7E41  | UC1102
-                new byte[] { 0xC9, 0x05, 0xE7, 0x00 }, // 0x12705C9 | UC2100
-                new byte[] { 0xF9, 0xCF, 0x05, 0x01 }, // 0x145cff9 | UC2102
-                new byte[] { 0x90, 0x1F, 0xA2, 0x01 }, // 0x1e21f90 | UC3100
-                new byte[] { 0x60, 0xEE, 0xB3, 0x01 }, // 0x1f3ee60 | UC3102
-                new byte[] {  }, // 0x | UC4100
-                new byte[] {  }, // 0x | UC4101
-                new byte[] {  }, // 0x | UC4133
-                new byte[] {  }, // 0x | UC4133MP
-                new byte[] {  }, // 0x | TLL100
-                new byte[] {  }, // 0x | TLL109
-                new byte[] {  }, // 0x | T1R100
-                new byte[] {  }, // 0x | T1R109
-                new byte[] {  }, // 0x | T1R111
-                new byte[] {  }, // 0x | T2100
-                new byte[] {  }, // T2107
-                new byte[] {  }  // T2109
-            },
-            */
-
             //|Show Paused Indicator
             new byte[][] {
                 new byte[] { 0x8A, 0xF9, 0xA9, 0x00 }, // 0xD98970  | UC1100
@@ -596,6 +549,52 @@ namespace Dobby {
                 new byte[] { 0x2C, 0x60, 0x01, 0x03 }, // 0x341602c | T2107
                 new byte[] { 0x2C, 0x9E, 0x04, 0x03 }  // 0x3449e2c | T2109
             }
+            
+            /*
+            //|Show Build Info
+            new byte[][] {
+                new byte[] {  }, // 0x | UC1100
+                new byte[] {  }, // 0x | UC1102
+                new byte[] {  }, // 0x | UC2100
+                new byte[] {  }, // 0x | UC2102
+                new byte[] {  }, // 0x | UC3100
+                new byte[] {  }, // 0x | UC3102
+                new byte[] {  }, // 0x | UC4100
+                new byte[] {  }, // 0x | UC4101
+                new byte[] {  }, // 0x | UC4133
+                new byte[] {  }, // 0x | UC4133MP
+                new byte[] {  }, // 0x | TLL100
+                new byte[] {  }, // 0x | TLL109
+                new byte[] {  }, // 0x | T1R100
+                new byte[] {  }, // 0x | T1R109
+                new byte[] {  }, // 0x | T1R111
+                new byte[] {  }, // 0x | T2100
+                new byte[] { 0xB0, 0x75, 0x76, 0x03, 0xcd, 0x3a, 0x00, 0x00 }, // T2107
+                new byte[] { 0x30, 0xb4, 0x77, 0x03, 0xcd, 0x3a, 0x00, 0x00 }  // T2109
+            },
+
+            //|Suppress Active task Display
+            new byte[][] {
+                new byte[] { 0x41, 0x7B, 0x99, 0x00 }, // 0xD97B41  | UC1100
+                new byte[] { 0x41, 0x7B, 0x99, 0x00 }, // 0xFA7E41  | UC1102
+                new byte[] { 0xC9, 0x05, 0xE7, 0x00 }, // 0x12705C9 | UC2100
+                new byte[] { 0xF9, 0xCF, 0x05, 0x01 }, // 0x145cff9 | UC2102
+                new byte[] { 0x90, 0x1F, 0xA2, 0x01 }, // 0x1e21f90 | UC3100
+                new byte[] { 0x60, 0xEE, 0xB3, 0x01 }, // 0x1f3ee60 | UC3102
+                new byte[] {  }, // 0x | UC4100
+                new byte[] {  }, // 0x | UC4101
+                new byte[] {  }, // 0x | UC4133
+                new byte[] {  }, // 0x | UC4133MP
+                new byte[] {  }, // 0x | TLL100
+                new byte[] {  }, // 0x | TLL109
+                new byte[] {  }, // 0x | T1R100
+                new byte[] {  }, // 0x | T1R109
+                new byte[] {  }, // 0x | T1R111
+                new byte[] {  }, // 0x | T2100
+                new byte[] {  }, // T2107
+                new byte[] {  }  // T2109
+            },
+            */
         };
 
         /// <summary>
@@ -796,6 +795,21 @@ namespace Dobby {
 
         #endregion
 
+        int[]
+            BootSettingsCallAddress = new int[] {
+
+                0x1F1DE8, // 0x53dde8
+                0x1f217a, // 0x5ee17a
+                0x633cba  // 0xa2fcba
+            },
+
+            BootSettingsFunctionAddress = new int[] {
+
+                0xB330,   // 0x407330
+                0xb330,   // 0x407330
+                0x55f0    // 0x4015f0
+            };
+
 
 
         ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
@@ -815,6 +829,32 @@ namespace Dobby {
             RB_StartPos,
             Game
         ;
+
+        /// <summary>
+        /// 0:  UC1100<br/>
+        /// 1:  UC1102<br/>
+        /// 2:  UC2100<br/>
+        /// 3:  UC2102<br/>
+        /// 4:  UC3100<br/>
+        /// 5:  UC3102<br/>
+        /// 6:  UC4100<br/>
+        /// 7:  UC4101<br/>
+        /// 8:  UC4133<br/>
+        /// 9:  UC4133MP<br/>
+        /// 10: TLL100<br/>
+        /// 11: TLL10X<br/>
+        /// 12: T1R100<br/>
+        /// 13: T1R109<br/>
+        /// 14: T1R11X<br/>
+        /// 15: T2100<br/>
+        /// 16: T2107<br/>
+        /// 17: T2109<br/>
+        /// </summary>
+#if DEBUG
+        public static int GameIndex;
+#else
+        private int GameIndex;
+#endif
 
         private static bool MultipleButtonsEnabled;
 
@@ -906,32 +946,6 @@ namespace Dobby {
         #endregion
 
         /// <summary>
-        /// 0:  UC1100<br/>
-        /// 1:  UC1102<br/>
-        /// 2:  UC2100<br/>
-        /// 3:  UC2102<br/>
-        /// 4:  UC3100<br/>
-        /// 5:  UC3102<br/>
-        /// 6:  UC4100<br/>
-        /// 7:  UC4101<br/>
-        /// 8:  UC4133<br/>
-        /// 9:  UC4133MP<br/>
-        /// 10: TLL100<br/>
-        /// 11: TLL10X<br/>
-        /// 12: T1R100<br/>
-        /// 13: T1R109<br/>
-        /// 14: T1R11X<br/>
-        /// 15: T2100<br/>
-        /// 16: T2107<br/>
-        /// 17: T2109<br/>
-        /// </summary>
-#if DEBUG
-        public static int GameIndex;
-#else
-        private int GameIndex;
-#endif
-
-        /// <summary>
         ///      Booleans Used For Universal Patch Values
         ///<br/> Defaults Are All False, So That's Nice. Simplifies Things
         ///<br/>
@@ -945,11 +959,11 @@ namespace Dobby {
         public static object[] PeekGameSpecificPatchValues() { return DynamicPatchButtons.GameSpecificPatchValues; }
         public static bool[] UniversaPatchValues { get; private set; }
 #else
-        private bool[] UniversaPatchValues
+        private static bool[] UniversaPatchValues
 #endif
          = new bool[5] { false, true, true, true, false };
 
-
+        private readonly bool[] DefaultUniveralPatchValues = new bool[5] { false, true, true, true, false };
 
         // this doesn't need to be a struct, but whatever
         /// <summary> Struct For Creating Dynamic Patch Buttons
@@ -990,7 +1004,7 @@ namespace Dobby {
                 (byte)10
             };
 
-            public static readonly object[] DefaultPatchValues = new object[] {
+            public static readonly object[] DefaultGameSpecificPatchValues = new object[] {
                 0.85f,
                 0.60f,
                 1f,
@@ -1070,12 +1084,10 @@ namespace Dobby {
             ///</summary>
             public void EnableDynamicPatchButtons(int?[] buttons = null) {
 
-                Dev.MsgOut($"Enabling {buttons.Length} Buttons");
                 for(int i = 0; i < buttons.Length; i++) {
                     if(buttons != null && buttons[i] == null) continue;
 
                     Buttons[i] = new vButton();
-                    Dev.MsgOut($"Enabling {Buttons[i].Name}");
                 }
                 MultipleButtonsEnabled = true;
             }
@@ -1087,7 +1099,7 @@ namespace Dobby {
                     button?.Dispose();
 
                 Buttons = null;
-                GameSpecificPatchValues = DefaultPatchValues;
+                GameSpecificPatchValues = DefaultGameSpecificPatchValues;
             }
 
             public Button[] CreateDynamicButtons() {
@@ -1264,35 +1276,30 @@ namespace Dobby {
                 Title = "Select Either Of The Game's Executables"
             };
 
+
             if(OpenedFile.ShowDialog() == DialogResult.OK) {
-                if(OriginalFormScale != Size.Empty || MainStreamIsOpen)
-                    ResetCustomDebugOptions();
+                if(OriginalFormScale != Size.Empty || MainStreamIsOpen) ResetCustomDebugOptions();
+
+                LoadPresentExecutableInStream(ExecutablePathBox.Text = OpenedFile.FileName);
                 
-                ExecutablePathBox.Text = OpenedFile.FileName;
-                MainStream = File.Open(OpenedFile.FileName, FileMode.Open, FileAccess.ReadWrite);
-
-
                 Game = GetGameID(MainStream);
                 GameInfoLabel.Text = GetGameLabelFromID(Game);
 
                 MainStreamIsOpen = true;
                 CustomDebugOptionsLabel.Visible = IsActiveFilePCExe = false;
 
-                GameIndex = (int)GetGameIndex(Game);
-                if(GetGameIndex(Game) != null)
-                    LoadGameSpecificMenuOptions();
+                GameIndex = GetGameIndex(Game);
 
-                else MessageBox.Show("Selected Game Not Currently Supported", $"Patches For {GetGameLabelFromID(Game)} Not Added Yet");
+                if(GameIndex == 0xBADBEEF)
+                    MessageBox.Show("Selected Game Not Currently Supported", $"Patches For {GetGameLabelFromID(Game)} Not Added Yet");
+                
+                LoadGameSpecificMenuOptions();
             }
-        }
-
-        private void LoadPresentExecutableInStream() {
-
         }
 
 
         private void ConfirmBtn_Click(object sender, EventArgs e) {
-            var Result = ApplyMenuSettings((int)GetGameIndex(Game));
+            var Result = ApplyMenuSettings(GetGameIndex(Game));
 
             if(Result.GetType() == typeof(int)) {
                 MessageBox.Show($"An Unexpected Error Occured While Applying The Patches, Please Ensure You're Running The Latest Release Build\nIf You Are, Report It To The Moron Typing Out This Error Message", $"ApplyMenuSettings() Error 0x{Result:X}");
@@ -1309,33 +1316,30 @@ namespace Dobby {
             var Message = string.Empty;
 
             using(MainStream) {
-                try {
-#if DEBUG
+              try {
                     if(UniversaPatchValues.Length != UniversalBootSettingsPointers.Length || DynamicPatchButtons.GameSpecificPatchValues.Length != GameSpecificBootSettingsPointers.Length)
                         MessageBox.Show($"Universal:\n  Vars: {UniversaPatchValues.Length}\n  Pointers: {UniversalBootSettingsPointers.Length}\nDynamic:\n  Vars: {DynamicPatchButtons.GameSpecificPatchValues.Length}\n  Pointers: {GameSpecificBootSettingsPointers.Length}", "Mismatch In Array Value vs pointer Length.");
-#endif
+      
                     int BootSettingsAddress, PatchCount = 0;
-                    var Addresses = GetBootSettingsGameIndexAndAddresses(Game);
 
-                    if(Addresses[0] == 0 || Addresses[1] == 0) {
-                        Dev.MsgOut($"Game #{GameIndex} Has Is Missing An Address For Settings (0: {Addresses[0]} / 1: {Addresses[1]})");
+                    if(BootSettingsCallAddress[GameIndex] == 0 || BootSettingsFunctionAddress[GameIndex] == 0) {
+                        MessageBox.Show($"Game #{GameIndex} Has Is Missing An Address For BootSettings (Function Call: {BootSettingsCallAddress[GameIndex]} / Function Data: {BootSettingsFunctionAddress[GameIndex]})");
                         return 0;
                     }
 
                     // Write Function Call To Call BootSettings
-                    WriteBytes((int)Addresses[0], GetBootSettingsFunctionCall());
+                    WriteBytes(BootSettingsCallAddress[GameIndex], GetBootSettingsFunctionCall());
 
                     // Write BootSettings Function's Assembly To Game Executable
-                    BootSettingsAddress = (int)Addresses[1];
-                    WriteBytes(BootSettingsAddress, GetBootSettingsBytes(GameIndex));
+                    WriteBytes(BootSettingsAddress = BootSettingsFunctionAddress[GameIndex], GetBootSettingsBytes(GameIndex));
 
-                    byte PointerType = 0x88;
+                    byte PointerType = 0x42;
                     byte[] PatchData;
                     PatchCount = 2;
 
                     // Universal Options
                     for(index = 0; index < UniversaPatchValues.Length; index++) {
-                        if(!UniversaPatchValues[index])
+                        if(UniversaPatchValues[index] == DefaultUniveralPatchValues[index])
                             continue;
 
                         PatchData = UniversalBootSettingsPointers[index][GameIndex];
@@ -1343,30 +1347,12 @@ namespace Dobby {
                         if(PatchData.Length == 4) PointerType = 0xFE;
                         else if(PatchData.Length == 8) PointerType = 0xFF;
 
-                        else if(PatchData.Length == 0) {
-                            Dev.MsgOut($"Pointer #{index} Was Null");
-                            continue;
-                        }
-                        else {
-                            Dev.MsgOut($"Invalid Data Size. ({PatchData.Length})");
-                            continue;
-                        }
+                        else throw new InvalidDataException($"Default Patch Value Pointer Data {(PatchData.Length == 0 ? "Null Somehow." : $"Size Invalid ({PatchData.Length})")}");
 
-#if DEBUG
-                        string[] dstr = new string[] {
-                            "Disable FPS",
-                            "Fill",
-                            "Disable Paused Indicator",
-                            "ProgPauseOnOpen",
-                            "ProgPauseOnExit",
-                            "Novis",
-                        };
-                        Dev.MsgOut(dstr[index]);
-#endif
                         WriteByte(data: PointerType);
                         WriteByte(data: 0);
                         WriteBytes(data: PatchData);
-                        WriteByte(data: 1);
+                        WriteByte(data: (byte)(UniversaPatchValues[index] ? 1 : 0));
 
                         Dev.MsgOut();
                         PatchCount++;
@@ -1375,31 +1361,16 @@ namespace Dobby {
 
                     // Game-Specific Options
                     for(index = 0; index < DynamicPatchButtons.GameSpecificPatchValues.Length; index++ ) {
-                        if(DynamicPatchButtons.GameSpecificPatchValues[index].Equals(DynamicPatchButtons.DefaultPatchValues[index])) {
-                            Dev.MsgOut($"Skipping Patch (#{index})");
-                            Dev.MsgOut();
+                        if(DynamicPatchButtons.GameSpecificPatchValues[index].Equals(DynamicPatchButtons.DefaultGameSpecificPatchValues[index]))
                             continue;
-                        }
 
                         PatchData = GameSpecificBootSettingsPointers[index][GameIndex];
 
                         if(PatchData.Length == 4) PointerType = 0xFE;
                         else if(PatchData.Length == 8) PointerType = 0xFF;
 
-                        else if(PatchData.Length == 0) {
-                            Dev.MsgOut($"Pointer #{index} Was Null");
-                            Dev.MsgOut();
-                            continue;
-                        }
-                        else {
-                            Dev.MsgOut($"Invalid Data Size. ({PatchData.Length})");
-                            Dev.MsgOut();
-                            continue;
-                        }
+                        else continue;
 
-#if DEBUG
-                        Dev.MsgOut($"[{DynamicPatchButtons.Name[index]}]");
-#endif
                         var PatchValue = DynamicPatchButtons.GameSpecificPatchValues[index];
                         WriteByte(data: PointerType);
                         WriteByte(data: (byte)(PatchValue.GetType() == typeof(byte) || PatchValue.GetType() == typeof(bool) ? 0 : 1));
@@ -1412,14 +1383,11 @@ namespace Dobby {
 
                     WriteBytes(data: new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0x08 }); // padding to avoid issues
 
-                    //MessageBox.Show("Patches Applied\n\nNote:\nCertain Values Are Set Long After The BootSettings Function Is Run.\nIf A Selected Setting Hasn't Changed, Select The Following Option:\n[Dev Menu => Custom... => Re-Apply Boot Settings]", "Patches Applied Without Any Errors");
-
-                    Message = $" {PatchCount} Patches Applied";
+                    Message = $" {PatchCount+1} Patches Applied";
                 }
                 catch(Exception tabarnack) {
-                    Dev.MsgOut(tabarnack.Message);
-                    Dev.MsgOut(tabarnack.StackTrace);
                     Dev.MsgOut($"{tabarnack.GetType()} | Error Applying Patches");
+                    MessageBox.Show(tabarnack.Message + $"\n{tabarnack.StackTrace}", $"Exception Type {tabarnack.GetType()}");
                     return 1;
                 }
             }
@@ -1476,7 +1444,7 @@ namespace Dobby {
 
 
         /// <summary> Get The MenuSettingsPage-Specific GameIndex Used For... Well, Take A Fking Guess.<br/><br/>Does Not Include Game Versions I Don't Indend To Support, Just Oldest And Latest<br/>(Plus A Couple Still Commonly Used In-Between Ones) </summary>
-        private int? GetGameIndex(int Game) {
+        private int GetGameIndex(int Game) {
             switch(Game) {
                 default:
                     return 999999999;
@@ -1487,7 +1455,7 @@ namespace Dobby {
                 case UC2102:
                 case UC3100:
                 case UC3102:
-                    return null;
+                    return 0xBADBEEF;
 
                 case UC4100:
                     return 6;
@@ -1496,7 +1464,7 @@ namespace Dobby {
                 case UC4127_133:
                     return 8;
                 case UC4133MP:
-                    return null;
+                    return 0xBADBEEF;
                 case TLL100:
                     return 10;
                 case TLL10X:
@@ -1517,57 +1485,6 @@ namespace Dobby {
                 case T2109:
                     return 17;
             }
-        }
-
-        /// <summary>
-        /// Merged A Few Functions With The Same Switch Case In To This Since There Wasn't Any Downside Anyway <br/>
-        /// 
-        /// Gets The Address To Call, Then Write The Address To Write The BootSettings Function
-        /// </summary>
-        /// <returns>
-        /// <br/>0: GetBootSettingsFunctionCallAddress
-        /// <br/>1: Address To Write Boot Settings
-        /// </returns>
-        private int[] GetBootSettingsGameIndexAndAddresses(int Game) {
-            var ret = new int[2] { 0, 0 };
-
-
-            switch(Game) {
-                default:
-                    break;
-
-                case UC1100:
-                case UC1102:
-                case UC2100:
-                case UC2102:
-                case UC3100:
-                case UC3102:
-                case UC4100:
-                case UC4101:
-                case UC4127_133:
-                case UC4133MP:
-                case TLL100:
-                case TLL10X:
-
-                case T1R100:
-                case T1R109:
-                case T1R110:case T1R111:
-                case T2100:
-                    ret[0] = 0x1F1DE8; // 0x53dde8
-                    ret[1] = 0xB330;   // 0x407330
-                    break;
-                case T2107:
-                    ret[0] = 0x1f217a; // 0x5ee17a
-                    ret[1] = 0xb330;   // 0x407330
-                    break;
-                case T2108:
-                case T2109:
-                    ret[0] = 0x633cba; // 0xa2fcba
-                    ret[1] = 0x55f0;   // 0x4015f0
-                    break;
-            }
-
-            return ret;
         }
 
 
@@ -1651,9 +1568,8 @@ namespace Dobby {
 
             gsButtons = new DynamicPatchButtons(IDS, GameSpecificPatchesLabel.Location.Y + GameSpecificPatchesLabel.Size.Height + 1);
 
-            foreach(var btn in gsButtons.CreateDynamicButtons()) {
+            foreach(var btn in gsButtons.CreateDynamicButtons())
                 ActiveForm.Controls.Add(btn);
-            }
 
             index = 0;
 

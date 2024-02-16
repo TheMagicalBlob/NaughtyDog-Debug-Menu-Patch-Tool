@@ -27,7 +27,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             YellowInformationLabel = Info;
             Info.Text = "";
             Page = 0;
-            AddControlEventHandlers(Controls);
+            AddEventHandlersToControls(Controls);
 
 #if !DEBUG
             //PS4MenuSettingsPageBtn.Enabled = false;

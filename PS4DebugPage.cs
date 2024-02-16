@@ -23,13 +23,8 @@ namespace Dobby {
             
             PortBox.Text = Port().ToString();
             IPBOX.Text = IP();
-            AddControlEventHandlers(Controls);
+            AddEventHandlersToControls(Controls);
         }
-
-        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     Designer Managed Functions     --\\\
-        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
-        #region Designer Managed
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
             this.TLLBtn = new System.Windows.Forms.Button();
@@ -93,7 +88,7 @@ namespace Dobby {
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeBtn.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.MinimizeBtn.Location = new System.Drawing.Point(273, 1);
             this.MinimizeBtn.Name = "MinimizeBtn";
@@ -109,7 +104,7 @@ namespace Dobby {
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Cambria", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.ExitBtn.Location = new System.Drawing.Point(296, 1);
             this.ExitBtn.Name = "ExitBtn";
@@ -495,12 +490,60 @@ namespace Dobby {
             this.PerformLayout();
 
         }
-#endregion
 
+
+        //////////////////\\\\\\\\\\\\\\\\\
+        ///-- PS4DEBUG PAGE VARIABLES --\\\
+        //////////////////\\\\\\\\\\\\\\\\\
+        #region PS4Debug Page Variables
+
+        public static PS4DBG geo;
+        public delegate void LabelTextDel(string message);
+        public static LabelTextDel SetLabelText = SetInfoLabelText;
+        public static Thread ConnectionThread = new Thread(new ThreadStart(PS4DebugPage.Connect));
+        public static SHA256 hash;
+
+
+        public static readonly byte
+            on = 0x01, off = 0x00
+        ;
+        public static bool PS4DebugIsConnected, WaitForConnection = true, IgnoreTitleID = false;
+
+        public static int
+            Executable,   // Active PS4DBG Process ID
+            attempts = 0, // Connect() retries
+            ProcessCount = 0,
+            DebugModePointerOffset = 0xDEADDAD
+        ;
+
+        public static ulong BaseAddress;
+
+        public static readonly string[] ExecutablesNames = new string[] {
+            "eboot.bin",
+            "t2.elf",
+            "t2-rtm.elf",
+            "t2-final.elf",
+            "t2-final-pgo-lto.elf",
+            "big2-ps4_Shipping.elf",
+            "big3-ps4_Shipping.elf",
+            "big4.elf",
+            "big4-final.elf",
+            "big4-mp.elf",
+            "big4-final-pgo-lto.elf",
+            "eboot-mp.elf",
+        };
+
+        public static string
+            ProcessName = "Jack Shit",
+            GameVersion = "UnknownGameVersion",
+            TitleID = "?"
+        ;
+        #endregion
 
         ///////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///--     Debug Mode Toggle Functions For Each Game     --\\\
         ///////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        #region Debug Mode Toggle Funxtions For Each Game
         public static void Connect() {
             try {
             Wait:
@@ -545,6 +588,7 @@ namespace Dobby {
             }
             catch(Exception tabarnack) { if(!Dev.REL) MessageBox.Show($"{tabarnack.Message}\n{tabarnack.StackTrace}"); ActiveForm?.Invoke(SetLabelText, $"Connection To {PS4DebugPage.IP()} Failed"); }
         }
+
 
         /// <summary> Avoid Attempting To Toggle The Selected Bool In Memory Before The Connection Process Is Finished
         ///</summary>

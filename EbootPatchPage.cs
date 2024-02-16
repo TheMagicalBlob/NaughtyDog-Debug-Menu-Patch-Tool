@@ -10,7 +10,7 @@ namespace Dobby {
         public EbootPatchPage() {
             InitializeComponent();
             
-            AddControlEventHandlers(Controls);
+            AddEventHandlersToControls(Controls);
             if (ActiveFilePath != null && !IsActiveFilePCExe)
                 ExecutablePathBox.Text = ActiveFilePath;
         }
@@ -78,7 +78,7 @@ namespace Dobby {
             // 
             this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(4, 101);
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 101);
             this.SeperatorLine1.Name = "SeperatorLine1";
             this.SeperatorLine1.Size = new System.Drawing.Size(316, 20);
             this.SeperatorLine1.TabIndex = 29;
@@ -122,7 +122,7 @@ namespace Dobby {
             // 
             this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(4, 158);
+            this.SeperatorLine2.Location = new System.Drawing.Point(2, 158);
             this.SeperatorLine2.Name = "SeperatorLine2";
             this.SeperatorLine2.Size = new System.Drawing.Size(316, 20);
             this.SeperatorLine2.TabIndex = 14;
@@ -1233,8 +1233,7 @@ namespace Dobby {
         }
 
 
-        void TLL100_Patches(string type) => WriteByte(0x1CCFED, (byte)(type == "Disable" ? off : on));
-
+        void TLL100_Patches(string type) { }
 
 
         void TLL100MP_RestoredMenu() {

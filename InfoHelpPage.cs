@@ -17,7 +17,7 @@ namespace Dobby {
         public InfoHelpPage() {
             InitializeComponent();
             
-            AddControlEventHandlers(Controls);
+            AddEventHandlersToControls(Controls);
             BuildLabel.Text += Build;
         }
 
