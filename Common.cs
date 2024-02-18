@@ -226,7 +226,9 @@ namespace Dobby {
           "* 3.43.203.540 | PS4 Menu Settings Page Universal Patch Section Work, Removed Some Debug Output Calls For Finished Function",
           "* 4.46.212.560 | PS4 Menu Settings Page Release, Code Restructuring For Most Pages. (Moved PS4DebugPage Related Variables From Common.cs In To PS4DebugPage.cs, Small Tweaks), Log Window Fixes" +
                           " (Properly Follows The Parent Form Now Instead Of Snapping To It). Standardized Seperator Label Heights And Adjusted Various Control Positions Application-Wide.",
-          "* 4.46.213.561 | Added BootSettings Function Data For T1R 1.00, Most Pointers Still Missing"
+          "* 4.46.213.561 | Added BootSettings Function Data For T1R 1.00, Most Pointers Still Missing",
+          "* 4.46.213.563 | Label Font Size Fix And Position Adjustment",
+          "* 4.46.215.583 | Standardized MainLabel, SeperatorLabel0, And Exit/Minimize Buttons, Positions And Sizes (Excuding Width For The Former Two) Shrumk Minimize/Exit Button Fonts (8f => 7.5f). Replaced The Control Hover Highlight With Mouse Down highlight To More Match ND's DMenu (Might Add Boolean Option Highlight To Match It Further)",
 
 
 
@@ -319,7 +321,7 @@ namespace Dobby {
         public static NetworkStream net_stream;
         public static FileStream MainStream;
 
-        public static Font MainFont = new Font("Consolas", 9.75F, FontStyle.Bold);
+        public static Font MainFont = new Font("Cambria", 9.75F, FontStyle.Bold);
         public static Color MainColour = Color.FromArgb(100, 100, 100);
 
 
@@ -371,7 +373,15 @@ namespace Dobby {
         /// <param name="EventIsMouseEnter">Highlight If True</param>
         public static void HoverLeave(Control PassedControl, bool EventIsMouseEnter) {
             CurrentControl = PassedControl.ToString();
-            PassedControl.ForeColor = EventIsMouseEnter ? Color.FromArgb(255, 227, 0) : Color.FromArgb(255, 255, 255);
+            if(EventIsMouseEnter) {
+                PassedControl.MouseDown += HighlightItemOnCLick;
+                PassedControl.MouseUp   += ResetItemHighlight;
+            }
+            else {
+                PassedControl.MouseDown -= HighlightItemOnCLick;
+                PassedControl.MouseUp   -= ResetItemHighlight;
+            }
+
             PassedControl.Text = EventIsMouseEnter ? $">{PassedControl.Text}" : PassedControl.Text.Substring(PassedControl.Text.IndexOf('>') + 1);
 
             if(PassedControl.GetType() != typeof(VarButton))
@@ -384,6 +394,8 @@ namespace Dobby {
             HoveredControl = PassedControl;
 #endif
         }
+        private static void HighlightItemOnCLick(object sender, MouseEventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
+        private static void ResetItemHighlight(object sender, MouseEventArgs e)   => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
 
         /// <summary> addme
         ///</summary>
@@ -568,7 +580,7 @@ namespace Dobby {
         }
 
 
-        /// <summary> Buttons To Avoid Applying Hover Arrow To </summary>
+        /// <summary> Buttons To Avoid Prepending The Hover Arrow To </summary>
         private static readonly string[] Blacklist = new string[] {
                 "!!!",
                 "ExitBtn",
@@ -586,16 +598,17 @@ namespace Dobby {
         public static void ApplyEventHandlersToControl(object sender) {
             var Item = sender as Control;
 
+            #if DEBUG
+            Item.MouseEnter += new EventHandler(DebugControlHover);
+            #endif
 
             Item.MouseDown += new MouseEventHandler(MouseDownFunc);
             Item.MouseUp += new MouseEventHandler(MouseUpFunc);
 
-            if(Item.Name.Contains("Seperator") && sender.GetType() == typeof(Label)) {
-                MsgOut($"Adding Paint Func To Line On {Item.Parent.Name}");
+            if(Item.Name.Contains("Seperator") && sender.GetType() == typeof(Label))
                 Item.Paint += PaintSeperatorLine;
-            }
 
-            else if(!Item.Name.Contains("PathBox")) // So You Can Drag Select The Text Lol
+            if(!Item.Name.Contains("PathBox")) // So You Can Drag Select The Text Lol
                 Item.MouseMove += new MouseEventHandler(MoveForm);
 
             if((Item.GetType() == typeof(Button) || Item.GetType() == typeof(VarButton)) && !Blacklist.Contains(Item.Name)) {
@@ -604,10 +617,6 @@ namespace Dobby {
             }
             if(Item.GetType() == typeof(VarButton))
                 Item.Paint += DrawButtonVar;
-
-            #if DEBUG
-            Item.MouseEnter += new EventHandler(DebugControlHover);
-            #endif
         }
 
         /// <summary>

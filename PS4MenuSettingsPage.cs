@@ -80,7 +80,7 @@ namespace Dobby {
             this.ProgPauseOnCloseBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ProgPauseOnCloseBtn.FlatAppearance.BorderSize = 0;
             this.ProgPauseOnCloseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ProgPauseOnCloseBtn.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
+            this.ProgPauseOnCloseBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.ProgPauseOnCloseBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.ProgPauseOnCloseBtn.Location = new System.Drawing.Point(1, 119);
             this.ProgPauseOnCloseBtn.Name = "ProgPauseOnCloseBtn";
@@ -97,7 +97,7 @@ namespace Dobby {
             this.ProgPauseOnOpenBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ProgPauseOnOpenBtn.FlatAppearance.BorderSize = 0;
             this.ProgPauseOnOpenBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ProgPauseOnOpenBtn.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
+            this.ProgPauseOnOpenBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.ProgPauseOnOpenBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.ProgPauseOnOpenBtn.Location = new System.Drawing.Point(1, 96);
             this.ProgPauseOnOpenBtn.Name = "ProgPauseOnOpenBtn";
@@ -114,7 +114,7 @@ namespace Dobby {
             this.DisableDebugTextBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.DisableDebugTextBtn.FlatAppearance.BorderSize = 0;
             this.DisableDebugTextBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DisableDebugTextBtn.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
+            this.DisableDebugTextBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.DisableDebugTextBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.DisableDebugTextBtn.Location = new System.Drawing.Point(1, 52);
             this.DisableDebugTextBtn.Name = "DisableDebugTextBtn";
@@ -132,7 +132,7 @@ namespace Dobby {
             this.DisablePausedIconBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.DisablePausedIconBtn.FlatAppearance.BorderSize = 0;
             this.DisablePausedIconBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DisablePausedIconBtn.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
+            this.DisablePausedIconBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.DisablePausedIconBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.DisablePausedIconBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisablePausedIconBtn.Location = new System.Drawing.Point(1, 74);
@@ -147,11 +147,11 @@ namespace Dobby {
             // MainLabel
             // 
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MainLabel.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold);
+            this.MainLabel.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Bold);
             this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
             this.MainLabel.Location = new System.Drawing.Point(1, 1);
             this.MainLabel.Name = "MainLabel";
-            this.MainLabel.Size = new System.Drawing.Size(314, 24);
+            this.MainLabel.Size = new System.Drawing.Size(314, 22);
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "Misc. PS4  Patches Page";
             // 
@@ -161,9 +161,9 @@ namespace Dobby {
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
+            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 7.5F, System.Drawing.FontStyle.Bold);
             this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ExitBtn.Location = new System.Drawing.Point(293, 1);
+            this.ExitBtn.Location = new System.Drawing.Point(296, 1);
             this.ExitBtn.Name = "ExitBtn";
             this.ExitBtn.Size = new System.Drawing.Size(23, 23);
             this.ExitBtn.TabIndex = 18;
@@ -177,9 +177,9 @@ namespace Dobby {
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
+            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 7.5F, System.Drawing.FontStyle.Bold);
             this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinimizeBtn.Location = new System.Drawing.Point(268, 1);
+            this.MinimizeBtn.Location = new System.Drawing.Point(272, 1);
             this.MinimizeBtn.Name = "MinimizeBtn";
             this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
             this.MinimizeBtn.TabIndex = 19;
@@ -203,7 +203,7 @@ namespace Dobby {
             this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.CreditsBtn.FlatAppearance.BorderSize = 0;
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CreditsBtn.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
+            this.CreditsBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.CreditsBtn.Location = new System.Drawing.Point(1, 319);
             this.CreditsBtn.Name = "CreditsBtn";
@@ -221,7 +221,7 @@ namespace Dobby {
             this.InfoHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.InfoHelpBtn.FlatAppearance.BorderSize = 0;
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InfoHelpBtn.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
+            this.InfoHelpBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.InfoHelpBtn.Location = new System.Drawing.Point(1, 297);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
@@ -237,7 +237,7 @@ namespace Dobby {
             // 
             this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine0.Location = new System.Drawing.Point(2, 17);
+            this.SeperatorLine0.Location = new System.Drawing.Point(2, 15);
             this.SeperatorLine0.Name = "SeperatorLine0";
             this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine0.TabIndex = 31;
@@ -249,7 +249,7 @@ namespace Dobby {
             this.BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.BackBtn.FlatAppearance.BorderSize = 0;
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BackBtn.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
+            this.BackBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.BackBtn.Location = new System.Drawing.Point(1, 340);
             this.BackBtn.Name = "BackBtn";
@@ -264,18 +264,18 @@ namespace Dobby {
             // CustomDebugOptionsLabel
             // 
             this.CustomDebugOptionsLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.CustomDebugOptionsLabel.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
+            this.CustomDebugOptionsLabel.Font = new System.Drawing.Font("Cambria", 8.75F, System.Drawing.FontStyle.Bold);
             this.CustomDebugOptionsLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.CustomDebugOptionsLabel.Location = new System.Drawing.Point(3, 202);
+            this.CustomDebugOptionsLabel.Location = new System.Drawing.Point(7, 201);
             this.CustomDebugOptionsLabel.Name = "CustomDebugOptionsLabel";
-            this.CustomDebugOptionsLabel.Size = new System.Drawing.Size(316, 19);
+            this.CustomDebugOptionsLabel.Size = new System.Drawing.Size(303, 19);
             this.CustomDebugOptionsLabel.TabIndex = 54;
             this.CustomDebugOptionsLabel.Text = "(Load An Executable To Show Game-Specific Options)";
             // 
             // UniversalPatchesLabel
             // 
             this.UniversalPatchesLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.UniversalPatchesLabel.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Bold);
+            this.UniversalPatchesLabel.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold);
             this.UniversalPatchesLabel.ForeColor = System.Drawing.SystemColors.Control;
             this.UniversalPatchesLabel.Location = new System.Drawing.Point(102, 33);
             this.UniversalPatchesLabel.Name = "UniversalPatchesLabel";
@@ -286,7 +286,7 @@ namespace Dobby {
             // GameSpecificPatchesLabel
             // 
             this.GameSpecificPatchesLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.GameSpecificPatchesLabel.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Bold);
+            this.GameSpecificPatchesLabel.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold);
             this.GameSpecificPatchesLabel.ForeColor = System.Drawing.SystemColors.Control;
             this.GameSpecificPatchesLabel.Location = new System.Drawing.Point(88, 177);
             this.GameSpecificPatchesLabel.Name = "GameSpecificPatchesLabel";
@@ -310,11 +310,11 @@ namespace Dobby {
             this.BrowseButton.Cursor = System.Windows.Forms.Cursors.Cross;
             this.BrowseButton.FlatAppearance.BorderSize = 0;
             this.BrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BrowseButton.Font = new System.Drawing.Font("Consolas", 8.5F, System.Drawing.FontStyle.Bold);
+            this.BrowseButton.Font = new System.Drawing.Font("Cambria", 8.5F, System.Drawing.FontStyle.Bold);
             this.BrowseButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.BrowseButton.Location = new System.Drawing.Point(237, 241);
+            this.BrowseButton.Location = new System.Drawing.Point(237, 242);
             this.BrowseButton.Name = "BrowseButton";
-            this.BrowseButton.Size = new System.Drawing.Size(78, 23);
+            this.BrowseButton.Size = new System.Drawing.Size(67, 19);
             this.BrowseButton.TabIndex = 39;
             this.BrowseButton.Text = "Browse...";
             this.BrowseButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -324,7 +324,7 @@ namespace Dobby {
             // ExecutablePathBox
             // 
             this.ExecutablePathBox.BackColor = System.Drawing.Color.Gray;
-            this.ExecutablePathBox.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
+            this.ExecutablePathBox.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.ExecutablePathBox.ForeColor = System.Drawing.SystemColors.Window;
             this.ExecutablePathBox.Location = new System.Drawing.Point(3, 241);
             this.ExecutablePathBox.Name = "ExecutablePathBox";
@@ -354,7 +354,7 @@ namespace Dobby {
             // 
             // GameInfoLabel
             // 
-            this.GameInfoLabel.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
+            this.GameInfoLabel.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
             this.GameInfoLabel.Location = new System.Drawing.Point(2, 267);
             this.GameInfoLabel.Name = "GameInfoLabel";
@@ -369,7 +369,7 @@ namespace Dobby {
             this.NovisBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.NovisBtn.FlatAppearance.BorderSize = 0;
             this.NovisBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.NovisBtn.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
+            this.NovisBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.NovisBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.NovisBtn.Location = new System.Drawing.Point(1, 141);
             this.NovisBtn.Name = "NovisBtn";

@@ -68,9 +68,9 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             // MainLabel
             // 
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MainLabel.Font = new System.Drawing.Font("Cambria", 12.25F, System.Drawing.FontStyle.Bold);
+            this.MainLabel.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Bold);
             this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.MainLabel.Location = new System.Drawing.Point(2, 2);
+            this.MainLabel.Location = new System.Drawing.Point(1, 1);
             this.MainLabel.Name = "MainLabel";
             this.MainLabel.Size = new System.Drawing.Size(314, 22);
             this.MainLabel.TabIndex = 0;
@@ -82,9 +82,9 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
+            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 7.5F, System.Drawing.FontStyle.Bold);
             this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ExitBtn.Location = new System.Drawing.Point(293, 1);
+            this.ExitBtn.Location = new System.Drawing.Point(296, 1);
             this.ExitBtn.Name = "ExitBtn";
             this.ExitBtn.Size = new System.Drawing.Size(23, 23);
             this.ExitBtn.TabIndex = 18;
@@ -98,9 +98,9 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
+            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 7.5F, System.Drawing.FontStyle.Bold);
             this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinimizeBtn.Location = new System.Drawing.Point(270, 1);
+            this.MinimizeBtn.Location = new System.Drawing.Point(273, 1);
             this.MinimizeBtn.Name = "MinimizeBtn";
             this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
             this.MinimizeBtn.TabIndex = 19;
@@ -174,7 +174,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             // 
             this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine0.Location = new System.Drawing.Point(2, 19);
+            this.SeperatorLine0.Location = new System.Drawing.Point(2, 15);
             this.SeperatorLine0.Name = "SeperatorLine0";
             this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine0.TabIndex = 31;
@@ -198,7 +198,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             this.PkgPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PkgPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.PkgPageBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.PkgPageBtn.Location = new System.Drawing.Point(1, 128);
+            this.PkgPageBtn.Location = new System.Drawing.Point(1, 127);
             this.PkgPageBtn.Name = "PkgPageBtn";
             this.PkgPageBtn.Size = new System.Drawing.Size(260, 23);
             this.PkgPageBtn.TabIndex = 35;
@@ -225,7 +225,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             this.PCDebugMenuPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PCDebugMenuPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.PCDebugMenuPageBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.PCDebugMenuPageBtn.Location = new System.Drawing.Point(1, 178);
+            this.PCDebugMenuPageBtn.Location = new System.Drawing.Point(1, 177);
             this.PCDebugMenuPageBtn.Name = "PCDebugMenuPageBtn";
             this.PCDebugMenuPageBtn.Size = new System.Drawing.Size(240, 23);
             this.PCDebugMenuPageBtn.TabIndex = 37;
@@ -245,7 +245,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             this.CreditsBtn.Location = new System.Drawing.Point(1, 233);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
+            this.CreditsBtn.Size = new System.Drawing.Size(68, 23);
             this.CreditsBtn.TabIndex = 28;
             this.CreditsBtn.Text = "Credits...";
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -263,7 +263,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             this.InfoHelpBtn.Location = new System.Drawing.Point(1, 210);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.InfoHelpBtn.Size = new System.Drawing.Size(147, 23);
+            this.InfoHelpBtn.Size = new System.Drawing.Size(139, 23);
             this.InfoHelpBtn.TabIndex = 29;
             this.InfoHelpBtn.Text = "Information / Help...";
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -275,9 +275,9 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             this.Playstation4Label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Playstation4Label.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold);
             this.Playstation4Label.ForeColor = System.Drawing.SystemColors.Control;
-            this.Playstation4Label.Location = new System.Drawing.Point(116, 33);
+            this.Playstation4Label.Location = new System.Drawing.Point(119, 30);
             this.Playstation4Label.Name = "Playstation4Label";
-            this.Playstation4Label.Size = new System.Drawing.Size(86, 19);
+            this.Playstation4Label.Size = new System.Drawing.Size(73, 15);
             this.Playstation4Label.TabIndex = 36;
             this.Playstation4Label.Text = "Playstation 4";
             // 
@@ -286,9 +286,9 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             this.PCLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.PCLabel.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold);
             this.PCLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.PCLabel.Location = new System.Drawing.Point(146, 160);
+            this.PCLabel.Location = new System.Drawing.Point(146, 158);
             this.PCLabel.Name = "PCLabel";
-            this.PCLabel.Size = new System.Drawing.Size(24, 19);
+            this.PCLabel.Size = new System.Drawing.Size(20, 15);
             this.PCLabel.TabIndex = 37;
             this.PCLabel.Text = "PC";
             // 
@@ -303,7 +303,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             this.DownloadSourceBtn.Location = new System.Drawing.Point(1, 258);
             this.DownloadSourceBtn.Name = "DownloadSourceBtn";
             this.DownloadSourceBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.DownloadSourceBtn.Size = new System.Drawing.Size(292, 23);
+            this.DownloadSourceBtn.Size = new System.Drawing.Size(275, 23);
             this.DownloadSourceBtn.TabIndex = 30;
             this.DownloadSourceBtn.Text = "Download Latest Source Code (Download Link)";
             this.DownloadSourceBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
