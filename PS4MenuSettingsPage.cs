@@ -815,50 +815,6 @@ namespace Dobby {
 
         #endregion
 
-        private static readonly int[]
-            BootSettingsCallAddress = new int[] {
-                0, // 0x | UC1100
-                0, // 0x | UC1102
-                0, // 0x | UC2100
-                0, // 0x | UC2102
-                0, // 0x | UC3100
-                0, // 0x | UC3102
-                0, // 0x | UC4100
-                0, // 0x | UC4101
-                0, // 0x | UC4133
-                0, // 0x | UC4133MP
-                0, // 0x | TLL100
-                0, // 0x | TLL109
-                0x101FB,  // 0x40c1fb | T1R100
-                0, // 0x | T1R109
-                0, // 0x | T1R111
-                0x1F1DE8, // 0x53dde8 | T2100
-                0x1f217a, // 0x5ee17a | T2107
-                0x633cba  // 0xa2fcba | T2109
-            },
-
-            BootSettingsFunctionAddress = new int[] {
-                0, // 0x | UC1100
-                0, // 0x | UC1102
-                0, // 0x | UC2100
-                0, // 0x | UC2102
-                0, // 0x | UC3100
-                0, // 0x | UC3102
-                0, // 0x | UC4100
-                0, // 0x | UC4101
-                0, // 0x | UC4133
-                0, // 0x | UC4133MP
-                0, // 0x | TLL100
-                0, // 0x | TLL109
-                0x217C0, // 0x41d7c0 | T1R100
-                0, // 0x | T1R109
-                0, // 0x | T1R111
-                0xB330,  // 0x407330 | T2100
-                0xb330,  // 0x407330 | T2107
-                0x55f0   // 0x4015f0 | T2109
-            };
-
-
 
         ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
         ///--     Misc Patches Page Variables    --\\\
@@ -1538,6 +1494,49 @@ namespace Dobby {
             }
         }
 
+
+        private static readonly int[]
+            BootSettingsCallAddress = new int[] {
+                0, // 0x | UC1100
+                0, // 0x | UC1102
+                0, // 0x | UC2100
+                0, // 0x | UC2102
+                0, // 0x | UC3100
+                0, // 0x | UC3102
+                0, // 0x | UC4100
+                0, // 0x | UC4101
+                0, // 0x | UC4133
+                0, // 0x | UC4133MP
+                0, // 0x | TLL100
+                0, // 0x | TLL109
+                0x101FB,  // 0x40c1fb | T1R100
+                0, // 0x | T1R109
+                0, // 0x | T1R111
+                0x1F1DE8, // 0x53dde8 | T2100
+                0x1f217a, // 0x5ee17a | T2107
+                0x633cba  // 0xa2fcba | T2109
+            },
+
+            BootSettingsFunctionAddress = new int[] {
+                0, // 0x | UC1100
+                0, // 0x | UC1102
+                0, // 0x | UC2100
+                0, // 0x | UC2102
+                0, // 0x | UC3100
+                0, // 0x | UC3102
+                0, // 0x | UC4100
+                0, // 0x | UC4101
+                0, // 0x | UC4133
+                0, // 0x | UC4133MP
+                0, // 0x | TLL100
+                0, // 0x | TLL109
+                0x217C0, // 0x41d7c0 | T1R100
+                0, // 0x | T1R109
+                0, // 0x | T1R111
+                0xB330,  // 0x407330 | T2100
+                0xb330,  // 0x407330 | T2107
+                0x55f0   // 0x4015f0 | T2109
+            };
 
         /// <summary>
         /// Returns The Data For The Custom Function Used To Call BootSettings To Write Over The Quick Menu Function Call<br/>
