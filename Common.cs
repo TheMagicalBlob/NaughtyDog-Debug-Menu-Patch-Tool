@@ -194,7 +194,7 @@ namespace Dobby {
           "* 3.36.143.380 | Renamed W.I.P. Page (PS4MiscPatchesPage => PS4MenuSettingsPage) And Related Controls, As Well As A Few Unrelated Ones. Misc. Changes",
           "* 3.36.144.380 | AppendControlVariable POC",
           "* 3.36.145.383 | Added Tlou 2 1.07 Custom Menu, Other Misc Changes",
-          "* 3.37.147.388 | Slightly Darkened All Form Background Colours, Added Button Class \"Overload\" (vButton) To Store Button Variables For Simpler Access. Created DrawButtonVar() Function For Appending Variables To vButtons. Dynamic Button Function Work. Other Random Crap",
+          "* 3.37.147.388 | Slightly Darkened All Form Background Colours, Added Button Class \"Overload\" (VarButton) To Store Button Variables For Simpler Access. Created DrawButtonVar() Function For Appending Variables To VarButtons. Dynamic Button Function Work. Other Random Crap",
           "* 3.37.148.392 | More Dynamic Patch Button Work",
           "* 3.37.150.403 | Added Many Pointers And Created Jagged Array To Store Them Better",
           "* 3.37.152.405 | Reworked Misc Patch Page Event Handlers, Other Misc Changes",
@@ -204,7 +204,7 @@ namespace Dobby {
           "* 3.39.165.451 | Reworked Several Functions, Moved Dev Class In TO Seperate File. Other Blah Blah Blah",
           "* 3.40.166.455 | Deleted Page, Moved More Crap",
           "* 3.40.172.470 | Large Code Cleaup, Deleted Resource, Reworked And Cleaned Up PCDebugMenuPatchPage, Added PaintBorder() Function Call Inside Of EventHandler Func And Removed All Instances That Came Before Said Function Originally, Many Minor Tweaks/Changes",
-          "* 3.40.175.474 | PS4MenuSettingsPatchPage Work (Reworked Page Structure, Made Some Other Minor Changes). Fixed Designer Bs With vButton class",
+          "* 3.40.175.474 | PS4MenuSettingsPatchPage Work (Reworked Page Structure, Made Some Other Minor Changes). Fixed Designer Bs With VarButton class",
           "* 3.40.176.478 | Minor EbootPatchPage Fix, Debug Tweaks",
           "* 3.40.178.481 | PS4MenuSettingsPatchPage Work, Renamed Some Game Identifiers (Ones Used To Check Against GetGameID())",
           "* 3.40.179.484 | PS4MenuSettingsPatchPage Work, Event Handler Fix, Debug Text Fix",
@@ -224,7 +224,8 @@ namespace Dobby {
           "* 3.43.199.527 | Changed Exit And Minimize Button Fonts Back, Line Fix On Another Page. Misc Patches Page Work (Changing Method For Enabling Buttons To Be Based On What's Available, Rather Than Manually Specifying Each Button To Be Enabled For Each Case- Jfc What Was I Thinking Before)",
           "* 3.43.203.540 | Debug Output Changes, Plenty Of Other Crap I Forgot. Go Away",
           "* 3.43.203.540 | PS4 Menu Settings Page Universal Patch Section Work, Removed Some Debug Output Calls For Finished Function",
-          "* 4.45.210.556 | PS4 Menu Settings Page Release, Code Restructuring FOr FOllowing Pages: [ PS4DebugPage (Moved Related Variables From Common.cs In To PS4DebugPage.cs), ",
+          "* 4.46.212.560 | PS4 Menu Settings Page Release, Code Restructuring For Most Pages. (Moved PS4DebugPage Related Variables From Common.cs In To PS4DebugPage.cs, Small Tweaks), Log Window Fixes" +
+                          " (Properly Follows The Parent Form Now Instead Of Snapping To It). Standardized Seperator Label Heights And Adjusted Various Control Positions Application-Wide.",
 
 
 
@@ -232,7 +233,7 @@ namespace Dobby {
             // * MAJOR
             //  - Create Remaining Two Help Pages
             //  - Refactor EbootPatchPage Code. Check The Others, Too
-            // 
+            //  - Gp4CreationPage Unfinished, Only Base Functionality Added
             // * MINOR 
             //  - Label Flash Stays On White If Inturrupted at the right time
             //  - Update PKG Creation Page To Be More Like GP4 Creation Page
@@ -258,16 +259,9 @@ namespace Dobby {
         ///--  MAIN APPLICATION VARIABLES & Functions  --\\\
         //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
         #region Application-Wide Functions And Variable Declarations
-
-        #region Designer Related
-        private IContainer components = null;
-        protected override void Dispose(bool disposing) {
-            if(disposing) components?.Dispose();
-            base.Dispose(disposing);
-        }
-        #endregion
-
-        public class vButton : Button { public object Variable; }
+        
+        // Custom Button Class So I Can Attach A Value To Them. This Is Probably The Wrong Way To Do This, But Whatever
+        public class VarButton : Button { public object Variable; }
 
         public enum PageID : int {
             MainPage = 0,
@@ -284,7 +278,7 @@ namespace Dobby {
             PCDebugMenuPage = 6,
             InfoHelpPage = 7,
             CreditsPage = 8,
-            PlaceholderPage = 111111111
+            PlaceholderPage = 0xbad
         }
 
 
@@ -296,14 +290,14 @@ namespace Dobby {
         public static PageID Page;
         public static PageID?[] Pages = new PageID?[5];
         public static bool
-            MouseScrolled = false,
-            MouseIsDown = false,
+            MouseScrolled,
+            MouseIsDown,
             FormActive,
             InfoHasImportantStr,
-            IsPageGoingBack = false,
-            LastMsgOutputWasInfoString = false,
-            LabelShouldFlash = false,
-            FlashThreadHasStarted = false,
+            IsPageGoingBack,
+            LastMsgOutputWasInfoString,
+            LabelShouldFlash,
+            FlashThreadHasStarted,
             IsActiveFilePCExe,
             MainStreamIsOpen
         ;
@@ -359,6 +353,10 @@ namespace Dobby {
 
             ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
             ActiveForm.Update();
+
+#if DEBUG
+            LogWindow.MoveLogToAppEdge(ActiveForm.Location);
+#endif
         }
         #endregion
 
@@ -371,11 +369,11 @@ namespace Dobby {
         /// <param name="PassedControl">The Control To Highlight</param>
         /// <param name="EventIsMouseEnter">Highlight If True</param>
         public static void HoverLeave(Control PassedControl, bool EventIsMouseEnter) {
-            CurrentControl = PassedControl.Name;
+            CurrentControl = PassedControl.ToString();
             PassedControl.ForeColor = EventIsMouseEnter ? Color.FromArgb(255, 227, 0) : Color.FromArgb(255, 255, 255);
             PassedControl.Text = EventIsMouseEnter ? $">{PassedControl.Text}" : PassedControl.Text.Substring(PassedControl.Text.IndexOf('>') + 1);
 
-            if(PassedControl.GetType() != typeof(vButton))
+            if(PassedControl.GetType() != typeof(VarButton))
                 PassedControl.Size = new Size(EventIsMouseEnter ? PassedControl.Width + 9 : PassedControl.Width - 9, PassedControl.Height);
 
             if(!InfoHasImportantStr & !EventIsMouseEnter) SetInfoLabelText("");
@@ -389,7 +387,7 @@ namespace Dobby {
         /// <summary> addme
         ///</summary>
         public static void DrawButtonVar(object sender, PaintEventArgs e) {
-            var control = sender as vButton;
+            var control = sender as VarButton;
             var Variable = control.Variable?.ToString();
 
             var x = (int)(control.Width - e.Graphics.MeasureString(Variable, control.Font).Width - 5);
@@ -421,8 +419,13 @@ namespace Dobby {
         ///</summary>
         public static void PaintSeperatorLine(object sender, PaintEventArgs e) {
             var AppRef = (Label)sender;
-            var LineVerticalPos = AppRef.Size.Height - 1;
 
+            if(AppRef.Size.Height != 15) {
+                AppRef.Size = new Size(AppRef.Size.Width, 15);
+                MsgOut($"Label On Page {AppRef.Parent.Name} Has An Ivalid Height ({AppRef.Size.Height})");
+            }
+
+            var LineVerticalPos = 9; 
             Point[] Line = new Point[] {
                 new Point(1, LineVerticalPos),
                 new Point(AppRef.Parent.Size.Width - 1, LineVerticalPos)
@@ -433,6 +436,9 @@ namespace Dobby {
         }
         #endregion
 
+
+
+        #region Basic Form Functions
 
         /// <summary>
         /// Loads The Specified Page From The PageId Group (E.g. ChangeForm(PageID.PS4MiscPageId))
@@ -573,7 +579,6 @@ namespace Dobby {
                 "OutputDirectoryBtn",
                 "TmpDirectoryBtn"
         };
-
         /// <summary>
         /// Apply Basic Event Handlers To Form And It's Items
         /// </summary>
@@ -592,11 +597,11 @@ namespace Dobby {
             else if(!Item.Name.Contains("PathBox")) // So You Can Drag Select The Text Lol
                 Item.MouseMove += new MouseEventHandler(MoveForm);
 
-            else if((Item.GetType() == typeof(Button) || Item.GetType() == typeof(vButton)) && !Blacklist.Contains(Item.Name)) {
+            if((Item.GetType() == typeof(Button) || Item.GetType() == typeof(VarButton)) && !Blacklist.Contains(Item.Name)) {
                 Item.MouseEnter += new EventHandler(ControlHover);
                 Item.MouseLeave += new EventHandler(ControlLeave);
             }
-            else if(Item.GetType() == typeof(vButton))
+            if(Item.GetType() == typeof(VarButton))
                 Item.Paint += DrawButtonVar;
 
             #if DEBUG
@@ -672,7 +677,16 @@ namespace Dobby {
             if(ActiveForm != null)
             YellowInformationLabel.Text = s;
         }
+        #endregion
 
+        /// <summary> Write A Byte To The MainStream And Flush The Data </summary>
+        public static void WriteByte(int offset, byte data) {
+            if(MainStream == null) { MessageBox.Show($"No Active Data Stream To Write To ({MainStreamIsOpen})", $"Addr: {offset:X} Byte: 0x{data:X}"); return; }
+
+            MainStream.Position = offset;
+            MainStream.WriteByte(data);
+            MainStream.Flush();
+        }
 
         /// <summary> Add A Summary, You Lazy Fuck </summary>
         /// <returns> The Game Name And App Version Respectively </returns>
@@ -880,8 +894,8 @@ namespace Dobby {
                 case "CustomDebugBtn":
                     InfoLabelString = "Patches In My Customized Version Of The Debug Menu";
                     break;
-                case "CustomOptDebugBtn":
-                    InfoLabelString = REL ? "Temporarily Disabled" : "change me //!";
+                case "PS4MenuSettingsPageBtn":
+                    InfoLabelString = "Adds A Function To Write To Selected Settings On Game Boot";
                     break;
                 // _______________
                 //

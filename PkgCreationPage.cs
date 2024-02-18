@@ -29,6 +29,27 @@ namespace Dobby {
                 }
             }
         }
+
+
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Designer Crap, No Touchie      --\\\
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+        #region Designer Crap, No Touchie
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing) {
+            if(disposing && (components != null)) {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
         private void InitializeComponent() {
             this.InfoHelpBtn = new System.Windows.Forms.Button();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
@@ -57,15 +78,15 @@ namespace Dobby {
             // 
             // InfoHelpBtn
             // 
-            this.InfoHelpBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.InfoHelpBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.InfoHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.InfoHelpBtn.FlatAppearance.BorderSize = 0;
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 248);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 260);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
-            this.InfoHelpBtn.Size = new System.Drawing.Size(317, 23);
+            this.InfoHelpBtn.Size = new System.Drawing.Size(168, 23);
             this.InfoHelpBtn.TabIndex = 15;
             this.InfoHelpBtn.Text = "Information / Help...";
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -76,23 +97,23 @@ namespace Dobby {
             // 
             this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(2, 200);
+            this.SeperatorLine2.Location = new System.Drawing.Point(2, 212);
             this.SeperatorLine2.Name = "SeperatorLine2";
-            this.SeperatorLine2.Size = new System.Drawing.Size(316, 20);
+            this.SeperatorLine2.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine2.TabIndex = 14;
-            this.SeperatorLine2.Text = "____________________________________________";
+            this.SeperatorLine2.Text = "--------------------------------------------------------------";
             // 
             // BackBtn
             // 
-            this.BackBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.BackBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.BackBtn.FlatAppearance.BorderSize = 0;
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 298);
+            this.BackBtn.Location = new System.Drawing.Point(1, 310);
             this.BackBtn.Name = "BackBtn";
-            this.BackBtn.Size = new System.Drawing.Size(317, 23);
+            this.BackBtn.Size = new System.Drawing.Size(130, 23);
             this.BackBtn.TabIndex = 13;
             this.BackBtn.Text = "Back...";
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -103,7 +124,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Cambria", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(4, 325);
+            this.Info.Location = new System.Drawing.Point(4, 336);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(313, 19);
             this.Info.TabIndex = 7;
@@ -111,16 +132,16 @@ namespace Dobby {
             // 
             // CreditsBtn
             // 
-            this.CreditsBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.CreditsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.CreditsBtn.FlatAppearance.BorderSize = 0;
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 273);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 285);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.CreditsBtn.Size = new System.Drawing.Size(317, 23);
+            this.CreditsBtn.Size = new System.Drawing.Size(208, 23);
             this.CreditsBtn.TabIndex = 28;
             this.CreditsBtn.Text = "Credits...";
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -129,13 +150,13 @@ namespace Dobby {
             // 
             // MinimizeBtn
             // 
-            this.MinimizeBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.MinimizeBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeBtn.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinimizeBtn.Location = new System.Drawing.Point(273, 2);
+            this.MinimizeBtn.Location = new System.Drawing.Point(273, 1);
             this.MinimizeBtn.Name = "MinimizeBtn";
             this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
             this.MinimizeBtn.TabIndex = 19;
@@ -145,13 +166,13 @@ namespace Dobby {
             // 
             // ExitBtn
             // 
-            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Cambria", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ExitBtn.Location = new System.Drawing.Point(295, 2);
+            this.ExitBtn.Location = new System.Drawing.Point(295, 1);
             this.ExitBtn.Name = "ExitBtn";
             this.ExitBtn.Size = new System.Drawing.Size(23, 23);
             this.ExitBtn.TabIndex = 18;
@@ -164,7 +185,7 @@ namespace Dobby {
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MainLabel.Font = new System.Drawing.Font("Cambria", 12.25F, System.Drawing.FontStyle.Bold);
             this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.MainLabel.Location = new System.Drawing.Point(2, 3);
+            this.MainLabel.Location = new System.Drawing.Point(2, 2);
             this.MainLabel.Name = "MainLabel";
             this.MainLabel.Size = new System.Drawing.Size(314, 22);
             this.MainLabel.TabIndex = 0;
@@ -174,15 +195,15 @@ namespace Dobby {
             // 
             this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine0.Location = new System.Drawing.Point(2, 12);
+            this.SeperatorLine0.Location = new System.Drawing.Point(2, 18);
             this.SeperatorLine0.Name = "SeperatorLine0";
-            this.SeperatorLine0.Size = new System.Drawing.Size(316, 20);
+            this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine0.TabIndex = 33;
-            this.SeperatorLine0.Text = "____________________________________________";
+            this.SeperatorLine0.Text = "--------------------------------------------------------------";
             // 
             // LaunchOrbisPubCmdBtn
             // 
-            this.LaunchOrbisPubCmdBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.LaunchOrbisPubCmdBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.LaunchOrbisPubCmdBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.LaunchOrbisPubCmdBtn.FlatAppearance.BorderSize = 0;
             this.LaunchOrbisPubCmdBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -199,7 +220,7 @@ namespace Dobby {
             // 
             // VerbosityBtn
             // 
-            this.VerbosityBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.VerbosityBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.VerbosityBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.VerbosityBtn.FlatAppearance.BorderSize = 0;
             this.VerbosityBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -218,15 +239,15 @@ namespace Dobby {
             // 
             this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 93);
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 101);
             this.SeperatorLine1.Name = "SeperatorLine1";
-            this.SeperatorLine1.Size = new System.Drawing.Size(316, 20);
+            this.SeperatorLine1.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine1.TabIndex = 29;
-            this.SeperatorLine1.Text = "____________________________________________";
+            this.SeperatorLine1.Text = "--------------------------------------------------------------";
             // 
             // TempDirectoryBtn
             // 
-            this.TempDirectoryBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.TempDirectoryBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.TempDirectoryBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.TempDirectoryBtn.FlatAppearance.BorderSize = 0;
             this.TempDirectoryBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -245,21 +266,21 @@ namespace Dobby {
             // 
             this.SeperatorLine3.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine3.Location = new System.Drawing.Point(2, 230);
+            this.SeperatorLine3.Location = new System.Drawing.Point(2, 245);
             this.SeperatorLine3.Name = "SeperatorLine3";
-            this.SeperatorLine3.Size = new System.Drawing.Size(316, 20);
+            this.SeperatorLine3.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine3.TabIndex = 40;
-            this.SeperatorLine3.Text = "____________________________________________";
+            this.SeperatorLine3.Text = "--------------------------------------------------------------";
             // 
             // Gp4CreationPageBtn
             // 
-            this.Gp4CreationPageBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.Gp4CreationPageBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.Gp4CreationPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.Gp4CreationPageBtn.FlatAppearance.BorderSize = 0;
             this.Gp4CreationPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Gp4CreationPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.Gp4CreationPageBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Gp4CreationPageBtn.Location = new System.Drawing.Point(1, 218);
+            this.Gp4CreationPageBtn.Location = new System.Drawing.Point(1, 226);
             this.Gp4CreationPageBtn.Name = "Gp4CreationPageBtn";
             this.Gp4CreationPageBtn.Size = new System.Drawing.Size(317, 23);
             this.Gp4CreationPageBtn.TabIndex = 41;
@@ -272,7 +293,7 @@ namespace Dobby {
             // 
             this.CmdPathLabel.Font = new System.Drawing.Font("Georgia", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CmdPathLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.CmdPathLabel.Location = new System.Drawing.Point(2, 114);
+            this.CmdPathLabel.Location = new System.Drawing.Point(3, 121);
             this.CmdPathLabel.Name = "CmdPathLabel";
             this.CmdPathLabel.Size = new System.Drawing.Size(266, 19);
             this.CmdPathLabel.TabIndex = 50;
@@ -282,15 +303,15 @@ namespace Dobby {
             // 
             // CmdPathBtn
             // 
-            this.CmdPathBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.CmdPathBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.CmdPathBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.CmdPathBtn.FlatAppearance.BorderSize = 0;
             this.CmdPathBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CmdPathBtn.Font = new System.Drawing.Font("Cambria", 7F);
             this.CmdPathBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CmdPathBtn.Location = new System.Drawing.Point(270, 112);
+            this.CmdPathBtn.Location = new System.Drawing.Point(270, 121);
             this.CmdPathBtn.Name = "CmdPathBtn";
-            this.CmdPathBtn.Size = new System.Drawing.Size(46, 23);
+            this.CmdPathBtn.Size = new System.Drawing.Size(46, 21);
             this.CmdPathBtn.TabIndex = 55;
             this.CmdPathBtn.Text = "Browse";
             this.CmdPathBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -302,7 +323,7 @@ namespace Dobby {
             this.GP4PathLabel.Font = new System.Drawing.Font("Georgia", 9.75F);
             this.GP4PathLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
             this.GP4PathLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.GP4PathLabel.Location = new System.Drawing.Point(2, 138);
+            this.GP4PathLabel.Location = new System.Drawing.Point(3, 145);
             this.GP4PathLabel.Name = "GP4PathLabel";
             this.GP4PathLabel.Size = new System.Drawing.Size(266, 19);
             this.GP4PathLabel.TabIndex = 53;
@@ -312,15 +333,15 @@ namespace Dobby {
             // 
             // GP4PathBtn
             // 
-            this.GP4PathBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.GP4PathBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.GP4PathBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.GP4PathBtn.FlatAppearance.BorderSize = 0;
             this.GP4PathBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.GP4PathBtn.Font = new System.Drawing.Font("Cambria", 7F);
             this.GP4PathBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.GP4PathBtn.Location = new System.Drawing.Point(270, 136);
+            this.GP4PathBtn.Location = new System.Drawing.Point(270, 144);
             this.GP4PathBtn.Name = "GP4PathBtn";
-            this.GP4PathBtn.Size = new System.Drawing.Size(46, 23);
+            this.GP4PathBtn.Size = new System.Drawing.Size(46, 21);
             this.GP4PathBtn.TabIndex = 56;
             this.GP4PathBtn.Text = "Browse";
             this.GP4PathBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -331,7 +352,7 @@ namespace Dobby {
             // 
             this.OutputDirectoryLabel.Font = new System.Drawing.Font("Georgia", 9.75F);
             this.OutputDirectoryLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.OutputDirectoryLabel.Location = new System.Drawing.Point(2, 163);
+            this.OutputDirectoryLabel.Location = new System.Drawing.Point(3, 170);
             this.OutputDirectoryLabel.Name = "OutputDirectoryLabel";
             this.OutputDirectoryLabel.Size = new System.Drawing.Size(266, 19);
             this.OutputDirectoryLabel.TabIndex = 51;
@@ -341,15 +362,15 @@ namespace Dobby {
             // 
             // OutputDirectoryBtn
             // 
-            this.OutputDirectoryBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.OutputDirectoryBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.OutputDirectoryBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.OutputDirectoryBtn.FlatAppearance.BorderSize = 0;
             this.OutputDirectoryBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.OutputDirectoryBtn.Font = new System.Drawing.Font("Cambria", 7F);
             this.OutputDirectoryBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.OutputDirectoryBtn.Location = new System.Drawing.Point(270, 161);
+            this.OutputDirectoryBtn.Location = new System.Drawing.Point(270, 169);
             this.OutputDirectoryBtn.Name = "OutputDirectoryBtn";
-            this.OutputDirectoryBtn.Size = new System.Drawing.Size(46, 23);
+            this.OutputDirectoryBtn.Size = new System.Drawing.Size(46, 21);
             this.OutputDirectoryBtn.TabIndex = 57;
             this.OutputDirectoryBtn.Text = "Browse";
             this.OutputDirectoryBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -360,7 +381,7 @@ namespace Dobby {
             // 
             this.TMPDirectoryLabel.Font = new System.Drawing.Font("Georgia", 9.75F);
             this.TMPDirectoryLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.TMPDirectoryLabel.Location = new System.Drawing.Point(2, 189);
+            this.TMPDirectoryLabel.Location = new System.Drawing.Point(3, 196);
             this.TMPDirectoryLabel.Name = "TMPDirectoryLabel";
             this.TMPDirectoryLabel.Size = new System.Drawing.Size(266, 19);
             this.TMPDirectoryLabel.TabIndex = 52;
@@ -370,15 +391,15 @@ namespace Dobby {
             // 
             // TMPDirectoryBtn
             // 
-            this.TMPDirectoryBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.TMPDirectoryBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.TMPDirectoryBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.TMPDirectoryBtn.FlatAppearance.BorderSize = 0;
             this.TMPDirectoryBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.TMPDirectoryBtn.Font = new System.Drawing.Font("Cambria", 7F);
             this.TMPDirectoryBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.TMPDirectoryBtn.Location = new System.Drawing.Point(270, 187);
+            this.TMPDirectoryBtn.Location = new System.Drawing.Point(270, 195);
             this.TMPDirectoryBtn.Name = "TMPDirectoryBtn";
-            this.TMPDirectoryBtn.Size = new System.Drawing.Size(46, 23);
+            this.TMPDirectoryBtn.Size = new System.Drawing.Size(46, 21);
             this.TMPDirectoryBtn.TabIndex = 58;
             this.TMPDirectoryBtn.Text = "Browse";
             this.TMPDirectoryBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -389,8 +410,8 @@ namespace Dobby {
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
-            this.ClientSize = new System.Drawing.Size(320, 348);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.ClientSize = new System.Drawing.Size(320, 361);
             this.Controls.Add(this.Gp4CreationPageBtn);
             this.Controls.Add(this.SeperatorLine3);
             this.Controls.Add(this.TempDirectoryBtn);
@@ -423,6 +444,7 @@ namespace Dobby {
             this.ResumeLayout(false);
 
         }
+        #endregion
 
         static public string
             GP4Path,
@@ -431,7 +453,7 @@ namespace Dobby {
             OutputDirectory = "?"
         ;
 
-        bool VerboseOutput = true, SpecifyTMPDirectory = false, IsFirstOpen = true, IsBuildReady;
+        bool VerboseOutput = true, SpecifyTMPDirectory = false, IsBuildReady;
 
         void ScanForOrbisPubTools() {                                                                                                              //DirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectory
             var FilesInCurrentDirectory   = Directory.GetFiles(Directory.GetCurrentDirectory());
@@ -613,24 +635,16 @@ namespace Dobby {
         private void Gp4CreationPageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.Gp4CreationPage);
 
 
-        /////////////////\\\\\\\\\\\\\\\\\\
-        ///--     Repeat Buttons      --\\\
-        /////////////////\\\\\\\\\\\\\\\\\\\
-        #region RepeatedButtonFunctions
+        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Repeated Page Functions & Control Declarations     --\\\
+        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        #region Repeat Functions & Control Declarations
         public void BackBtn_Click(object sender, EventArgs e) {
             LabelShouldFlash = false;
             ReturnToPreviousPage();
         }
-
         private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);
-
         private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
-        #endregion
-
-        ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     PS4DebugPage Control Declarations     --\\\
-        ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
-        #region ControlDeclarations
         private Button InfoHelpBtn;
         private Label SeperatorLine2;
         private Button BackBtn;
@@ -640,9 +654,7 @@ namespace Dobby {
         private Button CreditsBtn;
         private Button MinimizeBtn;
         private Button ExitBtn;
-        
         private Label MainLabel;
-        
         private Button VerbosityBtn;
         private Button LaunchOrbisPubCmdBtn;
         private Label SeperatorLine1;
@@ -650,11 +662,6 @@ namespace Dobby {
         private Label SeperatorLine0;
         private Label CmdPathLabel;
         private Button CmdPathBtn;
-
-        private void OutputDirectoryLabel_Click_1(object sender, EventArgs e) {
-
-        }
-
         private Label GP4PathLabel;
         private Button GP4PathBtn;
         private Label OutputDirectoryLabel;

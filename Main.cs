@@ -10,18 +10,11 @@ using System.Net.Sockets;
 using System.Windows.Forms;
 using static Dobby.Common;
 using static Dobby.Dev;
+using System.ComponentModel;
 
-namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
+namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
     public partial class Main : Form {
         public Main() {
-#if DEBUG
-            if (Pages[1] == null) {
-                try {
-                    Console.WindowWidth = 75; Console.BufferWidth = 75;
-                }
-                catch (Exception) { } // These Caused A Crash I Couldn't Recreate, So I Got Lazy Put Them In A Try/Catch
-            }
-#endif
             InitializeComponent();
             
             YellowInformationLabel = Info;
@@ -29,12 +22,27 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             Page = 0;
             AddEventHandlersToControls(Controls);
 
-#if !DEBUG
-            //PS4MenuSettingsPageBtn.Enabled = false;
-#else
+#if DEBUG
             var Log = new LogWindow(this);
             Log.Show();
 #endif
+        }
+
+        #region Designer Crap, No Touchie
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing) {
+            if(disposing && (components != null)) {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
         public void InitializeComponent() {
@@ -62,7 +70,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MainLabel.Font = new System.Drawing.Font("Cambria", 12.25F, System.Drawing.FontStyle.Bold);
             this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.MainLabel.Location = new System.Drawing.Point(2, 4);
+            this.MainLabel.Location = new System.Drawing.Point(2, 2);
             this.MainLabel.Name = "MainLabel";
             this.MainLabel.Size = new System.Drawing.Size(314, 22);
             this.MainLabel.TabIndex = 0;
@@ -166,21 +174,21 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             // 
             this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine0.Location = new System.Drawing.Point(2, 14);
+            this.SeperatorLine0.Location = new System.Drawing.Point(2, 19);
             this.SeperatorLine0.Name = "SeperatorLine0";
-            this.SeperatorLine0.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine0.TabIndex = 31;
-            this.SeperatorLine0.Text = "______________________________________________________________";
+            this.SeperatorLine0.Text = "--------------------------------------------------------------";
             // 
             // SeperatorLine3
             // 
             this.SeperatorLine3.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine3.Location = new System.Drawing.Point(3, 192);
+            this.SeperatorLine3.Location = new System.Drawing.Point(3, 194);
             this.SeperatorLine3.Name = "SeperatorLine3";
-            this.SeperatorLine3.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine3.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine3.TabIndex = 32;
-            this.SeperatorLine3.Text = "______________________________________________________________";
+            this.SeperatorLine3.Text = "--------------------------------------------------------------";
             // 
             // PkgPageBtn
             // 
@@ -203,11 +211,11 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             // 
             this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 142);
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 144);
             this.SeperatorLine1.Name = "SeperatorLine1";
-            this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine1.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine1.TabIndex = 36;
-            this.SeperatorLine1.Text = "______________________________________________________________";
+            this.SeperatorLine1.Text = "--------------------------------------------------------------";
             // 
             // PCDebugMenuPageBtn
             // 
@@ -267,12 +275,11 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.Playstation4Label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Playstation4Label.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold);
             this.Playstation4Label.ForeColor = System.Drawing.SystemColors.Control;
-            this.Playstation4Label.Location = new System.Drawing.Point(116, 32);
+            this.Playstation4Label.Location = new System.Drawing.Point(116, 33);
             this.Playstation4Label.Name = "Playstation4Label";
             this.Playstation4Label.Size = new System.Drawing.Size(86, 19);
             this.Playstation4Label.TabIndex = 36;
             this.Playstation4Label.Text = "Playstation 4";
-            this.Playstation4Label.Click += new System.EventHandler(this.Playstation4Label_Click);
             // 
             // PCLabel
             // 
@@ -293,7 +300,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.DownloadSourceBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DownloadSourceBtn.Font = new System.Drawing.Font("Cambria", 9F, System.Drawing.FontStyle.Bold);
             this.DownloadSourceBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.DownloadSourceBtn.Location = new System.Drawing.Point(1, 257);
+            this.DownloadSourceBtn.Location = new System.Drawing.Point(1, 258);
             this.DownloadSourceBtn.Name = "DownloadSourceBtn";
             this.DownloadSourceBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.DownloadSourceBtn.Size = new System.Drawing.Size(292, 23);
@@ -331,17 +338,19 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
             this.ResumeLayout(false);
 
         }
+        #endregion
 
 
-        #region Page-Specific Functions
         //////////////////////\\\\\\\\\\\\\\\\\\\\\
         ///--     Page-Specific Functions     --\\\
         //////////////////////\\\\\\\\\\\\\\\\\\\\\
+        #region Page-Specific Functions
         private void PS4DebugPageBtn_Click(object sender, EventArgs e)    => ChangeForm(PageID.PS4DebugPage);
         private void EbootPatchPageBtn_Click(object sender, EventArgs e)  => ChangeForm(PageID.EbootPatchPage);
         private void MiscPatchesBtn_Click(object sender, EventArgs e)     => ChangeForm(PageID.PS4MiscPage);
         private void PkgPageBtn_Click(object sender, EventArgs e)         => ChangeForm(PageID.PkgCreationPage);
         private void PCDebugMenuPageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.PCDebugMenuPage);
+        private void DownloadSourceBtn_Click(object sender, EventArgs e) => System.Diagnostics.Process.Start(@"https://github.com/TheMagicalBlob/NaughtyDog-Debug-Menu-Patch-Tool/archive/refs/heads/master.zip");
         #endregion
 
 
@@ -349,6 +358,9 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
         ///--     Control Declarations & Repeated Page Functions    --\\\
         /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         #region Control Declarations & Repeated Page Functions
+        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);
+        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
+
         public Label MainLabel;
         public Button PS4DebugPageBtn;
         public Button EbootPatchPageBtn;
@@ -361,14 +373,11 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release"
         public Button PkgPageBtn;
         public Label SeperatorLine1;
         public Button PCDebugMenuPageBtn;
-        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);
-        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
-        private void DownloadSourceBtn_Click(object sender, EventArgs e) => System.Diagnostics.Process.Start(@"https://github.com/TheMagicalBlob/NaughtyDog-Debug-Menu-Patch-Tool/archive/refs/heads/master.zip");
+        public Button CreditsBtn;
+        public Button InfoHelpBtn;
+        public Label Playstation4Label;
+        public Label PCLabel;
+        public Button DownloadSourceBtn;
         #endregion
-
-        // debug
-        private void Playstation4Label_Click(object sender, EventArgs e) {
-
-        }
     }
 }

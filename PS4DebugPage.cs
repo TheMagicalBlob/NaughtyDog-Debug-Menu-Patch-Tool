@@ -20,10 +20,31 @@ namespace Dobby {
 
         public PS4DebugPage() {
             InitializeComponent();
-            
+
             PortBox.Text = Port().ToString();
             IPBOX.Text = IP();
             AddEventHandlersToControls(Controls);
+        }
+
+
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Designer Crap, No Touchie      --\\\
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+        #region Designer Crap, No Touchie
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing) {
+            if(disposing && (components != null)) {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
         }
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
@@ -118,11 +139,11 @@ namespace Dobby {
             // 
             this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine0.Location = new System.Drawing.Point(2, 11);
+            this.SeperatorLine0.Location = new System.Drawing.Point(2, 18);
             this.SeperatorLine0.Name = "SeperatorLine0";
-            this.SeperatorLine0.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine0.TabIndex = 30;
-            this.SeperatorLine0.Text = "______________________________________________________________";
+            this.SeperatorLine0.Text = "--------------------------------------------------------------";
             // 
             // ManualConnectBtn
             // 
@@ -160,7 +181,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Cambria", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(9, 419);
+            this.Info.Location = new System.Drawing.Point(9, 417);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
@@ -225,7 +246,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 395);
+            this.BackBtn.Location = new System.Drawing.Point(1, 393);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(60, 22);
             this.BackBtn.TabIndex = 14;
@@ -289,11 +310,11 @@ namespace Dobby {
             // 
             this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 204);
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 208);
             this.SeperatorLine1.Name = "SeperatorLine1";
-            this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine1.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine1.TabIndex = 20;
-            this.SeperatorLine1.Text = "______________________________________________________________";
+            this.SeperatorLine1.Text = "--------------------------------------------------------------";
             // 
             // PS4DebugPayloadBtn
             // 
@@ -364,11 +385,11 @@ namespace Dobby {
             // 
             this.SeperatorLine3.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine3.Location = new System.Drawing.Point(2, 329);
+            this.SeperatorLine3.Location = new System.Drawing.Point(2, 334);
             this.SeperatorLine3.Name = "SeperatorLine3";
-            this.SeperatorLine3.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine3.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine3.TabIndex = 26;
-            this.SeperatorLine3.Text = "_______________________________________________________________";
+            this.SeperatorLine3.Text = "--------------------------------------------------------------_";
             // 
             // InfoHelpBtn
             // 
@@ -395,7 +416,7 @@ namespace Dobby {
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 371);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 370);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
@@ -426,11 +447,11 @@ namespace Dobby {
             // 
             this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(2, 300);
+            this.SeperatorLine2.Location = new System.Drawing.Point(2, 306);
             this.SeperatorLine2.Name = "SeperatorLine2";
-            this.SeperatorLine2.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine2.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine2.TabIndex = 31;
-            this.SeperatorLine2.Text = "_______________________________________________________________";
+            this.SeperatorLine2.Text = "--------------------------------------------------------------_";
             // 
             // IgnoreTitleIDBtn
             // 
@@ -490,7 +511,7 @@ namespace Dobby {
             this.PerformLayout();
 
         }
-
+        #endregion
 
         //////////////////\\\\\\\\\\\\\\\\\
         ///-- PS4DEBUG PAGE VARIABLES --\\\
@@ -540,14 +561,14 @@ namespace Dobby {
         ;
         #endregion
 
-        ///////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     Debug Mode Toggle Functions For Each Game     --\\\
-        ///////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        #region Debug Mode Toggle Funxtions For Each Game
+        //////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     FUNCTIONS FOR BASIC PS4DEBUG PAGE FUNCTIONALITY     --\\\
+        //////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        #region Functions For Basic PS4Debug Page Functionality
         public static void Connect() {
             try {
             Wait:
-                if (PS4DebugIsConnected) goto Wait;
+                if(PS4DebugIsConnected) goto Wait;
 
                 Dev.MsgOut($"Connecting To Console at {IP()}");
                 ActiveForm?.Invoke(SetLabelText, "Connecting To Console");
@@ -561,16 +582,16 @@ namespace Dobby {
                     if(ExecutablesNames.Contains(process.name)) {
 
                         string title = geo.GetProcessInfo(process.pid).titleid;
-                        
+
                         if(title == "FLTZ00003" || title == "ITEM00003") {
                             Dev.MsgOut($"Skipping Lightning's Stuff {title}");
-                            break;
+                            continue;
                         } // Check To Avoid Connecting To HB Store Stuff
 
-                        Executable   = process.pid;
-                        ProcessName  = process.name;
-                        TitleID      = geo.GetProcessInfo(process.pid).titleid;
-                        GameVersion  = GetGameVersion();
+                        Executable = process.pid;
+                        ProcessName = process.name;
+                        TitleID = geo.GetProcessInfo(process.pid).titleid;
+                        GameVersion = GetGameTitleIDVersionAndDMenuOffset();
                         ProcessCount = geo.GetProcessList().processes.Length;
 
 
@@ -594,7 +615,7 @@ namespace Dobby {
         ///</summary>
         public static Task CheckConnectionStatus() {
             if(ConnectionThread.ThreadState == System.Threading.ThreadState.Unstarted)
-               ConnectionThread.Start();
+                ConnectionThread.Start();
 
             else if(!PS4DebugIsConnected || geo?.GetProcessInfo(Executable).name != ProcessName || !ExecutablesNames.Contains(geo?.GetProcessInfo(Executable).name)) {
                 PS4DebugIsConnected = false; WaitForConnection = true;
@@ -604,25 +625,23 @@ namespace Dobby {
             while(WaitForConnection) Thread.Sleep(2);
             return Task.CompletedTask;
         }
-
+        
         /// <summary>
         /// An ugly sack of gross which determines the patch version of a specified game by just checking the int32 value of 2 bytes at a game-specific address because I have no idea how or if I can check the .sfo
         /// </summary>
         /// <returns> The Current Game Version If Successful, Or UnknownGameVersion \ UnknownTitleID If It Failed At Some Stage </returns>
-        public static string GetGameVersion() {
+        public static string GetGameTitleIDVersionAndDMenuOffset() {
             try {
                 if(PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName) {
-                    
-                    // Determine The Game That's Running
-                    if (!IgnoreTitleID) // Skip In Case The User's Using A fPKG With An Altered TitleID
 
+                    // Determine The Game That's Running
                     switch(TitleID) {
                         case "CUSA00552":
                         case "CUSA00554":
                         case "CUSA00556":
                         case "CUSA00557":
                         case "CUSA00559":
-                                GameVersion = "T1R";
+                            GameVersion = "T1R";
                             break;
                         case "CUSA10249":
                         case "CUSA14006":
@@ -649,7 +668,7 @@ namespace Dobby {
                         case "CUSA04032":
                         case "CUSA04034":
                         case "CUSA04051":
-                                GameVersion = "UC4 MP Beta";
+                            GameVersion = "UC4 MP Beta";
                             break;
                         case "CUSA07737":
                         case "CUSA07875":
@@ -660,8 +679,8 @@ namespace Dobby {
                             break;
 
                         default:
-                                MessageBox.Show("Title ID Doesn't Match Any Known ID's, Try Enabling \"Ignore Title ID\" If You've Changed The Game's Title ID Yourself", "No Idea Which Game This Is");
-                                return "UnknownTitleID";
+                            MessageBox.Show("Title ID Doesn't Match Any Known ID's, Try Enabling \"Ignore Title ID\" If You've Changed The Game's Title ID Yourself", "No Idea Which Game This Is");
+                            return "UnknownTitleID";
                     }
 
                     // Read A Spot In Memory To Determine Which Patch the Executable's From
@@ -670,9 +689,9 @@ namespace Dobby {
                             var T1RCheck = BitConverter.ToInt16(geo.ReadMemory(Executable, 0x4000F4, 2), 0);
                             switch(T1RCheck) {
                                 case 18432: DebugModePointerOffset = 0x2E81; return "1.00";
-                                case 3480:  DebugModePointerOffset = 0x2E81; return "1.09";
-                                case 4488:  DebugModePointerOffset = 0x2E81; return "1.10";
-                                case 4472:  DebugModePointerOffset = 0x2E81; return "1.11";
+                                case 3480: DebugModePointerOffset = 0x2E81; return "1.09";
+                                case 4488: DebugModePointerOffset = 0x2E81; return "1.10";
+                                case 4472: DebugModePointerOffset = 0x2E81; return "1.11";
 
                                 default: Dev.MsgOut($"Error, Game Was T1R But None of The Checks Matched! || {T1RCheck}");
                                     MessageBox.Show($"The Game Was Determined To Be The Last of Us: Remastered, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{T1RCheck} {TitleID}", "Error Finding App Version");
@@ -698,11 +717,11 @@ namespace Dobby {
                             hash = SHA256.Create();
                             var UCCCheck = BitConverter.ToInt32(hash.ComputeHash(geo.ReadMemory(Executable, 0x400000, 100)), 0);
                             switch(UCCCheck) {
-                                case 455457367:   return "U2 1.00";
+                                case 455457367: return "U2 1.00";
                                 case -1951784656: return "U3 1.00";
                                 case -1805287883: return "U2 1.02";
-                                case 750078581:   return "U3 1.02";
-                                case -136556654:  return "U1 1.00";
+                                case 750078581: return "U3 1.02";
+                                case -136556654: return "U1 1.00";
                                 case -1120900838: return "U1 1.02";
 
                                 default: Dev.MsgOut($"Error, Game Was UCC But None of The Checks Matched! || chk:{UCCCheck}");
@@ -752,10 +771,11 @@ namespace Dobby {
                                     MessageBox.Show($"The Game Was Determined To Be UC4, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{U4Check} {TitleID}", "Error Finding App Version");
                                     return "UnknownUC4GameVersion";
                             }
+
                         case "UC4 MP Beta":
                             var U4MPBetaCheck = BitConverter.ToInt32(geo.ReadMemory(Executable, 0x403000, 4), 0);
                             switch(U4MPBetaCheck) {
-                                case 759883849:  DebugModePointerOffset = 0x2E83; return "1.00 MP Beta"; 
+                                case 759883849:  DebugModePointerOffset = 0x2E83; return "1.00 MP Beta";
                                 case 2067458121: DebugModePointerOffset = 0x2E83; return "1.09 MP Beta";
 
                                 default:
@@ -763,6 +783,7 @@ namespace Dobby {
                                     MessageBox.Show($"The Game Was Determined To Be The UC4 MP Beta (Nice), But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{U4MPBetaCheck} {TitleID}", "Error Finding App Version");
                                     return "UnknownUC4GameVersion";
                             }
+
                         case "TLL":
                             var TLLCheck = BitConverter.ToInt16(geo.ReadMemory(Executable, 0x40003B, 2), 0);
                             switch(TLLCheck) {
@@ -776,7 +797,8 @@ namespace Dobby {
                                     MessageBox.Show($"The Game Was Determined To Be The The Lost Legacy, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{TLLCheck} {TitleID}", "Error Finding App Version");
                                     return "UnknownTLLGameVersion";
                             }
-                        default: Dev.MsgOut("!!! " + TempStringStore); return "UnknownGameVersion";
+
+                        default: Dev.MsgOut($"!!! PS4DebugPage -> GetGameVersion() Fell Through. (GameVersion: {GameVersion})"); return "UnknownGameVersion";
                     }
                 }
                 return "UnknownGameVersion";
@@ -843,6 +865,12 @@ namespace Dobby {
             }
         }
 
+        public void IgnoreTitleIDBtn_Click(object sender, EventArgs e) {
+            var ControlText = ((Control)sender).Text;
+            IgnoreTitleID = !IgnoreTitleID;
+            ((Control)sender).Text = $"{ControlText.Remove(ControlText.LastIndexOf(' '))} {(IgnoreTitleID ? "Enable" : "Disabled")}";
+        }
+
         /// <summary>
         /// Takes The Address For A Pointer, Adds The Offset For Debug Mode, And Writes To That Byte
         /// </summary>
@@ -861,9 +889,9 @@ namespace Dobby {
                         else if(AddressIndex != Addresses.Length - 1) AddressIndex++;
                 }
                 else {
-                    Dev.MsgOut (
-                        $"Error Toggling Byte.\nPS4Debug {(PS4DebugIsConnected ? "" : "Not " )}Connected\n"
-                        + $"{geo.GetProcessInfo(Executable).name} {(geo.GetProcessInfo(Executable).name == ProcessName ? "=" : "!" )}= {ProcessName}"
+                    Dev.MsgOut(
+                        $"Error Toggling Byte.\nPS4Debug {(PS4DebugIsConnected ? "" : "Not ")}Connected\n"
+                        + $"{geo.GetProcessInfo(Executable).name} {(geo.GetProcessInfo(Executable).name == ProcessName ? "=" : "!")}= {ProcessName}"
                     );
                 }
             }
@@ -876,12 +904,12 @@ namespace Dobby {
         /// <param name="Address">Address To Read/Write To</param>
         public static void Toggle(ulong Address) {
             try {
-                if (PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName) {
+                if(PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName) {
                     geo.WriteMemory(Executable, Address, geo.ReadMemory(Executable, Address, 1)[0] == 0x00 ? on : off);
                     Dev.MsgOut($"Wrote To 0x{Address:X} in {geo.GetProcessInfo(Executable).name}/{Executable}");
                 }
             }
-            catch (Exception tabarnack) { Dev.MsgOut(tabarnack.Message); }
+            catch(Exception tabarnack) { Dev.MsgOut(tabarnack.Message); }
         }
 
         /// <summary>
@@ -890,11 +918,11 @@ namespace Dobby {
         /// <param name="AddressArray">Array Of Addresses To Read/Write To</param>
         public void Toggle(ulong[] AddressArray) {
             try {
-                if (PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName)
-                    foreach (ulong Address in AddressArray)
-                    geo.WriteMemory(Executable, Address, geo.ReadMemory(Executable, Address, 1)[0] == 0x00 ? on : off);
+                if(PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName)
+                    foreach(ulong Address in AddressArray)
+                        geo.WriteMemory(Executable, Address, geo.ReadMemory(Executable, Address, 1)[0] == 0x00 ? on : off);
             }
-            catch (Exception tabarnack) { Dev.MsgOut(tabarnack.Message); }
+            catch(Exception tabarnack) { Dev.MsgOut(tabarnack.Message); }
         }
 
 
@@ -906,8 +934,8 @@ namespace Dobby {
             Socket S = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
             try { S.Connect(new IPEndPoint(IPAddress.Parse(IPBOX.Text), int.Parse(PortBox.Text))); S.Send(Properties.Resources.PS4Debug1_1_15); }
-            catch (Exception _) { Dev.MsgOut("Failed To Connect To Specified Address/Port"); return; }
-            
+            catch(Exception _) { Dev.MsgOut("Failed To Connect To Specified Address/Port"); return; }
+
             S.Close();
             SetInfoLabelText("Payload Injected Successfully");
             MessageBox.Show("PS4Debug Paylod Sent Without Issue\n\nPS4Debug Update 1.1.15 By ctn123\nPS4Debug Created By Golden", "Payload Injected Successfully, Here's Some Credits");
@@ -916,10 +944,10 @@ namespace Dobby {
 
         private void ManualConnectBtn_Click(object sender, EventArgs e) { // You Never Need To Press This, But People Would Probably Get Confused If It Was Missing
             if(ConnectionThread.ThreadState == System.Threading.ThreadState.Unstarted)
-            ConnectionThread.Start();
+                ConnectionThread.Start();
             PS4DebugIsConnected = false;
         }
-
+        #endregion
 
 
         ///////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -935,7 +963,7 @@ namespace Dobby {
             await Task.Run(CheckConnectionStatus);
             if(IgnoreTitleID) TitleID = "CUSA10249";
             if(!GameVersion.Contains("Unknown"))
-            Toggle(new ulong[] { 0x3b61900, 0x3b62d00, 0x3b67130, 0x3b67530, 0x3b675b0, 0x3b7b430, 0x3b7b430 }, new string[] { "1.00", "1.01", "1.02", "1.05", "1.07", "1.08", "1.09" });
+                Toggle(new ulong[] { 0x3b61900, 0x3b62d00, 0x3b67130, 0x3b67530, 0x3b675b0, 0x3b7b430, 0x3b7b430 }, new string[] { "1.00", "1.01", "1.02", "1.05", "1.07", "1.08", "1.09" });
             else Dev.MsgOut("Unknown Game Version");
         }
         private async void UC1Btn_Click(object sender, EventArgs e) {
@@ -957,78 +985,6 @@ namespace Dobby {
                 Toggle(GameVersion == "U3 1.00" ? new ulong[] { 0x18366c9, 0x18366c4, 0x1835481 } : new ulong[] { 0x1bbaf69, 0x1bbaf64, 0x1BB9D21 });
         }
         private async void UC4Btn_Click(object sender, EventArgs e) {
-            /*var VersionArray = new string[] {
-                "1.00 SP",
-                "1.01 SP",
-                "1.02 SP",
-                "1.03 SP",
-                "1.04 SP",
-                "1.05 SP",
-                "1.06 SP",
-                "1.08 SP",
-                "1.10 SP",
-                "1.11 SP",
-                "1.12 SP",
-                "1.13 SP",
-                "1.15 SP",
-                "1.16 SP",
-                "1.17 SP",
-                "1.18",
-                "1.19",
-                "1.20 MP",
-                "1.20 SP",
-                "1.21 MP",
-                "1.21 SP",
-                "1.22 MP",
-                "1.22/23 SP",
-                "1.23 MP",
-                "1.24 MP",
-                "1.24/25 SP",
-                "1.25 MP",
-                "1.27/28 MP",
-                "1.27+ SP",
-                "1.29 MP",
-                "1.30 MP",
-                "1.31 MP",
-                "1.32 MP",
-                "1.33 MP"
-            };
-            var AddressArray = new ulong[] {
-                0x27a3c30, // 1.00 SP
-                0x2889370, // 1.01 SP
-                0x288d370, // 1.02 SP
-                0x288d370, // 1.03 SP
-                0x2891370, // 1.04 SP
-                0x2891370, // 1.05 SP
-                0x2891370, // 1.06 SP
-                0x24ed968, // 1.08 SP
-                0x24ed968, // 1.10 SP
-                0x24f1978, // 1.11 SP
-                0x24fd958, // 1.12 SP
-                0x2501738, // 1.13 SP
-                0x2739a20, // 1.15 SP
-                0x2739a20, // 1.16 SP
-                0x2739a20, // 1.17 SP
-                0x2570748, // 1.18
-                0x2570748, // 1.19
-                0x2580888, // 1.20 MP
-                0x2570748, // 1.20 SP
-                0x2738dc0, // 1.21 MP
-                0x2570748, // 1.21 SP
-                0x273cdc0, // 1.22 MP
-                0x2570748, // 1.22/23 SP
-                0x273cdc0, // 1.23 MP
-                0x274ccd0, // 1.24 MP
-                0x2570748, // 1.24/25 SP
-                0x274ccd0, // 1.25 MP
-                0x2750d00, // 1.27/28 MP
-                0x2570748, // 1.27+ SP (Single Player Executable Never Changed After 1.27)
-                0x2758d00, // 1.29 MP
-                0x275cd00, // 1.30 MP
-                0x275cd00, // 1.31 MP
-                0x275cd00, // 1.32 MP
-                0x275cd00, // 1.33 MP
-            };*/
             await Task.Run(CheckConnectionStatus);
             if(IgnoreTitleID) TitleID = "CUSA00341";
             if(!GameVersion.Contains("Unknown"))
@@ -1044,35 +1000,20 @@ namespace Dobby {
             await Task.Run(CheckConnectionStatus);
             if(IgnoreTitleID) TitleID = "CUSA07737";
             if(!GameVersion.Contains("Unknown"))
-            Toggle(new ulong[] { 0x26b4558, 0x26c0698, 0x0274cd00, 0x275cd00, 0x275cd00 }, new string[] { "1.00 SP", "1.0X SP", "1.00 MP", "1.08 MP", "1.09 MP" });
+                Toggle(new ulong[] { 0x26b4558, 0x26c0698, 0x0274cd00, 0x275cd00, 0x275cd00 }, new string[] { "1.00 SP", "1.0X SP", "1.00 MP", "1.08 MP", "1.09 MP" });
         }
 
 
-
-
-        /////////////////\\\\\\\\\\\\\\\\\\
-        ///--     Repeat Buttons      --\\\
-        /////////////////\\\\\\\\\\\\\\\\\\\
+        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Repeated Page Functions & Control Declarations     --\\\
+        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        #region Repeat Functions & Control Declarations
         public void BackBtn_Click(object sender, EventArgs e) {
             ReturnToPreviousPage();
             HoverLeave(BackBtn, false); // What Did This Fix, Again?
         }
         private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);
         private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
-
-        public void IgnoreTitleIDBtn_Click(object sender, EventArgs e) {
-            TempStringStore = ((Control)sender).Text;
-            IgnoreTitleID = !IgnoreTitleID;
-            ((Control)sender).Text = $"{TempStringStore.Remove(TempStringStore.LastIndexOf(' '))} {(IgnoreTitleID ? "Enable" : "Disabled")}";
-        }
-
-
-
-
-        ////////////////////\\\\\\\\\\\\\\\\\\\\
-        ///--     Control Declarations     --\\\
-        ////////////////////\\\\\\\\\\\\\\\\\\\\
-        #region Control Declarations
         public TextBox IPBOX;
         public Button ExitBtn;
         public Button MinimizeBtn;

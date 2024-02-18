@@ -21,6 +21,28 @@ namespace Dobby {
             Question2Btn.Text = "- Button Text Here";
             Question3Btn.Text = "- Button Text Here";
         }
+
+
+
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Designer Crap, No Touchie      --\\\
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+        #region Designer Crap, No Touchie
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing) {
+            if(disposing && (components != null)) {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
         public void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PkgCreationHelpPage));
             this.ExitBtn = new System.Windows.Forms.Button();
@@ -57,9 +79,6 @@ namespace Dobby {
             this.ExitBtn.Text = "X";
             this.ExitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ExitBtn.UseVisualStyleBackColor = false;
-            this.ExitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
-            this.ExitBtn.MouseEnter += new System.EventHandler(this.ExitBtnMH);
-            this.ExitBtn.MouseLeave += new System.EventHandler(this.ExitBtnML);
             // 
             // MinimizeBtn
             // 
@@ -76,9 +95,6 @@ namespace Dobby {
             this.MinimizeBtn.Text = "--";
             this.MinimizeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.MinimizeBtn.UseVisualStyleBackColor = false;
-            this.MinimizeBtn.Click += new System.EventHandler(this.MinimizeBtn_Click);
-            this.MinimizeBtn.MouseEnter += new System.EventHandler(this.MinimizeBtnMH);
-            this.MinimizeBtn.MouseLeave += new System.EventHandler(this.MinimizeBtnML);
             // 
             // MainLabel
             // 
@@ -90,35 +106,6 @@ namespace Dobby {
             this.MainLabel.Size = new System.Drawing.Size(265, 22);
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "Pkg Creation Help Information";
-            this.MainLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MainLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.MainLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            // 
-            // MainBox
-            // 
-            this.Controls.Add(this.Question3Btn);
-            this.Controls.Add(this.Question2Btn);
-            this.Controls.Add(this.Question1Btn);
-            this.Controls.Add(this.SeperatorLine3);
-            this.Controls.Add(this.ExitBtn);
-            this.Controls.Add(this.MinimizeBtn);
-            this.Controls.Add(this.MainLabel);
-            this.Controls.Add(this.SeperatorLine1);
-            this.Controls.Add(this.PopupLabel);
-            this.Controls.Add(this.Info);
-            this.Controls.Add(this.CreditsBtn);
-            this.Controls.Add(this.BackBtn);
-            this.Controls.Add(this.DefaultQuestionBtn);
-            this.Controls.Add(this.SeperatorLine2);
-            this.Controls.Add(this.Question0Btn);
-            this.Location = new System.Drawing.Point(0, -6);
-            this.Name = "MainBox";
-            this.Size = new System.Drawing.Size(320, 483);
-            this.TabIndex = 5;
-            this.TabStop = false;
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
             // 
             // Question3Btn
             // 
@@ -168,9 +155,9 @@ namespace Dobby {
             this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.SeperatorLine3.Location = new System.Drawing.Point(2, 394);
             this.SeperatorLine3.Name = "SeperatorLine3";
-            this.SeperatorLine3.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine3.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine3.TabIndex = 40;
-            this.SeperatorLine3.Text = "______________________________________________________________";
+            this.SeperatorLine3.Text = "--------------------------------------------------------------";
             // 
             // SeperatorLine1
             // 
@@ -178,9 +165,9 @@ namespace Dobby {
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.SeperatorLine1.Location = new System.Drawing.Point(2, 15);
             this.SeperatorLine1.Name = "SeperatorLine1";
-            this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine1.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine1.TabIndex = 39;
-            this.SeperatorLine1.Text = "______________________________________________________________";
+            this.SeperatorLine1.Text = "--------------------------------------------------------------";
             // 
             // PopupLabel
             // 
@@ -221,7 +208,6 @@ namespace Dobby {
             this.CreditsBtn.Text = "Credits...";
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
-            this.CreditsBtn.Click += new System.EventHandler(this.CreditsBtn_Click);
             // 
             // BackBtn
             // 
@@ -256,9 +242,9 @@ namespace Dobby {
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.SeperatorLine2.Location = new System.Drawing.Point(2, 291);
             this.SeperatorLine2.Name = "SeperatorLine2";
-            this.SeperatorLine2.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine2.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine2.TabIndex = 38;
-            this.SeperatorLine2.Text = "______________________________________________________________";
+            this.SeperatorLine2.Text = "--------------------------------------------------------------";
             // 
             // Question0Btn
             // 
@@ -276,6 +262,21 @@ namespace Dobby {
             // 
             // PkgCreationHelpPage
             // 
+            this.Controls.Add(this.Question3Btn);
+            this.Controls.Add(this.Question2Btn);
+            this.Controls.Add(this.Question1Btn);
+            this.Controls.Add(this.SeperatorLine3);
+            this.Controls.Add(this.ExitBtn);
+            this.Controls.Add(this.MinimizeBtn);
+            this.Controls.Add(this.MainLabel);
+            this.Controls.Add(this.SeperatorLine1);
+            this.Controls.Add(this.PopupLabel);
+            this.Controls.Add(this.Info);
+            this.Controls.Add(this.CreditsBtn);
+            this.Controls.Add(this.BackBtn);
+            this.Controls.Add(this.DefaultQuestionBtn);
+            this.Controls.Add(this.SeperatorLine2);
+            this.Controls.Add(this.Question0Btn);
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
@@ -284,42 +285,21 @@ namespace Dobby {
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PkgCreationHelpPage";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
-            this.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
+        #endregion
 
-        string[] Headers = new string[] {
+
+        private static readonly string[] Headers = new string[] {
             "                [Page Title]\n",
             "                [Page Title]\n",
             "                [Page Title]\n",
             "                [Page Title]\n"
         };
 
-        bool[] Questions = new bool[4];
-        bool DefaultQuestionIsActive = true;
-
-
-        /////////////////\\\\\\\\\\\\\\\\\\
-        ///--     Repeat Buttons      --\\\
-        /////////////////\\\\\\\\\\\\\\\\\\\
-        #region RepeatedButtonFunctions
-        public void MoveForm(object sender, MouseEventArgs e) => Common.MoveForm(sender, e);
-        public void MouseUpFunc(object sender, MouseEventArgs e) => Common.MouseUpFunc(sender, e);
-        public void MouseDownFunc(object sender, MouseEventArgs e) => Common.MouseDownFunc(sender, e);
-        public void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
-        public void ExitBtnMH(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 227, 0);
-        public void ExitBtnML(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 255, 255);
-
-        public void MinimizeBtn_Click(object sender, EventArgs e) => ActiveForm.WindowState = FormWindowState.Minimized;
-        public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
-        public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
-        public void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
-        void BackBtn_Click(object sender, EventArgs e) => ReturnToPreviousPage();
-        #endregion
+        private static bool[] Questions = new bool[4];
+        private static bool DefaultQuestionIsActive = true;
 
 
         //////////////////////\\\\\\\\\\\\\\\\\\\\\
@@ -355,10 +335,12 @@ namespace Dobby {
         private void PopupLabelML(object sender, EventArgs e) => PopupLabel.ForeColor = Color.White;
         #endregion
 
-        #region ControlDeclarations
-        ////////////////////\\\\\\\\\\\\\\\\\\\\
-        ///--     Control Declarations     --\\\
-        ////////////////////\\\\\\\\\\\\\\\\\\\\
+
+        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Repeated Page Functions & Control Declarations     --\\\
+        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        #region Repeat Functions & Control Declarations
+        private void BackBtn_Click(object sender, EventArgs e) => ReturnToPreviousPage();
         public Button MinimizeBtn;
         public Label Info;
         public Label MainLabel;

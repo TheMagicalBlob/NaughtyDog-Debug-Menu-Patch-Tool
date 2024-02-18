@@ -33,6 +33,28 @@ namespace Dobby {
         /// </summary>
         bool[] Questions = new bool[4];
         bool DefaultQuestion = true;
+
+
+
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Designer Crap, No Touchie      --\\\
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+        #region Designer Crap, No Touchie
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing) {
+            if(disposing && (components != null)) {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
         public void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EbootPatchHelpPage));
             this.ExitBtn = new System.Windows.Forms.Button();
@@ -67,9 +89,6 @@ namespace Dobby {
             this.ExitBtn.Text = "X";
             this.ExitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ExitBtn.UseVisualStyleBackColor = false;
-            this.ExitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
-            this.ExitBtn.MouseEnter += new System.EventHandler(this.ExitBtnMH);
-            this.ExitBtn.MouseLeave += new System.EventHandler(this.ExitBtnML);
             // 
             // MinimizeBtn
             // 
@@ -86,23 +105,17 @@ namespace Dobby {
             this.MinimizeBtn.Text = "---";
             this.MinimizeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.MinimizeBtn.UseVisualStyleBackColor = false;
-            this.MinimizeBtn.Click += new System.EventHandler(this.MinimizeBtn_Click);
-            this.MinimizeBtn.MouseEnter += new System.EventHandler(this.MinimizeBtnMH);
-            this.MinimizeBtn.MouseLeave += new System.EventHandler(this.MinimizeBtnML);
             // 
             // MainLabel
             // 
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MainLabel.Font = new System.Drawing.Font("Cambria", 12.25F, System.Drawing.FontStyle.Bold);
             this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.MainLabel.Location = new System.Drawing.Point(2, 7);
+            this.MainLabel.Location = new System.Drawing.Point(2, 5);
             this.MainLabel.Name = "MainLabel";
             this.MainLabel.Size = new System.Drawing.Size(265, 22);
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "Eboot Patch Page Information";
-            this.MainLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MainLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.MainLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             // 
             // Question3Btn
             // 
@@ -122,21 +135,21 @@ namespace Dobby {
             // 
             this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(2, 411);
+            this.SeperatorLine2.Location = new System.Drawing.Point(2, 416);
             this.SeperatorLine2.Name = "SeperatorLine2";
-            this.SeperatorLine2.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine2.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine2.TabIndex = 40;
-            this.SeperatorLine2.Text = "______________________________________________________________";
+            this.SeperatorLine2.Text = "--------------------------------------------------------------";
             // 
             // SeperatorLine0
             // 
             this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine0.Location = new System.Drawing.Point(2, 15);
+            this.SeperatorLine0.Location = new System.Drawing.Point(2, 20);
             this.SeperatorLine0.Name = "SeperatorLine0";
-            this.SeperatorLine0.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine0.TabIndex = 39;
-            this.SeperatorLine0.Text = "______________________________________________________________";
+            this.SeperatorLine0.Text = "--------------------------------------------------------------";
             // 
             // WithSomeExceptionsLabel
             // 
@@ -230,7 +243,7 @@ namespace Dobby {
             this.DefaultQuestionBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.DefaultQuestionBtn.Location = new System.Drawing.Point(3, 36);
             this.DefaultQuestionBtn.Name = "DefaultQuestionBtn";
-            this.DefaultQuestionBtn.Size = new System.Drawing.Size(316, 291);
+            this.DefaultQuestionBtn.Size = new System.Drawing.Size(316, 290);
             this.DefaultQuestionBtn.TabIndex = 0;
             this.DefaultQuestionBtn.Text = resources.GetString("DefaultQuestionBtn.Text");
             // 
@@ -238,11 +251,11 @@ namespace Dobby {
             // 
             this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 314);
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 320);
             this.SeperatorLine1.Name = "SeperatorLine1";
-            this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine1.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine1.TabIndex = 38;
-            this.SeperatorLine1.Text = "______________________________________________________________";
+            this.SeperatorLine1.Text = "--------------------------------------------------------------";
             // 
             // Question0Btn
             // 
@@ -263,7 +276,7 @@ namespace Dobby {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ClientSize = new System.Drawing.Size(320, 500);
+            this.ClientSize = new System.Drawing.Size(320, 506);
             this.Controls.Add(this.Question3Btn);
             this.Controls.Add(this.SeperatorLine2);
             this.Controls.Add(this.ExitBtn);
@@ -281,38 +294,16 @@ namespace Dobby {
             this.Controls.Add(this.Question0Btn);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "EbootPatchHelpPage";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.ResumeLayout(false);
 
         }
-
-
-        #region RepeatedButtonFunctions
-        /////////////////\\\\\\\\\\\\\\\\\\
-        ///--     Repeat Buttons      --\\\
-        /////////////////\\\\\\\\\\\\\\\\\\\
-        public void MoveForm(object sender, MouseEventArgs e) => Common.MoveForm(sender, e);
-        public void MouseUpFunc(object sender, MouseEventArgs e) => Common.MouseUpFunc(sender, e);
-        public void MouseDownFunc(object sender, MouseEventArgs e) => Common.MouseDownFunc(sender, e);
-        public void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
-        public void ExitBtnMH(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 227, 0);
-        public void ExitBtnML(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 255, 255);
-
-        public void MinimizeBtn_Click(object sender, EventArgs e) => ActiveForm.WindowState = FormWindowState.Minimized;
-        public void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
-        public void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
-        public void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
-        private void BackBtn_Click(object sender, EventArgs e) => ReturnToPreviousPage();
         #endregion
 
 
-        #region Page-Specific Functions
         //////////////////////\\\\\\\\\\\\\\\\\\\\\
         ///--     Page-Specific Functions     --\\\
         //////////////////////\\\\\\\\\\\\\\\\\\\\\
+        #region Page-Specific Functions
         void LoadQuestions(int Index) {
             
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EbootPatchHelpPage));
@@ -362,10 +353,13 @@ namespace Dobby {
         private void WithSomeExceptionsLabelML(object sender, EventArgs e) => WithSomeExceptionsLabel.ForeColor = Color.White;
         #endregion
 
-        #region ControlDeclarations
-        ////////////////////\\\\\\\\\\\\\\\\\\\\
-        ///--     Control Declarations     --\\\
-        ////////////////////\\\\\\\\\\\\\\\\\\\\
+
+        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Repeated Page Functions & Control Declarations     --\\\
+        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        #region Repeat Functions & Control Declarations
+        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
+        private void BackBtn_Click(object sender, EventArgs e) => ReturnToPreviousPage();
         public Button MinimizeBtn;
         public Label Info;
         public Label MainLabel;

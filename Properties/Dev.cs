@@ -96,7 +96,6 @@ namespace Dobby {
 
                 LogWindowRenderer = this.CreateGraphics();
                 LogWindowPtr = this;
-                ParentFormPtr = Gaia;
                 SetParent(Gaia);
                 logThread.Start();
             }
@@ -125,16 +124,16 @@ namespace Dobby {
             }
             #endregion
 
-
-            public static void SetParent(Form Parent) {
-                if(Parent == null)
-                    
-                Parent.LocationChanged -= MoveLogToAppEdge;
-                Parent.LocationChanged += MoveLogToAppEdge;
+            // Sets The Form To Attach The Log Window To
+            public static void SetParent(Form Gaia) {
+                
+                ParentFormPtr = Gaia;
+                Gaia.LocationChanged -= MoveLogToAppEdge;
             }
             private void MouseDownFunc(object sender, MouseEventArgs e) => MouseIsDown = true;
             private void MouseUpFunc(object sender, MouseEventArgs e) => MouseScrolled = MouseIsDown = false;
             public static void MoveLogToAppEdge(object mommy, EventArgs e) => LogWindowPtr.Location = new Point(((Form)mommy).Location.X - LogWindowPtr.Size.Width, ((Form)mommy).Location.Y);
+            public static void MoveLogToAppEdge(Point Loc) => LogWindowPtr.Location = new Point(Loc.X - LogWindowPtr.Size.Width, Loc.Y);
 
 
             public delegate void Scaling();
@@ -202,7 +201,7 @@ namespace Dobby {
                                     " ",
                                     $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}",
                                     $"Control: {HoveredControl?.Name} | {ControlType?.Substring(ControlType.LastIndexOf('.') + 1)}",
-                                    $"{(HoveredControl?.GetType() == typeof(vButton) ? ((vButton)HoveredControl)?.Variable : " ")}",
+                                    $"{(HoveredControl?.GetType() == typeof(VarButton) ? ((VarButton)HoveredControl)?.Variable : " ")}",
                                     $" Size: {HoveredControl?.Size} | Pos: {HoveredControl?.Location}",
                                     $" Parent [{HoveredControl?.Parent?.Name}]",
 

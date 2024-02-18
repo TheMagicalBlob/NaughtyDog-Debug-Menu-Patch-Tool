@@ -12,7 +12,7 @@ using System.ComponentModel;
 namespace Dobby {
     public class Gp4CreationPage : Form {
 
-        public Gp4CreationPage() {
+        public Gp4CreationPage() { //! Page Unfinished, Only Base Functionality Added
             InitializeComponent();
             
             AddEventHandlersToControls(Controls);
@@ -29,13 +29,24 @@ namespace Dobby {
         bool VerboseOutput = true, SpecifyTMPDirectory = false, IsFirstOpen = true, IsBuildReady;
         private GP4Creator gp4;
 
-        #region Designer Managed
+
         ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     Designer Managed Functions     --\\\
+        ///--     Designer Crap, No Touchie      --\\\
         ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
-        private IContainer components = null;
+        #region Designer Crap, No Touchie
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing) {
-            if(disposing) components?.Dispose();
+            if(disposing && (components != null)) {
+                components.Dispose();
+            }
             base.Dispose(disposing);
         }
         public void InitializeComponent() {
@@ -82,7 +93,7 @@ namespace Dobby {
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 259);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 229);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.Size = new System.Drawing.Size(317, 23);
             this.InfoHelpBtn.TabIndex = 15;
@@ -95,11 +106,11 @@ namespace Dobby {
             // 
             this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(2, 204);
+            this.SeperatorLine2.Location = new System.Drawing.Point(2, 212);
             this.SeperatorLine2.Name = "SeperatorLine2";
-            this.SeperatorLine2.Size = new System.Drawing.Size(316, 20);
+            this.SeperatorLine2.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine2.TabIndex = 14;
-            this.SeperatorLine2.Text = "______________________________________________________________";
+            this.SeperatorLine2.Text = "--------------------------------------------------------------";
             // 
             // BackBtn
             // 
@@ -109,7 +120,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 308);
+            this.BackBtn.Location = new System.Drawing.Point(1, 278);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(317, 23);
             this.BackBtn.TabIndex = 13;
@@ -122,7 +133,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Cambria", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(3, 334);
+            this.Info.Location = new System.Drawing.Point(3, 304);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(313, 19);
             this.Info.TabIndex = 7;
@@ -136,7 +147,7 @@ namespace Dobby {
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 284);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 254);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(317, 23);
@@ -154,7 +165,7 @@ namespace Dobby {
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinimizeBtn.Location = new System.Drawing.Point(273, 0);
+            this.MinimizeBtn.Location = new System.Drawing.Point(274, 1);
             this.MinimizeBtn.Name = "MinimizeBtn";
             this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
             this.MinimizeBtn.TabIndex = 19;
@@ -170,7 +181,7 @@ namespace Dobby {
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ExitBtn.Location = new System.Drawing.Point(295, -1);
+            this.ExitBtn.Location = new System.Drawing.Point(296, 1);
             this.ExitBtn.Name = "ExitBtn";
             this.ExitBtn.Size = new System.Drawing.Size(23, 23);
             this.ExitBtn.TabIndex = 18;
@@ -193,11 +204,11 @@ namespace Dobby {
             // 
             this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine0.Location = new System.Drawing.Point(2, 14);
+            this.SeperatorLine0.Location = new System.Drawing.Point(2, 18);
             this.SeperatorLine0.Name = "SeperatorLine0";
-            this.SeperatorLine0.Size = new System.Drawing.Size(316, 20);
+            this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine0.TabIndex = 33;
-            this.SeperatorLine0.Text = "______________________________________________________________";
+            this.SeperatorLine0.Text = "--------------------------------------------------------------";
             // 
             // Gp4FilterBrowseBtn
             // 
@@ -275,7 +286,7 @@ namespace Dobby {
             this.StartGp4CreationBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.StartGp4CreationBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.StartGp4CreationBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.StartGp4CreationBtn.Location = new System.Drawing.Point(1, 33);
+            this.StartGp4CreationBtn.Location = new System.Drawing.Point(1, 32);
             this.StartGp4CreationBtn.Name = "StartGp4CreationBtn";
             this.StartGp4CreationBtn.Size = new System.Drawing.Size(317, 23);
             this.StartGp4CreationBtn.TabIndex = 23;
@@ -312,11 +323,11 @@ namespace Dobby {
             // 
             this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 45);
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 49);
             this.SeperatorLine1.Name = "SeperatorLine1";
-            this.SeperatorLine1.Size = new System.Drawing.Size(316, 20);
+            this.SeperatorLine1.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine1.TabIndex = 29;
-            this.SeperatorLine1.Text = "______________________________________________________________";
+            this.SeperatorLine1.Text = "--------------------------------------------------------------";
             // 
             // OutputPathLabel
             // 
@@ -360,7 +371,7 @@ namespace Dobby {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ClientSize = new System.Drawing.Size(320, 354);
+            this.ClientSize = new System.Drawing.Size(320, 329);
             this.Controls.Add(this.PasscodeLabel);
             this.Controls.Add(this.OutputPathLabel);
             this.Controls.Add(this.FilterArrayLabel);
@@ -519,10 +530,11 @@ namespace Dobby {
         }
 
 
-        #region RepeatedButtonFunctions
-        /////////////////\\\\\\\\\\\\\\\\\\
-        ///--     Repeat Buttons      --\\\
-        /////////////////\\\\\\\\\\\\\\\\\\\
+
+        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Repeated Page Functions & Control Declarations     --\\\
+        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        #region Repeat Functions & Control Declarations
         public void BackBtn_Click(object sender, EventArgs e) {
             LabelShouldFlash = false;
             ReturnToPreviousPage();
@@ -531,12 +543,6 @@ namespace Dobby {
         private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);
 
         private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
-        #endregion
-
-        ////////////////////\\\\\\\\\\\\\\\\\\\\
-        ///--     Control Declarations     --\\\
-        ////////////////////\\\\\\\\\\\\\\\\\\\\
-        #region Control Declarations
         public Label GamedataPathLabel;
         private Button InfoHelpBtn;
         private Label SeperatorLine2;

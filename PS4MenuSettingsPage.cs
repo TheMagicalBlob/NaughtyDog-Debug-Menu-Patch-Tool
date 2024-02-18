@@ -29,11 +29,31 @@ namespace Dobby {
 #endif
         }
 
+
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Designer Crap, No Touchie      --\\\
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+        #region Designer Crap, No Touchie
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing) {
+            if(disposing && (components != null)) {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
         private void InitializeComponent() {
-            this.ProgPauseOnCloseBtn = new Dobby.Common.vButton();
-            this.ProgPauseOnOpenBtn = new Dobby.Common.vButton();
-            this.DisableDebugTextBtn = new Dobby.Common.vButton();
-            this.DisablePausedIconBtn = new Dobby.Common.vButton();
+            this.ProgPauseOnCloseBtn = new Dobby.Common.VarButton();
+            this.ProgPauseOnOpenBtn = new Dobby.Common.VarButton();
+            this.DisableDebugTextBtn = new Dobby.Common.VarButton();
+            this.DisablePausedIconBtn = new Dobby.Common.VarButton();
             this.MainLabel = new System.Windows.Forms.Label();
             this.ExitBtn = new System.Windows.Forms.Button();
             this.MinimizeBtn = new System.Windows.Forms.Button();
@@ -51,7 +71,7 @@ namespace Dobby {
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
             this.GameInfoLabel = new System.Windows.Forms.Label();
-            this.NovisBtn = new Dobby.Common.vButton();
+            this.NovisBtn = new Dobby.Common.VarButton();
             this.SuspendLayout();
             // 
             // ProgPauseOnCloseBtn
@@ -171,7 +191,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Cambria", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(8, 366);
+            this.Info.Location = new System.Drawing.Point(8, 365);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
@@ -217,11 +237,11 @@ namespace Dobby {
             // 
             this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine0.Location = new System.Drawing.Point(2, 12);
+            this.SeperatorLine0.Location = new System.Drawing.Point(2, 17);
             this.SeperatorLine0.Name = "SeperatorLine0";
-            this.SeperatorLine0.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine0.TabIndex = 31;
-            this.SeperatorLine0.Text = "______________________________________________________________";
+            this.SeperatorLine0.Text = "--------------------------------------------------------------";
             // 
             // BackBtn
             // 
@@ -231,7 +251,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 341);
+            this.BackBtn.Location = new System.Drawing.Point(1, 340);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.BackBtn.Size = new System.Drawing.Size(65, 22);
@@ -278,11 +298,11 @@ namespace Dobby {
             // 
             this.SeperatorLine3.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine3.Location = new System.Drawing.Point(2, 278);
+            this.SeperatorLine3.Location = new System.Drawing.Point(2, 280);
             this.SeperatorLine3.Name = "SeperatorLine3";
-            this.SeperatorLine3.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine3.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine3.TabIndex = 32;
-            this.SeperatorLine3.Text = "______________________________________________________________";
+            this.SeperatorLine3.Text = "--------------------------------------------------------------";
             // 
             // BrowseButton
             // 
@@ -316,21 +336,21 @@ namespace Dobby {
             // 
             this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 156);
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 158);
             this.SeperatorLine1.Name = "SeperatorLine1";
-            this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine1.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine1.TabIndex = 37;
-            this.SeperatorLine1.Text = "______________________________________________________________";
+            this.SeperatorLine1.Text = "--------------------------------------------------------------";
             // 
             // SeperatorLine2
             // 
             this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(2, 216);
+            this.SeperatorLine2.Location = new System.Drawing.Point(2, 217);
             this.SeperatorLine2.Name = "SeperatorLine2";
-            this.SeperatorLine2.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine2.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine2.TabIndex = 36;
-            this.SeperatorLine2.Text = "______________________________________________________________";
+            this.SeperatorLine2.Text = "--------------------------------------------------------------";
             // 
             // GameInfoLabel
             // 
@@ -394,14 +414,14 @@ namespace Dobby {
             this.PerformLayout();
 
         }
-
+        #endregion
 
 
         ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///-- QUALITY OF LIFE/BOOTSETTINGS OFFSET POINTERS  --\\\
         ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         #region BootSettingsPointers
-        
+
         /*|Template
         new byte[][] {
             new byte[] {  }, // 0x | UC1100
@@ -795,19 +815,47 @@ namespace Dobby {
 
         #endregion
 
-        int[]
+        private static readonly int[]
             BootSettingsCallAddress = new int[] {
-
-                0x1F1DE8, // 0x53dde8
-                0x1f217a, // 0x5ee17a
-                0x633cba  // 0xa2fcba
+                0, // 0x | UC1100
+                0, // 0x | UC1102
+                0, // 0x | UC2100
+                0, // 0x | UC2102
+                0, // 0x | UC3100
+                0, // 0x | UC3102
+                0, // 0x | UC4100
+                0, // 0x | UC4101
+                0, // 0x | UC4133
+                0, // 0x | UC4133MP
+                0, // 0x | TLL100
+                0, // 0x | TLL109
+                0x101FB,  // 0x40c1fb | T1R100
+                0, // 0x | T1R109
+                0, // 0x | T1R111
+                0x1F1DE8, // 0x53dde8 | T2100
+                0x1f217a, // 0x5ee17a | T2107
+                0x633cba  // 0xa2fcba | T2109
             },
 
             BootSettingsFunctionAddress = new int[] {
-
-                0xB330,   // 0x407330
-                0xb330,   // 0x407330
-                0x55f0    // 0x4015f0
+                0, // 0x | UC1100
+                0, // 0x | UC1102
+                0, // 0x | UC2100
+                0, // 0x | UC2102
+                0, // 0x | UC3100
+                0, // 0x | UC3102
+                0, // 0x | UC4100
+                0, // 0x | UC4101
+                0, // 0x | UC4133
+                0, // 0x | UC4133MP
+                0, // 0x | TLL100
+                0, // 0x | TLL109
+                0x217C0, // 0x41d7c0 | T1R100
+                0, // 0x | T1R109
+                0, // 0x | T1R111
+                0xB330,  // 0x407330 | T2100
+                0xb330,  // 0x407330 | T2107
+                0x55f0   // 0x4015f0 | T2109
             };
 
 
@@ -970,7 +1018,7 @@ namespace Dobby {
         /// </summary>
         private struct DynamicPatchButtons {
             public DynamicPatchButtons(int?[] Ids, int VerticalStartIndex = 0) {
-                Buttons = new vButton[ControlText.Length + 1];
+                Buttons = new VarButton[ControlText.Length + 1];
                 ButtonsVerticalStartPos = VerticalStartIndex;
 
                 if(Ids != null && Ids.Length < 2)
@@ -1066,7 +1114,7 @@ namespace Dobby {
             /// 6: RightAlignBtn                                                                       <br/>
             /// 7: RightMarginBtn
             /// </summary>
-            public vButton[] Buttons; // Initialized Once An Executable's Selected
+            public VarButton[] Buttons; // Initialized Once An Executable's Selected
             private int ButtonsVerticalStartPos;
 
 
@@ -1078,7 +1126,7 @@ namespace Dobby {
 
             /// <summary> Enable A Specific Button
             ///</summary>
-            public void EnableDynamicPatchButton(int button) => Buttons[button] = new vButton();
+            public void EnableDynamicPatchButton(int button) => Buttons[button] = new VarButton();
 
             /// <summary> Enable Specific Buttons
             ///</summary>
@@ -1087,7 +1135,7 @@ namespace Dobby {
                 for(int i = 0; i < buttons.Length; i++) {
                     if(buttons != null && buttons[i] == null) continue;
 
-                    Buttons[i] = new vButton();
+                    Buttons[i] = new VarButton();
                 }
                 MultipleButtonsEnabled = true;
             }
@@ -1160,8 +1208,8 @@ namespace Dobby {
             ///--     Event Handlers And Functions For Dynamic Button   --\\\
             /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
             #region Event Handlers And Functions For Dynamic Button
-            private void DynamicBtn_Click(object sender, EventArgs e) => ToggleFunc((vButton)sender, ((Control)sender).TabIndex);
-            private void ToggleFunc(vButton Control, int ButtonIndex) {
+            private void DynamicBtn_Click(object sender, EventArgs e) => ToggleFunc((VarButton)sender, ((Control)sender).TabIndex);
+            private void ToggleFunc(VarButton Control, int ButtonIndex) {
                 if(MouseScrolled || !MouseIsDown || CurrentControl != Control.Name) return;
 
                 GameSpecificPatchValues[ButtonIndex] = !(bool)GameSpecificPatchValues[ButtonIndex];
@@ -1170,8 +1218,8 @@ namespace Dobby {
             }
 
 
-            private void FloatClick(object sender, MouseEventArgs e) => FloatClickFunc((vButton)sender, ((vButton)sender).TabIndex, e.Button);
-            private void FloatClickFunc(vButton Control, int ButtonIndex, MouseButtons Button) {
+            private void FloatClick(object sender, MouseEventArgs e) => FloatClickFunc((VarButton)sender, ((VarButton)sender).TabIndex, e.Button);
+            private void FloatClickFunc(VarButton Control, int ButtonIndex, MouseButtons Button) {
                 if(CurrentControl != Control.Name) return;
                 var currentFloat = (float)GameSpecificPatchValues[ButtonIndex]; // Avoid CS0445
 
@@ -1182,8 +1230,8 @@ namespace Dobby {
                 Control.Refresh();
             }
 
-            private void FloatFunc(object sender, MouseEventArgs e) => FloatScrollFunc((vButton)sender, ((vButton)sender).TabIndex, e.Delta);
-            private void FloatScrollFunc(vButton Control, int ButtonIndex, int WheelDelta) {
+            private void FloatFunc(object sender, MouseEventArgs e) => FloatScrollFunc((VarButton)sender, ((VarButton)sender).TabIndex, e.Delta);
+            private void FloatScrollFunc(VarButton Control, int ButtonIndex, int WheelDelta) {
                 if(CurrentControl != Control.Name) return;
                 var currentFloat = (float)GameSpecificPatchValues[ButtonIndex]; // Avoid CS0445
 
@@ -1193,8 +1241,8 @@ namespace Dobby {
             }
 
 
-            private void IntClick(object sender, MouseEventArgs e) => IntClickFunc((vButton)sender, ((vButton)sender).TabIndex, e.Button);
-            private void IntClickFunc(vButton Control, int ButtonIndex, MouseButtons Button) {
+            private void IntClick(object sender, MouseEventArgs e) => IntClickFunc((VarButton)sender, ((VarButton)sender).TabIndex, e.Button);
+            private void IntClickFunc(VarButton Control, int ButtonIndex, MouseButtons Button) {
                 if(CurrentControl != Control.Name) return;
                 var currentInt = (byte)GameSpecificPatchValues[ButtonIndex]; // Avoid CS0445
 
@@ -1207,8 +1255,8 @@ namespace Dobby {
                 Control.Refresh();
             }
 
-            private void IntFunc(object sender, MouseEventArgs e) => IntScrollFunc((vButton)sender, ((vButton)sender).TabIndex, e.Delta);
-            private void IntScrollFunc(vButton Control, int ButtonIndex, int WheelDelta) {
+            private void IntFunc(object sender, MouseEventArgs e) => IntScrollFunc((VarButton)sender, ((VarButton)sender).TabIndex, e.Delta);
+            private void IntScrollFunc(VarButton Control, int ButtonIndex, int WheelDelta) {
                 if(CurrentControl != Control.Name) return;
                 var currentInt = (byte)GameSpecificPatchValues[ButtonIndex]; // Avoid CS0445
 
@@ -1229,15 +1277,17 @@ namespace Dobby {
         ///--     Event Handlers For Basic Patches Available For Each Game     --\\\
         ///////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         #region Event Handlers For Basic Patches Available For Each Game
-        private void DisableDebugTextBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((vButton)sender, e.Delta != 0, 0);
-        private void PausedIconBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((vButton)sender, e.Delta != 0, 1);
-        private void ProgPauseOnOpenBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((vButton)sender, e.Delta != 0, 2);
-        private void ProgPauseOnCloseBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((vButton)sender, e.Delta != 0, 3);
-        private void DisableAllVisibilityBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((vButton)sender, e.Delta != 0, 4);
-        private void DefaultButtonClick(vButton cnt, bool scrolled, int PatchIndex) { ToggleBool(cnt, PatchIndex); MouseScrolled = scrolled; }
-        private void ToggleBool(vButton Control, int OptionIndex) {
-            if(MouseScrolled || !MouseIsDown || CurrentControl != Control.Name)
+        private void DisableDebugTextBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((VarButton)sender, e.Delta != 0, 0);
+        private void PausedIconBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((VarButton)sender, e.Delta != 0, 1);
+        private void ProgPauseOnOpenBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((VarButton)sender, e.Delta != 0, 2);
+        private void ProgPauseOnCloseBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((VarButton)sender, e.Delta != 0, 3);
+        private void DisableAllVisibilityBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((VarButton)sender, e.Delta != 0, 4);
+        private void DefaultButtonClick(VarButton cnt, bool scrolled, int PatchIndex) { ToggleBool(cnt, PatchIndex); MouseScrolled = scrolled; }
+        private void ToggleBool(VarButton Control, int OptionIndex) {
+            if(MouseScrolled || !MouseIsDown || CurrentControl != Control.Name) {
+                Dev.MsgOut($"{MouseScrolled} {MouseIsDown} {CurrentControl} ? {Control.Name}");
                 return;
+            }
 
             UniversaPatchValues[OptionIndex] = !(bool)UniversaPatchValues[OptionIndex];
             Control.Variable = UniversaPatchValues[OptionIndex];
@@ -1307,6 +1357,7 @@ namespace Dobby {
                 return;
             }
 
+            if (Dev.REL)
             ResetCustomDebugOptions();
             GameInfoLabel.Text += Result;
         }
@@ -1337,7 +1388,7 @@ namespace Dobby {
                     byte[] PatchData;
                     PatchCount = 2;
 
-                    // Universal Options
+                    // Apply Universal Options
                     for(index = 0; index < UniversaPatchValues.Length; index++) {
                         if(UniversaPatchValues[index] == DefaultUniveralPatchValues[index])
                             continue;
@@ -1359,7 +1410,7 @@ namespace Dobby {
                     }
 
 
-                    // Game-Specific Options
+                    // Apply Game-Specific Options
                     for(index = 0; index < DynamicPatchButtons.GameSpecificPatchValues.Length; index++ ) {
                         if(DynamicPatchButtons.GameSpecificPatchValues[index].Equals(DynamicPatchButtons.DefaultGameSpecificPatchValues[index]))
                             continue;
@@ -1414,7 +1465,7 @@ namespace Dobby {
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC4 1.33 MP //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // TLL 1.00 //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // TLL 1.09 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.00 //!
+                new byte [] { 0xe8, 0x6b, 0x32, 0x04, 0x00, 0x53, 0x48, 0x8d, 0x05, 0x33, 0x28, 0xfe, 0xff }, // T1R 1.00 //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.09 //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.11 //!
                 new byte [] { 0xe8, 0x8b, 0x9c, 0x3d, 0x00, 0x53, 0x48, 0x8d, 0x05, 0xc3, 0x8c, 0xff, 0xff }, // T2 1.00  //!
@@ -1511,7 +1562,7 @@ namespace Dobby {
                 case T1R109: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
 
                 case T1R110:
-                case T1R111: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+                case T1R111: return new byte[] { 0xe8, 0xc0, 0x15, 0x01, 0x00 }; // 
 
                 case T2100: return new byte[] { 0xe8, 0x43, 0x95, 0xe1, 0xff };  // CALL 0x7e0fc0
 
@@ -1691,11 +1742,11 @@ namespace Dobby {
         private Button CreditsBtn;
         private Button ExitBtn;
         private Button BackBtn;
-        private vButton DisableDebugTextBtn;
-        private vButton DisablePausedIconBtn;
-        private vButton ProgPauseOnCloseBtn;
-        private vButton ProgPauseOnOpenBtn;
-        private vButton NovisBtn; 
+        private VarButton DisableDebugTextBtn;
+        private VarButton DisablePausedIconBtn;
+        private VarButton ProgPauseOnCloseBtn;
+        private VarButton ProgPauseOnOpenBtn;
+        private VarButton NovisBtn; 
         private TextBox ExecutablePathBox;
         private Label GameSpecificPatchesLabel;
         private Label CustomDebugOptionsLabel;

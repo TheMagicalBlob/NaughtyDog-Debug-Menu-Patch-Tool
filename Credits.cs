@@ -14,15 +14,34 @@ namespace Dobby {
                 control.TabStop = false;
         }
 
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Designer Crap, No Touchie      --\\\
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+        #region Designer Crap, No Touchie
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing) {
+            if(disposing && (components != null)) {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
         public void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreditsPage));
             this.MainLabel = new System.Windows.Forms.Label();
             this.BackBtn = new System.Windows.Forms.Button();
             this.ExitBtn = new System.Windows.Forms.Button();
             this.MinimizeBtn = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
+            this.SeperatorLine0 = new System.Windows.Forms.Label();
             this.IllusionBlogBtn = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.SeperatorLine2 = new System.Windows.Forms.Label();
             this.ContributorsLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.NarcissismLabel = new System.Windows.Forms.Label();
@@ -41,9 +60,6 @@ namespace Dobby {
             this.MainLabel.Size = new System.Drawing.Size(268, 22);
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "Credits";
-            this.MainLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MainLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.MainLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             // 
             // BackBtn
             // 
@@ -53,7 +69,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 326);
+            this.BackBtn.Location = new System.Drawing.Point(1, 325);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(60, 22);
             this.BackBtn.TabIndex = 14;
@@ -68,18 +84,15 @@ namespace Dobby {
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold);
+            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ExitBtn.Location = new System.Drawing.Point(295, 2);
+            this.ExitBtn.Location = new System.Drawing.Point(295, 1);
             this.ExitBtn.Name = "ExitBtn";
             this.ExitBtn.Size = new System.Drawing.Size(23, 23);
             this.ExitBtn.TabIndex = 18;
             this.ExitBtn.Text = "X";
             this.ExitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ExitBtn.UseVisualStyleBackColor = false;
-            this.ExitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
-            this.ExitBtn.MouseEnter += new System.EventHandler(this.ExitBtnMH);
-            this.ExitBtn.MouseLeave += new System.EventHandler(this.ExitBtnML);
             // 
             // MinimizeBtn
             // 
@@ -87,28 +100,25 @@ namespace Dobby {
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold);
+            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinimizeBtn.Location = new System.Drawing.Point(272, 2);
+            this.MinimizeBtn.Location = new System.Drawing.Point(272, 1);
             this.MinimizeBtn.Name = "MinimizeBtn";
             this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
             this.MinimizeBtn.TabIndex = 19;
             this.MinimizeBtn.Text = "--";
             this.MinimizeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.MinimizeBtn.UseVisualStyleBackColor = false;
-            this.MinimizeBtn.Click += new System.EventHandler(this.MinimizeBtn_Click);
-            this.MinimizeBtn.MouseEnter += new System.EventHandler(this.MinimizeBtnMH);
-            this.MinimizeBtn.MouseLeave += new System.EventHandler(this.MinimizeBtnML);
             // 
-            // label3
+            // SeperatorLine0
             // 
-            this.label3.Font = new System.Drawing.Font("Cambria", 10F);
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label3.Location = new System.Drawing.Point(4, 13);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(316, 16);
-            this.label3.TabIndex = 39;
-            this.label3.Text = "______________________________________________________________";
+            this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
+            this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine0.Location = new System.Drawing.Point(4, 18);
+            this.SeperatorLine0.Name = "SeperatorLine0";
+            this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
+            this.SeperatorLine0.TabIndex = 39;
+            this.SeperatorLine0.Text = "--------------------------------------------------------------";
             // 
             // IllusionBlogBtn
             // 
@@ -124,15 +134,15 @@ namespace Dobby {
             this.IllusionBlogBtn.MouseEnter += new System.EventHandler(this.IllusionBlogBtnMH);
             this.IllusionBlogBtn.MouseLeave += new System.EventHandler(this.IllusionBlogBtnML);
             // 
-            // label2
+            // SeperatorLine2
             // 
-            this.label2.Font = new System.Drawing.Font("Cambria", 10F);
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label2.Location = new System.Drawing.Point(2, 306);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(316, 16);
-            this.label2.TabIndex = 38;
-            this.label2.Text = "______________________________________________________________";
+            this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
+            this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine2.Location = new System.Drawing.Point(2, 309);
+            this.SeperatorLine2.Name = "SeperatorLine2";
+            this.SeperatorLine2.Size = new System.Drawing.Size(316, 15);
+            this.SeperatorLine2.TabIndex = 38;
+            this.SeperatorLine2.Text = "--------------------------------------------------------------";
             // 
             // ContributorsLabel
             // 
@@ -144,9 +154,6 @@ namespace Dobby {
             this.ContributorsLabel.Size = new System.Drawing.Size(317, 184);
             this.ContributorsLabel.TabIndex = 35;
             this.ContributorsLabel.Text = resources.GetString("ContributorsLabel.Text");
-            this.ContributorsLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.ContributorsLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.ContributorsLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             // 
             // label1
             // 
@@ -154,9 +161,9 @@ namespace Dobby {
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.label1.Location = new System.Drawing.Point(2, 249);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(316, 16);
+            this.label1.Size = new System.Drawing.Size(316, 15);
             this.label1.TabIndex = 37;
-            this.label1.Text = "______________________________________________________________";
+            this.label1.Text = "--------------------------------------------------------------";
             // 
             // NarcissismLabel
             // 
@@ -168,19 +175,16 @@ namespace Dobby {
             this.NarcissismLabel.Size = new System.Drawing.Size(244, 39);
             this.NarcissismLabel.TabIndex = 20;
             this.NarcissismLabel.Text = "App And Game Patches Developed\r\nBy: TheMagicalBlob";
-            this.NarcissismLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.NarcissismLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.NarcissismLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             // 
             // SeperatorLine1
             // 
             this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 61);
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 65);
             this.SeperatorLine1.Name = "SeperatorLine1";
-            this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine1.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine1.TabIndex = 36;
-            this.SeperatorLine1.Text = "______________________________________________________________";
+            this.SeperatorLine1.Text = "--------------------------------------------------------------";
             // 
             // BlobGithubBtn
             // 
@@ -212,9 +216,9 @@ namespace Dobby {
             this.Controls.Add(this.MainLabel);
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.MinimizeBtn);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.SeperatorLine0);
             this.Controls.Add(this.IllusionBlogBtn);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.SeperatorLine2);
             this.Controls.Add(this.ContributorsLabel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.NarcissismLabel);
@@ -225,26 +229,13 @@ namespace Dobby {
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "CreditsPage";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownFunc);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveForm);
-            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpFunc);
             this.ResumeLayout(false);
 
         }
-        public void MoveForm(object sender, MouseEventArgs e) => Common.MoveForm(sender, e);
-        public void MouseUpFunc(object sender, MouseEventArgs e) => Common.MouseUpFunc(sender, e);
-        public void MouseDownFunc(object sender, MouseEventArgs e) => Common.MouseDownFunc(sender, e);
-        void ExitBtn_Click(object sender, EventArgs e) => Environment.Exit(0);
-        void ExitBtnMH(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 227, 0);
-        void ExitBtnML(object sender, EventArgs e) => ExitBtn.ForeColor = Color.FromArgb(255, 255, 255);
-        void MinimizeBtn_Click(object sender, EventArgs e) => ActiveForm.WindowState = FormWindowState.Minimized;
-        void MinimizeBtnMH(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 227, 0);
-        void MinimizeBtnML(object sender, EventArgs e) => MinimizeBtn.ForeColor = Color.FromArgb(255, 255, 255);
+        #endregion
 
-        void BackBtn_Click(object sender, EventArgs e) {
-            ReturnToPreviousPage();
-            HoverLeave((Control)sender, false);
-        }
+
+
         public void BlobGithubBtn_RightClick(object sender, MouseEventArgs e) {
             if (e.Button == MouseButtons.Right) MessageBox.Show("https://github.com/TheMagicalBlob");
 
@@ -262,10 +253,15 @@ namespace Dobby {
 
 
 
-        ////////////////////\\\\\\\\\\\\\\\\\\\\
-        ///--     Control Declarations     --\\\
-        ////////////////////\\\\\\\\\\\\\\\\\\\\
-        #region Control Declarations
+
+        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Repeated Page Functions & Control Declarations     --\\\
+        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        #region Repeat Functions & Control Declarations
+        void BackBtn_Click(object sender, EventArgs e) {
+            ReturnToPreviousPage();
+            HoverLeave((Control)sender, false);
+        }
         public Button ExitBtn;
         public Button MinimizeBtn;
         public Label MainLabel;
@@ -276,9 +272,9 @@ namespace Dobby {
         public Button BackBtn;
         public Label SeperatorLine1;
         public Label Info;
-        public Label label2;
+        public Label SeperatorLine2;
         public Label label1;
-        public Label label3;
+        public Label SeperatorLine0;
         #endregion
     }
 }

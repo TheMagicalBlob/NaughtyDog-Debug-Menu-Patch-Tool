@@ -16,10 +16,25 @@ namespace Dobby {
             AddEventHandlersToControls(Controls);
         }
 
-        /////////////////\\\\\\\\\\\\\\\\\\
-        ///--     Repeat Buttons      --\\\
-        /////////////////\\\\\\\\\\\\\\\\\\\
-        #region RepeatedButtonFunctions
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Designer Crap, No Touchie      --\\\
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+        #region Designer Crap, No Touchie
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing) {
+            if(disposing && (components != null)) {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
             this.ExitBtn = new System.Windows.Forms.Button();
@@ -43,7 +58,7 @@ namespace Dobby {
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MainLabel.Font = new System.Drawing.Font("Cambria", 12.25F, System.Drawing.FontStyle.Bold);
             this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.MainLabel.Location = new System.Drawing.Point(2, 4);
+            this.MainLabel.Location = new System.Drawing.Point(2, 2);
             this.MainLabel.Name = "MainLabel";
             this.MainLabel.Size = new System.Drawing.Size(314, 22);
             this.MainLabel.TabIndex = 0;
@@ -55,9 +70,9 @@ namespace Dobby {
             this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.ExitBtn.FlatAppearance.BorderSize = 0;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Cambria", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ExitBtn.Location = new System.Drawing.Point(293, 1);
+            this.ExitBtn.Location = new System.Drawing.Point(296, 1);
             this.ExitBtn.Name = "ExitBtn";
             this.ExitBtn.Size = new System.Drawing.Size(23, 23);
             this.ExitBtn.TabIndex = 18;
@@ -71,9 +86,9 @@ namespace Dobby {
             this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MinimizeBtn.FlatAppearance.BorderSize = 0;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeBtn.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8F, System.Drawing.FontStyle.Bold);
             this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinimizeBtn.Location = new System.Drawing.Point(270, 1);
+            this.MinimizeBtn.Location = new System.Drawing.Point(273, 1);
             this.MinimizeBtn.Name = "MinimizeBtn";
             this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
             this.MinimizeBtn.TabIndex = 19;
@@ -85,7 +100,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Cambria", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(9, 241);
+            this.Info.Location = new System.Drawing.Point(9, 235);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
@@ -99,7 +114,7 @@ namespace Dobby {
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 192);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 184);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
@@ -117,7 +132,7 @@ namespace Dobby {
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 167);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 159);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.InfoHelpBtn.Size = new System.Drawing.Size(147, 23);
@@ -131,11 +146,11 @@ namespace Dobby {
             // 
             this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine0.Location = new System.Drawing.Point(2, 14);
+            this.SeperatorLine0.Location = new System.Drawing.Point(2, 20);
             this.SeperatorLine0.Name = "SeperatorLine0";
-            this.SeperatorLine0.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine0.TabIndex = 31;
-            this.SeperatorLine0.Text = "______________________________________________________________";
+            this.SeperatorLine0.Text = "--------------------------------------------------------------";
             // 
             // SeperatorLine2
             // 
@@ -143,9 +158,9 @@ namespace Dobby {
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.SeperatorLine2.Location = new System.Drawing.Point(3, 141);
             this.SeperatorLine2.Name = "SeperatorLine2";
-            this.SeperatorLine2.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine2.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine2.TabIndex = 32;
-            this.SeperatorLine2.Text = "______________________________________________________________";
+            this.SeperatorLine2.Text = "--------------------------------------------------------------";
             // 
             // GameInfoLabel
             // 
@@ -166,7 +181,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 217);
+            this.BackBtn.Location = new System.Drawing.Point(1, 209);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.BackBtn.Size = new System.Drawing.Size(75, 23);
@@ -208,11 +223,11 @@ namespace Dobby {
             // 
             this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 75);
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 78);
             this.SeperatorLine1.Name = "SeperatorLine1";
-            this.SeperatorLine1.Size = new System.Drawing.Size(316, 16);
+            this.SeperatorLine1.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine1.TabIndex = 36;
-            this.SeperatorLine1.Text = "______________________________________________________________";
+            this.SeperatorLine1.Text = "--------------------------------------------------------------";
             // 
             // BaseDebugBtn
             // 
@@ -222,7 +237,7 @@ namespace Dobby {
             this.BaseDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BaseDebugBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.BaseDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BaseDebugBtn.Location = new System.Drawing.Point(1, 60);
+            this.BaseDebugBtn.Location = new System.Drawing.Point(1, 59);
             this.BaseDebugBtn.Name = "BaseDebugBtn";
             this.BaseDebugBtn.Size = new System.Drawing.Size(231, 23);
             this.BaseDebugBtn.TabIndex = 20;
@@ -253,7 +268,7 @@ namespace Dobby {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ClientSize = new System.Drawing.Size(320, 261);
+            this.ClientSize = new System.Drawing.Size(320, 260);
             this.Controls.Add(this.GameInfoLabel);
             this.Controls.Add(this.SeperatorLine2);
             this.Controls.Add(this.BaseDebugBtn);
@@ -275,18 +290,14 @@ namespace Dobby {
             this.PerformLayout();
 
         }
-        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);
-        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
-        private void BackBtn_Click(object sender, EventArgs e) => ReturnToPreviousPage();
         #endregion
 
 
         //////////////////////\\\\\\\\\\\\\\\\\\\\\
         ///--     Page-Specific Variables     --\\\
         //////////////////////\\\\\\\\\\\\\\\\\\\\\
-#region Page-Specific Variables
+        #region Page-Specific Variables
 
-        public static FileStream MainStream { get; private set; }
         private Thread DebugScanThread;
         public static bool IsActiveFilePCExe, MainStreamIsOpen;
 
@@ -304,12 +315,12 @@ namespace Dobby {
 
         private byte[] LocalExecutableCheck;
 
-#endregion
+        #endregion
 
         //////////////////////\\\\\\\\\\\\\\\\\\\\\
         ///--     Page-Specific Functions     --\\\
         //////////////////////\\\\\\\\\\\\\\\\\\\\\
-#region Page-Specific Functions
+        #region Page-Specific Functions
 
         private void BrowseButton_Click(object sender, EventArgs e) {
             FileDialog FileDialog = new OpenFileDialog {
@@ -364,20 +375,13 @@ namespace Dobby {
         /// <summary> Compare Data Read At The Given Address
         /// </summary>
         /// <returns> True If The Data Read Matches The Array Given </returns>
-        public bool ArrayCmp(int Address, byte[] DataToCompare) {
+        public bool CompareBytes(int Address, byte[] DataToCompare) {
             var DataPresent = new byte[DataToCompare.Length];
 
             MainStream.Position = Address;
             MainStream.Read(DataPresent, 0, DataToCompare.Length);
 
             return DataPresent.SequenceEqual(DataToCompare);
-        }
-        public void WriteByte(int offset, byte data) {
-            MainStream.Position = offset;
-            MainStream.WriteByte(data);
-
-            for(var i=0;i!=12;i++)
-            MainStream.Flush();
         }
 
         private void ScanForDebugAddr() { 
@@ -397,7 +401,7 @@ Read:       MainStream.Position = TmpAddr++;
             MessageBox.Show($"0x8F Written At {GuessedDebug:X}\nStart Time: {StartTime} -> End Time: {DateTime.Now}", "That Should Work");
         }
 
-        public string UpdateGameInfoLabel() { //!
+        public string UpdateGameInfoLabel() {
             var VersionString = $"Unknown Version {BitConverter.ToString(LocalExecutableCheck):X}";
 
             switch (Game) {
@@ -414,52 +418,52 @@ Read:       MainStream.Position = TmpAddr++;
                     break;
                 case T1X101:
                     VersionString = "Original Release";
-                     if (!ArrayCmp(0x3B66B6, DebugDat))
+                     if (!CompareBytes(0x3B66B6, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1XL101:
                     VersionString = "Original Release Non-AVX";
-                    if (!ArrayCmp(0x3B64A2, DebugDat))
+                    if (!CompareBytes(0x3B64A2, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1X1015:
                     VersionString = "1.01.5 Release";
-                    if (!ArrayCmp(0x3B68E6, DebugDat))
+                    if (!CompareBytes(0x3B68E6, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1XL1015:
                     VersionString = "1.01.5 Release Non-AVX";
-                    if (!ArrayCmp(0x3B66D2, DebugDat))
+                    if (!CompareBytes(0x3B66D2, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1X1016:
                     VersionString = "1.01.6 Release";
-                    if (!ArrayCmp(0x3B68F6, DebugDat))
+                    if (!CompareBytes(0x3B68F6, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1XL1016:
                     VersionString = "1.01.6 Release Non-AVX";
-                    if (!ArrayCmp(0x3B66D2, DebugDat))
+                    if (!CompareBytes(0x3B66D2, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1X1017:
                     VersionString = "1.01.7 Release";
-                    if (!ArrayCmp(0x3B6A17, DebugDat))
+                    if (!CompareBytes(0x3B6A17, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1XL1017:
                     VersionString = "1.01.7 Release Non-AVX";
-                    if (!ArrayCmp(0x3B67F3, DebugDat))
+                    if (!CompareBytes(0x3B67F3, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1X102:
                     VersionString = "1.02 Release";
-                    if (!ArrayCmp(0x3B6A92, DebugDat))
+                    if (!CompareBytes(0x3B6A92, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
                 case T1XL102:
                     VersionString = "1.02 Release Non-AVX";
-                    if (!ArrayCmp(0x3B686E, DebugDat))
+                    if (!CompareBytes(0x3B686E, DebugDat))
                         VersionString += " | Debug Enabled";
                     break;
             }
@@ -563,13 +567,16 @@ Read:       MainStream.Position = TmpAddr++;
             }
             WriteByte(DebugAddr, 0x8F);
         }
-#endregion
+        #endregion
 
 
-        ////////////////////\\\\\\\\\\\\\\\\\\\\
-        ///--     Control Declarations     --\\\
-        ////////////////////\\\\\\\\\\\\\\\\\\\\
-#region ControlDeclarations
+        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Repeated Page Functions & Control Declarations     --\\\
+        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        #region Repeat Functions & Control Declarations
+        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);
+        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
+        private void BackBtn_Click(object sender, EventArgs e) => ReturnToPreviousPage();
         public Label MainLabel;
         public Button CreditsBtn;
         public Button InfoHelpBtn;
@@ -585,6 +592,6 @@ Read:       MainStream.Position = TmpAddr++;
         public Button BackBtn;
         public Button DisableDebugBtn;
         public Button BaseDebugBtn;
-#endregion
+        #endregion
     }
 }
