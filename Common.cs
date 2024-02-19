@@ -321,7 +321,7 @@ namespace Dobby {
         public static NetworkStream net_stream;
         public static FileStream MainStream;
 
-        public static Font MainFont = new Font("Cambria", 9.75F, FontStyle.Bold);
+        public static Font MainFont = new Font("Consolas", 9.75F, FontStyle.Bold);
         public static Color MainColour = Color.FromArgb(100, 100, 100);
 
 
@@ -372,7 +372,8 @@ namespace Dobby {
         /// <param name="PassedControl">The Control To Highlight</param>
         /// <param name="EventIsMouseEnter">Highlight If True</param>
         public static void HoverLeave(Control PassedControl, bool EventIsMouseEnter) {
-            CurrentControl = PassedControl.ToString();
+            CurrentControl = PassedControl.Name;
+
             if(EventIsMouseEnter) {
                 PassedControl.MouseDown += HighlightItemOnCLick;
                 PassedControl.MouseUp   += ResetItemHighlight;
@@ -576,7 +577,7 @@ namespace Dobby {
         /// <returns> A New Size For cunt </returns>
         public static Size FitControlText(Control cunt) {
             var size = TextRenderer.MeasureText(cunt.Text, cunt.Font);
-            return new Size(size.Width + 7, size.Height + 7);
+            return new Size(size.Width + 10, size.Height + 10);
         }
 
 
@@ -645,38 +646,6 @@ namespace Dobby {
                 Controls.Find("ExitBtn", true)[0]    .MouseLeave += new EventHandler(ExitBtnML);
             }
             catch(IndexOutOfRangeException) { MsgOut("Form Lacks MinimizeBtn And / Or ExitBtn"); }
-
-#if DEBUG
-            #region Debug Label
-            if(Controls.Owner.Name == "LogWindow") goto FormIsLogWindow;
-            Label DebugLabel = new Label {
-                Location = new Point(230, 1),
-                ForeColor = SystemColors.Control,
-                BorderStyle = BorderStyle.FixedSingle,
-                Font = new Font("Cambria", 7F, FontStyle.Bold),
-                Text = "(Dev)"
-            };
-            DebugLabel.Size = FitControlText(DebugLabel);
-            DebugLabel.Click += new EventHandler(MiscDebugFunc);
-            Controls.Add(DebugLabel);
-            DebugLabel.BringToFront();
-
-            Button OpenLogAndQuit = new Button {
-                ForeColor = SystemColors.Control,
-                Font = new Font("Cambria", 7F, FontStyle.Bold),
-                Text = "&L",
-                Name = "!!!"
-            };
-            OpenLogAndQuit.Size = FitControlText(OpenLogAndQuit);
-            OpenLogAndQuit.Click += new EventHandler(MiscDebugFunc);
-            OpenLogAndQuit.FlatAppearance.BorderSize = 0;
-            OpenLogAndQuit.FlatStyle = FlatStyle.Flat;
-            Controls.Add(OpenLogAndQuit);
-            OpenLogAndQuit.Location = new Point(230 - OpenLogAndQuit.Width, 1);
-            OpenLogAndQuit.BringToFront();
-        FormIsLogWindow:;
-            #endregion
-#endif
         }
 
 

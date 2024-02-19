@@ -27,20 +27,37 @@ namespace Dobby {
 
         /// <summary> Dev Label Event Handler Function </summary>
         public static void MiscDebugFunc(object sender, EventArgs e) {
-            if(((Control)sender).Text == "&L") {
+            LogWindow.SewerSlide();
+        }
 
-                if(MessageBox.Show("Open Log?", "", MessageBoxButtons.OKCancel) != DialogResult.OK)
-                    return;
+        public static void OpenLog(object _ = null, EventArgs __ = null) {
 
-                System.Diagnostics.Process.Start($"{Directory.GetCurrentDirectory()}\\out.txt");
-                Environment.Exit(0);
+            if(MessageBox.Show("Open Log?", "", MessageBoxButtons.OKCancel) != DialogResult.OK)
                 return;
-            }
 
-            bool a = true;
+            System.Diagnostics.Process.Start($"{Directory.GetCurrentDirectory()}\\out.txt");
+            LogWindow.SewerSlide();
+            Environment.Exit(0);
+        }
 
-            Dev.MsgOut(a ^= a);
+        public static void StartReadLogTest() => ReadTest.Start();
 
+        private static Thread ReadTest = new Thread(new ThreadStart(rTst));
+
+        private static void rTst() {
+            string[] chk = Array.Empty<string>(), lines;
+
+        start:
+            while(!File.Exists(@"C:\Users\Blob\Desktop\out.txt"));
+
+            lines = File.ReadAllLines(@"C:\Users\Blob\Desktop\out.txt");
+            if (chk.Equals(Array.Empty<string>()) || lines.SequenceEqual(chk))
+
+            foreach(var line in lines)
+                    Dev.MsgOut(line);
+
+            chk = lines;
+            goto start;
         }
 
         public static void DebugControlHover(object sender, EventArgs e) => HoveredControl = (Control)sender;
@@ -72,9 +89,8 @@ namespace Dobby {
 
             Window.DefWndProc(ref Msg);
 
-            if((int)toggle != 0) {
+            if((int)toggle != 0)
                 control.Update();
-            }
         }
 
 
@@ -84,11 +100,40 @@ namespace Dobby {
         public partial class LogWindow : Form {
             public LogWindow(Form Gaia) {
 
-                // LogWindow Form Style & Event Handlers
+                // LogWindow Form And Control Initializations
                 BackColor = Gaia.BackColor;
                 FormBorderStyle = FormBorderStyle.None;
                 Name = "LogWindow";
-                
+                Button DebugLabel = new Button {
+                    TabIndex = 0,
+                    ForeColor = SystemColors.Control,
+                    Font = new Font("Cambria", 7F, FontStyle.Bold),
+                    Text = "(Dev)",
+                    Name = "!!!"
+                };
+                DebugLabel.Size = FitControlText(DebugLabel);
+                DebugLabel.FlatStyle = FlatStyle.Flat;
+                DebugLabel.FlatAppearance.BorderSize = 0;
+                DebugLabel.Click += new EventHandler(MiscDebugFunc);
+                DebugLabel.BringToFront();
+
+                Button OpenLogFileAndQuit = new Button {
+                    TabIndex = 1,
+                    ForeColor = SystemColors.Control,
+                    Font = new Font("Cambria", 7F, FontStyle.Bold),
+                    Text = "LogTxt",
+                    Name = "!!!"
+                };
+                OpenLogFileAndQuit.Size = FitControlText(OpenLogFileAndQuit);
+                OpenLogFileAndQuit.Click += new EventHandler(OpenLog);
+                OpenLogFileAndQuit.FlatStyle = FlatStyle.Flat;
+                OpenLogFileAndQuit.FlatAppearance.BorderSize = 0;
+                OpenLogFileAndQuit.BringToFront();
+                Controls.Add(DebugLabel);
+                Controls.Add(OpenLogFileAndQuit);
+                //\\
+
+                // LogWindow Event Handlers
                 MouseEnter += DebugControlHover;
                 MouseDown  += MouseDownFunc;
                 MouseUp    += MouseUpFunc;
@@ -97,6 +142,8 @@ namespace Dobby {
                 LogWindowRenderer = this.CreateGraphics();
                 LogWindowPtr = this;
                 SetParent(Gaia);
+
+                LogFile = File.CreateText($"{Directory.GetCurrentDirectory()}\\out.txt");
                 logThread.Start();
             }
 
@@ -105,7 +152,7 @@ namespace Dobby {
 
             private static Graphics LogWindowRenderer;
 
-            public static StreamWriter LogFile;
+            private static StreamWriter LogFile;
             public static string[] LogBuffer;
 
             #region timer crap
@@ -144,11 +191,42 @@ namespace Dobby {
 
                 LogWindowPtr.Location = new Point(ParentFormPtr.Location.X - LogWindowPtr.Size.Width, ParentFormPtr.Location.Y);
                 LogWindowPtr.Update();
+
+                var ControlOffset = 0;
+                foreach(Control c in LogWindowPtr.Controls) {
+                    c.Location = new Point(LogWindowPtr.Size.Width - c.Size.Width - ControlOffset - 1, 1);
+                    ControlOffset += c.Size.Width;
+                }
             }
 
             public static void SewerSlide() {
                 logThread.Abort();
             }
+
+            public static void LogOut(string str) {
+                while(LogFile == null);
+
+                LogFile.WriteLine(str);
+                LogFile.Flush();
+
+                LogShouldRefresh = true;
+
+                if(OutputStringIndex != OutputStrings.Length - 1) {
+                    for(; OutputStringIndex < OutputStrings.Length - 1; OutputStringIndex++) {
+                        if(OutputStrings[OutputStringIndex] == null) {
+                            OutputStrings[OutputStringIndex] = str;
+                            break;
+                        }
+                    }
+                    return;
+                }
+                for(ShiftIndex = 0; ShiftIndex < OutputStrings.Length - 1; ShiftIndex++)
+                    OutputStrings[ShiftIndex] = OutputStrings[ShiftIndex + 1];
+                OutputStrings[ShiftIndex] = str;
+
+                LogShouldRefresh = true;
+            }
+
 
             private static readonly Thread logThread = new Thread(new ThreadStart(UpdateConsoleOutput));
             public static void UpdateConsoleOutput() {
@@ -160,6 +238,7 @@ namespace Dobby {
                 string[] Output, chk1 = Array.Empty<string>(), chk2 = Array.Empty<string>();
 
                 Pen pen = new Pen(Color.White);
+                Font DFont = new Font("Consolas", 8.5f, FontStyle.Bold);
 
                 while(true) {
                     try {
@@ -223,7 +302,7 @@ namespace Dobby {
 
                             // Resize LogWindow To Fit Rendered Text, With A Padding of 6 Pixels (Half Because It's Also Placed 6 Pixles In On Each Axis Below)
                             foreach(string line in Output) {
-                                TextSize = LogWindowRenderer.MeasureString(line, MainFont);
+                                TextSize = LogWindowRenderer.MeasureString(line, DFont);
 
                                 if(TextSize.Width > formScale.Width - 12)
                                     formScale.Width = (int)TextSize.Width + 12;
@@ -237,7 +316,7 @@ namespace Dobby {
                             Out += " \n";
                             
                             foreach(string line in OutputStrings) {
-                                TextSize = LogWindowRenderer.MeasureString(line, MainFont);
+                                TextSize = LogWindowRenderer.MeasureString(line, DFont);
 
                                 if(TextSize.Width > formScale.Width - 12)
                                     formScale.Width = (int)TextSize.Width + 12;
@@ -252,7 +331,7 @@ namespace Dobby {
 
                             }
 
-                            formScale.Height += 47; // Border Offset + Padding
+                            formScale.Height += 50; // Border Offset + Padding
 
 
                             // Resize Form Back On Main LogWindow Thread
@@ -274,7 +353,7 @@ namespace Dobby {
                             LogWindowRenderer.Clear(Color.FromArgb(100, 100, 100));
                             LogWindowRenderer.DrawLine(pen, 0f, 30f, (float)LogWindowPtr.Width, 30f);
                             LogWindowRenderer.DrawLines(pen, Border);
-                            LogWindowRenderer.DrawString(Out, MainFont, Brushes.White, new PointF(6f, 35f));
+                            LogWindowRenderer.DrawString(Out, DFont, Brushes.White, new PointF(6f, 35f));
                             LogShouldRefresh ^= LogShouldRefresh;
                         }
 
@@ -302,37 +381,16 @@ namespace Dobby {
 
         public static void MsgOut(object obj = null) {
 #if DEBUG
-            string s;
+            string str;
 
-            if(obj == null) s = " ";
+            if(obj == null) str = " ";
 
-            else s = obj.ToString();
+            else str = obj.ToString();
             
-            if(s.Contains("\n"))
-                s = s.Replace("\n", "\n "); // So It Still Has A Size (for log window scaling purposes)
+            if(str.Contains("\n"))
+                str = str.Replace("\n", "\n "); // So It Still Has A Size (for log window scaling purposes)
 
-            if(LogWindow.LogFile == null)
-                LogWindow.LogFile = File.CreateText($"{Directory.GetCurrentDirectory()}\\out.txt");
-            
-            LogWindow.LogFile.WriteLine(s);
-            LogWindow.LogFile.Flush();
-
-            LogWindow.LogShouldRefresh = true;
-
-            if(OutputStringIndex != OutputStrings.Length - 1) {
-                for(; OutputStringIndex < OutputStrings.Length - 1; OutputStringIndex++) {
-                    if(OutputStrings[OutputStringIndex] == null) {
-                        OutputStrings[OutputStringIndex] = s;
-                        break;
-                    }
-                }
-                return;
-            }
-            for(ShiftIndex = 0; ShiftIndex < OutputStrings.Length - 1; ShiftIndex++)
-                OutputStrings[ShiftIndex] = OutputStrings[ShiftIndex + 1];
-            OutputStrings[ShiftIndex] = s;
-
-            LogWindow.LogShouldRefresh = true;
+            LogWindow.LogOut(str);
 #endif
         }
     }

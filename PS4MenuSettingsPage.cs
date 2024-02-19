@@ -1611,10 +1611,8 @@ namespace Dobby {
 
 
             int?[] IDS = new int?[GameSpecificBootSettingsPointers.Length];
-            for(int i = 0; i < GameSpecificBootSettingsPointers.Length ; i++) {
+            for(int i = 0; i < GameSpecificBootSettingsPointers.Length ; i++)
                 IDS[i] = GameSpecificBootSettingsPointers[i][GameIndex].Length == 0 ? null : (int?)i;
-                Dev.MsgOut($"Enabling Button: #{i} ({IDS[i]})");
-            }
 
             gsButtons = new DynamicPatchButtons(IDS, GameSpecificPatchesLabel.Location.Y + GameSpecificPatchesLabel.Size.Height + 1);
 

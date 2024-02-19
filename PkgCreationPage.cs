@@ -455,7 +455,7 @@ namespace Dobby {
 
         bool VerboseOutput = true, SpecifyTMPDirectory = false, IsBuildReady;
 
-        void ScanForOrbisPubTools() {                                                                                                              //DirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectory
+        private void ScanForOrbisPubTools() {                                                                                                              //DirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectory
             var FilesInCurrentDirectory   = Directory.GetFiles(Directory.GetCurrentDirectory());
             var FoldersInCurrentDirectory = Directory.GetDirectories(Directory.GetCurrentDirectory());
 
@@ -486,10 +486,7 @@ namespace Dobby {
         }
         private void HighlightPathLabel(object sender, EventArgs e) {
             var Sender = sender as Control;
-            if (Sender.Font.Underline)
-            Sender.Font = new Font("Georgia", 9.75F);
-            else
-            Sender.Font = new Font("Georgia", 9.75F, FontStyle.Underline);
+            Sender.Font = Sender.Font.Underline ? new Font("Georgia", 9.75F) : new Font("Georgia", 9.75F, FontStyle.Underline);
         }
 
 
@@ -505,7 +502,10 @@ namespace Dobby {
                 OutputDirectory = GP4Path.Remove(GP4Path.LastIndexOf(@"\"));
             }
 
-            string Parameters = $"img_create --oformat pkg  {(VerboseOutput ? "--no_progress_bar" : string.Empty)} --skip_digest {(SpecifyTMPDirectory ? $"--tmp_path \"{TMPPath}\"" : string.Empty)} \"{GP4Path}\" \"{OutputDirectory}\"";
+            string Parameters = $"img_create --oformat pkg  {(VerboseOutput ? "--no_progress_bar" : string.Empty)} --skip_digest {(SpecifyTMPDirectory ? $"--tmp_path \"{TMPPath}\"" : string.Empty)} \"{GP4Path}\" \"{OutputDirectory}\" > \"C:\\Users\\Blob\\Desktop\\out.txt\"";
+#if DEBUG
+            Dev.StartReadLogTest();
+#endif
             System.Diagnostics.Process.Start(OrbisPubCmdPath, Parameters);
             Dev.MsgOut(Parameters);
 
@@ -566,7 +566,7 @@ namespace Dobby {
 
 
         private void VerbosityBtn_Click(object sender, EventArgs e) {
-            VerboseOutput = !VerboseOutput;
+            VerboseOutput ^= true;
             ((Control)sender).Text = ((Control)sender).Text.Remove(((Control)sender).Text.LastIndexOf(' ') + 1) + (VerboseOutput ? "Details" : "Bar");
         }
 
@@ -611,7 +611,9 @@ namespace Dobby {
 
         private void TMPDirectoryLabel_Click(object sender, EventArgs e) => TMPDirectoryBtn_Click(TempDirectoryBtn, null);
         private void TMPDirectoryBtn_Click(object sender, EventArgs e) {
-            ((Control)sender).Text = ((Control)sender).Text.Remove(((Control)sender).Text.LastIndexOf(' ') + 1) + (SpecifyTMPDirectory ? "No" : "Yes");
+            var Sender = ((Control)sender);
+
+            Sender.Text = Sender.Text.Remove(Sender.Text.LastIndexOf(' ') + 1) + (SpecifyTMPDirectory ? "No" : "Yes");
             Refresh();
 
             if(!SpecifyTMPDirectory) {
@@ -621,7 +623,7 @@ namespace Dobby {
                 if(Folder.ShowDialog() == DialogResult.OK)
                     TMPDirectoryLabel.Text = TMPPath = Folder.SelectedPath;
                 else {
-                    ((Control)sender).Text = ((Control)sender).Text.Remove(((Control)sender).Text.LastIndexOf(' ') + 1) + (SpecifyTMPDirectory ? "Yes" : "No");
+                    Sender.Text = Sender.Text.Remove(Sender.Text.LastIndexOf(' ') + 1) + (SpecifyTMPDirectory ? "Yes" : "No");
                     return;
                 }
             }
