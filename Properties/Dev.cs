@@ -27,7 +27,7 @@ namespace Dobby {
 
         /// <summary> Dev Label Event Handler Function </summary>
         public static void MiscDebugFunc(object sender, EventArgs e) {
-            LogWindow.SewerSlide();
+            LogWindow.Exit();
         }
 
         public static void OpenLog(object _ = null, EventArgs __ = null) {
@@ -36,8 +36,13 @@ namespace Dobby {
                 return;
 
             System.Diagnostics.Process.Start($"{Directory.GetCurrentDirectory()}\\out.txt");
-            LogWindow.SewerSlide();
+            LogWindow.Exit();
             Environment.Exit(0);
+        }
+        public static void SwitchToRelease(object _ = null, EventArgs __ = null) {
+            LogWindow.Exit();
+            System.Diagnostics.Process.Start($@"{Directory.GetParent(Directory.GetCurrentDirectory())}\Release\ND Debug Enabler.exe");
+            Environment.Exit(1);
         }
 
         public static void StartReadLogTest() => ReadTest.Start();
@@ -92,7 +97,18 @@ namespace Dobby {
             if((int)toggle != 0)
                 control.Update();
         }
+        
+        /// <summary>
+        /// Calculates A Size Exactly Large Enough (Hopefully)
+        /// To Fit The Item's Text Content
+        /// </summary>
+        /// <returns> A New Size For cunt </returns>
+        private static Size TryAutosize(Control cunt) {
+            var gr = cunt.CreateGraphics();
 
+            var size = gr.MeasureString(cunt.Text, cunt.Font);
+            return new Size((int)size.Width + 25, (int)size.Height + 10);
+        }
 
         /// <summary>
         /// Log Window Class
@@ -111,7 +127,7 @@ namespace Dobby {
                     Text = "(Dev)",
                     Name = "!!!"
                 };
-                DebugLabel.Size = FitControlText(DebugLabel);
+                DebugLabel.Size = TryAutosize(DebugLabel);
                 DebugLabel.FlatStyle = FlatStyle.Flat;
                 DebugLabel.FlatAppearance.BorderSize = 0;
                 DebugLabel.Click += new EventHandler(MiscDebugFunc);
@@ -124,13 +140,27 @@ namespace Dobby {
                     Text = "LogTxt",
                     Name = "!!!"
                 };
-                OpenLogFileAndQuit.Size = FitControlText(OpenLogFileAndQuit);
+                OpenLogFileAndQuit.Size = TryAutosize(OpenLogFileAndQuit);
                 OpenLogFileAndQuit.Click += new EventHandler(OpenLog);
                 OpenLogFileAndQuit.FlatStyle = FlatStyle.Flat;
                 OpenLogFileAndQuit.FlatAppearance.BorderSize = 0;
                 OpenLogFileAndQuit.BringToFront();
+
+                Button SwitchToReleaseBtn = new Button {
+                    TabIndex = 2,
+                    ForeColor = SystemColors.Control,
+                    Font = new Font("Cambria", 7F, FontStyle.Bold),
+                    Text = "Boot Release",
+                    Name = "!!!"
+                };
+                SwitchToReleaseBtn.Size = TryAutosize(SwitchToReleaseBtn);
+                SwitchToReleaseBtn.Click += new EventHandler(SwitchToRelease);
+                SwitchToReleaseBtn.FlatStyle = FlatStyle.Flat;
+                SwitchToReleaseBtn.FlatAppearance.BorderSize = 0;
+                SwitchToReleaseBtn.BringToFront();
                 Controls.Add(DebugLabel);
                 Controls.Add(OpenLogFileAndQuit);
+                Controls.Add(SwitchToReleaseBtn);
                 //\\
 
                 // LogWindow Event Handlers
@@ -199,8 +229,9 @@ namespace Dobby {
                 }
             }
 
-            public static void SewerSlide() {
+            public static void Exit() {
                 logThread.Abort();
+                LogWindowPtr.Dispose();
             }
 
             public static void LogOut(string str) {

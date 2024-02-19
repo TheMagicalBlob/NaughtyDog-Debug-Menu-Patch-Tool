@@ -332,7 +332,7 @@ namespace Dobby {
         #region Basic Form Event Handlers
         public static void ExitBtn_Click(object sender, EventArgs e) {
 #if DEBUG
-            LogWindow.SewerSlide();
+            LogWindow.Exit();
 #endif
             MainStream?.Dispose();
             Environment.Exit(0);
@@ -570,15 +570,6 @@ namespace Dobby {
             FormActive = false;
         }
 
-        /// <summary>
-        /// Calculates A Size Exactly Large Enough (Hopefully)
-        /// To Fit The Item's Text Content
-        /// </summary>
-        /// <returns> A New Size For cunt </returns>
-        public static Size FitControlText(Control cunt) {
-            var size = TextRenderer.MeasureText(cunt.Text, cunt.Font);
-            return new Size(size.Width + 10, size.Height + 10);
-        }
 
 
         /// <summary> Buttons To Avoid Prepending The Hover Arrow To </summary>
