@@ -20,12 +20,12 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             YellowInformationLabel = Info;
             Info.Text = "";
             Page = 0;
-            AddEventHandlersToControls(Controls);
 
 #if DEBUG
             var Log = new LogWindow(this);
             Log.Show();
 #endif
+            AddEventHandlersToControls(Controls);
         }
 
         #region Designer Crap, No Touchie

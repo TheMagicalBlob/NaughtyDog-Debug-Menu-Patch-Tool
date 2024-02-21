@@ -229,7 +229,7 @@ namespace Dobby {
           "* 4.46.213.561 | Added BootSettings Function Data For T1R 1.00, Most Pointers Still Missing",
           "* 4.46.213.563 | Label Font Size Fix And Position Adjustment",
           "* 4.46.215.583 | Standardized MainLabel, SeperatorLabel0, And Exit/Minimize Buttons, Positions And Sizes (Excuding Width For The Former Two) Shrumk Minimize/Exit Button Fonts (8f => 7.5f). Replaced The Control Hover Highlight With Mouse Down highlight To More Match ND's DMenu (Might Add Boolean Option Highlight To Match It Further)",
-
+          "* 4.46.216.583 | HoverLeave Function No Longer Widens Controls If They Already FIt The Form Width Rather Than Only Themselves"
 
 
             // TODO:
@@ -385,10 +385,11 @@ namespace Dobby {
 
             PassedControl.Text = EventIsMouseEnter ? $">{PassedControl.Text}" : PassedControl.Text.Substring(PassedControl.Text.IndexOf('>') + 1);
 
-            if(PassedControl.GetType() != typeof(VarButton))
+            if(PassedControl.Size.Width + PassedControl.Location.X != PassedControl.Parent.Size.Width - 1)
                 PassedControl.Size = new Size(EventIsMouseEnter ? PassedControl.Width + 9 : PassedControl.Width - 9, PassedControl.Height);
 
             if(!InfoHasImportantStr & !EventIsMouseEnter) SetInfoLabelText("");
+
             if(!EventIsMouseEnter) { MouseScrolled = EventIsMouseEnter; return; }
             else SetInfoLabelStringOnControlHover(PassedControl);
 #if DEBUG
@@ -577,12 +578,7 @@ namespace Dobby {
                 "!!!",
                 "ExitBtn",
                 "MinimizeBtn",
-                "IPLabelBtn",
-                "PortLabelBtn",
-                "CmdPathBtn",
-                "Gp4PathBtn",
-                "OutputDirectoryBtn",
-                "TmpDirectoryBtn"
+                "LabelBtn",
         };
         /// <summary>
         /// Apply Basic Event Handlers To Form And It's Items
@@ -607,6 +603,7 @@ namespace Dobby {
                 Item.MouseEnter += new EventHandler(ControlHover);
                 Item.MouseLeave += new EventHandler(ControlLeave);
             }
+
             if(Item.GetType() == typeof(VarButton))
                 Item.Paint += DrawButtonVar;
         }

@@ -50,19 +50,24 @@ namespace Dobby {
         private static Thread ReadTest = new Thread(new ThreadStart(rTst));
 
         private static void rTst() {
-            string[] chk = Array.Empty<string>(), lines;
+            try {
+                string[] chk = Array.Empty<string>(), lines;
 
-        start:
-            while(!File.Exists(@"C:\Users\Blob\Desktop\out.txt"));
+            start:
+                while(!File.Exists(@"C:\Users\Blob\Desktop\out.txt")) ;
 
-            lines = File.ReadAllLines(@"C:\Users\Blob\Desktop\out.txt");
-            if (chk.Equals(Array.Empty<string>()) || lines.SequenceEqual(chk))
+                lines = File.ReadAllLines(@"C:\Users\Blob\Desktop\out.txt");
+                if(chk.Equals(Array.Empty<string>()) || lines.SequenceEqual(chk))
 
-            foreach(var line in lines)
-                    Dev.MsgOut(line);
+                    foreach(var line in lines)
+                        MsgOut(line);
 
-            chk = lines;
-            goto start;
+                chk = lines;
+                goto start;
+            }
+            catch(Exception e) {
+                MsgOut($"rTst Failed, Cause: {e.Message}");
+            }
         }
 
         public static void DebugControlHover(object sender, EventArgs e) => HoveredControl = (Control)sender;
@@ -170,14 +175,14 @@ namespace Dobby {
                 //\\
 
                 LogWindowRenderer = this.CreateGraphics();
-                LogWindowPtr = this;
+                LogPtr = this;
                 SetParent(Gaia);
 
                 LogFile = File.CreateText($"{Directory.GetCurrentDirectory()}\\out.txt");
                 logThread.Start();
             }
 
-            private static Form LogWindowPtr, ParentFormPtr;
+            private static Form LogPtr, ParentPtr;
             public static Size formScale;
 
             private static Graphics LogWindowRenderer;
@@ -204,34 +209,41 @@ namespace Dobby {
             // Sets The Form To Attach The Log Window To
             public static void SetParent(Form Gaia) {
                 
-                ParentFormPtr = Gaia;
+                ParentPtr = Gaia;
                 Gaia.LocationChanged -= MoveLogToAppEdge;
             }
             private void MouseDownFunc(object sender, MouseEventArgs e) => MouseIsDown = true;
             private void MouseUpFunc(object sender, MouseEventArgs e) => MouseScrolled = MouseIsDown = false;
-            public static void MoveLogToAppEdge(object mommy, EventArgs e) => LogWindowPtr.Location = new Point(((Form)mommy).Location.X - LogWindowPtr.Size.Width, ((Form)mommy).Location.Y);
-            public static void MoveLogToAppEdge(Point Loc) => LogWindowPtr.Location = new Point(Loc.X - LogWindowPtr.Size.Width, Loc.Y);
+            public static void MoveLogToAppEdge(object mommy, EventArgs e) => LogPtr.Location = new Point(((Form)mommy).Location.X - LogPtr.Size.Width, ((Form)mommy).Location.Y);
+            public static void MoveLogToAppEdge(Point Loc) => LogPtr.Location = new Point(Loc.X - LogPtr.Size.Width, Loc.Y);
 
 
             public delegate void Scaling();
             public static Scaling resize = new Scaling(ResizeLog);
             private static void ResizeLog() {
-                LogWindowPtr.Size = formScale;
-                LogWindowRenderer = LogWindowPtr.CreateGraphics();
+                LogPtr.Size = formScale;
+                LogWindowRenderer = LogPtr.CreateGraphics();
 
-                LogWindowPtr.Location = new Point(ParentFormPtr.Location.X - LogWindowPtr.Size.Width, ParentFormPtr.Location.Y);
-                LogWindowPtr.Update();
+                LogPtr.Location = new Point(ParentPtr.Location.X - LogPtr.Size.Width, ParentPtr.Location.Y);
+                LogPtr.Update();
+
+
+                if(!MouseIsDown && LogPtr.Location.X < 0) {
+                    LogPtr.Location = new Point(1, LogPtr.Location.Y);
+                    ParentPtr.Location = new Point(LogPtr.Location.X + LogPtr.Size.Width, ParentPtr.Location.Y);
+                }
+
 
                 var ControlOffset = 0;
-                foreach(Control c in LogWindowPtr.Controls) {
-                    c.Location = new Point(LogWindowPtr.Size.Width - c.Size.Width - ControlOffset - 1, 1);
+                foreach(Control c in LogPtr.Controls) {
+                    c.Location = new Point(LogPtr.Size.Width - c.Size.Width - ControlOffset - 1, 1);
                     ControlOffset += c.Size.Width;
                 }
             }
 
             public static void Exit() {
                 logThread.Abort();
-                LogWindowPtr.Dispose();
+                LogPtr.Dispose();
             }
 
             public static void LogOut(string str) {
@@ -366,7 +378,7 @@ namespace Dobby {
 
 
                             // Resize Form Back On Main LogWindow Thread
-                            try { LogWindowPtr.Invoke(resize); }
+                            try { LogPtr.Invoke(resize); }
 
                             catch(InvalidOperationException) { MessageBox.Show("Resize Error Noti"); }
 
@@ -374,15 +386,15 @@ namespace Dobby {
                             // Border Setup
                             Point[] Border = new Point[] {
                                     Point.Empty,
-                                    new Point(LogWindowPtr.Width-1, 0),
-                                    new Point(LogWindowPtr.Width-1, LogWindowPtr.Height-1),
-                                    new Point(0, LogWindowPtr.Height-1),
+                                    new Point(LogPtr.Width-1, 0),
+                                    new Point(LogPtr.Width-1, LogPtr.Height-1),
+                                    new Point(0, LogPtr.Height-1),
                                     Point.Empty
                             };
 
                             // Clear Last "Frame", Draw Text And Border
                             LogWindowRenderer.Clear(Color.FromArgb(100, 100, 100));
-                            LogWindowRenderer.DrawLine(pen, 0f, 30f, (float)LogWindowPtr.Width, 30f);
+                            LogWindowRenderer.DrawLine(pen, 0f, 30f, (float)LogPtr.Width, 30f);
                             LogWindowRenderer.DrawLines(pen, Border);
                             LogWindowRenderer.DrawString(Out, DFont, Brushes.White, new PointF(6f, 35f));
                             LogShouldRefresh ^= LogShouldRefresh;
