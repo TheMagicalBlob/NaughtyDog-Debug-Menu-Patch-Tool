@@ -59,7 +59,7 @@ namespace Dobby {
             // 
             this.GameInfoLabel.Font = new System.Drawing.Font("Cambria", 10F);
             this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.GameInfoLabel.Location = new System.Drawing.Point(1, 148);
+            this.GameInfoLabel.Location = new System.Drawing.Point(1, 142);
             this.GameInfoLabel.Name = "GameInfoLabel";
             this.GameInfoLabel.Size = new System.Drawing.Size(316, 19);
             this.GameInfoLabel.TabIndex = 32;
@@ -74,7 +74,7 @@ namespace Dobby {
             this.BrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BrowseButton.Font = new System.Drawing.Font("Cambria", 8.5F, System.Drawing.FontStyle.Bold);
             this.BrowseButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.BrowseButton.Location = new System.Drawing.Point(238, 122);
+            this.BrowseButton.Location = new System.Drawing.Point(238, 116);
             this.BrowseButton.Name = "BrowseButton";
             this.BrowseButton.Size = new System.Drawing.Size(67, 19);
             this.BrowseButton.TabIndex = 31;
@@ -88,7 +88,7 @@ namespace Dobby {
             this.ExecutablePathBox.BackColor = System.Drawing.Color.Gray;
             this.ExecutablePathBox.Font = new System.Drawing.Font("Cambria", 10F);
             this.ExecutablePathBox.ForeColor = System.Drawing.SystemColors.Window;
-            this.ExecutablePathBox.Location = new System.Drawing.Point(6, 122);
+            this.ExecutablePathBox.Location = new System.Drawing.Point(6, 116);
             this.ExecutablePathBox.Name = "ExecutablePathBox";
             this.ExecutablePathBox.Size = new System.Drawing.Size(233, 23);
             this.ExecutablePathBox.TabIndex = 30;
@@ -99,9 +99,9 @@ namespace Dobby {
             // 
             this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 104);
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 98);
             this.SeperatorLine1.Name = "SeperatorLine1";
-            this.SeperatorLine1.Size = new System.Drawing.Size(316, 20);
+            this.SeperatorLine1.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine1.TabIndex = 29;
             this.SeperatorLine1.Text = "--------------------------------------------------------------";
             // 
@@ -113,7 +113,7 @@ namespace Dobby {
             this.RestoredDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RestoredDebugBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.RestoredDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.RestoredDebugBtn.Location = new System.Drawing.Point(1, 88);
+            this.RestoredDebugBtn.Location = new System.Drawing.Point(1, 80);
             this.RestoredDebugBtn.Name = "RestoredDebugBtn";
             this.RestoredDebugBtn.Size = new System.Drawing.Size(283, 23);
             this.RestoredDebugBtn.TabIndex = 23;
@@ -130,7 +130,7 @@ namespace Dobby {
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 179);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 168);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.Size = new System.Drawing.Size(147, 23);
             this.InfoHelpBtn.TabIndex = 15;
@@ -143,9 +143,9 @@ namespace Dobby {
             // 
             this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(2, 159);
+            this.SeperatorLine2.Location = new System.Drawing.Point(2, 155);
             this.SeperatorLine2.Name = "SeperatorLine2";
-            this.SeperatorLine2.Size = new System.Drawing.Size(316, 20);
+            this.SeperatorLine2.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine2.TabIndex = 14;
             this.SeperatorLine2.Text = "--------------------------------------------------------------";
             // 
@@ -157,7 +157,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 226);
+            this.BackBtn.Location = new System.Drawing.Point(1, 215);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(60, 23);
             this.BackBtn.TabIndex = 13;
@@ -174,7 +174,7 @@ namespace Dobby {
             this.DisableDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DisableDebugBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.DisableDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.DisableDebugBtn.Location = new System.Drawing.Point(1, 36);
+            this.DisableDebugBtn.Location = new System.Drawing.Point(1, 28);
             this.DisableDebugBtn.Name = "DisableDebugBtn";
             this.DisableDebugBtn.Size = new System.Drawing.Size(150, 23);
             this.DisableDebugBtn.TabIndex = 12;
@@ -191,7 +191,7 @@ namespace Dobby {
             this.EnableDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EnableDebugBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.EnableDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.EnableDebugBtn.Location = new System.Drawing.Point(1, 61);
+            this.EnableDebugBtn.Location = new System.Drawing.Point(1, 53);
             this.EnableDebugBtn.Name = "EnableDebugBtn";
             this.EnableDebugBtn.Size = new System.Drawing.Size(205, 23);
             this.EnableDebugBtn.TabIndex = 9;
@@ -204,7 +204,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Cambria", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(3, 250);
+            this.Info.Location = new System.Drawing.Point(3, 240);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(313, 19);
             this.Info.TabIndex = 7;
@@ -218,7 +218,7 @@ namespace Dobby {
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 202);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 191);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(74, 23);
@@ -277,7 +277,7 @@ namespace Dobby {
             this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.SeperatorLine0.Location = new System.Drawing.Point(2, 15);
             this.SeperatorLine0.Name = "SeperatorLine0";
-            this.SeperatorLine0.Size = new System.Drawing.Size(316, 20);
+            this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine0.TabIndex = 33;
             this.SeperatorLine0.Text = "--------------------------------------------------------------";
             // 
@@ -286,7 +286,7 @@ namespace Dobby {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ClientSize = new System.Drawing.Size(320, 272);
+            this.ClientSize = new System.Drawing.Size(320, 264);
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.MinimizeBtn);
             this.Controls.Add(this.MainLabel);

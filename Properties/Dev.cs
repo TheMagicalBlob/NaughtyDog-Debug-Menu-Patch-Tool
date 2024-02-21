@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.ComponentModel;
+using System.Collections;
+using System.Globalization;
 
 namespace Dobby {
     public class Dev : Common {
@@ -19,15 +21,98 @@ namespace Dobby {
         ///-- DEBUG CLASS  --\\\
         ////////////\\\\\\\\\\\\
 
+        public const bool REL =
 #if !DEBUG
-            public const bool REL = true;
-
+        true;
 #else
-        public const bool REL = false;
+        false;
 
         /// <summary> Dev Label Event Handler Function </summary>
         public static void MiscDebugFunc(object sender, EventArgs e) {
-            LogWindow.Exit();
+            if(((Control)sender).Text == "(Dev)") {
+                foreach(var v in GetControlsInOrder(LogWindow.GetParent())) {
+                    MsgOut($"|RET {v.Name} at {v.Location}|");
+                }
+
+
+                //LogWindow.Pause();
+                return;
+            }
+
+            ResizeTest();
+        }
+        private static List<Control> Cunts;
+        public static Control[] GetControlsInOrder(Form Parent) {
+            Cunts = new List<Control>();
+            int Y = 0, X;
+            do {
+                X = 0;
+                
+                do
+                  foreach(Control Item in Parent.Controls)
+                      if(Item.Location.Y == Y & Item.Location.X == X)
+                      Cunts.Add(Item);
+                while(X++ < Parent.Size.Width);
+            }
+            while(Y++ < Parent.Size.Height);
+
+            return Cunts.ToArray();
+        }
+
+
+        private static Point[] OldPositions;
+        private static Size OldFormScale;
+        private static string LastForm;
+        public static Point[] Last_Pos = new Point[] { Point.Empty, Point.Empty };
+        private static void ResizeTest() {
+            var Mommy = LogWindow.GetParent();
+            int index = 0, Last_Y_Size = 0, Offset;
+
+            if(OldPositions == null || LastForm != Mommy.Name) {
+                OldPositions = new Point[Mommy.Controls.Count];
+                LastForm = Mommy.Name;
+
+
+                foreach(Control bitch in GetControlsInOrder(Mommy)) {
+                    OldPositions[index++] = bitch.Location;
+                    
+                    Offset = Last_Pos[1].Y;
+
+                    if(bitch.Location.Y != Last_Pos[1].Y)
+                        Offset = (Last_Pos[1].Y + Last_Y_Size + 1);
+                    if(index > 1 && bitch.Location.Y < OldPositions[index - 2].Y + Last_Y_Size) {
+                        MsgOut($"Whore Found: {bitch.Name}\\{bitch.Text}");
+                        Offset = (OldPositions[index - 2].Y + Last_Y_Size + 1);
+
+                    }
+                    
+                    if(bitch.Location.Y != 1 && bitch.Name != "SeperatorLine0")
+                        bitch.Location = new Point(bitch.Location.X, Offset);
+
+                    Last_Pos[1] = bitch.Location;
+                    Last_Y_Size = bitch.Size.Height;
+                    
+                    if(bitch.Location.Y > Mommy.Size.Height){//UwU
+                        MsgOut($"Control Went Passed Form Border, Extending Form ({bitch.Location.Y} > {Mommy.Size.Height})");
+                        OldFormScale = Mommy.Size;
+                        Mommy.Size = new Size(Mommy.Size.Width, bitch.Location.Y + bitch.Size.Height+1);
+                        Mommy.Update();
+                    }
+                }
+            }
+
+            else {
+                foreach(Control bitch in Cunts)
+                    bitch.Location = OldPositions[index++];
+                if(OldFormScale != Size.Empty) {
+                    Mommy.Size = OldFormScale;
+                    OldFormScale = Size.Empty;
+                    Mommy.Update();
+                }
+
+                OldPositions = null;
+                LastForm = "!?!";
+            }
         }
 
         public static void OpenLog(object _ = null, EventArgs __ = null) {
@@ -112,7 +197,7 @@ namespace Dobby {
             var gr = cunt.CreateGraphics();
 
             var size = gr.MeasureString(cunt.Text, cunt.Font);
-            return new Size((int)size.Width + 25, (int)size.Height + 10);
+            return new Size((int)size.Width + 15, (int)size.Height + 10);
         }
 
         /// <summary>
@@ -120,52 +205,59 @@ namespace Dobby {
         /// </summary>
         public partial class LogWindow : Form {
             public LogWindow(Form Gaia) {
+                Font DButtonFont = new Font("Cambria", 7F, FontStyle.Bold);
+
+                Button[] DButtons = new Button[] {
+                    new Button {
+                        TabIndex = 0,
+                        ForeColor = SystemColors.Control,
+                        Font = DButtonFont,
+                        Text = "(Dev)",
+                        Name = "!!!"
+                    },
+                    new Button {
+                        TabIndex = 1,
+                        ForeColor = SystemColors.Control,
+                        Font = DButtonFont,
+                        Text = "LogTxt",
+                        Name = "!!!"
+                    },
+                    new Button {
+                        TabIndex = 2,
+                        ForeColor = SystemColors.Control,
+                        Font = DButtonFont,
+                        Text = "Boot Release",
+                        Name = "!!!"
+                    },
+                    new Button {
+                        TabIndex = 3,
+                        ForeColor = SystemColors.Control,
+                        Font = DButtonFont,
+                        Text = "ResizeTst",
+                        Name = "!!!"
+                    }
+                };
+
+                EventHandler[] Handlers = new EventHandler[] {
+                    new EventHandler(MiscDebugFunc),
+                    new EventHandler(OpenLog),
+                    new EventHandler(SwitchToRelease),
+                    new EventHandler(MiscDebugFunc)
+                };
+
 
                 // LogWindow Form And Control Initializations
                 BackColor = Gaia.BackColor;
                 FormBorderStyle = FormBorderStyle.None;
                 Name = "LogWindow";
-                Button DebugLabel = new Button {
-                    TabIndex = 0,
-                    ForeColor = SystemColors.Control,
-                    Font = new Font("Cambria", 7F, FontStyle.Bold),
-                    Text = "(Dev)",
-                    Name = "!!!"
-                };
-                DebugLabel.Size = TryAutosize(DebugLabel);
-                DebugLabel.FlatStyle = FlatStyle.Flat;
-                DebugLabel.FlatAppearance.BorderSize = 0;
-                DebugLabel.Click += new EventHandler(MiscDebugFunc);
-                DebugLabel.BringToFront();
-
-                Button OpenLogFileAndQuit = new Button {
-                    TabIndex = 1,
-                    ForeColor = SystemColors.Control,
-                    Font = new Font("Cambria", 7F, FontStyle.Bold),
-                    Text = "LogTxt",
-                    Name = "!!!"
-                };
-                OpenLogFileAndQuit.Size = TryAutosize(OpenLogFileAndQuit);
-                OpenLogFileAndQuit.Click += new EventHandler(OpenLog);
-                OpenLogFileAndQuit.FlatStyle = FlatStyle.Flat;
-                OpenLogFileAndQuit.FlatAppearance.BorderSize = 0;
-                OpenLogFileAndQuit.BringToFront();
-
-                Button SwitchToReleaseBtn = new Button {
-                    TabIndex = 2,
-                    ForeColor = SystemColors.Control,
-                    Font = new Font("Cambria", 7F, FontStyle.Bold),
-                    Text = "Boot Release",
-                    Name = "!!!"
-                };
-                SwitchToReleaseBtn.Size = TryAutosize(SwitchToReleaseBtn);
-                SwitchToReleaseBtn.Click += new EventHandler(SwitchToRelease);
-                SwitchToReleaseBtn.FlatStyle = FlatStyle.Flat;
-                SwitchToReleaseBtn.FlatAppearance.BorderSize = 0;
-                SwitchToReleaseBtn.BringToFront();
-                Controls.Add(DebugLabel);
-                Controls.Add(OpenLogFileAndQuit);
-                Controls.Add(SwitchToReleaseBtn);
+                foreach(Button c in DButtons) {
+                    Controls.Add(c);
+                    c.FlatStyle = FlatStyle.Flat;
+                    c.FlatAppearance.BorderSize = 0;
+                    c.Click += Handlers[c.TabIndex];
+                    c.Size = TryAutosize(c);
+                    c.BringToFront();
+                }
                 //\\
 
                 // LogWindow Event Handlers
@@ -193,7 +285,7 @@ namespace Dobby {
             #region timer crap
             private static float Delay = 0;
             private static bool TimerThreadStarted = false;
-            public static bool LogShouldRefresh;
+            public static bool LogShouldRefresh, LogShouldPause;
             private static readonly System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
             private static readonly Thread TimerThread = new Thread(StartTimer);
             private static void Timer_Tick(object sender, EventArgs e) => TimerTicks+= 0.001f;
@@ -206,12 +298,17 @@ namespace Dobby {
             }
             #endregion
 
+            public static void Pause() => LogShouldPause ^= true;
+
             // Sets The Form To Attach The Log Window To
             public static void SetParent(Form Gaia) {
                 
                 ParentPtr = Gaia;
                 Gaia.LocationChanged -= MoveLogToAppEdge;
             }
+            // mmbeep
+            public static Form GetParent() { return ParentPtr; }
+
             private void MouseDownFunc(object sender, MouseEventArgs e) => MouseIsDown = true;
             private void MouseUpFunc(object sender, MouseEventArgs e) => MouseScrolled = MouseIsDown = false;
             public static void MoveLogToAppEdge(object mommy, EventArgs e) => LogPtr.Location = new Point(((Form)mommy).Location.X - LogPtr.Size.Width, ((Form)mommy).Location.Y);
@@ -293,6 +390,8 @@ namespace Dobby {
                         var DynamicVars = PS4MenuSettingsPage.PeekGameSpecificPatchValues();
 
                         try {
+                            while(LogShouldPause);
+
                             if(OverrideMsgOut)
                                 Output = new string[] {
                                     $"| Game Index: {PS4MenuSettingsPage.GameIndex}",
@@ -326,6 +425,7 @@ namespace Dobby {
                                     $"{(HoveredControl?.GetType() == typeof(VarButton) ? ((VarButton)HoveredControl)?.Variable : " ")}",
                                     $" Size: {HoveredControl?.Size} | Pos: {HoveredControl?.Location}",
                                     $" Parent [{HoveredControl?.Parent?.Name}]",
+                                    $" Last_Pos' [{Last_Pos[0]}] {Last_Pos[1]}",
 
                                     (MainStreamIsOpen ? " " : ""),
 

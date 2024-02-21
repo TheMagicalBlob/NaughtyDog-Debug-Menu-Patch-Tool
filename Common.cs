@@ -372,30 +372,35 @@ namespace Dobby {
         /// <param name="PassedControl">The Control To Highlight</param>
         /// <param name="EventIsMouseEnter">Highlight If True</param>
         public static void HoverLeave(Control PassedControl, bool EventIsMouseEnter) {
-            CurrentControl = PassedControl.Name;
+            int ArrowWidth;
 
-            if(EventIsMouseEnter) {
+            //if(!InfoHasImportantStr & !EventIsMouseEnter) SetInfoLabelText("");
+            
+            try {
+                ArrowWidth = (int)PassedControl.CreateGraphics().MeasureString(">", PassedControl.Font).Width;
+            }
+            catch(ObjectDisposedException) { return; }
+
+            if(MouseScrolled = EventIsMouseEnter) {
+                #if DEBUG
+                HoveredControl = PassedControl;
+                #endif
+                CurrentControl = PassedControl.Name;
                 PassedControl.MouseDown += HighlightItemOnCLick;
                 PassedControl.MouseUp   += ResetItemHighlight;
             }
             else {
                 PassedControl.MouseDown -= HighlightItemOnCLick;
                 PassedControl.MouseUp   -= ResetItemHighlight;
+                SetInfoLabelStringOnControlHover(PassedControl);
             }
 
-            PassedControl.Text = EventIsMouseEnter ? $">{PassedControl.Text}" : PassedControl.Text.Substring(PassedControl.Text.IndexOf('>') + 1);
+            PassedControl.Text = EventIsMouseEnter ? ($">{PassedControl.Text}") : PassedControl.Text.Substring(1);
 
             if(PassedControl.Size.Width + PassedControl.Location.X != PassedControl.Parent.Size.Width - 1)
-                PassedControl.Size = new Size(EventIsMouseEnter ? PassedControl.Width + 9 : PassedControl.Width - 9, PassedControl.Height);
-
-            if(!InfoHasImportantStr & !EventIsMouseEnter) SetInfoLabelText("");
-
-            if(!EventIsMouseEnter) { MouseScrolled = EventIsMouseEnter; return; }
-            else SetInfoLabelStringOnControlHover(PassedControl);
-#if DEBUG
-            HoveredControl = PassedControl;
-#endif
+                PassedControl.Size = new Size(EventIsMouseEnter ? PassedControl.Width + ArrowWidth : PassedControl.Width - ArrowWidth, PassedControl.Height);
         }
+
         private static void HighlightItemOnCLick(object sender, MouseEventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
         private static void ResetItemHighlight(object sender, MouseEventArgs e)   => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
 
@@ -405,9 +410,9 @@ namespace Dobby {
             var control = sender as VarButton;
             var Variable = control.Variable?.ToString();
 
-            var x = (int)(control.Width - e.Graphics.MeasureString(Variable, control.Font).Width - 5);
+            var X_Pos = (int)(control.Width - e.Graphics.MeasureString(Variable, control.Font).Width - 5);
 
-            e.Graphics.DrawString(Variable, MainFont, Brushes.LightGreen, new Point(x, 5));
+            e.Graphics.DrawString(Variable, MainFont, Brushes.LightGreen, new Point(X_Pos, 5));
         }
 
         /// <summary> Form Border Pen
@@ -449,6 +454,44 @@ namespace Dobby {
             e.Graphics.Clear(Color.FromArgb(100, 100, 100));
             e.Graphics.DrawLines(pen, Line);
         }
+
+
+
+        delegate void LabelFlashDelegate(string g);
+        static readonly LabelFlashDelegate Yellow = new LabelFlashDelegate(FlashYellow);
+        static readonly LabelFlashDelegate White = new LabelFlashDelegate(FlashWhite);
+        public static Thread FlashThread = new Thread(new ThreadStart(FlashLabel));
+        private static void FlashLabel() {
+            while(!LabelShouldFlash) { Thread.Sleep(7); }
+            try {
+                for(int Flashes = 0; Flashes < 8; Flashes++) {
+                    ActiveForm?.Invoke(White, "cracker");
+                    Thread.Sleep(135);
+                    ActiveForm?.Invoke(Yellow, "asian");
+                    Thread.Sleep(135);
+                }
+            }
+            catch(Exception) {
+                MsgOut("Killing Label Flash");
+            }
+            LabelShouldFlash = false;
+            FlashLabel();
+        }
+        private static void FlashWhite(string s) {
+            try {
+                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.White;
+                ActiveForm?.Update();
+            }
+            catch(Exception){}
+        }
+        private static void FlashYellow(string s) {
+            try {
+                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.FromArgb(255, 227, 0);
+                ActiveForm?.Update();
+            }
+            catch(Exception){}
+        }
+
         #endregion
 
 
@@ -733,45 +776,6 @@ namespace Dobby {
                 case T2108: return "The Last Of Us 2 1.08";
                 case T2109: return "The Last Of Us 2 1.09";
                 default: return $"Unknown Game ({GameID})";
-            }
-        }
-
-        delegate void LabelFlashDelegate();
-        static readonly LabelFlashDelegate Yellow = new LabelFlashDelegate(FlashYellow);
-        static readonly LabelFlashDelegate White = new LabelFlashDelegate(FlashWhite);
-        public static Thread FlashThread = new Thread(new ThreadStart(FlashLabel));
-        static void FlashLabel() {
-            while(!LabelShouldFlash) { Thread.Sleep(7); }
-            try {
-                for(int Flashes = 0; Flashes < 8; Flashes++) {
-                    ActiveForm?.Invoke(White);
-                    Thread.Sleep(135);
-                    ActiveForm?.Invoke(Yellow);
-                    Thread.Sleep(135);
-                }
-            }
-            catch(Exception) {
-                MsgOut("Killing Label Flash");
-            }
-            LabelShouldFlash = false;
-            FlashLabel();
-        }
-        static void FlashWhite() {
-            try {
-                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.White;
-                ActiveForm.Refresh();
-            }
-            catch(Exception) {
-                MsgOut("Killing Label Flash WH");
-            }
-        }
-        static void FlashYellow() {
-            try {
-                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.FromArgb(255, 227, 0);
-                ActiveForm.Refresh();
-            }
-            catch(Exception) {
-                MsgOut("Killing Label Flash YL");
             }
         }
 
