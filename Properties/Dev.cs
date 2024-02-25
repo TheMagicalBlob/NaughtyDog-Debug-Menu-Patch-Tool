@@ -59,16 +59,19 @@ namespace Dobby {
         private static Point[] OldPositions = new Point[1] { Point.Empty };
         private static Size OldFormScale;
         private static string EditedForm;
-        private static Point Next_Pos;
+        private static int Next_Base;
+
+        // Style Test
         private static void ResizeTest() {
             var Mommy = LogWindow.GetParent();
-            int index = 0, Last_Y_Size = 0, Offset = 0, Diff;
+            int index = 0,
+                PAD = 1
+            ;
 
             var Controls = new List<Control>(GetControlsInOrder(Mommy));
-            for(; Controls.Contains(LogWindow.GetParent().Controls.Find("SeperatorLine0", true)?[0]); Controls.Remove(Controls[index - index++]));
-            if((index ^= 4) != 0) { MessageBox.Show($"Unexpected Form Structure {index}"); Environment.Exit(1); }
-
-
+            for(; Controls[0].Name != "SeperatorLine0"; Controls.Remove(Controls[index - index++]));
+            
+            if((index ^= 3) != 0) { MessageBox.Show($"Unexpected Form Structure {index}"); Environment.Exit(1); }
             if(OldPositions.Length == 1 || EditedForm != Mommy.Name) {
                 MsgOut("Beeg");
                 
@@ -76,31 +79,38 @@ namespace Dobby {
                 for(OldPositions = new Point[Mommy.Controls.Count]; index < Controls.Count;)
                     OldPositions[index] = Controls[index++].Location;
 
-                EditedForm = Mommy.Name;         // Avoid Breaking The Form If Used On Another Page Without Reseting
-                Next_Pos = Controls[0].Location; // Start At The First Control After The Title Section Seperator Line
+                // Avoid Breaking The Form If Used On Another Page Without Reseting
+                EditedForm = Mommy.Name;
+                // Start At The First Control After The Title Section Seperator Line
+                Next_Base = Controls[index=0].Location.Y + Controls[index++].Size.Height + PAD;
+
+                OldFormScale = Mommy.Size;
+
+                // Attempt To Adjust Control Positions To Consistent Locations
+                for(; index != Controls.Count; index++ ) {
+                    var Last_Pos = Controls[index].Location;
+
+                    Controls[index].Location = new Point(Controls[index].Location.X, Next_Base);
+                    Next_Base = Controls[index].Location.Y + Controls[index].Size.Height + PAD;
 
 
-                for(index = 0; index != Controls.Count; index++) { // Attempt To Adjust Control Positions To Consistent Locations
-
-                    if(Controls[index].Location.Y != Next_Pos.Y)
-                    Offset = (Next_Pos.Y + Last_Y_Size + 1);
-
-                    Controls[index].Location = new Point(Controls[index].Location.X, Offset);
-                    Next_Pos = Controls[index].Location;
-                    Last_Y_Size = Controls[index].Size.Height;
-
-                    if(index < Controls.Count - 1 && Controls[index + 1].Location.Y < Next_Pos.Y) {
-                        Diff = (0);
+                    if(index < Controls.Count - 1 && Controls[index + 1].Location.Y < Next_Base) {
+                        var Diff = Controls[index].Location.Y - Last_Pos.Y;
                         Controls[index + 1].Location = new Point(Controls[index + 1].Location.X, Controls[index + 1].Location.Y + Diff);
+                        if(Controls[index + 1].Name.Contains("SeperatorLine")) {
+                            Next_Base = Controls[index + 1].Location.Y + Controls[index + 1].Size.Height + PAD + 1;
+                        }
+                        index++;
                     }
 
-                    if(Controls[index].Location.Y > Mommy.Size.Height){//UwU
+                    // Adjust Form Size If The Control Has Been Moved Off The Form
+                    if(Controls[index].Location.Y + Controls[index].Size.Height > Mommy.Size.Height){//UwU
                         MsgOut($"Control Went Passed Form Border, Extending Form ({Controls[index].Location.Y} > {Mommy.Size.Height})");
                         Mommy.Size = new Size(Mommy.Size.Width, Controls[index].Location.Y + Controls[index].Size.Height+1);
                         Mommy.Update();
+                        Mommy.Refresh();
+                        Mommy.Update();
                     }
-                    
-                    OldFormScale = Mommy.Size;
                 }
                 return;
             }
@@ -113,7 +123,7 @@ namespace Dobby {
                 MsgOut($"{bitch.Location} -> {OldPositions[index]}");
                 bitch.Location = OldPositions[index++];
             }
-
+            MsgOut(OldFormScale);
             Mommy.Size = OldFormScale;
             Mommy.Update();
 
@@ -431,7 +441,7 @@ namespace Dobby {
                                     $"{(HoveredControl?.GetType() == typeof(VarButton) ? ((VarButton)HoveredControl)?.Variable : " ")}",
                                     $" Size: {HoveredControl?.Size} | Pos: {HoveredControl?.Location}",
                                     $" Parent [{HoveredControl?.Parent?.Name}]",
-                                    $" Nex_Pos' [{Next_Pos}]",
+                                    $" Nex_Pos' [{Next_Base}]",
 
                                     (MainStreamIsOpen ? " " : ""),
 

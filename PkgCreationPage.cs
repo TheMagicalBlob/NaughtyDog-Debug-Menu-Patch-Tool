@@ -470,6 +470,9 @@ namespace Dobby {
 
             CheckFiles:
             foreach(var file in FilesInCurrentDirectory) {
+                if(file.Contains("out.txt"))
+                    continue;
+
                 stream = File.OpenRead(file);
                 
                 stream.Position = 0x100;
