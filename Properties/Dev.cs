@@ -10,10 +10,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
-using System.ComponentModel;
-using System.Collections;
-using System.Globalization;
 
 namespace Dobby {
     public class Dev : Common {
@@ -35,23 +31,24 @@ namespace Dobby {
                 }
 
 
-                //LogWindow.Pause();
+                LogWindow.Pause();
                 return;
             }
 
             ResizeTest();
         }
-        private static List<Control> Cunts;
         public static Control[] GetControlsInOrder(Form Parent) {
-            Cunts = new List<Control>();
+            var i = 0;
+            var Cunts = new List<Control>();
             int Y = 0, X;
             do {
                 X = 0;
-                
+
                 do
-                  foreach(Control Item in Parent.Controls)
-                      if(Item.Location.Y == Y & Item.Location.X == X)
-                      Cunts.Add(Item);
+                    foreach(Control Item in Parent.Controls)
+                        if(Item.Location.Y == Y & Item.Location.X == X)
+                            Cunts.Add(Item);
+
                 while(X++ < Parent.Size.Width);
             }
             while(Y++ < Parent.Size.Height);
@@ -59,60 +56,69 @@ namespace Dobby {
             return Cunts.ToArray();
         }
 
-
-        private static Point[] OldPositions;
+        private static Point[] OldPositions = new Point[1] { Point.Empty };
         private static Size OldFormScale;
-        private static string LastForm;
-        public static Point[] Last_Pos = new Point[] { Point.Empty, Point.Empty };
+        private static string EditedForm;
+        private static Point Next_Pos;
         private static void ResizeTest() {
             var Mommy = LogWindow.GetParent();
-            int index = 0, Last_Y_Size = 0, Offset;
+            int index = 0, Last_Y_Size = 0, Offset = 0, Diff;
 
-            if(OldPositions == null || LastForm != Mommy.Name) {
-                OldPositions = new Point[Mommy.Controls.Count];
-                LastForm = Mommy.Name;
+            var Controls = new List<Control>(GetControlsInOrder(Mommy));
+            for(; Controls.Contains(LogWindow.GetParent().Controls.Find("SeperatorLine0", true)?[0]); Controls.Remove(Controls[index - index++]));
+            if((index ^= 4) != 0) { MessageBox.Show($"Unexpected Form Structure {index}"); Environment.Exit(1); }
 
 
-                foreach(Control bitch in GetControlsInOrder(Mommy)) {
-                    OldPositions[index++] = bitch.Location;
-                    
-                    Offset = Last_Pos[1].Y;
+            if(OldPositions.Length == 1 || EditedForm != Mommy.Name) {
+                MsgOut("Beeg");
+                
+                // Save Orignal Item Locations
+                for(OldPositions = new Point[Mommy.Controls.Count]; index < Controls.Count;)
+                    OldPositions[index] = Controls[index++].Location;
 
-                    if(bitch.Location.Y != Last_Pos[1].Y)
-                        Offset = (Last_Pos[1].Y + Last_Y_Size + 1);
-                    if(index > 1 && bitch.Location.Y < OldPositions[index - 2].Y + Last_Y_Size) {
-                        MsgOut($"Whore Found: {bitch.Name}\\{bitch.Text}");
-                        Offset = (OldPositions[index - 2].Y + Last_Y_Size + 1);
+                EditedForm = Mommy.Name;         // Avoid Breaking The Form If Used On Another Page Without Reseting
+                Next_Pos = Controls[0].Location; // Start At The First Control After The Title Section Seperator Line
 
+
+                for(index = 0; index != Controls.Count; index++) { // Attempt To Adjust Control Positions To Consistent Locations
+
+                    if(Controls[index].Location.Y != Next_Pos.Y)
+                    Offset = (Next_Pos.Y + Last_Y_Size + 1);
+
+                    Controls[index].Location = new Point(Controls[index].Location.X, Offset);
+                    Next_Pos = Controls[index].Location;
+                    Last_Y_Size = Controls[index].Size.Height;
+
+                    if(index < Controls.Count - 1 && Controls[index + 1].Location.Y < Next_Pos.Y) {
+                        Diff = (0);
+                        Controls[index + 1].Location = new Point(Controls[index + 1].Location.X, Controls[index + 1].Location.Y + Diff);
                     }
-                    
-                    if(bitch.Location.Y != 1 && bitch.Name != "SeperatorLine0")
-                        bitch.Location = new Point(bitch.Location.X, Offset);
 
-                    Last_Pos[1] = bitch.Location;
-                    Last_Y_Size = bitch.Size.Height;
-                    
-                    if(bitch.Location.Y > Mommy.Size.Height){//UwU
-                        MsgOut($"Control Went Passed Form Border, Extending Form ({bitch.Location.Y} > {Mommy.Size.Height})");
-                        OldFormScale = Mommy.Size;
-                        Mommy.Size = new Size(Mommy.Size.Width, bitch.Location.Y + bitch.Size.Height+1);
+                    if(Controls[index].Location.Y > Mommy.Size.Height){//UwU
+                        MsgOut($"Control Went Passed Form Border, Extending Form ({Controls[index].Location.Y} > {Mommy.Size.Height})");
+                        Mommy.Size = new Size(Mommy.Size.Width, Controls[index].Location.Y + Controls[index].Size.Height+1);
                         Mommy.Update();
                     }
+                    
+                    OldFormScale = Mommy.Size;
                 }
+                return;
             }
 
-            else {
-                foreach(Control bitch in Cunts)
-                    bitch.Location = OldPositions[index++];
-                if(OldFormScale != Size.Empty) {
-                    Mommy.Size = OldFormScale;
-                    OldFormScale = Size.Empty;
-                    Mommy.Update();
-                }
 
-                OldPositions = null;
-                LastForm = "!?!";
+
+            MsgOut("Smol");
+
+            foreach(Control bitch in Controls) {
+                MsgOut($"{bitch.Location} -> {OldPositions[index]}");
+                bitch.Location = OldPositions[index++];
             }
+
+            Mommy.Size = OldFormScale;
+            Mommy.Update();
+
+            OldPositions = new Point[1] { Point.Empty };
+            EditedForm = string.Empty;
         }
 
         public static void OpenLog(object _ = null, EventArgs __ = null) {
@@ -425,7 +431,7 @@ namespace Dobby {
                                     $"{(HoveredControl?.GetType() == typeof(VarButton) ? ((VarButton)HoveredControl)?.Variable : " ")}",
                                     $" Size: {HoveredControl?.Size} | Pos: {HoveredControl?.Location}",
                                     $" Parent [{HoveredControl?.Parent?.Name}]",
-                                    $" Last_Pos' [{Last_Pos[0]}] {Last_Pos[1]}",
+                                    $" Nex_Pos' [{Next_Pos}]",
 
                                     (MainStreamIsOpen ? " " : ""),
 
