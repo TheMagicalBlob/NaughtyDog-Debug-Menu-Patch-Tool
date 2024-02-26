@@ -28,7 +28,12 @@ namespace Dobby {
                     control.MouseLeave += new EventHandler(HighlightPathLabel);
                 }
             }
+
+
+            GP4PathBox.Text = "Using Current Directory For .pkg Output";
+            OutputDirectory = Directory.GetCurrentDirectory();
         }
+
 
 
         ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
@@ -64,8 +69,6 @@ namespace Dobby {
             this.VerbosityBtn = new System.Windows.Forms.Button();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.TempDirectoryBtn = new System.Windows.Forms.Button();
-            this.SeperatorLine3 = new System.Windows.Forms.Label();
-            this.Gp4CreationPageBtn = new System.Windows.Forms.Button();
             this.CmdPathBox = new System.Windows.Forms.TextBox();
             this.CmdPathBtn = new System.Windows.Forms.Button();
             this.GP4PathBox = new System.Windows.Forms.TextBox();
@@ -84,7 +87,7 @@ namespace Dobby {
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 256);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 225);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.Size = new System.Drawing.Size(309, 23);
             this.InfoHelpBtn.TabIndex = 15;
@@ -111,7 +114,7 @@ namespace Dobby {
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 306);
+            this.BackBtn.Location = new System.Drawing.Point(1, 275);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(309, 23);
             this.BackBtn.TabIndex = 13;
@@ -124,7 +127,7 @@ namespace Dobby {
             // 
             this.Info.Font = new System.Drawing.Font("Cambria", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(4, 333);
+            this.Info.Location = new System.Drawing.Point(4, 302);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(313, 19);
             this.Info.TabIndex = 7;
@@ -138,7 +141,7 @@ namespace Dobby {
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 281);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 250);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(309, 23);
@@ -260,34 +263,6 @@ namespace Dobby {
             this.TempDirectoryBtn.Text = "Use Custom Temp Directory: No";
             this.TempDirectoryBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.TempDirectoryBtn.UseVisualStyleBackColor = false;
-            this.TempDirectoryBtn.Click += new System.EventHandler(this.TMPDirectoryBtn_Click);
-            // 
-            // SeperatorLine3
-            // 
-            this.SeperatorLine3.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine3.Location = new System.Drawing.Point(2, 241);
-            this.SeperatorLine3.Name = "SeperatorLine3";
-            this.SeperatorLine3.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine3.TabIndex = 40;
-            this.SeperatorLine3.Text = "--------------------------------------------------------------";
-            // 
-            // Gp4CreationPageBtn
-            // 
-            this.Gp4CreationPageBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.Gp4CreationPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.Gp4CreationPageBtn.FlatAppearance.BorderSize = 0;
-            this.Gp4CreationPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Gp4CreationPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
-            this.Gp4CreationPageBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Gp4CreationPageBtn.Location = new System.Drawing.Point(1, 222);
-            this.Gp4CreationPageBtn.Name = "Gp4CreationPageBtn";
-            this.Gp4CreationPageBtn.Size = new System.Drawing.Size(318, 23);
-            this.Gp4CreationPageBtn.TabIndex = 41;
-            this.Gp4CreationPageBtn.Text = "Build .gp4 File From Gamedata...";
-            this.Gp4CreationPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Gp4CreationPageBtn.UseVisualStyleBackColor = false;
-            this.Gp4CreationPageBtn.Click += new System.EventHandler(this.Gp4CreationPageBtn_Click);
             // 
             // CmdPathBox
             // 
@@ -300,6 +275,7 @@ namespace Dobby {
             this.CmdPathBox.Size = new System.Drawing.Size(264, 18);
             this.CmdPathBox.TabIndex = 50;
             this.CmdPathBox.Text = "No Program Path Loaded";
+            this.CmdPathBox.TextChanged += new System.EventHandler(this.CmdPath_Interact);
             // 
             // CmdPathBtn
             // 
@@ -329,6 +305,7 @@ namespace Dobby {
             this.GP4PathBox.Size = new System.Drawing.Size(264, 18);
             this.GP4PathBox.TabIndex = 53;
             this.GP4PathBox.Text = "No .gp4 Selected";
+            this.GP4PathBox.TextChanged += new System.EventHandler(this.GP4Path_Interact);
             // 
             // GP4PathBtn
             // 
@@ -345,7 +322,7 @@ namespace Dobby {
             this.GP4PathBtn.Text = "Browse";
             this.GP4PathBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.GP4PathBtn.UseVisualStyleBackColor = false;
-            this.GP4PathBtn.Click += new System.EventHandler(this.GP4PathBtn_Click);
+            this.GP4PathBtn.Click += new System.EventHandler(this.GP4Path_Interact);
             // 
             // OutputDirectoryBox
             // 
@@ -358,7 +335,6 @@ namespace Dobby {
             this.OutputDirectoryBox.Size = new System.Drawing.Size(264, 18);
             this.OutputDirectoryBox.TabIndex = 51;
             this.OutputDirectoryBox.Text = "Using Current Directory For .pkg Output";
-            this.OutputDirectoryBox.Click += new System.EventHandler(this.OutputDirectoryBox_Click);
             // 
             // OutputDirectoryBtn
             // 
@@ -375,7 +351,7 @@ namespace Dobby {
             this.OutputDirectoryBtn.Text = "Browse";
             this.OutputDirectoryBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.OutputDirectoryBtn.UseVisualStyleBackColor = false;
-            this.OutputDirectoryBtn.Click += new System.EventHandler(this.OutputDirectoryBtn_Click);
+            this.OutputDirectoryBtn.Click += new System.EventHandler(this.OutputDirectory_Interact);
             // 
             // TMPDirectoryBox
             // 
@@ -388,7 +364,7 @@ namespace Dobby {
             this.TMPDirectoryBox.Size = new System.Drawing.Size(264, 18);
             this.TMPDirectoryBox.TabIndex = 52;
             this.TMPDirectoryBox.Text = "Using This PC\'s Default TMP Directory";
-            this.TMPDirectoryBox.Click += new System.EventHandler(this.TMPDirectoryBox_Click);
+            this.TMPDirectoryBox.TextChanged += new System.EventHandler(this.TMPDirectoryItem_Interaction);
             // 
             // TMPDirectoryBtn
             // 
@@ -405,16 +381,14 @@ namespace Dobby {
             this.TMPDirectoryBtn.Text = "Browse";
             this.TMPDirectoryBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.TMPDirectoryBtn.UseVisualStyleBackColor = false;
-            this.TMPDirectoryBtn.Click += new System.EventHandler(this.TMPDirectoryBtn_Click);
+            this.TMPDirectoryBtn.Click += new System.EventHandler(this.TMPDirectoryItem_Interaction);
             // 
             // PkgCreationPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ClientSize = new System.Drawing.Size(320, 358);
-            this.Controls.Add(this.Gp4CreationPageBtn);
-            this.Controls.Add(this.SeperatorLine3);
+            this.ClientSize = new System.Drawing.Size(320, 325);
             this.Controls.Add(this.TempDirectoryBtn);
             this.Controls.Add(this.VerbosityBtn);
             this.Controls.Add(this.ExitBtn);
@@ -448,9 +422,13 @@ namespace Dobby {
         }
         #endregion
 
-        FileDialog fileDialog;
 
-        static public string
+
+
+        //////////////////\\\\\\\\\\\\\\\\\
+        ///--     Page Variables      --\\\
+        //////////////////\\\\\\\\\\\\\\\\\
+        private static string
             GP4Path,
             TMPPath,
             OrbisPubCmdPath = "?",
@@ -461,6 +439,9 @@ namespace Dobby {
 
 
 
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Page Background Functions      --\\\
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
         private void ScanForOrbisPubTools() {                                                                                                              //DirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectory
             var FilesInCurrentDirectory   = Directory.GetFiles(Directory.GetCurrentDirectory());
             var FoldersInCurrentDirectory = Directory.GetDirectories(Directory.GetCurrentDirectory());
@@ -493,6 +474,7 @@ namespace Dobby {
                 }
             }
         }
+
         private void HighlightPathLabel(object sender, EventArgs e) {
             var Sender = sender as Control;
             Sender.Font = Sender.Font.Underline ? new Font("Georgia", 9.75F) : new Font("Georgia", 9.75F, FontStyle.Underline);
@@ -500,6 +482,61 @@ namespace Dobby {
 
 
 
+
+        /// <summary> Open A File Dialog Window To Select The orbis-pub-cmd.exe Binary And The Reqired .gp4 file
+        /// </summary>
+        private void LoadFilesButton_Click(object sender, EventArgs e) {
+            bool SelectedFileWasExe;
+            FileDialog file = new OpenFileDialog {
+                Filter = ".gp4 or .exe|*.gp4;*.exe",
+                Title = "Select Your .gp4 File/orbis-pub-cmd.exe (The Order Doesn't Matter)"
+            };
+
+            if(file.ShowDialog() == DialogResult.OK)
+                SelectedFileWasExe = LoadFilesFromPath(file.FileName);
+            else return;
+
+
+            file = new OpenFileDialog {
+                Filter = (SelectedFileWasExe ? "gp4 Project|*.gp4" : "orbis-pub-cmd path|*.exe"),
+                Title = $"Select {(SelectedFileWasExe ? "Your .gp4 Path" : "orbis-pub-cmd")}"
+            };
+            if(file.ShowDialog() == DialogResult.OK)
+                LoadFilesFromPath(file.FileName);
+            else return;
+
+            FolderBrowserDialog Folder = new FolderBrowserDialog {
+                Description = "Chose A Directory You Want The Finished .pkg To Go, Or Close This Window To Use The App Directory"
+            };
+            if(Folder.ShowDialog() == DialogResult.OK)
+                GP4PathBox.Text = OutputDirectory = Folder.SelectedPath;
+            else {
+                GP4PathBox.Text = "Using Current Directory For.pkg Output";
+                OutputDirectory = Directory.GetCurrentDirectory();
+            }
+        }
+
+
+
+        /// <summary> Edit Related Labels
+        /// </summary>
+        private bool LoadFilesFromPath(string Path) {
+            if(Path.Contains(".exe")) TMPDirectoryBox.Text = OrbisPubCmdPath = Path;
+            if(Path.Contains(".gp4")) GP4PathBox.Text = GP4Path = Path;
+
+            IsBuildReady = (OrbisPubCmdPath != "" && GP4Path != "" && OutputDirectory != "");
+            return Path.Contains(".exe"); 
+        }
+
+
+
+
+
+
+
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\
+        ///--     Page Interface Functions      --\\\
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\
         private void LaunchOrbisPubCmdBtn_Click(object sender, EventArgs e) {
             if(!IsBuildReady) {
                 ScanForOrbisPubTools();
@@ -521,105 +558,16 @@ namespace Dobby {
             MessageBox.Show(".pkg Creation Started; If The CMD Window Closes Immediately, You Did Something Wrong. Check Info/Help Page -> Pkg Creation Page Help");
         }
 
-        /// <summary> Open A File Dialog Window To Select The orbis-pub-cmd.exe Binary And The Reqired .gp4 file
-        /// </summary>
-        private void LoadFilesButton_Click(object sender, EventArgs e) {
-            bool SelectedFileWasExe;
-            FileDialog file = new OpenFileDialog {
-                Filter = ".gp4 or .exe|*.gp4;*.exe",
-                Title = "Select Your .gp4 File/orbis-pub-cmd.exe (The Order Doesn't Matter)"
-            };
 
-            if(file.ShowDialog() == DialogResult.OK)
-                SelectedFileWasExe = LoadFilesFromSelectedPath(file.FileName);
-            else return;
+        private void VerbosityBtn_Click(object sender, EventArgs e) =>
+            ((Control)sender).Text = ((Control)sender).Text.Remove(((Control)sender).Text.LastIndexOf(' ') + 1)
+                                   + ((VerboseOutput ^= true) ? "Details" : "Bar");
 
 
-            file = new OpenFileDialog {
-                Filter = (SelectedFileWasExe ? "gp4 Project|*.gp4" : "orbis-pub-cmd path|*.exe"),
-                Title = $"Select {(SelectedFileWasExe ? "Your .gp4 Path" : "orbis-pub-cmd")}"
-            };
-            if(file.ShowDialog() == DialogResult.OK)
-                LoadFilesFromSelectedPath(file.FileName);
-            else return;
-
-            FolderBrowserDialog Folder = new FolderBrowserDialog {
-                Description = "Chose A Directory You Want The Finished .pkg To Go, Or Close This Window To Use The App Directory"
-            };
-            if(Folder.ShowDialog() == DialogResult.OK)
-                GP4PathBox.Text = OutputDirectory = Folder.SelectedPath;
-            else {
-                GP4PathBox.Text = "Using Current Directory For.pkg Output";
-                OutputDirectory = Directory.GetCurrentDirectory();
-            }
-        }
-
-        /// <summary> Load orbis-pub-cmd.exe Binary And The Reqired .gp4 file If The Path Is Right
-        /// </summary>
-        private void CmdPathBox_TextChanged(object sender, EventArgs e) {
-            var TextBox = ((Control)sender);
-
-            if(File.Exists(TextBox.Text.Replace("\"", "")))
-                LoadFilesFromSelectedPath(TextBox.Text.Replace("\"", ""));
-        }
-
-        /// <summary> Edit Related Labels
-        /// </summary>
-        private bool LoadFilesFromSelectedPath(string Path) {
-            if(Path.Contains(".exe")) TMPDirectoryBox.Text = OrbisPubCmdPath = Path;
-            if(Path.Contains(".gp4")) GP4PathBox.Text = GP4Path = Path;
-
-            if(OrbisPubCmdPath != "" && GP4Path != "" && OutputDirectory != "") IsBuildReady = true;
-            return Path.Contains(".exe") ? true : false; 
-        }
-
-
-        private void VerbosityBtn_Click(object sender, EventArgs e) {
-            VerboseOutput ^= true;
-            ((Control)sender).Text = ((Control)sender).Text.Remove(((Control)sender).Text.LastIndexOf(' ') + 1) + (VerboseOutput ? "Details" : "Bar");
-        }
-
-
-        private void CmdPathBtn_Click(object sender, EventArgs e) {
-            fileDialog = new OpenFileDialog {
-                Filter = "Executable|*.exe",
-                Title = "Select orbis-pub-cmd.exe"
-            };
-
-            if(fileDialog.ShowDialog() == DialogResult.OK)
-                LoadFilesFromSelectedPath(fileDialog.FileName);
-            else return;
-        }
-
-        private void GP4PathBtn_Click(object sender, EventArgs e) => GP4PathBox_Click(GP4PathBtn, null);
-        private void GP4PathBox_Click(object sender, EventArgs e) {
-            FileDialog file = new OpenFileDialog {
-                Filter = ".gp4 Project File|*.gp4",
-                Title = "Select Your .gp4 File"
-            };
-
-            if(file.ShowDialog() == DialogResult.OK)
-                LoadFilesFromSelectedPath(file.FileName);
-            else return;
-        }
-
-        private void OutputDirectoryBox_Click(object sender, EventArgs e) => OutputDirectoryBtn_Click(OutputDirectoryBtn, null);
-        private void OutputDirectoryBtn_Click(object sender, EventArgs e) {
-            FolderBrowserDialog Folder = new FolderBrowserDialog {
-                Description = "Chose A Directory You Want The Finished .pkg To Go, Or Close This Window To Use The App Directory"
-            };
-            if(Folder.ShowDialog() == DialogResult.OK)
-                GP4PathBox.Text = OutputDirectory = Folder.SelectedPath;
-            else {
-                GP4PathBox.Text = "Using Current Directory For .pkg Output";
-                OutputDirectory = Directory.GetCurrentDirectory();
-            }
-        }
-
-        private void TMPDirectoryBox_Click(object sender, EventArgs e) => TMPDirectoryBtn_Click(TempDirectoryBtn, null);
-        private void TMPDirectoryBtn_Click(object sender, EventArgs e) {
+        private void TMPDirectoryItem_Interaction(object sender, EventArgs e) {
             var Sender = ((Control)sender);
 
+            MessageBox.Show($"{sender}", $"{e}");
             Sender.Text = Sender.Text.Remove(Sender.Text.LastIndexOf(' ') + 1) + (SpecifyTMPDirectory ? "No" : "Yes");
             Update();
 
@@ -641,7 +589,43 @@ namespace Dobby {
 
             SpecifyTMPDirectory ^= true;
         }
-        private void Gp4CreationPageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.Gp4CreationPage);
+
+        /// <summary> Load orbis-pub-cmd.exe Binary And The Reqired .gp4 file If The Path Is Right
+        /// </summary>
+        private void CmdPath_Interact(object sender, EventArgs e) {
+            if(((Control)sender).GetType() == typeof(Button)) {
+                using(FileDialog fileDialog = new OpenFileDialog { Filter = "Executable|*.exe", Title = "Select orbis-pub-cmd.exe" })
+                    if(fileDialog.ShowDialog() == DialogResult.OK)
+                        LoadFilesFromPath(fileDialog.FileName);
+            }
+            else
+                if(File.Exists(((Control)sender).Text.Replace("\"", "")))
+                    LoadFilesFromPath(((Control)sender).Text.Replace("\"", ""));
+        }
+
+        private void GP4Path_Interact(object sender, EventArgs e) {
+            if(((Control)sender).GetType() == typeof(Button)) {
+                using(FileDialog fileDialog = new OpenFileDialog { Filter = ".gp4 Project File|*.gp4", Title = "Select Your .gp4 File"  })
+                    if(fileDialog.ShowDialog() == DialogResult.OK)
+                        LoadFilesFromPath(fileDialog.FileName);
+            }
+            else
+                if(File.Exists(((Control)sender).Text.Replace("\"", "")))
+                    LoadFilesFromPath(((Control)sender).Text.Replace("\"", ""));
+        }
+
+        private void OutputDirectory_Interact(object sender, EventArgs e) {
+            if(((Control)sender).GetType() == typeof(Button)) {
+                using(FolderBrowserDialog Folder = new FolderBrowserDialog { Description = "Chose A Directory You Want The Finished .pkg To Go, Or Close This Window To Use The App Directory" })
+                    if(Folder.ShowDialog() == DialogResult.OK)
+                        GP4PathBox.Text = OutputDirectory = Folder.SelectedPath;
+                return;
+            }
+
+            if(File.Exists(((Control)sender).Text.Replace("\"", "")))
+                LoadFilesFromPath(((Control)sender).Text.Replace("\"", ""));
+        }
+
 
 
         /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -657,7 +641,6 @@ namespace Dobby {
         private Label SeperatorLine0;
         private Label SeperatorLine1;
         private Label SeperatorLine2;
-        private Label SeperatorLine3;
         private Button CreditsBtn;
         private Button MinimizeBtn;
         private Button ExitBtn;
@@ -673,7 +656,6 @@ namespace Dobby {
         private Button OutputDirectoryBtn;
         private TextBox TMPDirectoryBox;
         private Button TMPDirectoryBtn;
-        private Button Gp4CreationPageBtn;
         private Button InfoHelpBtn;
         private Button BackBtn;
         private Label Info;

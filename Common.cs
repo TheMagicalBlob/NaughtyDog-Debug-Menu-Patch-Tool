@@ -230,7 +230,8 @@ namespace Dobby {
           "* 4.46.213.563 | Label Font Size Fix And Position Adjustment",
           "* 4.46.215.583 | Standardized MainLabel, SeperatorLabel0, And Exit/Minimize Buttons, Positions And Sizes (Excuding Width For The Former Two) Shrumk Minimize/Exit Button Fonts (8f => 7.5f). Replaced The Control Hover Highlight With Mouse Down highlight To More Match ND's DMenu (Might Add Boolean Option Highlight To Match It Further)",
           "* 4.46.216.583 | HoverLeave Function No Longer Widens Controls If They Already FIt The Form Width Rather Than Only Themselves",
-          "* 4.46.217.585 | Style Testing Wip, Debug Fix"
+          "* 4.46.217.585 | Style Testing Wip, Debug Fix",
+          "* 4.46.218.585 | Temporarily Removed GP4 Creation Page Access, Going To Replace With Automatic GP4 Creation Until Gp4 lib is fleshed out",
 
 
 
