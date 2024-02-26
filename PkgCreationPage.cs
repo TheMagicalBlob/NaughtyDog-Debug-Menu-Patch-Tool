@@ -292,7 +292,7 @@ namespace Dobby {
             this.CmdPathBtn.Text = "Browse";
             this.CmdPathBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CmdPathBtn.UseVisualStyleBackColor = false;
-            this.CmdPathBtn.Click += new System.EventHandler(this.CmdPathBtn_Click);
+            this.CmdPathBtn.Click += new System.EventHandler(this.CmdPath_Interact);
             // 
             // GP4PathBox
             // 
@@ -533,10 +533,13 @@ namespace Dobby {
 
 
 
-
         ///////////////////////\\\\\\\\\\\\\\\\\\\\\\
         ///--     Page Interface Functions      --\\\
         ///////////////////////\\\\\\\\\\\\\\\\\\\\\\
+
+        /// <summary>
+        /// addme
+        /// </summary>
         private void LaunchOrbisPubCmdBtn_Click(object sender, EventArgs e) {
             if(!IsBuildReady) {
                 ScanForOrbisPubTools();
@@ -558,12 +561,18 @@ namespace Dobby {
             MessageBox.Show(".pkg Creation Started; If The CMD Window Closes Immediately, You Did Something Wrong. Check Info/Help Page -> Pkg Creation Page Help");
         }
 
-
+        /// <summary>
+        /// addme
+        /// </summary>
         private void VerbosityBtn_Click(object sender, EventArgs e) =>
             ((Control)sender).Text = ((Control)sender).Text.Remove(((Control)sender).Text.LastIndexOf(' ') + 1)
                                    + ((VerboseOutput ^= true) ? "Details" : "Bar");
 
 
+
+        /// <summary>
+        /// addme
+        /// </summary>
         private void TMPDirectoryItem_Interaction(object sender, EventArgs e) {
             var Sender = ((Control)sender);
 
@@ -603,6 +612,9 @@ namespace Dobby {
                     LoadFilesFromPath(((Control)sender).Text.Replace("\"", ""));
         }
 
+        /// <summary>
+        /// addme
+        /// </summary>
         private void GP4Path_Interact(object sender, EventArgs e) {
             if(((Control)sender).GetType() == typeof(Button)) {
                 using(FileDialog fileDialog = new OpenFileDialog { Filter = ".gp4 Project File|*.gp4", Title = "Select Your .gp4 File"  })
@@ -614,6 +626,10 @@ namespace Dobby {
                     LoadFilesFromPath(((Control)sender).Text.Replace("\"", ""));
         }
 
+
+        /// <summary>
+        /// addme
+        /// </summary>
         private void OutputDirectory_Interact(object sender, EventArgs e) {
             if(((Control)sender).GetType() == typeof(Button)) {
                 using(FolderBrowserDialog Folder = new FolderBrowserDialog { Description = "Chose A Directory You Want The Finished .pkg To Go, Or Close This Window To Use The App Directory" })
