@@ -37,8 +37,6 @@ namespace Dobby {
         }
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
-            this.ExitBtn = new System.Windows.Forms.Button();
-            this.MinimizeBtn = new System.Windows.Forms.Button();
             this.Info = new System.Windows.Forms.Label();
             this.CreditsBtn = new System.Windows.Forms.Button();
             this.InfoHelpBtn = new System.Windows.Forms.Button();
@@ -63,38 +61,6 @@ namespace Dobby {
             this.MainLabel.Size = new System.Drawing.Size(314, 22);
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "PC Debug Menu Page";
-            // 
-            // ExitBtn
-            // 
-            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.ExitBtn.FlatAppearance.BorderSize = 0;
-            this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 7.5F, System.Drawing.FontStyle.Bold);
-            this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ExitBtn.Location = new System.Drawing.Point(296, 1);
-            this.ExitBtn.Name = "ExitBtn";
-            this.ExitBtn.Size = new System.Drawing.Size(23, 23);
-            this.ExitBtn.TabIndex = 18;
-            this.ExitBtn.Text = "X";
-            this.ExitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ExitBtn.UseVisualStyleBackColor = false;
-            // 
-            // MinimizeBtn
-            // 
-            this.MinimizeBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.MinimizeBtn.FlatAppearance.BorderSize = 0;
-            this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 7.5F, System.Drawing.FontStyle.Bold);
-            this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinimizeBtn.Location = new System.Drawing.Point(273, 1);
-            this.MinimizeBtn.Name = "MinimizeBtn";
-            this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
-            this.MinimizeBtn.TabIndex = 19;
-            this.MinimizeBtn.Text = "--";
-            this.MinimizeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.MinimizeBtn.UseVisualStyleBackColor = false;
             // 
             // Info
             // 
@@ -274,8 +240,6 @@ namespace Dobby {
             this.Controls.Add(this.BaseDebugBtn);
             this.Controls.Add(this.DisableDebugBtn);
             this.Controls.Add(this.SeperatorLine1);
-            this.Controls.Add(this.ExitBtn);
-            this.Controls.Add(this.MinimizeBtn);
             this.Controls.Add(this.MainLabel);
             this.Controls.Add(this.SeperatorLine0);
             this.Controls.Add(this.BackBtn);
@@ -581,8 +545,6 @@ Read:       MainStream.Position = TmpAddr++;
         public Button CreditsBtn;
         public Button InfoHelpBtn;
         public Label Info;
-        public Button ExitBtn;
-        public Button MinimizeBtn;
         public Label SeperatorLine0;
         public Label SeperatorLine2;
         public Label SeperatorLine1;

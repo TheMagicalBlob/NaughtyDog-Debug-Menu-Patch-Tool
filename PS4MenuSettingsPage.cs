@@ -55,8 +55,6 @@ namespace Dobby {
             this.DisableDebugTextBtn = new Dobby.Common.VarButton();
             this.DisablePausedIconBtn = new Dobby.Common.VarButton();
             this.MainLabel = new System.Windows.Forms.Label();
-            this.ExitBtn = new System.Windows.Forms.Button();
-            this.MinimizeBtn = new System.Windows.Forms.Button();
             this.Info = new System.Windows.Forms.Label();
             this.CreditsBtn = new System.Windows.Forms.Button();
             this.InfoHelpBtn = new System.Windows.Forms.Button();
@@ -154,38 +152,6 @@ namespace Dobby {
             this.MainLabel.Size = new System.Drawing.Size(314, 22);
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "Misc. PS4  Patches Page";
-            // 
-            // ExitBtn
-            // 
-            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.ExitBtn.FlatAppearance.BorderSize = 0;
-            this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 7.5F, System.Drawing.FontStyle.Bold);
-            this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ExitBtn.Location = new System.Drawing.Point(296, 1);
-            this.ExitBtn.Name = "ExitBtn";
-            this.ExitBtn.Size = new System.Drawing.Size(23, 23);
-            this.ExitBtn.TabIndex = 18;
-            this.ExitBtn.Text = "X";
-            this.ExitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ExitBtn.UseVisualStyleBackColor = false;
-            // 
-            // MinimizeBtn
-            // 
-            this.MinimizeBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.MinimizeBtn.FlatAppearance.BorderSize = 0;
-            this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 7.5F, System.Drawing.FontStyle.Bold);
-            this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinimizeBtn.Location = new System.Drawing.Point(272, 1);
-            this.MinimizeBtn.Name = "MinimizeBtn";
-            this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
-            this.MinimizeBtn.TabIndex = 19;
-            this.MinimizeBtn.Text = "--";
-            this.MinimizeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.MinimizeBtn.UseVisualStyleBackColor = false;
             // 
             // Info
             // 
@@ -388,7 +354,6 @@ namespace Dobby {
             this.ClientSize = new System.Drawing.Size(320, 387);
             this.Controls.Add(this.NovisBtn);
             this.Controls.Add(this.ProgPauseOnCloseBtn);
-            this.Controls.Add(this.MinimizeBtn);
             this.Controls.Add(this.CustomDebugOptionsLabel);
             this.Controls.Add(this.UniversalPatchesLabel);
             this.Controls.Add(this.GameSpecificPatchesLabel);
@@ -405,7 +370,6 @@ namespace Dobby {
             this.Controls.Add(this.CreditsBtn);
             this.Controls.Add(this.SeperatorLine1);
             this.Controls.Add(this.SeperatorLine2);
-            this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.MainLabel);
             this.Controls.Add(this.SeperatorLine0);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -1734,10 +1698,8 @@ namespace Dobby {
         }
 
         private Button BrowseButton;
-        private Button MinimizeBtn;
         private Button InfoHelpBtn;
         private Button CreditsBtn;
-        private Button ExitBtn;
         private Button BackBtn;
         private VarButton DisableDebugTextBtn;
         private VarButton DisablePausedIconBtn;

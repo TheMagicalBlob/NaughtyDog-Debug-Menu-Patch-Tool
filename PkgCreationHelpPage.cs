@@ -45,10 +45,7 @@ namespace Dobby {
         }
         public void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PkgCreationHelpPage));
-            this.ExitBtn = new System.Windows.Forms.Button();
-            this.MinimizeBtn = new System.Windows.Forms.Button();
             this.MainLabel = new System.Windows.Forms.Label();
-            this.MainBox = new System.Windows.Forms.GroupBox();
             this.Question3Btn = new System.Windows.Forms.Button();
             this.Question2Btn = new System.Windows.Forms.Button();
             this.Question1Btn = new System.Windows.Forms.Button();
@@ -62,39 +59,6 @@ namespace Dobby {
             this.SeperatorLine2 = new System.Windows.Forms.Label();
             this.Question0Btn = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // ExitBtn
-            // 
-            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
-            this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.ExitBtn.FlatAppearance.BorderSize = 0;
-            this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Cambria", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ExitBtn.Location = new System.Drawing.Point(293, 7);
-            this.ExitBtn.Name = "ExitBtn";
-            this.ExitBtn.Size = new System.Drawing.Size(23, 23);
-            this.ExitBtn.TabIndex = 18;
-            this.ExitBtn.Text = "X";
-            this.ExitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ExitBtn.UseVisualStyleBackColor = false;
-            // 
-            // MinimizeBtn
-            // 
-            this.MinimizeBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
-            this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.MinimizeBtn.FlatAppearance.BorderSize = 0;
-            this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeBtn.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinimizeBtn.Location = new System.Drawing.Point(270, 7);
-            this.MinimizeBtn.Name = "MinimizeBtn";
-            this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
-            this.MinimizeBtn.TabIndex = 19;
-            this.MinimizeBtn.Text = "--";
-            this.MinimizeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.MinimizeBtn.UseVisualStyleBackColor = false;
             // 
             // MainLabel
             // 
@@ -194,7 +158,7 @@ namespace Dobby {
             // 
             // CreditsBtn
             // 
-            this.CreditsBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.CreditsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.CreditsBtn.FlatAppearance.BorderSize = 0;
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -211,7 +175,7 @@ namespace Dobby {
             // 
             // BackBtn
             // 
-            this.BackBtn.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.BackBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.BackBtn.FlatAppearance.BorderSize = 0;
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -262,12 +226,14 @@ namespace Dobby {
             // 
             // PkgCreationHelpPage
             // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.ClientSize = new System.Drawing.Size(320, 476);
             this.Controls.Add(this.Question3Btn);
             this.Controls.Add(this.Question2Btn);
             this.Controls.Add(this.Question1Btn);
             this.Controls.Add(this.SeperatorLine3);
-            this.Controls.Add(this.ExitBtn);
-            this.Controls.Add(this.MinimizeBtn);
             this.Controls.Add(this.MainLabel);
             this.Controls.Add(this.SeperatorLine1);
             this.Controls.Add(this.PopupLabel);
@@ -277,11 +243,6 @@ namespace Dobby {
             this.Controls.Add(this.DefaultQuestionBtn);
             this.Controls.Add(this.SeperatorLine2);
             this.Controls.Add(this.Question0Btn);
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(100, 100, 100);
-            this.ClientSize = new System.Drawing.Size(320, 476);
-            this.Controls.Add(this.MainBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PkgCreationHelpPage";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
@@ -341,14 +302,11 @@ namespace Dobby {
         /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         #region Repeat Functions & Control Declarations
         private void BackBtn_Click(object sender, EventArgs e) => ReturnToPreviousPage();
-        public Button MinimizeBtn;
         public Label Info;
         public Label MainLabel;
-        public GroupBox MainBox;
         public Button CreditsBtn;
         public Button BackBtn;
         private Button Question0Btn;
-        public Button ExitBtn;
         private Label PopupLabel;
         public Label SeperatorLine1;
         public Label SeperatorLine2;

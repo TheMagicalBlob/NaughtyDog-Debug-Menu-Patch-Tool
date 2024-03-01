@@ -12,6 +12,7 @@ using static Dobby.Dev;
 namespace Dobby {
     public class Common : Main {
         //#error version
+        #pragma warning disable CS0472
 
         // Spacing:
         // Info & Back Btn; Info: Form.Size.Y - Info.Size.Y | BackBtn Pos: (Info Vertical Pos - BackBtn.Size.Y - 3)
@@ -232,6 +233,7 @@ namespace Dobby {
           "* 4.46.216.583 | HoverLeave Function No Longer Widens Controls If They Already FIt The Form Width Rather Than Only Themselves",
           "* 4.46.217.585 | Style Testing Wip, Debug Fix",
           "* 4.46.218.585 | Temporarily Removed GP4 Creation Page Access, Going To Replace With Automatic GP4 Creation Until Gp4 lib is fleshed out",
+          "* 4.47.224.603 | PkgCreationPage Work, Changed Seperator Line Positioning And Sizing Replaced Static Exit/Minimize Buttons With Dynamic Initialization During Form Init (Through AddEventHandlersToControls()), Other Misc Changes",
 
 
 
@@ -249,13 +251,17 @@ namespace Dobby {
         };
         public static string Build = ChangeList[ChangeList.Length - 1].Substring(2).Substring(0, ChangeList[ChangeList.Length - 1].IndexOf('|') - 3); // Trims The Last ChangeList String For Latest The Build Number
 
-        //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///--              Design Bullshit              --\\\
-        ///                                               \\\
-        /// * FONT USAGE: (Use Bold For Both)             \\\
-        /// - Use Franklin Gothic 10pt For Basic Controls \\\
-        /// - Use Cambria 9.75pt For Information Pages    \\\
-        //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///                 Design Bullshit                  \\\
+        ///__________________________________________________\\\
+        /// * FONT USAGE: (Use Bold For Both)                \\\
+        /// - Use Franklin Gothic 10pt For Basic Controls    \\\
+        /// - Use Cambria 9.75pt For Information Pages       \\\
+        ///                                                  \\\
+        /// * Borders And Seperator Lines                    \\\
+        /// - Keep Controls At Least 1 Pixel From Form Edge  \\\
+        /// - Lines Should Be 2 Pixels From Either Form Edge \\\
+        ////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 
 
@@ -265,7 +271,7 @@ namespace Dobby {
         ///--  MAIN APPLICATION VARIABLES & Functions  --\\\
         //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
         #region Application-Wide Functions And Variable Declarations
-        
+
         // Custom Button Class So I Can Attach A Value To Them. This Is Probably The Wrong Way To Do This, But Whatever
         public class VarButton : Button { public object Variable; }
 
@@ -275,8 +281,8 @@ namespace Dobby {
             PS4DebugHelpPage = 11,
             EbootPatchPage = 2,
             EbootPatchHelpPage = 21,
-            PS4MiscPage = 3,
-            PS4MiscPatchesHelpPage = 31,
+            PS4MenuSettingsPage = 3,
+            PS4MenuSettingsHelpPage = 31,
             PkgCreationPage = 4,
             PkgCreationHelpPage = 41,
             Gp4CreationPage = 5,
@@ -288,9 +294,11 @@ namespace Dobby {
         }
 
 
-        public static string CurrentControl, TempStringStore;
-
-        public static string ActiveGameID = "UNK";
+        public static string
+            CurrentControl,
+            TempStringStore,
+            ActiveGameID = "UNK"
+        ;
 
         public static int Game, index;
         public static PageID Page;
@@ -333,18 +341,19 @@ namespace Dobby {
         ///--  Basic Form Event Handlers  --\\\
         ////////////////////\\\\\\\\\\\\\\\\\\\
         #region Basic Form Event Handlers
-        public static void ExitBtn_Click(object sender, EventArgs e) {
+        private static void ExitBtn_Click(object sender, EventArgs e) {
 #if DEBUG
             LogWindow.Exit();
 #endif
             MainStream?.Dispose();
             Environment.Exit(0);
         }
-        public static void ExitBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
-        public static void ExitBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
-        public static void MinimizeBtn_Click(object sender, EventArgs e) => ((Control)sender).FindForm().WindowState = FormWindowState.Minimized;
-        public static void MinimizeBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
-        public static void MinimizeBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
+        private static void ExitBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
+        private static void ExitBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
+        private static void MinimizeBtn_Click(object sender, EventArgs e) => ((Control)sender).FindForm().WindowState = FormWindowState.Minimized;
+        private static void MinimizeBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
+        private static void MinimizeBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
+
         public static void ControlHover(object sender, EventArgs e) => HoverLeave((Control)sender, true);
         public static void ControlLeave(object sender, EventArgs e) => HoverLeave((Control)sender, false);
         public static void MouseDownFunc(object sender, MouseEventArgs e) {
@@ -385,9 +394,9 @@ namespace Dobby {
             catch(ObjectDisposedException) { return; }
 
             if(MouseScrolled = EventIsMouseEnter) {
-                #if DEBUG
+#if DEBUG
                 HoveredControl = PassedControl;
-                #endif
+#endif
                 CurrentControl = PassedControl.Name;
                 PassedControl.MouseDown += HighlightItemOnCLick;
                 PassedControl.MouseUp   += ResetItemHighlight;
@@ -407,7 +416,7 @@ namespace Dobby {
         private static void HighlightItemOnCLick(object sender, MouseEventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
         private static void ResetItemHighlight(object sender, MouseEventArgs e)   => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
 
-        /// <summary> addme
+        /// <summary> Draw The Variable Tied To The Sender Control, Aligned To The Right Of The Form
         ///</summary>
         public static void DrawButtonVar(object sender, PaintEventArgs e) {
             var control = sender as VarButton;
@@ -418,19 +427,17 @@ namespace Dobby {
             e.Graphics.DrawString(Variable, MainFont, Brushes.LightGreen, new Point(X_Pos, 5));
         }
 
-        /// <summary> Form Border Pen
-        ///</summary>
+        ///<summary> Form Border Pen </summary>
         public static Pen pen = new Pen(Color.White);
-        /// <summary> Create And Apply A Thin Border To The Form
-        ///</summary>
+        ///<summary> Create And Apply A Thin Border To The Form </summary>
         public static void PaintBorder(object sender, PaintEventArgs e) {
-            var AppRef = (Form)sender;
+            var ItemPtr = (Form)sender;
             
             Point[] Border = new Point[] {
                 Point.Empty,
-                new Point(AppRef.Width-1, 0),
-                new Point(AppRef.Width-1, AppRef.Height-1),
-                new Point(0, AppRef.Height-1),
+                new Point(ItemPtr.Width-1, 0),
+                new Point(ItemPtr.Width-1, ItemPtr.Height-1),
+                new Point(0, ItemPtr.Height-1),
                 Point.Empty
             };
 
@@ -441,17 +448,15 @@ namespace Dobby {
         /// <summary> Create And Apply A Thin Line From One End Of The Form To The Other (placeholder code atm)
         ///</summary>
         public static void PaintSeperatorLine(object sender, PaintEventArgs e) {
-            var AppRef = (Label)sender;
+            var ItemPtr = (Label)sender;
 
-            if(AppRef.Size.Height != 15) {
-                AppRef.Size = new Size(AppRef.Size.Width, 15);
-                MsgOut($"Label On Page {AppRef.Parent.Name} Has An Ivalid Height ({AppRef.Size.Height})");
-            }
+            if(ItemPtr.Size.Height != 15 && MsgOut($"Label On Page {ItemPtr.Parent.Name} Has An Ivalid Height ({ItemPtr.Size.Height})")!=null)
+                ItemPtr.Size = new Size(ItemPtr.Size.Width, 15);
 
             var LineVerticalPos = 9; 
             Point[] Line = new Point[] {
                 new Point(1, LineVerticalPos),
-                new Point(AppRef.Parent.Size.Width - 1, LineVerticalPos)
+                new Point(ItemPtr.Parent.Size.Width - 1, LineVerticalPos)
             };
 
             e.Graphics.Clear(Color.FromArgb(100, 100, 100));
@@ -460,9 +465,9 @@ namespace Dobby {
 
 
 
-        delegate void LabelFlashDelegate(string g);
-        static readonly LabelFlashDelegate Yellow = new LabelFlashDelegate(FlashYellow);
-        static readonly LabelFlashDelegate White = new LabelFlashDelegate(FlashWhite);
+        public delegate void LabelFlashDelegate(string str);
+        public static readonly LabelFlashDelegate Yellow = new LabelFlashDelegate(FlashYellow);
+        public static readonly LabelFlashDelegate White = new LabelFlashDelegate(FlashWhite);
         public static Thread FlashThread = new Thread(new ThreadStart(FlashLabel));
         private static void FlashLabel() {
             while(!LabelShouldFlash) { Thread.Sleep(7); }
@@ -480,19 +485,19 @@ namespace Dobby {
             LabelShouldFlash = false;
             FlashLabel();
         }
-        private static void FlashWhite(string s) {
+        private static void FlashWhite(string str) {
             try {
                 ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.White;
                 ActiveForm?.Update();
             }
-            catch(Exception){}
+            catch(Exception){ FlashThread.Abort(); }
         }
-        private static void FlashYellow(string s) {
+        private static void FlashYellow(string str) {
             try {
                 ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.FromArgb(255, 227, 0);
                 ActiveForm?.Update();
             }
-            catch(Exception){}
+            catch(Exception){ FlashThread.Abort(); }
         }
 
         #endregion
@@ -543,11 +548,11 @@ namespace Dobby {
                     NewPage = new EbootPatchHelpPage();
                     break;
 
-                case PageID.PS4MiscPage:
+                case PageID.PS4MenuSettingsPage:
                     NewPage = new PS4MenuSettingsPage();
                     break;
 
-                case PageID.PS4MiscPatchesHelpPage:
+                case PageID.PS4MenuSettingsHelpPage:
                     //PS4MiscPatchesHelpPage PS4MiscPatchesHelpPage = new PS4MiscPatchesHelpPage();
                     //PS4MiscPatchesHelpPage.Show();
                     break;
@@ -632,9 +637,9 @@ namespace Dobby {
         public static void ApplyEventHandlersToControl(object sender) {
             var Item = sender as Control;
 
-            #if DEBUG
+#if DEBUG
             Item.MouseEnter += new EventHandler(DebugControlHover);
-            #endif
+#endif
 
             Item.MouseDown += new MouseEventHandler(MouseDownFunc);
             Item.MouseUp += new MouseEventHandler(MouseUpFunc);
@@ -661,7 +666,6 @@ namespace Dobby {
         public static void AddEventHandlersToControls(Control.ControlCollection Controls) { // Got Sick of Manually Editing InitializeComponent()
 
             Controls.Owner.Paint += PaintBorder;
-
             foreach(Control Item in Controls) {
                 ApplyEventHandlersToControl(Item);
 
@@ -670,18 +674,51 @@ namespace Dobby {
                         ApplyEventHandlersToControl(Child);
             }
 
-            try {
-                Controls.Find("MinimizeBtn", true)[0].Click += new EventHandler(MinimizeBtn_Click);
-                Controls.Find("MinimizeBtn", true)[0].MouseEnter += new EventHandler(MinimizeBtnMH);
-                Controls.Find("MinimizeBtn", true)[0].MouseLeave += new EventHandler(MinimizeBtnML);
+            // Create Exit And Minimize Buttons, And Add Them To The Top Right Of The Form
+            var Gray = Color.FromArgb(100, 100, 100);
+            Button ExitBtn = new Button() {
+                Location = new Point(Controls.Owner.Size.Width - 24, 1),
+                Size = new Size(23, 23),
+                Name = "ExitBtn",
+                Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
+                Text = "X",
+                FlatStyle = FlatStyle.Flat,
+                BackColor = Gray,
+                ForeColor = SystemColors.Control,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Cursor = Cursors.Cross
+            },
+            MinimizeBtn = new Button() {
+                Location = new Point(Controls.Owner.Size.Width - 47, 1),
+                Size = new Size(23, 23),
+                Name = "MinimizeBtn",
+                Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
+                Text = "--",
+                FlatStyle = FlatStyle.Flat,
+                BackColor = Gray,
+                ForeColor = SystemColors.Control,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Cursor = Cursors.Cross,
+            };
+            
+            MinimizeBtn.FlatAppearance.BorderSize = 0;
+            Controls.Owner.Controls.Add(MinimizeBtn);
+            ExitBtn.FlatAppearance.BorderSize = 0;
+            Controls.Owner.Controls.Add(ExitBtn);
+            MinimizeBtn.BringToFront();
+            ExitBtn.BringToFront();
 
-                Controls.Find("ExitBtn", true)[0]    .Click += new EventHandler(ExitBtn_Click);
-                Controls.Find("ExitBtn", true)[0]    .MouseEnter += new EventHandler(ExitBtnMH);
-                Controls.Find("ExitBtn", true)[0]    .MouseLeave += new EventHandler(ExitBtnML);
-            }
-            catch(IndexOutOfRangeException) { MsgOut("Form Lacks MinimizeBtn And / Or ExitBtn"); }
+            MinimizeBtn.Click      += new EventHandler(MinimizeBtn_Click);
+            MinimizeBtn.MouseEnter += new EventHandler(MinimizeBtnMH);
+            MinimizeBtn.MouseLeave += new EventHandler(MinimizeBtnML);
+            ExitBtn    .Click      += new EventHandler(ExitBtn_Click);
+            ExitBtn    .MouseEnter += new EventHandler(ExitBtnMH);
+            ExitBtn    .MouseLeave += new EventHandler(ExitBtnML);
+
+
+            // Clear Info Label Text
+            try { Controls.Owner.Controls.Find("Info", true)[0].Text = string.Empty; } catch(Exception){ MsgOut("Info Label Mising"); }
         }
-
 
         /// <summary>
         /// Set The Text of The Yellow Label At The Bottom Of The Form
@@ -692,14 +729,6 @@ namespace Dobby {
         }
         #endregion
 
-        /// <summary> Write A Byte To The MainStream And Flush The Data </summary>
-        public static void WriteByte(int offset, byte data) {
-            if(MainStream == null) { MessageBox.Show($"No Active Data Stream To Write To ({MainStreamIsOpen})", $"Addr: {offset:X} Byte: 0x{data:X}"); return; }
-
-            MainStream.Position = offset;
-            MainStream.WriteByte(data);
-            MainStream.Flush();
-        }
 
         /// <summary> Add A Summary, You Lazy Fuck </summary>
         /// <returns> The Game Name And App Version Respectively </returns>
@@ -718,6 +747,15 @@ namespace Dobby {
             var Hash = SHA256.Create();
             var HashArray = Hash.ComputeHash(LocalExecutableCheck);
             return BitConverter.ToInt32(HashArray, 0);
+        }
+
+        /// <summary> Write A Byte To The MainStream And Flush The Data </summary>
+        public static void WriteByte(int offset, byte data) {
+            if(MainStream == null) { MessageBox.Show($"No Active Data Stream To Write To ({MainStreamIsOpen})", $"Addr: {offset:X} Byte: 0x{data:X}"); return; }
+
+            MainStream.Position = offset;
+            MainStream.WriteByte(data);
+            MainStream.Flush();
         }
 
         public static string GetGameLabelFromID(int GameID) {

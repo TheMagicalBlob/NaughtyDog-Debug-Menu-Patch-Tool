@@ -57,8 +57,6 @@ namespace Dobby {
         }
         public void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EbootPatchHelpPage));
-            this.ExitBtn = new System.Windows.Forms.Button();
-            this.MinimizeBtn = new System.Windows.Forms.Button();
             this.MainLabel = new System.Windows.Forms.Label();
             this.Question3Btn = new System.Windows.Forms.Button();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
@@ -73,38 +71,6 @@ namespace Dobby {
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.Question0Btn = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // ExitBtn
-            // 
-            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.ExitBtn.FlatAppearance.BorderSize = 0;
-            this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 7.5F, System.Drawing.FontStyle.Bold);
-            this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ExitBtn.Location = new System.Drawing.Point(296, 1);
-            this.ExitBtn.Name = "ExitBtn";
-            this.ExitBtn.Size = new System.Drawing.Size(23, 23);
-            this.ExitBtn.TabIndex = 8;
-            this.ExitBtn.Text = "X";
-            this.ExitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ExitBtn.UseVisualStyleBackColor = false;
-            // 
-            // MinimizeBtn
-            // 
-            this.MinimizeBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.MinimizeBtn.FlatAppearance.BorderSize = 0;
-            this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 7.5F, System.Drawing.FontStyle.Bold);
-            this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinimizeBtn.Location = new System.Drawing.Point(273, 1);
-            this.MinimizeBtn.Name = "MinimizeBtn";
-            this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
-            this.MinimizeBtn.TabIndex = 7;
-            this.MinimizeBtn.Text = "---";
-            this.MinimizeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.MinimizeBtn.UseVisualStyleBackColor = false;
             // 
             // MainLabel
             // 
@@ -279,8 +245,6 @@ namespace Dobby {
             this.ClientSize = new System.Drawing.Size(320, 506);
             this.Controls.Add(this.Question3Btn);
             this.Controls.Add(this.SeperatorLine2);
-            this.Controls.Add(this.ExitBtn);
-            this.Controls.Add(this.MinimizeBtn);
             this.Controls.Add(this.MainLabel);
             this.Controls.Add(this.SeperatorLine0);
             this.Controls.Add(this.WithSomeExceptionsLabel);
@@ -360,7 +324,6 @@ namespace Dobby {
         #region Repeat Functions & Control Declarations
         private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
         private void BackBtn_Click(object sender, EventArgs e) => ReturnToPreviousPage();
-        public Button MinimizeBtn;
         public Label Info;
         public Label MainLabel;
         public Button CreditsBtn;
@@ -370,7 +333,6 @@ namespace Dobby {
         private Button Question2Btn;
         private Button Question3Btn;
         private Label DefaultQuestionBtn;
-        public Button ExitBtn;
         private Label WithSomeExceptionsLabel;
         public Label SeperatorLine0;
         public Label SeperatorLine1;

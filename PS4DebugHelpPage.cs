@@ -36,8 +36,6 @@ namespace Dobby {
         }
         public void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PS4DebugHelpPage));
-            this.ExitBtn = new System.Windows.Forms.Button();
-            this.MinimizeBtn = new System.Windows.Forms.Button();
             this.MainLabel = new System.Windows.Forms.Label();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.PS4DebugAnswerLabel = new System.Windows.Forms.Label();
@@ -48,38 +46,6 @@ namespace Dobby {
             this.CreditsBtn = new System.Windows.Forms.Button();
             this.BackBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // ExitBtn
-            // 
-            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ExitBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.ExitBtn.FlatAppearance.BorderSize = 0;
-            this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 7.5F, System.Drawing.FontStyle.Bold);
-            this.ExitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ExitBtn.Location = new System.Drawing.Point(296, 1);
-            this.ExitBtn.Name = "ExitBtn";
-            this.ExitBtn.Size = new System.Drawing.Size(23, 23);
-            this.ExitBtn.TabIndex = 18;
-            this.ExitBtn.Text = "X";
-            this.ExitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ExitBtn.UseVisualStyleBackColor = false;
-            // 
-            // MinimizeBtn
-            // 
-            this.MinimizeBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.MinimizeBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.MinimizeBtn.FlatAppearance.BorderSize = 0;
-            this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 7.5F, System.Drawing.FontStyle.Bold);
-            this.MinimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinimizeBtn.Location = new System.Drawing.Point(273, 1);
-            this.MinimizeBtn.Name = "MinimizeBtn";
-            this.MinimizeBtn.Size = new System.Drawing.Size(23, 23);
-            this.MinimizeBtn.TabIndex = 19;
-            this.MinimizeBtn.Text = "--";
-            this.MinimizeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.MinimizeBtn.UseVisualStyleBackColor = false;
             // 
             // MainLabel
             // 
@@ -195,8 +161,6 @@ namespace Dobby {
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ClientSize = new System.Drawing.Size(320, 426);
             this.Controls.Add(this.SeperatorLine1);
-            this.Controls.Add(this.ExitBtn);
-            this.Controls.Add(this.MinimizeBtn);
             this.Controls.Add(this.MainLabel);
             this.Controls.Add(this.PS4DebugAnswerLabel);
             this.Controls.Add(this.SeperatorLine2);
@@ -219,7 +183,6 @@ namespace Dobby {
         #region Repeat Functions & Control Declarations
         private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
         private void BackBtn_Click(object sender, EventArgs e) => ReturnToPreviousPage();
-        public Button MinimizeBtn;
         public Label Info;
         public Label MainLabel;
         public Button CreditsBtn;
@@ -229,7 +192,6 @@ namespace Dobby {
         public Label SeperatorLine2;
         public Label SeperatorLine0;
         public Label SeperatorLine1;
-        public Button ExitBtn;
         #endregion
     }
 }
