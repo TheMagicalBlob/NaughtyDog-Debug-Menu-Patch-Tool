@@ -113,10 +113,13 @@ namespace Dobby {
                 }
             }
 
+
+            /* A Bit Of An Intrusion, And Still Sus Even If The Exact Intent's Explicitly Stated
             for(; i < FoldersInCurrentDirectory.Length; ) {
                 FilesInCurrentDirectory = Directory.GetFiles(FoldersInCurrentDirectory[i++]);
                 goto CheckFiles;
             }
+            */
         }
 
 
@@ -133,7 +136,7 @@ namespace Dobby {
         /// </summary>
         private void LaunchOrbisPubCmdBtn_Click(object sender, EventArgs e) {
             if(!File.Exists(OrbisToolPath)) {
-                if (MessageBox.Show("A Valid Path To The FakePkg Toolset Was Not Provided, Would You Like To Scan The Current Folder For Publishing Tools Folder?", "Toolset Not Found, Provide A Valid Path",
+                if (MessageBox.Show("A Valid Path To The Fake Package / fpkg Toolset Was Not Provided, Would You Like To Scan The Current Folder For Publishing Tools Folder?", "Toolset Not Found, Provide A Valid Path",
                     MessageBoxButtons.YesNo) == DialogResult.OK)
                     ScanForOrbisPubTools(); // Maybe Just Remove This And Make Them Do It Themselves
                 return;
