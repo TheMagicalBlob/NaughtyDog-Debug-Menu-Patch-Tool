@@ -324,24 +324,22 @@ namespace Dobby {
                 LogPtr.Size = formScale;
                 LogWindowRenderer = LogPtr.CreateGraphics();
 
+            Reset:
                 LogPtr.Location = new Point(ParentPtr.Location.X - LogPtr.Size.Width, ParentPtr.Location.Y);
                 LogPtr.Update();
 
 
-                if(!MouseIsDown && LogPtr.Location.X < 0) {
-                    LogPtr.Location = new Point(1, LogPtr.Location.Y);
-                    ParentPtr.Location = new Point(LogPtr.Location.X + LogPtr.Size.Width, ParentPtr.Location.Y);
-                }
-
-
                 var ControlOffset = 0;
-                foreach(Control c in LogPtr.Controls) {
+                foreach(Control c in LogPtr.Controls) { 
                     c.Location = new Point(LogPtr.Size.Width - c.Size.Width - ControlOffset - 1, 1);
-                    if(c.Location.X < 0)
-                        LogPtr.Size = new Size(c.Location.X - 1, LogPtr.Size.Height);
+                    if(c.Location.X < 0) {
+                        LogPtr.Size = new Size(LogPtr.Size.Width + c.Size.Width + 1, LogPtr.Size.Height);
+                        goto Reset;
+                    }
 
                     ControlOffset += c.Size.Width;
                 }
+                if(PkgCreationPage.debug && !REL) Console.WriteLine($"Should be: {formScale} \\ Is: {LogPtr.Size}");
             }
 
             public static void Exit() {
@@ -441,6 +439,18 @@ namespace Dobby {
                                         $"|    Right Margin:      {DynamicVars[7]}\n"
                                     };
                                 break;
+                                case PageID.PkgCreationPage:
+                                    var arr = PkgCreationPage.DebugPeek();
+                                    Output = new string[] {
+                                        $"| Build Is Ready: {!(arr[0].Equals("?") && arr[1].Equals("?"))}",
+                                        $"| ",
+                                        $"| ",
+                                        $"| ",
+                                        $"| ",
+                                        $"| ",
+                                        $"| ",
+                                    };
+                                break;
                             }
                         }
                         catch(Exception e) {
@@ -457,7 +467,7 @@ namespace Dobby {
                             foreach(string line in Output) {
                                 TextSize = LogWindowRenderer.MeasureString(line, DFont);
 
-                                if(TextSize.Width > formScale.Width - 12)
+                                if((int)TextSize.Width > (int)formScale.Width - 12)
                                     formScale.Width = (int)TextSize.Width + 12;
 
                                 formScale.Height += (int)TextSize.Height;
@@ -481,12 +491,11 @@ namespace Dobby {
 
                                 else
                                     Out += "!\n";
-
                             }
 
                             formScale.Height += 50; // Border Offset + Padding
 
-
+                            Console.WriteLine(formScale);
                             // Resize Form Back On Main LogWindow Thread
                             try { LogPtr.Invoke(resize); }
 
