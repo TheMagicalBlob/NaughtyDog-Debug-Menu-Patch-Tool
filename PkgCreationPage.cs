@@ -87,29 +87,28 @@ namespace Dobby {
         ///--     Page Background Functions      --\\\
         ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
         #region Page Background Functions
-        private void ScanForOrbisPubTools() {                                                                                                              //DirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectoryDirectory
+        private void ScanForOrbisPubTools() {
+            return; // Too Sus
+
             FileStream stream;
             byte[] Check = new byte[4];
-            int i = 0;
+            
+            var FilesInCurrentDirectory = Directory.GetFiles(Directory.GetCurrentDirectory());
 
-            var FoldersInCurrentDirectory = Directory.GetDirectories(Directory.GetCurrentDirectory());
-            var FilesInCurrentDirectory   = Directory.GetFiles(Directory.GetCurrentDirectory());
-
-            CheckFiles:
             foreach(var file in FilesInCurrentDirectory) {
                 if(file.Contains("out.txt"))
                     continue;
 
-                stream = File.OpenRead(file);
-                
-                stream.Position = 0x100;
-                stream.Read(Check, 0, 4);
+                using(stream = File.OpenRead(file)) {
+                    stream.Position = 0x100;
+                    stream.Read(Check, 0, 4);
 
-                if(Check.SequenceEqual(new byte[] { 0x46, 0xD1, 0xB8 }) || Check.SequenceEqual(new byte[] { 0x50, 0x45, 0x00 }) || file.Contains("orbis-pub-cmd") || file.Contains("-keystone")) {
-                    CmdPathBox.Text = OrbisToolPath = file;
+                    if(Check.SequenceEqual(new byte[] { 0x46, 0xD1, 0xB8 }) || Check.SequenceEqual(new byte[] { 0x50, 0x45, 0x00 }) || file.Contains("orbis-pub-cmd") || file.Contains("-keystone")) {
+                        CmdPathBox.Text = OrbisToolPath = file;
 
-                    Dev.MsgOut($"{file}\\{OrbisToolPath} Set As OrbisPubCmdPath");
-                    return;
+                        Dev.MsgOut($"{file}\\{OrbisToolPath} Set As OrbisPubCmdPath");
+                        return;
+                    }
                 }
             }
 

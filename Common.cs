@@ -234,7 +234,8 @@ namespace Dobby {
           "* 4.46.217.585 | Style Testing Wip, Debug Fix",
           "* 4.46.218.585 | Temporarily Removed GP4 Creation Page Access, Going To Replace With Automatic GP4 Creation Until Gp4 lib is fleshed out",
           "* 4.47.224.603 | PkgCreationPage Work, Changed Seperator Line Positioning And Sizing Replaced Static Exit/Minimize Buttons With Dynamic Initialization During Form Init (Through AddEventHandlersToControls()), Other Misc Changes",
-          "* 4.47.225.609 | PkgCreationPage Work, Trying To Get A \"Good\" Look Down "
+          "* 4.47.225.609 | PkgCreationPage Work, Trying To Get A \"Good\" Look Down ",
+          "* 4.47.225.611 | Font Styling Fix In EbootPatchPage "
 
 
 

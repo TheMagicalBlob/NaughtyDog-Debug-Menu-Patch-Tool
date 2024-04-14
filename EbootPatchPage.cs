@@ -455,7 +455,7 @@ namespace Dobby {
                 case TLL100MP:
                 case TLL100:
                 case TLL10X:
-                    RestoredDebugBtn.Font = new Font("Cambria", 9.75F, FontStyle.Strikeout);
+                    RestoredDebugBtn.Font = new Font("Cambria", 9.25F, FontStyle.Bold | FontStyle.Strikeout);
                     RestoredDebugBtn.Enabled = false; return " Restored/Custom";
 
                 ////
@@ -464,7 +464,7 @@ namespace Dobby {
                 case T2107:
                 case T2108:
                 case T2109:
-                    RestoredDebugBtn.Font = MainFont;
+                    RestoredDebugBtn.Font = new Font("Cambria", 9.25F, FontStyle.Bold);
                     RestoredDebugBtn.Enabled = true; return " Custom";
                 ////
                 // Games I've Made Restorations For
@@ -479,7 +479,7 @@ namespace Dobby {
                 case UC3102:
                 case UC4117:
                 case UC4133MP:
-                    RestoredDebugBtn.Font = MainFont;
+                    RestoredDebugBtn.Font = new Font("Cambria", 9.25F, FontStyle.Bold);
                     RestoredDebugBtn.Enabled = true; return " Restored";
                 ////
                 // Games That Aren't The Right Fucking Game You Dumbass
