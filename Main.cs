@@ -122,6 +122,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             // 
             this.PS4MenuSettingsPageBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.PS4MenuSettingsPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.PS4MenuSettingsPageBtn.Enabled = false;
             this.PS4MenuSettingsPageBtn.FlatAppearance.BorderSize = 0;
             this.PS4MenuSettingsPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PS4MenuSettingsPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);

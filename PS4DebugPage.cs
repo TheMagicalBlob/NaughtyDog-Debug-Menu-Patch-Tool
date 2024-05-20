@@ -784,9 +784,13 @@ namespace Dobby {
                     Dev.MsgOut($"IP(); No Settings File Was Found, Made A New One At:\n{f.Name}");
                     f.Position = 0; f.Write(Encoding.UTF8.GetBytes("192.168.137."), 0, 12);
                     f.Position = 15; f.WriteByte(0x3B); f.Write(BitConverter.GetBytes(9020), 0, 4);
-                    return "192.168.137.";
                 }
             }
+            catch(Exception tabarnack) {
+                Dev.MsgOut(tabarnack.Message + $"\n{tabarnack.StackTrace}");
+            }
+
+            return "192.168.137.";
         }
 
         public void IPBOX_TextChanged(object sender, EventArgs e) {
@@ -796,7 +800,9 @@ namespace Dobby {
                 }
             }
             catch(FileNotFoundException) { IP(); }
-            catch(Exception tabarnack) { Dev.MsgOut(tabarnack.Message + $"\n{tabarnack.StackTrace}"); }
+            catch(Exception tabarnack) {
+                Dev.MsgOut(tabarnack.Message + $"\n{tabarnack.StackTrace}");
+            }
         }
 
         public int Port() {
@@ -807,13 +813,15 @@ namespace Dobby {
                 return BitConverter.ToInt32(dat, 0);
             }
             catch(FileNotFoundException) {
-                using(FileStream f = new FileStream(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB", FileMode.OpenOrCreate, FileAccess.Write)) {
+                using(FileStream f = new FileStream(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB", FileMode.Create, FileAccess.Write)) {
                     Dev.MsgOut($"Port(); No Settings File Was Found, Made A New One At:\n{f.Name}");
                     f.Write(Encoding.UTF8.GetBytes("192.168.137."), 0, 12);
                     f.Position = 15; f.WriteByte(0x3B); f.Write(BitConverter.GetBytes(9020), 0, 4);
                 }
             }
-            catch(Exception tabarnack) { Dev.MsgOut(tabarnack.Message + $"\n{tabarnack.StackTrace}"); }
+            catch(Exception tabarnack) {
+                Dev.MsgOut(tabarnack.Message + $"\n{tabarnack.StackTrace}");
+            }
 
             return 9020;
         }

@@ -1,19 +1,10 @@
 ﻿using libdebug;
 using System;
 using System.IO;
-using System.Net;
-using System.Text;
 using System.Drawing;
-using System.Net.Sockets;
 using static Dobby.Common;
 using System.Windows.Forms;
-using System.Threading;
-using System.Diagnostics;
 using System.Linq;
-using System.Data;
-using System.Threading.Tasks;
-using System.Security.Cryptography;
-using System.Net.NetworkInformation;
 
 namespace Dobby {
     public class PkgCreationPage : Form {
