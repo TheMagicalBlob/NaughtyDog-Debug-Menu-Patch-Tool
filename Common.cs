@@ -236,7 +236,8 @@ namespace Dobby {
           "* 4.47.224.603 | PkgCreationPage Work, Changed Seperator Line Positioning And Sizing Replaced Static Exit/Minimize Buttons With Dynamic Initialization During Form Init (Through AddEventHandlersToControls()), Other Misc Changes",
           "* 4.47.225.609 | PkgCreationPage Work, Trying To Get A \"Good\" Look Down ",
           "* 4.47.225.611 | Font Styling Fix In EbootPatchPage ",
-          "* 4.47.226.613 | Fixed Incorrect File Access In Port Function Catch Block That Was Just Re-Trowing The Same Exception, Soft-blocking Access To The PS4DebugPage."
+          "* 4.47.226.613 | Fixed Incorrect File Access In Port Function Catch Block That Was Just Re-Trowing The Same Exception, Soft-blocking Access To The PS4DebugPage.",
+          "* 4.47.227.617 | Changed ResetItemHighlight(sender, MouseEventArgs) Access Level For Manual Resetting. Message Boxes Are Rude."
 
 
 
@@ -358,8 +359,6 @@ namespace Dobby {
         private static void MinimizeBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
         private static void MinimizeBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
 
-        public static void ControlHover(object sender, EventArgs e) => HoverLeave((Control)sender, true);
-        public static void ControlLeave(object sender, EventArgs e) => HoverLeave((Control)sender, false);
         public static void MouseDownFunc(object sender, MouseEventArgs e) {
             MouseIsDown = true; LastPos = ActiveForm.Location;
             MouseDif = new Point(MousePosition.X - ActiveForm.Location.X, MousePosition.Y - ActiveForm.Location.Y);
@@ -377,6 +376,8 @@ namespace Dobby {
             LogWindow.MoveLogToAppEdge(ActiveForm.Location);
 #endif
         }
+        public static void ControlHover(object sender, EventArgs e = null) => HoverLeave((Control)sender, true);
+        public static void ControlLeave(object sender, EventArgs e = null) => HoverLeave((Control)sender, false);
         #endregion
 
 
@@ -395,7 +396,10 @@ namespace Dobby {
             try {
                 ArrowWidth = (int)PassedControl.CreateGraphics().MeasureString(">", PassedControl.Font).Width;
             }
-            catch(ObjectDisposedException) { return; }
+            catch(ObjectDisposedException) {
+                System.Diagnostics.Debug.WriteLine($"Error Getting Width Of Hover Arror From Control ({PassedControl.Name}: {(EventIsMouseEnter ? "Hover" : "Leave")})");
+                return;
+            }
 
             if(MouseScrolled = EventIsMouseEnter) {
 #if DEBUG
@@ -417,8 +421,8 @@ namespace Dobby {
                 PassedControl.Size = new Size(EventIsMouseEnter ? PassedControl.Width + ArrowWidth : PassedControl.Width - ArrowWidth, PassedControl.Height);
         }
 
-        private static void HighlightItemOnCLick(object sender, MouseEventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
-        private static void ResetItemHighlight(object sender, MouseEventArgs e)   => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
+        private static void HighlightItemOnCLick(object sender, MouseEventArgs e = null) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
+        public static void ResetItemHighlight(object sender, MouseEventArgs e = null)   => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
 
         /// <summary> Draw The Variable Tied To The Sender Control, Aligned To The Right Of The Form
         ///</summary>
@@ -653,7 +657,7 @@ namespace Dobby {
             if(Item.Name.Contains("Seperator") && sender.GetType() == typeof(Label))
                 Item.Paint += PaintSeperatorLine;
 
-            if(!Item.Name.Contains("PathBox")) // So You Can Drag Select The Text Lol
+            if(!Item.Name.Contains("Box")) // So You Can Drag Select The Text Lol
                 Item.MouseMove += new MouseEventHandler(MoveForm);
 
             if((Item.GetType() == typeof(Button) || Item.GetType() == typeof(VarButton)) && !Blacklist.Contains(Item.Name)) {
@@ -827,11 +831,13 @@ namespace Dobby {
         }
 
 
-        // TODO: this is fucking stupid, change it.
         /// <summary> Sets The Info Label String Based On The Currently Hovered Control </summary>
         /// <param name="Sender">The Hovered Control</param>
         public static void SetInfoLabelStringOnControlHover(Control Sender, float FontAdjustment = 10f) { // SetInfo
+            // TODO: this is fucking stupid, change or delete it.
+            
             string InfoLabelString = "";
+            
             switch(Sender.Name) {
                 default: return;
                 //

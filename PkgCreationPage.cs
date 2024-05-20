@@ -27,12 +27,11 @@ namespace Dobby {
 
 
 
-
         //////////////////\\\\\\\\\\\\\\\\\
         ///--     Page Variables      --\\\
         //////////////////\\\\\\\\\\\\\\\\\
 
-        #if DEBUG
+#if DEBUG
         public static bool debug = false;
         public static object[] DebugPeek() {
             return new object[] {
@@ -46,7 +45,7 @@ namespace Dobby {
         }
 
         private static string
-        #else
+#else
         private string
 #endif
             OrbisToolPath = "?",
@@ -79,7 +78,7 @@ namespace Dobby {
         ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
         #region Page Background Functions
         private void ScanForOrbisPubTools() {
-            return; // Too Sus
+#if DEBUG // Too Sus
 
             FileStream stream;
             byte[] Check = new byte[4];
@@ -110,6 +109,7 @@ namespace Dobby {
                 goto CheckFiles;
             }
             */
+#endif
         }
 
 
@@ -125,17 +125,26 @@ namespace Dobby {
         /// addme
         /// </summary>
         private void LaunchOrbisPubCmdBtn_Click(object sender, EventArgs e) {
+
+            // Verfiy Publishing Tool Directory
             if(!File.Exists(OrbisToolPath)) {
-                if (MessageBox.Show("A Valid Path To The Fake Package / fpkg Toolset Was Not Provided, Would You Like To Scan The Current Folder For Publishing Tools Folder?", "Toolset Not Found, Provide A Valid Path",
-                    MessageBoxButtons.YesNo) == DialogResult.OK)
+                if (MessageBox.Show("A Valid Path To The Fake Package / fpkg Toolset Was Not Provided, Would You Like To Scan The Current Folder For Publishing Tools Folder?", "Toolset Not Found, Provide A Valid Path", MessageBoxButtons.YesNo) == DialogResult.OK)
                     ScanForOrbisPubTools(); // Maybe Just Remove This And Make Them Do It Themselves
+
+                ResetItemHighlight(sender); //! (Fix The Underlying Issue!!!) Force Reset Control Highlight, As The Message Box Stops The Control From Ever Resetting Automatically
                 return;
             }
 
+            // Verfiy .gp4 Project Path
             else if(!File.Exists(GP4Path)) {
+                MessageBox.Show($"Error: The Path Provided For The .gp4 Project Wasn't Valid. A Valid .gp4 Is Mandatory For .pkg Creation.\n\nProvided Path: {GP4Path}", "Invalid .gp4 Project File Path");
+                ResetItemHighlight(sender);
+
+                /*
                 if(MessageBox.Show("orbis-pub-cmd.exe And A .gp4 Are Necessary For .pkg Creation, Create New .gp4?", string.Empty,
                     MessageBoxButtons.YesNo) == DialogResult.OK)
-                  //CreateNewGP4();
+                  CreateNewGP4();
+                */
                 return;
             }
 
