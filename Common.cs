@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -10,9 +9,9 @@ using System.Windows.Forms;
 using static Dobby.Dev;
 
 namespace Dobby {
+
     public class Common : Main {
         //#error version
-        #pragma warning disable CS0472
 
         // Spacing:
         // Info & Back Btn; Info: Form.Size.Y - Info.Size.Y | BackBtn Pos: (Info Vertical Pos - BackBtn.Size.Y - 3)
@@ -225,8 +224,7 @@ namespace Dobby {
           "* 3.43.199.527 | Changed Exit And Minimize Button Fonts Back, Line Fix On Another Page. Misc Patches Page Work (Changing Method For Enabling Buttons To Be Based On What's Available, Rather Than Manually Specifying Each Button To Be Enabled For Each Case- Jfc What Was I Thinking Before)",
           "* 3.43.203.540 | Debug Output Changes, Plenty Of Other Crap I Forgot. Go Away",
           "* 3.43.203.540 | PS4 Menu Settings Page Universal Patch Section Work, Removed Some Debug Output Calls For Finished Function",
-          "* 4.46.212.560 | PS4 Menu Settings Page Release, Code Restructuring For Most Pages. (Moved PS4DebugPage Related Variables From Common.cs In To PS4DebugPage.cs, Small Tweaks), Log Window Fixes" +
-                          " (Properly Follows The Parent Form Now Instead Of Snapping To It). Standardized Seperator Label Heights And Adjusted Various Control Positions Application-Wide.",
+          "* 4.46.212.560 | PS4 Menu Settings Page Release, Code Restructuring For Most Pages. (Moved PS4DebugPage Related Variables From Common.cs In To PS4DebugPage.cs, Small Tweaks), Log Window Fixes (Properly Follows The Parent Form Now Instead Of Snapping To It). Standardized Seperator Label Heights And Adjusted Various Control Positions Application-Wide.",
           "* 4.46.213.561 | Added BootSettings Function Data For T1R 1.00, Most Pointers Still Missing",
           "* 4.46.213.563 | Label Font Size Fix And Position Adjustment",
           "* 4.46.215.583 | Standardized MainLabel, SeperatorLabel0, And Exit/Minimize Buttons, Positions And Sizes (Excuding Width For The Former Two) Shrumk Minimize/Exit Button Fonts (8f => 7.5f). Replaced The Control Hover Highlight With Mouse Down highlight To More Match ND's DMenu (Might Add Boolean Option Highlight To Match It Further)",
@@ -237,8 +235,8 @@ namespace Dobby {
           "* 4.47.225.609 | PkgCreationPage Work, Trying To Get A \"Good\" Look Down ",
           "* 4.47.225.611 | Font Styling Fix In EbootPatchPage ",
           "* 4.47.226.613 | Fixed Incorrect File Access In Port Function Catch Block That Was Just Re-Trowing The Same Exception, Soft-blocking Access To The PS4DebugPage.",
-          "* 4.47.227.617 | Changed ResetItemHighlight(sender, MouseEventArgs) Access Level For Manual Resetting. Message Boxes Are Rude."
-
+          "* 4.47.227.617 | Changed ResetItemHighlight(sender, MouseEventArgs) Access Level For Manual Resetting. Message Boxes Are Rude.",
+          "* 4.47.227.618 | "
 
 
 
@@ -277,8 +275,6 @@ namespace Dobby {
         //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
         #region Application-Wide Functions And Variable Declarations
 
-        // Custom Button Class So I Can Attach A Value To Them. This Is Probably The Wrong Way To Do This, But Whatever
-        public class VarButton : Button { public object Variable; }
 
         public enum PageID : int {
             MainPage = 0,
@@ -392,7 +388,7 @@ namespace Dobby {
             int ArrowWidth;
 
             //if(!InfoHasImportantStr & !EventIsMouseEnter) SetInfoLabelText("");
-            
+
             try {
                 ArrowWidth = (int)PassedControl.CreateGraphics().MeasureString(">", PassedControl.Font).Width;
             }
@@ -407,11 +403,11 @@ namespace Dobby {
 #endif
                 CurrentControl = PassedControl.Name;
                 PassedControl.MouseDown += HighlightItemOnCLick;
-                PassedControl.MouseUp   += ResetItemHighlight;
+                PassedControl.MouseUp += ResetItemHighlight;
             }
             else {
                 PassedControl.MouseDown -= HighlightItemOnCLick;
-                PassedControl.MouseUp   -= ResetItemHighlight;
+                PassedControl.MouseUp -= ResetItemHighlight;
                 SetInfoLabelStringOnControlHover(PassedControl);
             }
 
@@ -422,12 +418,12 @@ namespace Dobby {
         }
 
         private static void HighlightItemOnCLick(object sender, MouseEventArgs e = null) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
-        public static void ResetItemHighlight(object sender, MouseEventArgs e = null)   => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
+        public static void ResetItemHighlight(object sender, MouseEventArgs e = null) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
 
         /// <summary> Draw The Variable Tied To The Sender Control, Aligned To The Right Of The Form
         ///</summary>
         public static void DrawButtonVar(object sender, PaintEventArgs e) {
-            var control = sender as VarButton;
+            var control = sender as Button;
             var Variable = control.Variable?.ToString();
 
             var X_Pos = (int)(control.Width - e.Graphics.MeasureString(Variable, control.Font).Width - 5);
@@ -440,7 +436,7 @@ namespace Dobby {
         ///<summary> Create And Apply A Thin Border To The Form </summary>
         public static void PaintBorder(object sender, PaintEventArgs e) {
             var ItemPtr = (Form)sender;
-            
+
             Point[] Border = new Point[] {
                 Point.Empty,
                 new Point(ItemPtr.Width-1, 0),
@@ -458,10 +454,13 @@ namespace Dobby {
         public static void PaintSeperatorLine(object sender, PaintEventArgs e) {
             var ItemPtr = (Label)sender;
 
-            if(ItemPtr.Size.Height != 15 && MsgOut($"Label On Page {ItemPtr.Parent.Name} Has An Ivalid Height ({ItemPtr.Size.Height})")!=null)
+            if(ItemPtr.Size.Height != 15) {
+                MsgOut($"Label On Page {ItemPtr.Parent.Name} Has An Ivalid Height ({ItemPtr.Size.Height})");
                 ItemPtr.Size = new Size(ItemPtr.Size.Width, 15);
+            }
+                
 
-            var LineVerticalPos = 9; 
+            var LineVerticalPos = 9;
             Point[] Line = new Point[] {
                 new Point(1, LineVerticalPos),
                 new Point(ItemPtr.Parent.Size.Width - 1, LineVerticalPos)
@@ -472,41 +471,37 @@ namespace Dobby {
         }
 
 
+        // TODO: rework this crap
+        public delegate void LabelFlashDelegate();
+        public static readonly LabelFlashDelegate White = () => {
+            ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.White;
+            ActiveForm?.Update();
+        };
+        public static readonly LabelFlashDelegate Yellow = () => {
+            ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.FromArgb(255, 227, 0);
+            ActiveForm?.Update();
+        };
 
-        public delegate void LabelFlashDelegate(string str);
-        public static readonly LabelFlashDelegate Yellow = new LabelFlashDelegate(FlashYellow);
-        public static readonly LabelFlashDelegate White = new LabelFlashDelegate(FlashWhite);
-        public static Thread FlashThread = new Thread(new ThreadStart(FlashLabel));
-        private static void FlashLabel() {
-            while(!LabelShouldFlash) { Thread.Sleep(7); }
-            try {
-                for(int Flashes = 0; Flashes < 8; Flashes++) {
-                    ActiveForm?.Invoke(White, "cracker");
-                    Thread.Sleep(135);
-                    ActiveForm?.Invoke(Yellow, "asian");
-                    Thread.Sleep(135);
+        public static Thread FlashThread = new Thread( () => {
+            while(true) {
+                while(!LabelShouldFlash) { Thread.Sleep(1); }
+                try {
+                    for(int Flashes = 0; Flashes < 8; Flashes++) {
+                        ActiveForm?.Invoke(White);
+                        Thread.Sleep(135);
+                        ActiveForm?.Invoke(Yellow);
+                        Thread.Sleep(135);
+                    }
                 }
+                catch(Exception) {
+                    MsgOut("Form Changed or Lost Focus, Killing Label Flash");
+                }
+                finally {
+                    LabelShouldFlash = false;
+                }
+                
             }
-            catch(Exception) {
-                MsgOut("Killing Label Flash");
-            }
-            LabelShouldFlash = false;
-            FlashLabel();
-        }
-        private static void FlashWhite(string str) {
-            try {
-                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.White;
-                ActiveForm?.Update();
-            }
-            catch(Exception){ FlashThread.Abort(); }
-        }
-        private static void FlashYellow(string str) {
-            try {
-                ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.FromArgb(255, 227, 0);
-                ActiveForm?.Update();
-            }
-            catch(Exception){ FlashThread.Abort(); }
-        }
+        });
 
         #endregion
 
@@ -660,12 +655,12 @@ namespace Dobby {
             if(!Item.Name.Contains("Box")) // So You Can Drag Select The Text Lol
                 Item.MouseMove += new MouseEventHandler(MoveForm);
 
-            if((Item.GetType() == typeof(Button) || Item.GetType() == typeof(VarButton)) && !Blacklist.Contains(Item.Name)) {
+            if((Item.GetType() == typeof(Button) || Item.GetType() == typeof(Button)) && !Blacklist.Contains(Item.Name)) {
                 Item.MouseEnter += new EventHandler(ControlHover);
                 Item.MouseLeave += new EventHandler(ControlLeave);
             }
 
-            if(Item.GetType() == typeof(VarButton))
+            if(Item.GetType() == typeof(Button))
                 Item.Paint += DrawButtonVar;
         }
 
@@ -1170,5 +1165,11 @@ namespace Dobby {
             T1XL102Debug = 0x3B6885
         ;
         #endregion
+    }
+
+
+    // Custom Button Class So I Can Attach A Value To Them. This Is Probably The Wrong Way To Do This, But Whatever
+    public class Button : System.Windows.Forms.Button {
+        public object Variable;
     }
 }

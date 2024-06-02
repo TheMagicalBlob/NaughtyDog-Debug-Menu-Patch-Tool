@@ -38,17 +38,17 @@ namespace Dobby {
 
         public void InitializeComponent() {
             this.GameInfoLabel = new System.Windows.Forms.Label();
-            this.BrowseButton = new System.Windows.Forms.Button();
+            this.BrowseButton = new Dobby.Button();
             this.ExecutablePathBox = new System.Windows.Forms.TextBox();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.RestoredDebugBtn = new System.Windows.Forms.Button();
-            this.InfoHelpBtn = new System.Windows.Forms.Button();
+            this.RestoredDebugBtn = new Dobby.Button();
+            this.InfoHelpBtn = new Dobby.Button();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
-            this.BackBtn = new System.Windows.Forms.Button();
-            this.DisableDebugBtn = new System.Windows.Forms.Button();
-            this.EnableDebugBtn = new System.Windows.Forms.Button();
+            this.BackBtn = new Dobby.Button();
+            this.DisableDebugBtn = new Dobby.Button();
+            this.EnableDebugBtn = new Dobby.Button();
             this.Info = new System.Windows.Forms.Label();
-            this.CreditsBtn = new System.Windows.Forms.Button();
+            this.CreditsBtn = new Dobby.Button();
             this.MainLabel = new System.Windows.Forms.Label();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -360,7 +360,7 @@ namespace Dobby {
             }
         }
 
-        bool BrowseButtonOverride = false;
+        private bool BrowseButtonOverride = false;
         /// <summary> Load A File For Checking/Patching If The Path In The ExecutablePathBox Exists </summary>
         private void ExecutablePathBox_TextChanged(object sender, EventArgs e) {
             if(BrowseButtonOverride) {

@@ -36,7 +36,7 @@ namespace Dobby {
         public void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreditsPage));
             this.MainLabel = new System.Windows.Forms.Label();
-            this.BackBtn = new System.Windows.Forms.Button();
+            this.BackBtn = new Dobby.Button();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
             this.IllusionBlogBtn = new System.Windows.Forms.Label();
             this.SeperatorLine2 = new System.Windows.Forms.Label();

@@ -48,19 +48,19 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
             this.Info = new System.Windows.Forms.Label();
-            this.PS4DebugPageBtn = new System.Windows.Forms.Button();
-            this.EbootPatchPageBtn = new System.Windows.Forms.Button();
-            this.PS4MenuSettingsPageBtn = new System.Windows.Forms.Button();
+            this.PS4DebugPageBtn = new Dobby.Button();
+            this.EbootPatchPageBtn = new Dobby.Button();
+            this.PS4MenuSettingsPageBtn = new Dobby.Button();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
             this.SeperatorLine3 = new System.Windows.Forms.Label();
-            this.PkgPageBtn = new System.Windows.Forms.Button();
+            this.PkgPageBtn = new Dobby.Button();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.PCDebugMenuPageBtn = new System.Windows.Forms.Button();
-            this.CreditsBtn = new System.Windows.Forms.Button();
-            this.InfoHelpBtn = new System.Windows.Forms.Button();
+            this.PCDebugMenuPageBtn = new Dobby.Button();
+            this.CreditsBtn = new Dobby.Button();
+            this.InfoHelpBtn = new Dobby.Button();
             this.Playstation4Label = new System.Windows.Forms.Label();
             this.PCLabel = new System.Windows.Forms.Label();
-            this.DownloadSourceBtn = new System.Windows.Forms.Button();
+            this.DownloadSourceBtn = new Dobby.Button();
             this.SuspendLayout();
             // 
             // MainLabel
@@ -122,6 +122,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             // 
             this.PS4MenuSettingsPageBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.PS4MenuSettingsPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.PS4MenuSettingsPageBtn.Enabled = false;
             this.PS4MenuSettingsPageBtn.FlatAppearance.BorderSize = 0;
             this.PS4MenuSettingsPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PS4MenuSettingsPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);

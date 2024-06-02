@@ -273,25 +273,25 @@ namespace Dobby {
             base.Dispose(disposing);
         }
         private void InitializeComponent() {
-            this.InfoHelpBtn = new System.Windows.Forms.Button();
+            this.InfoHelpBtn = new Dobby.Button();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
-            this.BackBtn = new System.Windows.Forms.Button();
+            this.BackBtn = new Dobby.Button();
             this.Info = new System.Windows.Forms.Label();
-            this.CreditsBtn = new System.Windows.Forms.Button();
+            this.CreditsBtn = new Dobby.Button();
             this.MainLabel = new System.Windows.Forms.Label();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
-            this.LaunchOrbisPubCmdBtn = new System.Windows.Forms.Button();
-            this.VerbosityBtn = new System.Windows.Forms.Button();
+            this.LaunchOrbisPubCmdBtn = new Dobby.Button();
+            this.VerbosityBtn = new Dobby.Button();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.TempDirectoryBtn = new System.Windows.Forms.Button();
+            this.TempDirectoryBtn = new Dobby.Button();
             this.CmdPathBox = new System.Windows.Forms.TextBox();
-            this.CmdPathBtn = new System.Windows.Forms.Button();
+            this.CmdPathBtn = new Dobby.Button();
             this.GP4PathBox = new System.Windows.Forms.TextBox();
-            this.GP4PathBtn = new System.Windows.Forms.Button();
+            this.GP4PathBtn = new Dobby.Button();
             this.OutputDirectoryBox = new System.Windows.Forms.TextBox();
-            this.OutputDirectoryBtn = new System.Windows.Forms.Button();
+            this.OutputDirectoryBtn = new Dobby.Button();
             this.TMPDirectoryBox = new System.Windows.Forms.TextBox();
-            this.TMPDirectoryBtn = new System.Windows.Forms.Button();
+            this.TMPDirectoryBtn = new Dobby.Button();
             this.OrbisToolPathLabel = new System.Windows.Forms.Label();
             this.Gp4PathLabel = new System.Windows.Forms.Label();
             this.OutputDirectoryLabel = new System.Windows.Forms.Label();

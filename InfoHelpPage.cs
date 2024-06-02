@@ -45,17 +45,17 @@ namespace Dobby {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InfoHelpPage));
             this.MainLabel = new System.Windows.Forms.Label();
             this.BlobLabel = new System.Windows.Forms.Label();
-            this.PkgHelpPageBtn = new System.Windows.Forms.Button();
+            this.PkgHelpPageBtn = new Dobby.Button();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
-            this.PS4QOLPageHelpBtn = new System.Windows.Forms.Button();
+            this.PS4QOLPageHelpBtn = new Dobby.Button();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
             this.BuildLabel = new System.Windows.Forms.Label();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.PS4DebugHelpBtn = new System.Windows.Forms.Button();
+            this.PS4DebugHelpBtn = new Dobby.Button();
             this.label4 = new System.Windows.Forms.Label();
-            this.EbootPatchPageHelpBtn = new System.Windows.Forms.Button();
+            this.EbootPatchPageHelpBtn = new Dobby.Button();
             this.Info = new System.Windows.Forms.Label();
-            this.BackBtn = new System.Windows.Forms.Button();
+            this.BackBtn = new Dobby.Button();
             this.GeneralInfoLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 

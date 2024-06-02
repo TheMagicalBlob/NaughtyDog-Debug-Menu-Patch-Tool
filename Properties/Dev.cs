@@ -37,12 +37,12 @@ namespace Dobby {
 
 
         }
+
         public static Control[] GetControlsInOrder(Form Parent) {
             var Cunts = new List<Control>();
             
             int X, Y = 0;
             do {
-                
                 X = 0;
                 do
                     foreach(Control Item in Parent.Controls)

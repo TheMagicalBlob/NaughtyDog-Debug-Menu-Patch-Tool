@@ -3,17 +3,13 @@ using System;
 using System.IO;
 using System.Net;
 using System.Text;
-using System.Drawing;
 using System.Net.Sockets;
 using static Dobby.Common;
 using System.Windows.Forms;
 using System.Threading;
-using System.Diagnostics;
 using System.Linq;
-using System.Data;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
-using System.ComponentModel;
 
 namespace Dobby {
     public class PS4DebugPage : Form {
@@ -48,29 +44,29 @@ namespace Dobby {
         }
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
-            this.TLLBtn = new System.Windows.Forms.Button();
+            this.TLLBtn = new Dobby.Button();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
-            this.ManualConnectBtn = new System.Windows.Forms.Button();
+            this.ManualConnectBtn = new Dobby.Button();
             this.IPBOX = new System.Windows.Forms.TextBox();
             this.Info = new System.Windows.Forms.Label();
-            this.T1RBtn = new System.Windows.Forms.Button();
-            this.T2Btn = new System.Windows.Forms.Button();
-            this.UC4Btn = new System.Windows.Forms.Button();
-            this.BackBtn = new System.Windows.Forms.Button();
-            this.UC1Btn = new System.Windows.Forms.Button();
-            this.UC2Btn = new System.Windows.Forms.Button();
-            this.UC3Btn = new System.Windows.Forms.Button();
+            this.T1RBtn = new Dobby.Button();
+            this.T2Btn = new Dobby.Button();
+            this.UC4Btn = new Dobby.Button();
+            this.BackBtn = new Dobby.Button();
+            this.UC1Btn = new Dobby.Button();
+            this.UC2Btn = new Dobby.Button();
+            this.UC3Btn = new Dobby.Button();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.PS4DebugPayloadBtn = new System.Windows.Forms.Button();
+            this.PS4DebugPayloadBtn = new Dobby.Button();
             this.PortBox = new System.Windows.Forms.TextBox();
-            this.IPLabelBtn = new System.Windows.Forms.Button();
-            this.PortLabelBtn = new System.Windows.Forms.Button();
+            this.IPLabelBtn = new Dobby.Button();
+            this.PortLabelBtn = new Dobby.Button();
             this.SeperatorLine3 = new System.Windows.Forms.Label();
-            this.InfoHelpBtn = new System.Windows.Forms.Button();
-            this.CreditsBtn = new System.Windows.Forms.Button();
-            this.UC4MPBetaBtn = new System.Windows.Forms.Button();
+            this.InfoHelpBtn = new Dobby.Button();
+            this.CreditsBtn = new Dobby.Button();
+            this.UC4MPBetaBtn = new Dobby.Button();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
-            this.IgnoreTitleIDBtn = new System.Windows.Forms.Button();
+            this.IgnoreTitleIDBtn = new Dobby.Button();
             this.SuspendLayout();
             // 
             // MainLabel

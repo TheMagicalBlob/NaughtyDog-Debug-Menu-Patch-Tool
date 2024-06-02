@@ -51,18 +51,18 @@ namespace Dobby {
         }
         public void InitializeComponent() {
             this.GamedataPathLabel = new System.Windows.Forms.Label();
-            this.InfoHelpBtn = new System.Windows.Forms.Button();
+            this.InfoHelpBtn = new Dobby.Button();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
-            this.BackBtn = new System.Windows.Forms.Button();
+            this.BackBtn = new Dobby.Button();
             this.Info = new System.Windows.Forms.Label();
-            this.CreditsBtn = new System.Windows.Forms.Button();
+            this.CreditsBtn = new Dobby.Button();
             this.MainLabel = new System.Windows.Forms.Label();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
-            this.Gp4FilterBrowseBtn = new System.Windows.Forms.Button();
-            this.SourcePkgPathBrowseBtn = new System.Windows.Forms.Button();
-            this.OutputPathBrowseBtn = new System.Windows.Forms.Button();
-            this.GamedataFolderBrowseBtn = new System.Windows.Forms.Button();
-            this.StartGp4CreationBtn = new System.Windows.Forms.Button();
+            this.Gp4FilterBrowseBtn = new Dobby.Button();
+            this.SourcePkgPathBrowseBtn = new Dobby.Button();
+            this.OutputPathBrowseBtn = new Dobby.Button();
+            this.GamedataFolderBrowseBtn = new Dobby.Button();
+            this.StartGp4CreationBtn = new Dobby.Button();
             this.SourcePkgPathLabel = new System.Windows.Forms.Label();
             this.FilterArrayTextBox = new System.Windows.Forms.TextBox();
             this.SeperatorLine1 = new System.Windows.Forms.Label();

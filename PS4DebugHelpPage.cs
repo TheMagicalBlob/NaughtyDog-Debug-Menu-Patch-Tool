@@ -43,8 +43,8 @@ namespace Dobby {
             this.SeperatorLine0 = new System.Windows.Forms.Label();
             this.PS4DebugQuestionLabel = new System.Windows.Forms.Label();
             this.Info = new System.Windows.Forms.Label();
-            this.CreditsBtn = new System.Windows.Forms.Button();
-            this.BackBtn = new System.Windows.Forms.Button();
+            this.CreditsBtn = new Dobby.Button();
+            this.BackBtn = new Dobby.Button();
             this.SuspendLayout();
             // 
             // MainLabel

@@ -50,26 +50,26 @@ namespace Dobby {
             base.Dispose(disposing);
         }
         private void InitializeComponent() {
-            this.ProgPauseOnCloseBtn = new Dobby.Common.VarButton();
-            this.ProgPauseOnOpenBtn = new Dobby.Common.VarButton();
-            this.DisableDebugTextBtn = new Dobby.Common.VarButton();
-            this.DisablePausedIconBtn = new Dobby.Common.VarButton();
+            this.ProgPauseOnCloseBtn = new Dobby.Button();
+            this.ProgPauseOnOpenBtn = new Dobby.Button();
+            this.DisableDebugTextBtn = new Dobby.Button();
+            this.DisablePausedIconBtn = new Dobby.Button();
             this.MainLabel = new System.Windows.Forms.Label();
             this.Info = new System.Windows.Forms.Label();
-            this.CreditsBtn = new System.Windows.Forms.Button();
-            this.InfoHelpBtn = new System.Windows.Forms.Button();
+            this.CreditsBtn = new Dobby.Button();
+            this.InfoHelpBtn = new Dobby.Button();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
-            this.BackBtn = new System.Windows.Forms.Button();
+            this.BackBtn = new Dobby.Button();
             this.CustomDebugOptionsLabel = new System.Windows.Forms.Label();
             this.UniversalPatchesLabel = new System.Windows.Forms.Label();
             this.GameSpecificPatchesLabel = new System.Windows.Forms.Label();
             this.SeperatorLine3 = new System.Windows.Forms.Label();
-            this.BrowseButton = new System.Windows.Forms.Button();
+            this.BrowseButton = new Dobby.Button();
             this.ExecutablePathBox = new System.Windows.Forms.TextBox();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
             this.GameInfoLabel = new System.Windows.Forms.Label();
-            this.NovisBtn = new Dobby.Common.VarButton();
+            this.NovisBtn = new Dobby.Button();
             this.SuspendLayout();
             // 
             // ProgPauseOnCloseBtn
@@ -938,7 +938,7 @@ namespace Dobby {
         /// </summary>
         private struct DynamicPatchButtons {
             public DynamicPatchButtons(int?[] Ids, int VerticalStartIndex = 0) {
-                Buttons = new VarButton[ControlText.Length + 1];
+                Buttons = new Button[ControlText.Length + 1];
                 ButtonsVerticalStartPos = VerticalStartIndex;
 
                 if(Ids != null && Ids.Length < 2)
@@ -1034,7 +1034,7 @@ namespace Dobby {
             /// 6: RightAlignBtn                                                                       <br/>
             /// 7: RightMarginBtn
             /// </summary>
-            public VarButton[] Buttons; // Initialized Once An Executable's Selected
+            public Button[] Buttons; // Initialized Once An Executable's Selected
             private int ButtonsVerticalStartPos;
 
 
@@ -1046,7 +1046,7 @@ namespace Dobby {
 
             /// <summary> Enable A Specific Button
             ///</summary>
-            public void EnableDynamicPatchButton(int button) => Buttons[button] = new VarButton();
+            public void EnableDynamicPatchButton(int button) => Buttons[button] = new Button();
 
             /// <summary> Enable Specific Buttons
             ///</summary>
@@ -1055,7 +1055,7 @@ namespace Dobby {
                 for(int i = 0; i < buttons.Length; i++) {
                     if(buttons != null && buttons[i] == null) continue;
 
-                    Buttons[i] = new VarButton();
+                    Buttons[i] = new Button();
                 }
                 MultipleButtonsEnabled = true;
             }
@@ -1063,14 +1063,14 @@ namespace Dobby {
             /// <summary> Nuke Dynamic Patch Buttons And Reset Option Variables
             ///</summary>
             public void Reset() {
-                foreach(Button button in Buttons)
+                foreach(Dobby.Button button in Buttons)
                     button?.Dispose();
 
                 Buttons = null;
                 GameSpecificPatchValues = DefaultGameSpecificPatchValues;
             }
 
-            public Button[] CreateDynamicButtons() {
+            public Dobby.Button[] CreateDynamicButtons() {
             RunCheck:
                 if(ButtonIndex >= gsButtons.Buttons.Length - 1)
                     return Buttons;
@@ -1128,8 +1128,8 @@ namespace Dobby {
             ///--     Event Handlers And Functions For Dynamic Button   --\\\
             /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
             #region Event Handlers And Functions For Dynamic Button
-            private void DynamicBtn_Click(object sender, EventArgs e) => ToggleFunc((VarButton)sender, ((Control)sender).TabIndex);
-            private void ToggleFunc(VarButton Control, int ButtonIndex) {
+            private void DynamicBtn_Click(object sender, EventArgs e) => ToggleFunc((Button)sender, ((Control)sender).TabIndex);
+            private void ToggleFunc(Button Control, int ButtonIndex) {
                 if(MouseScrolled || !MouseIsDown || CurrentControl != Control.Name) return;
 
                 GameSpecificPatchValues[ButtonIndex] = !(bool)GameSpecificPatchValues[ButtonIndex];
@@ -1138,8 +1138,8 @@ namespace Dobby {
             }
 
 
-            private void FloatClick(object sender, MouseEventArgs e) => FloatClickFunc((VarButton)sender, ((VarButton)sender).TabIndex, e.Button);
-            private void FloatClickFunc(VarButton Control, int ButtonIndex, MouseButtons Button) {
+            private void FloatClick(object sender, MouseEventArgs e) => FloatClickFunc((Button)sender, (int)((Button)sender).TabIndex, e.Button);
+            private void FloatClickFunc(Button Control, int ButtonIndex, MouseButtons Button) {
                 if(CurrentControl != Control.Name) return;
                 var currentFloat = (float)GameSpecificPatchValues[ButtonIndex]; // Avoid CS0445
 
@@ -1150,8 +1150,8 @@ namespace Dobby {
                 Control.Refresh();
             }
 
-            private void FloatFunc(object sender, MouseEventArgs e) => FloatScrollFunc((VarButton)sender, ((VarButton)sender).TabIndex, e.Delta);
-            private void FloatScrollFunc(VarButton Control, int ButtonIndex, int WheelDelta) {
+            private void FloatFunc(object sender, MouseEventArgs e) => FloatScrollFunc((Button)sender, (int)((Button)sender).TabIndex, e.Delta);
+            private void FloatScrollFunc(Button Control, int ButtonIndex, int WheelDelta) {
                 if(CurrentControl != Control.Name) return;
                 var currentFloat = (float)GameSpecificPatchValues[ButtonIndex]; // Avoid CS0445
 
@@ -1161,8 +1161,8 @@ namespace Dobby {
             }
 
 
-            private void IntClick(object sender, MouseEventArgs e) => IntClickFunc((VarButton)sender, ((VarButton)sender).TabIndex, e.Button);
-            private void IntClickFunc(VarButton Control, int ButtonIndex, MouseButtons Button) {
+            private void IntClick(object sender, MouseEventArgs e) => IntClickFunc((Button)sender, (int)((Button)sender).TabIndex, e.Button);
+            private void IntClickFunc(Button Control, int ButtonIndex, MouseButtons Button) {
                 if(CurrentControl != Control.Name) return;
                 var currentInt = (byte)GameSpecificPatchValues[ButtonIndex]; // Avoid CS0445
 
@@ -1175,8 +1175,8 @@ namespace Dobby {
                 Control.Refresh();
             }
 
-            private void IntFunc(object sender, MouseEventArgs e) => IntScrollFunc((VarButton)sender, ((VarButton)sender).TabIndex, e.Delta);
-            private void IntScrollFunc(VarButton Control, int ButtonIndex, int WheelDelta) {
+            private void IntFunc(object sender, MouseEventArgs e) => IntScrollFunc((Button)sender, (int)((Button)sender).TabIndex, e.Delta);
+            private void IntScrollFunc(Button Control, int ButtonIndex, int WheelDelta) {
                 if(CurrentControl != Control.Name) return;
                 var currentInt = (byte)GameSpecificPatchValues[ButtonIndex]; // Avoid CS0445
 
@@ -1197,13 +1197,13 @@ namespace Dobby {
         ///--     Event Handlers For Basic Patches Available For Each Game     --\\\
         ///////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         #region Event Handlers For Basic Patches Available For Each Game
-        private void DisableDebugTextBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((VarButton)sender, e.Delta != 0, 0);
-        private void PausedIconBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((VarButton)sender, e.Delta != 0, 1);
-        private void ProgPauseOnOpenBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((VarButton)sender, e.Delta != 0, 2);
-        private void ProgPauseOnCloseBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((VarButton)sender, e.Delta != 0, 3);
-        private void DisableAllVisibilityBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((VarButton)sender, e.Delta != 0, 4);
-        private void DefaultButtonClick(VarButton cnt, bool scrolled, int PatchIndex) { ToggleBool(cnt, PatchIndex); MouseScrolled = scrolled; }
-        private void ToggleBool(VarButton Control, int OptionIndex) {
+        private void DisableDebugTextBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((Button)sender, e.Delta != 0, 0);
+        private void PausedIconBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((Button)sender, e.Delta != 0, 1);
+        private void ProgPauseOnOpenBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((Button)sender, e.Delta != 0, 2);
+        private void ProgPauseOnCloseBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((Button)sender, e.Delta != 0, 3);
+        private void DisableAllVisibilityBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((Button)sender, e.Delta != 0, 4);
+        private void DefaultButtonClick(Button cnt, bool scrolled, int PatchIndex) { ToggleBool(cnt, PatchIndex); MouseScrolled = scrolled; }
+        private void ToggleBool(Button Control, int OptionIndex) {
             if(MouseScrolled || !MouseIsDown || CurrentControl != Control.Name) {
                 Dev.MsgOut($"{MouseScrolled} {MouseIsDown} {CurrentControl} ? {Control.Name}");
                 return;
@@ -1606,7 +1606,7 @@ namespace Dobby {
 
             // Create Confirm And Reset Buttons Once The Rest Are Created
             RB_StartPos = GameInfoLabel.Location.Y + GameInfoLabel.Size.Height + 1; // Right Below The GameInfoLabel
-            Button ConfirmPatchesBtn = new Button();
+            Dobby.Button ConfirmPatchesBtn = new Dobby.Button();
             Controls.Add(ConfirmPatchesBtn);
             ConfirmPatchesBtn.TabIndex = ButtonIndex;
             ConfirmPatchesBtn.Name = "ConfirmPatchesBtn";
@@ -1625,7 +1625,7 @@ namespace Dobby {
             ConfirmPatchesBtn.Click += ConfirmBtn_Click;
             ConfirmPatchesBtn.BringToFront();
 
-            Button ResetBtn = new Button();
+            Dobby.Button ResetBtn = new Dobby.Button();
             Controls.Add(ResetBtn);
             ResetBtn.BackColor = Color.FromArgb(100, 100, 100);
             ResetBtn.Cursor = Cursors.Cross;
@@ -1697,15 +1697,15 @@ namespace Dobby {
 #endif
         }
 
-        private Button BrowseButton;
-        private Button InfoHelpBtn;
-        private Button CreditsBtn;
-        private Button BackBtn;
-        private VarButton DisableDebugTextBtn;
-        private VarButton DisablePausedIconBtn;
-        private VarButton ProgPauseOnCloseBtn;
-        private VarButton ProgPauseOnOpenBtn;
-        private VarButton NovisBtn; 
+        private Dobby.Button BrowseButton;
+        private Dobby.Button InfoHelpBtn;
+        private Dobby.Button CreditsBtn;
+        private Dobby.Button BackBtn;
+        private Button DisableDebugTextBtn;
+        private Button DisablePausedIconBtn;
+        private Button ProgPauseOnCloseBtn;
+        private Button ProgPauseOnOpenBtn;
+        private Button NovisBtn; 
         private TextBox ExecutablePathBox;
         private Label GameSpecificPatchesLabel;
         private Label CustomDebugOptionsLabel;

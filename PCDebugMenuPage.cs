@@ -38,17 +38,17 @@ namespace Dobby {
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
             this.Info = new System.Windows.Forms.Label();
-            this.CreditsBtn = new System.Windows.Forms.Button();
-            this.InfoHelpBtn = new System.Windows.Forms.Button();
+            this.CreditsBtn = new Dobby.Button();
+            this.InfoHelpBtn = new Dobby.Button();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
             this.GameInfoLabel = new System.Windows.Forms.Label();
-            this.BackBtn = new System.Windows.Forms.Button();
-            this.BrowseButton = new System.Windows.Forms.Button();
+            this.BackBtn = new Dobby.Button();
+            this.BrowseButton = new Dobby.Button();
             this.ExecutablePathBox = new System.Windows.Forms.TextBox();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.BaseDebugBtn = new System.Windows.Forms.Button();
-            this.DisableDebugBtn = new System.Windows.Forms.Button();
+            this.BaseDebugBtn = new Dobby.Button();
+            this.DisableDebugBtn = new Dobby.Button();
             this.SuspendLayout();
             // 
             // MainLabel
