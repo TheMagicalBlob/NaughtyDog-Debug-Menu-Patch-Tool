@@ -273,25 +273,25 @@ namespace Dobby {
             base.Dispose(disposing);
         }
         private void InitializeComponent() {
-            this.InfoHelpBtn = new Dobby.Button();
+            this.InfoHelpBtn = new Button();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
-            this.BackBtn = new Dobby.Button();
+            this.BackBtn = new Button();
             this.Info = new System.Windows.Forms.Label();
-            this.CreditsBtn = new Dobby.Button();
+            this.CreditsBtn = new Button();
             this.MainLabel = new System.Windows.Forms.Label();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
-            this.LaunchOrbisPubCmdBtn = new Dobby.Button();
-            this.VerbosityBtn = new Dobby.Button();
+            this.LaunchOrbisPubCmdBtn = new Button();
+            this.VerbosityBtn = new Button();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.TempDirectoryBtn = new Dobby.Button();
+            this.TempDirectoryBtn = new Button();
             this.CmdPathBox = new System.Windows.Forms.TextBox();
-            this.CmdPathBtn = new Dobby.Button();
+            this.CmdPathBtn = new Button();
             this.GP4PathBox = new System.Windows.Forms.TextBox();
-            this.GP4PathBtn = new Dobby.Button();
+            this.GP4PathBtn = new Button();
             this.OutputDirectoryBox = new System.Windows.Forms.TextBox();
-            this.OutputDirectoryBtn = new Dobby.Button();
+            this.OutputDirectoryBtn = new Button();
             this.TMPDirectoryBox = new System.Windows.Forms.TextBox();
-            this.TMPDirectoryBtn = new Dobby.Button();
+            this.TMPDirectoryBtn = new Button();
             this.OrbisToolPathLabel = new System.Windows.Forms.Label();
             this.Gp4PathLabel = new System.Windows.Forms.Label();
             this.OutputDirectoryLabel = new System.Windows.Forms.Label();

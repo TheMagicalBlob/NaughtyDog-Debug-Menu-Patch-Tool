@@ -409,7 +409,7 @@ namespace Dobby {
                                         " ",
                                         $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}",
                                         $"Control: {HoveredControl?.Name} | {ControlType?.Substring(ControlType.LastIndexOf('.') + 1)}",
-                                        $"{(HoveredControl?.GetType() == typeof(VarButton) ? ((VarButton)HoveredControl)?.Variable : " ")}",
+                                        $"{(HoveredControl?.GetType() == typeof(Button) ? ((Button)HoveredControl)?.Variable : " ")}",
                                         $" Size: {HoveredControl?.Size} | Pos: {HoveredControl?.Location}",
                                         $" Parent [{HoveredControl?.Parent?.Name}]",
                                         $" Nex_Pos' [{Next_Base}]",

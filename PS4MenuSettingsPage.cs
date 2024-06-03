@@ -50,26 +50,26 @@ namespace Dobby {
             base.Dispose(disposing);
         }
         private void InitializeComponent() {
-            this.ProgPauseOnCloseBtn = new Dobby.Button();
-            this.ProgPauseOnOpenBtn = new Dobby.Button();
-            this.DisableDebugTextBtn = new Dobby.Button();
-            this.DisablePausedIconBtn = new Dobby.Button();
+            this.ProgPauseOnCloseBtn = new Button();
+            this.ProgPauseOnOpenBtn = new Button();
+            this.DisableDebugTextBtn = new Button();
+            this.DisablePausedIconBtn = new Button();
             this.MainLabel = new System.Windows.Forms.Label();
             this.Info = new System.Windows.Forms.Label();
-            this.CreditsBtn = new Dobby.Button();
-            this.InfoHelpBtn = new Dobby.Button();
+            this.CreditsBtn = new Button();
+            this.InfoHelpBtn = new Button();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
-            this.BackBtn = new Dobby.Button();
+            this.BackBtn = new Button();
             this.CustomDebugOptionsLabel = new System.Windows.Forms.Label();
             this.UniversalPatchesLabel = new System.Windows.Forms.Label();
             this.GameSpecificPatchesLabel = new System.Windows.Forms.Label();
             this.SeperatorLine3 = new System.Windows.Forms.Label();
-            this.BrowseButton = new Dobby.Button();
+            this.BrowseButton = new Button();
             this.ExecutablePathBox = new System.Windows.Forms.TextBox();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
             this.GameInfoLabel = new System.Windows.Forms.Label();
-            this.NovisBtn = new Dobby.Button();
+            this.NovisBtn = new Button();
             this.SuspendLayout();
             // 
             // ProgPauseOnCloseBtn
@@ -1063,14 +1063,14 @@ namespace Dobby {
             /// <summary> Nuke Dynamic Patch Buttons And Reset Option Variables
             ///</summary>
             public void Reset() {
-                foreach(Dobby.Button button in Buttons)
+                foreach(Button button in Buttons)
                     button?.Dispose();
 
                 Buttons = null;
                 GameSpecificPatchValues = DefaultGameSpecificPatchValues;
             }
 
-            public Dobby.Button[] CreateDynamicButtons() {
+            public Button[] CreateDynamicButtons() {
             RunCheck:
                 if(ButtonIndex >= gsButtons.Buttons.Length - 1)
                     return Buttons;
@@ -1606,7 +1606,7 @@ namespace Dobby {
 
             // Create Confirm And Reset Buttons Once The Rest Are Created
             RB_StartPos = GameInfoLabel.Location.Y + GameInfoLabel.Size.Height + 1; // Right Below The GameInfoLabel
-            Dobby.Button ConfirmPatchesBtn = new Dobby.Button();
+            Button ConfirmPatchesBtn = new Button();
             Controls.Add(ConfirmPatchesBtn);
             ConfirmPatchesBtn.TabIndex = ButtonIndex;
             ConfirmPatchesBtn.Name = "ConfirmPatchesBtn";
@@ -1625,7 +1625,7 @@ namespace Dobby {
             ConfirmPatchesBtn.Click += ConfirmBtn_Click;
             ConfirmPatchesBtn.BringToFront();
 
-            Dobby.Button ResetBtn = new Dobby.Button();
+            Button ResetBtn = new Button();
             Controls.Add(ResetBtn);
             ResetBtn.BackColor = Color.FromArgb(100, 100, 100);
             ResetBtn.Cursor = Cursors.Cross;
@@ -1697,10 +1697,10 @@ namespace Dobby {
 #endif
         }
 
-        private Dobby.Button BrowseButton;
-        private Dobby.Button InfoHelpBtn;
-        private Dobby.Button CreditsBtn;
-        private Dobby.Button BackBtn;
+        private Button BrowseButton;
+        private Button InfoHelpBtn;
+        private Button CreditsBtn;
+        private Button BackBtn;
         private Button DisableDebugTextBtn;
         private Button DisablePausedIconBtn;
         private Button ProgPauseOnCloseBtn;

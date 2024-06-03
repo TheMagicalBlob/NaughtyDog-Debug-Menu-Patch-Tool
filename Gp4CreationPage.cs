@@ -51,18 +51,18 @@ namespace Dobby {
         }
         public void InitializeComponent() {
             this.GamedataPathLabel = new System.Windows.Forms.Label();
-            this.InfoHelpBtn = new Dobby.Button();
+            this.InfoHelpBtn = new Button();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
-            this.BackBtn = new Dobby.Button();
+            this.BackBtn = new Button();
             this.Info = new System.Windows.Forms.Label();
-            this.CreditsBtn = new Dobby.Button();
+            this.CreditsBtn = new Button();
             this.MainLabel = new System.Windows.Forms.Label();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
-            this.Gp4FilterBrowseBtn = new Dobby.Button();
-            this.SourcePkgPathBrowseBtn = new Dobby.Button();
-            this.OutputPathBrowseBtn = new Dobby.Button();
-            this.GamedataFolderBrowseBtn = new Dobby.Button();
-            this.StartGp4CreationBtn = new Dobby.Button();
+            this.Gp4FilterBrowseBtn = new Button();
+            this.SourcePkgPathBrowseBtn = new Button();
+            this.OutputPathBrowseBtn = new Button();
+            this.GamedataFolderBrowseBtn = new Button();
+            this.StartGp4CreationBtn = new Button();
             this.SourcePkgPathLabel = new System.Windows.Forms.Label();
             this.FilterArrayTextBox = new System.Windows.Forms.TextBox();
             this.SeperatorLine1 = new System.Windows.Forms.Label();

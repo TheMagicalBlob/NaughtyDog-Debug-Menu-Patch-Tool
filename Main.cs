@@ -1,29 +1,21 @@
 ﻿using System;
-using libdebug;
-using System.IO;
-using System.Net;
-using System.Linq;
-using System.Text;
-using System.Drawing;
-using System.Threading;
-using System.Net.Sockets;
 using System.Windows.Forms;
 using static Dobby.Common;
 using static Dobby.Dev;
-using System.ComponentModel;
 
 namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
     public partial class Main : Form {
         public Main() {
             InitializeComponent();
             
-            YellowInformationLabel = Info;
+            InfoLabel = Info;
             Info.Text = "";
             Page = 0;
 
 #if DEBUG
             var Log = new LogWindow(this);
             Log.Show();
+            PS4MenuSettingsPageBtn.Enabled = true;
 #endif
             AddEventHandlersToControls(Controls);
         }
@@ -48,19 +40,19 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
             this.Info = new System.Windows.Forms.Label();
-            this.PS4DebugPageBtn = new Dobby.Button();
-            this.EbootPatchPageBtn = new Dobby.Button();
-            this.PS4MenuSettingsPageBtn = new Dobby.Button();
+            this.PS4DebugPageBtn = new Button();
+            this.EbootPatchPageBtn = new Button();
+            this.PS4MenuSettingsPageBtn = new Button();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
             this.SeperatorLine3 = new System.Windows.Forms.Label();
-            this.PkgPageBtn = new Dobby.Button();
+            this.PkgPageBtn = new Button();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.PCDebugMenuPageBtn = new Dobby.Button();
-            this.CreditsBtn = new Dobby.Button();
-            this.InfoHelpBtn = new Dobby.Button();
+            this.PCDebugMenuPageBtn = new Button();
+            this.CreditsBtn = new Button();
+            this.InfoHelpBtn = new Button();
             this.Playstation4Label = new System.Windows.Forms.Label();
             this.PCLabel = new System.Windows.Forms.Label();
-            this.DownloadSourceBtn = new Dobby.Button();
+            this.DownloadSourceBtn = new Button();
             this.SuspendLayout();
             // 
             // MainLabel
@@ -135,7 +127,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             this.PS4MenuSettingsPageBtn.Text = "Misc. Debug Menu Settings...";
             this.PS4MenuSettingsPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PS4MenuSettingsPageBtn.UseVisualStyleBackColor = false;
-            this.PS4MenuSettingsPageBtn.Click += new System.EventHandler(this.MiscPatchesBtn_Click);
+            this.PS4MenuSettingsPageBtn.Click += new System.EventHandler(this.PS4MenuSettingsPageBtn_Click);
             // 
             // SeperatorLine0
             // 
@@ -312,7 +304,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
         #region Page-Specific Functions
         private void PS4DebugPageBtn_Click(object sender, EventArgs e)    => ChangeForm(PageID.PS4DebugPage);
         private void EbootPatchPageBtn_Click(object sender, EventArgs e)  => ChangeForm(PageID.EbootPatchPage);
-        private void MiscPatchesBtn_Click(object sender, EventArgs e)     => ChangeForm(PageID.PS4MenuSettingsPage);
+        private void PS4MenuSettingsPageBtn_Click(object sender, EventArgs e)     => ChangeForm(PageID.PS4MenuSettingsPage);
         private void PkgPageBtn_Click(object sender, EventArgs e)         => ChangeForm(PageID.PkgCreationPage);
         private void PCDebugMenuPageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.PCDebugMenuPage);
         private void DownloadSourceBtn_Click(object sender, EventArgs e) => System.Diagnostics.Process.Start(@"https://github.com/TheMagicalBlob/NaughtyDog-Debug-Menu-Patch-Tool/archive/refs/heads/master.zip");

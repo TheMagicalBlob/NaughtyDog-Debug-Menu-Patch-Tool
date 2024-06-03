@@ -17,8 +17,8 @@ namespace Dobby {
         public PS4DebugPage() {
             InitializeComponent();
 
-            PortBox.Text = Port().ToString();
-            IPBOX.Text = IP();
+            IP = IPBOX.Text = GetIPFromSettingsFile();
+            Port = PortBox.Text = GetPortFromSettingsFile().ToString();
             AddEventHandlersToControls(Controls);
         }
 
@@ -479,9 +479,11 @@ namespace Dobby {
         #region PS4Debug Page Variables
 
         public static PS4DBG geo;
-        public delegate void LabelTextDel(string message);
-        public static LabelTextDel SetLabelText = SetInfoLabelText;
-        public static Thread ConnectionThread = new Thread(new ThreadStart(PS4DebugPage.Connect));
+        internal static InfoLabelUpdateCallback SetInfoText = value => {
+            if(ActiveForm != null)
+                InfoLabel.Text = value;
+        };
+        public static Thread ConnectionThread = new Thread(Connect);
         public static SHA256 hash;
 
 
@@ -515,6 +517,8 @@ namespace Dobby {
         };
 
         public static string
+            IP,
+            Port,
             ProcessName = "Jack Shit",
             GameVersion = "UnknownGameVersion",
             TitleID = "?"
@@ -525,16 +529,46 @@ namespace Dobby {
         ///--     FUNCTIONS FOR BASIC PS4DEBUG PAGE FUNCTIONALITY     --\\\
         //////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         #region Functions For Basic PS4Debug Page Functionality
+
+        internal static bool ThreadSleep;
+        internal Thread PayloadThread = new Thread(delegate (object Parameters) {
+            while(true) {
+                using(var S = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)) {
+
+                    dynamic parameters = Parameters;
+                    ActiveForm.Invoke(SetInfoText, "Sending ps4debug Payload...");
+
+                    try {
+                        S.Connect(new IPEndPoint(IPAddress.Parse(parameters[0]), int.Parse(parameters[1])));
+                        S.Send(Properties.Resources.PS4Debug1_1_15);
+                    }
+                    catch(Exception) {
+                        Dev.MsgOut("Failed To Connect To Specified Address/Port");
+                        ActiveForm.Invoke(SetInfoText, "Failed To Connect To Specified Address/Port");
+                    }
+                    finally { S.Close(); ThreadSleep = true; }
+
+                    if(S.Connected) {
+                        ActiveForm.Invoke(SetInfoText, "Payload Injected Successfully");
+                        MessageBox.Show("PS4Debug Update 1.1.15 By ctn123\nPS4Debug Created By Golden", "Payload Injected Successfully, Here's Some Credits");
+                        // ^^^ Excessive Credits To Try Avoiding Beef lol
+                    }
+                }
+
+                while(ThreadSleep) ; // Wait For Another Try
+            }
+        });
+
         public static void Connect() {
             try {
             Wait:
                 if(PS4DebugIsConnected) goto Wait;
 
-                Dev.MsgOut($"Connecting To Console at {IP()}");
-                ActiveForm?.Invoke(SetLabelText, "Connecting To Console");
+                Dev.MsgOut($"Connecting To Console at {GetIPFromSettingsFile()}");
+                ActiveForm?.Invoke(SetInfoText, "Connecting To Console");
                 Dev.MsgOut($"PDIC?: {PS4DebugIsConnected} | {geo?.GetProcessInfo(Executable).name != ProcessName} | {geo?.GetProcessList().processes.Length == ProcessCount}");
 
-                geo = new PS4DBG(IP());
+                geo = new PS4DBG(GetIPFromSettingsFile());
                 geo.Connect();
                 PS4DebugIsConnected = true;
 
@@ -555,7 +589,7 @@ namespace Dobby {
                         ProcessCount = geo.GetProcessList().processes.Length;
 
 
-                        ActiveForm?.Invoke(SetLabelText, $"Attached To {TitleID} ({GameVersion})");
+                        ActiveForm?.Invoke(SetInfoText, $"Attached To {TitleID} ({GameVersion})");
                         WaitForConnection = false;
                         goto Wait;
                     }
@@ -563,11 +597,11 @@ namespace Dobby {
                 ProcessName = "No Valid Process";
                 ProcessCount = geo.GetProcessList().processes.Length;
 
-                ActiveForm?.Invoke(SetLabelText, "Connected To PS4, But Couldn't Find The Game Process");
+                ActiveForm?.Invoke(SetInfoText, "Connected To PS4, But Couldn't Find The Game Process");
                 WaitForConnection = false;
                 goto Wait;
             }
-            catch(Exception tabarnack) { if(!Dev.REL) MessageBox.Show($"{tabarnack.Message}\n{tabarnack.StackTrace}"); ActiveForm?.Invoke(SetLabelText, $"Connection To {PS4DebugPage.IP()} Failed"); }
+            catch(Exception tabarnack) { if(!Dev.REL) MessageBox.Show($"{tabarnack.Message}\n{tabarnack.StackTrace}"); ActiveForm?.Invoke(SetInfoText, $"Connection To {PS4DebugPage.GetIPFromSettingsFile()} Failed"); }
         }
 
 
@@ -769,7 +803,7 @@ namespace Dobby {
             }
         }
 
-        public static string IP() {
+        public static string GetIPFromSettingsFile() {
             try {
                 var file = File.OpenText(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB");
                 string v = file.ReadToEnd(); file.Dispose();
@@ -795,13 +829,13 @@ namespace Dobby {
                     f.Write(Encoding.UTF8.GetBytes(IPBOX.Text + ";"), 0, IPBOX.Text.Length + 1);
                 }
             }
-            catch(FileNotFoundException) { IP(); }
+            catch(FileNotFoundException) { GetIPFromSettingsFile(); }
             catch(Exception tabarnack) {
                 Dev.MsgOut(tabarnack.Message + $"\n{tabarnack.StackTrace}");
             }
         }
 
-        public int Port() {
+        public int GetPortFromSettingsFile() {
             try {
                 byte[] dat = new byte[4];
                 var file = File.OpenRead(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB");
@@ -831,7 +865,7 @@ namespace Dobby {
             }
             catch(Exception tabarnack) {
                 Dev.MsgOut($"{tabarnack.Message};{tabarnack.StackTrace}");
-                Port();
+                GetPortFromSettingsFile();
             }
         }
 
@@ -901,18 +935,12 @@ namespace Dobby {
         public void PortLabelBtn_Click(object sender, EventArgs e) => PortBox.Focus();
 
         public void DebugPayloadBtn_Click(object sender, EventArgs e) {
-            Socket S = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
-            try { S.Connect(new IPEndPoint(IPAddress.Parse(IPBOX.Text), int.Parse(PortBox.Text))); S.Send(Properties.Resources.PS4Debug1_1_15); }
-            catch(Exception _) { Dev.MsgOut("Failed To Connect To Specified Address/Port"); return; }
-
-            S.Close();
-            SetInfoLabelText("Payload Injected Successfully");
-            MessageBox.Show("PS4Debug Paylod Sent Without Issue\n\nPS4Debug Update 1.1.15 By ctn123\nPS4Debug Created By Golden", "Payload Injected Successfully, Here's Some Credits");
-            // Excessive Credits To Try Avoiding Beef lol
+            if(PayloadThread.ThreadState == ThreadState.Unstarted)
+                PayloadThread.Start(new { IP, Port });
+            ThreadSleep = false;
         }
 
-        private void ManualConnectBtn_Click(object sender, EventArgs e) { // You Never Need To Press This, But People Would Probably Get Confused If It Was Missing
+        private void ManualConnectBtn_Click(object sender, EventArgs e) { // You Never Need To Press This, But People May Get Confused If It's Left Out.
             if(ConnectionThread.ThreadState == System.Threading.ThreadState.Unstarted)
                 ConnectionThread.Start();
             PS4DebugIsConnected = false;
