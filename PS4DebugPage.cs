@@ -536,14 +536,15 @@ namespace Dobby {
                 using(var S = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)) {
 
                     dynamic parameters = Parameters;
+
                     ActiveForm.Invoke(SetInfoText, "Sending ps4debug Payload...");
 
                     try {
-                        S.Connect(new IPEndPoint(IPAddress.Parse(parameters[0]), int.Parse(parameters[1])));
+                        S.Connect(new IPEndPoint(IPAddress.Parse(parameters.IP), int.Parse(parameters.Port)));
                         S.Send(Properties.Resources.PS4Debug1_1_15);
                     }
-                    catch(Exception) {
-                        Dev.MsgOut("Failed To Connect To Specified Address/Port");
+                    catch(Exception e) {
+                        Dev.MsgOut($"Failed To Connect To Specified Address/Port\nError: {e.Message}\n{e.StackTrace}");
                         ActiveForm.Invoke(SetInfoText, "Failed To Connect To Specified Address/Port");
                     }
                     finally { S.Close(); ThreadSleep = true; }

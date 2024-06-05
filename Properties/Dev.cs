@@ -553,6 +553,7 @@ namespace Dobby {
                 str = str.Replace("\n", "\n "); // So It Still Has A Size (for log window scaling purposes)
 
             LogWindow.LogOut(str);
+            System.Diagnostics.Debug.WriteLine(str);
 #endif
             return obj == null;
         }

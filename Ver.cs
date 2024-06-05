@@ -221,7 +221,8 @@
           "* 4.47.225.611 | Font Styling Fix In EbootPatchPage ",
           "* 4.47.226.613 | Fixed Incorrect File Access In Port Function Catch Block That Was Just Re-Trowing The Same Exception, Soft-blocking Access To The PS4DebugPage.",
           "* 4.47.227.617 | Changed ResetItemHighlight(sender, MouseEventArgs) Access Level For Manual Resetting. Message Boxes Are Rude.",
-          "* 4.47.228.621 | Moved Payload Sending Method To It's Own Thread, Minor Tweaks"
+          "* 4.47.228.621 | Moved Payload Sending Method To It's Own Thread, Minor Tweaks",
+          "* 4.47.228.622 | "
 
         };
 
