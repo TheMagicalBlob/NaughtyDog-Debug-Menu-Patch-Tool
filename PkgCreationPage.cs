@@ -25,8 +25,6 @@ namespace Dobby {
             OutputPath = Directory.GetCurrentDirectory();
         }
 
-        private Button Gp4PageBtn;
-
 
 
         //////////////////\\\\\\\\\\\\\\\\\
@@ -133,20 +131,26 @@ namespace Dobby {
                 if (MessageBox.Show("A Valid Path To The Fake Package / fpkg Toolset Was Not Provided, Would You Like To Scan The Current Folder For Publishing Tools Folder?", "Toolset Not Found, Provide A Valid Path", MessageBoxButtons.YesNo) == DialogResult.OK)
                     ScanForOrbisPubTools(); // Maybe Just Remove This And Make Them Do It Themselves
 
-                ResetItemHighlight(sender); //! (Fix The Underlying Issue!!!) Force Reset Control Highlight, As The Message Box Stops The Control From Ever Resetting Automatically
+                // Force Reset Control Highlight, As The Message Box Stops The Control From Ever Resetting Automatically (Fix The Underlying Issue//!!!) 
+                ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
                 return;
             }
 
             // Verfiy .gp4 Project Path
             else if(!File.Exists(GP4Path)) {
                 MessageBox.Show($"Error: The Path Provided For The .gp4 Project Wasn't Valid. A Valid .gp4 Is Mandatory For .pkg Creation.\n\nProvided Path: {GP4Path}", "Invalid .gp4 Project File Path");
-                ResetItemHighlight(sender);
 
-                /*
-                if(MessageBox.Show("orbis-pub-cmd.exe And A .gp4 Are Necessary For .pkg Creation, Create New .gp4?", string.Empty,
+                // Force Reset Control Highlight, As The Message Box Stops The Control From Ever Resetting Automatically (Fix The Underlying Issue//!!!) 
+                ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
+
+                if (MessageBox.Show("orbis-pub-cmd.exe And A .gp4 Are Necessary For .pkg Creation, Create New .gp4?", string.Empty,
                     MessageBoxButtons.YesNo) == DialogResult.OK)
-                  CreateNewGP4();
-                */
+                {
+                    var gp4 = new libgp4.GP4Creator() {
+                        GamedataFolder = ""
+                    };
+                    gp4.CreateGP4(null, true);
+                }
                 return;
             }
 
@@ -630,6 +634,7 @@ namespace Dobby {
             this.Gp4PageBtn.Text = "Create New .gp4 File";
             this.Gp4PageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Gp4PageBtn.UseVisualStyleBackColor = false;
+            this.Gp4PageBtn.Click += new System.EventHandler(this.Gp4PageBtn_Click);
             // 
             // PkgCreationPage
             // 
@@ -677,12 +682,14 @@ namespace Dobby {
         ///--     Repeated Page Functions & Control Declarations     --\\\
         /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         #region Repeat Functions & Control Declarations
-        public void BackBtn_Click(object sender, EventArgs e) {
+        private void Gp4PageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.Gp4CreationPage);
+        private void BackBtn_Click(object sender, EventArgs e) {
             LabelShouldFlash = false;
             ReturnToPreviousPage();
         }
         private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);
         private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
+
         private Label SeperatorLine0;
         private Label SeperatorLine1;
         private Label SeperatorLine2;
@@ -695,6 +702,7 @@ namespace Dobby {
         private Button VerbosityBtn;
         private Button LaunchOrbisPubCmdBtn;
         private Button TempDirectoryBtn;
+        private Button Gp4PageBtn;
         private TextBox CmdPathBox;
         private Button CmdPathBtn;
         private TextBox GP4PathBox;

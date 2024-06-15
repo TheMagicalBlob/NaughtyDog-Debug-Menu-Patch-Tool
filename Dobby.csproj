@@ -114,9 +114,7 @@
     <Compile Include="PS4DebugPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ver.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Ver.cs" />
     <EmbeddedResource Include="Common.resx">
       <DependentUpon>Common.cs</DependentUpon>
     </EmbeddedResource>
