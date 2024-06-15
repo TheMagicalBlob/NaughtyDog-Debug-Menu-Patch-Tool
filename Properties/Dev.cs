@@ -27,7 +27,7 @@ namespace Dobby {
         public static void MiscDebugFunc(object sender, EventArgs e) {
             if(((Control)sender).Text == "(Dev)") {
                 foreach(var v in GetControlsInOrder(LogWindow.GetParent())) {
-                    MsgOut($"|RET {v.Name} at {v.Location}|");
+                    WLog($"|RET {v.Name} at {v.Location}|");
                 }
 
 
@@ -85,13 +85,13 @@ namespace Dobby {
                 if(chk.Equals(Array.Empty<string>()) || lines.SequenceEqual(chk))
 
                     foreach(var line in lines)
-                        MsgOut(line);
+                        WLog(line);
 
                 chk = lines;
                 goto start;
             }
             catch(Exception e) {
-                MsgOut($"rTst Failed, Cause: {e.Message}");
+                WLog($"rTst Failed, Cause: {e.Message}");
             }
         }
 
@@ -155,7 +155,7 @@ namespace Dobby {
 
             if((index ^= 3) != 0) { MessageBox.Show($"Unexpected Form Structure {index}"); Environment.Exit(1); }
             if(OldPositions.Length == 1 || EditedForm != Mommy.Name) {
-                MsgOut("Beeg");
+                WLog("Beeg");
 
                 // Save Orignal Item Locations
                 for(OldPositions = new Point[Mommy.Controls.Count]; index < Controls.Count;)
@@ -187,7 +187,7 @@ namespace Dobby {
 
                     // Adjust Form Size If The Control Has Been Moved Off The Form
                     if(Controls[index].Location.Y + Controls[index].Size.Height > Mommy.Size.Height) {//UwU
-                        MsgOut($"Control Went Passed Form Border, Extending Form ({Controls[index].Location.Y} > {Mommy.Size.Height})");
+                        WLog($"Control Went Passed Form Border, Extending Form ({Controls[index].Location.Y} > {Mommy.Size.Height})");
                         Mommy.Size = new Size(Mommy.Size.Width, Controls[index].Location.Y + Controls[index].Size.Height + 1);
                         Mommy.Update();
                         Mommy.Refresh();
@@ -197,9 +197,9 @@ namespace Dobby {
                 return;
             }
 
-            MsgOut("Smol");
+            WLog("Smol");
             foreach(Control bitch in Controls) {
-                MsgOut($"{bitch.Location} -> {OldPositions[index]}");
+                WLog($"{bitch.Location} -> {OldPositions[index]}");
                 bitch.Location = OldPositions[index++];
             }
             Mommy.Size = OldFormScale;
@@ -537,11 +537,11 @@ namespace Dobby {
             while(TextRenderer.MeasureText(str, MainFont).Width < LogWindow.formScale.Width)
                 str += '-';
 
-            MsgOut($"\n{str}\n{StringToEnclose}\n{str}");
+            WLog($"\n{str}\n{StringToEnclose}\n{str}");
 #endif
         }
 
-        public static bool MsgOut(object obj = null) {
+        public static bool WLog(object obj = null) {
 #if DEBUG
             string str;
 

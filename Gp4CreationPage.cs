@@ -44,6 +44,7 @@ namespace Dobby {
         private Label label5;
         private TextBox textBox4;
         private Button button2;
+        private BindingSource buttonBindingSource;
 
 
         ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
@@ -66,6 +67,7 @@ namespace Dobby {
             base.Dispose(disposing);
         }
         public void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
             this.InfoHelpBtn = new Dobby.Button();
             this.BackBtn = new Dobby.Button();
             this.Info = new System.Windows.Forms.Label();
@@ -90,6 +92,8 @@ namespace Dobby {
             this.label5 = new System.Windows.Forms.Label();
             this.textBox4 = new Dobby.TextBox();
             this.button2 = new Dobby.Button();
+            this.buttonBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.buttonBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // InfoHelpBtn
@@ -404,6 +408,10 @@ namespace Dobby {
             this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button2.UseVisualStyleBackColor = false;
             // 
+            // buttonBindingSource
+            // 
+            this.buttonBindingSource.DataSource = typeof(Dobby.Button);
+            // 
             // Gp4CreationPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -440,6 +448,7 @@ namespace Dobby {
             this.MinimizeBox = false;
             this.Name = "Gp4CreationPage";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            ((System.ComponentModel.ISupportInitialize)(this.buttonBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -501,7 +510,6 @@ namespace Dobby {
         private Label Info;
         private Button CreditsBtn;
         private Label MainLabel;
-
         private Button StartGp4CreationBtn;
         private Label SeperatorLine1;
         private Label SeperatorLine0;

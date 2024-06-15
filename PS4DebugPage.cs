@@ -544,7 +544,7 @@ namespace Dobby {
                         S.Send(Properties.Resources.ps4debug);
                     }
                     catch(Exception e) {
-                        Dev.MsgOut($"Failed To Connect To Specified Address/Port\nError: {e.Message}\n{e.StackTrace}");
+                        Dev.WLog($"Failed To Connect To Specified Address/Port\nError: {e.Message}\n{e.StackTrace}");
                         ActiveForm.Invoke(SetInfoText, "Failed To Connect To Specified Address/Port");
                     }
                     finally { S.Close(); ThreadSleep = true; }
@@ -565,9 +565,9 @@ namespace Dobby {
             Wait:
                 if(PS4DebugIsConnected) goto Wait;
 
-                Dev.MsgOut($"Connecting To Console at {GetIPFromSettingsFile()}");
+                Dev.WLog($"Connecting To Console at {GetIPFromSettingsFile()}");
                 ActiveForm?.Invoke(SetInfoText, "Connecting To Console");
-                Dev.MsgOut($"PDIC?: {PS4DebugIsConnected} | {geo?.GetProcessInfo(Executable).name != ProcessName} | {geo?.GetProcessList().processes.Length == ProcessCount}");
+                Dev.WLog($"PDIC?: {PS4DebugIsConnected} | {geo?.GetProcessInfo(Executable).name != ProcessName} | {geo?.GetProcessList().processes.Length == ProcessCount}");
 
                 geo = new PS4DBG(GetIPFromSettingsFile());
                 geo.Connect();
@@ -579,7 +579,7 @@ namespace Dobby {
                         string title = geo.GetProcessInfo(process.pid).titleid;
 
                         if(title == "FLTZ00003" || title == "ITEM00003") {
-                            Dev.MsgOut($"Skipping Lightning's Stuff {title}");
+                            Dev.WLog($"Skipping Lightning's Stuff {title}");
                             continue;
                         } // Check To Avoid Connecting To HB Store Stuff
 
@@ -614,7 +614,7 @@ namespace Dobby {
 
             else if(!PS4DebugIsConnected || geo?.GetProcessInfo(Executable).name != ProcessName || !ExecutablesNames.Contains(geo?.GetProcessInfo(Executable).name)) {
                 PS4DebugIsConnected = false; WaitForConnection = true;
-                Dev.MsgOut("CheckConnectionStatus Second Case, Now On WaitForConnection");
+                Dev.WLog("CheckConnectionStatus Second Case, Now On WaitForConnection");
             }
 
             while(WaitForConnection) Thread.Sleep(2);
@@ -688,7 +688,7 @@ namespace Dobby {
                                 case 4488: DebugModePointerOffset = 0x2E81; return "1.10";
                                 case 4472: DebugModePointerOffset = 0x2E81; return "1.11";
 
-                                default: Dev.MsgOut($"Error, Game Was T1R But None of The Checks Matched! || {T1RCheck}");
+                                default: Dev.WLog($"Error, Game Was T1R But None of The Checks Matched! || {T1RCheck}");
                                     MessageBox.Show($"The Game Was Determined To Be The Last of Us: Remastered, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{T1RCheck} {TitleID}", "Error Finding App Version");
                                     return "UnknownT1RGameVersion";
                             }
@@ -704,7 +704,7 @@ namespace Dobby {
                                 case 30024882: DebugModePointerOffset = 0x3aa1; return "1.08";
                                 case 30024914: DebugModePointerOffset = 0x3aa1; return "1.09";
 
-                                default: Dev.MsgOut($"Error, Game Was T2 But None of The Checks Matched! || chk:{T2Check}");
+                                default: Dev.WLog($"Error, Game Was T2 But None of The Checks Matched! || chk:{T2Check}");
                                     MessageBox.Show($"The Game Was Determined To Be The Last of Us Part II, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{T2Check} {TitleID}", "Error Finding App Version");
                                     return "UnknownT2GameVersion";
                             }
@@ -719,7 +719,7 @@ namespace Dobby {
                                 case -136556654: return "U1 1.00";
                                 case -1120900838: return "U1 1.02";
 
-                                default: Dev.MsgOut($"Error, Game Was UCC But None of The Checks Matched! || chk:{UCCCheck}");
+                                default: Dev.WLog($"Error, Game Was UCC But None of The Checks Matched! || chk:{UCCCheck}");
                                     MessageBox.Show($"The Game Was Determined To Be The Uncharted Collection, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{UCCCheck} {TitleID}", "Error Finding App Version");
                                     return "UnknownUCCGameVersion";
                             }
@@ -762,7 +762,7 @@ namespace Dobby {
                                 case -71032229:   DebugModePointerOffset = 0x2E79; return "1.32 MP";
                                 case 145928122:   DebugModePointerOffset = 0x2E79; return "1.33 MP";
 
-                                default: Dev.MsgOut($"Error, Game Was UC4, But None of The Checks Matched! || chk:{U4Check}");
+                                default: Dev.WLog($"Error, Game Was UC4, But None of The Checks Matched! || chk:{U4Check}");
                                     MessageBox.Show($"The Game Was Determined To Be UC4, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{U4Check} {TitleID}", "Error Finding App Version");
                                     return "UnknownUC4GameVersion";
                             }
@@ -774,7 +774,7 @@ namespace Dobby {
                                 case 2067458121: DebugModePointerOffset = 0x2E83; return "1.09 MP Beta";
 
                                 default:
-                                    Dev.MsgOut($"Error, Game Was UC4 MP Beta, But None of The Checks Matched! || chk:{U4MPBetaCheck}");
+                                    Dev.WLog($"Error, Game Was UC4 MP Beta, But None of The Checks Matched! || chk:{U4MPBetaCheck}");
                                     MessageBox.Show($"The Game Was Determined To Be The UC4 MP Beta (Nice), But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{U4MPBetaCheck} {TitleID}", "Error Finding App Version");
                                     return "UnknownUC4GameVersion";
                             }
@@ -788,18 +788,18 @@ namespace Dobby {
                                 case 27793:  DebugModePointerOffset = 0x2E79; return "1.08 MP";
                                 case 27841:  DebugModePointerOffset = 0x2E79; return "1.09 MP";
 
-                                default: Dev.MsgOut($"Error, Game Was UCC But None of The Checks Matched! || chk:{TLLCheck}");
+                                default: Dev.WLog($"Error, Game Was UCC But None of The Checks Matched! || chk:{TLLCheck}");
                                     MessageBox.Show($"The Game Was Determined To Be The The Lost Legacy, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{TLLCheck} {TitleID}", "Error Finding App Version");
                                     return "UnknownTLLGameVersion";
                             }
 
-                        default: Dev.MsgOut($"!!! PS4DebugPage -> GetGameVersion() Fell Through. (GameVersion: {GameVersion})"); return "UnknownGameVersion";
+                        default: Dev.WLog($"!!! PS4DebugPage -> GetGameVersion() Fell Through. (GameVersion: {GameVersion})"); return "UnknownGameVersion";
                     }
                 }
                 return "UnknownGameVersion";
             }
             catch(Exception Tabarnack) {
-                Dev.MsgOut($"{Tabarnack.Message};{Tabarnack.StackTrace}");
+                Dev.WLog($"{Tabarnack.Message};{Tabarnack.StackTrace}");
                 return "UnknownGameVersion";
             }
         }
@@ -812,13 +812,13 @@ namespace Dobby {
             }
             catch(FileNotFoundException) {
                 using(FileStream f = new FileStream(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB", FileMode.Create, FileAccess.Write)) {
-                    Dev.MsgOut($"IP(); No Settings File Was Found, Made A New One At:\n{f.Name}");
+                    Dev.WLog($"IP(); No Settings File Was Found, Made A New One At:\n{f.Name}");
                     f.Position = 0; f.Write(Encoding.UTF8.GetBytes("192.168.137."), 0, 12);
                     f.Position = 15; f.WriteByte(0x3B); f.Write(BitConverter.GetBytes(9020), 0, 4);
                 }
             }
             catch(Exception tabarnack) {
-                Dev.MsgOut(tabarnack.Message + $"\n{tabarnack.StackTrace}");
+                Dev.WLog(tabarnack.Message + $"\n{tabarnack.StackTrace}");
             }
 
             return "192.168.137.";
@@ -832,7 +832,7 @@ namespace Dobby {
             }
             catch(FileNotFoundException) { GetIPFromSettingsFile(); }
             catch(Exception tabarnack) {
-                Dev.MsgOut(tabarnack.Message + $"\n{tabarnack.StackTrace}");
+                Dev.WLog(tabarnack.Message + $"\n{tabarnack.StackTrace}");
             }
         }
 
@@ -845,13 +845,13 @@ namespace Dobby {
             }
             catch(FileNotFoundException) {
                 using(FileStream f = new FileStream(Directory.GetCurrentDirectory() + @"\PS4_IP.BLB", FileMode.Create, FileAccess.Write)) {
-                    Dev.MsgOut($"Port(); No Settings File Was Found, Made A New One At:\n{f.Name}");
+                    Dev.WLog($"Port(); No Settings File Was Found, Made A New One At:\n{f.Name}");
                     f.Write(Encoding.UTF8.GetBytes("192.168.137."), 0, 12);
                     f.Position = 15; f.WriteByte(0x3B); f.Write(BitConverter.GetBytes(9020), 0, 4);
                 }
             }
             catch(Exception tabarnack) {
-                Dev.MsgOut(tabarnack.Message + $"\n{tabarnack.StackTrace}");
+                Dev.WLog(tabarnack.Message + $"\n{tabarnack.StackTrace}");
             }
 
             return 9020;
@@ -865,7 +865,7 @@ namespace Dobby {
                 }
             }
             catch(Exception tabarnack) {
-                Dev.MsgOut($"{tabarnack.Message};{tabarnack.StackTrace}");
+                Dev.WLog($"{tabarnack.Message};{tabarnack.StackTrace}");
                 GetPortFromSettingsFile();
             }
         }
@@ -889,18 +889,18 @@ namespace Dobby {
                         if(GameVersion == Version) {
                             var pointer = (ulong)(BitConverter.ToInt64(geo.ReadMemory(Executable, Addresses[AddressIndex], 8), 0) + DebugModePointerOffset);
                             geo.WriteMemory(Executable, pointer, geo.ReadMemory(Executable, pointer, 1)[0] == 0x00 ? on : off);
-                            Dev.MsgOut($"Toggle(ulong[] Addresses, string[] Versions) Wrote To {pointer:X}");
+                            Dev.WLog($"Toggle(ulong[] Addresses, string[] Versions) Wrote To {pointer:X}");
                         }
                         else if(AddressIndex != Addresses.Length - 1) AddressIndex++;
                 }
                 else {
-                    Dev.MsgOut(
+                    Dev.WLog(
                         $"Error Toggling Byte.\nPS4Debug {(PS4DebugIsConnected ? "" : "Not ")}Connected\n"
                         + $"{geo.GetProcessInfo(Executable).name} {(geo.GetProcessInfo(Executable).name == ProcessName ? "=" : "!")}= {ProcessName}"
                     );
                 }
             }
-            catch(Exception tabarnack) { Dev.MsgOut(tabarnack.Message); }
+            catch(Exception tabarnack) { Dev.WLog(tabarnack.Message); }
         }
 
         /// <summary>
@@ -911,10 +911,10 @@ namespace Dobby {
             try {
                 if(PS4DebugIsConnected && geo.GetProcessInfo(Executable).name == ProcessName) {
                     geo.WriteMemory(Executable, Address, geo.ReadMemory(Executable, Address, 1)[0] == 0x00 ? on : off);
-                    Dev.MsgOut($"Wrote To 0x{Address:X} in {geo.GetProcessInfo(Executable).name}/{Executable}");
+                    Dev.WLog($"Wrote To 0x{Address:X} in {geo.GetProcessInfo(Executable).name}/{Executable}");
                 }
             }
-            catch(Exception tabarnack) { Dev.MsgOut(tabarnack.Message); }
+            catch(Exception tabarnack) { Dev.WLog(tabarnack.Message); }
         }
 
         /// <summary>
@@ -927,7 +927,7 @@ namespace Dobby {
                     foreach(ulong Address in AddressArray)
                         geo.WriteMemory(Executable, Address, geo.ReadMemory(Executable, Address, 1)[0] == 0x00 ? on : off);
             }
-            catch(Exception tabarnack) { Dev.MsgOut(tabarnack.Message); }
+            catch(Exception tabarnack) { Dev.WLog(tabarnack.Message); }
         }
 
 
@@ -963,7 +963,7 @@ namespace Dobby {
             if(IgnoreTitleID) TitleID = "CUSA10249";
             if(!GameVersion.Contains("Unknown"))
                 Toggle(new ulong[] { 0x3b61900, 0x3b62d00, 0x3b67130, 0x3b67530, 0x3b675b0, 0x3b7b430, 0x3b7b430 }, new string[] { "1.00", "1.01", "1.02", "1.05", "1.07", "1.08", "1.09" });
-            else Dev.MsgOut("Unknown Game Version");
+            else Dev.WLog("Unknown Game Version");
         }
         private async void UC1Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);

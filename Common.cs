@@ -414,15 +414,20 @@ namespace Dobby {
         {
             int ArrowWidth;
 
+            void HighlightItemOnCLick(object sender, MouseEventArgs e = null) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
+            void ResetItemHighlight(object sender, MouseEventArgs e = null) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
+
             //if(!InfoHasImportantStr & !EventIsMouseEnter) SetInfoLabelText("");
 
             try
             {
                 ArrowWidth = (int)PassedControl.CreateGraphics().MeasureString(">", PassedControl.Font).Width;
             }
-            catch (ObjectDisposedException)
-            {
-                System.Diagnostics.Debug.WriteLine($"Error Getting Width Of Hover Arror From Control ({PassedControl.Name}: {(EventIsMouseEnter ? "Hover" : "Leave")})");
+            catch (Exception ex) {
+                var s = $"Error Getting Width Of Hover Arror From Control ({PassedControl.Name}: {(EventIsMouseEnter ? "Hover" : "Leave")})\n\nException Of Type: {ex.GetType()}\n{ex.Message}";
+
+                WLog(s);
+                System.Diagnostics.Debug.WriteLine(s);
                 return;
             }
 
@@ -439,7 +444,6 @@ namespace Dobby {
             {
                 PassedControl.MouseDown -= HighlightItemOnCLick;
                 PassedControl.MouseUp -= ResetItemHighlight;
-                SetInfoLabelStringOnControlHover(PassedControl);
             }
 
             PassedControl.Text = EventIsMouseEnter ? ($">{PassedControl.Text}") : PassedControl.Text.Substring(1);
@@ -448,8 +452,6 @@ namespace Dobby {
                 PassedControl.Size = new Size(EventIsMouseEnter ? PassedControl.Width + ArrowWidth : PassedControl.Width - ArrowWidth, PassedControl.Height);
         }
 
-        private static void HighlightItemOnCLick(object sender, MouseEventArgs e = null) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
-        public static void ResetItemHighlight(object sender, MouseEventArgs e = null) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
 
         /// <summary> Draw The Variable Tied To The Sender Control, Aligned To The Right Of The Form
         ///</summary>
@@ -491,7 +493,7 @@ namespace Dobby {
 
             if (ItemPtr.Size.Height != 15)
             {
-                MsgOut($"Label On Page {ItemPtr.Parent.Name} Has An Ivalid Height ({ItemPtr.Size.Height})");
+                WLog($"Label On Page {ItemPtr.Parent.Name} Has An Ivalid Height ({ItemPtr.Size.Height})");
                 ItemPtr.Size = new Size(ItemPtr.Size.Width, 15);
             }
 
@@ -534,7 +536,7 @@ namespace Dobby {
                 }
                 catch (Exception)
                 {
-                    MsgOut("Form Changed or Lost Focus, Killing Label Flash");
+                    WLog("Form Changed or Lost Focus, Killing Label Flash");
                 }
                 finally
                 {
@@ -557,8 +559,7 @@ namespace Dobby {
         /// </summary>
         /// <param name="Page"> Page To Change To </param>
         /// <param name="IsPageGoingBack"> Whether We're Returning Or Loading A New Page </param>
-        public static void ChangeForm(PageID Page)
-        {
+        public static void ChangeForm(PageID Page) {
             LastPos = ActiveForm.Location;
             var ClosingForm = ActiveForm;
 
@@ -641,7 +642,7 @@ namespace Dobby {
                     NewPage = new CreditsPage();
                     break;
 
-                default: MsgOut($"{Page} Is Not A Page!"); break;
+                default: WLog($"{Page} Is Not A Page!"); break;
             }
 
             NewPage?.Show();
@@ -779,7 +780,7 @@ namespace Dobby {
 
 
             // Clear Info Label Text
-            try { Controls.Owner.Controls.Find("Info", true)[0].Text = string.Empty; } catch (Exception) { MsgOut("Info Label Mising"); }
+            try { Controls.Owner.Controls.Find("Info", true)[0].Text = string.Empty; } catch (Exception) { WLog("Info Label Mising"); }
         }
 
         /// <summary>
@@ -981,7 +982,11 @@ namespace Dobby {
     
     public class TextBox : System.Windows.Forms.TextBox {
         public TextBox() {
+
             IsDefault = true;
+            
+            Info = ((string)Tag) ?? string.Empty;
+
 
             TextChanged += Set;
 
@@ -1013,6 +1018,7 @@ namespace Dobby {
 
         private string DefaultText;
         public bool IsDefault { get; private set; }
+        public string Info { get; private set; }
 
 
         /// <summary> Yoink Default Text From First Text Assignment.
@@ -1034,7 +1040,7 @@ namespace Dobby {
     public class Button : System.Windows.Forms.Button {
         public Button() {
             Variable = null;
-            Info = string.Empty;
+            Info = ((string)Tag) ?? string.Empty;
         }
 
         public object Variable;
