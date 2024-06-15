@@ -48,8 +48,6 @@ namespace Dobby {
         ///--  MAIN APPLICATION VARIABLES & Functions  --\\\
         //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
         #region Application-Wide Functions And Variable Declarations
-
-
         public enum PageID : int {
             MainPage = 0,
             PS4DebugPage = 1,
@@ -109,47 +107,6 @@ namespace Dobby {
 
         public static Font MainFont = new Font("Consolas", 9.75F, FontStyle.Bold);
         public static Color MainColour = Color.FromArgb(100, 100, 100);
-
-
-
-        ////////////////////\\\\\\\\\\\\\\\\\\\
-        ///--  Basic Form Event Handlers  --\\\
-        ////////////////////\\\\\\\\\\\\\\\\\\\
-        #region Basic Form Event Handlers
-        private static void ExitBtn_Click(object sender, EventArgs e) {
-#if DEBUG
-            LogWindow.Exit();
-#endif
-            MainStream?.Dispose();
-            Environment.Exit(0);
-        }
-        private static void ExitBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
-        private static void ExitBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
-        private static void MinimizeBtn_Click(object sender, EventArgs e) => ((Control)sender).FindForm().WindowState = FormWindowState.Minimized;
-        private static void MinimizeBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
-        private static void MinimizeBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
-
-        public static void MouseDownFunc(object sender, MouseEventArgs e) {
-            MouseIsDown = true; LastPos = ActiveForm.Location;
-            MouseDif = new Point(MousePosition.X - ActiveForm.Location.X, MousePosition.Y - ActiveForm.Location.Y);
-        }
-        public static void MouseUpFunc(object sender, MouseEventArgs e) { MouseScrolled = false; MouseIsDown = false; }
-
-        public static void MoveForm(object sender, MouseEventArgs e) {
-            if(!MouseIsDown)
-                return;
-
-            ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
-            ActiveForm.Update();
-
-#if DEBUG
-            LogWindow.MoveLogToAppEdge(ActiveForm.Location);
-#endif
-        }
-        public static void ControlHover(object sender, EventArgs _ = null) => HoverLeave((Control)sender, true);
-        public static void ControlLeave(object sender, EventArgs _ = null) => HoverLeave((Control)sender, false);
-        #endregion
-
 
 
         ///////////////////\\\\\\\\\\\\\\\\\\
@@ -282,7 +239,9 @@ namespace Dobby {
         #endregion
 
 
-
+        //////////////////\\\\\\\\\\\\\\\\\
+        ///--   Basic Form Functions  --\\\
+        //////////////////\\\\\\\\\\\\\\\\\
         #region Basic Form Functions
 
         /// <summary>
@@ -402,7 +361,6 @@ namespace Dobby {
         }
 
 
-
         /// <summary> Buttons To Avoid Prepending The Hover Arrow To </summary>
         private static readonly string[] Blacklist = new string[] {
                 "!!!",
@@ -512,16 +470,62 @@ namespace Dobby {
         #endregion
 
 
+
+
+        /////////////////\\\\\\\\\\\\\\\\
+        ///--  Form Event Handlers  --\\\
+        /////////////////\\\\\\\\\\\\\\\\
+        #region Form Event Handlers
+        private static void ExitBtn_Click(object sender, EventArgs e)
+        {
+#if DEBUG
+            LogWindow.Exit();
+#endif
+            MainStream?.Dispose();
+            Environment.Exit(0);
+        }
+        private static void ExitBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
+        private static void ExitBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
+        private static void MinimizeBtn_Click(object sender, EventArgs e) => ((Control)sender).FindForm().WindowState = FormWindowState.Minimized;
+        private static void MinimizeBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
+        private static void MinimizeBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
+
+        public static void MouseDownFunc(object sender, MouseEventArgs e)
+        {
+            MouseIsDown = true; LastPos = ActiveForm.Location;
+            MouseDif = new Point(MousePosition.X - ActiveForm.Location.X, MousePosition.Y - ActiveForm.Location.Y);
+        }
+        public static void MouseUpFunc(object sender, MouseEventArgs e) { MouseScrolled = false; MouseIsDown = false; }
+
+        public static void MoveForm(object sender, MouseEventArgs e)
+        {
+            if (!MouseIsDown)
+                return;
+
+            ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
+            ActiveForm.Update();
+
+#if DEBUG
+            LogWindow.MoveLogToAppEdge(ActiveForm.Location);
+#endif
+        }
+        public static void ControlHover(object sender, EventArgs _ = null) => HoverLeave((Control)sender, true);
+        public static void ControlLeave(object sender, EventArgs _ = null) => HoverLeave((Control)sender, false);
+        #endregion
+
+
+
         /// <summary> Add A Summary, You Lazy Fuck </summary>
         /// <returns> The Game Name And App Version Respectively </returns>
-        public static int GetGameID(FileStream stream) {
+        public static int GetGameID(FileStream stream)
+        {
 
             byte[] LocalExecutableCheck = new byte[160];
 
             // Make Sure The File's Actually Even A .elf
             stream.Position = 0;
             stream.Read(LocalExecutableCheck, 0, 4);
-            if(BitConverter.ToInt32(LocalExecutableCheck, 0) != 1179403647)
+            if (BitConverter.ToInt32(LocalExecutableCheck, 0) != 1179403647)
                 MessageBox.Show($"Executable Still Encrypted (self) | Must Be Decrypted/Unsigned");
 
 
@@ -532,16 +536,19 @@ namespace Dobby {
         }
 
         /// <summary> Write A Byte To The MainStream And Flush The Data </summary>
-        public static void WriteByte(int offset, byte data) {
-            if(MainStream == null) { MessageBox.Show($"No Active Data Stream To Write To ({MainStreamIsOpen})", $"Addr: {offset:X} Byte: 0x{data:X}"); return; }
+        public static void WriteByte(int offset, byte data)
+        {
+            if (MainStream == null) { MessageBox.Show($"No Active Data Stream To Write To ({MainStreamIsOpen})", $"Addr: {offset:X} Byte: 0x{data:X}"); return; }
 
             MainStream.Position = offset;
             MainStream.WriteByte(data);
             MainStream.Flush();
         }
 
-        public static string GetGameLabelFromID(int GameID) {
-            switch(GameID) {
+        public static string GetGameLabelFromID(int GameID)
+        {
+            switch (GameID)
+            {
                 case UC1100: return "Uncharted 1 1.00";
                 case UC1102: return "Uncharted 1 1.02";
                 case UC2100: return "Uncharted 2 1.00";
@@ -605,12 +612,14 @@ namespace Dobby {
 
         /// <summary> Sets The Info Label String Based On The Currently Hovered Control </summary>
         /// <param name="Sender">The Hovered Control</param>
-        public static void SetInfoLabelStringOnControlHover(Control Sender, float FontAdjustment = 10f) { // SetInfo
-            // TODO: this is fucking stupid, change or delete it.
-            
+        public static void SetInfoLabelStringOnControlHover(Control Sender, float FontAdjustment = 10f)
+        { // SetInfo
+          // TODO: this is fucking stupid, change or delete it.
+
             string InfoLabelString = "";
-            
-            switch(Sender.Name) {
+
+            switch (Sender.Name)
+            {
                 default: return;
                 //
                 // Const
@@ -741,16 +750,19 @@ namespace Dobby {
             SetInfoLabelText(InfoLabelString);
         }
 
-        public static RichTextBox CreateTextBox(string Title) {
+        public static RichTextBox CreateTextBox(string Title)
+        {
             PopupGroupBox?.Dispose();
 
-            PopupGroupBox = new GroupBox() {
+            PopupGroupBox = new GroupBox()
+            {
                 Cursor = Cursors.Cross,
                 Size = new Size(250, ActiveForm.Size.Height - 65),
                 Location = new Point(35, ActiveForm.Controls.Find("SeperatorLine0", true)[0].Location.Y + 8),
                 BackColor = Color.FromArgb(255, Color.FromArgb(100, 100, 100))
             };
-            var popupBoxLabel = new Label() {
+            var popupBoxLabel = new Label()
+            {
                 Text = Title,
                 Font = new Font("Microsoft YaHei UI", 7.5F),
                 Size = new Size(217, 21),
@@ -758,7 +770,8 @@ namespace Dobby {
                 ForeColor = SystemColors.Control,
                 BackColor = Color.FromArgb(100, 100, 100)
             };
-            var closeBtn = new Button() {
+            var closeBtn = new Button()
+            {
                 Text = "X",
                 Cursor = Cursors.Cross,
                 Size = new Size(19, 19),
@@ -770,7 +783,8 @@ namespace Dobby {
                 Font = new Font("Cambria", 6.5F)
 
             };
-            var textBox = new RichTextBox() {
+            var textBox = new RichTextBox()
+            {
                 ReadOnly = true,
                 Cursor = Cursors.Cross,
                 Size = new Size(242, PopupGroupBox.Size.Height - 35),
@@ -793,13 +807,6 @@ namespace Dobby {
 
         private static void KillTextBox(object sender, MouseEventArgs e) => PopupGroupBox?.Dispose();
         #endregion
-
-
-
-        public static void LoadPresentExecutableInStream(string OpenedFile) {
-            MainStream?.Dispose();
-            MainStream = File.Open(OpenedFile, FileMode.Open, FileAccess.ReadWrite);
-        }
 
         /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///-- DEBUG MODE OFFSETS AND GAME INDENTIFIERS --\\\

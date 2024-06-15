@@ -1250,7 +1250,8 @@ namespace Dobby {
             if(OpenedFile.ShowDialog() == DialogResult.OK) {
                 if(OriginalFormScale != Size.Empty || MainStreamIsOpen) ResetCustomDebugOptions();
 
-                LoadPresentExecutableInStream(ExecutablePathBox.Text = OpenedFile.FileName);
+                MainStream?.Dispose();
+                MainStream = File.Open(ExecutablePathBox.Text = OpenedFile.FileName, FileMode.Open, FileAccess.ReadWrite);
                 
                 Game = GetGameID(MainStream);
                 GameInfoLabel.Text = GetGameLabelFromID(Game);
