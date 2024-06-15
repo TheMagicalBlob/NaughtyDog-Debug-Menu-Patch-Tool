@@ -65,7 +65,7 @@ namespace Dobby {
             this.GameSpecificPatchesLabel = new System.Windows.Forms.Label();
             this.SeperatorLine3 = new System.Windows.Forms.Label();
             this.BrowseButton = new Button();
-            this.ExecutablePathBox = new System.Windows.Forms.TextBox();
+            this.ExecutablePathBox = new Dobby.TextBox();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
             this.GameInfoLabel = new System.Windows.Forms.Label();

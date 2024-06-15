@@ -39,7 +39,7 @@ namespace Dobby {
         public void InitializeComponent() {
             this.GameInfoLabel = new System.Windows.Forms.Label();
             this.BrowseButton = new Button();
-            this.ExecutablePathBox = new System.Windows.Forms.TextBox();
+            this.ExecutablePathBox = new Dobby.TextBox();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.RestoredDebugBtn = new Button();
             this.InfoHelpBtn = new Button();

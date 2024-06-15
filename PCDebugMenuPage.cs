@@ -45,7 +45,7 @@ namespace Dobby {
             this.GameInfoLabel = new System.Windows.Forms.Label();
             this.BackBtn = new Button();
             this.BrowseButton = new Button();
-            this.ExecutablePathBox = new System.Windows.Forms.TextBox();
+            this.ExecutablePathBox = new Dobby.TextBox();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.BaseDebugBtn = new Button();
             this.DisableDebugBtn = new Button();

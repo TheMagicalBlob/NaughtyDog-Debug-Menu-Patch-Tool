@@ -109,411 +109,6 @@ namespace Dobby {
         public static Color MainColour = Color.FromArgb(100, 100, 100);
 
 
-        ///////////////////\\\\\\\\\\\\\\\\\\
-        ///--   Form Drawing Functions  --\\\
-        ///////////////////\\\\\\\\\\\\\\\\\\
-        #region Form Drawing Functions
-        /// <summary> Highlights A Control In Yellow With A > Preceeding It When Hovered Over </summary>
-        /// <param name="PassedControl">The Control To Highlight</param>
-        /// <param name="EventIsMouseEnter">Highlight If True</param>
-        public static void HoverLeave(Control PassedControl, bool EventIsMouseEnter) {
-            int ArrowWidth;
-
-            //if(!InfoHasImportantStr & !EventIsMouseEnter) SetInfoLabelText("");
-
-            try {
-                ArrowWidth = (int)PassedControl.CreateGraphics().MeasureString(">", PassedControl.Font).Width;
-            }
-            catch(ObjectDisposedException) {
-                System.Diagnostics.Debug.WriteLine($"Error Getting Width Of Hover Arror From Control ({PassedControl.Name}: {(EventIsMouseEnter ? "Hover" : "Leave")})");
-                return;
-            }
-
-            if(MouseScrolled = EventIsMouseEnter) {
-#if DEBUG
-                HoveredControl = PassedControl;
-#endif
-                CurrentControl = PassedControl.Name;
-                PassedControl.MouseDown += HighlightItemOnCLick;
-                PassedControl.MouseUp += ResetItemHighlight;
-            }
-            else {
-                PassedControl.MouseDown -= HighlightItemOnCLick;
-                PassedControl.MouseUp -= ResetItemHighlight;
-                SetInfoLabelStringOnControlHover(PassedControl);
-            }
-
-            PassedControl.Text = EventIsMouseEnter ? ($">{PassedControl.Text}") : PassedControl.Text.Substring(1);
-
-            if(PassedControl.Size.Width + PassedControl.Location.X != PassedControl.Parent.Size.Width - 1)
-                PassedControl.Size = new Size(EventIsMouseEnter ? PassedControl.Width + ArrowWidth : PassedControl.Width - ArrowWidth, PassedControl.Height);
-        }
-
-        private static void HighlightItemOnCLick(object sender, MouseEventArgs e = null) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
-        public static void ResetItemHighlight(object sender, MouseEventArgs e = null) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
-
-        /// <summary> Draw The Variable Tied To The Sender Control, Aligned To The Right Of The Form
-        ///</summary>
-        public static void DrawButtonVar(object sender, PaintEventArgs e) {
-            var control = sender as Button;
-            var Variable = control.Variable?.ToString();
-
-            var X_Pos = (int)(control.Width - e.Graphics.MeasureString(Variable, control.Font).Width - 5);
-
-            e.Graphics.DrawString(Variable, MainFont, Brushes.LightGreen, new Point(X_Pos, 5));
-        }
-
-        ///<summary> Form Border Pen </summary>
-        public static Pen pen = new Pen(Color.White);
-
-        ///<summary> Create And Apply A Thin Border To The Form </summary>
-        public static void PaintBorder(object sender, PaintEventArgs e) {
-            var ItemPtr = (Form)sender;
-
-            Point[] Border = new Point[] {
-                Point.Empty,
-                new Point(ItemPtr.Width-1, 0),
-                new Point(ItemPtr.Width-1, ItemPtr.Height-1),
-                new Point(0, ItemPtr.Height-1),
-                Point.Empty
-            };
-
-            e.Graphics.Clear(Color.FromArgb(100, 100, 100));
-            e.Graphics.DrawLines(pen, Border);
-        }
-
-        /// <summary> Create And Apply A Thin Line From One End Of The Form To The Other (placeholder code atm)
-        ///</summary>
-        public static void PaintSeperatorLine(object sender, PaintEventArgs e) {
-            var ItemPtr = (Label)sender;
-
-            if(ItemPtr.Size.Height != 15) {
-                MsgOut($"Label On Page {ItemPtr.Parent.Name} Has An Ivalid Height ({ItemPtr.Size.Height})");
-                ItemPtr.Size = new Size(ItemPtr.Size.Width, 15);
-            }
-                
-
-            var LineVerticalPos = 9;
-            Point[] Line = new Point[] {
-                new Point(1, LineVerticalPos),
-                new Point(ItemPtr.Parent.Size.Width - 1, LineVerticalPos)
-            };
-
-            e.Graphics.Clear(Color.FromArgb(100, 100, 100));
-            e.Graphics.DrawLines(pen, Line);
-        }
-
-
-        // TODO: rework this crap
-        public delegate void LabelFlashDelegate();
-        public static readonly LabelFlashDelegate White = () => {
-            ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.White;
-            ActiveForm?.Update();
-        };
-        public static readonly LabelFlashDelegate Yellow = () => {
-            ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.FromArgb(255, 227, 0);
-            ActiveForm?.Update();
-        };
-
-        public static Thread FlashThread = new Thread( () => {
-            while(true) {
-                while(!LabelShouldFlash) { Thread.Sleep(1); }
-                try {
-                    for(int Flashes = 0; Flashes < 8; Flashes++) {
-                        ActiveForm?.Invoke(White);
-                        Thread.Sleep(135);
-                        ActiveForm?.Invoke(Yellow);
-                        Thread.Sleep(135);
-                    }
-                }
-                catch(Exception) {
-                    MsgOut("Form Changed or Lost Focus, Killing Label Flash");
-                }
-                finally {
-                    LabelShouldFlash = false;
-                }
-                
-            }
-        });
-        public delegate void InfoLabelUpdateCallback(string NewText);
-        #endregion
-
-
-        //////////////////\\\\\\\\\\\\\\\\\
-        ///--   Basic Form Functions  --\\\
-        //////////////////\\\\\\\\\\\\\\\\\
-        #region Basic Form Functions
-
-        /// <summary>
-        /// Loads The Specified Page From The PageId Group (E.g. ChangeForm(PageID.PS4MiscPageId))
-        /// </summary>
-        /// <param name="Page"> Page To Change To </param>
-        /// <param name="IsPageGoingBack"> Whether We're Returning Or Loading A New Page </param>
-        public static void ChangeForm(PageID Page) {
-            LastPos = ActiveForm.Location;
-            var ClosingForm = ActiveForm;
-
-            if(!IsPageGoingBack) {
-                for(int i = 0; i < 5; i++) {
-                    if(Pages[i] == null) {
-                        Pages[i] = Common.Page;
-                        break;
-                    }
-                }
-            }
-            else IsPageGoingBack ^= true;
-            Form NewPage = null;
-
-            Common.Page = Page;
-
-            switch(Page) {
-                case PageID.MainPage:
-                    NewPage = MainForm;
-                    break;
-                case PageID.PS4DebugPage:
-                    NewPage = new PS4DebugPage();
-                    break;
-
-                case PageID.PS4DebugHelpPage:
-                    NewPage = new PS4DebugHelpPage();
-                    break;
-
-                case PageID.EbootPatchPage:
-                    NewPage = new EbootPatchPage();
-                    break;
-
-                case PageID.EbootPatchHelpPage:
-                    NewPage = new EbootPatchHelpPage();
-                    break;
-
-                case PageID.PS4MenuSettingsPage:
-                    NewPage = new PS4MenuSettingsPage();
-                    break;
-
-                case PageID.PS4MenuSettingsHelpPage:
-                    //PS4MiscPatchesHelpPage PS4MiscPatchesHelpPage = new PS4MiscPatchesHelpPage();
-                    //PS4MiscPatchesHelpPage.Show();
-                    break;
-
-                case PageID.PkgCreationPage:
-                    NewPage = new PkgCreationPage();
-                    break;
-
-                case PageID.PkgCreationHelpPage:
-                    NewPage = new PkgCreationHelpPage();
-                    break;
-
-                case PageID.Gp4CreationPage:
-                    NewPage = new Gp4CreationPage();
-                    break;
-
-                case PageID.Gp4CreationHelpPage:
-                    break;
-
-                case PageID.PCDebugMenuPage:
-                    NewPage = new PCDebugMenuPage();
-                    MessageBox.Show("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
-                    break;
-
-                case PageID.PlaceholderPage:
-                    MessageBox.Show("Nani The Fuck?");
-                    Environment.Exit(1);
-                    break;
-
-                case PageID.InfoHelpPage:
-                    NewPage = new InfoHelpPage();
-                    break;
-
-                case PageID.CreditsPage:
-                    NewPage = new CreditsPage();
-                    break;
-
-                default: MsgOut($"{Page} Is Not A Page!"); break;
-            }
-
-            NewPage?.Show();
-#if DEBUG
-            LogWindow.SetParent(NewPage);
-#endif
-
-            InfoLabel = ActiveForm.Controls.Find("Info", true)[0];
-            ActiveForm.Location = LastPos;
-
-            if(ClosingForm.Name == "Main") {
-                MainForm = ClosingForm;
-                ClosingForm.Hide();
-                return;
-            }
-
-            ClosingForm.Close();
-        }
-
-        public static void ReturnToPreviousPage() {
-            IsPageGoingBack ^= true;
-
-            for(int i = 4; i >= 0; i--)
-                if(Pages[i] != null) {
-                    ChangeForm((PageID)Pages[i]);
-                    Pages[i] = null;
-                    break;
-                }
-            FormActive = false;
-        }
-
-
-        /// <summary> Buttons To Avoid Prepending The Hover Arrow To </summary>
-        private static readonly string[] Blacklist = new string[] {
-                "!!!",
-                "ExitBtn",
-                "MinimizeBtn",
-                "LabelBtn",
-                "CmdPathBox",
-                "Gp4PathBox"
-        };
-        /// <summary>
-        /// Apply Basic Event Handlers To Form And It's Items
-        /// </summary>
-        public static void ApplyEventHandlersToControl(object sender) {
-            var Item = sender as Control;
-
-#if DEBUG
-            Item.MouseEnter += new EventHandler(DebugControlHover);
-#endif
-
-            Item.MouseDown += new MouseEventHandler(MouseDownFunc);
-            Item.MouseUp += new MouseEventHandler(MouseUpFunc);
-
-            if(Item.Name.Contains("Seperator") && sender.GetType() == typeof(Label))
-                Item.Paint += PaintSeperatorLine;
-
-            if(!Item.Name.Contains("Box")) // So You Can Drag Select The Text Lol
-                Item.MouseMove += new MouseEventHandler(MoveForm);
-
-            if((Item.GetType() == typeof(Button) || Item.GetType() == typeof(Button)) && !Blacklist.Contains(Item.Name)) {
-                Item.MouseEnter += new EventHandler(ControlHover);
-                Item.MouseLeave += new EventHandler(ControlLeave);
-            }
-
-            if(Item.GetType() == typeof(Button))
-                Item.Paint += DrawButtonVar;
-        }
-
-        /// <summary>
-        /// Mass-Apply Basic Event Handlers To Form And It's Items
-        /// </summary>
-        /// <param name="Controls"></param>
-        public static void AddEventHandlersToControls(Control.ControlCollection Controls) { // Got Sick of Manually Editing InitializeComponent()
-
-            Controls.Owner.Paint += PaintBorder;
-            foreach(Control Item in Controls) {
-                ApplyEventHandlersToControl(Item);
-
-                if(Item.HasChildren) // Designer Adds Some Things To Other Controls Sometimes. I Am Lazy
-                    foreach(Control Child in Item.Controls)
-                        ApplyEventHandlersToControl(Child);
-            }
-            InfoLabel = Controls.Find("Info", true)[0];
-
-            // Create Exit And Minimize Buttons, And Add Them To The Top Right Of The Form
-            var Gray = Color.FromArgb(100, 100, 100);
-            Button ExitBtn = new Button() {
-                Location = new Point(Controls.Owner.Size.Width - 24, 1),
-                Size = new Size(23, 23),
-                Name = "ExitBtn",
-                Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
-                Text = "X",
-                FlatStyle = FlatStyle.Flat,
-                BackColor = Gray,
-                ForeColor = SystemColors.Control,
-                TextAlign = ContentAlignment.MiddleLeft,
-                Cursor = Cursors.Cross
-            },
-            MinimizeBtn = new Button() {
-                Location = new Point(Controls.Owner.Size.Width - 47, 1),
-                Size = new Size(23, 23),
-                Name = "MinimizeBtn",
-                Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
-                Text = "--",
-                FlatStyle = FlatStyle.Flat,
-                BackColor = Gray,
-                ForeColor = SystemColors.Control,
-                TextAlign = ContentAlignment.MiddleLeft,
-                Cursor = Cursors.Cross,
-            };
-            
-            MinimizeBtn.FlatAppearance.BorderSize = 0;
-            Controls.Owner.Controls.Add(MinimizeBtn);
-            ExitBtn.FlatAppearance.BorderSize = 0;
-            Controls.Owner.Controls.Add(ExitBtn);
-            MinimizeBtn.BringToFront();
-            ExitBtn.BringToFront();
-
-            MinimizeBtn.Click      += new EventHandler(MinimizeBtn_Click);
-            MinimizeBtn.MouseEnter += new EventHandler(MinimizeBtnMH);
-            MinimizeBtn.MouseLeave += new EventHandler(MinimizeBtnML);
-            ExitBtn    .Click      += new EventHandler(ExitBtn_Click);
-            ExitBtn    .MouseEnter += new EventHandler(ExitBtnMH);
-            ExitBtn    .MouseLeave += new EventHandler(ExitBtnML);
-
-
-            // Clear Info Label Text
-            try { Controls.Owner.Controls.Find("Info", true)[0].Text = string.Empty; } catch(Exception){ MsgOut("Info Label Mising"); }
-        }
-
-        /// <summary>
-        /// Set The Text of The Yellow Label At The Bottom Of The Form
-        /// </summary>
-        public static void SetInfoLabelText(string s) {
-            if(ActiveForm != null)
-            InfoLabel.Text = s;
-        }
-        #endregion
-
-
-
-
-        /////////////////\\\\\\\\\\\\\\\\
-        ///--  Form Event Handlers  --\\\
-        /////////////////\\\\\\\\\\\\\\\\
-        #region Form Event Handlers
-        private static void ExitBtn_Click(object sender, EventArgs e)
-        {
-#if DEBUG
-            LogWindow.Exit();
-#endif
-            MainStream?.Dispose();
-            Environment.Exit(0);
-        }
-        private static void ExitBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
-        private static void ExitBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
-        private static void MinimizeBtn_Click(object sender, EventArgs e) => ((Control)sender).FindForm().WindowState = FormWindowState.Minimized;
-        private static void MinimizeBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
-        private static void MinimizeBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
-
-        public static void MouseDownFunc(object sender, MouseEventArgs e)
-        {
-            MouseIsDown = true; LastPos = ActiveForm.Location;
-            MouseDif = new Point(MousePosition.X - ActiveForm.Location.X, MousePosition.Y - ActiveForm.Location.Y);
-        }
-        public static void MouseUpFunc(object sender, MouseEventArgs e) { MouseScrolled = false; MouseIsDown = false; }
-
-        public static void MoveForm(object sender, MouseEventArgs e)
-        {
-            if (!MouseIsDown)
-                return;
-
-            ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
-            ActiveForm.Update();
-
-#if DEBUG
-            LogWindow.MoveLogToAppEdge(ActiveForm.Location);
-#endif
-        }
-        public static void ControlHover(object sender, EventArgs _ = null) => HoverLeave((Control)sender, true);
-        public static void ControlLeave(object sender, EventArgs _ = null) => HoverLeave((Control)sender, false);
-        #endregion
-
-
 
         /// <summary> Add A Summary, You Lazy Fuck </summary>
         /// <returns> The Game Name And App Version Respectively </returns>
@@ -806,6 +401,439 @@ namespace Dobby {
         }
 
         private static void KillTextBox(object sender, MouseEventArgs e) => PopupGroupBox?.Dispose();
+
+
+        ///////////////////\\\\\\\\\\\\\\\\\\
+        ///--   Form Drawing Functions  --\\\
+        ///////////////////\\\\\\\\\\\\\\\\\\
+        #region Form Drawing Functions
+        /// <summary> Highlights A Control In Yellow With A > Preceeding It When Hovered Over </summary>
+        /// <param name="PassedControl">The Control To Highlight</param>
+        /// <param name="EventIsMouseEnter">Highlight If True</param>
+        public static void HoverLeave(Control PassedControl, bool EventIsMouseEnter)
+        {
+            int ArrowWidth;
+
+            //if(!InfoHasImportantStr & !EventIsMouseEnter) SetInfoLabelText("");
+
+            try
+            {
+                ArrowWidth = (int)PassedControl.CreateGraphics().MeasureString(">", PassedControl.Font).Width;
+            }
+            catch (ObjectDisposedException)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error Getting Width Of Hover Arror From Control ({PassedControl.Name}: {(EventIsMouseEnter ? "Hover" : "Leave")})");
+                return;
+            }
+
+            if (MouseScrolled = EventIsMouseEnter)
+            {
+#if DEBUG
+                HoveredControl = PassedControl;
+#endif
+                CurrentControl = PassedControl.Name;
+                PassedControl.MouseDown += HighlightItemOnCLick;
+                PassedControl.MouseUp += ResetItemHighlight;
+            }
+            else
+            {
+                PassedControl.MouseDown -= HighlightItemOnCLick;
+                PassedControl.MouseUp -= ResetItemHighlight;
+                SetInfoLabelStringOnControlHover(PassedControl);
+            }
+
+            PassedControl.Text = EventIsMouseEnter ? ($">{PassedControl.Text}") : PassedControl.Text.Substring(1);
+
+            if (PassedControl.Size.Width + PassedControl.Location.X != PassedControl.Parent.Size.Width - 1)
+                PassedControl.Size = new Size(EventIsMouseEnter ? PassedControl.Width + ArrowWidth : PassedControl.Width - ArrowWidth, PassedControl.Height);
+        }
+
+        private static void HighlightItemOnCLick(object sender, MouseEventArgs e = null) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
+        public static void ResetItemHighlight(object sender, MouseEventArgs e = null) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
+
+        /// <summary> Draw The Variable Tied To The Sender Control, Aligned To The Right Of The Form
+        ///</summary>
+        public static void DrawButtonVar(object sender, PaintEventArgs e)
+        {
+            var control = sender as Button;
+            var Variable = control.Variable?.ToString();
+
+            var X_Pos = (int)(control.Width - e.Graphics.MeasureString(Variable, control.Font).Width - 5);
+
+            e.Graphics.DrawString(Variable, MainFont, Brushes.LightGreen, new Point(X_Pos, 5));
+        }
+
+        ///<summary> Form Border Pen </summary>
+        public static Pen pen = new Pen(Color.White);
+
+        ///<summary> Create And Apply A Thin Border To The Form </summary>
+        public static void PaintBorder(object sender, PaintEventArgs e)
+        {
+            var ItemPtr = (Form)sender;
+
+            Point[] Border = new Point[] {
+                Point.Empty,
+                new Point(ItemPtr.Width-1, 0),
+                new Point(ItemPtr.Width-1, ItemPtr.Height-1),
+                new Point(0, ItemPtr.Height-1),
+                Point.Empty
+            };
+
+            e.Graphics.Clear(Color.FromArgb(100, 100, 100));
+            e.Graphics.DrawLines(pen, Border);
+        }
+
+        /// <summary> Create And Apply A Thin Line From One End Of The Form To The Other (placeholder code atm)
+        ///</summary>
+        public static void PaintSeperatorLine(object sender, PaintEventArgs e)
+        {
+            var ItemPtr = (Label)sender;
+
+            if (ItemPtr.Size.Height != 15)
+            {
+                MsgOut($"Label On Page {ItemPtr.Parent.Name} Has An Ivalid Height ({ItemPtr.Size.Height})");
+                ItemPtr.Size = new Size(ItemPtr.Size.Width, 15);
+            }
+
+
+            var LineVerticalPos = 9;
+            Point[] Line = new Point[] {
+                new Point(1, LineVerticalPos),
+                new Point(ItemPtr.Parent.Size.Width - 1, LineVerticalPos)
+            };
+
+            e.Graphics.Clear(Color.FromArgb(100, 100, 100));
+            e.Graphics.DrawLines(pen, Line);
+        }
+
+
+        // TODO: rework this crap
+        public delegate void LabelFlashDelegate();
+        public static readonly LabelFlashDelegate White = () => {
+            ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.White;
+            ActiveForm?.Update();
+        };
+        public static readonly LabelFlashDelegate Yellow = () => {
+            ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.FromArgb(255, 227, 0);
+            ActiveForm?.Update();
+        };
+
+        public static Thread FlashThread = new Thread(() => {
+            while (true)
+            {
+                while (!LabelShouldFlash) { Thread.Sleep(1); }
+                try
+                {
+                    for (int Flashes = 0; Flashes < 8; Flashes++)
+                    {
+                        ActiveForm?.Invoke(White);
+                        Thread.Sleep(135);
+                        ActiveForm?.Invoke(Yellow);
+                        Thread.Sleep(135);
+                    }
+                }
+                catch (Exception)
+                {
+                    MsgOut("Form Changed or Lost Focus, Killing Label Flash");
+                }
+                finally
+                {
+                    LabelShouldFlash = false;
+                }
+
+            }
+        });
+        public delegate void InfoLabelUpdateCallback(string NewText);
+        #endregion
+
+
+        //////////////////\\\\\\\\\\\\\\\\\
+        ///--   Basic Form Functions  --\\\
+        //////////////////\\\\\\\\\\\\\\\\\
+        #region Basic Form Functions
+
+        /// <summary>
+        /// Loads The Specified Page From The PageId Group (E.g. ChangeForm(PageID.PS4MiscPageId))
+        /// </summary>
+        /// <param name="Page"> Page To Change To </param>
+        /// <param name="IsPageGoingBack"> Whether We're Returning Or Loading A New Page </param>
+        public static void ChangeForm(PageID Page)
+        {
+            LastPos = ActiveForm.Location;
+            var ClosingForm = ActiveForm;
+
+            if (!IsPageGoingBack)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    if (Pages[i] == null)
+                    {
+                        Pages[i] = Common.Page;
+                        break;
+                    }
+                }
+            }
+            else IsPageGoingBack ^= true;
+            Form NewPage = null;
+
+            Common.Page = Page;
+
+            switch (Page)
+            {
+                case PageID.MainPage:
+                    NewPage = MainForm;
+                    break;
+                case PageID.PS4DebugPage:
+                    NewPage = new PS4DebugPage();
+                    break;
+
+                case PageID.PS4DebugHelpPage:
+                    NewPage = new PS4DebugHelpPage();
+                    break;
+
+                case PageID.EbootPatchPage:
+                    NewPage = new EbootPatchPage();
+                    break;
+
+                case PageID.EbootPatchHelpPage:
+                    NewPage = new EbootPatchHelpPage();
+                    break;
+
+                case PageID.PS4MenuSettingsPage:
+                    NewPage = new PS4MenuSettingsPage();
+                    break;
+
+                case PageID.PS4MenuSettingsHelpPage:
+                    //PS4MiscPatchesHelpPage PS4MiscPatchesHelpPage = new PS4MiscPatchesHelpPage();
+                    //PS4MiscPatchesHelpPage.Show();
+                    break;
+
+                case PageID.PkgCreationPage:
+                    NewPage = new PkgCreationPage();
+                    break;
+
+                case PageID.PkgCreationHelpPage:
+                    NewPage = new PkgCreationHelpPage();
+                    break;
+
+                case PageID.Gp4CreationPage:
+                    NewPage = new Gp4CreationPage();
+                    break;
+
+                case PageID.Gp4CreationHelpPage:
+                    break;
+
+                case PageID.PCDebugMenuPage:
+                    NewPage = new PCDebugMenuPage();
+                    MessageBox.Show("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
+                    break;
+
+                case PageID.PlaceholderPage:
+                    MessageBox.Show("Nani The Fuck?");
+                    Environment.Exit(1);
+                    break;
+
+                case PageID.InfoHelpPage:
+                    NewPage = new InfoHelpPage();
+                    break;
+
+                case PageID.CreditsPage:
+                    NewPage = new CreditsPage();
+                    break;
+
+                default: MsgOut($"{Page} Is Not A Page!"); break;
+            }
+
+            NewPage?.Show();
+#if DEBUG
+            LogWindow.SetParent(NewPage);
+#endif
+
+            InfoLabel = ActiveForm.Controls.Find("Info", true)[0];
+            ActiveForm.Location = LastPos;
+
+            if (ClosingForm.Name == "Main")
+            {
+                MainForm = ClosingForm;
+                ClosingForm.Hide();
+                return;
+            }
+
+            ClosingForm.Close();
+        }
+
+        public static void ReturnToPreviousPage()
+        {
+            IsPageGoingBack ^= true;
+
+            for (int i = 4; i >= 0; i--)
+                if (Pages[i] != null)
+                {
+                    ChangeForm((PageID)Pages[i]);
+                    Pages[i] = null;
+                    break;
+                }
+            FormActive = false;
+        }
+
+
+        /// <summary> Buttons To Avoid Prepending The Hover Arrow To </summary>
+        private static readonly string[] Blacklist = new string[] {
+                "!!!",
+                "ExitBtn",
+                "MinimizeBtn",
+                "LabelBtn",
+                "CmdPathBox",
+                "Gp4PathBox"
+        };
+        /// <summary>
+        /// Apply Basic Event Handlers To Form And It's Items
+        /// </summary>
+        public static void ApplyEventHandlersToControl(object sender)
+        {
+            var Item = sender as Control;
+
+#if DEBUG
+            Item.MouseEnter += new EventHandler(DebugControlHover);
+#endif
+
+            Item.MouseDown += new MouseEventHandler(MouseDownFunc);
+            Item.MouseUp += new MouseEventHandler(MouseUpFunc);
+
+            if (Item.Name.Contains("Seperator") && sender.GetType() == typeof(Label))
+                Item.Paint += PaintSeperatorLine;
+
+            if (!Item.Name.Contains("Box")) // So You Can Drag Select The Text Lol
+                Item.MouseMove += new MouseEventHandler(MoveForm);
+
+            if ((Item.GetType() == typeof(Button) || Item.GetType() == typeof(Button)) && !Blacklist.Contains(Item.Name))
+            {
+                Item.MouseEnter += new EventHandler(ControlHover);
+                Item.MouseLeave += new EventHandler(ControlLeave);
+            }
+
+            if (Item.GetType() == typeof(Button))
+                Item.Paint += DrawButtonVar;
+        }
+
+        /// <summary>
+        /// Mass-Apply Basic Event Handlers To Form And It's Items
+        /// </summary>
+        /// <param name="Controls"></param>
+        public static void AddEventHandlersToControls(Control.ControlCollection Controls)
+        { // Got Sick of Manually Editing InitializeComponent()
+
+            Controls.Owner.Paint += PaintBorder;
+            foreach (Control Item in Controls)
+            {
+                ApplyEventHandlersToControl(Item);
+
+                if (Item.HasChildren) // Designer Adds Some Things To Other Controls Sometimes. I Am Lazy
+                    foreach (Control Child in Item.Controls)
+                        ApplyEventHandlersToControl(Child);
+            }
+            InfoLabel = Controls.Find("Info", true)[0];
+
+            // Create Exit And Minimize Buttons, And Add Them To The Top Right Of The Form
+            var Gray = Color.FromArgb(100, 100, 100);
+            Button ExitBtn = new Button()
+            {
+                Location = new Point(Controls.Owner.Size.Width - 24, 1),
+                Size = new Size(23, 23),
+                Name = "ExitBtn",
+                Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
+                Text = "X",
+                FlatStyle = FlatStyle.Flat,
+                BackColor = Gray,
+                ForeColor = SystemColors.Control,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Cursor = Cursors.Cross
+            },
+            MinimizeBtn = new Button()
+            {
+                Location = new Point(Controls.Owner.Size.Width - 47, 1),
+                Size = new Size(23, 23),
+                Name = "MinimizeBtn",
+                Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
+                Text = "--",
+                FlatStyle = FlatStyle.Flat,
+                BackColor = Gray,
+                ForeColor = SystemColors.Control,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Cursor = Cursors.Cross,
+            };
+
+            MinimizeBtn.FlatAppearance.BorderSize = 0;
+            Controls.Owner.Controls.Add(MinimizeBtn);
+            ExitBtn.FlatAppearance.BorderSize = 0;
+            Controls.Owner.Controls.Add(ExitBtn);
+            MinimizeBtn.BringToFront();
+            ExitBtn.BringToFront();
+
+            MinimizeBtn.Click += new EventHandler(MinimizeBtn_Click);
+            MinimizeBtn.MouseEnter += new EventHandler(MinimizeBtnMH);
+            MinimizeBtn.MouseLeave += new EventHandler(MinimizeBtnML);
+            ExitBtn.Click += new EventHandler(ExitBtn_Click);
+            ExitBtn.MouseEnter += new EventHandler(ExitBtnMH);
+            ExitBtn.MouseLeave += new EventHandler(ExitBtnML);
+
+
+            // Clear Info Label Text
+            try { Controls.Owner.Controls.Find("Info", true)[0].Text = string.Empty; } catch (Exception) { MsgOut("Info Label Mising"); }
+        }
+
+        /// <summary>
+        /// Set The Text of The Yellow Label At The Bottom Of The Form
+        /// </summary>
+        public static void SetInfoLabelText(string s)
+        {
+            if (ActiveForm != null)
+                InfoLabel.Text = s;
+        }
+        #endregion
+
+
+        /////////////////\\\\\\\\\\\\\\\\
+        ///--  Form Event Handlers  --\\\
+        /////////////////\\\\\\\\\\\\\\\\
+        #region Form Event Handlers
+        private static void ExitBtn_Click(object sender, EventArgs e)
+        {
+#if DEBUG
+            LogWindow.Exit();
+#endif
+            MainStream?.Dispose();
+            Environment.Exit(0);
+        }
+        private static void ExitBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
+        private static void ExitBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
+        private static void MinimizeBtn_Click(object sender, EventArgs e) => ((Control)sender).FindForm().WindowState = FormWindowState.Minimized;
+        private static void MinimizeBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
+        private static void MinimizeBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
+
+        public static void MouseDownFunc(object sender, MouseEventArgs e)
+        {
+            MouseIsDown = true; LastPos = ActiveForm.Location;
+            MouseDif = new Point(MousePosition.X - ActiveForm.Location.X, MousePosition.Y - ActiveForm.Location.Y);
+        }
+        public static void MouseUpFunc(object sender, MouseEventArgs e) { MouseScrolled = false; MouseIsDown = false; }
+
+        public static void MoveForm(object sender, MouseEventArgs e)
+        {
+            if (!MouseIsDown)
+                return;
+
+            ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
+            ActiveForm.Update();
+
+#if DEBUG
+            LogWindow.MoveLogToAppEdge(ActiveForm.Location);
+#endif
+        }
+        public static void ControlHover(object sender, EventArgs _ = null) => HoverLeave((Control)sender, true);
+        public static void ControlLeave(object sender, EventArgs _ = null) => HoverLeave((Control)sender, false);
+        #endregion
+
         #endregion
 
         /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -950,10 +978,66 @@ namespace Dobby {
         ;
         #endregion
     }
+    
+    public class TextBox : System.Windows.Forms.TextBox {
+        public TextBox() {
+            IsDefault = true;
 
+            TextChanged += Set;
+
+            GotFocus += (object _, EventArgs __) => {
+                if(IsDefault) {
+                    Font = new Font("Microsoft YaHei UI", 8.25F);
+                    Clear();
+                    IsDefault = false;
+                }
+            };
+
+            Click += (object _, EventArgs __) => { // Just In Case, I Suppose.
+                if(IsDefault) {
+                    Font = new Font("Microsoft YaHei UI", 8.25F);
+                    Clear();
+                    IsDefault = false;
+                }
+            };
+
+            LostFocus += (object _, EventArgs __) => {
+                if(Text.Length <= 0 || Text.Trim().Length <= 0) {
+                    Font = new Font("Microsoft YaHei UI", 8.25F, FontStyle.Italic);
+                    Text = DefaultText;
+                    IsDefault = true;
+                }
+            };
+        }
+
+
+        private string DefaultText;
+        public bool IsDefault { get; private set; }
+
+
+        /// <summary> Yoink Default Text From First Text Assignment.
+        ///</summary>
+        void Set(object s, EventArgs e) {
+            DefaultText = Text;
+
+            TextChanged -= Set;
+            TextChanged += (object control, EventArgs _) => {
+                if(IsDefault && Text.Length > 0) {
+                    Font = new Font("Microsoft YaHei UI", 8.25F);
+                    IsDefault = false;
+                }
+            };
+        }
+    }
 
     // Custom Button Class So I Can Attach A Value To Them. This Is Probably The Wrong Way To Do This, But Whatever
     public class Button : System.Windows.Forms.Button {
+        public Button() {
+            Variable = null;
+            Info = string.Empty;
+        }
+
         public object Variable;
+        public string Info;
     }
 }

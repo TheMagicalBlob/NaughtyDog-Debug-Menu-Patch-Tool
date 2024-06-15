@@ -48,9 +48,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\libdebug.dll</HintPath>
     </Reference>
-    <Reference Include="libgp4, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\libgp4.dll</HintPath>
+    <Reference Include="libgp4">
+      <HintPath>..\libgp4.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

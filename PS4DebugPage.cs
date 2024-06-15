@@ -47,7 +47,7 @@ namespace Dobby {
             this.TLLBtn = new Dobby.Button();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
             this.ManualConnectBtn = new Dobby.Button();
-            this.IPBOX = new System.Windows.Forms.TextBox();
+            this.IPBOX = new Dobby.TextBox();
             this.Info = new System.Windows.Forms.Label();
             this.T1RBtn = new Dobby.Button();
             this.T2Btn = new Dobby.Button();
@@ -58,7 +58,7 @@ namespace Dobby {
             this.UC3Btn = new Dobby.Button();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.PS4DebugPayloadBtn = new Dobby.Button();
-            this.PortBox = new System.Windows.Forms.TextBox();
+            this.PortBox = new Dobby.TextBox();
             this.IPLabelBtn = new Dobby.Button();
             this.PortLabelBtn = new Dobby.Button();
             this.SeperatorLine3 = new System.Windows.Forms.Label();
@@ -541,7 +541,7 @@ namespace Dobby {
 
                     try {
                         S.Connect(new IPEndPoint(IPAddress.Parse(parameters.IP), int.Parse(parameters.Port)));
-                        S.Send(Properties.Resources.PS4Debug1_1_15);
+                        S.Send(Properties.Resources.ps4debug);
                     }
                     catch(Exception e) {
                         Dev.MsgOut($"Failed To Connect To Specified Address/Port\nError: {e.Message}\n{e.StackTrace}");
