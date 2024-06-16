@@ -112,9 +112,7 @@ namespace Dobby {
 
         /// <summary> Add A Summary, You Lazy Fuck </summary>
         /// <returns> The Game Name And App Version Respectively </returns>
-        public static int GetGameID(FileStream stream)
-        {
-
+        public static int GetGameID(FileStream stream) {
             byte[] LocalExecutableCheck = new byte[160];
 
             // Make Sure The File's Actually Even A .elf
@@ -131,8 +129,7 @@ namespace Dobby {
         }
 
         /// <summary> Write A Byte To The MainStream And Flush The Data </summary>
-        public static void WriteByte(int offset, byte data)
-        {
+        public static void WriteByte(int offset, byte data) {
             if (MainStream == null) { MessageBox.Show($"No Active Data Stream To Write To ({MainStreamIsOpen})", $"Addr: {offset:X} Byte: 0x{data:X}"); return; }
 
             MainStream.Position = offset;
@@ -140,82 +137,83 @@ namespace Dobby {
             MainStream.Flush();
         }
 
-        public static string GetGameLabelFromID(int GameID)
-        {
-            switch (GameID)
-            {
-                case UC1100: return "Uncharted 1 1.00";
-                case UC1102: return "Uncharted 1 1.02";
-                case UC2100: return "Uncharted 2 1.00";
-                case UC2102: return "Uncharted 2 1.02";
-                case UC3100: return "Uncharted 3 1.00";
-                case UC3102: return "Uncharted 3 1.02";
-                case UC4100: return "Uncharted 4 1.00";
-                case UC4101: return "Uncharted 4 1.01";
-                case UC4102: return "Uncharted 4 1.02";
-                case UC4103: return "Uncharted 4 1.03";
-                case UC4104: return "Uncharted 4 1.04";
-                case UC4105: return "Uncharted 4 1.05";
-                case UC4106: return "Uncharted 4 1.06";
-                case UC4108: return "Uncharted 4 1.08";
-                case UC4110: return "Uncharted 4 1.10";
-                case UC4111: return "Uncharted 4 1.11";
-                case UC4112: return "Uncharted 4 1.12";
-                case UC4113: return "Uncharted 4 1.13";
-                case UC4115: return "Uncharted 4 1.15";
-                case UC4116: return "Uncharted 4 1.16";
-                case UC4117: return "Uncharted 4 1.17";
-                case UC4118: return "Uncharted 4 1.18 SP/MP";
-                case UC4119: return "Uncharted 4 1.19 SP/MP";
-                case UC4120MP: return "Uncharted 4 1.20 MP";
-                case UC4120: return "Uncharted 4 1.20 SP";
-                case UC4121MP: return "Uncharted 4 1.21 MP";
-                case UC4121: return "Uncharted 4 1.21 SP";
-                case UC4122MP: return "Uncharted 4 1.22 MP";
-                case UC4122_23: return "Uncharted 4 1.22/23 SP";
-                case UC4123MP: return "Uncharted 4 1.23 MP";
-                case UC4124MP: return "Uncharted 4 1.24 MP";
-                case UC4124_25: return "Uncharted 4 1.24/25 SP";
-                case UC4125MP: return "Uncharted 4 1.25 MP";
-                case UC4127_28MP: return "Uncharted 4 1.27/28 MP";
-                case UC4127_133: return "Uncharted 4 1.27+ SP";
-                case UC4129MP: return "Uncharted 4 1.29 MP";
-                case UC4130MP: return "Uncharted 4 1.30 MP";
-                case UC4131MP: return "Uncharted 4 1.31 MP";
-                case UC4132MP: return "Uncharted 4 1.32/TLL 1.08 MP";
-                case UC4133MP: return "Uncharted 4 1.33/TLL 1.09 MP";
+        public static string GetGameLabelFromID(int GameID) {
+            switch (GameID) {
+                case UC1100:       return "Uncharted 1 1.00";
+                case UC1102:       return "Uncharted 1 1.02";
+                case UC2100:       return "Uncharted 2 1.00";
+                case UC2102:       return "Uncharted 2 1.02";
+                case UC3100:       return "Uncharted 3 1.00";
+                case UC3102:       return "Uncharted 3 1.02";
+                case UC4100:       return "Uncharted 4 1.00";
+                case UC4101:       return "Uncharted 4 1.01";
+                case UC4102:       return "Uncharted 4 1.02";
+                case UC4103:       return "Uncharted 4 1.03";
+                case UC4104:       return "Uncharted 4 1.04";
+                case UC4105:       return "Uncharted 4 1.05";
+                case UC4106:       return "Uncharted 4 1.06";
+                case UC4108:       return "Uncharted 4 1.08";
+                case UC4110:       return "Uncharted 4 1.10";
+                case UC4111:       return "Uncharted 4 1.11";
+                case UC4112:       return "Uncharted 4 1.12";
+                case UC4113:       return "Uncharted 4 1.13";
+                case UC4115:       return "Uncharted 4 1.15";
+                case UC4116:       return "Uncharted 4 1.16";
+                case UC4117:       return "Uncharted 4 1.17";
+                case UC4118:       return "Uncharted 4 1.18 SP/MP";
+                case UC4119:       return "Uncharted 4 1.19 SP/MP";
+                case UC4120MP:     return "Uncharted 4 1.20 MP";
+                case UC4120:       return "Uncharted 4 1.20 SP";
+                case UC4121MP:     return "Uncharted 4 1.21 MP";
+                case UC4121:       return "Uncharted 4 1.21 SP";
+                case UC4122MP:     return "Uncharted 4 1.22 MP";
+                case UC4122_23:    return "Uncharted 4 1.22/23 SP";
+                case UC4123MP:     return "Uncharted 4 1.23 MP";
+                case UC4124MP:     return "Uncharted 4 1.24 MP";
+                case UC4124_25:    return "Uncharted 4 1.24/25 SP";
+                case UC4125MP:     return "Uncharted 4 1.25 MP";
+                case UC4127_28MP:  return "Uncharted 4 1.27/28 MP";
+                case UC4127_133:   return "Uncharted 4 1.27+ SP";
+                case UC4129MP:     return "Uncharted 4 1.29 MP";
+                case UC4130MP:     return "Uncharted 4 1.30 MP";
+                case UC4131MP:     return "Uncharted 4 1.31 MP";
+                case UC4132MP:     return "Uncharted 4 1.32/TLL 1.08 MP";
+                case UC4133MP:     return "Uncharted 4 1.33/TLL 1.09 MP";
                 case UC4MPBETA100: return "Uncharted 4 MP Beta 1.00";
                 case UC4MPBETA109: return "Uncharted 4 MP Beta 1.09";
-                case TLL100MP: return "Uncharted Lost Legacy 1.00 MP";
-                case TLL100: return "Uncharted Lost Legacy 1.00 SP";
-                case TLL10X: return "Uncharted Lost Legacy 1.08/9 SP";
-                case T1R100: return "The Last Of Us 1.00";
-                case T1R109: return "The Last Of Us 1.09";
-                case T1R110: return "The Last Of Us 1.10";
-                case T1R111: return "The Last Of Us 1.11";
-                case T2100: return "The Last Of Us 2 1.00";
-                case T2101: return "The Last Of Us 2 1.01";
-                case T2102: return "The Last Of Us 2 1.02";
-                case T2105: return "The Last Of Us 2 1.05";
-                case T2107: return "The Last Of Us 2 1.07";
-                case T2108: return "The Last Of Us 2 1.08";
-                case T2109: return "The Last Of Us 2 1.09";
-                default: return $"Unknown Game ({GameID})";
+                case TLL100MP:     return "Uncharted Lost Legacy 1.00 MP";
+                case TLL100:       return "Uncharted Lost Legacy 1.00 SP";
+                case TLL10X:       return "Uncharted Lost Legacy 1.08/9 SP";
+                case T1R100:       return "The Last Of Us 1.00";
+                case T1R109:       return "The Last Of Us 1.09";
+                case T1R110:       return "The Last Of Us 1.10";
+                case T1R111:       return "The Last Of Us 1.11";
+                case T2100:        return "The Last Of Us 2 1.00";
+                case T2101:        return "The Last Of Us 2 1.01";
+                case T2102:        return "The Last Of Us 2 1.02";
+                case T2105:        return "The Last Of Us 2 1.05";
+                case T2107:        return "The Last Of Us 2 1.07";
+                case T2108:        return "The Last Of Us 2 1.08";
+                case T2109:        return "The Last Of Us 2 1.09";
+
+                default:
+                    return $"Unknown Game ({GameID})";
             }
         }
 
 
         /// <summary> Sets The Info Label String Based On The Currently Hovered Control </summary>
         /// <param name="Sender">The Hovered Control</param>
-        public static void SetInfoLabelStringOnControlHover(Control Sender, float FontAdjustment = 10f)
-        { // SetInfo
+        public static void SetInfoLabelStringOnControlHover(Control Sender, float FontAdjustment = 10f) {
+            // SetInfo
           // TODO: this is fucking stupid, change or delete it.
 
             string InfoLabelString = "";
 
-            switch (Sender.Name)
-            {
-                default: return;
+            switch (Sender.Name) {
+                default:
+                    return;
+
                 //
                 // Const
                 //
@@ -345,19 +343,17 @@ namespace Dobby {
             SetInfoLabelText(InfoLabelString);
         }
 
-        public static RichTextBox CreateTextBox(string Title)
-        {
+        public static RichTextBox CreateTextBox(string Title) {
             PopupGroupBox?.Dispose();
 
-            PopupGroupBox = new GroupBox()
-            {
+            PopupGroupBox = new GroupBox() {
                 Cursor = Cursors.Cross,
                 Size = new Size(250, ActiveForm.Size.Height - 65),
                 Location = new Point(35, ActiveForm.Controls.Find("SeperatorLine0", true)[0].Location.Y + 8),
                 BackColor = Color.FromArgb(255, Color.FromArgb(100, 100, 100))
             };
-            var popupBoxLabel = new Label()
-            {
+
+            var popupBoxLabel = new Label() {
                 Text = Title,
                 Font = new Font("Microsoft YaHei UI", 7.5F),
                 Size = new Size(217, 21),
@@ -365,8 +361,7 @@ namespace Dobby {
                 ForeColor = SystemColors.Control,
                 BackColor = Color.FromArgb(100, 100, 100)
             };
-            var closeBtn = new Button()
-            {
+            var closeBtn = new Button() {
                 Text = "X",
                 Cursor = Cursors.Cross,
                 Size = new Size(19, 19),
@@ -378,8 +373,7 @@ namespace Dobby {
                 Font = new Font("Cambria", 6.5F)
 
             };
-            var textBox = new RichTextBox()
-            {
+            var textBox = new RichTextBox() {
                 ReadOnly = true,
                 Cursor = Cursors.Cross,
                 Size = new Size(242, PopupGroupBox.Size.Height - 35),
