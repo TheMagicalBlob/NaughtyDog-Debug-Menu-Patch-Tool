@@ -206,11 +206,11 @@ namespace Dobby {
         /// <param name="Sender">The Hovered Control</param>
         public static void SetInfoLabelStringOnControlHover(Control Sender, float FontAdjustment = 10f) {
             // SetInfo
-          // TODO: this is fucking stupid, change or delete it.
+            // TODO: this is fucking stupid, change or delete it.
 
             string InfoLabelString = "";
 
-            switch (Sender.Name) {
+            switch(Sender.Name) {
                 default:
                     return;
 
@@ -389,7 +389,7 @@ namespace Dobby {
             ActiveForm.Controls.Add(PopupGroupBox);
 
             PopupGroupBox.BringToFront(); textBox.BringToFront();
-            closeBtn.BringToFront(); popupBoxLabel.BringToFront();
+            closeBtn.BringToFront();      popupBoxLabel.BringToFront();
 
             return textBox;
         }
@@ -404,8 +404,7 @@ namespace Dobby {
         /// <summary> Highlights A Control In Yellow With A > Preceeding It When Hovered Over </summary>
         /// <param name="PassedControl">The Control To Highlight</param>
         /// <param name="EventIsMouseEnter">Highlight If True</param>
-        public static void HoverLeave(Control PassedControl, bool EventIsMouseEnter)
-        {
+        public static void HoverLeave(Control PassedControl, bool EventIsMouseEnter) {
             int ArrowWidth;
 
             void HighlightItemOnCLick(object sender, MouseEventArgs e = null) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
@@ -977,12 +976,9 @@ namespace Dobby {
     public class TextBox : System.Windows.Forms.TextBox {
         public TextBox() {
 
-            IsDefault = true;
-            
-            Info = ((string)Tag) ?? string.Empty;
-
-
+            Info         = ((string)Tag) ?? string.Empty;
             TextChanged += Set;
+            IsDefault    = true;
 
             GotFocus += (object _, EventArgs __) => {
                 if(IsDefault) {
@@ -1010,10 +1006,10 @@ namespace Dobby {
         }
 
 
-        private string DefaultText;
         public bool IsDefault { get; private set; }
-        public string Info { get; private set; }
-
+        public string Info    { get; private set; }
+        
+        private string DefaultText;
 
         /// <summary> Yoink Default Text From First Text Assignment.
         ///</summary>
@@ -1029,6 +1025,7 @@ namespace Dobby {
             };
         }
     }
+
 
     // Custom Button Class So I Can Attach A Value To Them. This Is Probably The Wrong Way To Do This, But Whatever
     public class Button : System.Windows.Forms.Button {
