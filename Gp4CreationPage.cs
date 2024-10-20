@@ -544,7 +544,7 @@ namespace Dobby {
             };
 
             if(file.ShowDialog() == DialogResult.OK)
-                gp4.BasePkgPath = file.FileName;
+                gp4.BasePackagePath = file.FileName;
             else return;
         }
 

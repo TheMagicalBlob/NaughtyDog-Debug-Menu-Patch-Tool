@@ -711,15 +711,13 @@ namespace Dobby {
         }
 
         /// <summary>
-        /// Mass-Apply Basic Event Handlers To Form And It's Items
+        /// Mass-Apply Basic Event Handlers To Form And It's Items. (I got sick of manually editing InitializeComponent())
         /// </summary>
-        /// <param name="Controls"></param>
+        /// <param name="Controls">Collection of Controls to Apply Event Handlers to.</param>
         public static void AddEventHandlersToControls(Control.ControlCollection Controls)
-        { // Got Sick of Manually Editing InitializeComponent()
-
+        {
             Controls.Owner.Paint += PaintBorder;
-            foreach (Control Item in Controls)
-            {
+            foreach (Control Item in Controls) {
                 ApplyEventHandlersToControl(Item);
 
                 if (Item.HasChildren) // Designer Adds Some Things To Other Controls Sometimes. I Am Lazy
@@ -730,8 +728,8 @@ namespace Dobby {
 
             // Create Exit And Minimize Buttons, And Add Them To The Top Right Of The Form
             var Gray = Color.FromArgb(100, 100, 100);
-            Button ExitBtn = new Button()
-            {
+
+            Button ExitBtn = new Button() {
                 Location = new Point(Controls.Owner.Size.Width - 24, 1),
                 Size = new Size(23, 23),
                 Name = "ExitBtn",
@@ -743,8 +741,7 @@ namespace Dobby {
                 TextAlign = ContentAlignment.MiddleLeft,
                 Cursor = Cursors.Cross
             },
-            MinimizeBtn = new Button()
-            {
+            MinimizeBtn = new Button() {
                 Location = new Point(Controls.Owner.Size.Width - 47, 1),
                 Size = new Size(23, 23),
                 Name = "MinimizeBtn",
