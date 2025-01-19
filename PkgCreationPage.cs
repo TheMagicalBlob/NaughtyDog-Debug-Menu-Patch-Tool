@@ -147,10 +147,8 @@ namespace Dobby {
                 if (MessageBox.Show("orbis-pub-cmd.exe And A .gp4 Are Necessary For .pkg Creation, Create New .gp4?", string.Empty,
                     MessageBoxButtons.YesNo) == DialogResult.OK)
                 {
-                    var gp4 = new libgp4.GP4Creator() {
-                        GamedataFolder = ""
-                    };
-                    gp4.CreateGP4(null, true);
+                    var gp4 = new libgp4.GP4Creator();
+                    gp4.CreateGP4();
                 }
                 return;
             }

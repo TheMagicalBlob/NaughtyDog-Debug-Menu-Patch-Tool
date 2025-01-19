@@ -228,6 +228,7 @@
           "* 4.48-alpha.233.649 | Jic",
           "* 4.48-alpha.233.650 | Minor Formatting Fixes (Eat Shite, VS)",
           "* 4.48-alpha.233.651 | JIC, Been a While",
+          "* 4.48-alpha.234.653 | Added support for the 1.08 version of The Last of Us Remastered; Disabled the clunky, half-arsed pgk creation page (not very user friendly, and needs testing after gp4 library overhaul)",
 
         };
 

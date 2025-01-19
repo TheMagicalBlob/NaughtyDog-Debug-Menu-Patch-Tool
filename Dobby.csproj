@@ -49,7 +49,7 @@
       <HintPath>.\libdebug.dll</HintPath>
     </Reference>
     <Reference Include="libgp4">
-      <HintPath>..\OrbisGP4\libgp4\bin\Debug\libgp4.dll</HintPath>
+      <HintPath>..\OrbisGP4\GP4GUI\bin\Release\libgp4.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

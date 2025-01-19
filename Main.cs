@@ -15,7 +15,9 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
 #if DEBUG
             var Log = new LogWindow(this);
             Log.Show();
-            PS4MenuSettingsPageBtn.Enabled = true;
+#else
+            PS4MenuSettingsPageBtn.Enabled = false;
+            PkgCreationPageBtn.Enabled = false;
 #endif
             AddEventHandlersToControls(Controls);
         }
@@ -40,19 +42,19 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
             this.Info = new System.Windows.Forms.Label();
-            this.PS4DebugPageBtn = new Button();
-            this.EbootPatchPageBtn = new Button();
-            this.PS4MenuSettingsPageBtn = new Button();
+            this.PS4DebugPageBtn = new Dobby.Button();
+            this.EbootPatchPageBtn = new Dobby.Button();
+            this.PS4MenuSettingsPageBtn = new Dobby.Button();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
             this.SeperatorLine3 = new System.Windows.Forms.Label();
-            this.PkgPageBtn = new Button();
+            this.PkgCreationPageBtn = new Dobby.Button();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.PCDebugMenuPageBtn = new Button();
-            this.CreditsBtn = new Button();
-            this.InfoHelpBtn = new Button();
+            this.PCDebugMenuPageBtn = new Dobby.Button();
+            this.CreditsBtn = new Dobby.Button();
+            this.InfoHelpBtn = new Dobby.Button();
             this.Playstation4Label = new System.Windows.Forms.Label();
             this.PCLabel = new System.Windows.Forms.Label();
-            this.DownloadSourceBtn = new Button();
+            this.DownloadSourceBtn = new Dobby.Button();
             this.SuspendLayout();
             // 
             // MainLabel
@@ -114,7 +116,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             // 
             this.PS4MenuSettingsPageBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.PS4MenuSettingsPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.PS4MenuSettingsPageBtn.Enabled = false;
             this.PS4MenuSettingsPageBtn.FlatAppearance.BorderSize = 0;
             this.PS4MenuSettingsPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PS4MenuSettingsPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
@@ -151,20 +152,20 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             // 
             // PkgPageBtn
             // 
-            this.PkgPageBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.PkgPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.PkgPageBtn.FlatAppearance.BorderSize = 0;
-            this.PkgPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PkgPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
-            this.PkgPageBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.PkgPageBtn.Location = new System.Drawing.Point(1, 127);
-            this.PkgPageBtn.Name = "PkgPageBtn";
-            this.PkgPageBtn.Size = new System.Drawing.Size(260, 23);
-            this.PkgPageBtn.TabIndex = 35;
-            this.PkgPageBtn.Text = "Build New Patch Or Base Game .pkg...";
-            this.PkgPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.PkgPageBtn.UseVisualStyleBackColor = false;
-            this.PkgPageBtn.Click += new System.EventHandler(this.PkgPageBtn_Click);
+            this.PkgCreationPageBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.PkgCreationPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.PkgCreationPageBtn.FlatAppearance.BorderSize = 0;
+            this.PkgCreationPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PkgCreationPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
+            this.PkgCreationPageBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.PkgCreationPageBtn.Location = new System.Drawing.Point(1, 127);
+            this.PkgCreationPageBtn.Name = "PkgPageBtn";
+            this.PkgCreationPageBtn.Size = new System.Drawing.Size(260, 23);
+            this.PkgCreationPageBtn.TabIndex = 35;
+            this.PkgCreationPageBtn.Text = "Build New Patch Or Base Game .pkg...";
+            this.PkgCreationPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.PkgCreationPageBtn.UseVisualStyleBackColor = false;
+            this.PkgCreationPageBtn.Click += new System.EventHandler(this.PkgPageBtn_Click);
             // 
             // SeperatorLine1
             // 
@@ -281,7 +282,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             this.Controls.Add(this.InfoHelpBtn);
             this.Controls.Add(this.CreditsBtn);
             this.Controls.Add(this.PCDebugMenuPageBtn);
-            this.Controls.Add(this.PkgPageBtn);
+            this.Controls.Add(this.PkgCreationPageBtn);
             this.Controls.Add(this.SeperatorLine1);
             this.Controls.Add(this.PS4DebugPageBtn);
             this.Controls.Add(this.EbootPatchPageBtn);
@@ -325,7 +326,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
         public Label Info;
         public Label SeperatorLine0;
         public Label SeperatorLine3;
-        public Button PkgPageBtn;
+        public Button PkgCreationPageBtn;
         public Label SeperatorLine1;
         public Button PCDebugMenuPageBtn;
         public Button CreditsBtn;

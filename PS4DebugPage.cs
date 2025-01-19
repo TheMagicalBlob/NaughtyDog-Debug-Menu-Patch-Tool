@@ -684,11 +684,13 @@ namespace Dobby {
                             var T1RCheck = BitConverter.ToInt16(geo.ReadMemory(Executable, 0x4000F4, 2), 0);
                             switch(T1RCheck) {
                                 case 18432: DebugModePointerOffset = 0x2E81; return "1.00";
-                                case 3480: DebugModePointerOffset = 0x2E81; return "1.09";
-                                case 4488: DebugModePointerOffset = 0x2E81; return "1.10";
-                                case 4472: DebugModePointerOffset = 0x2E81; return "1.11";
+                                case 1288:  DebugModePointerOffset = 0x2E81; return "1.08";
+                                case 3480:  DebugModePointerOffset = 0x2E81; return "1.09";
+                                case 4488:  DebugModePointerOffset = 0x2E81; return "1.10";
+                                case 4472:  DebugModePointerOffset = 0x2E81; return "1.11";
 
-                                default: Dev.WLog($"Error, Game Was T1R But None of The Checks Matched! || {T1RCheck}");
+                                default:
+                                    Dev.WLog($"Error, Game Was T1R But None of The Checks Matched! || {T1RCheck}");
                                     MessageBox.Show($"The Game Was Determined To Be The Last of Us: Remastered, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{T1RCheck} {TitleID}", "Error Finding App Version");
                                     return "UnknownT1RGameVersion";
                             }
@@ -704,7 +706,8 @@ namespace Dobby {
                                 case 30024882: DebugModePointerOffset = 0x3aa1; return "1.08";
                                 case 30024914: DebugModePointerOffset = 0x3aa1; return "1.09";
 
-                                default: Dev.WLog($"Error, Game Was T2 But None of The Checks Matched! || chk:{T2Check}");
+                                default:
+                                    Dev.WLog($"Error, Game Was T2 But None of The Checks Matched! || chk:{T2Check}");
                                     MessageBox.Show($"The Game Was Determined To Be The Last of Us Part II, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{T2Check} {TitleID}", "Error Finding App Version");
                                     return "UnknownT2GameVersion";
                             }
@@ -719,7 +722,8 @@ namespace Dobby {
                                 case -136556654: return "U1 1.00";
                                 case -1120900838: return "U1 1.02";
 
-                                default: Dev.WLog($"Error, Game Was UCC But None of The Checks Matched! || chk:{UCCCheck}");
+                                default:
+                                    Dev.WLog($"Error, Game Was UCC But None of The Checks Matched! || chk:{UCCCheck}");
                                     MessageBox.Show($"The Game Was Determined To Be The Uncharted Collection, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{UCCCheck} {TitleID}", "Error Finding App Version");
                                     return "UnknownUCCGameVersion";
                             }
@@ -762,7 +766,8 @@ namespace Dobby {
                                 case -71032229:   DebugModePointerOffset = 0x2E79; return "1.32 MP";
                                 case 145928122:   DebugModePointerOffset = 0x2E79; return "1.33 MP";
 
-                                default: Dev.WLog($"Error, Game Was UC4, But None of The Checks Matched! || chk:{U4Check}");
+                                default:
+                                    Dev.WLog($"Error, Game Was UC4, But None of The Checks Matched! || chk:{U4Check}");
                                     MessageBox.Show($"The Game Was Determined To Be UC4, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{U4Check} {TitleID}", "Error Finding App Version");
                                     return "UnknownUC4GameVersion";
                             }
@@ -788,7 +793,8 @@ namespace Dobby {
                                 case 27793:  DebugModePointerOffset = 0x2E79; return "1.08 MP";
                                 case 27841:  DebugModePointerOffset = 0x2E79; return "1.09 MP";
 
-                                default: Dev.WLog($"Error, Game Was UCC But None of The Checks Matched! || chk:{TLLCheck}");
+                                default:
+                                    Dev.WLog($"Error, Game Was UCC But None of The Checks Matched! || chk:{TLLCheck}");
                                     MessageBox.Show($"The Game Was Determined To Be The The Lost Legacy, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{TLLCheck} {TitleID}", "Error Finding App Version");
                                     return "UnknownTLLGameVersion";
                             }
