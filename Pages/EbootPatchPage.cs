@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Drawing;
-using Dobby.Properties;
 using static Dobby.Common;
 using System.Windows.Forms;
+using Dobby.Resources;
+
 
 namespace Dobby {
     public class EbootPatchPage : Form {
@@ -1281,11 +1282,11 @@ namespace Dobby {
 
 
             // Write The 5 Chunks With The Majority Of Function Calls \\
-            WriteBytes(0x1457571, Resources.T1R_11X_Restored_Chunk1);
-            WriteBytes(0x1457D2E, Resources.T1R_11X_Restored_Chunk2);
-            WriteBytes(0x7AA10, Resources.T1R_11X_Restored_Chunk3);
-            WriteBytes(0x8492F0, Resources.T1R_11X_Restored_Chunk4);
-            WriteBytes(0x7AAC7D, Resources.T1R_11X_Restored_Chunk5);
+            WriteBytes(0x1457571, Resource.T1R_11X_Restored_Chunk2);
+            WriteBytes(0x1457D2E, Resource.T1R_11X_Restored_Chunk2);
+            WriteBytes(0x7AA10, Resource.T1R_11X_Restored_Chunk3);
+            WriteBytes(0x8492F0, Resource.T1R_11X_Restored_Chunk4);
+            WriteBytes(0x7AAC7D, Resource.T1R_11X_Restored_Chunk5);
 
             // Root Menu Function Calls \\
             WriteBytes(0x71F6C, new byte[] { 0xE8, 0x4F, 0x6B, 0x84, 0x00 }); // Call Large Rendering Menu Instead Of Tiny One (Yeah, That's All It Takes...)

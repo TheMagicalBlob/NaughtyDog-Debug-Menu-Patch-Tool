@@ -46,10 +46,11 @@
   <ItemGroup>
     <Reference Include="libdebug, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\libdebug.dll</HintPath>
+      <HintPath>Resources\bin\libdebug.dll</HintPath>
     </Reference>
-    <Reference Include="libgp4">
-      <HintPath>..\OrbisGP4\GP4GUI\bin\Release\libgp4.dll</HintPath>
+    <Reference Include="libgp4, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\bin\libgp4.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -65,45 +66,40 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Gp4CreationPage.cs">
+    <Compile Include="Pages\Gp4CreationPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PkgCreationHelpPage.cs">
+    <Compile Include="Pages\PkgCreationHelpPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PkgCreationPage.cs">
+    <Compile Include="Pages\PkgCreationPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Properties\Dev.cs">
+    <Compile Include="Dev.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PS4MenuSettingsPage.cs">
+    <Compile Include="Pages\PS4MenuSettingsPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PCDebugMenuPage.cs">
+    <Compile Include="Pages\PCDebugMenuPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EbootPatchHelpPage.cs">
+    <Compile Include="Pages\EbootPatchHelpPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="PS4DebugHelpPage.cs">
+    <Compile Include="Pages\PS4DebugHelpPage.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Common.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Credits.cs">
+    <Compile Include="Pages\Credits.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EbootPatchPage.cs">
+    <Compile Include="Pages\EbootPatchPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InfoHelpPage.cs">
+    <Compile Include="Pages\InfoHelpPage.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Main.cs">
@@ -111,81 +107,81 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PS4DebugPage.cs">
+    <Compile Include="Pages\PS4DebugPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ver.cs">
-      <SubType>Form</SubType>
+    <Compile Include="Resources\Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
+    <Compile Include="Ver.cs" />
     <EmbeddedResource Include="Common.resx">
       <DependentUpon>Common.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EbootPatchHelpPage.resx">
+    <EmbeddedResource Include="Pages\EbootPatchHelpPage.resx">
       <DependentUpon>EbootPatchHelpPage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Credits.resx">
+    <EmbeddedResource Include="Pages\Credits.resx">
       <DependentUpon>Credits.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="EbootPatchPage.resx">
+    <EmbeddedResource Include="Pages\EbootPatchPage.resx">
       <DependentUpon>EbootPatchPage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gp4CreationPage.resx">
+    <EmbeddedResource Include="Pages\Gp4CreationPage.resx">
       <DependentUpon>Gp4CreationPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InfoHelpPage.resx">
+    <EmbeddedResource Include="Pages\InfoHelpPage.resx">
       <DependentUpon>InfoHelpPage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PkgCreationHelpPage.resx">
+    <EmbeddedResource Include="Pages\PkgCreationHelpPage.resx">
       <DependentUpon>PkgCreationHelpPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PkgCreationPage.resx">
+    <EmbeddedResource Include="Pages\PkgCreationPage.resx">
       <DependentUpon>PkgCreationPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PS4MenuSettingsPage.resx">
+    <EmbeddedResource Include="Pages\PS4MenuSettingsPage.resx">
       <DependentUpon>PS4MenuSettingsPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PCDebugMenuPage.resx">
+    <EmbeddedResource Include="Pages\PCDebugMenuPage.resx">
       <DependentUpon>PCDebugMenuPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PS4DebugPage.resx">
+    <EmbeddedResource Include="Pages\PS4DebugPage.resx">
       <DependentUpon>PS4DebugPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PS4DebugHelpPage.resx">
+    <EmbeddedResource Include="Pages\PS4DebugHelpPage.resx">
       <DependentUpon>PS4DebugHelpPage.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="Properties\DataSources\Button.datasource" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <None Include="Resources\PS4Debug1.1.15.bin" />
+    <EmbeddedResource Include="Resources\Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Resources\bin\ps4debug.bin" />
+    <None Include="Resources\data\T1R_11X_Restored_Chunk1" />
+    <None Include="Resources\data\T1R_11X_Restored_Chunk2" />
+    <None Include="Resources\data\T1R_11X_Restored_Chunk3" />
+    <None Include="Resources\data\T1R_11X_Restored_Chunk4" />
+    <None Include="Resources\data\T1R_11X_Restored_Chunk5" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="GenSCPatchCode.py" />
-    <Content Include="Resources\Address List.txt" />
-    <Content Include="Resources\blobwithgreybg.png" />
-    <Content Include="Resources\Code List.txt" />
-    <Content Include="Resources\InvertBytes.exe" />
+    <Content Include="Resources\bin\libdebug.dll" />
+    <Content Include="Resources\bin\libgp4.dll" />
+    <Content Include="Resources\misc\Address List.txt" />
+    <Content Include="Resources\misc\blob.ico" />
+    <Content Include="Resources\misc\blob.png" />
+    <Content Include="Resources\misc\Code List.txt" />
+    <Content Include="Resources\misc\GenSCPatchCode.py" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -18,7 +18,7 @@ namespace Dobby {
             InitializeComponent();
             
             AddEventHandlersToControls(Controls);
-            BuildLabel.Text += Main.Build;
+            BuildLabel.Text += Ver.Build;
         }
 
 
@@ -278,7 +278,7 @@ namespace Dobby {
         #region Page-Specific Functions
         private void BuildLabel_Click(object sender, MouseEventArgs e) {
             if(e.Button == MouseButtons.Right) {
-                File.WriteAllLines(Directory.GetCurrentDirectory() + @"\ChangeLog.txt", Common.ChangeList);
+                File.WriteAllLines(Directory.GetCurrentDirectory() + @"\ChangeLog.txt", Ver.ChangeList);
                 MessageBox.Show($"Changelist Dumped To {Directory.GetCurrentDirectory()}\\ChangeLog.txt");
             }
         }

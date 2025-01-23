@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using static Dobby.Common;
 using System.Drawing;
-using Dobby.Properties;
 
 namespace Dobby {
     public class EbootPatchHelpPage : Form {

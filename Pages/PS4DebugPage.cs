@@ -10,6 +10,8 @@ using System.Threading;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
+using Dobby.Resources;
+
 
 namespace Dobby {
     public class PS4DebugPage : Form {
@@ -541,7 +543,7 @@ namespace Dobby {
 
                     try {
                         S.Connect(new IPEndPoint(IPAddress.Parse(parameters.IP), int.Parse(parameters.Port)));
-                        S.Send(Properties.Resources.ps4debug);
+                        S.Send(Resource.ps4debug);
                     }
                     catch(Exception e) {
                         Dev.WLog($"Failed To Connect To Specified Address/Port\nError: {e.Message}\n{e.StackTrace}");
@@ -962,7 +964,7 @@ namespace Dobby {
             await Task.Run(CheckConnectionStatus);
             if(IgnoreTitleID) TitleID = "CUSA00552";
             if(!GameVersion.Contains("Unknown"))
-                Toggle(new ulong[] { 0x1B8FA20, 0x1924a70, 0x1924a70, 0x1924a70 }, new string[] { "1.00", "1.09", "1.10", "1.11" });
+                Toggle(new ulong[] { 0x1B8FA20, 0x1924a70, 0x1924a70, 0x1924a70, 0x1924a70 }, new string[] { "1.00", "1.08", "1.09", "1.10", "1.11" });
         }
         private async void T2Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);

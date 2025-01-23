@@ -1,5 +1,5 @@
-# Outputs Selection As C# Code For My Own Tool Screw You, Go Away
-#@author TheMagicalBlob
+# Outputs Selection As C# Code For My Own Tool. (Screw You, Go Away)
+#@author illusiony; Edited For C# By TheMagicalBlob
 #@category _NEW_
 #@keybinding 
 #@menupath 

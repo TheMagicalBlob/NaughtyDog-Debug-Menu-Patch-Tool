@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Dobby.Properties {
+namespace Dobby.Resources {
     using System;
     
     
@@ -22,24 +22,24 @@ namespace Dobby.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Resources {
+    internal class Resource {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal Resource() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Dobby.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Dobby.Resources.Resource", typeof(Resource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace Dobby.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Dobby.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] ps4debug {
+        internal static byte[] ps4debug {
             get {
                 object obj = ResourceManager.GetObject("ps4debug", resourceCulture);
                 return ((byte[])(obj));
@@ -73,7 +73,17 @@ namespace Dobby.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] T1R_11X_Restored_Chunk1 {
+        internal static byte[] PS4Debug1_1_15 {
+            get {
+                object obj = ResourceManager.GetObject("PS4Debug1.1.15", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] T1R_11X_Restored_Chunk1 {
             get {
                 object obj = ResourceManager.GetObject("T1R_11X_Restored_Chunk1", resourceCulture);
                 return ((byte[])(obj));
@@ -83,7 +93,7 @@ namespace Dobby.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] T1R_11X_Restored_Chunk2 {
+        internal static byte[] T1R_11X_Restored_Chunk2 {
             get {
                 object obj = ResourceManager.GetObject("T1R_11X_Restored_Chunk2", resourceCulture);
                 return ((byte[])(obj));
@@ -93,7 +103,7 @@ namespace Dobby.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] T1R_11X_Restored_Chunk3 {
+        internal static byte[] T1R_11X_Restored_Chunk3 {
             get {
                 object obj = ResourceManager.GetObject("T1R_11X_Restored_Chunk3", resourceCulture);
                 return ((byte[])(obj));
@@ -103,7 +113,7 @@ namespace Dobby.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] T1R_11X_Restored_Chunk4 {
+        internal static byte[] T1R_11X_Restored_Chunk4 {
             get {
                 object obj = ResourceManager.GetObject("T1R_11X_Restored_Chunk4", resourceCulture);
                 return ((byte[])(obj));
@@ -113,7 +123,7 @@ namespace Dobby.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] T1R_11X_Restored_Chunk5 {
+        internal static byte[] T1R_11X_Restored_Chunk5 {
             get {
                 object obj = ResourceManager.GetObject("T1R_11X_Restored_Chunk5", resourceCulture);
                 return ((byte[])(obj));
