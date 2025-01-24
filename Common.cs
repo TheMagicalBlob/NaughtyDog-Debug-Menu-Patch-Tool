@@ -95,8 +95,7 @@ namespace Dobby {
             MainStreamIsOpen
         ;
 
-        public static byte[] buffer;
-
+        
         public static Point LastPos, MousePos, MouseDif;
         public static Point[] OriginalControlPositions;
 
@@ -107,8 +106,8 @@ namespace Dobby {
         public static Control InfoLabel;
         public static GroupBox PopupGroupBox;
 
-        public static TcpClient tcp_client;
-        public static NetworkStream net_stream;
+        public static TcpClient TcpClient;
+        public static NetworkStream NetStream;
         public static FileStream MainStream;
 
         public static Font MainFont = new Font("Consolas", 9.75F, FontStyle.Bold);
@@ -829,8 +828,9 @@ namespace Dobby {
         public static void ControlHover(object sender, EventArgs _ = null) => HoverLeave((Control)sender, true);
         public static void ControlLeave(object sender, EventArgs _ = null) => HoverLeave((Control)sender, false);
         #endregion
-
         #endregion
+
+
 
         /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///-- DEBUG MODE OFFSETS AND GAME INDENTIFIERS --\\\

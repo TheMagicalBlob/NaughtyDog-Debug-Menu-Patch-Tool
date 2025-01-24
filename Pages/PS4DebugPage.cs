@@ -99,15 +99,17 @@ namespace Dobby {
 
 
 
-
+            // Read ip and port from local settings file, or create a new one if none's present
             var settingsFilePath = Directory.GetCurrentDirectory() + @"\PS4_IP.BLB";
             if (File.Exists(settingsFilePath)) {
-                IP = IPBOX.Text = GetIPFromSettingsFile();
-                Port = PortBox.Text = GetPortFromSettingsFile();
+                var settings = ReadSettingsFile();
+
+                IP = IPBOX.Text = settings[0];
+                Port = PortBox.Text = settings[1];
             }
             else CreateSettingsFile();
 
-
+            // Create and set event handlers IP & Port boxes
             IPBOX.LostFocus += (control, args) =>
             {
                 if (File.Exists(settingsFilePath))
@@ -427,35 +429,29 @@ namespace Dobby {
         /// </summary>
         /// 
         /// <returns>
-        ///   The current ip if the file's present, otherwise the default value of "192.168.137.115". \m/
+        ///   A string array containing the current ip and port if the file's present, otherwise the default value of "192.168.137.115". \m/
         /// </returns>
-        public static string GetIPFromSettingsFile() {
+        internal string[] ReadSettingsFile() {
             var settingsFilePath = Directory.GetCurrentDirectory() + @"\PS4_IP.BLB";
-
-            // Read ip from settings file in app directory
-            if (File.Exists(settingsFilePath))
-                using (var settingsFile = File.OpenText(settingsFilePath)) {
-                    var ip = settingsFile.ReadToEnd();
-                    return ip.Remove(ip.IndexOf(";"));
-                }
             
-            return "192.168.137.115";
-        }
-
-        public string GetPortFromSettingsFile() {
-            var settingsFilePath = Directory.GetCurrentDirectory() + @"\PS4_IP.BLB";
-
-            // Read port from settings file in app directory
+            // Read port & ip from settings file in app directory
             if (File.Exists(settingsFilePath))
                 using (var settingsFile = File.OpenRead(settingsFilePath)) {
-                    var port = new byte[4];
-                    settingsFile.Position = 16;
-                    settingsFile.Read(port, 0, 4);
+                    var buffer = new byte[settingsFile.Length];
+                    string ip, port;
 
-                    return BitConverter.ToInt16(port, 0).ToString();
+                    settingsFile.Read(buffer, 0, buffer.Length);
+                    
+                    ip = Encoding.UTF8.GetString(buffer);
+                    ip = ip.Remove(ip.IndexOf(';'));
+                    
+                    port = BitConverter.ToInt16(buffer, 16).ToString();
+
+
+                    return new string[] { ip, port };
                 }
 
-            return "9090";
+            return new string[] { "192.168.137.115", "9090" };
         }
 
 
