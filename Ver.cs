@@ -231,7 +231,8 @@
           "* 4.48-alpha.234.653 | Added support for the 1.08 version of The Last of Us Remastered; Disabled the clunky, half-arsed pkg creation page (not very user friendly, and needs testing after gp4 library overhaul)",
           "* 4.48-alpha.234.655 | Cleaning up project/solution.",
           "* 4.48-alpha.234.655 | PS4 Debug Page fixes. I broke the ip box at some point; now THAT takes skill ;_;.",
-          "* 4.48-alpha.234.659 | General code cleanup, and some PS4DebugPage \"work\"."
+          "* 4.48-alpha.234.659 | General code cleanup, and some PS4DebugPage \"work\".",
+          "* 4.48-alpha.234.660 | Port fix. I should pay attention. Or just sleep."
 
         };
 

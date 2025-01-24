@@ -434,9 +434,12 @@ namespace Dobby {
 
             // Read port from settings file in app directory
             if (File.Exists(settingsFilePath))
-                using (var settingsFile = File.OpenText(settingsFilePath)) {
-                    var port = settingsFile.ReadToEnd();
-                    return port.Substring(port.LastIndexOf(";") + 1);
+                using (var settingsFile = File.OpenRead(settingsFilePath)) {
+                    var port = new byte[4];
+                    settingsFile.Position = 16;
+                    settingsFile.Read(port, 0, 4);
+
+                    return BitConverter.ToInt16(port, 0).ToString();
                 }
 
             // Create new settings file, and add the default ip & port
