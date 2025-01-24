@@ -93,28 +93,38 @@ namespace Dobby {
         {
             AddEventHandlersToControls(Controls);
 
-            IP = IPBOX.Text = GetIPFromSettingsFile();
-            Port = PortBox.Text = GetPortFromSettingsFile();
 
             // Initialize connection thread
             ConnectionThread = new Thread(Connect);
 
+
+
+
             var settingsFilePath = Directory.GetCurrentDirectory() + @"\PS4_IP.BLB";
+            if (File.Exists(settingsFilePath)) {
+                IP = IPBOX.Text = GetIPFromSettingsFile();
+                Port = PortBox.Text = GetPortFromSettingsFile();
+            }
+            else CreateSettingsFile();
+
+
             IPBOX.LostFocus += (control, args) =>
             {
                 if (File.Exists(settingsFilePath))
-                {
                     using (FileStream settingsFile = new FileStream(settingsFilePath, FileMode.Open, FileAccess.ReadWrite))
                         settingsFile.Write(Encoding.UTF8.GetBytes(IPBOX.Text + ";"), 0, IPBOX.Text.Length + 1);
-                }
-                else GetIPFromSettingsFile();
+                
+                else CreateSettingsFile();
             };
             PortBox.LostFocus += (control, args) =>
             {
-                using (FileStream settingsFile = new FileStream(settingsFilePath, FileMode.Open, FileAccess.Write)) {
-                    settingsFile.Position = 16;
-                    settingsFile.Write(BitConverter.GetBytes(int.Parse(PortBox.Text)), 0, 4);
-                }
+                if (File.Exists(settingsFilePath))
+                    using (FileStream settingsFile = new FileStream(settingsFilePath, FileMode.Open, FileAccess.Write)) {
+                        settingsFile.Position = 16;
+                        settingsFile.Write(BitConverter.GetBytes(int.Parse(PortBox.Text)), 0, 4);
+                    }
+                
+                else CreateSettingsFile();
             };
         }
 
@@ -155,9 +165,9 @@ namespace Dobby {
             try {
             Wait:
                 while(PS4DebugIsConnected)
-                ActiveForm?.Invoke(SetInfoText, $"Connecting To Console at {GetIPFromSettingsFile()}.");
+                ActiveForm?.Invoke(SetInfoText, $"Connecting To Console at {IP}.");
 
-                geo = new PS4DBG(GetIPFromSettingsFile());
+                geo = new PS4DBG(IP);
                 geo.Connect();
                 PS4DebugIsConnected = true;
 
@@ -398,6 +408,18 @@ namespace Dobby {
                 return "UnknownGameVersion";
             }
         }
+        internal static void CreateSettingsFile()
+        {
+            var settingsFilePath = Directory.GetCurrentDirectory() + @"\PS4_IP.BLB";
+
+            Dev.WLog($"No settings file was found in current folder, creating new one...\n{settingsFilePath}");
+
+            using (var newSettingsFile = new FileStream(settingsFilePath, FileMode.Create, FileAccess.Write))
+            {
+                newSettingsFile.Write(Encoding.UTF8.GetBytes("192.168.137.115;"), 0, 16);
+                newSettingsFile.Write(BitConverter.GetBytes((short)9020), 0, 2);
+            }
+        }
 
 
         /// <summary>
@@ -417,16 +439,7 @@ namespace Dobby {
                     return ip.Remove(ip.IndexOf(";"));
                 }
             
-            // Create new settings file, and add the default ip & port
-            else {
-                Dev.WLog($"IP(); No settings file was found in current folder, creating new one...\n{settingsFilePath}");
-                
-                using(var newSettingsFile = new FileStream(settingsFilePath, FileMode.Create, FileAccess.Write)) {
-                    newSettingsFile.Write(Encoding.UTF8.GetBytes("192.168.137.115;"), 0, 16);
-                    newSettingsFile.Write(BitConverter.GetBytes((short)9020), 0, 2);
-                }
-                return "192.168.137.115";
-            }
+            return "192.168.137.115";
         }
 
         public string GetPortFromSettingsFile() {
@@ -442,17 +455,7 @@ namespace Dobby {
                     return BitConverter.ToInt16(port, 0).ToString();
                 }
 
-            // Create new settings file, and add the default ip & port
-            else {
-                Dev.WLog($"Port(); No settings file was found in current folder, creating new one...\n{settingsFilePath}");
-                
-                using(var newSettingsFile = new FileStream(settingsFilePath, FileMode.Create, FileAccess.Write))
-                {
-                    newSettingsFile.Write(Encoding.UTF8.GetBytes("192.168.137.115;"), 0, 16);
-                    newSettingsFile.Write(BitConverter.GetBytes((short)9090), 0, 2);
-                }
-                return "9090";
-            }
+            return "9090";
         }
 
 
