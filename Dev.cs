@@ -25,6 +25,8 @@ namespace Dobby {
 
         /// <summary> Dev Label Event Handler Function </summary>
         public static void MiscDebugFunc(object sender, EventArgs e) {
+            WLog("useless");
+            return;
             if(((Control)sender).Text == "(Dev)") {
                 foreach(var v in GetControlsInOrder(LogWindow.GetParent())) {
                     WLog($"|RET {v.Name} at {v.Location}|");
@@ -34,8 +36,6 @@ namespace Dobby {
                 LogWindow.Pause();
                 return;
             }
-
-
         }
 
         public static Control[] GetControlsInOrder(Form Parent) {
@@ -138,6 +138,7 @@ namespace Dobby {
         }
 
         // Style Test (fuck it, too annoying dealing with overlapping controls, and I've wasted enough time on this already)
+        #region [Style Test]
         private static Point[] OldPositions = new Point[1] { Point.Empty };
         private static Size OldFormScale;
         private static string EditedForm;
@@ -208,6 +209,8 @@ namespace Dobby {
             OldPositions = new Point[1] { Point.Empty };
             EditedForm = string.Empty;
         }
+        #endregion [Style Test]
+
 
         /// <summary>
         /// Log Window Class
@@ -216,7 +219,7 @@ namespace Dobby {
             public LogWindow(Form Gaia) {
                 Font DButtonFont = new Font("Cambria", 7F, FontStyle.Bold);
 
-                Button[] DButtons = new Button[] {
+                var DButtons = new Button[] {
                     new Button {
                         TabIndex = 0,
                         ForeColor = SystemColors.Control,
@@ -399,7 +402,7 @@ namespace Dobby {
                             switch(Page) {
                                 default:
                                     Output = new string[] {
-                                        $"Build: {Build}                   [Delay: ~{Delay}ms]",
+                                        $"Build: {Ver.Build}                   [Delay: ~{Delay}ms]",
                                         " ",
                                         $"Parent Form: {(ActiveForm != null ? $"{ActiveForm?.Name} | # Of Children: {ActiveForm?.Controls?.Count}" : "Console")}",
                                         " ",

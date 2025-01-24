@@ -15,9 +15,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
 #if DEBUG
             var Log = new LogWindow(this);
             Log.Show();
-#else
-            PS4MenuSettingsPageBtn.Enabled = false;
-            PkgCreationPageBtn.Enabled = false;
 #endif
             AddEventHandlersToControls(Controls);
         }

@@ -16,6 +16,7 @@ namespace Dobby {
         // Spacing:
         // Info & Back Btn; Info: Form.Size.Y - Info.Size.Y | BackBtn Pos: (Info Vertical Pos - BackBtn.Size.Y - 3)
 
+        /*
         ////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///                 Design Bullshit                  \\\
         ///__________________________________________________\\\
@@ -27,7 +28,7 @@ namespace Dobby {
         /// - Keep Controls At Least 1 Pixel From Form Edge  \\\
         /// - Lines Should Be 2 Pixels From Either Form Edge \\\
         ////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
+        */
 
 
         // TODO:
@@ -43,11 +44,16 @@ namespace Dobby {
         //  - PS4DebugPage Consistency Fix (Can't Seem To Reproduce? [The Bug, I Mean. Not That I Don't Want The Other Thing])
 
 
-
+        /*
         //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///--  MAIN APPLICATION VARIABLES & Functions  --\\\
         //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
+        */
         #region Application-Wide Functions And Variable Declarations
+
+        /// <summary>
+        /// ID's for the various pages (forms) in the application.
+        /// </summary>
         public enum PageID : int {
             MainPage = 0,
             PS4DebugPage = 1,
@@ -73,7 +79,7 @@ namespace Dobby {
             ActiveGameID = "UNK"
         ;
 
-        public static int Game, index;
+        public static GameIDs Game;
         public static PageID Page;
         public static PageID?[] Pages = new PageID?[5];
         public static bool
@@ -110,94 +116,92 @@ namespace Dobby {
 
 
 
-        /// <summary> Add A Summary, You Lazy Fuck </summary>
-        /// <returns> The Game Name And App Version Respectively </returns>
-        public static int GetGameID(FileStream stream) {
-            byte[] LocalExecutableCheck = new byte[160];
-
-            // Make Sure The File's Actually Even A .elf
-            stream.Position = 0;
-            stream.Read(LocalExecutableCheck, 0, 4);
-            if (BitConverter.ToInt32(LocalExecutableCheck, 0) != 1179403647)
-                MessageBox.Show($"Executable Still Encrypted (self) | Must Be Decrypted/Unsigned");
-
-
-            stream.Position = 0x5100; stream.Read(LocalExecutableCheck, 0, 160);
-            var Hash = SHA256.Create();
-            var HashArray = Hash.ComputeHash(LocalExecutableCheck);
-            return BitConverter.ToInt32(HashArray, 0);
-        }
-
         /// <summary> Write A Byte To The MainStream And Flush The Data </summary>
         public static void WriteByte(int offset, byte data) {
-            if (MainStream == null) { MessageBox.Show($"No Active Data Stream To Write To ({MainStreamIsOpen})", $"Addr: {offset:X} Byte: 0x{data:X}"); return; }
+            if (MainStream == null) {
+                MessageBox.Show($"!! ERROR: No Active Data Stream To Write To ({MainStreamIsOpen})", $"Addr: {offset:X} Byte: 0x{data:X}");
+                return;
+            }
 
             MainStream.Position = offset;
             MainStream.WriteByte(data);
             MainStream.Flush();
         }
 
-        public static string GetGameLabelFromID(int GameID) {
-            switch (GameID) {
-                case UC1100:       return "Uncharted 1 1.00";
-                case UC1102:       return "Uncharted 1 1.02";
-                case UC2100:       return "Uncharted 2 1.00";
-                case UC2102:       return "Uncharted 2 1.02";
-                case UC3100:       return "Uncharted 3 1.00";
-                case UC3102:       return "Uncharted 3 1.02";
-                case UC4100:       return "Uncharted 4 1.00";
-                case UC4101:       return "Uncharted 4 1.01";
-                case UC4102:       return "Uncharted 4 1.02";
-                case UC4103:       return "Uncharted 4 1.03";
-                case UC4104:       return "Uncharted 4 1.04";
-                case UC4105:       return "Uncharted 4 1.05";
-                case UC4106:       return "Uncharted 4 1.06";
-                case UC4108:       return "Uncharted 4 1.08";
-                case UC4110:       return "Uncharted 4 1.10";
-                case UC4111:       return "Uncharted 4 1.11";
-                case UC4112:       return "Uncharted 4 1.12";
-                case UC4113:       return "Uncharted 4 1.13";
-                case UC4115:       return "Uncharted 4 1.15";
-                case UC4116:       return "Uncharted 4 1.16";
-                case UC4117:       return "Uncharted 4 1.17";
-                case UC4118:       return "Uncharted 4 1.18 SP/MP";
-                case UC4119:       return "Uncharted 4 1.19 SP/MP";
-                case UC4120MP:     return "Uncharted 4 1.20 MP";
-                case UC4120:       return "Uncharted 4 1.20 SP";
-                case UC4121MP:     return "Uncharted 4 1.21 MP";
-                case UC4121:       return "Uncharted 4 1.21 SP";
-                case UC4122MP:     return "Uncharted 4 1.22 MP";
-                case UC4122_23:    return "Uncharted 4 1.22/23 SP";
-                case UC4123MP:     return "Uncharted 4 1.23 MP";
-                case UC4124MP:     return "Uncharted 4 1.24 MP";
-                case UC4124_25:    return "Uncharted 4 1.24/25 SP";
-                case UC4125MP:     return "Uncharted 4 1.25 MP";
-                case UC4127_28MP:  return "Uncharted 4 1.27/28 MP";
-                case UC4127_133:   return "Uncharted 4 1.27+ SP";
-                case UC4129MP:     return "Uncharted 4 1.29 MP";
-                case UC4130MP:     return "Uncharted 4 1.30 MP";
-                case UC4131MP:     return "Uncharted 4 1.31 MP";
-                case UC4132MP:     return "Uncharted 4 1.32/TLL 1.08 MP";
-                case UC4133MP:     return "Uncharted 4 1.33/TLL 1.09 MP";
-                case UC4MPBETA100: return "Uncharted 4 MP Beta 1.00";
-                case UC4MPBETA109: return "Uncharted 4 MP Beta 1.09";
-                case TLL100MP:     return "Uncharted Lost Legacy 1.00 MP";
-                case TLL100:       return "Uncharted Lost Legacy 1.00 SP";
-                case TLL10X:       return "Uncharted Lost Legacy 1.08/9 SP";
-                case T1R100:       return "The Last Of Us 1.00";
-                case T1R109:       return "The Last Of Us 1.09";
-                case T1R110:       return "The Last Of Us 1.10";
-                case T1R111:       return "The Last Of Us 1.11";
-                case T2100:        return "The Last Of Us 2 1.00";
-                case T2101:        return "The Last Of Us 2 1.01";
-                case T2102:        return "The Last Of Us 2 1.02";
-                case T2105:        return "The Last Of Us 2 1.05";
-                case T2107:        return "The Last Of Us 2 1.07";
-                case T2108:        return "The Last Of Us 2 1.08";
-                case T2109:        return "The Last Of Us 2 1.09";
+        public static string GetCurrentGame(FileStream stream) {
+            var LocalExecutableCheck = new byte[160];
+
+            // 
+            stream.Position = 0;
+            stream.Read(LocalExecutableCheck, 0, 4);
+            if (BitConverter.ToInt32(LocalExecutableCheck, 0) != 1179403647)
+                MessageBox.Show($"Executable Still Encrypted (self) | Must Be Decrypted/Unsigned");
+
+
+            stream.Position = 0x5100;
+            stream.Read(LocalExecutableCheck, 0, 160);
+            Game = (GameIDs)BitConverter.ToInt32(SHA256.Create().ComputeHash(LocalExecutableCheck), 0);
+
+            switch (Game) {
+                case GameIDs.UC1100: return "Uncharted 1 1.00";
+                case GameIDs.UC1102: return "Uncharted 1 1.02";
+                case GameIDs.UC2100: return "Uncharted 2 1.00";
+                case GameIDs.UC2102: return "Uncharted 2 1.02";
+                case GameIDs.UC3100: return "Uncharted 3 1.00";
+                case GameIDs.UC3102: return "Uncharted 3 1.02";
+                case GameIDs.UC4100: return "Uncharted 4 1.00";
+                case GameIDs.UC4101: return "Uncharted 4 1.01";
+                case GameIDs.UC4102: return "Uncharted 4 1.02";
+                case GameIDs.UC4103: return "Uncharted 4 1.03";
+                case GameIDs.UC4104: return "Uncharted 4 1.04";
+                case GameIDs.UC4105: return "Uncharted 4 1.05";
+                case GameIDs.UC4106: return "Uncharted 4 1.06";
+                case GameIDs.UC4108: return "Uncharted 4 1.08";
+                case GameIDs.UC4110: return "Uncharted 4 1.10";
+                case GameIDs.UC4111: return "Uncharted 4 1.11";
+                case GameIDs.UC4112: return "Uncharted 4 1.12";
+                case GameIDs.UC4113: return "Uncharted 4 1.13";
+                case GameIDs.UC4115: return "Uncharted 4 1.15";
+                case GameIDs.UC4116: return "Uncharted 4 1.16";
+                case GameIDs.UC4117: return "Uncharted 4 1.17";
+                case GameIDs.UC4118: return "Uncharted 4 1.18 SP/MP";
+                case GameIDs.UC4119: return "Uncharted 4 1.19 SP/MP";
+                case GameIDs.UC4120MP: return "Uncharted 4 1.20 MP";
+                case GameIDs.UC4120: return "Uncharted 4 1.20 SP";
+                case GameIDs.UC4121MP: return "Uncharted 4 1.21 MP";
+                case GameIDs.UC4121: return "Uncharted 4 1.21 SP";
+                case GameIDs.UC4122MP: return "Uncharted 4 1.22 MP";
+                case GameIDs.UC4122_23: return "Uncharted 4 1.22/23 SP";
+                case GameIDs.UC4123MP: return "Uncharted 4 1.23 MP";
+                case GameIDs.UC4124MP: return "Uncharted 4 1.24 MP";
+                case GameIDs.UC4124_25: return "Uncharted 4 1.24/25 SP";
+                case GameIDs.UC4125MP: return "Uncharted 4 1.25 MP";
+                case GameIDs.UC4127_28MP: return "Uncharted 4 1.27/28 MP";
+                case GameIDs.UC4127_133: return "Uncharted 4 1.27+ SP";
+                case GameIDs.UC4129MP: return "Uncharted 4 1.29 MP";
+                case GameIDs.UC4130MP: return "Uncharted 4 1.30 MP";
+                case GameIDs.UC4131MP: return "Uncharted 4 1.31 MP";
+                case GameIDs.UC4132MP: return "Uncharted 4 1.32/TLL 1.08 MP";
+                case GameIDs.UC4133MP: return "Uncharted 4 1.33/TLL 1.09 MP";
+                case GameIDs.UC4MPBETA100: return "Uncharted 4 MP Beta 1.00";
+                case GameIDs.UC4MPBETA109: return "Uncharted 4 MP Beta 1.09";
+                case GameIDs.TLL100MP: return "Uncharted Lost Legacy 1.00 MP";
+                case GameIDs.TLL100: return "Uncharted Lost Legacy 1.00 SP";
+                case GameIDs.TLL10X: return "Uncharted Lost Legacy 1.08/9 SP";
+                case GameIDs.T1R100: return "The Last Of Us 1.00";
+                case GameIDs.T1R109: return "The Last Of Us 1.09";
+                case GameIDs.T1R110: return "The Last Of Us 1.10";
+                case GameIDs.T1R111: return "The Last Of Us 1.11";
+                case GameIDs.T2100: return "The Last Of Us 2 1.00";
+                case GameIDs.T2101: return "The Last Of Us 2 1.01";
+                case GameIDs.T2102: return "The Last Of Us 2 1.02";
+                case GameIDs.T2105: return "The Last Of Us 2 1.05";
+                case GameIDs.T2107: return "The Last Of Us 2 1.07";
+                case GameIDs.T2108: return "The Last Of Us 2 1.08";
+                case GameIDs.T2109: return "The Last Of Us 2 1.09";
 
                 default:
-                    return $"Unknown Game ({GameID})";
+                    return $"Unknown Game (Game ID: {Game})";
             }
         }
 
@@ -210,7 +214,7 @@ namespace Dobby {
 
             string InfoLabelString = "";
 
-            switch(Sender.Name) {
+            switch (Sender.Name) {
                 default:
                     return;
 
@@ -389,7 +393,7 @@ namespace Dobby {
             ActiveForm.Controls.Add(PopupGroupBox);
 
             PopupGroupBox.BringToFront(); textBox.BringToFront();
-            closeBtn.BringToFront();      popupBoxLabel.BringToFront();
+            closeBtn.BringToFront(); popupBoxLabel.BringToFront();
 
             return textBox;
         }
@@ -503,6 +507,7 @@ namespace Dobby {
 
 
         // TODO: rework this crap
+        public delegate void InfoLabelUpdateCallback(string NewText);
         public delegate void LabelFlashDelegate();
         public static readonly LabelFlashDelegate White = () => {
             ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.White;
@@ -538,7 +543,6 @@ namespace Dobby {
 
             }
         });
-        public delegate void InfoLabelUpdateCallback(string NewText);
         #endregion
 
 
@@ -720,11 +724,12 @@ namespace Dobby {
             foreach (Control Item in Controls) {
                 ApplyEventHandlersToControl(Item);
 
-                if (Item.HasChildren) // Designer Adds Some Things To Other Controls Sometimes. I Am Lazy
+                if (Item.HasChildren) // Designer Adds Some Things To Other Controls Sometimes. This should fix those controls until I notice it. (I Am Lazy.)
                     foreach (Control Child in Item.Controls)
                         ApplyEventHandlersToControl(Child);
             }
             InfoLabel = Controls.Find("Info", true)[0];
+
 
             // Create Exit And Minimize Buttons, And Add Them To The Top Right Of The Form
             var Gray = Color.FromArgb(100, 100, 100);
@@ -831,7 +836,7 @@ namespace Dobby {
         ///-- DEBUG MODE OFFSETS AND GAME INDENTIFIERS --\\\
         /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
         #region Debug Offsets & Game Identifiers
-        public const int
+        public enum GameIDs : long {
             // Read 160 bytes at 0x5100 as SHA256 Then Checked As Int32 Because I'm An Idiot And Don't Feel Like Correcting It Since It Works
             UC1100 = -679355525,
             UC1102 = 104877429,
@@ -888,7 +893,10 @@ namespace Dobby {
             T2105 = -342416055,
             T2107 = 154664618,
             T2108 = 537380869,
-            T2109 = 1174398197
+            T2109 = 1174398197,
+
+            Empty = 0xDEADBEEF
+            }
         ;
 
 

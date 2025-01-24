@@ -356,7 +356,7 @@ namespace Dobby {
                 BrowseButtonOverride ^= true;
                 ExecutablePathBox.Text = fileDialog.FileName;
 
-                LoadFileToBePatched(fileDialog.FileName);
+                LoadFileToBePatched(fileDialog.FileName, MainStream);
                 fileDialog.Dispose();
             }
         }
@@ -372,7 +372,7 @@ namespace Dobby {
             var TextBoxData = (((Control)sender).Text.Replace("\"", ""));
 
             if(File.Exists(TextBoxData))
-            LoadFileToBePatched(TextBoxData);
+            LoadFileToBePatched(TextBoxData, MainStream);
         }
 
         /// <summary>
@@ -381,11 +381,12 @@ namespace Dobby {
         /// Then Assigns The RestoredDebugBtn's Button Text
         /// </summary>
         /// <param name="FilePath"> The Opened File </param>
-        private void LoadFileToBePatched(string FilePath) {
+        /// <param name="FilePath"> The Opened File </param>
+        private void LoadFileToBePatched(string FilePath, FileStream mainStream) {
             try { 
-                MainStream?.Dispose();
+                mainStream?.Dispose();
                 Dev.WLog(FilePath);
-                MainStream = new FileStream(FilePath, FileMode.Open, FileAccess.ReadWrite);
+                mainStream = new FileStream(FilePath, FileMode.Open, FileAccess.ReadWrite);
             }
             catch(IOException Oop) {
                 Dev.WLog(Oop.Message); SetGameInfoLabelText("Access Denied, File In Use Elsewhere");
@@ -394,15 +395,11 @@ namespace Dobby {
 
             ActiveFilePath = FilePath;
 
-            Game = GetGameID(MainStream);
-
-            GameInfoLabel.Text = ActiveGameID = GetGameLabelFromID(Game);
+            GameInfoLabel.Text = ActiveGameID = GetCurrentGame(mainStream);
                 
             DebugAddressForSelectedGame = GetDebugAddress(Game);
 
-            RestoredDebugBtn.Text =
-                RestoredDebugBtn.Text.Remove(RestoredDebugBtn.Text.LastIndexOf(' '))
-                + GetMenuPatchTypeAvailability(Game);
+            RestoredDebugBtn.Text = $"{RestoredDebugBtn.Text.Remove(RestoredDebugBtn.Text.LastIndexOf(' '))}{GetMenuPatchTypeAvailability(Game)}";
 
             MainStreamIsOpen = true;
             IsActiveFilePCExe = false;
@@ -410,76 +407,76 @@ namespace Dobby {
         }
 
         /// <returns> Patch Type Name For Restored/Custom Debug Button </returns>
-        private string GetMenuPatchTypeAvailability(int GameID) {
+        private string GetMenuPatchTypeAvailability(GameIDs GameID) {
             switch(GameID) {
                 ///
                 // Games I've Only Made Debug Mode Toggles For
                 ///
-                case T1R100:
-                case T1R109:
-                case T2100:
-                case T2101:
-                case T2102:
-                case T2105:
-                case UC4100:
-                case UC4101:
-                case UC4102:
-                case UC4103:
-                case UC4104:
-                case UC4105:
-                case UC4106:
-                case UC4108:
-                case UC4110:
-                case UC4111:
-                case UC4112:
-                case UC4113:
-                case UC4115:
-                case UC4116:
-                case UC4118:
-                case UC4119:
-                case UC4120:
-                case UC4120MP:
-                case UC4121:
-                case UC4121MP:
-                case UC4122_23:
-                case UC4122MP:
-                case UC4123MP:
-                case UC4124_25:
-                case UC4124MP:
-                case UC4125MP:
-                case UC4127_133:
-                case UC4127_28MP:
-                case UC4129MP:
-                case UC4130MP:
-                case UC4131MP:
-                case UC4132MP:
-                case TLL100MP:
-                case TLL100:
-                case TLL10X:
+                case GameIDs.T1R100:
+                case GameIDs.T1R109:
+                case GameIDs.T2100:
+                case GameIDs.T2101:
+                case GameIDs.T2102:
+                case GameIDs.T2105:
+                case GameIDs.UC4100:
+                case GameIDs.UC4101:
+                case GameIDs.UC4102:
+                case GameIDs.UC4103:
+                case GameIDs.UC4104:
+                case GameIDs.UC4105:
+                case GameIDs.UC4106:
+                case GameIDs.UC4108:
+                case GameIDs.UC4110:
+                case GameIDs.UC4111:
+                case GameIDs.UC4112:
+                case GameIDs.UC4113:
+                case GameIDs.UC4115:
+                case GameIDs.UC4116:
+                case GameIDs.UC4118:
+                case GameIDs.UC4119:
+                case GameIDs.UC4120:
+                case GameIDs.UC4120MP:
+                case GameIDs.UC4121:
+                case GameIDs.UC4121MP:
+                case GameIDs.UC4122_23:
+                case GameIDs.UC4122MP:
+                case GameIDs.UC4123MP:
+                case GameIDs.UC4124_25:
+                case GameIDs.UC4124MP:
+                case GameIDs.UC4125MP:
+                case GameIDs.UC4127_133:
+                case GameIDs.UC4127_28MP:
+                case GameIDs.UC4129MP:
+                case GameIDs.UC4130MP:
+                case GameIDs.UC4131MP:
+                case GameIDs.UC4132MP:
+                case GameIDs.TLL100MP:
+                case GameIDs.TLL100:
+                case GameIDs.TLL10X:
                     RestoredDebugBtn.Font = new Font("Cambria", 9.25F, FontStyle.Bold | FontStyle.Strikeout);
                     RestoredDebugBtn.Enabled = false; return " Restored/Custom";
 
                 ////
                 // Games I've Made Customizations For
                 ////
-                case T2107:
-                case T2108:
-                case T2109:
+                case GameIDs.T2107:
+                case GameIDs.T2108:
+                case GameIDs.T2109:
                     RestoredDebugBtn.Font = new Font("Cambria", 9.25F, FontStyle.Bold);
                     RestoredDebugBtn.Enabled = true; return " Custom";
                 ////
                 // Games I've Made Restorations For
                 ////
-                case T1R110:
-                case T1R111:
-                case UC1100:
-                case UC1102:
-                case UC2100:
-                case UC2102:
-                case UC3100:
-                case UC3102:
-                case UC4117:
-                case UC4133MP:
+                case GameIDs.T1R110:
+                case GameIDs.T1R111:
+                case GameIDs.UC1100:
+                case GameIDs.UC1102:
+                case GameIDs.UC2100:
+                case GameIDs.UC2102:
+                case GameIDs.UC3100:
+                case GameIDs.UC3102:
+                case GameIDs.UC4117:
+                case GameIDs.UC4133MP:
                     RestoredDebugBtn.Font = new Font("Cambria", 9.25F, FontStyle.Bold);
                     RestoredDebugBtn.Enabled = true; return " Restored";
                 ////
@@ -500,64 +497,64 @@ namespace Dobby {
 #else
         private
 #endif
-        int GetDebugAddress(int GameID) {
+        int GetDebugAddress(GameIDs GameID) {
             switch(GameID) {
-                case UC1100:       return UC1100Debug;
-                case UC1102:       return UC1102Debug;
-                case UC2100:       return UC2100Debug;
-                case UC2102:       return UC2102Debug;
-                case UC3100:       return UC3100Debug;
-                case UC3102:       return UC3102Debug;
-                case UC4100:       return UC4100Debug;
-                case UC4101:       return UC4101_106Debug;
-                case UC4102:       return UC4101_106Debug;
-                case UC4103:       return UC4101_106Debug;
-                case UC4104:       return UC4101_106Debug;
-                case UC4105:       return UC4101_106Debug;
-                case UC4106:       return UC4101_106Debug;
-                case UC4108:       return UC4108_111Debug;
-                case UC4110:       return UC4108_111Debug;
-                case UC4111:       return UC4108_111Debug;
-                case UC4112:       return UC4112_113Debug;
-                case UC4113:       return UC4112_113Debug;
-                case UC4115:       return UC4115Debug;
-                case UC4116:       return UC4116Debug;
-                case UC4117:       return UC4117Debug;
-                case UC4118:       return UC4118_119Debug;
-                case UC4119:       return UC4118_119Debug;
-                case UC4120MP:     return UC4120MPDebug;
-                case UC4120:     return UC4120SPDebug;
-                case UC4121MP:     return UC4121MPDebug;
-                case UC4121:     return UC4121SPDebug;
-                case UC4122MP:     return UC4122_125MPDebug;
-                case UC4122_23:  return UC4122_125SPDebug;
-                case UC4123MP:     return UC4122_125MPDebug;
-                case UC4124MP:     return UC4122_125MPDebug;
-                case UC4124_25:  return UC4122_125SPDebug;
-                case UC4125MP:     return UC4122_125MPDebug;
-                case UC4127_28MP:  return UC4127_132MPDebug;
-                case UC4127_133:     return UC4127_133SPDebug;
-                case UC4129MP:     return UC4127_132MPDebug;
-                case UC4130MP:     return UC4127_132MPDebug;
-                case UC4131MP:     return UC4127_132MPDebug;
-                case UC4132MP:     return UC4127_132MPDebug;
-                case UC4133MP:     return UC4133MPDebug;
-                case UC4MPBETA100: return UC4MPBETA100Debug;
-                case UC4MPBETA109: return UC4MPBETA109Debug;
-                case TLL100MP:     return TLL100MPDebug;
-                case TLL100:     return TLL100Debug;
-                case TLL10X:     return TLL10XDebug;
-                case T1R100:       return T1R100Debug;
-                case T1R109:       return T1R109Debug;
-                case T1R110:       return T1R110Debug;
-                case T1R111:       return T1R111Debug;
-                case T2100:        return T2100Debug;
-                case T2101:        return T2101Debug;
-                case T2102:        return T2102Debug;
-                case T2105:        return T2105Debug;
-                case T2107:        return T2107Debug;
-                case T2108:        return T2108Debug;
-                case T2109:        return T2109Debug;
+                case GameIDs.UC1100:       return UC1100Debug;
+                case GameIDs.UC1102:       return UC1102Debug;
+                case GameIDs.UC2100:       return UC2100Debug;
+                case GameIDs.UC2102:       return UC2102Debug;
+                case GameIDs.UC3100:       return UC3100Debug;
+                case GameIDs.UC3102:       return UC3102Debug;
+                case GameIDs.UC4100:       return UC4100Debug;
+                case GameIDs.UC4101:       return UC4101_106Debug;
+                case GameIDs.UC4102:       return UC4101_106Debug;
+                case GameIDs.UC4103:       return UC4101_106Debug;
+                case GameIDs.UC4104:       return UC4101_106Debug;
+                case GameIDs.UC4105:       return UC4101_106Debug;
+                case GameIDs.UC4106:       return UC4101_106Debug;
+                case GameIDs.UC4108:       return UC4108_111Debug;
+                case GameIDs.UC4110:       return UC4108_111Debug;
+                case GameIDs.UC4111:       return UC4108_111Debug;
+                case GameIDs.UC4112:       return UC4112_113Debug;
+                case GameIDs.UC4113:       return UC4112_113Debug;
+                case GameIDs.UC4115:       return UC4115Debug;
+                case GameIDs.UC4116:       return UC4116Debug;
+                case GameIDs.UC4117:       return UC4117Debug;
+                case GameIDs.UC4118:       return UC4118_119Debug;
+                case GameIDs.UC4119:       return UC4118_119Debug;
+                case GameIDs.UC4120MP:     return UC4120MPDebug;
+                case GameIDs.UC4120:     return UC4120SPDebug;
+                case GameIDs.UC4121MP:     return UC4121MPDebug;
+                case GameIDs.UC4121:     return UC4121SPDebug;
+                case GameIDs.UC4122MP:     return UC4122_125MPDebug;
+                case GameIDs.UC4122_23:  return UC4122_125SPDebug;
+                case GameIDs.UC4123MP:     return UC4122_125MPDebug;
+                case GameIDs.UC4124MP:     return UC4122_125MPDebug;
+                case GameIDs.UC4124_25:  return UC4122_125SPDebug;
+                case GameIDs.UC4125MP:     return UC4122_125MPDebug;
+                case GameIDs.UC4127_28MP:  return UC4127_132MPDebug;
+                case GameIDs.UC4127_133:     return UC4127_133SPDebug;
+                case GameIDs.UC4129MP:     return UC4127_132MPDebug;
+                case GameIDs.UC4130MP:     return UC4127_132MPDebug;
+                case GameIDs.UC4131MP:     return UC4127_132MPDebug;
+                case GameIDs.UC4132MP:     return UC4127_132MPDebug;
+                case GameIDs.UC4133MP:     return UC4133MPDebug;
+                case GameIDs.UC4MPBETA100: return UC4MPBETA100Debug;
+                case GameIDs.UC4MPBETA109: return UC4MPBETA109Debug;
+                case GameIDs.TLL100MP:     return TLL100MPDebug;
+                case GameIDs.TLL100:     return TLL100Debug;
+                case GameIDs.TLL10X:     return TLL10XDebug;
+                case GameIDs.T1R100:       return T1R100Debug;
+                case GameIDs.T1R109:       return T1R109Debug;
+                case GameIDs.T1R110:       return T1R110Debug;
+                case GameIDs.T1R111:       return T1R111Debug;
+                case GameIDs.T2100:        return T2100Debug;
+                case GameIDs.T2101:        return T2101Debug;
+                case GameIDs.T2102:        return T2102Debug;
+                case GameIDs.T2105:        return T2105Debug;
+                case GameIDs.T2107:        return T2107Debug;
+                case GameIDs.T2108:        return T2108Debug;
+                case GameIDs.T2109:        return T2109Debug;
                 default:           return 0xBADBEEF ;
             }
         }
@@ -592,57 +589,57 @@ namespace Dobby {
                 default:
                     MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported\n" + Game);
                     break;
-                case T1R100:
-                case T1R109:
-                case T1R110:
-                case T1R111:
+                case GameIDs.T1R100:
+                case GameIDs.T1R109:
+                case GameIDs.T1R110:
+                case GameIDs.T1R111:
                     T1R11X_RestoredMenu();
                     break;
-                case T2100:
-                case T2101:
-                case T2102:
-                case T2105:
-                case T2107:
+                case GameIDs.T2100:
+                case GameIDs.T2101:
+                case GameIDs.T2102:
+                case GameIDs.T2105:
+                case GameIDs.T2107:
                     T2107_CustomMenu();
                     break;
-                case T2108:
-                case T2109:
+                case GameIDs.T2108:
+                case GameIDs.T2109:
                     T2109_CustomMenu();
                     break;
-                case UC1100: // Uncharted 1 1.00 Restored Debug Ver. 2.6.1
+                case GameIDs.UC1100: // Uncharted 1 1.00 Restored Debug Ver. 2.6.1
                     UC1100_RestoredMenu();
                     break;
-                case UC1102: // Uncharted 1 1.02 Restored Debug Ver. 2.7
+                case GameIDs.UC1102: // Uncharted 1 1.02 Restored Debug Ver. 2.7
                     UC1102_RestoredMenu();
                     break;
-                case UC2100: // Uncharted 2 1.00 Restored Debug Ver. 1.0
+                case GameIDs.UC2100: // Uncharted 2 1.00 Restored Debug Ver. 1.0
                     UC2100_RestoredMenu();
                     break;
-                case UC2102: // Uncharted 2 1.02 Restored Debug Ver. 1.0
+                case GameIDs.UC2102: // Uncharted 2 1.02 Restored Debug Ver. 1.0
                   //UC2102_RestoredMenu();
                     break;
-                case UC3100:
+                case GameIDs.UC3100:
                     UC3100_RestoredMenu();
                     break;
-                case UC3102:
+                case GameIDs.UC3102:
                   //UC3100_RestoredMenu();
                     break;
-                case UC4100:
+                case GameIDs.UC4100:
                   //UC4SP100_CustomMenu();
                     break;
-                case UC4127_133:
+                case GameIDs.UC4127_133:
                   //UC4SP127_CustomMenu();
                     break;
-                case UC4133MP:
+                case GameIDs.UC4133MP:
                     UC4MP133_RestoredMenu();
                     break;
-                case TLL100MP:
+                case GameIDs.TLL100MP:
                   //TLLMP100_RestoredMenu();
                     break;
-                case TLL100:
+                case GameIDs.TLL100:
                   //TLLSP100_CustomMenu();
                     break;
-                case TLL10X:
+                case GameIDs.TLL10X:
                   //TLLMP100_RestoredMenu();
                     break;
             }

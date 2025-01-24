@@ -5,4 +5,5 @@
 
 using System.Diagnostics.CodeAnalysis;
 
+
 [assembly: SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "I Don't Care", Scope = "member", Target = "~M:Dobby.Common.PageInfo(System.Windows.Forms.Control.ControlCollection)")]

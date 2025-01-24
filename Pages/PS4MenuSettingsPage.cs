@@ -780,9 +780,9 @@ namespace Dobby {
         #endregion
 
 
-        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+        /*/////////////////////\\\\\\\\\\\\\\\\\\\\\\\
         ///--     Misc Patches Page Variables    --\\\
-        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\*/
         #region Misc Patches Page Variables
 
         /// <summary> Array of Controls to Move When Loading >1 Game-Specific Debug Options
@@ -794,9 +794,10 @@ namespace Dobby {
         ///</summary>
         private static int
             ButtonIndex = 0,
-            RB_StartPos,
-            Game
+            RB_StartPos
         ;
+
+        internal GameIDs Game = GameIDs.Empty;
 
         /// <summary>
         /// 0:  UC1100<br/>
@@ -1236,14 +1237,14 @@ namespace Dobby {
 #endif
 
 
-        //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
+        /*////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
         ///--     Misc Patches Page Main Functions    --\\\
-        //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
+        //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\*/
         #region Misc Patches Page Main Functions
         private void BrowseButton_Click(object sender, EventArgs e) {
-            FileDialog OpenedFile = new OpenFileDialog {
+            var OpenedFile = new OpenFileDialog {
                 Filter = "Executable|*.elf;*.bin",
-                Title = "Select Either Of The Game's Executables"
+                Title = "Please select the executable you would like to patch."
             };
 
 
@@ -1253,8 +1254,7 @@ namespace Dobby {
                 MainStream?.Dispose();
                 MainStream = File.Open(ExecutablePathBox.Text = OpenedFile.FileName, FileMode.Open, FileAccess.ReadWrite);
                 
-                Game = GetGameID(MainStream);
-                GameInfoLabel.Text = GetGameLabelFromID(Game);
+                GameInfoLabel.Text = GetCurrentGame(MainStream);
 
                 MainStreamIsOpen = true;
                 CustomDebugOptionsLabel.Visible = IsActiveFilePCExe = false;
@@ -1262,7 +1262,7 @@ namespace Dobby {
                 GameIndex = GetGameIndex(Game);
 
                 if(GameIndex == 0xBADBEEF)
-                    MessageBox.Show("Selected Game Not Currently Supported", $"Patches For {GetGameLabelFromID(Game)} Not Added Yet");
+                    MessageBox.Show("Selected Game Not Currently Supported", $"Patches For {GameInfoLabel.Text} Not Added Yet");
                 
                 LoadGameSpecificMenuOptions();
             }
@@ -1300,7 +1300,7 @@ namespace Dobby {
                     }
 
                     // Write Function Call To Call BootSettings
-                    WriteBytes(BootSettingsCallAddress[GameIndex], GetBootSettingsFunctionCall());
+                    WriteBytes(BootSettingsCallAddress[GameIndex], GetBootSettingsFunctionCall(Game));
 
                     // Write BootSettings Function's Assembly To Game Executable
                     WriteBytes(BootSettingsAddress = BootSettingsFunctionAddress[GameIndex], GetBootSettingsBytes(GameIndex));
@@ -1310,7 +1310,7 @@ namespace Dobby {
                     PatchCount = 2;
 
                     // Apply Universal Options
-                    for(index = 0; index < UniversaPatchValues.Length; index++) {
+                    for(var index = 0; index < UniversaPatchValues.Length; index++) {
                         if(UniversaPatchValues[index] == DefaultUniveralPatchValues[index])
                             continue;
 
@@ -1332,7 +1332,7 @@ namespace Dobby {
 
 
                     // Apply Game-Specific Options
-                    for(index = 0; index < DynamicPatchButtons.GameSpecificPatchValues.Length; index++ ) {
+                    for(var index = 0; index < DynamicPatchButtons.GameSpecificPatchValues.Length; index++ ) {
                         if(DynamicPatchButtons.GameSpecificPatchValues[index].Equals(DynamicPatchButtons.DefaultGameSpecificPatchValues[index]))
                             continue;
 
@@ -1416,45 +1416,45 @@ namespace Dobby {
 
 
         /// <summary> Get The MenuSettingsPage-Specific GameIndex Used For... Well, Take A Fking Guess.<br/><br/>Does Not Include Game Versions I Don't Indend To Support, Just Oldest And Latest<br/>(Plus A Couple Still Commonly Used In-Between Ones) </summary>
-        private int GetGameIndex(int Game) {
+        private int GetGameIndex(GameIDs Game) {
             switch(Game) {
                 default:
                     return 999999999;
 
-                case UC1100:
-                case UC1102:
-                case UC2100:
-                case UC2102:
-                case UC3100:
-                case UC3102:
+                case GameIDs.UC1100:
+                case GameIDs.UC1102:
+                case GameIDs.UC2100:
+                case GameIDs.UC2102:
+                case GameIDs.UC3100:
+                case GameIDs.UC3102:
                     return 0xBADBEEF;
 
-                case UC4100:
+                case GameIDs.UC4100:
                     return 6;
-                case UC4101:
+                case GameIDs.UC4101:
                     return 7;
-                case UC4127_133:
+                case GameIDs.UC4127_133:
                     return 8;
-                case UC4133MP:
+                case GameIDs.UC4133MP:
                     return 0xBADBEEF;
-                case TLL100:
+                case GameIDs.TLL100:
                     return 10;
-                case TLL10X:
+                case GameIDs.TLL10X:
                     return 11;
 
-                case T1R100:
+                case GameIDs.T1R100:
                     return 11;
-                case T1R109:
+                case GameIDs.T1R109:
                     return 13;
-                case T1R110:
-                case T1R111:
+                case GameIDs.T1R110:
+                case GameIDs.T1R111:
                     return 14;
-                case T2100:
+                case GameIDs.T2100:
                     return 15;
-                case T2107:
+                case GameIDs.T2107:
                     return 16;
-                case T2108:
-                case T2109:
+                case GameIDs.T2108:
+                case GameIDs.T2109:
                     return 17;
             }
         }
@@ -1507,33 +1507,33 @@ namespace Dobby {
         /// Returns The Data For The Custom Function Used To Call BootSettings To Write Over The Quick Menu Function Call<br/>
         /// (Redirected Quick Menu Function Call Prepends BootSettings' Code)
         ///</summary>
-        private static byte[] GetBootSettingsFunctionCall() {
-            switch(Game) {
-                case UC1100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+        private static byte[] GetBootSettingsFunctionCall(GameIDs GameID) {
+            switch(GameID) {
+                case GameIDs.UC1100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
 
-                case UC1102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+                case GameIDs.UC1102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
 
-                case UC2100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+                case GameIDs.UC2100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
 
-                case UC2102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+                case GameIDs.UC2102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
 
-                case UC3100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+                case GameIDs.UC3100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
 
-                case UC3102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+                case GameIDs.UC3102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
 
-                case T1R100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+                case GameIDs.T1R100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
 
-                case T1R109: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+                case GameIDs.T1R109: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
 
-                case T1R110:
-                case T1R111: return new byte[] { 0xe8, 0xc0, 0x15, 0x01, 0x00 }; // 
+                case GameIDs.T1R110:
+                case GameIDs.T1R111: return new byte[] { 0xe8, 0xc0, 0x15, 0x01, 0x00 }; // 
 
-                case T2100: return new byte[] { 0xe8, 0x43, 0x95, 0xe1, 0xff };  // CALL 0x7e0fc0
+                case GameIDs.T2100: return new byte[] { 0xe8, 0x43, 0x95, 0xe1, 0xff };  // CALL 0x7e0fc0
 
-                case T2107: return new byte[] { 0xe8, 0xb1, 0x91, 0xe1, 0xff };  // CALL 0x407330
+                case GameIDs.T2107: return new byte[] { 0xe8, 0xb1, 0x91, 0xe1, 0xff };  // CALL 0x407330
 
-                case T2108:
-                case T2109: return new byte[] { 0xe8, 0x31, 0x19, 0x9d, 0xff };  // CALL 0x4015f0
+                case GameIDs.T2108:
+                case GameIDs.T2109: return new byte[] { 0xe8, 0x31, 0x19, 0x9d, 0xff };  // CALL 0x4015f0
                 default:
                     return Array.Empty<byte>();
             }
@@ -1563,7 +1563,7 @@ namespace Dobby {
                 OriginalFormScale = Size;
                 OriginalControlPositions = new Point[ControlsToMove.Length];
 
-                for(index = 0; index < ControlsToMove.Length; index++) // Save Original Y Loc Of Controls
+                for(var index = 0; index < ControlsToMove.Length; index++) // Save Original Y Loc Of Controls
                     OriginalControlPositions[index] = ControlsToMove[index].Location;
             }
 
@@ -1584,12 +1584,10 @@ namespace Dobby {
             foreach(var btn in gsButtons.CreateDynamicButtons())
                 ActiveForm.Controls.Add(btn);
 
-            index = 0;
-
             // Only Needed If Multiple Buttons Are Being Added, As The Form Can Already Fit One More After hiding The Label
             if(MultipleButtonsEnabled)
                 foreach(Control control in gsButtons.Buttons)
-                    if(control != null && index++ != 0) {
+                    if(control != null) {
                         // Move Each Control, Then Resize The BorderBox & Form
                         foreach(Control A in ControlsToMove)
                             A.Location = new Point(A.Location.X, A.Location.Y + 23);
@@ -1647,12 +1645,12 @@ namespace Dobby {
             ResetBtn.BringToFront();
         }
 
-        private static void ResetCustomDebugOptions(object _ = null, EventArgs __ = null) {
+        private void ResetCustomDebugOptions(object _ = null, EventArgs __ = null) {
             if(Game == 0) return;
 #if DEBUG
             Dev.WLog("Resetting Form And Main Stream");
 #endif
-            index = 0;
+            var index = 0;
 
             // Reset Form Size
             if(ActiveForm.Name != "Dobby") //! Lazy Fix 

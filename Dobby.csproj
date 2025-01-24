@@ -19,9 +19,10 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\ND Debug Enabler.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -34,7 +35,7 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject />
+    <StartupObject>Dobby.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -66,6 +67,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Pages\PS4DebugPage.Designer.cs">
+      <SubType>Form</SubType>
+      <DependentUpon>PS4DebugPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\CreditsPage.Designer.cs">
+      <SubType>Form</SubType>
+      <DependentUpon>CreditsPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Gp4CreationPage.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,7 +102,7 @@
     <Compile Include="Common.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Pages\Credits.cs">
+    <Compile Include="Pages\CreditsPage.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Pages\EbootPatchPage.cs">
@@ -123,8 +132,8 @@
       <DependentUpon>EbootPatchHelpPage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Credits.resx">
-      <DependentUpon>Credits.cs</DependentUpon>
+    <EmbeddedResource Include="Pages\CreditsPage.resx">
+      <DependentUpon>CreditsPage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\EbootPatchPage.resx">
@@ -164,6 +173,7 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include=".editorconfig" />
     <None Include="Resources\bin\ps4debug.bin" />
     <None Include="Resources\data\T1R_11X_Restored_Chunk1" />
     <None Include="Resources\data\T1R_11X_Restored_Chunk2" />
