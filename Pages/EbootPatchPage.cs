@@ -11,7 +11,7 @@ namespace Dobby {
         public EbootPatchPage() {
             InitializeComponent();
             
-            AddEventHandlersToControls(Controls);
+            InitializeAdditionalEventHandlers(Controls);
             if (ActiveFilePath != null && !IsActiveFilePCExe)
                 ExecutablePathBox.Text = ActiveFilePath;
         }

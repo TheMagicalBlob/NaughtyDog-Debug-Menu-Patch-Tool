@@ -1,1 +1,0 @@
-xcopy "..\OrbisGP4\GP4GUI\bin\Release\libgp4.dll" "Resources\bin\" /v/y/f

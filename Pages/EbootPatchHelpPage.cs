@@ -9,7 +9,7 @@ namespace Dobby {
         public EbootPatchHelpPage() {
             InitializeComponent();
             
-            AddEventHandlersToControls(Controls);
+            InitializeAdditionalEventHandlers(Controls);
 
             Question0Btn.Text = "- How Do I Get My Game's eboot.bin?";
             Question1Btn.Text = "- How Do I Extract My Game's .pkg?";

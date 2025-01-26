@@ -194,4 +194,12 @@
     <Content Include="Resources\misc\GenSCPatchCode.py" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>xcopy "$(ProjectDir)\..\libgp4\bin\Release\libgp4.dll" "$(ProjectDir)\Resources\bin" /v/y/f
+xcopy "$(ProjectDir)\..\libdebug\bin\Debug\net20\libdebug.dll" "$(ProjectDir)\Resources\bin" /v/y/f</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>

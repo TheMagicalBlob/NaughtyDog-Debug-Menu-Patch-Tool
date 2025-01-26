@@ -16,7 +16,7 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             var Log = new LogWindow(this);
             Log.Show();
 #endif
-            AddEventHandlersToControls(Controls);
+            InitializeAdditionalEventHandlers(Controls);
         }
 
         #region Designer Crap, No Touchie

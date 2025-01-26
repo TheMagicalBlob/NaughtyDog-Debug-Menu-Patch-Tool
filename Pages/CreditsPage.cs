@@ -9,7 +9,7 @@ namespace Dobby {
         public CreditsPage() {
             InitializeComponent();
             
-            AddEventHandlersToControls(Controls);
+            InitializeAdditionalEventHandlers(Controls);
             foreach (Control control in Controls)
                 control.TabStop = false;
         }

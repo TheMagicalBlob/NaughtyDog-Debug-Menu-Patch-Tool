@@ -49,7 +49,7 @@ namespace Dobby {
         ///--  MAIN APPLICATION VARIABLES & Functions  --\\\
         //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
         */
-        #region Application-Wide Functions And Variable Declarations
+        #region Main Application Functions & Variable Declarations
 
         /// <summary>
         /// ID's for the various pages (forms) in the application.
@@ -72,6 +72,16 @@ namespace Dobby {
             PlaceholderPage = 0xbad
         }
 
+        /// <summary> Buttons To Avoid Prepending The Hover Arrow To </summary>
+        private static readonly string[] ArrowBlacklist = new string[] {
+                "DebugControl",
+                "ExitBtn",
+                "MinimizeBtn",
+                "LabelBtn",
+                "CmdPathBox",
+                "Gp4PathBox"
+        };
+
 
         public static string
             CurrentControl,
@@ -79,9 +89,13 @@ namespace Dobby {
             ActiveGameID = "UNK"
         ;
 
+        /// <summary> ID for the active game. </summary>
         public static GameIDs Game;
+
+        /// <summary> ID for the currently loaded form. </summary>
         public static PageID Page;
         public static PageID?[] Pages = new PageID?[5];
+
         public static bool
             MouseScrolled,
             MouseIsDown,
@@ -113,6 +127,12 @@ namespace Dobby {
         public static Font MainFont = new Font("Consolas", 9.75F, FontStyle.Bold);
         public static Color MainColour = Color.FromArgb(100, 100, 100);
 
+        
+
+        public static InfoLabelUpdateCallback SetInfoText = value => {
+            if(ActiveForm != null)
+                InfoLabel.Text = value;
+        };
 
 
         /// <summary> Write A Byte To The MainStream And Flush The Data </summary>
@@ -481,28 +501,31 @@ namespace Dobby {
             e.Graphics.DrawLines(pen, Border);
         }
 
-        /// <summary> Create And Apply A Thin Line From One End Of The Form To The Other (placeholder code atm)
+        /// <summary> Create and draw a thin white line from one end of the form to the other. (placeholder code atm)
         ///</summary>
         public static void PaintSeperatorLine(object sender, PaintEventArgs e)
         {
-            var ItemPtr = (Label)sender;
+            var item = sender as Label;
 
-            if (ItemPtr.Size.Height != 15)
-            {
-                WLog($"Label On Page {ItemPtr.Parent.Name} Has An Ivalid Height ({ItemPtr.Size.Height})");
-                ItemPtr.Size = new Size(ItemPtr.Size.Width, 15);
+            if (item == null) {
+                WLog("!! ERROR: Invalid control passed as Seperator line.");
+                WLog($"  - Control \"{(((Control)sender).Name)}\" location: {((Control)sender).Location}.");
+            }
+            if (item.Size.Height != 15) {
+                WLog($"# WARNING: A label on page \"{item.Parent.Name}\" has an invalid height!!! (Label at {item.Location} is {item.Size.Height} pixels in height)");
+                //item.Size = new Size(item.Size.Width, 15);
             }
 
 
-            var LineVerticalPos = 9;
-            Point[] Line = new Point[] {
-                new Point(1, LineVerticalPos),
-                new Point(ItemPtr.Parent.Size.Width - 1, LineVerticalPos)
-            };
-
             e.Graphics.Clear(Color.FromArgb(100, 100, 100));
-            e.Graphics.DrawLines(pen, Line);
+            e.Graphics.DrawLines(pen, new Point[] {
+                new Point(1, 9),
+                new Point(item.Parent.Size.Width - 1, 9)
+            });
         }
+
+
+        public static void WriteLabel(Form form, string message) => form.Invoke(SetInfoText, message);
 
 
         // TODO: rework this crap
@@ -554,10 +577,9 @@ namespace Dobby {
         /// Loads The Specified Page From The PageId Group (E.g. ChangeForm(PageID.PS4MiscPageId))
         /// </summary>
         /// <param name="Page"> Page To Change To </param>
-        /// <param name="IsPageGoingBack"> Whether We're Returning Or Loading A New Page </param>
         public static void ChangeForm(PageID Page) {
             LastPos = ActiveForm.Location;
-            var ClosingForm = ActiveForm;
+            var ClosingForm = ActiveForm as Form;
 
             if (!IsPageGoingBack)
             {
@@ -674,51 +696,44 @@ namespace Dobby {
         }
 
 
-        /// <summary> Buttons To Avoid Prepending The Hover Arrow To </summary>
-        private static readonly string[] Blacklist = new string[] {
-                "!!!",
-                "ExitBtn",
-                "MinimizeBtn",
-                "LabelBtn",
-                "CmdPathBox",
-                "Gp4PathBox"
-        };
+
         /// <summary>
         /// Apply Basic Event Handlers To Form And It's Items
         /// </summary>
-        public static void ApplyEventHandlersToControl(object sender)
-        {
-            var Item = sender as Control;
 
-#if DEBUG
-            Item.MouseEnter += new EventHandler(DebugControlHover);
-#endif
-
-            Item.MouseDown += new MouseEventHandler(MouseDownFunc);
-            Item.MouseUp += new MouseEventHandler(MouseUpFunc);
-
-            if (Item.Name.Contains("Seperator") && sender.GetType() == typeof(Label))
-                Item.Paint += PaintSeperatorLine;
-
-            if (!Item.Name.Contains("Box")) // So You Can Drag Select The Text Lol
-                Item.MouseMove += new MouseEventHandler(MoveForm);
-
-            if ((Item.GetType() == typeof(Button) || Item.GetType() == typeof(Button)) && !Blacklist.Contains(Item.Name))
-            {
-                Item.MouseEnter += new EventHandler(ControlHover);
-                Item.MouseLeave += new EventHandler(ControlLeave);
-            }
-
-            if (Item.GetType() == typeof(Button))
-                Item.Paint += DrawButtonVar;
-        }
 
         /// <summary>
         /// Mass-Apply Basic Event Handlers To Form And It's Items. (I got sick of manually editing InitializeComponent())
         /// </summary>
         /// <param name="Controls">Collection of Controls to Apply Event Handlers to.</param>
-        public static void AddEventHandlersToControls(Control.ControlCollection Controls)
+        public static void InitializeAdditionalEventHandlers(Control.ControlCollection Controls)
         {
+            void ApplyEventHandlersToControl(object sender) {
+                var Item = sender as Control;
+    #if DEBUG
+                Item.MouseEnter += new EventHandler(DebugControlHover);
+    #endif
+                Item.MouseDown += new MouseEventHandler(MouseDownFunc);
+                Item.MouseUp += new MouseEventHandler(MouseUpFunc);
+
+
+                if (Item.Name.Contains("Seperator") && sender.GetType() == typeof(Label))
+                    Item.Paint += PaintSeperatorLine;
+
+                if (!Item.Name.Contains("Box")) // So You Can Drag Select The Text Lol
+                    Item.MouseMove += new MouseEventHandler(MoveForm);
+
+                if ((Item.GetType() == typeof(Button) || Item.GetType() == typeof(Button)) && !ArrowBlacklist.Contains(Item.Name))
+                {
+                    Item.MouseEnter += new EventHandler(ControlHover);
+                    Item.MouseLeave += new EventHandler(ControlLeave);
+                }
+
+                if (Item.GetType() == typeof(Button))
+                    Item.Paint += DrawButtonVar;
+            }
+
+
             Controls.Owner.Paint += PaintBorder;
             foreach (Control Item in Controls) {
                 ApplyEventHandlersToControl(Item);
@@ -1041,5 +1056,21 @@ namespace Dobby {
 
         public object Variable;
         public string Info;
+    }
+
+    public class Form : System.Windows.Forms.Form
+    {
+        /// <summary>
+        ///   Update the yellow info label at the base of the form with a new message
+        /// </summary>
+        /// <param name="message"> The message to display with the info label. </param>
+        public void SetInfo(string message = "")
+        {
+            Invoke(Common.SetInfoText, message);
+
+            #if DEBUG
+            WLog($"[Info]: {message}");
+            #endif
+        }
     }
 }

@@ -22,22 +22,7 @@ namespace Dobby {
         true;
 #else
         false;
-
-        /// <summary> Dev Label Event Handler Function </summary>
-        public static void MiscDebugFunc(object sender, EventArgs e) {
-            WLog("useless");
-            return;
-            if(((Control)sender).Text == "(Dev)") {
-                foreach(var v in GetControlsInOrder(LogWindow.GetParent())) {
-                    WLog($"|RET {v.Name} at {v.Location}|");
-                }
-
-
-                LogWindow.Pause();
-                return;
-            }
-        }
-
+        
         public static Control[] GetControlsInOrder(Form Parent) {
             var Cunts = new List<Control>();
             
@@ -55,20 +40,6 @@ namespace Dobby {
             return Cunts.ToArray();
         }
 
-        public static void OpenLog(object _ = null, EventArgs __ = null) {
-
-            if(MessageBox.Show("Open Log?", "", MessageBoxButtons.OKCancel) != DialogResult.OK)
-                return;
-
-            System.Diagnostics.Process.Start($"{Directory.GetCurrentDirectory()}\\out.txt");
-            LogWindow.Exit();
-            Environment.Exit(0);
-        }
-        public static void SwitchToRelease(object _ = null, EventArgs __ = null) {
-            LogWindow.Exit();
-            System.Diagnostics.Process.Start($@"{Directory.GetParent(Directory.GetCurrentDirectory())}\Release\ND Debug Enabler.exe");
-            Environment.Exit(1);
-        }
 
         public static void StartReadLogTest() => ReadTest.Start();
 
@@ -221,58 +192,71 @@ namespace Dobby {
 
                 var DButtons = new Button[] {
                     new Button {
-                        TabIndex = 0,
-                        ForeColor = SystemColors.Control,
-                        Font = DButtonFont,
-                        Text = "(Dev)",
-                        Name = "!!!"
-                    },
-                    new Button {
                         TabIndex = 1,
                         ForeColor = SystemColors.Control,
                         Font = DButtonFont,
                         Text = "LogTxt",
-                        Name = "!!!"
+                        Name = "DebugControl"
                     },
                     new Button {
                         TabIndex = 2,
                         ForeColor = SystemColors.Control,
                         Font = DButtonFont,
                         Text = "Boot Release",
-                        Name = "!!!"
+                        Name = "DebugControl"
+                    },
+                    new Button {
+                        TabIndex = 2,
+                        ForeColor = SystemColors.Control,
+                        Font = DButtonFont,
+                        Text = "Clear Info Label",
+                        Name = "DebugControl"
                     }
                 };
 
-                EventHandler[] Handlers = new EventHandler[] {
-                    new EventHandler(MiscDebugFunc),
-                    new EventHandler(OpenLog),
-                    new EventHandler(SwitchToRelease),
+                var Handlers = new EventHandler[] {
+                    new EventHandler((sender, e) => { 
+                        if(MessageBox.Show("Open Log?", "", MessageBoxButtons.OKCancel) != DialogResult.OK)
+                            return;
+
+                        System.Diagnostics.Process.Start($"{Directory.GetCurrentDirectory()}\\out.txt");
+                        Exit();
+                        Environment.Exit(0);
+                    }),
+                    new EventHandler((_, __) => {
+                        Exit();
+                        System.Diagnostics.Process.Start($@"{Directory.GetParent(Directory.GetCurrentDirectory())}\Release\ND Debug Enabler.exe");
+                        Environment.Exit(1);
+                    }),
+                    new EventHandler((control, args) => SetInfo())
                 };
+
+
 
 
                 // LogWindow Form And Control Initializations
                 BackColor = Gaia.BackColor;
                 FormBorderStyle = FormBorderStyle.None;
                 Name = "LogWindow";
-                foreach(Button c in DButtons) {
-                    Controls.Add(c);
-                    c.FlatStyle = FlatStyle.Flat;
-                    c.FlatAppearance.BorderSize = 0;
-                    c.Click += Handlers[c.TabIndex];
-                    c.Size = TryAutosize(c);
-                    c.BringToFront();
+                foreach(Button debugControl in DButtons) {
+                    Controls.Add(debugControl);
+                    debugControl.FlatStyle = FlatStyle.Flat;
+                    debugControl.FlatAppearance.BorderSize = 0;
+                    debugControl.Click += Handlers[debugControl.TabIndex];
+                    debugControl.Size = TryAutosize(debugControl);
+                    debugControl.BringToFront();
 
                 }
-                //\\
+
 
                 // LogWindow Event Handlers
                 MouseEnter += DebugControlHover;
                 MouseDown  += MouseDownFunc;
                 MouseUp    += MouseUpFunc;
-                //\\
 
-                LogWindowRenderer = this.CreateGraphics();
+
                 LogPtr = this;
+                LogWindowRenderer = CreateGraphics();
                 SetParent(Gaia);
 
                 LogFile = File.CreateText($"{Directory.GetCurrentDirectory()}\\out.txt");
@@ -280,7 +264,7 @@ namespace Dobby {
             }
 
             private static Form LogPtr, ParentPtr;
-            public static Size formScale;
+            public static Size FormScale;
 
             private static Graphics LogWindowRenderer;
 
@@ -324,7 +308,7 @@ namespace Dobby {
             public delegate void Scaling();
             public static Scaling resize = new Scaling(ResizeLog);
             private static void ResizeLog() {
-                LogPtr.Size = formScale;
+                LogPtr.Size = FormScale;
                 LogWindowRenderer = LogPtr.CreateGraphics();
 
             Reset:
@@ -342,7 +326,7 @@ namespace Dobby {
 
                     ControlOffset += c.Size.Width;
                 }
-                if(PkgCreationPage.debug && !REL) Console.WriteLine($"Should be: {formScale} \\ Is: {LogPtr.Size}");
+                if(PkgCreationPage.debug && !REL) Console.WriteLine($"Should be: {FormScale} \\ Is: {LogPtr.Size}");
             }
 
             public static void Exit() {
@@ -389,7 +373,6 @@ namespace Dobby {
 
                 while(true) {
                     try {
-
                         Out = string.Empty;
                         var StartTime = TimerTicks;
                         var ControlType = HoveredControl?.GetType().ToString();
@@ -397,12 +380,15 @@ namespace Dobby {
                         var DynamicVars = PS4MenuSettingsPage.PeekGameSpecificPatchValues();
 
                         try {
+
+                            // Lazy way to pause output.
                             while(LogShouldPause);
 
+                            // Switch between various formats of debug output based on the current page.
                             switch(Page) {
                                 default:
                                     Output = new string[] {
-                                        $"Build: {Ver.Build}                   [Delay: ~{Delay}ms]",
+                                        $"Build: {Ver.Build} | [Delay: ~{Delay}ms]",
                                         " ",
                                         $"Parent Form: {(ActiveForm != null ? $"{ActiveForm?.Name} | # Of Children: {ActiveForm?.Controls?.Count}" : "Console")}",
                                         " ",
@@ -425,6 +411,7 @@ namespace Dobby {
                                 break;
                                 case PageID.PS4MenuSettingsPage:
                                     Output = new string[] {
+                                        "",
                                         $"| Game Index:           {PS4MenuSettingsPage.GameIndex}",
                                         $"| Disable FPS:          {PS4MenuSettingsPage.UniversaPatchValues[0]}",
                                         $"| Paused Icon:          {PS4MenuSettingsPage.UniversaPatchValues[1]}",
@@ -457,23 +444,24 @@ namespace Dobby {
                             }
                         }
                         catch(Exception e) {
-                            Output = new string[] { "Error", e.Message };
+                            Output = new string[] { "Error.", e.Message };
+                            WLog($"!! ERROR: an exception occured during debug output loop while setting \"frame\"");
                         }
 
                         if(LogShouldRefresh || !chk1.SequenceEqual(Output) || chk1 == null || !chk2.SequenceEqual(OutputStrings)) {
                             chk1 = Output;
                             chk2 = OutputStrings;
                             SizeF TextSize;
-                            formScale = Size.Empty;
+                            FormScale = Size.Empty;
 
                             // Resize LogWindow To Fit Rendered Text, With A Padding of 6 Pixels (Half Because It's Also Placed 6 Pixles In On Each Axis Below)
                             foreach(string line in Output) {
                                 TextSize = LogWindowRenderer.MeasureString(line, DFont);
 
-                                if((int)TextSize.Width > (int)formScale.Width - 12)
-                                    formScale.Width = (int)TextSize.Width + 12;
+                                if((int)TextSize.Width > (int)FormScale.Width - 12)
+                                    FormScale.Width = (int)TextSize.Width + 12;
 
-                                formScale.Height += (int)TextSize.Height;
+                                FormScale.Height += (int)TextSize.Height;
 
                                 if(line != "")
                                     Out += $"{line}\n";
@@ -484,10 +472,10 @@ namespace Dobby {
                             foreach(string line in OutputStrings) {
                                 TextSize = LogWindowRenderer.MeasureString(line, DFont);
 
-                                if(TextSize.Width > formScale.Width - 12)
-                                    formScale.Width = (int)TextSize.Width + 12;
+                                if(TextSize.Width > FormScale.Width - 12)
+                                    FormScale.Width = (int)TextSize.Width + 12;
 
-                                formScale.Height += (int)TextSize.Height;
+                                FormScale.Height += (int)TextSize.Height;
 
                                 if(line != "")
                                     Out += $"{line}\n";
@@ -496,9 +484,9 @@ namespace Dobby {
                                     Out += "!\n";
                             }
 
-                            formScale.Height += 50; // Border Offset + Padding
+                            FormScale.Height += 50; // Border Offset + Padding
 
-                            Console.WriteLine(formScale);
+                            Console.WriteLine(FormScale);
                             // Resize Form Back On Main LogWindow Thread
                             try { LogPtr.Invoke(resize); }
 
@@ -534,10 +522,10 @@ namespace Dobby {
 #if DEBUG
             var str = string.Empty;
 
-            if(StringToEnclose != null && LogWindow.formScale.Width < TextRenderer.MeasureText(StringToEnclose, MainFont).Width)
-                LogWindow.formScale.Width = TextRenderer.MeasureText(StringToEnclose, MainFont).Width;
+            if(StringToEnclose != null && LogWindow.FormScale.Width < TextRenderer.MeasureText(StringToEnclose, MainFont).Width)
+                LogWindow.FormScale.Width = TextRenderer.MeasureText(StringToEnclose, MainFont).Width;
 
-            while(TextRenderer.MeasureText(str, MainFont).Width < LogWindow.formScale.Width)
+            while(TextRenderer.MeasureText(str, MainFont).Width < LogWindow.FormScale.Width)
                 str += '-';
 
             WLog($"\n{str}\n{StringToEnclose}\n{str}");

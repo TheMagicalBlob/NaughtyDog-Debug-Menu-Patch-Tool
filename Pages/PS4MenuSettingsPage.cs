@@ -19,7 +19,7 @@ namespace Dobby {
             ProgPauseOnCloseBtn.Variable = UniversaPatchValues[3];
             NovisBtn.Variable = UniversaPatchValues[4];
 
-            AddEventHandlersToControls(Controls);
+            InitializeAdditionalEventHandlers(Controls);
 
 
             if(Game != 0 && gsButtons.Buttons != null) ResetCustomDebugOptions();

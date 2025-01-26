@@ -11,7 +11,7 @@ namespace Dobby {
         public PkgCreationPage() {
             InitializeComponent();
             
-            AddEventHandlersToControls(Controls);
+            InitializeAdditionalEventHandlers(Controls);
 
             foreach(Control control in Controls) {
                 if(control.Name.Contains("PathBox") || control.Name.Contains("DirectoryBox")) {

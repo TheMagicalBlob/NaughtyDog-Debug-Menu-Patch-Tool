@@ -87,7 +87,7 @@ namespace Dobby
             this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.SeperatorLine0.Location = new System.Drawing.Point(2, 15);
             this.SeperatorLine0.Name = "SeperatorLine0";
-            this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
+            this.SeperatorLine0.Size = new System.Drawing.Size(316, 16);
             this.SeperatorLine0.TabIndex = 30;
             this.SeperatorLine0.Text = "--------------------------------------------------------------";
             // 
