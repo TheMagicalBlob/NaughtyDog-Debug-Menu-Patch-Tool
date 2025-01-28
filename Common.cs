@@ -137,6 +137,7 @@ namespace Dobby {
         };
 
 
+
         /// <summary> Write A Byte To The MainStream And Flush The Data </summary>
         public static void WriteByte(int offset, byte data) {
             if (MainStream == null) {
@@ -148,6 +149,8 @@ namespace Dobby {
             MainStream.WriteByte(data);
             MainStream.Flush();
         }
+
+
 
         public static string GetCurrentGame(FileStream stream) {
             var LocalExecutableCheck = new byte[160];
@@ -225,6 +228,7 @@ namespace Dobby {
                     return $"Unknown Game (Game ID: {Game})";
             }
         }
+
 
 
         /// <summary> Sets The Info Label String Based On The Currently Hovered Control </summary>
@@ -368,6 +372,8 @@ namespace Dobby {
             SetInfoLabelText(InfoLabelString);
         }
 
+
+
         public static RichTextBox CreateTextBox(string Title) {
             PopupGroupBox?.Dispose();
 
@@ -432,19 +438,14 @@ namespace Dobby {
         public static void HoverLeave(Control PassedControl, bool EventIsMouseEnter) {
             int ArrowWidth;
 
-            void HighlightItemOnCLick(object sender, MouseEventArgs e = null) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
+            void HighlightItemOnMouseDown(object sender, MouseEventArgs e = null) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
             void ResetItemHighlight(object sender, MouseEventArgs e = null) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
-
-            //if(!InfoHasImportantStr & !EventIsMouseEnter) SetInfoLabelText("");
 
             try {
                 ArrowWidth = (int)PassedControl.CreateGraphics().MeasureString(">", PassedControl.Font).Width;
             }
             catch (Exception ex) {
-                var error = $"Error Getting Width Of Hover Arror From Control ({PassedControl.Name}: {(EventIsMouseEnter ? "Hover" : "Leave")})\n\nException Of Type: {ex.GetType()}\n{ex.Message}";
-
-                Print(error);
-                System.Diagnostics.Debug.WriteLine(error);
+                Print($"Error Getting Width Of Hover Arror From Control ({PassedControl.Name}: {(EventIsMouseEnter ? "Hover" : "Leave")})\n\nException Of Type: {ex.GetType()}\n{ex.Message}");
                 return;
             }
 
@@ -453,11 +454,11 @@ namespace Dobby {
                 HoveredControl = PassedControl;
 #endif
                 CurrentControl = PassedControl.Name;
-                PassedControl.MouseDown += HighlightItemOnCLick;
+                PassedControl.MouseDown += HighlightItemOnMouseDown;
                 PassedControl.MouseUp += ResetItemHighlight;
             }
             else {
-                PassedControl.MouseDown -= HighlightItemOnCLick;
+                PassedControl.MouseDown -= HighlightItemOnMouseDown;
                 PassedControl.MouseUp -= ResetItemHighlight;
             }
 
@@ -542,9 +543,10 @@ namespace Dobby {
         public static Thread FlashThread = new Thread(() => {
             while (true)
             {
-                while (!LabelShouldFlash) { Thread.Sleep(1); }
-                try
-                {
+                while (!LabelShouldFlash)
+                    Thread.Sleep(1);
+                
+                try {
                     for (int Flashes = 0; Flashes < 8; Flashes++)
                     {
                         ActiveForm?.Invoke(White);
@@ -553,13 +555,13 @@ namespace Dobby {
                         Thread.Sleep(135);
                     }
                 }
-                catch (Exception)
-                {
+                catch (Exception) {
                     Print("Form Changed or Lost Focus, Killing Label Flash");
+                    while (ActiveForm == null);
                 }
-                finally
-                {
+                finally {
                     LabelShouldFlash = false;
+                    ActiveForm?.Invoke(Yellow);
                 }
 
             }
@@ -713,7 +715,7 @@ namespace Dobby {
                 var Item = sender as Control;
 
     #if DEBUG
-                Item.MouseEnter += new EventHandler(DebugControlHover);
+                Item.MouseEnter += new EventHandler((control, e) => Dev.HoveredControl = Item);
     #endif
                 Item.MouseDown += new MouseEventHandler(MouseDownFunc);
                 Item.MouseUp += new MouseEventHandler(MouseUpFunc);
@@ -725,6 +727,9 @@ namespace Dobby {
                 if (!(Item.Name.ToLower().Contains("box") && (sender.GetType() == typeof(TextBox) || sender.GetType() == typeof(RichTextBox)))) // So You Can Drag Select The Text Lol
                     Item.MouseMove += new MouseEventHandler(MoveForm);
 
+
+                // TODO:
+                // check this odd shit //!
                 if ((Item.GetType() == typeof(Button) || Item.GetType() == typeof(Button)) && !ArrowBlacklist.Contains(Item.Name))
                 {
                     Item.MouseEnter += new EventHandler(ControlHover);
@@ -744,7 +749,7 @@ namespace Dobby {
                     foreach (Control Child in Item.Controls)
                         ApplyEventHandlersToControl(Child);
             }
-            InfoLabel = Controls.Find("Info", true)[0];
+            InfoLabel = Controls.Find("Info", true)[0] ?? null;
 
 
             // Create Exit And Minimize Buttons, And Add Them To The Top Right Of The Form
@@ -777,21 +782,27 @@ namespace Dobby {
 
             MinimizeBtn.FlatAppearance.BorderSize = 0;
             Controls.Owner.Controls.Add(MinimizeBtn);
-            ExitBtn.FlatAppearance.BorderSize = 0;
-            Controls.Owner.Controls.Add(ExitBtn);
             MinimizeBtn.BringToFront();
-            ExitBtn.BringToFront();
-
             MinimizeBtn.Click += new EventHandler(MinimizeBtn_Click);
             MinimizeBtn.MouseEnter += new EventHandler(MinimizeBtnMH);
             MinimizeBtn.MouseLeave += new EventHandler(MinimizeBtnML);
+
+            ExitBtn.FlatAppearance.BorderSize = 0;
+            Controls.Owner.Controls.Add(ExitBtn);
+            ExitBtn.BringToFront();
+            
             ExitBtn.Click += new EventHandler(ExitBtn_Click);
             ExitBtn.MouseEnter += new EventHandler(ExitBtnMH);
             ExitBtn.MouseLeave += new EventHandler(ExitBtnML);
 
 
             // Clear Info Label Text
-            try { Controls.Owner.Controls.Find("Info", true)[0].Text = string.Empty; } catch (Exception) { Print("Info Label Mising"); }
+            try {
+                Controls.Owner.Controls.Find("Info", true)[0].Text = string.Empty;
+            }
+            catch (Exception) {
+                Print("Info Label Mising");
+            }
         }
 
         /// <summary>
@@ -805,10 +816,10 @@ namespace Dobby {
         #endregion
 
 
-        /////////////////\\\\\\\\\\\\\\\\
+        //=============================\\
         ///--  Form Event Handlers  --\\\
-        /////////////////\\\\\\\\\\\\\\\\
-        #region Form Event Handlers
+        //=============================\\
+        #region [Form Event Handlers]
         private static void ExitBtn_Click(object sender, EventArgs e)
         {
 #if DEBUG
@@ -825,10 +836,14 @@ namespace Dobby {
 
         public static void MouseDownFunc(object sender, MouseEventArgs e)
         {
-            MouseIsDown = true; LastPos = ActiveForm.Location;
-            MouseDif = new Point(MousePosition.X - ActiveForm.Location.X, MousePosition.Y - ActiveForm.Location.Y);
+            MouseIsDown = true;
+            LastPos = ActiveForm.Location;
+            MouseDif = new Point(MousePosition.X - LastPos.X, MousePosition.Y - LastPos.Y);
         }
-        public static void MouseUpFunc(object sender, MouseEventArgs e) { MouseScrolled = false; MouseIsDown = false; }
+
+        public static void MouseUpFunc(object sender, MouseEventArgs e) =>
+            MouseScrolled = MouseIsDown = false;
+
 
         public static void MoveForm(object sender, MouseEventArgs e)
         {
@@ -849,9 +864,9 @@ namespace Dobby {
 
 
 
-        /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        //================================================\\
         ///-- DEBUG MODE OFFSETS AND GAME INDENTIFIERS --\\\
-        /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        //================================================\\
         #region Debug Offsets & Game Identifiers
         public enum GameIDs : long {
             // Read 160 bytes at 0x5100 as SHA256 Then Checked As Int32 Because I'm An Idiot And Don't Feel Like Correcting It Since It Works
@@ -994,7 +1009,14 @@ namespace Dobby {
         ;
         #endregion
     }
-    
+
+
+
+
+    //===============================\\
+    ///-- Custom Class Extensions --\\\
+    //===============================\\
+    #region [Class Extensions]
     public class TextBox : System.Windows.Forms.TextBox {
         public TextBox() {
 
@@ -1049,7 +1071,9 @@ namespace Dobby {
     }
 
 
-    // Custom Button Class So I Can Attach A Value To Them. This Is Probably The Wrong Way To Do This, But Whatever
+    /// <summary>
+    /// Custom Button Class extention so I can attach a value to them. 
+    /// </summary>
     public class Button : System.Windows.Forms.Button {
         public Button() {
             Variable = null;
@@ -1059,4 +1083,5 @@ namespace Dobby {
         public object Variable;
         public string Info;
     }
+    #endregion [Class Extensions]
 }

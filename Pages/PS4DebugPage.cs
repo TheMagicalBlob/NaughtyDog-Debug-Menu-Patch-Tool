@@ -97,22 +97,22 @@ namespace Dobby {
 
             var settings = ReadSettingsFile();
 
-            IPBOX.Text = (IP = (IPAddress) settings[0]).ToString();
-            PortBox.Text = ((Int16)settings[1]).ToString();
+            IpBox.Text = (IP = (IPAddress) settings[0]).ToString();
+            PortBox.Text = (Port = (Int16) settings[1]).ToString();
 
 
 
             // Create and set event handlers IP & Port boxes
-            IPBOX.LostFocus += (control, args) =>
+            IpBox.LostFocus += (control, args) =>
             {
                 if (!File.Exists(settingsFilePath))
                     CreateSettingsFile();
 
 
-                if (IPAddress.TryParse(IPBOX.Text, out IP))
+                if (IPAddress.TryParse(IpBox.Text, out IP))
                     using (FileStream settingsFile = new FileStream(settingsFilePath, FileMode.Open, FileAccess.ReadWrite)) {
                         Dev.Print($"Saving \"{IP}\" as new IPAddress.");
-                        settingsFile.Write(Encoding.UTF8.GetBytes(IP + ";"), 0, IPBOX.Text.Length + 1);
+                        settingsFile.Write(Encoding.UTF8.GetBytes(IP + ";"), 0, IpBox.Text.Length + 1);
                     }
 
                 else
@@ -484,7 +484,7 @@ namespace Dobby {
                         ActiveForm?.Invoke(SetInfoText, "Unable to parse settings file.");
 
                         // use the default IP.
-                        ip = IPAddress.Parse(IPBOX.Text = "192.168.137.115");
+                        ip = IPAddress.Parse(IpBox.Text = "192.168.137.115");
                     }
 
                     settingsFile.Dispose();
@@ -547,7 +547,7 @@ namespace Dobby {
 
 
 
-        public void IPLabelBtn_Click(object sender, EventArgs e) => IPBOX.Focus();
+        public void IPLabelBtn_Click(object sender, EventArgs e) => IpBox.Focus();
         public void PortLabelBtn_Click(object sender, EventArgs e) => PortBox.Focus();
 
         public void DebugPayloadBtn_Click(object sender, EventArgs e) {
@@ -562,12 +562,14 @@ namespace Dobby {
         /// </summary>
         private void ManualConnectBtn_Click(object sender, EventArgs e)
         {
-            ActiveForm?.Invoke(SetInfoText, "Initializing Connection Thread.");
-            
-            PS4DebugIsConnected = false;
-            ConnectionThread = new Thread(Connect);
-            ConnectionThread.Start(new { ActiveForm, IP, Port });
+            ActiveForm?.Invoke(SetInfoText, "Connecting to Console");
 
+            if (ConnectionThread.ThreadState != ThreadState.Unstarted)
+            {
+                PS4DebugIsConnected = false;
+                ConnectionThread = new Thread(Connect);
+                ConnectionThread.Start(new { ActiveForm, IP, Port });
+            }
         }
         #endregion
 
@@ -654,7 +656,7 @@ namespace Dobby {
         }
         private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);
         private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
-        public TextBox IPBOX;
+        public TextBox IpBox;
         public Label MainLabel;
         public Button T1RBtn;
         public Button T2Btn;

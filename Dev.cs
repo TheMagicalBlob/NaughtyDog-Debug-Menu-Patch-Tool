@@ -345,13 +345,18 @@ namespace Dobby {
 
             private void MouseDownFunc(object sender, MouseEventArgs e) => MouseIsDown = true;
             private void MouseUpFunc(object sender, MouseEventArgs e) => MouseScrolled = MouseIsDown = false;
-            public static void MoveLogToAppEdge(object mommy, EventArgs e) => LogPtr.Location = new Point(((Form)mommy).Location.X - LogPtr.Size.Width, ((Form)mommy).Location.Y);
+            public static void MoveLogToAppEdge(object mommy, EventArgs e)
+            {
+                LogPtr.BringToFront();
+                ((Form) mommy).BringToFront();
+                LogPtr.Location = new Point(((Form)mommy).Location.X - LogPtr.Size.Width, ((Form)mommy).Location.Y);
+            }
             public static void MoveLogToAppEdge(Point Loc) => LogPtr.Location = new Point(Loc.X - LogPtr.Size.Width, Loc.Y);
 
 
-            public delegate void Scaling();
-            public static Scaling resize = new Scaling(ResizeLog);
-            private static void ResizeLog() {
+            public delegate void scaling();
+            public static scaling ResizeLog = new scaling(() =>
+            { 
                 LogPtr.Size = FormScale;
                 LogWindowRenderer = LogPtr.CreateGraphics();
 
@@ -361,7 +366,8 @@ namespace Dobby {
 
 
                 var ControlOffset = 0;
-                foreach(Control c in LogPtr.Controls) { 
+                foreach(Control c in LogPtr.Controls)
+                {
                     c.Location = new Point(LogPtr.Size.Width - c.Size.Width - ControlOffset - 1, 1);
                     if(c.Location.X < 0) {
                         LogPtr.Size = new Size(LogPtr.Size.Width + c.Size.Width + 1, LogPtr.Size.Height);
@@ -370,7 +376,7 @@ namespace Dobby {
 
                     ControlOffset += c.Size.Width;
                 }
-            }
+            });
 
             public static void Exit() {
                 logThread.Abort();
@@ -441,7 +447,7 @@ namespace Dobby {
                                     //break;
                                 case PageID.EbootPatchPage:
                                     Output = new string[] {
-                                        $"Build: {Ver.Build} | [Delay: ~{Delay}ms]",
+                                        $"Build: {Ver.Build} ~{Delay}ms",
                                         " ",
                                         $"Parent Form: {(ActiveForm != null ? $"{ActiveForm?.Name} | # Of Children: {ActiveForm?.Controls?.Count}" : "Console")}",
                                         " ",
@@ -540,7 +546,7 @@ namespace Dobby {
                             FormScale.Height += 50; // Border Offset + Padding
 
                             // Resize Form Back On Main LogWindow Thread
-                            try { LogPtr.Invoke(resize); }
+                            try { LogPtr.Invoke(ResizeLog); }
 
                             catch(InvalidOperationException) { MessageBox.Show("Resize Error Noti"); }
 

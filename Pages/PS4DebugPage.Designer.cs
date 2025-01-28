@@ -31,7 +31,7 @@ namespace Dobby
             this.TLLBtn = new Dobby.Button();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
             this.ManualConnectBtn = new Dobby.Button();
-            this.IPBOX = new Dobby.TextBox();
+            this.IpBox = new Dobby.TextBox();
             this.Info = new System.Windows.Forms.Label();
             this.T1RBtn = new Dobby.Button();
             this.T2Btn = new Dobby.Button();
@@ -107,20 +107,19 @@ namespace Dobby
             this.ManualConnectBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ManualConnectBtn.UseVisualStyleBackColor = false;
             this.ManualConnectBtn.Click += new System.EventHandler(this.ManualConnectBtn_Click);
-            this.ManualConnectBtn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.ManualConnectBtn_Click);
             // 
             // IPBOX
             // 
-            this.IPBOX.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.IPBOX.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.IPBOX.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.IPBOX.ForeColor = System.Drawing.SystemColors.Control;
-            this.IPBOX.Location = new System.Drawing.Point(102, 228);
-            this.IPBOX.MaxLength = 15;
-            this.IPBOX.Name = "IPBOX";
-            this.IPBOX.Size = new System.Drawing.Size(100, 13);
-            this.IPBOX.TabIndex = 8;
-            this.IPBOX.Text = "IP()";
+            this.IpBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.IpBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.IpBox.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.IpBox.ForeColor = System.Drawing.SystemColors.Control;
+            this.IpBox.Location = new System.Drawing.Point(102, 228);
+            this.IpBox.MaxLength = 15;
+            this.IpBox.Name = "IPBOX";
+            this.IpBox.Size = new System.Drawing.Size(100, 13);
+            this.IpBox.TabIndex = 8;
+            this.IpBox.Text = "IP()";
             // 
             // Info
             // 
@@ -424,7 +423,7 @@ namespace Dobby
             this.Controls.Add(this.ManualConnectBtn);
             this.Controls.Add(this.SeperatorLine2);
             this.Controls.Add(this.PortBox);
-            this.Controls.Add(this.IPBOX);
+            this.Controls.Add(this.IpBox);
             this.Controls.Add(this.UC4MPBetaBtn);
             this.Controls.Add(this.InfoHelpBtn);
             this.Controls.Add(this.PortLabelBtn);
