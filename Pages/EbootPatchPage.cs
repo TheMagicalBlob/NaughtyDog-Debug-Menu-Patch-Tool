@@ -385,11 +385,11 @@ namespace Dobby {
         private void LoadFileToBePatched(string FilePath, FileStream mainStream) {
             try { 
                 mainStream?.Dispose();
-                Dev.WLog(FilePath);
+                Dev.Print(FilePath);
                 mainStream = new FileStream(FilePath, FileMode.Open, FileAccess.ReadWrite);
             }
             catch(IOException Oop) {
-                Dev.WLog(Oop.Message); SetGameInfoLabelText("Access Denied, File In Use Elsewhere");
+                Dev.Print(Oop.Message); SetGameInfoLabelText("Access Denied, File In Use Elsewhere");
                 return;
             }
 
@@ -483,7 +483,7 @@ namespace Dobby {
                 // Games That Aren't The Right Fucking Game You Dumbass
                 ////
                 default:
-                    Dev.WLog($"Unknown Game Selected (GetGameID()) Game: {GameID}");
+                    Dev.Print($"Unknown Game Selected (GetGameID()) Game: {GameID}");
                     RestoredDebugBtn.Font = new Font("Cambria", 9.75F, FontStyle.Strikeout);
                     RestoredDebugBtn.Enabled = false; return " Invalid Game";
             }
@@ -1392,7 +1392,7 @@ namespace Dobby {
             for(; i < CustomFunctions.Length; i++)
                 WriteBytes(Addresses[i], CustomFunctions[i]);
 
-            Dev.WLog($"Wrote {i} Patches To {MainStream.Name}");
+            Dev.Print($"Wrote {i} Patches To {MainStream.Name}");
         }
 
 

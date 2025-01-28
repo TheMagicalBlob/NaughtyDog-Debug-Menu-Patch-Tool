@@ -1,28 +1,71 @@
 ﻿using libdebug;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Net.Sockets;
 using System.Net;
 using System.Text;
+using System.Linq;
+using System.Drawing;
 using System.Threading;
-using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Net.Sockets;
 using System.Windows.Forms;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+
 
 namespace Dobby {
-    public class Dev : Common {
-        ////////////\\\\\\\\\\\\
-        ///-- DEBUG CLASS  --\\\
-        ////////////\\\\\\\\\\\\
 
-        public const bool REL =
-#if !DEBUG
-        true;
-#else
-        false;
+    /// <summary>
+    /// Lazy/Messy class for general debugging/testing-related stuff.
+    /// </summary>
+    public class Dev : Common {
+        /*//////////\\\\\\\\\\\\
+        ///-- DEBUG CLASS  --\\\
+        ////////////\\\\\\\\\\*/
         
+        /// <summary>
+        /// Default message output function. Prints to the debug window if present, as well as the standard output
+        /// </summary>
+        /// <param name="obj"></param>
+        public static void Print(object obj = null) {
+#if DEBUG
+            string str;
+
+            // Some formatting stuff
+            if(obj == null || obj.ToString().Length < 1)
+                str = " ";
+            else
+                str = obj.ToString();
+
+            if(str.Contains("\n"))
+                str = str.Replace("\n", "\n "); // So It Still Has A Size (for log window scaling purposes)
+            //^
+
+
+
+            LogWindow.LogOut(str);
+            Debug.WriteLine(str);
+            if (!Console.IsInputRedirected)
+                Console.WriteLine(str);
+#endif
+        }
+        
+        /// <summary>
+        /// Basic error logging function (not yet fully implemented)
+        /// </summary>
+        public static void PrintError(string msg) {
+#if DEBUG
+            Print($"!! ERROR: {msg}");
+            
+            // placeholder
+#endif
+        }
+
+
+
+#if DEBUG
+
+
         public static Control[] GetControlsInOrder(Form Parent) {
             var Cunts = new List<Control>();
             
@@ -56,13 +99,13 @@ namespace Dobby {
                 if(chk.Equals(Array.Empty<string>()) || lines.SequenceEqual(chk))
 
                     foreach(var line in lines)
-                        WLog(line);
+                        Print(line);
 
                 chk = lines;
                 goto start;
             }
             catch(Exception e) {
-                WLog($"rTst Failed, Cause: {e.Message}");
+                Print($"rTst Failed, Cause: {e.Message}");
             }
         }
 
@@ -127,7 +170,7 @@ namespace Dobby {
 
             if((index ^= 3) != 0) { MessageBox.Show($"Unexpected Form Structure {index}"); Environment.Exit(1); }
             if(OldPositions.Length == 1 || EditedForm != Mommy.Name) {
-                WLog("Beeg");
+                Print("Beeg");
 
                 // Save Orignal Item Locations
                 for(OldPositions = new Point[Mommy.Controls.Count]; index < Controls.Count;)
@@ -159,7 +202,7 @@ namespace Dobby {
 
                     // Adjust Form Size If The Control Has Been Moved Off The Form
                     if(Controls[index].Location.Y + Controls[index].Size.Height > Mommy.Size.Height) {//UwU
-                        WLog($"Control Went Passed Form Border, Extending Form ({Controls[index].Location.Y} > {Mommy.Size.Height})");
+                        Print($"Control Went Passed Form Border, Extending Form ({Controls[index].Location.Y} > {Mommy.Size.Height})");
                         Mommy.Size = new Size(Mommy.Size.Width, Controls[index].Location.Y + Controls[index].Size.Height + 1);
                         Mommy.Update();
                         Mommy.Refresh();
@@ -169,9 +212,9 @@ namespace Dobby {
                 return;
             }
 
-            WLog("Smol");
+            Print("Smol");
             foreach(Control bitch in Controls) {
-                WLog($"{bitch.Location} -> {OldPositions[index]}");
+                Print($"{bitch.Location} -> {OldPositions[index]}");
                 bitch.Location = OldPositions[index++];
             }
             Mommy.Size = OldFormScale;
@@ -215,7 +258,7 @@ namespace Dobby {
                 };
 
                 var Handlers = new EventHandler[] {
-                    new EventHandler((sender, e) => { 
+                    new EventHandler((_, __) => { 
                         if(MessageBox.Show("Open Log?", "", MessageBoxButtons.OKCancel) != DialogResult.OK)
                             return;
 
@@ -228,7 +271,8 @@ namespace Dobby {
                         System.Diagnostics.Process.Start($@"{Directory.GetParent(Directory.GetCurrentDirectory())}\Release\ND Debug Enabler.exe");
                         Environment.Exit(1);
                     }),
-                    new EventHandler((control, args) => SetInfo())
+                    new EventHandler((control, args) => ActiveForm?.Invoke(SetInfoText)),
+                    new EventHandler((control, args) => ActiveForm?.Invoke(SetInfoText))
                 };
 
 
@@ -277,7 +321,7 @@ namespace Dobby {
             public static bool LogShouldRefresh, LogShouldPause;
             private static readonly System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
             private static readonly Thread TimerThread = new Thread(StartTimer);
-        private static float TimerTicks = 0;
+            private static float TimerTicks = 0;
             private static void Timer_Tick(object sender, EventArgs e) => TimerTicks+= 0.001f;
             private static void StartTimer() {
                 if(!timer.Enabled) {
@@ -326,7 +370,6 @@ namespace Dobby {
 
                     ControlOffset += c.Size.Width;
                 }
-                if(PkgCreationPage.debug && !REL) Console.WriteLine($"Should be: {FormScale} \\ Is: {LogPtr.Size}");
             }
 
             public static void Exit() {
@@ -334,6 +377,9 @@ namespace Dobby {
                 LogPtr.Dispose();
             }
 
+            /// <summary>
+            /// what the fuck
+            /// </summary>
             public static void LogOut(string str) {
                 while(LogFile == null);
 
@@ -387,6 +433,13 @@ namespace Dobby {
                             // Switch between various formats of debug output based on the current page.
                             switch(Page) {
                                 default:
+                                    //Output = new string[] {
+                                    //    $"Build: {Ver.Build} | [Delay: ~{Delay}ms]",
+                                    //    $"Build: {Ver.Build} | [Delay: ~{Delay}ms]",
+                                    //    $"Build: {Ver.Build} | [Delay: ~{Delay}ms]",
+                                    //};
+                                    //break;
+                                case PageID.EbootPatchPage:
                                     Output = new string[] {
                                         $"Build: {Ver.Build} | [Delay: ~{Delay}ms]",
                                         " ",
@@ -413,11 +466,11 @@ namespace Dobby {
                                     Output = new string[] {
                                         "",
                                         $"| Game Index:           {PS4MenuSettingsPage.GameIndex}",
-                                        $"| Disable FPS:          {PS4MenuSettingsPage.UniversaPatchValues[0]}",
-                                        $"| Paused Icon:          {PS4MenuSettingsPage.UniversaPatchValues[1]}",
-                                        $"| ProgPauseOnOpen:      {PS4MenuSettingsPage.UniversaPatchValues[2]}",
-                                        $"| ProgPauseOnExit:      {PS4MenuSettingsPage.UniversaPatchValues[3]}",
-                                        $"| Novis:                {PS4MenuSettingsPage.UniversaPatchValues[4]}",
+                                        $"| Disable FPS:          {PS4MenuSettingsPage.UniversalPatchValues[0]}",
+                                        $"| Paused Icon:          {PS4MenuSettingsPage.UniversalPatchValues[1]}",
+                                        $"| ProgPauseOnOpen:      {PS4MenuSettingsPage.UniversalPatchValues[2]}",
+                                        $"| ProgPauseOnExit:      {PS4MenuSettingsPage.UniversalPatchValues[3]}",
+                                        $"| Novis:                {PS4MenuSettingsPage.UniversalPatchValues[4]}",
                                          "| ",
                                         $"| Menu Scale:           {DynamicVars[0]}",
                                         $"| Menu Alpha:           {DynamicVars[1]}",
@@ -445,7 +498,7 @@ namespace Dobby {
                         }
                         catch(Exception e) {
                             Output = new string[] { "Error.", e.Message };
-                            WLog($"!! ERROR: an exception occured during debug output loop while setting \"frame\"");
+                            Print($"!! ERROR: an exception occured during debug output loop while setting \"frame\"");
                         }
 
                         if(LogShouldRefresh || !chk1.SequenceEqual(Output) || chk1 == null || !chk2.SequenceEqual(OutputStrings)) {
@@ -486,7 +539,6 @@ namespace Dobby {
 
                             FormScale.Height += 50; // Border Offset + Padding
 
-                            Console.WriteLine(FormScale);
                             // Resize Form Back On Main LogWindow Thread
                             try { LogPtr.Invoke(resize); }
 
@@ -518,35 +570,5 @@ namespace Dobby {
             }
         }
 #endif
-        public static void LineOut(string StringToEnclose = null) {
-#if DEBUG
-            var str = string.Empty;
-
-            if(StringToEnclose != null && LogWindow.FormScale.Width < TextRenderer.MeasureText(StringToEnclose, MainFont).Width)
-                LogWindow.FormScale.Width = TextRenderer.MeasureText(StringToEnclose, MainFont).Width;
-
-            while(TextRenderer.MeasureText(str, MainFont).Width < LogWindow.FormScale.Width)
-                str += '-';
-
-            WLog($"\n{str}\n{StringToEnclose}\n{str}");
-#endif
-        }
-
-        public static bool WLog(object obj = null) {
-#if DEBUG
-            string str;
-
-            if(obj == null) str = " ";
-
-            else str = obj.ToString();
-            
-            if(str.Contains("\n"))
-                str = str.Replace("\n", "\n "); // So It Still Has A Size (for log window scaling purposes)
-
-            LogWindow.LogOut(str);
-            System.Diagnostics.Debug.WriteLine(str);
-#endif
-            return obj == null;
-        }
     }
 }

@@ -132,6 +132,8 @@ namespace Dobby {
         public static InfoLabelUpdateCallback SetInfoText = value => {
             if(ActiveForm != null)
                 InfoLabel.Text = value;
+
+            Print($"[info]: {value}");
         };
 
 
@@ -435,20 +437,18 @@ namespace Dobby {
 
             //if(!InfoHasImportantStr & !EventIsMouseEnter) SetInfoLabelText("");
 
-            try
-            {
+            try {
                 ArrowWidth = (int)PassedControl.CreateGraphics().MeasureString(">", PassedControl.Font).Width;
             }
             catch (Exception ex) {
-                var s = $"Error Getting Width Of Hover Arror From Control ({PassedControl.Name}: {(EventIsMouseEnter ? "Hover" : "Leave")})\n\nException Of Type: {ex.GetType()}\n{ex.Message}";
+                var error = $"Error Getting Width Of Hover Arror From Control ({PassedControl.Name}: {(EventIsMouseEnter ? "Hover" : "Leave")})\n\nException Of Type: {ex.GetType()}\n{ex.Message}";
 
-                WLog(s);
-                System.Diagnostics.Debug.WriteLine(s);
+                Print(error);
+                System.Diagnostics.Debug.WriteLine(error);
                 return;
             }
 
-            if (MouseScrolled = EventIsMouseEnter)
-            {
+            if (MouseScrolled = EventIsMouseEnter) {
 #if DEBUG
                 HoveredControl = PassedControl;
 #endif
@@ -456,8 +456,7 @@ namespace Dobby {
                 PassedControl.MouseDown += HighlightItemOnCLick;
                 PassedControl.MouseUp += ResetItemHighlight;
             }
-            else
-            {
+            else {
                 PassedControl.MouseDown -= HighlightItemOnCLick;
                 PassedControl.MouseUp -= ResetItemHighlight;
             }
@@ -508,11 +507,11 @@ namespace Dobby {
             var item = sender as Label;
 
             if (item == null) {
-                WLog("!! ERROR: Invalid control passed as Seperator line.");
-                WLog($"  - Control \"{(((Control)sender).Name)}\" location: {((Control)sender).Location}.");
+                Print("!! ERROR: Invalid control passed as Seperator line.");
+                Print($"  - Control \"{(((Control)sender).Name)}\" location: {((Control)sender).Location}.");
             }
             if (item.Size.Height != 15) {
-                WLog($"# WARNING: A label on page \"{item.Parent.Name}\" has an invalid height!!! (Label at {item.Location} is {item.Size.Height} pixels in height)");
+                Print($"# WARNING: A label on page \"{item.Parent.Name}\" has an invalid height!!! (Label at {item.Location} is {item.Size.Height} pixels in height)");
                 //item.Size = new Size(item.Size.Width, 15);
             }
 
@@ -556,7 +555,7 @@ namespace Dobby {
                 }
                 catch (Exception)
                 {
-                    WLog("Form Changed or Lost Focus, Killing Label Flash");
+                    Print("Form Changed or Lost Focus, Killing Label Flash");
                 }
                 finally
                 {
@@ -660,7 +659,7 @@ namespace Dobby {
                     NewPage = new CreditsPage();
                     break;
 
-                default: WLog($"{Page} Is Not A Page!"); break;
+                default: Print($"{Page} Is Not A Page!"); break;
             }
 
             NewPage?.Show();
@@ -709,7 +708,10 @@ namespace Dobby {
         public static void InitializeAdditionalEventHandlers(Control.ControlCollection Controls)
         {
             void ApplyEventHandlersToControl(object sender) {
+
+                // Convert the item to a basic control
                 var Item = sender as Control;
+
     #if DEBUG
                 Item.MouseEnter += new EventHandler(DebugControlHover);
     #endif
@@ -720,7 +722,7 @@ namespace Dobby {
                 if (Item.Name.Contains("Seperator") && sender.GetType() == typeof(Label))
                     Item.Paint += PaintSeperatorLine;
 
-                if (!Item.Name.Contains("Box")) // So You Can Drag Select The Text Lol
+                if (!(Item.Name.ToLower().Contains("box") && (sender.GetType() == typeof(TextBox) || sender.GetType() == typeof(RichTextBox)))) // So You Can Drag Select The Text Lol
                     Item.MouseMove += new MouseEventHandler(MoveForm);
 
                 if ((Item.GetType() == typeof(Button) || Item.GetType() == typeof(Button)) && !ArrowBlacklist.Contains(Item.Name))
@@ -789,7 +791,7 @@ namespace Dobby {
 
 
             // Clear Info Label Text
-            try { Controls.Owner.Controls.Find("Info", true)[0].Text = string.Empty; } catch (Exception) { WLog("Info Label Mising"); }
+            try { Controls.Owner.Controls.Find("Info", true)[0].Text = string.Empty; } catch (Exception) { Print("Info Label Mising"); }
         }
 
         /// <summary>
@@ -1056,21 +1058,5 @@ namespace Dobby {
 
         public object Variable;
         public string Info;
-    }
-
-    public class Form : System.Windows.Forms.Form
-    {
-        /// <summary>
-        ///   Update the yellow info label at the base of the form with a new message
-        /// </summary>
-        /// <param name="message"> The message to display with the info label. </param>
-        public void SetInfo(string message = "")
-        {
-            Invoke(Common.SetInfoText, message);
-
-            #if DEBUG
-            WLog($"[Info]: {message}");
-            #endif
-        }
     }
 }

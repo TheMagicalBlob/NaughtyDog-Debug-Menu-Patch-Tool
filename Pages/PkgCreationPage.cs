@@ -33,7 +33,6 @@ namespace Dobby {
         //////////////////\\\\\\\\\\\\\\\\\
 
 #if DEBUG
-        public static bool debug = false;
         public static object[] DebugPeek() {
             return new object[] {
                 OrbisToolPath,
@@ -97,7 +96,7 @@ namespace Dobby {
                     if(Check.SequenceEqual(new byte[] { 0x46, 0xD1, 0xB8 }) || Check.SequenceEqual(new byte[] { 0x50, 0x45, 0x00 }) || file.Contains("orbis-pub-cmd") || file.Contains("-keystone")) {
                         CmdPathBox.Text = OrbisToolPath = file;
 
-                        Dev.WLog($"{file}\\{OrbisToolPath} Set As OrbisPubCmdPath");
+                        Dev.Print($"{file}\\{OrbisToolPath} Set As OrbisPubCmdPath");
                         return;
                     }
                 }
@@ -163,7 +162,7 @@ namespace Dobby {
             Dev.StartReadLogTest();
 #endif
             System.Diagnostics.Process.Start(OrbisToolPath, Parameters);
-            Dev.WLog(Parameters);
+            Dev.Print(Parameters);
 #if !DEBUG
             MessageBox.Show(Parameters);
 #endif

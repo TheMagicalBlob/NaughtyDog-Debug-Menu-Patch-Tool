@@ -235,6 +235,7 @@
           "* 4.48-alpha.234.662 | Port fix. I should pay attention. Or just sleep.",
           "* 4.48-alpha.234.665 | Cleaned up PS4Debug Page",
           "* 4.48-alpha.237.671 | More code cleanup, misc background changes for my own damn sanity. (bite me, nobody's gonna actually read these, anyway)",
+          "* 4.48-alpha.238.681 | More code cleanup; fixed inability to drag-select the text in the IP and Port boxes. Still reworking the connection / payload injection functions.",
 
         };
 

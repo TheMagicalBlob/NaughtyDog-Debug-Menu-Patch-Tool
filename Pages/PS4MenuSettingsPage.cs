@@ -13,11 +13,11 @@ namespace Dobby {
             InitializeComponent();
             
 
-            DisableDebugTextBtn.Variable = UniversaPatchValues[0];
-            DisablePausedIconBtn.Variable = UniversaPatchValues[1];
-            ProgPauseOnOpenBtn.Variable = UniversaPatchValues[2];
-            ProgPauseOnCloseBtn.Variable = UniversaPatchValues[3];
-            NovisBtn.Variable = UniversaPatchValues[4];
+            DisableDebugTextBtn.Variable = UniversalPatchValues[0];
+            DisablePausedIconBtn.Variable = UniversalPatchValues[1];
+            ProgPauseOnOpenBtn.Variable = UniversalPatchValues[2];
+            ProgPauseOnCloseBtn.Variable = UniversalPatchValues[3];
+            NovisBtn.Variable = UniversalPatchValues[4];
 
             InitializeAdditionalEventHandlers(Controls);
 
@@ -837,8 +837,8 @@ namespace Dobby {
             msg += MainStream.Position.ToString("X"); // trust issues
 
             MainStream.Write(data, 0, data.Length);
-            Dev.WLog(msg);
-            Dev.WLog();
+            Dev.Print(msg);
+            Dev.Print();
 #else
             if (offset != null)
             MainStream.Position = (int)offset;
@@ -853,7 +853,7 @@ namespace Dobby {
             msg += MainStream.Position.ToString("X"); // trust issues
 
             MainStream.WriteByte(data);
-            Dev.WLog(msg);
+            Dev.Print(msg);
 #else
             if(offset != null)
             MainStream.Position = (int)offset;
@@ -883,9 +883,9 @@ namespace Dobby {
                     msg = (float)data + msg;
                 }
             }
-            catch (Exception) { Dev.WLog($"Error Writing Var: {data} ({data.GetType()})"); }
+            catch (Exception) { Dev.Print($"Error Writing Var: {data} ({data.GetType()})"); }
 
-            Dev.WLog($"var: {msg}");
+            Dev.Print($"var: {msg}");
 #else
             if(offset != null)
                 MainStream.Position = (int)offset;
@@ -926,18 +926,18 @@ namespace Dobby {
         /// </summary>
 #if DEBUG
         public static object[] PeekGameSpecificPatchValues() { return DynamicPatchButtons.GameSpecificPatchValues; }
-        public static bool[] UniversaPatchValues { get; private set; }
+        public static bool[] UniversalPatchValues { get; private set; }
 #else
-        private static bool[] UniversaPatchValues
+        private static bool[] UniversalPatchValues
 #endif
          = new bool[5] { false, true, true, true, false };
 
-        private readonly bool[] DefaultUniveralPatchValues = new bool[5] { false, true, true, true, false };
+        internal readonly bool[] DefaultUniveralPatchValues = new bool[5] { false, true, true, true, false };
 
         // this doesn't need to be a struct, but whatever
         /// <summary> Struct For Creating Dynamic Patch Buttons
         /// </summary>
-        private struct DynamicPatchButtons {
+        internal struct DynamicPatchButtons {
             public DynamicPatchButtons(int?[] Ids, int VerticalStartIndex = 0) {
                 Buttons = new Button[ControlText.Length + 1];
                 ButtonsVerticalStartPos = VerticalStartIndex;
@@ -962,7 +962,7 @@ namespace Dobby {
             /// 7: Right Margin <br/>
             /// </summary>
 
-            public static object[] GameSpecificPatchValues { get; private set; } = new object[] {
+            internal static object[] GameSpecificPatchValues { get; private set; } = new object[] {
                 0.85f,
                 0.60f,
                 1f,
@@ -973,7 +973,7 @@ namespace Dobby {
                 (byte)10
             };
 
-            public static readonly object[] DefaultGameSpecificPatchValues = new object[] {
+            internal static readonly object[] DefaultGameSpecificPatchValues = new object[] {
                 0.85f,
                 0.60f,
                 1f,
@@ -1104,7 +1104,7 @@ namespace Dobby {
                 Buttons[ButtonIndex].Paint += DrawButtonVar;
                 Buttons[ButtonIndex].BringToFront();
 
-                Dev.WLog(Buttons[ButtonIndex].Name);
+                Dev.Print(Buttons[ButtonIndex].Name);
 
                 if(GameSpecificPatchValues[ButtonIndex].GetType() == typeof(bool))
                     Buttons[ButtonIndex].Click += DynamicBtn_Click;
@@ -1206,12 +1206,12 @@ namespace Dobby {
         private void DefaultButtonClick(Button cnt, bool scrolled, int PatchIndex) { ToggleBool(cnt, PatchIndex); MouseScrolled = scrolled; }
         private void ToggleBool(Button Control, int OptionIndex) {
             if(MouseScrolled || !MouseIsDown || CurrentControl != Control.Name) {
-                Dev.WLog($"{MouseScrolled} {MouseIsDown} {CurrentControl} ? {Control.Name}");
+                Dev.Print($"{MouseScrolled} {MouseIsDown} {CurrentControl} ? {Control.Name}");
                 return;
             }
 
-            UniversaPatchValues[OptionIndex] = !(bool)UniversaPatchValues[OptionIndex];
-            Control.Variable = UniversaPatchValues[OptionIndex];
+            UniversalPatchValues[OptionIndex] = !(bool)UniversalPatchValues[OptionIndex];
+            Control.Variable = UniversalPatchValues[OptionIndex];
             Control.Refresh();
         }
         #endregion
@@ -1274,12 +1274,13 @@ namespace Dobby {
 
             if(Result.GetType() == typeof(int)) {
                 MessageBox.Show($"An Unexpected Error Occured While Applying The Patches, Please Ensure You're Running The Latest Release Build\nIf You Are, Report It To The Moron Typing Out This Error Message", $"ApplyMenuSettings() Error 0x{Result:X}");
-                Dev.WLog("ApplyMenuSettings Returned Null");
+                Dev.Print("ApplyMenuSettings Returned Null");
                 return;
             }
 
-            if (Dev.REL)
-            ResetCustomDebugOptions();
+            #if !DEBUG
+            ResetCustomDebugOptions(); //! check this! I forget what I needed it for.
+            #endif
             GameInfoLabel.Text += Result;
         }
 
@@ -1289,8 +1290,8 @@ namespace Dobby {
 
             using(MainStream) {
               try {
-                    if(UniversaPatchValues.Length != UniversalBootSettingsPointers.Length || DynamicPatchButtons.GameSpecificPatchValues.Length != GameSpecificBootSettingsPointers.Length)
-                        MessageBox.Show($"Universal:\n  Vars: {UniversaPatchValues.Length}\n  Pointers: {UniversalBootSettingsPointers.Length}\nDynamic:\n  Vars: {DynamicPatchButtons.GameSpecificPatchValues.Length}\n  Pointers: {GameSpecificBootSettingsPointers.Length}", "Mismatch In Array Value vs pointer Length.");
+                    if(UniversalPatchValues.Length != UniversalBootSettingsPointers.Length || DynamicPatchButtons.GameSpecificPatchValues.Length != GameSpecificBootSettingsPointers.Length)
+                        MessageBox.Show($"Universal:\n  Vars: {UniversalPatchValues.Length}\n  Pointers: {UniversalBootSettingsPointers.Length}\nDynamic:\n  Vars: {DynamicPatchButtons.GameSpecificPatchValues.Length}\n  Pointers: {GameSpecificBootSettingsPointers.Length}", "Mismatch In Array Value vs pointer Length.");
       
                     int BootSettingsAddress, PatchCount = 0;
 
@@ -1310,8 +1311,8 @@ namespace Dobby {
                     PatchCount = 2;
 
                     // Apply Universal Options
-                    for(var index = 0; index < UniversaPatchValues.Length; index++) {
-                        if(UniversaPatchValues[index] == DefaultUniveralPatchValues[index])
+                    for(var index = 0; index < UniversalPatchValues.Length; index++) {
+                        if(UniversalPatchValues[index] == DefaultUniveralPatchValues[index])
                             continue;
 
                         PatchData = UniversalBootSettingsPointers[index][GameIndex];
@@ -1324,9 +1325,9 @@ namespace Dobby {
                         WriteByte(data: PointerType);
                         WriteByte(data: 0);
                         WriteBytes(data: PatchData);
-                        WriteByte(data: (byte)(UniversaPatchValues[index] ? 1 : 0));
+                        WriteByte(data: (byte)(UniversalPatchValues[index] ? 1 : 0));
 
-                        Dev.WLog();
+                        Dev.Print();
                         PatchCount++;
                     }
 
@@ -1350,7 +1351,7 @@ namespace Dobby {
                         WriteVar(data: PatchValue);
 
                         PatchCount++;
-                        Dev.WLog();
+                        Dev.Print();
                     }
 
                     WriteBytes(data: new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0x08 }); // padding to avoid issues
@@ -1358,7 +1359,7 @@ namespace Dobby {
                     Message = $" {PatchCount+1} Patches Applied";
                 }
                 catch(Exception tabarnack) {
-                    Dev.WLog($"{tabarnack.GetType()} | Error Applying Patches");
+                    Dev.Print($"{tabarnack.GetType()} | Error Applying Patches");
                     MessageBox.Show(tabarnack.Message + $"\n{tabarnack.StackTrace}", $"Exception Type {tabarnack.GetType()}");
                     return 1;
                 }
@@ -1546,7 +1547,7 @@ namespace Dobby {
 
             // Assign values to variables made to keep track of the default form size/control postions for the reset button. Doing it on page init is annoying 'cause designer memes
             if(OriginalFormScale == Size.Empty) {
-                Dev.WLog("Setting Original Scale Variables");
+                Dev.Print("Setting Original Scale Variables");
 
                 // Every Control Below The "Game Specific Patches" Label
                 ControlsToMove = new Control[] {
@@ -1645,12 +1646,15 @@ namespace Dobby {
             ResetBtn.BringToFront();
         }
 
-        private void ResetCustomDebugOptions(object _ = null, EventArgs __ = null) {
-            if(Game == 0) return;
-#if DEBUG
-            Dev.WLog("Resetting Form And Main Stream");
-#endif
-            var index = 0;
+        private void ResetCustomDebugOptions(object _ = null, EventArgs __ = null)
+        {
+            if (Game == GameIDs.Empty) {
+                Dev.Print("ResetCustomDebugOptions(): Game was unset, aborting.");
+                return;
+            }
+            
+            Dev.Print("Resetting Form And Main Stream");
+            
 
             // Reset Form Size
             if(ActiveForm.Name != "Dobby") //! Lazy Fix 
@@ -1665,7 +1669,7 @@ namespace Dobby {
             gsButtons.Reset();
 
             // Move Controls Back To Their Original Positions
-            for(; index < ControlsToMove.Length; index++)
+            for(var index = 0; index < ControlsToMove.Length; index++)
                 ControlsToMove[index].Location = OriginalControlPositions[index];
 
             // Nudge Remaining Controls Back To Their Default Positions
@@ -1676,7 +1680,7 @@ namespace Dobby {
                 ActiveForm.Controls.Find("ExecutablePathBox", true)[0].Text = " Select A .elf To Patch";
             }
 
-            Game = 0;
+            Game = GameIDs.Empty;
             MultipleButtonsEnabled = false;
         }
 #endregion
