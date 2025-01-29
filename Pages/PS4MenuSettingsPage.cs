@@ -1101,7 +1101,7 @@ namespace Dobby {
                 Buttons[ButtonIndex].MouseUp += new MouseEventHandler(MouseUpFunc);
                 Buttons[ButtonIndex].MouseEnter += HoverString;
                 Buttons[ButtonIndex].MouseLeave += ControlLeave;
-                Buttons[ButtonIndex].Paint += DrawButtonVar;
+                Buttons[ButtonIndex].Paint += DrawButtonVariable;
                 Buttons[ButtonIndex].BringToFront();
 
                 Dev.Print(Buttons[ButtonIndex].Name);

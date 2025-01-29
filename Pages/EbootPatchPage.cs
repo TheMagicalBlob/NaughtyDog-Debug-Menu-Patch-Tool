@@ -7,7 +7,7 @@ using Dobby.Resources;
 
 
 namespace Dobby {
-    public class EbootPatchPage : Form {
+    internal class EbootPatchPage : Form {
         public EbootPatchPage() {
             InitializeComponent();
             

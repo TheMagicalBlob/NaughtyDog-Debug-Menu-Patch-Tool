@@ -93,14 +93,14 @@ csharp_style_var_for_built_in_types = false
 csharp_style_var_when_type_is_apparent = false
 
 # Expression-bodied members
-csharp_style_expression_bodied_accessors = true
-csharp_style_expression_bodied_constructors = false
-csharp_style_expression_bodied_indexers = true
-csharp_style_expression_bodied_lambdas = true
-csharp_style_expression_bodied_local_functions = false
-csharp_style_expression_bodied_methods = false
-csharp_style_expression_bodied_operators = false
-csharp_style_expression_bodied_properties = true
+csharp_style_expression_bodied_accessors = true:silent
+csharp_style_expression_bodied_constructors = false:silent
+csharp_style_expression_bodied_indexers = true:silent
+csharp_style_expression_bodied_lambdas = true:silent
+csharp_style_expression_bodied_local_functions = false:silent
+csharp_style_expression_bodied_methods = false:silent
+csharp_style_expression_bodied_operators = false:silent
+csharp_style_expression_bodied_properties = true:silent
 
 # Pattern matching preferences
 csharp_style_pattern_matching_over_as_with_null_check = true
@@ -121,13 +121,13 @@ csharp_style_prefer_readonly_struct = true
 csharp_style_prefer_readonly_struct_member = true
 
 # Code-block preferences
-csharp_prefer_braces = true
-csharp_prefer_simple_using_statement = true
-csharp_prefer_system_threading_lock = true
-csharp_style_namespace_declarations = block_scoped
-csharp_style_prefer_method_group_conversion = true
-csharp_style_prefer_primary_constructors = true
-csharp_style_prefer_top_level_statements = true
+csharp_prefer_braces = true:silent
+csharp_prefer_simple_using_statement = true:suggestion
+csharp_prefer_system_threading_lock = true:suggestion
+csharp_style_namespace_declarations = block_scoped:silent
+csharp_style_prefer_method_group_conversion = true:silent
+csharp_style_prefer_primary_constructors = true:suggestion
+csharp_style_prefer_top_level_statements = true:silent
 
 # Expression-level preferences
 csharp_prefer_simple_default_expression = true
@@ -145,7 +145,7 @@ csharp_style_unused_value_assignment_preference = discard_variable
 csharp_style_unused_value_expression_statement_preference = discard_variable
 
 # 'using' directive preferences
-csharp_using_directive_placement = outside_namespace
+csharp_using_directive_placement = outside_namespace:silent
 
 # New line preferences
 csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental = true
@@ -223,7 +223,7 @@ dotnet_naming_rule.enum_should_be_pascal_case.style = pascal_case
 
 dotnet_naming_rule.delegate_should_be_camel_case.severity = warning
 dotnet_naming_rule.delegate_should_be_camel_case.symbols = delegate
-dotnet_naming_rule.delegate_should_be_camel_case.style = camel_case
+dotnet_naming_rule.delegate_should_be_camel_case.style = pascal_case
 
 dotnet_naming_rule.types_should_be_pascal_case.severity = warning
 dotnet_naming_rule.types_should_be_pascal_case.symbols = types
@@ -231,7 +231,7 @@ dotnet_naming_rule.types_should_be_pascal_case.style = pascal_case
 
 dotnet_naming_rule.event_should_be_camel_case.severity = warning
 dotnet_naming_rule.event_should_be_camel_case.symbols = event
-dotnet_naming_rule.event_should_be_camel_case.style = camel_case
+dotnet_naming_rule.event_should_be_camel_case.style = pascal_case
 
 dotnet_naming_rule.method_should_be_pascal_case.severity = warning
 dotnet_naming_rule.method_should_be_pascal_case.symbols = method
@@ -239,7 +239,7 @@ dotnet_naming_rule.method_should_be_pascal_case.style = pascal_case
 
 dotnet_naming_rule.property_should_be_camel_case.severity = warning
 dotnet_naming_rule.property_should_be_camel_case.symbols = property
-dotnet_naming_rule.property_should_be_camel_case.style = camel_case
+dotnet_naming_rule.property_should_be_camel_case.style = pascal_case
 
 dotnet_naming_rule.public_or_protected_field_should_be_pascal_case.severity = warning
 dotnet_naming_rule.public_or_protected_field_should_be_pascal_case.symbols = public_or_protected_field
@@ -342,3 +342,9 @@ dotnet_naming_style.camel_case.capitalization = camel_case
 
 # CS1591: Missing XML comment for publicly visible type or member
 dotnet_diagnostic.CS1591.severity = suggestion
+
+[*.{cs,vb}]
+dotnet_style_operator_placement_when_wrapping = beginning_of_line
+tab_width = 4
+indent_size = 4
+end_of_line = crlf

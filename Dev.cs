@@ -53,9 +53,9 @@ namespace Dobby {
         /// <summary>
         /// Basic error logging function (not yet fully implemented)
         /// </summary>
-        public static void PrintError(string msg) {
+        public static void PrintError(Exception tabarnack) {
 #if DEBUG
-            Print($"!! ERROR: {msg}");
+            Print($"!! ERROR: {tabarnack.Message}\n{tabarnack.StackTrace.Replace("\n", "  \n")}");
             
             // placeholder
 #endif
@@ -160,7 +160,7 @@ namespace Dobby {
         private static void ResizeTest() {
             return;
 
-            var Mommy = LogWindow.GetParent();
+            var Mommy = LogWindow.ParentPtr;
             int index = 0,
                 PAD = 1
             ;
@@ -263,11 +263,11 @@ namespace Dobby {
                             return;
 
                         System.Diagnostics.Process.Start($"{Directory.GetCurrentDirectory()}\\out.txt");
-                        Exit();
+                        LogWindowExit();
                         Environment.Exit(0);
                     }),
                     new EventHandler((_, __) => {
-                        Exit();
+                        LogWindowExit();
                         System.Diagnostics.Process.Start($@"{Directory.GetParent(Directory.GetCurrentDirectory())}\Release\ND Debug Enabler.exe");
                         Environment.Exit(1);
                     }),
@@ -307,7 +307,7 @@ namespace Dobby {
                 logThread.Start();
             }
 
-            private static Form LogPtr, ParentPtr;
+            public static Form LogPtr, ParentPtr;
             public static Size FormScale;
 
             private static Graphics LogWindowRenderer;
@@ -363,25 +363,28 @@ namespace Dobby {
             Reset:
                 LogPtr.Location = new Point(ParentPtr.Location.X - LogPtr.Size.Width, ParentPtr.Location.Y);
                 LogPtr.Update();
-
+                //ParentPtr.BringToFront();
 
                 var ControlOffset = 0;
-                foreach(Control c in LogPtr.Controls)
+                foreach(Control control in LogPtr.Controls)
                 {
-                    c.Location = new Point(LogPtr.Size.Width - c.Size.Width - ControlOffset - 1, 1);
-                    if(c.Location.X < 0) {
-                        LogPtr.Size = new Size(LogPtr.Size.Width + c.Size.Width + 1, LogPtr.Size.Height);
+                    control.Location = new Point(LogPtr.Size.Width - control.Size.Width - ControlOffset - 1, 1);
+                    if(control.Location.X < 0) {
+                        LogPtr.Size = new Size(LogPtr.Size.Width + control.Size.Width + 1, LogPtr.Size.Height);
                         goto Reset;
                     }
 
-                    ControlOffset += c.Size.Width;
+                    ControlOffset += control.Size.Width;
                 }
             });
 
-            public static void Exit() {
+
+            public static void LogWindowExit() {
                 logThread.Abort();
                 LogPtr.Dispose();
             }
+
+
 
             /// <summary>
             /// what the fuck

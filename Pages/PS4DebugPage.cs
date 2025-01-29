@@ -20,7 +20,61 @@ namespace Dobby {
 
         public PS4DebugPage() {
             InitializeComponent();
-            PostInitializationFunc();
+            
+
+            // Run miscellaneous post-initialization setup (Variable assignment, event handler creation, etc.)
+            InitializeAdditionalEventHandlers(Controls);
+
+            var settingsFilePath = Directory.GetCurrentDirectory() + @"\PS4_IP.BLB";
+
+            // Create and set event handlers for the IP and Port text boxes
+            IpBox.LostFocus += (control, args) =>
+            {
+                if (!File.Exists(settingsFilePath))
+                    CreateSettingsFile();
+
+
+                if (IPAddress.TryParse(IpBox.Text, out IP))
+                    using (FileStream settingsFile = new FileStream(settingsFilePath, FileMode.Open, FileAccess.ReadWrite))
+                    {
+                        Dev.Print($"Saving \"{IP}\" as new IPAddress.");
+                        settingsFile.Write(Encoding.UTF8.GetBytes(IP + ";"), 0, IpBox.Text.Length + 1);
+                    }
+
+                else
+                    ActiveForm?.Invoke(SetInfoText, $"Invalid IP specified; save aborted. (provided address: {IP})");
+            };
+            PortBox.LostFocus += (control, args) =>
+            {
+                if (!File.Exists(settingsFilePath))
+                    CreateSettingsFile();
+    
+
+                if (int.TryParse(settingsFilePath, out Port)) {
+                    using (FileStream settingsFile = new FileStream(settingsFilePath, FileMode.Open, FileAccess.Write))
+                    {
+                        Dev.Print($"Saving \"{Port}\" as new Port");
+                        settingsFile.Position = 16;
+                        settingsFile.Write(BitConverter.GetBytes(Port), 0, 4);
+                    }
+                }
+                else
+                    ActiveForm?.Invoke(SetInfoText, $"Invalid Port specified; save aborted. (provided port: {Port})");
+            };
+
+            // Assign IgnoreTitleID variable property
+            IgnoreTitleIDBtn.Variable = false;
+            
+
+
+            if (!File.Exists(settingsFilePath))
+                CreateSettingsFile();
+
+            var settings = ReadSettingsFile();
+
+            IpBox.Text = (IP = (IPAddress) settings[0]).ToString();
+            PortBox.Text = (Port = (Int16) settings[1]).ToString();
+
         }
 
 
@@ -30,27 +84,47 @@ namespace Dobby {
         //////////////////\\\\\\\\\\\\\\\*/
         #region PS4Debug Page Variables
 
-        public static PS4DBG Geo;
+        public PS4DBG Geo;
         
-        public static Thread ConnectionThread;
-
-        public static readonly byte
-            On = 0x01, Off = 0x00
+        public Thread 
+            ConnectionThread,
+            PayloadThread
         ;
-        public static bool PS4DebugIsConnected, WaitForConnection = true;
+
+        private readonly byte
+            On = 0x01,
+            Off = 0x00
+        ;
+
+        /// <summary>
+        /// Seperate boolean due to the PS4DBG.IsConnected property throwning an exception in certain cases. (TODO: rework and avoid this, lazy-arse //!)
+        /// </summary>
+    #if DEBUG
+        internal static
+    #else
+        private
+    #endif
+        bool PS4DebugIsConnected;
+
+        /// <summary>
+        /// //! Maybe just remove this and rework stuff
+        /// </summary>
+        private bool WaitForConnection = true;
+
 
         /// <summary> If true, manually assigns a default title id matching the chosen game. </summary>
-        public bool IgnoreTitleID = false;
+        private bool IgnoreTitleID = false;
 
-        public static int
+
+        private int
             Executable,   // Active PS4DBG Process ID
             ConnectionAttempts = 0, // Connect() retries
             DebugModePointerOffset = 0xDEADDAD
         ;
 
-        public static ulong BaseAddress;
+        public ulong BaseAddress;
 
-        public static readonly string[] ExecutablesNames = new string[] {
+        public readonly string[] ExecutableNames = new string[] {
             "eboot.bin",
             "t2.elf",
             "t2-rtm.elf",
@@ -83,160 +157,116 @@ namespace Dobby {
         //////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ */
         #region Functions For Basic PS4Debug Page Functionality
 
-        /// <summary>
-        /// Run miscellaneous post-initialization setup (Variable assignment, event handler creation, etc.)
-        /// </summary>
-        internal void PostInitializationFunc()
+        private void SendPayload(dynamic args)
         {
-            InitializeAdditionalEventHandlers(Controls);
-
-
-            var settingsFilePath = Directory.GetCurrentDirectory() + @"\PS4_IP.BLB";
-            if (!File.Exists(settingsFilePath))
-                CreateSettingsFile();
-
-            var settings = ReadSettingsFile();
-
-            IpBox.Text = (IP = (IPAddress) settings[0]).ToString();
-            PortBox.Text = (Port = (Int16) settings[1]).ToString();
-
-
-
-            // Create and set event handlers IP & Port boxes
-            IpBox.LostFocus += (control, args) =>
+            using(var payloadSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
             {
-                if (!File.Exists(settingsFilePath))
-                    CreateSettingsFile();
+                // Load Passed Parameters
+                var port = (int)args.Port;
+                var ip   = (IPAddress)args.IP;
+                var form = (Form)args.ActiveForm;
 
 
-                if (IPAddress.TryParse(IpBox.Text, out IP))
-                    using (FileStream settingsFile = new FileStream(settingsFilePath, FileMode.Open, FileAccess.ReadWrite)) {
-                        Dev.Print($"Saving \"{IP}\" as new IPAddress.");
-                        settingsFile.Write(Encoding.UTF8.GetBytes(IP + ";"), 0, IpBox.Text.Length + 1);
-                    }
+                form?.Invoke(SetInfoText, "Sending ps4debug Payload...");
+                Dev.Print($"^- Payload Destination: {ip}:{port}.");
 
-                else
-                    ActiveForm?.Invoke(SetInfoText, $"Invalid IP specified; save aborted. (provided address: {IP})");
-            };
-            PortBox.LostFocus += (control, args) =>
-            {
-                if (!File.Exists(settingsFilePath))
-                    CreateSettingsFile();
-    
-
-                if (int.TryParse(settingsFilePath, out Port)) {
-                    using (FileStream settingsFile = new FileStream(settingsFilePath, FileMode.Open, FileAccess.Write)) {
-                        settingsFile.Position = 16;
-                        Dev.Print($"Saving \"{Port}\" as new Port");
-                        settingsFile.Write(BitConverter.GetBytes(Port), 0, 4);
-                    }
+                try {
+                    payloadSocket.Connect(new IPEndPoint(ip, port));
+                    payloadSocket.Send(Resource.ps4debug);
                 }
-                else
-                    ActiveForm?.Invoke(SetInfoText, $"Invalid Port specified; save aborted. (provided port: {Port})");
-            };
+                catch(Exception e) {
+                    Dev.Print($"Failed To Connect To Specified Server at [{ip}:{port}]\nError: {e.Message}\n{e.StackTrace}");
+                    form.Invoke(SetInfoText, "Failed To Connect To Specified Address/Port");
+                }
+                finally {
+                    payloadSocket.Close();
+                }
+
+
+                if(payloadSocket.Connected)
+                {
+                    form?.Invoke(SetInfoText, "Payload Injected Successfully");
+                    MessageBox.Show("PS4Debug Update 1.1.15 By ctn123\nPS4Debug Created By Golden", "Payload Injected Successfully, Here's Some Credits"); // Excessive Credits To Try Avoiding Beef lol
+                }
+            }
         }
 
+        private void Connect(dynamic Parameters) {
+            try {
+                
+                // Load Passed Parameters
+                var ip = (IPAddress)Parameters.IP;
+                var form = (Form)Parameters.ActiveForm;
 
 
+                form?.Invoke(SetInfoText, $"Connecting to Console at \"{IP}\"");
 
-        internal static bool ThreadSleep;
-        internal Thread PayloadThread = new Thread(delegate (object Parameters) {
-            while(true) {
-                using(var payloadSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)) {
-
-                    // Load Passed Parameters
-                    var rawIp   = (string)((dynamic)Parameters).IP;
-                    var rawPort = (string)((dynamic)Parameters).Port;
-                    var form    = (Form)  ((dynamic)Parameters).ActiveForm;
-
-
-                    form.Invoke(SetInfoText, "Sending ps4debug Payload...");
-                    Dev.Print($"Sending payload to {rawIp}:{rawPort}.");
-
-                    try {
-                        if (!IPAddress.TryParse(rawIp, out IPAddress ip) | !int.TryParse(rawPort, out int port)) {
-                            var error = $"Invalid IP Address or Port specified; Please check your input and try again. (IP: {rawIp} | Port: {rawPort})";
-
-                            MessageBox.Show(error, "Unable to parse ip or port. Sorry");
-                            ActiveForm?.Invoke(SetInfoText, error);
-                            Dev.Print(error);
-                            return;
-                        }
-
-
-
-                        payloadSocket.Connect(new IPEndPoint(ip, port));
-                        payloadSocket.Send(Resource.ps4debug);
-                    }
-                    catch(Exception e) {
-                        Dev.Print($"Failed To Connect To Specified Server at [{rawIp}:{rawPort}]\nError: {e.Message}\n{e.StackTrace}");
-                        form.Invoke(SetInfoText, "Failed To Connect To Specified Address/Port");
-                    }
-                    finally {
-                        payloadSocket.Close();
-                        ThreadSleep = true;
-                    }
-
-                    if(payloadSocket.Connected) {
-                        form.Invoke(SetInfoText, "Payload Injected Successfully");
-                        MessageBox.Show("PS4Debug Update 1.1.15 By ctn123\nPS4Debug Created By Golden", "Payload Injected Successfully, Here's Some Credits");
-                        // ^^^ Excessive Credits To Try Avoiding Beef lol
-                    }
+                // Establish a connection for the new PS4Debug instance
+                try {
+                    Geo = new PS4DBG(IP);
+                    Geo.Connect();
+                }
+                catch (SocketException oops) {
+                    form.Invoke(SetInfoText, $"Error Connecting to \"{IP}\"");
+                    Dev.Print($"!! ERROR: Unable to connect to PS4, see exception below.\n{oops.Message}\n{oops.StackTrace.Replace("\n", "  \n")}");
+                    return;
                 }
 
-                while(ThreadSleep) ; // Wait For Another Try
-            }
-        });
 
-        public void Connect(dynamic args) {
-            try {
-                ActiveForm?.Invoke(SetInfoText, $"Connecting To Console at \"{IP}\"");
-
-                Geo = new PS4DBG(IP);
-                Geo.Connect();
                 PS4DebugIsConnected = Geo.IsConnected;
                 Dev.Print($"Connection Status: {PS4DebugIsConnected}");
-                return;
+                form?.Invoke(SetInfoText, "PS4Debug Connected, Searching for Game...");
+
 
                 foreach(libdebug.Process process in Geo.GetProcessList().processes) { // processprocessprocessprocessprocessprocessprocess
-                    if(ExecutablesNames.Contains(process.name)) {
-
-                        string title = Geo.GetProcessInfo(process.pid).titleid;
-
-                        if(title == "FLTZ00003" || title == "ITEM00003") {
-                            Dev.Print($"Skipping Lightning's Stuff {title}");
-                            continue;
-                        } // Check To Avoid Connecting To HB Store Stuff
-
-                        Executable = process.pid;
-                        ProcessName = process.name;
-                        GameVersion = GetGameTitleIDVersionAndDMenuOffset(TitleID = Geo.GetProcessInfo(process.pid).titleid);
+                    
+                    // Ignore unrelated processes
+                    if(!ExecutableNames.Contains(process.name))
+                        continue;
+                    
 
 
-                        ActiveForm?.Invoke(SetInfoText, $"Attached To {TitleID} ({GameVersion})");
-                        WaitForConnection = false;
+                    string titleId;
+                    int exectuable = process.pid;
+                    
+                    // Check To Avoid Connecting To HB Store Stuff
+                    if((titleId = Geo.GetProcessInfo(exectuable).titleid) == "FLTZ00003" || titleId == "ITEM00003") {
+                        Dev.Print($"Skipping Lightning's Stuff {titleId}");
+                        continue;
                     }
-                }
-                ProcessName = "No Valid Process";
 
-                ActiveForm?.Invoke(SetInfoText, "Connected To PS4, But Couldn't Find The Game Process");
-                WaitForConnection = false;
+                    Executable = exectuable;
+                    TitleID = titleId;
+                    ProcessName = process.name;
+                    Dev.Print($"Process Name: [{ProcessName}]");
+
+
+                    // Detect the currently loaded game and app_ver (clunkily.)
+                    GameVersion = GetGameTitleIDVersionAndDMenuOffset(titleId);
+
+                    form?.Invoke(SetInfoText, $"Attached to {titleId} ({GameVersion})");
+                    return;
+                }
+
+                // Error out if no eboot.bin (or other expected executable) was found.
+                ProcessName = "No Valid Process";
+                form?.Invoke(SetInfoText, "Couldn't Find a Valid Game Process.");
             }
             catch(Exception tabarnack) {
-                ActiveForm?.Invoke(SetInfoText, $"Connection To {IP} Failed.");
-                Dev.PrintError(tabarnack.Message);
+                ActiveForm?.Invoke(SetInfoText, $"Connection to {IP} Failed.");
+                Dev.PrintError(tabarnack);
             }
         }
 
 
         /// <summary> Avoid Attempting To Toggle The Selected Bool In Memory Before The Connection Process Is Finished
         ///</summary>
-        public static Task CheckConnectionStatus() {
+        private Task CheckConnectionStatus() {
             if(ConnectionThread == null || ConnectionThread.ThreadState == ThreadState.Unstarted)
                 ConnectionThread.Start();
 
 
-            else if(!PS4DebugIsConnected || Geo?.GetProcessInfo(Executable).name != ProcessName || !ExecutablesNames.Contains(Geo?.GetProcessInfo(Executable).name)) {
+            else if(!PS4DebugIsConnected || Geo?.GetProcessInfo(Executable).name != ProcessName || !ExecutableNames.Contains(Geo?.GetProcessInfo(Executable).name)) {
                 PS4DebugIsConnected = false; WaitForConnection = true;
                 Dev.Print("CheckConnectionStatus Second Case, Now On WaitForConnection");
             }
@@ -245,11 +275,12 @@ namespace Dobby {
             return Task.CompletedTask;
         }
         
+
         /// <summary>
-        /// An ugly sack of gross which determines the patch version of a specified game by just checking the int32 value of 2 bytes at a game-specific address because I have no idea how or if I can check the .sfo
+        /// An ugly sack of gross which determines the patch version of a specified game by checking the Int16 value of 2 bytes at a game-specific address because I have no idea how or if I can check the .sfo
         /// </summary>
         /// <returns> The Current Game Version If Successful, Or UnknownGameVersion \ UnknownTitleID If It Failed At Some Stage </returns>
-        public static string GetGameTitleIDVersionAndDMenuOffset(string titleID) {
+        private string GetGameTitleIDVersionAndDMenuOffset(string titleID) {
             try {
                 if(PS4DebugIsConnected && Geo.GetProcessInfo(Executable).name == ProcessName) {
 
@@ -433,6 +464,7 @@ namespace Dobby {
         }
 
 
+
         /// <summary>
         /// Create a new settings file for use in saving the selected Address and Port used for ps4debug operations.
         /// <br/>
@@ -440,7 +472,7 @@ namespace Dobby {
         /// <br/> Default data: 192.168.137.115;9090
         /// <br/> Destination: Current program working directory.
         /// </summary>
-        internal static void CreateSettingsFile()
+        private void CreateSettingsFile()
         {
             var settingsFilePath = Directory.GetCurrentDirectory() + @"\PS4_IP.BLB";
 
@@ -458,13 +490,14 @@ namespace Dobby {
         }
 
 
+
         /// <summary>
         ///   Read the saved IP address from the PS4_IP.BLB file in the app directory, or create a new one if it's not present
         /// </summary>
         /// <returns>
         ///   A string array containing the current ip and port if the file's present, otherwise the default value of "192.168.137.115". \m/
         /// </returns>
-        internal object[] ReadSettingsFile() {
+        private object[] ReadSettingsFile() {
             var settingsFilePath = Directory.GetCurrentDirectory() + @"\PS4_IP.BLB";
             
             // Read port & ip from settings file in app directory
@@ -475,12 +508,12 @@ namespace Dobby {
                     byte[] buffer;
 
                     settingsFile.Read(buffer = new byte[settingsFile.Length], 0, (int) settingsFile.Length);
-                    seperator = buffer.ToList().FindIndex(item => item == 0x3B);
+                    seperator = buffer.ToList().FindLastIndex(item => item == 0x3B);
 
 
                     if (!IPAddress.TryParse(Encoding.UTF8.GetString(buffer, 0, seperator), out IPAddress ip))
                     {
-                        Dev.PrintError($"Unable to part IP Address from settings file. (attempted to parse: {Encoding.UTF8.GetString(buffer, 0, seperator)})");
+                        Dev.Print($"!! ERROR: Unable to part IP Address from settings file. (attempted to parse: {Encoding.UTF8.GetString(buffer, 0, seperator)})");
                         ActiveForm?.Invoke(SetInfoText, "Unable to parse settings file.");
 
                         // use the default IP.
@@ -492,16 +525,22 @@ namespace Dobby {
                 }
             else
             {
-                Dev.PrintError("An attempt to read the settings file was made, but the file doesn't exist.");
+                Dev.Print("!! ERROR: An attempt to read the settings file was made, but the file doesn't exist.");
                 return new object[0];
             }
         }
 
 
-        public void IgnoreTitleIDBtn_Click(object sender, EventArgs e) {
-            var ControlText = ((Control)sender).Text;
-            IgnoreTitleID ^= true;
-            ((Control)sender).Text = $"{ControlText.Remove(ControlText.LastIndexOf(' '))} {(IgnoreTitleID ? "Enable" : "Disabled")}";
+
+        /// <summary>
+        /// Toggle the IgnoreTitleID setting for use when the game has an edited title id, but is likele still supported.
+        /// </summary>
+        /// <param name="control"> The clicked control to which the Enabled/Disabled text will be appended to. </param>
+        private void IgnoreTitleIDBtn_Click(object control, EventArgs _)
+        {
+            ((Dobby.Button)control).Variable = !(bool) ((Dobby.Button)control).Variable;
+            
+            return; ((Control)control).Text = $"{((Control)control).Text.Remove(((Control)control).Text.LastIndexOf(' '))} {((IgnoreTitleID ^= true) ? "Enable" : "Disabled")}";
         }
 
 
@@ -510,7 +549,7 @@ namespace Dobby {
         /// </summary>
         /// <param name="Addresses">Array Of Addresses To Read The Int64 From Depending On The Version</param>
         /// <param name="Versions">Version Strings To Check Against GameVersion</param>
-        public static void Toggle(ulong[] Addresses, string[] Versions) {
+        private void Toggle(ulong[] Addresses, string[] Versions) {
             try {
                 if(PS4DebugIsConnected && Geo.GetProcessInfo(Executable).name == ProcessName) {
                     var AddressIndex = 0;
@@ -532,11 +571,13 @@ namespace Dobby {
             catch(Exception tabarnack) { Dev.Print(tabarnack.Message); }
         }
 
+
+
         /// <summary>
         /// Toggles A Byte At Multiple Fixed Addresses (Only used for Uncharted: The Nathan Drake Collection)
         /// </summary>
         /// <param name="AddressArray">Array Of Addresses To Read/Write To</param>
-        public void Toggle(ulong[] AddressArray) {
+        private void Toggle(ulong[] AddressArray) {
             try {
                 if(PS4DebugIsConnected && Geo.GetProcessInfo(Executable).name == ProcessName)
                     Array.ForEach(AddressArray, Address => Geo.WriteMemory(Executable, Address, Geo.ReadMemory<byte>(Executable, Address) == 0x00 ? On : Off));
@@ -547,14 +588,17 @@ namespace Dobby {
 
 
 
-        public void IPLabelBtn_Click(object sender, EventArgs e) => IpBox.Focus();
-        public void PortLabelBtn_Click(object sender, EventArgs e) => PortBox.Focus();
+        private void IPLabelBtn_Click(object sender, EventArgs e) => IpBox.Focus();
+        private void PortLabelBtn_Click(object sender, EventArgs e) => PortBox.Focus();
 
-        public void DebugPayloadBtn_Click(object sender, EventArgs e) {
-            if(PayloadThread.ThreadState == ThreadState.Unstarted)
-                PayloadThread.Start(new { ActiveForm, IP, Port });
+        private void SendPayloadBtn_Click(object sender, EventArgs e) {
+            ActiveForm?.Invoke(SetInfoText, "Sending ps4debug Payload to PS4");
 
-            ThreadSleep = false;
+            if (PayloadThread?.ThreadState == 0)
+                PayloadThread.Abort();
+
+
+            (PayloadThread = new Thread(SendPayload)).Start(new { ActiveForm, IP, Port });
         }
 
         /// <summary>
@@ -564,12 +608,12 @@ namespace Dobby {
         {
             ActiveForm?.Invoke(SetInfoText, "Connecting to Console");
 
-            if (ConnectionThread.ThreadState != ThreadState.Unstarted)
-            {
-                PS4DebugIsConnected = false;
-                ConnectionThread = new Thread(Connect);
-                ConnectionThread.Start(new { ActiveForm, IP, Port });
-            }
+            if (ConnectionThread?.ThreadState == 0)
+                ConnectionThread.Abort();
+
+
+            PS4DebugIsConnected = false;
+            (ConnectionThread = new Thread(Connect)).Start(new { ActiveForm, IP, Port });
         }
         #endregion
 
@@ -646,16 +690,19 @@ namespace Dobby {
         }
 
 
-        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     Repeated Page Functions & Control Declarations     --\\\
-        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        #region Repeat Functions & Control Declarations
+
+
+        //==============================\\
+        //|    Control Declarations    |\\
+        //==============================\\
+        #region [Control Declarations]
         public void BackBtn_Click(object sender, EventArgs e) {
             ReturnToPreviousPage();
             HoverLeave(BackBtn, false); // What Did This Fix, Again?
         }
         private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);
         private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
+
         public TextBox IpBox;
         public Label MainLabel;
         public Button T1RBtn;

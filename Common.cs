@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Threading;
@@ -71,16 +72,6 @@ namespace Dobby {
             CreditsPage = 8,
             PlaceholderPage = 0xbad
         }
-
-        /// <summary> Buttons To Avoid Prepending The Hover Arrow To </summary>
-        private static readonly string[] ArrowBlacklist = new string[] {
-                "DebugControl",
-                "ExitBtn",
-                "MinimizeBtn",
-                "LabelBtn",
-                "CmdPathBox",
-                "Gp4PathBox"
-        };
 
 
         public static string
@@ -469,19 +460,38 @@ namespace Dobby {
         }
 
 
-        /// <summary> Draw The Variable Tied To The Sender Control, Aligned To The Right Of The Form
+
+        /// <summary>
+        /// Draw the string representation of the Dobby.Button's Variable property to the right of the control text.
         ///</summary>
-        public static void DrawButtonVar(object sender, PaintEventArgs e)
+        public static void DrawButtonVariable(object item, PaintEventArgs args)
         {
-            var control = sender as Button;
+            // Convert control to avoid constant casting
+            var control = item as Dobby.Button;
+
+            // Load the string representation of the Variable property
             var Variable = control.Variable?.ToString();
 
-            var X_Pos = (int)(control.Width - e.Graphics.MeasureString(Variable, control.Font).Width - 5);
+            // Check for stupidity.
+            if (Variable == null) {
+                Print($"!! ERROR: Variable property for control \"{control.Name}\" was null");
+                return;
+            }
 
-            e.Graphics.DrawString(Variable, MainFont, Brushes.LightGreen, new Point(X_Pos, 5));
+
+            // Format boolean values
+            if (control.Variable.GetType() == typeof(bool))
+                Variable = (bool) control.Variable ? "Yes" : "No";
+
+            // Draw the Variable's string representation appended to the rightmost side of the control's bounds
+            args.Graphics.DrawString(Variable, MainFont, Brushes.LightGreen, new Point((int) (control.Width - args.Graphics.MeasureString(Variable, control.Font).Width - 5), 5));
         }
 
-        ///<summary> Form Border Pen </summary>
+
+
+
+
+            ///<summary> Form Border Pen </summary>
         public static Pen pen = new Pen(Color.White);
 
         ///<summary> Create And Apply A Thin Border To The Form </summary>
@@ -728,16 +738,12 @@ namespace Dobby {
                     Item.MouseMove += new MouseEventHandler(MoveForm);
 
 
-                // TODO:
-                // check this odd shit //!
-                if ((Item.GetType() == typeof(Button) || Item.GetType() == typeof(Button)) && !ArrowBlacklist.Contains(Item.Name))
+                // Avoid assigning a hover arrow to unintended controls (blacklisted ones, and any non-button controls)
+                if ((Item.GetType() == typeof(Dobby.Button) || Item.GetType() == typeof(System.Windows.Forms.Button)) && !new string[] { "DebugControl", "ExitBtn", "MinimizeBtn", "LabelBtn", "CmdPathBox", "Gp4PathBox"}.Contains(Item.Name))
                 {
                     Item.MouseEnter += new EventHandler(ControlHover);
                     Item.MouseLeave += new EventHandler(ControlLeave);
                 }
-
-                if (Item.GetType() == typeof(Button))
-                    Item.Paint += DrawButtonVar;
             }
 
 
@@ -797,11 +803,20 @@ namespace Dobby {
 
 
             // Clear Info Label Text
+            var ConstantControls = new string[] { "Info", "InfoHelpBtn", "CreditsBtn", "BackBtn" };
             try {
-                Controls.Owner.Controls.Find("Info", true)[0].Text = string.Empty;
+                Controls.Owner.Controls.Find(ConstantControls[0], true)[0].Text = string.Empty;
+
+                Controls.Owner.Controls.Find(ConstantControls[1], true)[0].Click += (_, __) => ChangeForm(PageID.InfoHelpPage);
+                Controls.Owner.Controls.Find(ConstantControls[2], true)[0].Click += (_, __) => ChangeForm(PageID.CreditsPage);
+
+                // Avoid searching for back button on Main page
+                if (Page != PageID.MainPage)
+                    Controls.Owner.Controls.Find(ConstantControls[3], true)[0].Click += (_, __) => ReturnToPreviousPage();
             }
             catch (Exception) {
-                Print("Info Label Mising");
+                Print("!! ERROR: One of the various buttons is missing from the form, and could not be fully initialized:");
+                Array.ForEach<string>(ConstantControls, control => Print($"  {control}"));
             }
         }
 
@@ -823,7 +838,7 @@ namespace Dobby {
         private static void ExitBtn_Click(object sender, EventArgs e)
         {
 #if DEBUG
-            LogWindow.Exit();
+            LogWindow.LogWindowExit();
 #endif
             MainStream?.Dispose();
             Environment.Exit(0);
@@ -1075,13 +1090,24 @@ namespace Dobby {
     /// Custom Button Class extention so I can attach a value to them. 
     /// </summary>
     public class Button : System.Windows.Forms.Button {
-        public Button() {
-            Variable = null;
-            Info = ((string)Tag) ?? string.Empty;
-        }
 
-        public object Variable;
-        public string Info;
+
+        /// <summary>
+        /// Custom value associated with the control to be rendered alongside it, and edited via manually assigned per-control events.
+        /// </summary>
+        public object Variable
+        {
+            get => _Variable;
+            set {
+                if (value != null && value.ToString().Length > 0)
+                    Paint += Common.DrawButtonVariable;
+                else
+                    Paint -= Common.DrawButtonVariable;
+
+                _Variable = value;
+            }
+        }
+        private object _Variable;
     }
     #endregion [Class Extensions]
 }
