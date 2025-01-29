@@ -79,10 +79,10 @@ namespace Dobby {
 
 
 
-        /*////////////////\\\\\\\\\\\\\\\\\
-        ///-- PS4DEBUG PAGE VARIABLES --\\\
-        //////////////////\\\\\\\\\\\\\\\*/
-        #region PS4Debug Page Variables
+        //=================================\\
+        //|    PS4Debug Page Variables    |\\
+        //=================================\\
+        #region [PS4Debug Page Variables]
 
         public PS4DBG Geo;
         
@@ -696,13 +696,9 @@ namespace Dobby {
         //|    Control Declarations    |\\
         //==============================\\
         #region [Control Declarations]
-        public void BackBtn_Click(object sender, EventArgs e) {
-            ReturnToPreviousPage();
+        public void BackBtn_Click(object sender, EventArgs e) =>
             HoverLeave(BackBtn, false); // What Did This Fix, Again?
-        }
-        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);
-        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
-
+        
         public TextBox IpBox;
         public Label MainLabel;
         public Button T1RBtn;

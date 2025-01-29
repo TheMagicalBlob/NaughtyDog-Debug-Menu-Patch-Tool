@@ -36,10 +36,6 @@ namespace Dobby {
         ///--     Repeated Page Functions & Control Declarations     --\\\
         /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         #region Repeat Functions & Control Declarations
-        void BackBtn_Click(object sender, EventArgs e) {
-            ReturnToPreviousPage();
-            HoverLeave((Control)sender, false);
-        }
         public Label MainLabel;
         public Label NarcissismLabel;
         public Label BlobGithubBtn;

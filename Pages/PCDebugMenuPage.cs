@@ -155,7 +155,6 @@ namespace Dobby {
             this.BackBtn.Text = "Back...";
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
-            this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
             // 
             // BrowseButton
             // 
@@ -540,7 +539,6 @@ Read:       MainStream.Position = TmpAddr++;
         #region Repeat Functions & Control Declarations
         private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);
         private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
-        private void BackBtn_Click(object sender, EventArgs e) => ReturnToPreviousPage();
         public Label MainLabel;
         public Button CreditsBtn;
         public Button InfoHelpBtn;

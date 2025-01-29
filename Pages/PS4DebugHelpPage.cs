@@ -135,7 +135,6 @@ namespace Dobby {
             this.CreditsBtn.Text = "Credits...";
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
-            this.CreditsBtn.Click += new System.EventHandler(this.CreditsBtn_Click);
             // 
             // BackBtn
             // 
@@ -152,7 +151,6 @@ namespace Dobby {
             this.BackBtn.Text = "Back...";
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
-            this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
             // 
             // PS4DebugHelpPage
             // 
@@ -181,8 +179,6 @@ namespace Dobby {
         ///--     Repeated Page Functions & Control Declarations     --\\\
         /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         #region Repeat Functions & Control Declarations
-        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
-        private void BackBtn_Click(object sender, EventArgs e) => ReturnToPreviousPage();
         public Label Info;
         public Label MainLabel;
         public Button CreditsBtn;

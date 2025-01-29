@@ -187,7 +187,6 @@ namespace Dobby {
             this.BackBtn.Text = "Back...";
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
-            this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
             // 
             // DefaultQuestionBtn
             // 
@@ -300,7 +299,6 @@ namespace Dobby {
         ///--     Repeated Page Functions & Control Declarations     --\\\
         /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         #region Repeat Functions & Control Declarations
-        private void BackBtn_Click(object sender, EventArgs e) => ReturnToPreviousPage();
         public Label Info;
         public Label MainLabel;
         public Button CreditsBtn;

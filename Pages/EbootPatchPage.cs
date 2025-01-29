@@ -136,7 +136,6 @@ namespace Dobby {
             this.InfoHelpBtn.Text = "Information / Help...";
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
-            this.InfoHelpBtn.Click += new System.EventHandler(this.InfoHelpBtn_Click);
             // 
             // SeperatorLine2
             // 
@@ -225,7 +224,6 @@ namespace Dobby {
             this.CreditsBtn.Text = "Credits...";
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
-            this.CreditsBtn.Click += new System.EventHandler(this.CreditsBtn_Click);
             // 
             // MainLabel
             // 
@@ -1501,16 +1499,13 @@ namespace Dobby {
         #endregion
 
 
-        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     Repeated Page Functions & Control Declarations     --\\\
-        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        #region Repeat Functions & Control Declarations
-        public void BackBtn_Click(object sender, EventArgs e) {
+        //==============================\\
+        //|    Control Declarations    |\\
+        //==============================\\
+        #region [Control Declarations]
+        public void BackBtn_Click(object sender, EventArgs e) =>
             LabelShouldFlash = false;
-            ReturnToPreviousPage();
-        }
-        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);
-        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
+        
         public Label GameInfoLabel;
         private Button BrowseButton;
         private TextBox ExecutablePathBox;

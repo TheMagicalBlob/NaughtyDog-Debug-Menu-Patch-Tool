@@ -84,7 +84,7 @@ namespace Dobby {
         public static GameIDs Game;
 
         /// <summary> ID for the currently loaded form. </summary>
-        public static PageID Page;
+        public static PageID? Page;
         public static PageID?[] Pages = new PageID?[5];
 
         public static bool
@@ -587,28 +587,25 @@ namespace Dobby {
         /// <summary>
         /// Loads The Specified Page From The PageId Group (E.g. ChangeForm(PageID.PS4MiscPageId))
         /// </summary>
-        /// <param name="Page"> Page To Change To </param>
-        public static void ChangeForm(PageID Page) {
+        /// <param name="Page"> The Page To Change To. </param>
+        public static void ChangeForm(PageID? Page) {
             LastPos = ActiveForm.Location;
-            var ClosingForm = ActiveForm as Form;
+            var ClosingForm = ActiveForm;
 
             if (!IsPageGoingBack)
             {
                 for (int i = 0; i < 5; i++)
-                {
-                    if (Pages[i] == null)
-                    {
+                    if (Pages[i] == null) {
                         Pages[i] = Common.Page;
+                        Dev.Print($"Last Page: {Pages[i]}");
                         break;
                     }
-                }
             }
             else IsPageGoingBack ^= true;
             Form NewPage = null;
 
-            Common.Page = Page;
 
-            switch (Page)
+            switch (Common.Page = Page)
             {
                 case PageID.MainPage:
                     NewPage = MainForm;
@@ -692,17 +689,20 @@ namespace Dobby {
             ClosingForm.Close();
         }
 
+        static int tempindex = 0;
         public static void ReturnToPreviousPage()
         {
             IsPageGoingBack ^= true;
 
-            for (int i = 4; i >= 0; i--)
+            for (int i = 4; i > -1; i--) {
                 if (Pages[i] != null)
                 {
-                    ChangeForm((PageID)Pages[i]);
+                    Print($"Returning to {(PageID)Pages[i]}");
+                    ChangeForm(Pages[i]);
                     Pages[i] = null;
                     break;
                 }
+            }
             FormActive = false;
         }
 
@@ -805,17 +805,19 @@ namespace Dobby {
             // Clear Info Label Text
             var ConstantControls = new string[] { "Info", "InfoHelpBtn", "CreditsBtn", "BackBtn" };
             try {
+                // Avoid searching for back button on Main page
+                if (Page != PageID.MainPage)
+                    Controls.Owner.Controls.Find(ConstantControls[3], true)[0].Click += (_, __) => ReturnToPreviousPage();
+
+
                 Controls.Owner.Controls.Find(ConstantControls[0], true)[0].Text = string.Empty;
 
                 Controls.Owner.Controls.Find(ConstantControls[1], true)[0].Click += (_, __) => ChangeForm(PageID.InfoHelpPage);
                 Controls.Owner.Controls.Find(ConstantControls[2], true)[0].Click += (_, __) => ChangeForm(PageID.CreditsPage);
 
-                // Avoid searching for back button on Main page
-                if (Page != PageID.MainPage)
-                    Controls.Owner.Controls.Find(ConstantControls[3], true)[0].Click += (_, __) => ReturnToPreviousPage();
             }
             catch (Exception) {
-                Print("!! ERROR: One of the various buttons is missing from the form, and could not be fully initialized:");
+                Print($"!! ERROR: One of the various buttons is missing from the {Controls.Owner.Name} form, and could not be fully initialized:");
                 Array.ForEach<string>(ConstantControls, control => Print($"  {control}"));
             }
         }

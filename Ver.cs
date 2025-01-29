@@ -237,7 +237,8 @@
           "* 4.48-alpha.237.671 | More code cleanup; misc background changes for my own damn sanity. (bite me, nobody's gonna actually read these, anyway)",
           "* 4.48-alpha.238.681 | More code cleanup; fixed inability to drag-select the text in the IP and Port boxes. Still reworking the connection / payload injection functions.",
           "* 4.48-alpha.239.683 | Slight Dev.LogWindow output tweaks. Removed odd click functionality of scroll wheel on ps4debug page (no idea why that was there)",
-          "* 4.48-alpha.244.693 | More code cleanup; PS4DebugPage bs. ADHD hard."
+          "* 4.48-alpha.244.693 | More code cleanup; PS4DebugPage bs. ADHD hard.",
+          "* 4.48-alpha.245.694 | Fixed BackBtn memes after moving back functionality to dynamic initialization.",
         };
 
 

@@ -45,17 +45,17 @@ namespace Dobby {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InfoHelpPage));
             this.MainLabel = new System.Windows.Forms.Label();
             this.BlobLabel = new System.Windows.Forms.Label();
-            this.PkgHelpPageBtn = new Button();
+            this.PkgHelpPageBtn = new Dobby.Button();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
-            this.PS4QOLPageHelpBtn = new Button();
+            this.PS4QOLPageHelpBtn = new Dobby.Button();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
             this.BuildLabel = new System.Windows.Forms.Label();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.PS4DebugHelpBtn = new Button();
+            this.PS4DebugHelpBtn = new Dobby.Button();
             this.label4 = new System.Windows.Forms.Label();
-            this.EbootPatchPageHelpBtn = new Button();
+            this.EbootPatchPageHelpBtn = new Dobby.Button();
             this.Info = new System.Windows.Forms.Label();
-            this.BackBtn = new Button();
+            this.BackBtn = new Dobby.Button();
             this.GeneralInfoLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -96,6 +96,7 @@ namespace Dobby {
             this.PkgHelpPageBtn.Text = "Pkg Creation Page Help";
             this.PkgHelpPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PkgHelpPageBtn.UseVisualStyleBackColor = false;
+            this.PkgHelpPageBtn.Variable = null;
             this.PkgHelpPageBtn.Click += new System.EventHandler(this.PkgHelpPageBtn_Click);
             // 
             // SeperatorLine0
@@ -123,6 +124,7 @@ namespace Dobby {
             this.PS4QOLPageHelpBtn.Text = "Misc. Patch Page Help...";
             this.PS4QOLPageHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PS4QOLPageHelpBtn.UseVisualStyleBackColor = false;
+            this.PS4QOLPageHelpBtn.Variable = null;
             this.PS4QOLPageHelpBtn.Click += new System.EventHandler(this.PS4QOLPageHelpBtn_Click);
             // 
             // SeperatorLine2
@@ -174,6 +176,7 @@ namespace Dobby {
             this.PS4DebugHelpBtn.Text = "PS4Debug Page Help...";
             this.PS4DebugHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PS4DebugHelpBtn.UseVisualStyleBackColor = false;
+            this.PS4DebugHelpBtn.Variable = null;
             this.PS4DebugHelpBtn.Click += new System.EventHandler(this.PS4DebugHelpBtn_Click);
             // 
             // label4
@@ -202,6 +205,7 @@ namespace Dobby {
             this.EbootPatchPageHelpBtn.Text = "Eboot\\Executable Patch Page Help...";
             this.EbootPatchPageHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.EbootPatchPageHelpBtn.UseVisualStyleBackColor = false;
+            this.EbootPatchPageHelpBtn.Variable = null;
             this.EbootPatchPageHelpBtn.Click += new System.EventHandler(this.EbootPatchPageHelpBtn_Click);
             // 
             // Info
@@ -229,7 +233,7 @@ namespace Dobby {
             this.BackBtn.Text = "Back...";
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
-            this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
+            this.BackBtn.Variable = null;
             // 
             // GeneralInfoLabel
             // 
@@ -301,10 +305,9 @@ namespace Dobby {
 
 
         /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     Repeated Page Functions & Control Declarations     --\\\
+        ///--     Control Declarations     --\\\
         /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        #region Repeat Functions & Control Declarations
-        private void BackBtn_Click(object sender, EventArgs e) => ReturnToPreviousPage();
+        #region [Control Declarations]
         public Label MainLabel;
         public Button BackBtn;
         public Button PS4DebugHelpBtn;
