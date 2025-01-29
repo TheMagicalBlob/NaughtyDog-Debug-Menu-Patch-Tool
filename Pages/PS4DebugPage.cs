@@ -20,7 +20,6 @@ namespace Dobby {
 
         public PS4DebugPage() {
             InitializeComponent();
-            
 
             // Run miscellaneous post-initialization setup (Variable assignment, event handler creation, etc.)
             InitializeAdditionalEventHandlers(Controls);
@@ -50,7 +49,7 @@ namespace Dobby {
                     CreateSettingsFile();
     
 
-                if (int.TryParse(settingsFilePath, out Port)) {
+                if (short.TryParse(settingsFilePath, out Port)) {
                     using (FileStream settingsFile = new FileStream(settingsFilePath, FileMode.Open, FileAccess.Write))
                     {
                         Dev.Print($"Saving \"{Port}\" as new Port");
@@ -73,9 +72,10 @@ namespace Dobby {
             var settings = ReadSettingsFile();
 
             IpBox.Text = (IP = (IPAddress) settings[0]).ToString();
-            PortBox.Text = (Port = (Int16) settings[1]).ToString();
+            PortBox.Text = (Port = (short) settings[1]).ToString();
 
         }
+
 
 
 
@@ -115,14 +115,10 @@ namespace Dobby {
         /// <summary> If true, manually assigns a default title id matching the chosen game. </summary>
         private bool IgnoreTitleID = false;
 
+        /// <summary> Active PS4DBG Process ID </summary>
+        private int Executable;
 
-        private int
-            Executable,   // Active PS4DBG Process ID
-            ConnectionAttempts = 0, // Connect() retries
-            DebugModePointerOffset = 0xDEADDAD
-        ;
-
-        public ulong BaseAddress;
+        private int DebugModePointerOffset = 0xDEADDAD;
 
         public readonly string[] ExecutableNames = new string[] {
             "eboot.bin",
@@ -136,16 +132,14 @@ namespace Dobby {
             "big4-final.elf",
             "big4-mp.elf",
             "big4-final-pgo-lto.elf",
-            "eboot-mp.elf",
+            "eboot-mp.elf"
         };
 
-        public static string
-            ProcessName = "Jack Shit",
-            GameVersion = "UnknownGameVersion",
-            TitleID = "?"
-        ;
+        public string ProcessName;
+        public string GameVersion;
+        public string TitleID;
 
-        public int Port;
+        public short Port;
         public IPAddress IP;
         #endregion
 

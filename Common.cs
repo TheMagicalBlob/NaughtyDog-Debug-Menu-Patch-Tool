@@ -52,6 +52,7 @@ namespace Dobby {
         */
         #region Main Application Functions & Variable Declarations
 
+
         /// <summary>
         /// ID's for the various pages (forms) in the application.
         /// </summary>
@@ -115,17 +116,20 @@ namespace Dobby {
         public static NetworkStream NetStream;
         public static FileStream MainStream;
 
+
+        #region    Design-Related
         public static Font MainFont = new Font("Consolas", 9.75F, FontStyle.Bold);
         public static Color MainColour = Color.FromArgb(100, 100, 100);
+        
+        ///<summary> Form Border Pen </summary>
+        public static Pen BorderPen = new Pen(Color.White);
+        #endregion Design-Related
 
         
+        public delegate void InfoLabelUpdateCallback(string InfoText);
 
-        public static InfoLabelUpdateCallback SetInfoText = value => {
-            if(ActiveForm != null)
-                InfoLabel.Text = value;
+        public delegate void LabelFlashDelegate();
 
-            Print($"[info]: {value}");
-        };
 
 
 
@@ -222,7 +226,7 @@ namespace Dobby {
 
 
 
-        /// <summary> Sets The Info Label String Based On The Currently Hovered Control </summary>
+        /// <summary> [deprecated] Sets The Info Label String Based On The Currently Hovered Control </summary>
         /// <param name="Sender">The Hovered Control</param>
         public static void SetInfoLabelStringOnControlHover(Control Sender, float FontAdjustment = 10f) {
             // SetInfo
@@ -489,13 +493,8 @@ namespace Dobby {
 
 
 
-
-
-            ///<summary> Form Border Pen </summary>
-        public static Pen pen = new Pen(Color.White);
-
         ///<summary> Create And Apply A Thin Border To The Form </summary>
-        public static void PaintBorder(object sender, PaintEventArgs e)
+        public static void DrawBorder(object sender, PaintEventArgs e)
         {
             var ItemPtr = (Form)sender;
 
@@ -508,12 +507,12 @@ namespace Dobby {
             };
 
             e.Graphics.Clear(Color.FromArgb(100, 100, 100));
-            e.Graphics.DrawLines(pen, Border);
+            e.Graphics.DrawLines(BorderPen, Border);
         }
 
         /// <summary> Create and draw a thin white line from one end of the form to the other. (placeholder code atm)
         ///</summary>
-        public static void PaintSeperatorLine(object sender, PaintEventArgs e)
+        public static void DrawSeperatorLine(object sender, PaintEventArgs e)
         {
             var item = sender as Label;
 
@@ -528,7 +527,7 @@ namespace Dobby {
 
 
             e.Graphics.Clear(Color.FromArgb(100, 100, 100));
-            e.Graphics.DrawLines(pen, new Point[] {
+            e.Graphics.DrawLines(BorderPen, new Point[] {
                 new Point(1, 9),
                 new Point(item.Parent.Size.Width - 1, 9)
             });
@@ -538,9 +537,18 @@ namespace Dobby {
         public static void WriteLabel(Form form, string message) => form.Invoke(SetInfoText, message);
 
 
+        
+        public static InfoLabelUpdateCallback SetInfoText = value =>
+        {
+            if(ActiveForm != null)
+                InfoLabel.Text = value;
+
+            Print($"[info]: {value}");
+        };
+
+
+
         // TODO: rework this crap
-        public delegate void InfoLabelUpdateCallback(string NewText);
-        public delegate void LabelFlashDelegate();
         public static readonly LabelFlashDelegate White = () => {
             ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.White;
             ActiveForm?.Update();
@@ -671,9 +679,11 @@ namespace Dobby {
                 default: Print($"{Page} Is Not A Page!"); break;
             }
 
+
             NewPage?.Show();
 #if DEBUG
             LogWindow.SetParent(NewPage);
+            PEEKTESTDYN = (dynamic) NewPage;
 #endif
 
             InfoLabel = ActiveForm.Controls.Find("Info", true)[0];
@@ -732,7 +742,7 @@ namespace Dobby {
 
 
                 if (Item.Name.Contains("Seperator") && sender.GetType() == typeof(Label))
-                    Item.Paint += PaintSeperatorLine;
+                    Item.Paint += DrawSeperatorLine;
 
                 if (!(Item.Name.ToLower().Contains("box") && (sender.GetType() == typeof(TextBox) || sender.GetType() == typeof(RichTextBox)))) // So You Can Drag Select The Text Lol
                     Item.MouseMove += new MouseEventHandler(MoveForm);
@@ -747,7 +757,7 @@ namespace Dobby {
             }
 
 
-            Controls.Owner.Paint += PaintBorder;
+            Controls.Owner.Paint += DrawBorder;
             foreach (Control Item in Controls) {
                 ApplyEventHandlersToControl(Item);
 

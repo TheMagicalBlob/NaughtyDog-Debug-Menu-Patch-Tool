@@ -11,6 +11,7 @@ using System.Net.Sockets;
 using System.Windows.Forms;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace Dobby {
@@ -63,7 +64,10 @@ namespace Dobby {
 
 
 
+
 #if DEBUG
+
+        public static dynamic PEEKTESTDYN;
 
 
         public static Control[] GetControlsInOrder(Form Parent) {
@@ -442,21 +446,36 @@ namespace Dobby {
                             // Switch between various formats of debug output based on the current page.
                             switch(Page) {
                                 default:
-                                    //Output = new string[] {
-                                    //    $"Build: {Ver.Build} | [Delay: ~{Delay}ms]",
-                                    //    $"Build: {Ver.Build} | [Delay: ~{Delay}ms]",
-                                    //    $"Build: {Ver.Build} | [Delay: ~{Delay}ms]",
-                                    //};
-                                    //break;
-                                case PageID.EbootPatchPage:
                                     Output = new string[] {
                                         $"Build: {Ver.Build} ~{Delay}ms",
                                         " ",
                                         $"Parent Form: {(ActiveForm != null ? $"{ActiveForm?.Name} | # Of Children: {ActiveForm?.Controls?.Count}" : "Console")}",
                                         " ",
-                                        $"TitleID: {(PS4DebugPage.TitleID == "?" ? "UNK" : PS4DebugPage.TitleID)} | Game Version: {PS4DebugPage.GameVersion}",
-                                        $"GameID: {ActiveGameID}",
-                                        $"ProcessName: {PS4DebugPage.ProcessName} | PDbg Connected: {PS4DebugPage.PS4DebugIsConnected}",
+                                        $"GameID: {ActiveGameID} | {(Page == PageID.PS4DebugPage ? $"Peek Test: {PEEKTESTDYN.TitleID}" : "load the page, fucker")}",
+                                        " ",
+                                        $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}",
+                                        $"Control: {HoveredControl?.Name} | {ControlType?.Substring(ControlType.LastIndexOf('.') + 1)}",
+                                        $"{(HoveredControl?.GetType() == typeof(Button) ? ((Button)HoveredControl)?.Variable : " ")}",
+                                        $" Size: {HoveredControl?.Size} | Pos: {HoveredControl?.Location}",
+                                        $" Parent [{HoveredControl?.Parent?.Name}]",
+                                        $" Nex_Pos' [{Next_Base}]",
+
+                                        (MainStreamIsOpen ? " " : ""),
+
+                                        $"{(MainStreamIsOpen ? $"PS4Stream: {MainStream.Name}" : (PCDebugMenuPage.MainStreamIsOpen ? " " : ""))}",
+                                        $"{(MainStreamIsOpen ? $"Length: {(MainStream.Length.ToString().Length > 6 ? $"{MainStream.Length.ToString().Remove(2)}MB" : $"{MainStream.Length} bytes")} | Read: {MainStream.CanRead} | Write: {MainStream.CanWrite}" : (PCDebugMenuPage.MainStreamIsOpen ? " " : ""))}",
+                                    };
+                                    break;
+                                case PageID.PS4DebugPage:
+
+                                    Output = new string[] {
+                                        $"Build: {Ver.Build} ~{Delay}ms",
+                                        " ",
+                                        $"Parent Form: {(ActiveForm != null ? $"{ActiveForm?.Name} | # Of Children: {ActiveForm?.Controls?.Count}" : "Console")}",
+                                        " ",
+                                        //$"TitleID: {(PS4DebugPage.TitleID == "?" ? "UNK" : PS4DebugPage.TitleID)} | Game Version: {PS4DebugPage.GameVersion}",
+                                        $"GameID: {ActiveGameID} | {(Page == PageID.PS4DebugPage ? $"Peek Test: {PEEKTESTDYN.TitleID}" : "load the page, fucker")}",
+                                        //$"ProcessName: {PS4DebugPage.ProcessName} | PDbg Connected: {PS4DebugPage.PS4DebugIsConnected}",
                                         " ",
                                         $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}",
                                         $"Control: {HoveredControl?.Name} | {ControlType?.Substring(ControlType.LastIndexOf('.') + 1)}",
