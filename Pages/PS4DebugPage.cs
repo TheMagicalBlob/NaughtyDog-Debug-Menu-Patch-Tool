@@ -151,11 +151,10 @@ namespace Dobby {
 
 
 
-        /*
-        //////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     FUNCTIONS FOR BASIC PS4DEBUG PAGE FUNCTIONALITY     --\\\
-        //////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ */
-        #region Functions For Basic PS4Debug Page Functionality
+        //=========================================================\\
+        //|    Functions For Basic PS4Debug Page Functionality    |\\
+        //=========================================================\\
+        #region [Functions For Basic PS4Debug Page Functionality]
 
         private void SendPayload(dynamic args)
         {

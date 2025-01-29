@@ -834,7 +834,7 @@ namespace Dobby {
 
 
         //=============================\\
-        ///--  Form Event Handlers  --\\\
+        //|    Form Event Handlers    |\\
         //=============================\\
         #region [Form Event Handlers]
         private static void ExitBtn_Click(object sender, EventArgs e)
