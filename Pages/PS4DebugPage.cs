@@ -86,25 +86,17 @@ namespace Dobby {
 
         public PS4DBG Geo;
         
-        public Thread 
-            ConnectionThread,
-            PayloadThread
-        ;
+        /// <summary> Thread for connecting a new PS4DBG instance to a client PS4, specified by the IP box. </summary>
+        public Thread ConnectionThread;
 
-        private readonly byte
-            On = 0x01,
-            Off = 0x00
-        ;
+        /// <summary> Thread for sending the ps4debug payload to a client PS4 "bin loader", specified by the IP and Port boxes. </summary>
+        public Thread PayloadThread;
+
 
         /// <summary>
         /// Seperate boolean due to the PS4DBG.IsConnected property throwning an exception in certain cases. (TODO: rework and avoid this, lazy-arse //!)
         /// </summary>
-    #if DEBUG
-        internal static
-    #else
-        private
-    #endif
-        bool PS4DebugIsConnected;
+        //private bool PS4DebugIsConnected;
 
         /// <summary>
         /// //! Maybe just remove this and rework stuff
@@ -184,12 +176,29 @@ namespace Dobby {
             }
         }
 
-        private void Connect(dynamic Parameters) {
+
+
+        private void InitializeConnectionThread()
+        {
+            ActiveForm?.Invoke(SetInfoText, "Connecting to Console");
+
+            if (ConnectionThread?.ThreadState == 0)
+                ConnectionThread.Abort();
+
+            (ConnectionThread = new Thread(ConnectionFunction)).Start(new { ActiveForm, IP });
+        }
+
+
+        /// <summary>
+        /// Asyncronously attempt to connect to a new PS4DBG instance with the current IP address
+        /// </summary>
+        /// <param name="args"></param>
+        private void ConnectionFunction(dynamic args) {
             try {
                 
                 // Load Passed Parameters
-                var ip = (IPAddress)Parameters.IP;
-                var form = (Form)Parameters.ActiveForm;
+                var ip = (IPAddress)args.IP;
+                var form = (Form)args.ActiveForm;
 
 
                 form?.Invoke(SetInfoText, $"Connecting to Console at \"{IP}\"");
@@ -206,8 +215,7 @@ namespace Dobby {
                 }
 
 
-                PS4DebugIsConnected = Geo.IsConnected;
-                Dev.Print($"Connection Status: {PS4DebugIsConnected}");
+                Dev.Print($"Connection Status: {Geo.IsConnected}");
                 form?.Invoke(SetInfoText, "PS4Debug Connected, Searching for Game...");
 
 
@@ -254,18 +262,15 @@ namespace Dobby {
 
         /// <summary> Avoid Attempting To Toggle The Selected Bool In Memory Before The Connection Process Is Finished
         ///</summary>
-        private Task CheckConnectionStatus() {
-            if(ConnectionThread == null || ConnectionThread.ThreadState == ThreadState.Unstarted)
-                ConnectionThread.Start();
+        private void CheckConnectionStatus() {
+            if((ConnectionThread == null || ConnectionThread.ThreadState == ThreadState.Unstarted) || (!Geo.IsConnected || Geo?.GetProcessInfo(Executable).name != ProcessName || !ExecutableNames.Contains(Geo?.GetProcessInfo(Executable).name)))
+            {
+                GameVersion = null;
+                Dev.Print("Task.Run(CheckConnectionStatus) Initializing connection thread");
+                InitializeConnectionThread();
 
-
-            else if(!PS4DebugIsConnected || Geo?.GetProcessInfo(Executable).name != ProcessName || !ExecutableNames.Contains(Geo?.GetProcessInfo(Executable).name)) {
-                PS4DebugIsConnected = false; WaitForConnection = true;
-                Dev.Print("CheckConnectionStatus Second Case, Now On WaitForConnection");
+                while(GameVersion == null);
             }
-
-            while(WaitForConnection) Thread.Sleep(2);
-            return Task.CompletedTask;
         }
         
 
@@ -275,98 +280,62 @@ namespace Dobby {
         /// <returns> The Current Game Version If Successful, Or UnknownGameVersion \ UnknownTitleID If It Failed At Some Stage </returns>
         private string GetGameTitleIDVersionAndDMenuOffset(string titleID) {
             try {
-                if(PS4DebugIsConnected && Geo.GetProcessInfo(Executable).name == ProcessName) {
-
-                    // Determine The Game That's Running
-                    switch(titleID) {
+                //if(Geo.IsConnected && Geo.GetProcessInfo(Executable).name == ProcessName) {
+                if(true) {
+                    // Read A Spot In Memory To Determine Which Patch the Executable's From
+                    switch(TitleID) {
                         case "CUSA00552":
                         case "CUSA00554":
                         case "CUSA00556":
                         case "CUSA00557":
                         case "CUSA00559":
-                            GameVersion = "T1R";
-                            break;
-                        case "CUSA10249":
-                        case "CUSA14006":
-                        case "CUSA07820":
-                        case "CUSA13986":
-                            GameVersion = "T2";
-                            break;
-                        case "CUSA01399":
-                        case "CUSA02320":
-                        case "CUSA02343":
-                        case "CUSA02344":
-                        case "CUSA02826":
-                            GameVersion = "UCC";
-                            break;
-                        case "CUSA00341":
-                        case "CUSA08342":
-                        case "CUSA00912":
-                        case "CUSA00917":
-                        case "CUSA00918":
-                        case "CUSA04529":
-                            GameVersion = "UC4";
-                            break;
-                        case "CUSA04030":
-                        case "CUSA04032":
-                        case "CUSA04034":
-                        case "CUSA04051":
-                            GameVersion = "UC4 MP Beta";
-                            break;
-                        case "CUSA07737":
-                        case "CUSA07875":
-                        case "CUSA09564":
-                        case "CUSA08347":
-                        case "CUSA08352":
-                            GameVersion = "TLL";
-                            break;
-
-                        default:
-                            MessageBox.Show("Title ID Doesn't Match Any Known ID's, Try Enabling \"Ignore Title ID\" If You've Changed The Game's Title ID Yourself", "No Idea Which Game This Is");
-                            return "UnknownTitleID";
-                    }
-
-                    // Read A Spot In Memory To Determine Which Patch the Executable's From
-                    switch(GameVersion) {
-                        case "T1R":
                             var T1RCheck = BitConverter.ToInt16(Geo.ReadMemory(Executable, 0x4000F4, 2), 0);
+                            DebugModePointerOffset = 0x2E81;
                             switch(T1RCheck) {
-                                case 18432: DebugModePointerOffset = 0x2E81; return "1.00";
-                                case 1288:  DebugModePointerOffset = 0x2E81; return "1.08";
-                                case 3480:  DebugModePointerOffset = 0x2E81; return "1.09";
-                                case 4488:  DebugModePointerOffset = 0x2E81; return "1.10";
-                                case 4472:  DebugModePointerOffset = 0x2E81; return "1.11";
+                                case 18432: return "1.00";
+                                case 1288:  return "1.08";
+                                case 3480:  return "1.09";
+                                case 4488:  return "1.10";
+                                case 4472:  return "1.11";
 
                                 default:
                                     Dev.Print($"Error, Game Was T1R But None of The Checks Matched! || {T1RCheck}");
                                     MessageBox.Show($"The Game Was Determined To Be The Last of Us: Remastered, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{T1RCheck} {TitleID}", "Error Finding App Version");
                                     return "UnknownT1RGameVersion";
                             }
-                        case "T2":
+                        case "CUSA10249":
+                        case "CUSA14006":
+                        case "CUSA07820":
+                        case "CUSA13986":
                             var T2Check = BitConverter.ToInt32(Geo.ReadMemory(Executable, 0x40009A, 4), 0);
                             DebugModePointerOffset = 0x3aa1;
                             switch(T2Check) {
-                                case 25384434: DebugModePointerOffset = 0x3aa1; return "1.00";
-                                case 25548706: DebugModePointerOffset = 0x3aa1; return "1.01";
-                                case 25502882: DebugModePointerOffset = 0x3aa1; return "1.02";
-                                case 25588450: DebugModePointerOffset = 0x3aa1; return "1.05";
-                                case 25593522: DebugModePointerOffset = 0x3aa1; return "1.07";
-                                case 30024882: DebugModePointerOffset = 0x3aa1; return "1.08";
-                                case 30024914: DebugModePointerOffset = 0x3aa1; return "1.09";
+                                case 25384434: return "1.00";
+                                case 25548706: return "1.01";
+                                case 25502882: return "1.02";
+                                case 25588450: return "1.05";
+                                case 25593522: return "1.07";
+                                case 30024882: return "1.08";
+                                case 30024914: return "1.09";
 
                                 default:
                                     Dev.Print($"Error, Game Was T2 But None of The Checks Matched! || chk:{T2Check}");
                                     MessageBox.Show($"The Game Was Determined To Be The Last of Us Part II, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{T2Check} {TitleID}", "Error Finding App Version");
+                                    DebugModePointerOffset = 0xDEADDAD;
                                     return "UnknownT2GameVersion";
                             }
-                        case "UCC":
+                        case "CUSA01399":
+                        case "CUSA02320":
+                        case "CUSA02343":
+                        case "CUSA02344":
+                        case "CUSA02826":
                             var UCCCheck = BitConverter.ToInt32(SHA256.Create().ComputeHash(Geo.ReadMemory(Executable, 0x400000, 100)), 0);
                             switch(UCCCheck) {
-                                case 455457367: return "U2 1.00";
+                                case 455457367:   return "U2 1.00";
                                 case -1951784656: return "U3 1.00";
                                 case -1805287883: return "U2 1.02";
-                                case 750078581: return "U3 1.02";
-                                case -136556654: return "U1 1.00";
+                                case 750078581:   return "U3 1.02";
+                                case -136556654:  return "U1 1.00";
                                 case -1120900838: return "U1 1.02";
 
                                 default:
@@ -374,7 +343,12 @@ namespace Dobby {
                                     MessageBox.Show($"The Game Was Determined To Be The Uncharted Collection, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{UCCCheck} {TitleID}", "Error Finding App Version");
                                     return "UnknownUCCGameVersion";
                             }
-                        case "UC4":
+                        case "CUSA00341":
+                        case "CUSA08342":
+                        case "CUSA00912":
+                        case "CUSA00917":
+                        case "CUSA00918":
+                        case "CUSA04529":
                             var U4Check = BitConverter.ToInt32(SHA256.Create().ComputeHash(Geo.ReadMemory(Executable, 0x400000, 450)), 0);
                             switch(U4Check) {
                                 case -164231569:  DebugModePointerOffset = 0x2E95; return "1.00 SP";
@@ -417,8 +391,10 @@ namespace Dobby {
                                     MessageBox.Show($"The Game Was Determined To Be UC4, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{U4Check} {TitleID}", "Error Finding App Version");
                                     return "UnknownUC4GameVersion";
                             }
-
-                        case "UC4 MP Beta":
+                        case "CUSA04030":
+                        case "CUSA04032":
+                        case "CUSA04034":
+                        case "CUSA04051":
                             var U4MPBetaCheck = BitConverter.ToInt32(Geo.ReadMemory(Executable, 0x403000, 4), 0);
                             switch(U4MPBetaCheck) {
                                 case 759883849:  DebugModePointerOffset = 0x2E83; return "1.00 MP Beta";
@@ -429,8 +405,12 @@ namespace Dobby {
                                     MessageBox.Show($"The Game Was Determined To Be The UC4 MP Beta (Nice), But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{U4MPBetaCheck} {TitleID}", "Error Finding App Version");
                                     return "UnknownUC4GameVersion";
                             }
-
-                        case "TLL":
+                        
+                        case "CUSA07737":
+                        case "CUSA07875":
+                        case "CUSA09564":
+                        case "CUSA08347":
+                        case "CUSA08352":
                             var TLLCheck = BitConverter.ToInt16(Geo.ReadMemory(Executable, 0x40003B, 2), 0);
                             switch(TLLCheck) {
                                 case 3777:   DebugModePointerOffset = 0x2EF9; return "1.00 SP";
@@ -448,7 +428,6 @@ namespace Dobby {
                         default: Dev.Print($"!!! PS4DebugPage -> GetGameVersion() Fell Through. (GameVersion: {GameVersion})"); return "UnknownGameVersion";
                     }
                 }
-                return "UnknownGameVersion";
             }
             catch(Exception Tabarnack) {
                 Dev.Print($"{Tabarnack.Message};{Tabarnack.StackTrace}");
@@ -529,12 +508,7 @@ namespace Dobby {
         /// Toggle the IgnoreTitleID setting for use when the game has an edited title id, but is likele still supported.
         /// </summary>
         /// <param name="control"> The clicked control to which the Enabled/Disabled text will be appended to. </param>
-        private void IgnoreTitleIDBtn_Click(object control, EventArgs _)
-        {
-            ((Dobby.Button)control).Variable = !(bool) ((Dobby.Button)control).Variable;
-            
-            return; ((Control)control).Text = $"{((Control)control).Text.Remove(((Control)control).Text.LastIndexOf(' '))} {((IgnoreTitleID ^= true) ? "Enable" : "Disabled")}";
-        }
+        private void IgnoreTitleIDBtn_Click(object control, EventArgs _) => ((Dobby.Button)control).Variable = !(bool) ((Dobby.Button)control).Variable;
 
 
         /// <summary>
@@ -544,19 +518,19 @@ namespace Dobby {
         /// <param name="Versions">Version Strings To Check Against GameVersion</param>
         private void Toggle(ulong[] Addresses, string[] Versions) {
             try {
-                if(PS4DebugIsConnected && Geo.GetProcessInfo(Executable).name == ProcessName) {
+                if(Geo.IsConnected && Geo.GetProcessInfo(Executable).name == ProcessName) {
                     var AddressIndex = 0;
                     foreach(string Version in Versions)
                         if(GameVersion == Version) {
                             var pointer = (ulong)(BitConverter.ToInt64(Geo.ReadMemory(Executable, Addresses[AddressIndex], 8), 0) + DebugModePointerOffset);
-                            Geo.WriteMemory(Executable, pointer, Geo.ReadMemory(Executable, pointer, 1)[0] == 0x00 ? On : Off);
+                            Geo.WriteMemory(Executable, pointer, !Geo.ReadMemory<bool>(Executable, pointer));
                             Dev.Print($"Toggle(ulong[] Addresses, string[] Versions) Wrote To {pointer:X}");
                         }
                         else if(AddressIndex != Addresses.Length - 1) AddressIndex++;
                 }
                 else {
                     Dev.Print(
-                        $"Error Toggling Byte.\nPS4Debug {(PS4DebugIsConnected ? "" : "Not ")}Connected\n"
+                        $"Error Toggling Byte.\nPS4Debug {(Geo.IsConnected ? "" : "Not ")}Connected\n"
                         + $"{Geo.GetProcessInfo(Executable).name} {(Geo.GetProcessInfo(Executable).name == ProcessName ? "=" : "!")}= {ProcessName}"
                     );
                 }
@@ -572,8 +546,8 @@ namespace Dobby {
         /// <param name="AddressArray">Array Of Addresses To Read/Write To</param>
         private void Toggle(ulong[] AddressArray) {
             try {
-                if(PS4DebugIsConnected && Geo.GetProcessInfo(Executable).name == ProcessName)
-                    Array.ForEach(AddressArray, Address => Geo.WriteMemory(Executable, Address, Geo.ReadMemory<byte>(Executable, Address) == 0x00 ? On : Off));
+                if(Geo.IsConnected && Geo.GetProcessInfo(Executable).name == ProcessName)
+                    Array.ForEach(AddressArray, Address => Geo.WriteMemory(Executable, Address, !Geo.ReadMemory<bool>(Executable, Address)));
 
             }
             catch(Exception tabarnack) { Dev.Print(tabarnack.Message); }
@@ -597,17 +571,7 @@ namespace Dobby {
         /// <summary>
         /// Manually attempt to connect to the target ps4. (You Never Need To Press This, But People May Get Confused If It's Left Out)
         /// </summary>
-        private void ManualConnectBtn_Click(object sender, EventArgs e)
-        {
-            ActiveForm?.Invoke(SetInfoText, "Connecting to Console");
-
-            if (ConnectionThread?.ThreadState == 0)
-                ConnectionThread.Abort();
-
-
-            PS4DebugIsConnected = false;
-            (ConnectionThread = new Thread(Connect)).Start(new { ActiveForm, IP, Port });
-        }
+        private void ManualConnectBtn_Click(object sender, EventArgs e) => InitializeConnectionThread();
         #endregion
 
 
@@ -618,24 +582,34 @@ namespace Dobby {
         ///////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         private async void T1RBtn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
+
             if(IgnoreTitleID) TitleID = "CUSA00552";
 
-            if(!GameVersion.Contains("Unknown"))
-                Toggle(new ulong[] { 0x1B8FA20, 0x1924a70, 0x1924a70, 0x1924a70, 0x1924a70 }, new string[] { "1.00", "1.08", "1.09", "1.10", "1.11" });
-            else
+            if (GameVersion.Contains("Unknown")) {
                 Dev.Print($"Unknown Game Version \"{GameVersion}\".");
+                return;
+            }
+            
+            Toggle(new ulong[] { 0x1B8FA20, 0x1924a70, 0x1924a70, 0x1924a70, 0x1924a70 }, new string[] { "1.00", "1.08", "1.09", "1.10", "1.11" });
         }
         private async void T2Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
+
             if(IgnoreTitleID) TitleID = "CUSA10249";
-            if(!GameVersion.Contains("Unknown"))
-                Toggle(new ulong[] { 0x3b61900, 0x3b62d00, 0x3b67130, 0x3b67530, 0x3b675b0, 0x3b7b430, 0x3b7b430 }, new string[] { "1.00", "1.01", "1.02", "1.05", "1.07", "1.08", "1.09" });
-            else
+            
+            if (GameVersion.Contains("Unknown")) {
                 Dev.Print($"Unknown Game Version \"{GameVersion}\".");
+                return;
+            }
+            
+            
+            Toggle(new ulong[] { 0x3b61900, 0x3b62d00, 0x3b67130, 0x3b67530, 0x3b675b0, 0x3b7b430, 0x3b7b430 }, new string[] { "1.00", "1.01", "1.02", "1.05", "1.07", "1.08", "1.09" });
         }
         private async void UC1Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
+
             if(IgnoreTitleID) TitleID = "CUSA02320";
+
             if(!GameVersion.Contains("Unknown"))
                 Toggle(GameVersion == "U1 1.00" ? new ulong[] { 0xD97B41, 0xD989CC, 0xD98970 } : new ulong[] { 0xD5C9F0, 0xD5CA4C, 0xD5BBC1 });
             else
@@ -643,7 +617,9 @@ namespace Dobby {
         }
         private async void UC2Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
+
             if(IgnoreTitleID) TitleID = "CUSA02320";
+
             if(!GameVersion.Contains("Unknown"))
                 Toggle(GameVersion == "U2 1.00" ? new ulong[] { 0x1271431, 0x127149C, 0x12705C9 } : new ulong[] { 0x145decc, 0x145cff9, 0x145de61 });
             else
@@ -651,7 +627,9 @@ namespace Dobby {
         }
         private async void UC3Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
+
             if(IgnoreTitleID) TitleID = "CUSA02320";
+
             if(!GameVersion.Contains("Unknown"))
                 Toggle(GameVersion == "U3 1.00" ? new ulong[] { 0x18366c9, 0x18366c4, 0x1835481 } : new ulong[] { 0x1bbaf69, 0x1bbaf64, 0x1BB9D21 });
             else
@@ -659,7 +637,9 @@ namespace Dobby {
         }
         private async void UC4Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
+
             if(IgnoreTitleID) TitleID = "CUSA00341";
+
             if(!GameVersion.Contains("Unknown"))
                 Toggle(new ulong[] { 0x27a3c30, 0x2889370, 0x288d370, 0x288d370, 0x2891370, 0x2891370, 0x2891370, 0x24ed968, 0x24ed968, 0x24f1978, 0x24fd958, 0x2501738, 0x2739a20, 0x2739a20, 0x2739a20, 0x2570748, 0x2570748, 0x2580888, 0x2570748, 0x2738dc0, 0x2570748, 0x273cdc0, 0x2570748, 0x273cdc0, 0x274ccd0, 0x2570748, 0x274ccd0, 0x2750d00, 0x2570748, 0x2758d00, 0x275cd00, 0x275cd00, 0x275cd00, 0x275cd00 }, new string[] { "1.00 SP", "1.01 SP", "1.02 SP", "1.03 SP", "1.04 SP", "1.05 SP", "1.06 SP", "1.08 SP", "1.10 SP", "1.11 SP", "1.12 SP", "1.13 SP", "1.15 SP", "1.16 SP", "1.17 SP", "1.18", "1.19", "1.20 MP", "1.20 SP", "1.21 MP", "1.21 SP", "1.22 MP", "1.22/23 SP", "1.23 MP", "1.24 MP", "1.24/25 SP", "1.25 MP", "1.27/28 MP", "1.27+ SP", "1.29 MP", "1.30 MP", "1.31 MP", "1.32 MP", "1.33 MP" });
             else
@@ -667,7 +647,9 @@ namespace Dobby {
         }
         private async void UC4MPBetaBtn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
+
             if(IgnoreTitleID) TitleID = "CUSA00341";
+
             if(!GameVersion.Contains("Unknown"))
                 Toggle(new ulong[] { 0x2bbf720, 0x2bc3720 }, new string[] { "1.00", "1.09" });
             else
@@ -675,7 +657,9 @@ namespace Dobby {
         }
         private async void UCTLLBtn(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
+
             if(IgnoreTitleID) TitleID = "CUSA07737";
+
             if(!GameVersion.Contains("Unknown"))
                 Toggle(new ulong[] { 0x26b4558, 0x26c0698, 0x0274cd00, 0x275cd00, 0x275cd00 }, new string[] { "1.00 SP", "1.0X SP", "1.00 MP", "1.08 MP", "1.09 MP" });
             else

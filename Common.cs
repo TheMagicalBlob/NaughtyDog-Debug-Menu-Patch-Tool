@@ -1040,10 +1040,13 @@ namespace Dobby {
 
 
 
-    //===============================\\
-    ///-- Custom Class Extensions --\\\
-    //===============================\\
+    //=================================\\
+    //-|   Custom Class Extensions   |-\\
+    //=================================\\
     #region [Class Extensions]
+
+
+    
     public class TextBox : System.Windows.Forms.TextBox {
         public TextBox() {
 
