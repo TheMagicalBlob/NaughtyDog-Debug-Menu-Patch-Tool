@@ -2,12 +2,10 @@
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
-using static Dobby.Dev;
 
 namespace Dobby {
 
@@ -52,11 +50,18 @@ namespace Dobby {
         */
         #region Main Application Functions & Variable Declarations
 
+        #if DEBUG
+        /// <summary>
+        /// Debug class instance
+        /// </summary>
+        public static Testing Dev;
+        #endif
+
 
         /// <summary>
         /// ID's for the various pages (forms) in the application.
         /// </summary>
-        public enum PageID : int {
+        public enum PageID : byte {
             MainPage = 0,
             PS4DebugPage = 1,
             PS4DebugHelpPage = 11,
@@ -71,7 +76,7 @@ namespace Dobby {
             PCDebugMenuPage = 6,
             InfoHelpPage = 7,
             CreditsPage = 8,
-            PlaceholderPage = 0xbad
+            Back = 0xFF
         }
 
 
@@ -440,13 +445,13 @@ namespace Dobby {
                 ArrowWidth = (int)PassedControl.CreateGraphics().MeasureString(">", PassedControl.Font).Width;
             }
             catch (Exception ex) {
-                Print($"Error Getting Width Of Hover Arror From Control ({PassedControl.Name}: {(EventIsMouseEnter ? "Hover" : "Leave")})\n\nException Of Type: {ex.GetType()}\n{ex.Message}");
+                Dev.Print($"Error Getting Width Of Hover Arror From Control ({PassedControl.Name}: {(EventIsMouseEnter ? "Hover" : "Leave")})\n\nException Of Type: {ex.GetType()}\n{ex.Message}");
                 return;
             }
 
             if (MouseScrolled = EventIsMouseEnter) {
 #if DEBUG
-                HoveredControl = PassedControl;
+                Testing.HoveredControl = PassedControl;
 #endif
                 CurrentControl = PassedControl.Name;
                 PassedControl.MouseDown += HighlightItemOnMouseDown;
@@ -478,7 +483,7 @@ namespace Dobby {
 
             // Check for stupidity.
             if (Variable == null) {
-                Print($"!! ERROR: Variable property for control \"{control.Name}\" was null");
+                Dev.Print($"!! ERROR: Variable property for control \"{control.Name}\" was null");
                 return;
             }
 
@@ -517,11 +522,11 @@ namespace Dobby {
             var item = sender as Label;
 
             if (item == null) {
-                Print("!! ERROR: Invalid control passed as Seperator line.");
-                Print($"  - Control \"{(((Control)sender).Name)}\" location: {((Control)sender).Location}.");
+                Dev.Print("!! ERROR: Invalid control passed as Seperator line.");
+                Dev.Print($"  - Control \"{(((Control)sender).Name)}\" location: {((Control)sender).Location}.");
             }
             if (item.Size.Height != 15) {
-                Print($"# WARNING: A label on page \"{item.Parent.Name}\" has an invalid height!!! (Label at {item.Location} is {item.Size.Height} pixels in height)");
+                Dev.Print($"# WARNING: A label on page \"{item.Parent.Name}\" has an invalid height!!! (Label at {item.Location} is {item.Size.Height} pixels in height)");
                 //item.Size = new Size(item.Size.Width, 15);
             }
 
@@ -543,7 +548,7 @@ namespace Dobby {
             if(ActiveForm != null)
                 InfoLabel.Text = value;
 
-            Print($"[info]: {value}");
+            Dev.Print($"[info]: {value}");
         };
 
 
@@ -574,7 +579,7 @@ namespace Dobby {
                     }
                 }
                 catch (Exception) {
-                    Print("Form Changed or Lost Focus, Killing Label Flash");
+                    Dev.Print("Form Changed or Lost Focus, Killing Label Flash");
                     while (ActiveForm == null);
                 }
                 finally {
@@ -596,21 +601,22 @@ namespace Dobby {
         /// Loads The Specified Page From The PageId Group (E.g. ChangeForm(PageID.PS4MiscPageId))
         /// </summary>
         /// <param name="Page"> The Page To Change To. </param>
-        public static void ChangeForm(PageID? Page) {
+        public static void ChangeForm(PageID? Page)
+        {
             LastPos = ActiveForm.Location;
             var ClosingForm = ActiveForm;
+            Form NewPage = null;
 
-            if (!IsPageGoingBack)
+            if (Page != PageID.Back)
             {
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 5; ++i)
                     if (Pages[i] == null) {
                         Pages[i] = Common.Page;
                         Dev.Print($"Last Page: {Pages[i]}");
                         break;
                     }
             }
-            else IsPageGoingBack ^= true;
-            Form NewPage = null;
+
 
 
             switch (Common.Page = Page)
@@ -660,12 +666,7 @@ namespace Dobby {
 
                 case PageID.PCDebugMenuPage:
                     NewPage = new PCDebugMenuPage();
-                    MessageBox.Show("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
-                    break;
-
-                case PageID.PlaceholderPage:
-                    MessageBox.Show("Nani The Fuck?");
-                    Environment.Exit(1);
+                    //MessageBox.Show("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
                     break;
 
                 case PageID.InfoHelpPage:
@@ -676,14 +677,29 @@ namespace Dobby {
                     NewPage = new CreditsPage();
                     break;
 
-                default: Print($"{Page} Is Not A Page!"); break;
+                case PageID.Back:
+            
+                    for (int i = 4; i > -1; --i) {
+                        if (Pages[i] != null)
+                        {
+                            ChangeForm(Pages[i]);
+                            Pages[i] = null;
+                            return;
+                        }
+                    }
+                    FormActive = false;
+                    break;
+
+                default:
+                    Dev.Print($"{Page} Is Not A Page!");
+                    break;
             }
 
 
             NewPage?.Show();
 #if DEBUG
-            LogWindow.SetParent(NewPage);
-            PEEKTESTDYN = (dynamic) NewPage;
+            Dev.Print($"Changing to page \"{nameof(NewPage)}\"");
+            Dev.ActivePage = NewPage;
 #endif
 
             InfoLabel = ActiveForm.Controls.Find("Info", true)[0];
@@ -699,22 +715,6 @@ namespace Dobby {
             ClosingForm.Close();
         }
 
-        static int tempindex = 0;
-        public static void ReturnToPreviousPage()
-        {
-            IsPageGoingBack ^= true;
-
-            for (int i = 4; i > -1; i--) {
-                if (Pages[i] != null)
-                {
-                    Print($"Returning to {(PageID)Pages[i]}");
-                    ChangeForm(Pages[i]);
-                    Pages[i] = null;
-                    break;
-                }
-            }
-            FormActive = false;
-        }
 
 
 
@@ -735,7 +735,7 @@ namespace Dobby {
                 var Item = sender as Control;
 
     #if DEBUG
-                Item.MouseEnter += new EventHandler((control, e) => Dev.HoveredControl = Item);
+                Item.MouseEnter += new EventHandler((control, e) => Testing.HoveredControl = Item);
     #endif
                 Item.MouseDown += new MouseEventHandler(MouseDownFunc);
                 Item.MouseUp += new MouseEventHandler(MouseUpFunc);
@@ -817,7 +817,7 @@ namespace Dobby {
             try {
                 // Avoid searching for back button on Main page
                 if (Page != PageID.MainPage)
-                    Controls.Owner.Controls.Find(ConstantControls[3], true)[0].Click += (_, __) => ReturnToPreviousPage();
+                    Controls.Owner.Controls.Find(ConstantControls[3], true)[0].Click += (_, __) => ChangeForm(PageID.Back);
 
 
                 Controls.Owner.Controls.Find(ConstantControls[0], true)[0].Text = string.Empty;
@@ -827,8 +827,8 @@ namespace Dobby {
 
             }
             catch (Exception) {
-                Print($"!! ERROR: One of the various buttons is missing from the {Controls.Owner.Name} form, and could not be fully initialized:");
-                Array.ForEach<string>(ConstantControls, control => Print($"  {control}"));
+                Dev.Print($"!! ERROR: One of the various buttons is missing from the {Controls.Owner.Name} form, and could not be fully initialized:");
+                Array.ForEach<string>(ConstantControls, control => Dev.Print($"  {control}"));
             }
         }
 
@@ -849,9 +849,6 @@ namespace Dobby {
         #region [Form Event Handlers]
         private static void ExitBtn_Click(object sender, EventArgs e)
         {
-#if DEBUG
-            LogWindow.LogWindowExit();
-#endif
             MainStream?.Dispose();
             Environment.Exit(0);
         }
@@ -881,7 +878,7 @@ namespace Dobby {
             ActiveForm.Update();
 
 #if DEBUG
-            LogWindow.MoveLogToAppEdge(ActiveForm.Location);
+            //Dev.MoveLogToAppEdge(ActiveForm.Location);
 #endif
         }
         public static void ControlHover(object sender, EventArgs _ = null) => HoverLeave((Control)sender, true);

@@ -241,6 +241,8 @@
           "* 4.48-beta.245.695 | Fixed BackBtn memes after moving back functionality to dynamic initialization.",
           "* 4.48-beta.247.700 | Misc Dev.LogWindow stuff, more code cleanup.",
           "* 4.48-beta.252.706 | Slight PS4DBG usage tweak in PS4DebugPage.Toggle() methods, *mostly finished reworking PS4DBG connection thread setup and other related background functionality *(I have a migraine and need to clean it up later, but it works)",
+          "* 4.48-beta.256.723 | Reworking Dobby.Dev and Dobby.Dev.LogWindow classes; renamed Dobby.Dev => Dobby.Testing. Small PS4DebugPage fix.",
+
         };
 
 

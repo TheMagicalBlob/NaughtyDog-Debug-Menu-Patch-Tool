@@ -1,20 +1,21 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 using static Dobby.Common;
-using static Dobby.Dev;
 
 namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
     public partial class Main : Form {
         public Main() {
+            Debug.WriteLine("Main app start");
             InitializeComponent();
+            Debug.WriteLine("Main app post-init");
             
             InfoLabel = Info;
             Info.Text = "";
             Page = 0;
 
 #if DEBUG
-            var Log = new LogWindow(this);
-            Log.Show();
+            new Testing(this);
 #endif
             InitializeAdditionalEventHandlers(Controls);
         }
@@ -37,6 +38,8 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
         }
 
         public void InitializeComponent() {
+            Debug.WriteLine("Main app init");
+
             this.MainLabel = new System.Windows.Forms.Label();
             this.Info = new System.Windows.Forms.Label();
             this.PS4DebugPageBtn = new Dobby.Button();

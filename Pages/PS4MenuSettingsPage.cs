@@ -914,18 +914,22 @@ namespace Dobby {
         }
         #endregion
 
+
+#if DEBUG
+        public static object[] PeekGameSpecificPatchValues() { return DynamicPatchButtons.GameSpecificPatchValues; }
+
+
+
+        
         /// <summary>
         ///      Booleans Used For Universal Patch Values
-        ///<br/> Defaults Are All False, So That's Nice. Simplifies Things
         ///<br/>
         ///<br/> 0: Disable FPS
         ///<br/> 1: Disable Paused Indicator
         ///<br/> 2: Prog Pause On Open 
         ///<br/> 3: Prog Pause On Close
-        ///<br/> 4: novis (Addme)
+        ///<br/> 4: novis TODO: //! Add Me!
         /// </summary>
-#if DEBUG
-        public static object[] PeekGameSpecificPatchValues() { return DynamicPatchButtons.GameSpecificPatchValues; }
         public static bool[] UniversalPatchValues { get; private set; }
 #else
         private static bool[] UniversalPatchValues
@@ -1053,7 +1057,7 @@ namespace Dobby {
             ///</summary>
             public void EnableDynamicPatchButtons(int?[] buttons = null) {
 
-                for(int i = 0; i < buttons.Length; i++) {
+                for(int i = 0; i < buttons.Length; ++i) {
                     if(buttons != null && buttons[i] == null) continue;
 
                     Buttons[i] = new Button();
@@ -1577,7 +1581,7 @@ namespace Dobby {
 
 
             int?[] IDS = new int?[GameSpecificBootSettingsPointers.Length];
-            for(int i = 0; i < GameSpecificBootSettingsPointers.Length ; i++)
+            for(int i = 0; i < GameSpecificBootSettingsPointers.Length ; ++i)
                 IDS[i] = GameSpecificBootSettingsPointers[i][GameIndex].Length == 0 ? null : (int?)i;
 
             gsButtons = new DynamicPatchButtons(IDS, GameSpecificPatchesLabel.Location.Y + GameSpecificPatchesLabel.Size.Height + 1);
@@ -1599,7 +1603,7 @@ namespace Dobby {
             Size = new Size(Size.Width, Size.Height + 46);
 
             // Move The Controls Below The Confirm And Reset Buttons A Bit Farther Down To Make Room For Them
-            for(int i = 4; i < ControlsToMove.Length; i++)
+            for(int i = 4; i < ControlsToMove.Length; ++i)
                 ControlsToMove[i].Location = new Point(ControlsToMove[i].Location.X, ControlsToMove[i].Location.Y + 46);
 
 
@@ -1669,8 +1673,9 @@ namespace Dobby {
             gsButtons.Reset();
 
             // Move Controls Back To Their Original Positions
-            for(var index = 0; index < ControlsToMove.Length; index++)
-                ControlsToMove[index].Location = OriginalControlPositions[index];
+            for(var i = 0; i < ControlsToMove.Length; ControlsToMove[i].Location = OriginalControlPositions[++i]);
+                
+
 
             // Nudge Remaining Controls Back To Their Default Positions
             if(FormActive) {

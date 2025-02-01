@@ -314,7 +314,7 @@ namespace Dobby {
                 MainStream.Position = offset[i];
                 MainStream.Write(bytes, 0, data.Length);
                 MainStream.Flush();
-                i++;
+                ++i;
             }
         }
         public static void WriteByte(int offset, byte data) {
@@ -383,7 +383,7 @@ namespace Dobby {
         private void LoadFileToBePatched(string FilePath, FileStream mainStream) {
             try { 
                 mainStream?.Dispose();
-                Dev.Print(FilePath);
+                Common.Dev.Print(FilePath);
                 mainStream = new FileStream(FilePath, FileMode.Open, FileAccess.ReadWrite);
             }
             catch(IOException Oop) {
@@ -1387,7 +1387,7 @@ namespace Dobby {
 
             int i = 0;
             // Write Custom Functions To .elf
-            for(; i < CustomFunctions.Length; i++)
+            for(; i < CustomFunctions.Length; ++i)
                 WriteBytes(Addresses[i], CustomFunctions[i]);
 
             Dev.Print($"Wrote {i} Patches To {MainStream.Name}");
@@ -1472,7 +1472,7 @@ namespace Dobby {
 
 
             // Write Custom Functions To .elf
-            for(int i = 0; i < CustomFunctions.Length; i++)
+            for(int i = 0; i < CustomFunctions.Length; ++i)
                 WriteBytes(Addresses[i], CustomFunctions[i]);
 
 

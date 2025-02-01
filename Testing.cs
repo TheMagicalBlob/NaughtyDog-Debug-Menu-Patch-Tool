@@ -11,7 +11,7 @@ using System.Net.Sockets;
 using System.Windows.Forms;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using static System.Net.Mime.MediaTypeNames;
+using static Dobby.Common;
 
 
 namespace Dobby {
@@ -19,16 +19,32 @@ namespace Dobby {
     /// <summary>
     /// Lazy/Messy class for general debugging/testing-related stuff.
     /// </summary>
-    public class Dev : Common {
-        /*//////////\\\\\\\\\\\\
-        ///-- DEBUG CLASS  --\\\
-        ////////////\\\\\\\\\\*/
+    public class Testing {
+        //===================\\
+        //--  DEBUG CLASS  --\\
+        //===================\\
         
+
+        /// <summary>
+        /// Create the Dobby.Dev instance which will be running for the Program's whole runtime.
+        /// </summary>
+        /// <param name="Gaia"> The Main Page. I forget why it needs this one, but not the new ones; will check later. </param>
+        public Testing(Form Gaia)
+        {
+            Debug.WriteLine("Testting class start");
+            (Log = new LogWindow(Gaia, Dev = this)).Show();
+            ActivePage = Gaia;
+        }
+
+
+
+
+
         /// <summary>
         /// Default message output function. Prints to the debug window if present, as well as the standard output
         /// </summary>
         /// <param name="obj"></param>
-        public static void Print(object obj = null) {
+        public void Print(object obj = null) {
 #if DEBUG
             string str;
 
@@ -45,7 +61,7 @@ namespace Dobby {
 
 
             LogWindow.LogOut(str);
-            Debug.WriteLine(str);
+            System.Diagnostics.Debug.WriteLine(str);
             if (!Console.IsInputRedirected)
                 Console.WriteLine(str);
 #endif
@@ -54,7 +70,7 @@ namespace Dobby {
         /// <summary>
         /// Basic error logging function (not yet fully implemented)
         /// </summary>
-        public static void PrintError(Exception tabarnack) {
+        public void PrintError(Exception tabarnack) {
 #if DEBUG
             Print($"!! ERROR: {tabarnack.Message}\n{tabarnack.StackTrace.Replace("\n", "  \n")}");
             
@@ -67,10 +83,8 @@ namespace Dobby {
 
 #if DEBUG
 
-        public static dynamic PEEKTESTDYN;
 
-
-        public static Control[] GetControlsInOrder(Form Parent) {
+        public Control[] GetControlsInOrder(Form Parent) {
             var Cunts = new List<Control>();
             
             int X, Y = 0;
@@ -88,13 +102,32 @@ namespace Dobby {
         }
 
 
-        public static void StartReadLogTest() => ReadTest.Start();
+        /// <summary>
+        /// Active Page reference for debug output loop.
+        /// </summary>
+        public dynamic ActivePage {
+            private get => activePage;
+            set => Log.SetLogParent(activePage = value);
+        }
+        private dynamic activePage;
 
-        private static Thread ReadTest = new Thread(new ThreadStart(rTst));
+        private readonly LogWindow Log;
 
-        private static void rTst() {
+
+        /// <summary> PkgCreationPage-Related bs. </summary>
+        public void StartReadLogTest() => ReadTest.Start();
+
+        /// <summary> PkgCreationPage-Related bs. </summary>
+        private readonly Thread ReadTest;// = new Thread(PkgCreationLogReadTest);
+
+        /// <summary> PkgCreationPage-Related bs. </summary>
+        private void PkgCreationLogReadTest() {
             try {
-                string[] chk = Array.Empty<string>(), lines;
+                string[]
+                    chk = Array.Empty<string>(),
+                    lines
+                ;
+
 
             start:
                 while(!File.Exists(@"C:\Users\Blob\Desktop\out.txt")) ;
@@ -113,9 +146,11 @@ namespace Dobby {
             }
         }
 
+
+
         public static void DebugControlHover(object sender, EventArgs e) => HoveredControl = (Control)sender;
 
-        public static bool OverrideMsgOut;
+        public bool OverrideMsgOut;
 
         private static int OutputStringIndex = 0, ShiftIndex = 0;
 
@@ -143,25 +178,25 @@ namespace Dobby {
                 control.Update();
         }
         
+
+
         /// <summary>
         /// Calculates A Size Exactly Large Enough (Hopefully)
         /// To Fit The Item's Text Content
         /// </summary>
-        /// <returns> A New Size For cunt </returns>
-        private static Size TryAutosize(Control cunt) {
-            var gr = cunt.CreateGraphics();
-
-            var size = gr.MeasureString(cunt.Text, cunt.Font);
+        /// <returns> A new size for the little cunt. </returns>
+        private Size TryAutosize(Control cunt) {
+            var size = cunt.CreateGraphics().MeasureString(cunt.Text, cunt.Font);
             return new Size((int)size.Width + 15, (int)size.Height + 10);
         }
 
         // Style Test (fuck it, too annoying dealing with overlapping controls, and I've wasted enough time on this already)
         #region [Style Test]
-        private static Point[] OldPositions = new Point[1] { Point.Empty };
-        private static Size OldFormScale;
-        private static string EditedForm;
-        private static int Next_Base;
-        private static void ResizeTest() {
+        private Point[] OldPositions = new Point[1] { Point.Empty };
+        private Size OldFormScale;
+        private string EditedForm;
+        private int Next_Base;
+        private void ResizeTest() {
             return;
 
             var Mommy = LogWindow.ParentPtr;
@@ -230,12 +265,22 @@ namespace Dobby {
         #endregion [Style Test]
 
 
+
+
+
+
+        //public void MoveLogToAppEdge() => Log.MoveLogToAppEdge
+
         /// <summary>
-        /// Log Window Class
+        /// Class for standard debug display / logging;
         /// </summary>
-        public partial class LogWindow : Form {
-            public LogWindow(Form Gaia) {
-                Font DButtonFont = new Font("Cambria", 7F, FontStyle.Bold);
+        private partial class LogWindow : Form {
+            public LogWindow(Form Gaia, Testing dev)
+            {
+                Debug.WriteLine("Logging class start");
+
+
+                var DButtonFont = new Font("Cambria", 7F, FontStyle.Bold);
 
                 var DButtons = new Button[] {
                     new Button {
@@ -267,11 +312,11 @@ namespace Dobby {
                             return;
 
                         System.Diagnostics.Process.Start($"{Directory.GetCurrentDirectory()}\\out.txt");
-                        LogWindowExit();
+                        Dispose();
                         Environment.Exit(0);
                     }),
                     new EventHandler((_, __) => {
-                        LogWindowExit();
+                        Dispose();
                         System.Diagnostics.Process.Start($@"{Directory.GetParent(Directory.GetCurrentDirectory())}\Release\ND Debug Enabler.exe");
                         Environment.Exit(1);
                     }),
@@ -291,7 +336,7 @@ namespace Dobby {
                     debugControl.FlatStyle = FlatStyle.Flat;
                     debugControl.FlatAppearance.BorderSize = 0;
                     debugControl.Click += Handlers[debugControl.TabIndex];
-                    debugControl.Size = TryAutosize(debugControl);
+                    debugControl.Size = Dev.TryAutosize(debugControl);
                     debugControl.BringToFront();
 
                 }
@@ -305,11 +350,14 @@ namespace Dobby {
 
                 LogPtr = this;
                 LogWindowRenderer = CreateGraphics();
-                SetParent(Gaia);
 
                 LogFile = File.CreateText($"{Directory.GetCurrentDirectory()}\\out.txt");
-                logThread.Start();
+                (LogThread = new Thread(new ThreadStart(UpdateConsoleOutput))).Start();
+
+                Dev = dev;
             }
+
+
 
             public static Form LogPtr, ParentPtr;
             public static Size FormScale;
@@ -320,35 +368,20 @@ namespace Dobby {
             public static string[] LogBuffer;
 
             #region timer crap
-            private static float Delay = 0;
-            private static bool TimerThreadStarted = false;
             public static bool LogShouldRefresh, LogShouldPause;
-            private static readonly System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-            private static readonly Thread TimerThread = new Thread(StartTimer);
-            private static float TimerTicks = 0;
-            private static void Timer_Tick(object sender, EventArgs e) => TimerTicks+= 0.001f;
-            private static void StartTimer() {
-                if(!timer.Enabled) {
-                    timer.Interval = 1;
-                    timer.Tick += Timer_Tick;
-                    timer.Start();
-                }
-            }
             #endregion
 
-            public static void Pause() => LogShouldPause ^= true;
-
-            // Sets The Form To Attach The Log Window To
-            public static void SetParent(Form Gaia) {
-                
-                ParentPtr = Gaia;
-                Gaia.LocationChanged -= MoveLogToAppEdge;
+            
+            
+            /// <summary>
+            /// Sets the form to anchor the log window to.
+            /// </summary>
+            /// <param name="Gaia"> The anchor form. </param>
+            public void SetLogParent(Form Gaia)
+            {
+                (ParentPtr = Gaia).LocationChanged += MoveLogToAppEdge;
             }
-            // mmbeep
-            public static Form GetParent() { return ParentPtr; }
 
-            private void MouseDownFunc(object sender, MouseEventArgs e) => MouseIsDown = true;
-            private void MouseUpFunc(object sender, MouseEventArgs e) => MouseScrolled = MouseIsDown = false;
             public static void MoveLogToAppEdge(object mommy, EventArgs e)
             {
                 LogPtr.BringToFront();
@@ -357,9 +390,15 @@ namespace Dobby {
             }
             public static void MoveLogToAppEdge(Point Loc) => LogPtr.Location = new Point(Loc.X - LogPtr.Size.Width, Loc.Y);
 
+            
+            private void MouseDownFunc(object sender, MouseEventArgs e) => MouseIsDown = true;
+            private void MouseUpFunc(object sender, MouseEventArgs e) => MouseScrolled = MouseIsDown = false;
 
-            public delegate void scaling();
-            public static scaling ResizeLog = new scaling(() =>
+
+
+            public delegate void Scaling();
+
+            public static Scaling ResizeLog = new Scaling(() =>
             { 
                 LogPtr.Size = FormScale;
                 LogWindowRenderer = LogPtr.CreateGraphics();
@@ -383,16 +422,9 @@ namespace Dobby {
             });
 
 
-            public static void LogWindowExit() {
-                logThread.Abort();
-                LogPtr.Dispose();
-            }
 
 
-
-            /// <summary>
-            /// what the fuck
-            /// </summary>
+            /// <summary> ugly, uuglyy, UGLY!!! </summary>
             public static void LogOut(string str) {
                 while(LogFile == null);
 
@@ -418,22 +450,21 @@ namespace Dobby {
             }
 
 
-            private static readonly Thread logThread = new Thread(new ThreadStart(UpdateConsoleOutput));
-            public static void UpdateConsoleOutput() {
-                if(ActiveForm != null && !TimerThreadStarted) {
-                    TimerThread.Start(); TimerThreadStarted = true;
-                }
+            private readonly Thread LogThread;
 
+
+            /// <summary> Main LogWindow output loop. </summary>
+            public void UpdateConsoleOutput()
+            {
                 string Out;
                 string[] Output, chk1 = Array.Empty<string>(), chk2 = Array.Empty<string>();
 
-                Pen pen = new Pen(Color.White);
-                Font DFont = new Font("Consolas", 8.5f, FontStyle.Bold);
+                var pen   = new Pen(Color.White);
+                var DFont = new Font("Consolas", 8.5f, FontStyle.Bold);
 
                 while(true) {
                     try {
                         Out = string.Empty;
-                        var StartTime = TimerTicks;
                         var ControlType = HoveredControl?.GetType().ToString();
 
                         var DynamicVars = PS4MenuSettingsPage.PeekGameSpecificPatchValues();
@@ -447,18 +478,18 @@ namespace Dobby {
                             switch(Page) {
                                 default:
                                     Output = new string[] {
-                                        $"Build: {Ver.Build} ~{Delay}ms",
+                                        $"Build: {Ver.Build}",
                                         " ",
                                         $"Parent Form: {(ActiveForm != null ? $"{ActiveForm?.Name} | # Of Children: {ActiveForm?.Controls?.Count}" : "Console")}",
                                         " ",
-                                        $"GameID: {ActiveGameID} | {(Page == PageID.PS4DebugPage ? $"Peek Test: {PEEKTESTDYN.TitleID}" : "load the page, fucker")}",
+                                        $"GameID: {ActiveGameID} | {(Page == PageID.PS4DebugPage ? $"Peek Test: {Dev.ActivePage.TitleID}" : "load the page, fucker")}",
                                         " ",
                                         $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}",
                                         $"Control: {HoveredControl?.Name} | {ControlType?.Substring(ControlType.LastIndexOf('.') + 1)}",
                                         $"{(HoveredControl?.GetType() == typeof(Button) ? ((Button)HoveredControl)?.Variable : " ")}",
                                         $" Size: {HoveredControl?.Size} | Pos: {HoveredControl?.Location}",
                                         $" Parent [{HoveredControl?.Parent?.Name}]",
-                                        $" Nex_Pos' [{Next_Base}]",
+                                        $" Nex_Pos' [{Dev.Next_Base}]",
 
                                         (MainStreamIsOpen ? " " : ""),
 
@@ -469,12 +500,12 @@ namespace Dobby {
                                 case PageID.PS4DebugPage:
 
                                     Output = new string[] {
-                                        $"Build: {Ver.Build} ~{Delay}ms",
+                                        $"Build: {Ver.Build}",
                                         " ",
                                         $"Parent Form: {(ActiveForm != null ? $"{ActiveForm?.Name} | # Of Children: {ActiveForm?.Controls?.Count}" : "Console")}",
                                         " ",
                                         //$"TitleID: {(PS4DebugPage.TitleID == "?" ? "UNK" : PS4DebugPage.TitleID)} | Game Version: {PS4DebugPage.GameVersion}",
-                                        $"GameID: {ActiveGameID} | {(Page == PageID.PS4DebugPage ? $"Peek Test: {PEEKTESTDYN.TitleID}" : "load the page, fucker")}",
+                                        $"GameID: {ActiveGameID} | {(Page == PageID.PS4DebugPage ? $"Peek Test: {Dev.ActivePage.TitleID}" : "load the page, fucker")}",
                                         //$"ProcessName: {PS4DebugPage.ProcessName} | PDbg Connected: {PS4DebugPage.PS4DebugIsConnected}",
                                         " ",
                                         $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}",
@@ -482,7 +513,7 @@ namespace Dobby {
                                         $"{(HoveredControl?.GetType() == typeof(Button) ? ((Button)HoveredControl)?.Variable : " ")}",
                                         $" Size: {HoveredControl?.Size} | Pos: {HoveredControl?.Location}",
                                         $" Parent [{HoveredControl?.Parent?.Name}]",
-                                        $" Nex_Pos' [{Next_Base}]",
+                                        $" Nex_Pos' [{Dev.Next_Base}]",
 
                                         (MainStreamIsOpen ? " " : ""),
 
@@ -526,7 +557,7 @@ namespace Dobby {
                         }
                         catch(Exception e) {
                             Output = new string[] { "Error.", e.Message };
-                            Print($"!! ERROR: an exception occured during debug output loop while setting \"frame\"");
+                            Dev.Print($"!! ERROR: an exception occured during debug output loop while setting \"frame\"");
                         }
 
                         if(LogShouldRefresh || !chk1.SequenceEqual(Output) || chk1 == null || !chk2.SequenceEqual(OutputStrings)) {
@@ -589,12 +620,22 @@ namespace Dobby {
                             LogWindowRenderer.DrawString(Out, DFont, Brushes.White, new PointF(6f, 35f));
                             LogShouldRefresh ^= LogShouldRefresh;
                         }
-
-                        Delay = TimerTicks - StartTime;
-
                     }
                     catch(System.ObjectDisposedException) { }
                 }
+            }
+
+
+
+
+            /// <summary>
+            /// Dispose of the log thread
+            /// TODO: Implement this properly.
+            /// </summary>
+            new public void Dispose()
+            {
+                LogThread.Abort();
+                LogPtr.Dispose();
             }
         }
 #endif

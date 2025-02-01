@@ -269,7 +269,7 @@ namespace Dobby {
 
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PkgCreationHelpPage));
 
-            for(int i = 0; i < Questions.Length; i++) // Reset The Other Buttons
+            for(int i = 0; i < Questions.Length; ++i) // Reset The Other Buttons
                 if(i != Index) Questions[i] = false;
 
             Questions[Index] = !Questions[Index];

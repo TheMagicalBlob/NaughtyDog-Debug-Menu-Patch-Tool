@@ -84,7 +84,7 @@
     <Compile Include="Pages\PkgCreationPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dev.cs">
+    <Compile Include="Testing.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Pages\PS4MenuSettingsPage.cs">

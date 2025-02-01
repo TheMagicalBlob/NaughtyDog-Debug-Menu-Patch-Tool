@@ -176,102 +176,7 @@ namespace Dobby {
             }
         }
 
-
-
-        private void InitializeConnectionThread()
-        {
-            ActiveForm?.Invoke(SetInfoText, "Connecting to Console");
-
-            if (ConnectionThread?.ThreadState == 0)
-                ConnectionThread.Abort();
-
-            (ConnectionThread = new Thread(ConnectionFunction)).Start(new { ActiveForm, IP });
-        }
-
-
-        /// <summary>
-        /// Asyncronously attempt to connect to a new PS4DBG instance with the current IP address
-        /// </summary>
-        /// <param name="args"></param>
-        private void ConnectionFunction(dynamic args) {
-            try {
-                
-                // Load Passed Parameters
-                var ip = (IPAddress)args.IP;
-                var form = (Form)args.ActiveForm;
-
-
-                form?.Invoke(SetInfoText, $"Connecting to Console at \"{IP}\"");
-
-                // Establish a connection for the new PS4Debug instance
-                try {
-                    Geo = new PS4DBG(IP);
-                    Geo.Connect();
-                }
-                catch (SocketException oops) {
-                    form.Invoke(SetInfoText, $"Error Connecting to \"{IP}\"");
-                    Dev.Print($"!! ERROR: Unable to connect to PS4, see exception below.\n{oops.Message}\n{oops.StackTrace.Replace("\n", "  \n")}");
-                    return;
-                }
-
-
-                Dev.Print($"Connection Status: {Geo.IsConnected}");
-                form?.Invoke(SetInfoText, "PS4Debug Connected, Searching for Game...");
-
-
-                foreach(libdebug.Process process in Geo.GetProcessList().processes) { // processprocessprocessprocessprocessprocessprocess
-                    
-                    // Ignore unrelated processes
-                    if(!ExecutableNames.Contains(process.name))
-                        continue;
-                    
-
-
-                    string titleId;
-                    int exectuable = process.pid;
-                    
-                    // Check To Avoid Connecting To HB Store Stuff
-                    if((titleId = Geo.GetProcessInfo(exectuable).titleid) == "FLTZ00003" || titleId == "ITEM00003") {
-                        Dev.Print($"Skipping Lightning's Stuff {titleId}");
-                        continue;
-                    }
-
-                    Executable = exectuable;
-                    TitleID = titleId;
-                    ProcessName = process.name;
-                    Dev.Print($"Process Name: [{ProcessName}]");
-
-
-                    // Detect the currently loaded game and app_ver (clunkily.)
-                    GameVersion = GetGameTitleIDVersionAndDMenuOffset(titleId);
-
-                    form?.Invoke(SetInfoText, $"Attached to {titleId} ({GameVersion})");
-                    return;
-                }
-
-                // Error out if no eboot.bin (or other expected executable) was found.
-                ProcessName = "No Valid Process";
-                form?.Invoke(SetInfoText, "Couldn't Find a Valid Game Process.");
-            }
-            catch(Exception tabarnack) {
-                ActiveForm?.Invoke(SetInfoText, $"Connection to {IP} Failed.");
-                Dev.PrintError(tabarnack);
-            }
-        }
-
-
-        /// <summary> Avoid Attempting To Toggle The Selected Bool In Memory Before The Connection Process Is Finished
-        ///</summary>
-        private void CheckConnectionStatus() {
-            if((ConnectionThread == null || ConnectionThread.ThreadState == ThreadState.Unstarted) || (!Geo.IsConnected || Geo?.GetProcessInfo(Executable).name != ProcessName || !ExecutableNames.Contains(Geo?.GetProcessInfo(Executable).name)))
-            {
-                GameVersion = null;
-                Dev.Print("Task.Run(CheckConnectionStatus) Initializing connection thread");
-                InitializeConnectionThread();
-
-                while(GameVersion == null);
-            }
-        }
+        
         
 
         /// <summary>
@@ -434,6 +339,103 @@ namespace Dobby {
                 return "UnknownGameVersion";
             }
         }
+        
+        
+        
+
+        /// <summary>
+        /// Asyncronously attempt to connect to a new PS4DBG instance with the current IP address
+        /// </summary>
+        /// <param name="args"></param>
+        private void ConnectionFunction(dynamic args) {
+            try {
+                
+                // Load Passed Parameters
+                var ip = (IPAddress)args.IP;
+                var form = (Form)args.ActiveForm;
+
+
+                form?.Invoke(SetInfoText, $"Connecting to Console at \"{IP}\"");
+
+                // Establish a connection for the new PS4Debug instance
+                try {
+                    Geo = new PS4DBG(IP);
+                    Geo.Connect();
+                }
+                catch (SocketException oops) {
+                    form.Invoke(SetInfoText, $"Error Connecting to \"{IP}\"");
+                    Dev.Print($"!! ERROR: Unable to connect to PS4, see exception below.\n{oops.Message}\n{oops.StackTrace.Replace("\n", "  \n")}");
+                    return;
+                }
+
+
+                Dev.Print($"Connection Status: {Geo.IsConnected}");
+                form?.Invoke(SetInfoText, "PS4Debug Connected, Searching for Game...");
+
+
+                foreach(libdebug.Process process in Geo.GetProcessList().processes) { // processprocessprocessprocessprocessprocessprocess
+                    
+                    // Ignore unrelated processes
+                    if(!ExecutableNames.Contains(process.name))
+                        continue;
+                    
+
+
+                    string titleId;
+                    int exectuable = process.pid;
+                    
+                    // Check To Avoid Connecting To HB Store Stuff
+                    if((titleId = Geo.GetProcessInfo(exectuable).titleid) == "FLTZ00003" || titleId == "ITEM00003") {
+                        Dev.Print($"Skipping Lightning's Stuff {titleId}");
+                        continue;
+                    }
+
+                    Executable = exectuable;
+                    TitleID = titleId;
+                    ProcessName = process.name;
+                    Dev.Print($"Process Name: [{ProcessName}]");
+
+
+                    // Detect the currently loaded game and app_ver (clunkily.)
+                    GameVersion = GetGameTitleIDVersionAndDMenuOffset(titleId);
+
+                    form?.Invoke(SetInfoText, $"Attached to {titleId} ({GameVersion})");
+                    return;
+                }
+
+                // Error out if no eboot.bin (or other expected executable) was found.
+                ProcessName = "No Valid Process";
+                form?.Invoke(SetInfoText, "Couldn't Find a Valid Game Process.");
+            }
+            catch(Exception tabarnack) {
+                ActiveForm?.Invoke(SetInfoText, $"Connection to {IP} Failed.");
+                Dev.PrintError(tabarnack);
+            }
+        }
+
+        private void InitializeConnectionThread()
+        {
+            ActiveForm?.Invoke(SetInfoText, "Connecting to Console");
+
+            if (ConnectionThread?.ThreadState == 0)
+                ConnectionThread.Abort();
+
+            (ConnectionThread = new Thread(ConnectionFunction)).Start(new { ActiveForm, IP });
+        }
+
+        /// <summary> Avoid Attempting To Toggle The Selected Bool In Memory Before The Connection Process Is Finished
+        ///</summary>
+        private void CheckConnectionStatus() {
+            if((ConnectionThread == null || ConnectionThread.ThreadState == ThreadState.Unstarted) || (Geo == null || !Geo.IsConnected || Geo?.GetProcessInfo(Executable).name != ProcessName || !ExecutableNames.Contains(Geo?.GetProcessInfo(Executable).name)))
+            {
+                GameVersion = null;
+                Dev.Print("Task.Run(CheckConnectionStatus) Initializing connection thread");
+                InitializeConnectionThread();
+
+                while(GameVersion == null);
+            }
+        }
+
 
 
 

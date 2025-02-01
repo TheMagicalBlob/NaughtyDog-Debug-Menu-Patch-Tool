@@ -105,7 +105,7 @@ namespace Dobby {
 
             /* A Bit Of An Intrusion, And Still Sus Even If The Exact Intent's Explicitly Stated
             for(; i < FoldersInCurrentDirectory.Length; ) {
-                FilesInCurrentDirectory = Directory.GetFiles(FoldersInCurrentDirectory[i++]);
+                FilesInCurrentDirectory = Directory.GetFiles(FoldersInCurrentDirectory[++i]);
                 goto CheckFiles;
             }
             */
