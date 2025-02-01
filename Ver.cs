@@ -242,6 +242,7 @@
           "* 4.48-beta.247.700 | Misc Dev.LogWindow stuff, more code cleanup.",
           "* 4.48-beta.252.706 | Slight PS4DBG usage tweak in PS4DebugPage.Toggle() methods, *mostly finished reworking PS4DBG connection thread setup and other related background functionality *(I have a migraine and need to clean it up later, but it works)",
           "* 4.48-beta.256.723 | Reworking Dobby.Dev and Dobby.Dev.LogWindow classes; renamed Dobby.Dev => Dobby.Testing. Small PS4DebugPage fix.",
+          "* 4.48-beta.261.728 | Removed duplicate Credits and Info/Help Page intialization events from main page (forgot to remove 'em after making that dynamic), fixed the previously half-reworked ChangeForm function. NOTE: Debug builds randomly ignore mouse click events now. kill me.",
 
         };
 

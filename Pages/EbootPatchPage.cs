@@ -278,6 +278,7 @@ namespace Dobby {
         }
         #endregion
 
+
         /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///-- EBOOTPATCHPAGE VARIABLES AND FUNCTIONS  --\\\
         /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -331,10 +332,11 @@ namespace Dobby {
         }
         #endregion
 
+        
 
-        //////////////////////\\\\\\\\\\\\\\\\\\\\\
-        ///--     Page-Specific Functions     --\\\
-        //////////////////////\\\\\\\\\\\\\\\\\\\\\
+        //===================================\\
+        //--|   Page-Specific Functions   |--\\
+        //===================================\\
         #region Page-Specific Functions
 
 
@@ -383,11 +385,11 @@ namespace Dobby {
         private void LoadFileToBePatched(string FilePath, FileStream mainStream) {
             try { 
                 mainStream?.Dispose();
-                Common.Dev.Print(FilePath);
+                Common.Print(FilePath);
                 mainStream = new FileStream(FilePath, FileMode.Open, FileAccess.ReadWrite);
             }
             catch(IOException Oop) {
-                Dev.Print(Oop.Message); SetGameInfoLabelText("Access Denied, File In Use Elsewhere");
+                Print(Oop.Message); SetGameInfoLabelText("Access Denied, File In Use Elsewhere");
                 return;
             }
 
@@ -481,7 +483,7 @@ namespace Dobby {
                 // Games That Aren't The Right Fucking Game You Dumbass
                 ////
                 default:
-                    Dev.Print($"Unknown Game Selected (GetGameID()) Game: {GameID}");
+                    Print($"Unknown Game Selected (GetGameID()) Game: {GameID}");
                     RestoredDebugBtn.Font = new Font("Cambria", 9.75F, FontStyle.Strikeout);
                     RestoredDebugBtn.Enabled = false; return " Invalid Game";
             }
@@ -652,10 +654,11 @@ namespace Dobby {
         #endregion
 
 
-        ////////////////////\\\\\\\\\\\\\\\\\\\\\
-        ///--  PATCH APPLICATION FUNCTIONS  --\\\
-        ////////////////////\\\\\\\\\\\\\\\\\\\\\
-        #region Patch Application Functions
+        
+        //=======================================\\
+        //--|   Patch Application Functions   |--\\
+        //=======================================\\
+        #region [Patch Application Functions]
         void UC1100_RestoredMenu() {
             int[] WhiteJumpsOneByte = new int[] {
                 0xE20E3,  // BP UCC...
@@ -1390,7 +1393,7 @@ namespace Dobby {
             for(; i < CustomFunctions.Length; ++i)
                 WriteBytes(Addresses[i], CustomFunctions[i]);
 
-            Dev.Print($"Wrote {i} Patches To {MainStream.Name}");
+            Print($"Wrote {i} Patches To {MainStream.Name}");
         }
 
 
@@ -1498,10 +1501,10 @@ namespace Dobby {
         }
         #endregion
 
-
-        //==============================\\
-        //|    Control Declarations    |\\
-        //==============================\\
+        
+        //================================\\
+        //--|   Control Declarations   |--\\
+        //================================\\
         #region [Control Declarations]
         public void BackBtn_Click(object sender, EventArgs e) =>
             LabelShouldFlash = false;

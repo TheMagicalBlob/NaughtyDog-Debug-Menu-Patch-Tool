@@ -24,18 +24,17 @@ namespace Dobby {
         //--  DEBUG CLASS  --\\
         //===================\\
         
-
+        #if DEBUG
         /// <summary>
         /// Create the Dobby.Dev instance which will be running for the Program's whole runtime.
         /// </summary>
         /// <param name="Gaia"> The Main Page. I forget why it needs this one, but not the new ones; will check later. </param>
         public Testing(Form Gaia)
         {
-            Debug.WriteLine("Testting class start");
             (Log = new LogWindow(Gaia, Dev = this)).Show();
             ActivePage = Gaia;
         }
-
+        #endif
 
 
 
@@ -277,9 +276,6 @@ namespace Dobby {
         private partial class LogWindow : Form {
             public LogWindow(Form Gaia, Testing dev)
             {
-                Debug.WriteLine("Logging class start");
-
-
                 var DButtonFont = new Font("Cambria", 7F, FontStyle.Bold);
 
                 var DButtons = new Button[] {
@@ -482,7 +478,8 @@ namespace Dobby {
                                         " ",
                                         $"Parent Form: {(ActiveForm != null ? $"{ActiveForm?.Name} | # Of Children: {ActiveForm?.Controls?.Count}" : "Console")}",
                                         " ",
-                                        $"GameID: {ActiveGameID} | {(Page == PageID.PS4DebugPage ? $"Peek Test: {Dev.ActivePage.TitleID}" : "load the page, fucker")}",
+                                        $"Active Page: {Page}",
+                                        $"  Pages: {string.Join(", ", Pages)}",
                                         " ",
                                         $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}",
                                         $"Control: {HoveredControl?.Name} | {ControlType?.Substring(ControlType.LastIndexOf('.') + 1)}",
@@ -497,7 +494,7 @@ namespace Dobby {
                                         $"{(MainStreamIsOpen ? $"Length: {(MainStream.Length.ToString().Length > 6 ? $"{MainStream.Length.ToString().Remove(2)}MB" : $"{MainStream.Length} bytes")} | Read: {MainStream.CanRead} | Write: {MainStream.CanWrite}" : (PCDebugMenuPage.MainStreamIsOpen ? " " : ""))}",
                                     };
                                     break;
-                                case PageID.PS4DebugPage:
+                                case PageID.PS4DebugHelpPage:
 
                                     Output = new string[] {
                                         $"Build: {Ver.Build}",
@@ -557,7 +554,7 @@ namespace Dobby {
                         }
                         catch(Exception e) {
                             Output = new string[] { "Error.", e.Message };
-                            Dev.Print($"!! ERROR: an exception occured during debug output loop while setting \"frame\"");
+                            Dev.Print($"!! ERROR: an exception occured during debug output loop while setting \"frame\".\nException: {e.Message}");
                         }
 
                         if(LogShouldRefresh || !chk1.SequenceEqual(Output) || chk1 == null || !chk2.SequenceEqual(OutputStrings)) {
@@ -570,7 +567,7 @@ namespace Dobby {
                             foreach(string line in Output) {
                                 TextSize = LogWindowRenderer.MeasureString(line, DFont);
 
-                                if((int)TextSize.Width > (int)FormScale.Width - 12)
+                                if((int)TextSize.Width > FormScale.Width - 12)
                                     FormScale.Width = (int)TextSize.Width + 12;
 
                                 FormScale.Height += (int)TextSize.Height;

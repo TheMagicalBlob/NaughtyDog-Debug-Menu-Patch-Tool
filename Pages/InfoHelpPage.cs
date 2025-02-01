@@ -304,9 +304,10 @@ namespace Dobby {
         #endregion
 
 
-        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     Control Declarations     --\\\
-        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        
+        //================================\\
+        //--|   Control Declarations   |--\\
+        //================================\\
         #region [Control Declarations]
         public Label MainLabel;
         public Button BackBtn;

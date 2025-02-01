@@ -6,13 +6,11 @@ using static Dobby.Common;
 namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
     public partial class Main : Form {
         public Main() {
-            Debug.WriteLine("Main app start");
             InitializeComponent();
-            Debug.WriteLine("Main app post-init");
             
             InfoLabel = Info;
-            Info.Text = "";
-            Page = 0;
+            Page = PageID.MainPage;
+            MainForm = this;
 
 #if DEBUG
             new Testing(this);
@@ -38,8 +36,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
         }
 
         public void InitializeComponent() {
-            Debug.WriteLine("Main app init");
-
             this.MainLabel = new System.Windows.Forms.Label();
             this.Info = new System.Windows.Forms.Label();
             this.PS4DebugPageBtn = new Dobby.Button();
@@ -210,7 +206,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             this.CreditsBtn.Text = "Credits...";
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
-            this.CreditsBtn.Click += new System.EventHandler(this.CreditsBtn_Click);
             // 
             // InfoHelpBtn
             // 
@@ -228,7 +223,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             this.InfoHelpBtn.Text = "Information / Help...";
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
-            this.InfoHelpBtn.Click += new System.EventHandler(this.InfoHelpBtn_Click);
             // 
             // Playstation4Label
             // 
@@ -311,14 +305,12 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
         private void DownloadSourceBtn_Click(object sender, EventArgs e)      => System.Diagnostics.Process.Start(@"https://github.com/TheMagicalBlob/NaughtyDog-Debug-Menu-Patch-Tool/archive/refs/heads/master.zip");
         #endregion
 
+        
 
-        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     Control Declarations & Repeated Page Functions    --\\\
-        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        #region Control Declarations & Repeated Page Functions
-        private void InfoHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.InfoHelpPage);
-        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
-
+        //================================\\
+        //--|   Control Declarations   |--\\
+        //================================\\
+        #region [Control Declarations]
         public Label MainLabel;
         public Button PS4DebugPageBtn;
         public Button EbootPatchPageBtn;

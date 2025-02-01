@@ -837,8 +837,8 @@ namespace Dobby {
             msg += MainStream.Position.ToString("X"); // trust issues
 
             MainStream.Write(data, 0, data.Length);
-            Dev.Print(msg);
-            Dev.Print();
+            Print(msg);
+            Print();
 #else
             if (offset != null)
             MainStream.Position = (int)offset;
@@ -853,7 +853,7 @@ namespace Dobby {
             msg += MainStream.Position.ToString("X"); // trust issues
 
             MainStream.WriteByte(data);
-            Dev.Print(msg);
+            Print(msg);
 #else
             if(offset != null)
             MainStream.Position = (int)offset;
@@ -883,9 +883,9 @@ namespace Dobby {
                     msg = (float)data + msg;
                 }
             }
-            catch (Exception) { Dev.Print($"Error Writing Var: {data} ({data.GetType()})"); }
+            catch (Exception) { Print($"Error Writing Var: {data} ({data.GetType()})"); }
 
-            Dev.Print($"var: {msg}");
+            Print($"var: {msg}");
 #else
             if(offset != null)
                 MainStream.Position = (int)offset;
@@ -1108,7 +1108,7 @@ namespace Dobby {
                 Buttons[ButtonIndex].Paint += DrawButtonVariable;
                 Buttons[ButtonIndex].BringToFront();
 
-                Dev.Print(Buttons[ButtonIndex].Name);
+                Print(Buttons[ButtonIndex].Name);
 
                 if(GameSpecificPatchValues[ButtonIndex].GetType() == typeof(bool))
                     Buttons[ButtonIndex].Click += DynamicBtn_Click;
@@ -1210,7 +1210,7 @@ namespace Dobby {
         private void DefaultButtonClick(Button cnt, bool scrolled, int PatchIndex) { ToggleBool(cnt, PatchIndex); MouseScrolled = scrolled; }
         private void ToggleBool(Button Control, int OptionIndex) {
             if(MouseScrolled || !MouseIsDown || CurrentControl != Control.Name) {
-                Dev.Print($"{MouseScrolled} {MouseIsDown} {CurrentControl} ? {Control.Name}");
+                Print($"{MouseScrolled} {MouseIsDown} {CurrentControl} ? {Control.Name}");
                 return;
             }
 
@@ -1278,7 +1278,7 @@ namespace Dobby {
 
             if(Result.GetType() == typeof(int)) {
                 MessageBox.Show($"An Unexpected Error Occured While Applying The Patches, Please Ensure You're Running The Latest Release Build\nIf You Are, Report It To The Moron Typing Out This Error Message", $"ApplyMenuSettings() Error 0x{Result:X}");
-                Dev.Print("ApplyMenuSettings Returned Null");
+                Print("ApplyMenuSettings Returned Null");
                 return;
             }
 
@@ -1331,7 +1331,7 @@ namespace Dobby {
                         WriteBytes(data: PatchData);
                         WriteByte(data: (byte)(UniversalPatchValues[index] ? 1 : 0));
 
-                        Dev.Print();
+                        Print();
                         PatchCount++;
                     }
 
@@ -1355,7 +1355,7 @@ namespace Dobby {
                         WriteVar(data: PatchValue);
 
                         PatchCount++;
-                        Dev.Print();
+                        Print();
                     }
 
                     WriteBytes(data: new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0x08 }); // padding to avoid issues
@@ -1363,7 +1363,7 @@ namespace Dobby {
                     Message = $" {PatchCount+1} Patches Applied";
                 }
                 catch(Exception tabarnack) {
-                    Dev.Print($"{tabarnack.GetType()} | Error Applying Patches");
+                    Print($"{tabarnack.GetType()} | Error Applying Patches");
                     MessageBox.Show(tabarnack.Message + $"\n{tabarnack.StackTrace}", $"Exception Type {tabarnack.GetType()}");
                     return 1;
                 }
@@ -1551,7 +1551,7 @@ namespace Dobby {
 
             // Assign values to variables made to keep track of the default form size/control postions for the reset button. Doing it on page init is annoying 'cause designer memes
             if(OriginalFormScale == Size.Empty) {
-                Dev.Print("Setting Original Scale Variables");
+                Print("Setting Original Scale Variables");
 
                 // Every Control Below The "Game Specific Patches" Label
                 ControlsToMove = new Control[] {
@@ -1653,11 +1653,11 @@ namespace Dobby {
         private void ResetCustomDebugOptions(object _ = null, EventArgs __ = null)
         {
             if (Game == GameIDs.Empty) {
-                Dev.Print("ResetCustomDebugOptions(): Game was unset, aborting.");
+                Print("ResetCustomDebugOptions(): Game was unset, aborting.");
                 return;
             }
             
-            Dev.Print("Resetting Form And Main Stream");
+            Print("Resetting Form And Main Stream");
             
 
             // Reset Form Size

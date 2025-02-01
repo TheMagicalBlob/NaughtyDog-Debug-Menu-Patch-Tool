@@ -31,11 +31,11 @@ namespace Dobby {
 
 
 
-
-        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     Repeated Page Functions & Control Declarations     --\\\
-        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        #region Repeat Functions & Control Declarations
+        
+        //================================\\
+        //--|   Control Declarations   |--\\
+        //================================\\
+        #region [Control Declarations]
         public Label MainLabel;
         public Label NarcissismLabel;
         public Label BlobGithubBtn;
