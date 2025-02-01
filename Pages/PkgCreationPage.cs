@@ -1,10 +1,12 @@
-﻿using libdebug;
-using System;
+﻿using System;
 using System.IO;
 using System.Drawing;
 using static Dobby.Common;
 using System.Windows.Forms;
+#if DEBUG
 using System.Linq;
+#endif
+
 
 namespace Dobby {
     public class PkgCreationPage : Form {
@@ -15,15 +17,15 @@ namespace Dobby {
 
             foreach(Control control in Controls) {
                 if(control.Name.Contains("PathBox") || control.Name.Contains("DirectoryBox")) {
-                    control.MouseEnter += new EventHandler(UnderlinePathLabel);
-                    control.MouseLeave += new EventHandler(UnderlinePathLabel);
-                    //control.MouseLeave += new EventHandler(ResetPathLabel);
+                    control.MouseEnter += (sender, _) => ((Control)sender).Font = new Font(((Control)sender).Font.FontFamily, ((Control)sender).Font.Size, ((Control)sender).Font.Underline ? FontStyle.Bold : FontStyle.Bold | FontStyle.Underline);
+                    control.MouseLeave += (sender, _) => ((Control)sender).Font = new Font(((Control)sender).Font.FontFamily, ((Control)sender).Font.Size, ((Control)sender).Font.Underline ? FontStyle.Bold : FontStyle.Bold | FontStyle.Underline);
                 }
             }
 
             // TODO: Maintain Settings For Page When Swapping Between gp4/pkg Creation Pages.. Or Just In General.
 
             OutputPath = Directory.GetCurrentDirectory();
+            TempDirectoryBtn.Variable = false;
         }
 
 
@@ -39,8 +41,8 @@ namespace Dobby {
                 GP4Path,
                 TMPDirectory,
                 OutputPath,
-                VerboseOutput,
-                UseCstmTMPDirectory
+                //VerboseOutput,
+                //UseCstmTMPDirectory
             };
         }
 
@@ -54,22 +56,10 @@ namespace Dobby {
             OutputPath    = "?"
         ;
 
-        #if DEBUG
-        private static string[]
-        #else
-        private string[]
-#endif
-            VerbosityExt = new string[] { "Details", "Progress Bar" },
-            TMPDirExt    = new string[] { "On"     , "Off" }
-        ;
         
-        #if DEBUG
-        private static int
-        #else
-        private int
-#endif
-            VerboseOutput = 0,
-            UseCstmTMPDirectory = 0
+        private bool
+            VerboseOutput,
+            UseCstmTMPDirectory
         ;
 
 
@@ -113,13 +103,6 @@ namespace Dobby {
         }
 
 
-        /// <summary> "Toggle" Underline Font Styling To Path Boxes </summary>
-        private void UnderlinePathLabel(object sender, EventArgs e) {
-            var Sender = sender as TextBox;
-
-            Sender.Font = Sender.Font.Underline ? new Font("Cambria", Sender.Font.Size) : new Font("Cambria", Sender.Font.Size, FontStyle.Underline);
-        }
-
 
         /// <summary>
         /// addme
@@ -157,7 +140,7 @@ namespace Dobby {
             if(!Directory.Exists(OutputPath))
                 OutputPath = GP4Path.Remove(GP4Path.LastIndexOf(@"\"));
 
-            string Parameters = $"img_create --oformat pkg  {((VerboseOutput == 1) ? "--no_progress_bar" : string.Empty)} --skip_digest {((UseCstmTMPDirectory == 1) ? $"--tmp_path \"{TMPDirectory}\"" : string.Empty)} \"{GP4Path}\" \"{OutputPath}\" > \"C:\\Users\\Blob\\Desktop\\out.txt\"";
+            string Parameters = $"img_create --oformat pkg  {(VerboseOutput ? "--no_progress_bar" : string.Empty)} --skip_digest {(UseCstmTMPDirectory ? $"--tmp_path \"{TMPDirectory}\"" : string.Empty)} \"{GP4Path}\" \"{OutputPath}\" > \"C:\\Users\\Blob\\Desktop\\out.txt\"";
 #if DEBUG
             Dev.StartReadLogTest();
 #endif
@@ -173,18 +156,14 @@ namespace Dobby {
 
         /// <summary> Invert the VerboseOutput bool And Replace The Last Word In The Button Text To Reflect The Change
         /// </summary>
-        private void VerbosityBtn_Click(object sender, EventArgs e) =>
-            ((Control)sender).Text = ((Control)sender).Text.Remove(((Control)sender).Text.IndexOf(VerbosityExt[VerboseOutput]) )
-                                   + VerbosityExt[VerboseOutput ^= 1];
-
+        private void VerbosityBtn_Click(object sender, EventArgs e) => ToggleBtnVar<bool>(sender);
 
         /// <summary> Toggle Whether Or Not To Add The -tmp-
         /// </summary>
         private void TempDirectoryBtn_Click(object sender, EventArgs e) {
-            var Sender = ((Control)sender);
-            Sender.Text = Sender.Text.Remove(Sender.Text.LastIndexOf(' ') + 1) + TMPDirExt[UseCstmTMPDirectory ^= 1];
+            ToggleBtnVar<bool>(sender);
 
-            if(UseCstmTMPDirectory == 0) {
+            if(!(UseCstmTMPDirectory ^= true)) {
                 TMPDirectory = string.Empty;
                 TMPDirectoryBox.Text = "Using This PC's Default TMP Directory";
                 return;
@@ -318,6 +297,7 @@ namespace Dobby {
             this.InfoHelpBtn.Text = "Information / Help...";
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
+            this.InfoHelpBtn.Variable = null;
             // 
             // SeperatorLine2
             // 
@@ -344,6 +324,7 @@ namespace Dobby {
             this.BackBtn.Text = "Back...";
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
+            this.BackBtn.Variable = null;
             this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
             // 
             // Info
@@ -372,6 +353,7 @@ namespace Dobby {
             this.CreditsBtn.Text = "Credits...";
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
+            this.CreditsBtn.Variable = null;
             // 
             // MainLabel
             // 
@@ -409,6 +391,7 @@ namespace Dobby {
             this.LaunchOrbisPubCmdBtn.Text = "Build .pkg File";
             this.LaunchOrbisPubCmdBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.LaunchOrbisPubCmdBtn.UseVisualStyleBackColor = false;
+            this.LaunchOrbisPubCmdBtn.Variable = null;
             this.LaunchOrbisPubCmdBtn.Click += new System.EventHandler(this.LaunchOrbisPubCmdBtn_Click);
             // 
             // VerbosityBtn
@@ -426,6 +409,7 @@ namespace Dobby {
             this.VerbosityBtn.Text = "orbis-pub-cmd Output Mode: Details";
             this.VerbosityBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.VerbosityBtn.UseVisualStyleBackColor = false;
+            this.VerbosityBtn.Variable = null;
             this.VerbosityBtn.Click += new System.EventHandler(this.VerbosityBtn_Click);
             // 
             // SeperatorLine1
@@ -450,9 +434,10 @@ namespace Dobby {
             this.TempDirectoryBtn.Name = "TempDirectoryBtn";
             this.TempDirectoryBtn.Size = new System.Drawing.Size(209, 23);
             this.TempDirectoryBtn.TabIndex = 39;
-            this.TempDirectoryBtn.Text = "Use Custom Temp Directory: No";
+            this.TempDirectoryBtn.Text = "Use Custom Temp Directory: ";
             this.TempDirectoryBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.TempDirectoryBtn.UseVisualStyleBackColor = false;
+            this.TempDirectoryBtn.Variable = null;
             this.TempDirectoryBtn.Click += new System.EventHandler(this.TempDirectoryBtn_Click);
             // 
             // CmdPathBox
@@ -482,6 +467,7 @@ namespace Dobby {
             this.CmdPathBtn.Text = "Browse";
             this.CmdPathBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CmdPathBtn.UseVisualStyleBackColor = false;
+            this.CmdPathBtn.Variable = null;
             this.CmdPathBtn.Click += new System.EventHandler(this.CmdPath_Interact);
             // 
             // GP4PathBox
@@ -511,6 +497,7 @@ namespace Dobby {
             this.GP4PathBtn.Text = "Browse";
             this.GP4PathBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.GP4PathBtn.UseVisualStyleBackColor = false;
+            this.GP4PathBtn.Variable = null;
             this.GP4PathBtn.Click += new System.EventHandler(this.GP4Path_Interact);
             // 
             // OutputDirectoryBox
@@ -540,6 +527,7 @@ namespace Dobby {
             this.OutputDirectoryBtn.Text = "Browse";
             this.OutputDirectoryBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.OutputDirectoryBtn.UseVisualStyleBackColor = false;
+            this.OutputDirectoryBtn.Variable = null;
             this.OutputDirectoryBtn.Click += new System.EventHandler(this.OutputDirectory_Interact);
             // 
             // TMPDirectoryBox
@@ -569,6 +557,7 @@ namespace Dobby {
             this.TMPDirectoryBtn.Text = "Browse";
             this.TMPDirectoryBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.TMPDirectoryBtn.UseVisualStyleBackColor = false;
+            this.TMPDirectoryBtn.Variable = null;
             this.TMPDirectoryBtn.Click += new System.EventHandler(this.TMPDirectoryItem_Interaction);
             // 
             // OrbisToolPathLabel
@@ -625,11 +614,12 @@ namespace Dobby {
             this.Gp4PageBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.Gp4PageBtn.Location = new System.Drawing.Point(2, 100);
             this.Gp4PageBtn.Name = "Gp4PageBtn";
-            this.Gp4PageBtn.Size = new System.Drawing.Size(137, 23);
+            this.Gp4PageBtn.Size = new System.Drawing.Size(146, 23);
             this.Gp4PageBtn.TabIndex = 63;
-            this.Gp4PageBtn.Text = "Create New .gp4 File";
+            this.Gp4PageBtn.Text = "Create New .gp4 File...";
             this.Gp4PageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Gp4PageBtn.UseVisualStyleBackColor = false;
+            this.Gp4PageBtn.Variable = null;
             this.Gp4PageBtn.Click += new System.EventHandler(this.Gp4PageBtn_Click);
             // 
             // PkgCreationPage

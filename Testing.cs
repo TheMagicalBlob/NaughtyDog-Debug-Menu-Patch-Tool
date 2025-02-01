@@ -1,17 +1,14 @@
-﻿using libdebug;
-using System;
+﻿using System;
+#if DEBUG
 using System.IO;
-using System.Net;
-using System.Text;
 using System.Linq;
 using System.Drawing;
 using System.Threading;
-using System.Diagnostics;
-using System.Net.Sockets;
 using System.Windows.Forms;
-using System.Threading.Tasks;
 using System.Collections.Generic;
+using libdebug;
 using static Dobby.Common;
+#endif
 
 
 namespace Dobby {
@@ -150,6 +147,10 @@ namespace Dobby {
         public static void DebugControlHover(object sender, EventArgs e) => HoveredControl = (Control)sender;
 
         public bool OverrideMsgOut;
+
+        internal int ClickErrors = 1;
+        internal int ClickEventCheck = 0;
+
 
         private static int OutputStringIndex = 0, ShiftIndex = 0;
 
@@ -474,7 +475,7 @@ namespace Dobby {
                             switch(Page) {
                                 default:
                                     Output = new string[] {
-                                        $"Build: {Ver.Build}",
+                                        $"Build: {Ver.Build} ClickErrors: {Dev.ClickErrors}",
                                         " ",
                                         $"Parent Form: {(ActiveForm != null ? $"{ActiveForm?.Name} | # Of Children: {ActiveForm?.Controls?.Count}" : "Console")}",
                                         " ",

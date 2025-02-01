@@ -183,7 +183,6 @@ namespace Dobby {
             this.CreditsBtn.Text = "Credits...";
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
-            this.CreditsBtn.Click += new System.EventHandler(this.CreditsBtn_Click);
             // 
             // BackBtn
             // 
@@ -320,7 +319,7 @@ namespace Dobby {
         ///--     Repeated Page Functions & Control Declarations     --\\\
         /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         #region Repeat Functions & Control Declarations
-        private void CreditsBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.CreditsPage);
+        
         public Label Info;
         public Label MainLabel;
         public Button CreditsBtn;

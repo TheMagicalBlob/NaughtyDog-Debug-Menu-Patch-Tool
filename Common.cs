@@ -7,9 +7,12 @@ using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
+#if DEBUG
+using System.Diagnostics;
+#endif
 
 namespace Dobby {
-
+    
     public class Common : Main {
         //#error version
 
@@ -51,10 +54,12 @@ namespace Dobby {
         */
         #region Main Application Functions & Variable Declarations
 
-        #if DEBUG
+    #if DEBUG
         /// <summary> Debug class instance. </summary>
         public static Testing Dev;
-        #endif
+    #endif
+
+
 
         /// <summary>
         /// ID's for the various pages (forms) in the application.
@@ -154,6 +159,25 @@ namespace Dobby {
             MainStream.Flush();
         }
 
+
+        /// <summary>
+        /// Toggle between various states of custom Button controls
+        /// </summary>
+        /// <typeparam name="T"> The button variable's type. </typeparam>
+        /// <param name="control"> The control to edit the variable of </param>
+        public static void ToggleBtnVar<T>(object control)
+        {
+            // Cast sender to correct control type
+            var Control = control as Dobby.Button;
+
+
+            if (typeof(T) != Control.Variable.GetType())
+                throw new Exception($"Invalid Type Provided. (I think?).\n  Type Provided: ({Control.Variable.GetType()})");
+
+
+            if (typeof(T) == typeof(bool))
+                ((Dobby.Button)control).Variable = !(bool) ((Dobby.Button)control).Variable;
+        }
 
 
         public static string GetCurrentGame(FileStream stream) {
@@ -693,7 +717,7 @@ namespace Dobby {
             Dev.ActivePage = NewPage;
 #endif
             Common.Page = Page;
-            InfoLabel = ActiveForm.Controls.Find("Info", true)[0];
+            InfoLabel = (Control)ActiveForm.Controls.Find("Info", true)[0];
             ActiveForm.Location = LastFormPosition;
 
 
@@ -753,7 +777,7 @@ namespace Dobby {
                     foreach (Control Child in Item.Controls)
                         ApplyEventHandlersToControl(Child);
             }
-            InfoLabel = Controls.Find("Info", true)[0] ?? null;
+            InfoLabel = (Control)(Controls.Find("Info", true)[0] ?? null);
 
 
             // Create Exit And Minimize Buttons, And Add Them To The Top Right Of The Form
@@ -809,12 +833,10 @@ namespace Dobby {
                 Controls.Owner.Controls.Find(ConstantControls[3], true)[0].Click += (_, __) => ChangeForm(null);
 
             try {
-                if (Parent != "InfoHelpPage" && Parent != "CreditsPage")
-                {
+                if (!Parent.Contains("Help") && Parent != "CreditsPage")
                     Controls.Owner.Controls.Find(ConstantControls[1], true)[0].Click += (_, __) => ChangeForm(PageID.InfoHelpPage);
-                    Controls.Owner.Controls.Find(ConstantControls[2], true)[0].Click += (_, __) => ChangeForm(PageID.CreditsPage);
-                }
-
+                
+                Controls.Owner.Controls.Find(ConstantControls[2], true)[0].Click += (_, __) => ChangeForm(PageID.CreditsPage);
                 Controls.Owner.Controls.Find(ConstantControls[0], true)[0].Text = string.Empty;
             }
             catch (Exception) {}
@@ -823,7 +845,7 @@ namespace Dobby {
         /// <summary>
         /// Set The Text of The Yellow Label At The Bottom Of The Form
         /// </summary>
-        public static void SetInfoLabelText(string s)
+        internal static void SetInfoLabelText(string s)
         {
             if (ActiveForm != null)
                 InfoLabel.Text = s;
@@ -835,40 +857,45 @@ namespace Dobby {
         //|    Form Event Handlers    |\\
         //=============================\\
         #region [Form Event Handlers]
-        private static void ExitBtn_Click(object sender, EventArgs e)
+        internal static void ExitBtn_Click(object sender, EventArgs e)
         {
             MainStream?.Dispose();
             Environment.Exit(0);
         }
-        private static void ExitBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
-        private static void ExitBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
-        private static void MinimizeBtn_Click(object sender, EventArgs e) => ((Control)sender).FindForm().WindowState = FormWindowState.Minimized;
-        private static void MinimizeBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
-        private static void MinimizeBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
+        internal static void ExitBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
+        internal static void ExitBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
+        internal static void MinimizeBtn_Click(object sender, EventArgs e) => ((Control)sender).FindForm().WindowState = FormWindowState.Minimized;
+        internal static void MinimizeBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
+        internal static void MinimizeBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
 
-        public static void MouseDownFunc(object sender, MouseEventArgs e)
+        internal static void MouseDownFunc(object sender, MouseEventArgs e)
         {
+            #if DEBUG
+            ++Dev.ClickEventCheck;
+            #endif
             MouseIsDown = true;
             LastFormPosition = ActiveForm.Location;
             MouseDif = new Point(MousePosition.X - LastFormPosition.X, MousePosition.Y - LastFormPosition.Y);
         }
 
-        public static void MouseUpFunc(object sender, MouseEventArgs e) =>
+        internal static void MouseUpFunc(object sender, MouseEventArgs e) {
             MouseScrolled = MouseIsDown = false;
-
+            #if DEBUG
+            if (Dev.ClickEventCheck > 1)
+                ActiveForm?.Invoke(SetInfoText, $"Possible OnClick() Event Error. #{++Dev.ClickErrors}");
+            ++Dev.ClickEventCheck;
+            #endif
+        }
 
         public static void MoveForm(object sender, MouseEventArgs e)
         {
-            if (!MouseIsDown)
+            if (!MouseIsDown || ActiveForm == null)
                 return;
 
             ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
             ActiveForm.Update();
-
-#if DEBUG
-            //Dev.MoveLogToAppEdge(ActiveForm.Location);
-#endif
         }
+
         public static void ControlHover(object sender, EventArgs _ = null) => HoverLeave((Control)sender, true);
         public static void ControlLeave(object sender, EventArgs _ = null) => HoverLeave((Control)sender, false);
         #endregion
@@ -1029,9 +1056,7 @@ namespace Dobby {
     //-|   Custom Class Extensions   |-\\
     //=================================\\
     #region [Class Extensions]
-
-
-    
+        
     public class TextBox : System.Windows.Forms.TextBox {
         public TextBox() {
 
@@ -1090,6 +1115,17 @@ namespace Dobby {
     /// Custom Button Class extention so I can attach a value to them. 
     /// </summary>
     public class Button : System.Windows.Forms.Button {
+        
+        # if DEBUG
+        /// <summary> OnClick event override to track dropped Click events (when tf did that start??)
+        ///</summary>
+        /// <param name="args"> The event args instance to send to the base OnClick event. </param>
+        protected override void OnClick(EventArgs args) {
+            Common.Dev.ClickEventCheck = 0;
+            base.OnClick(args);
+        }
+        #endif
+
 
 
         /// <summary>

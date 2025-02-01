@@ -26,8 +26,7 @@ namespace Dobby {
             var settingsFilePath = Directory.GetCurrentDirectory() + @"\PS4_IP.BLB";
 
             // Create and set event handlers for the IP and Port text boxes
-            IpBox.LostFocus += (control, args) =>
-            {
+            IpBox.LostFocus += (control, args) => {
                 if (!File.Exists(settingsFilePath))
                     CreateSettingsFile();
 
@@ -42,8 +41,7 @@ namespace Dobby {
                 else
                     ActiveForm?.Invoke(SetInfoText, $"Invalid IP specified; save aborted. (provided address: {IP})");
             };
-            PortBox.LostFocus += (control, args) =>
-            {
+            PortBox.LostFocus += (control, args) => {
                 if (!File.Exists(settingsFilePath))
                     CreateSettingsFile();
     
@@ -92,19 +90,8 @@ namespace Dobby {
         public Thread PayloadThread;
 
 
-        /// <summary>
-        /// Seperate boolean due to the PS4DBG.IsConnected property throwning an exception in certain cases. (TODO: rework and avoid this, lazy-arse //!)
-        /// </summary>
-        //private bool PS4DebugIsConnected;
-
-        /// <summary>
-        /// //! Maybe just remove this and rework stuff
-        /// </summary>
-        private bool WaitForConnection = true;
-
-
         /// <summary> If true, manually assigns a default title id matching the chosen game. </summary>
-        private bool IgnoreTitleID = false;
+        private bool IgnoreTitleID;
 
         /// <summary> Active PS4DBG Process ID </summary>
         private int Executable;
@@ -511,7 +498,7 @@ namespace Dobby {
         /// Toggle the IgnoreTitleID setting for use when the game has an edited title id, but is likele still supported.
         /// </summary>
         /// <param name="control"> The clicked control to which the Enabled/Disabled text will be appended to. </param>
-        private void IgnoreTitleIDBtn_Click(object control, EventArgs _) => ((Dobby.Button)control).Variable = !(bool) ((Dobby.Button)control).Variable;
+        private void IgnoreTitleIDBtn_Click(object control, EventArgs _) => ToggleBtnVar<bool>(control);
 
 
         /// <summary>
