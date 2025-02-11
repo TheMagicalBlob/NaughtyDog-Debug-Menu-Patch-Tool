@@ -4,6 +4,7 @@ using System.Drawing;
 using static Dobby.Common;
 using System.Windows.Forms;
 using Dobby.Resources;
+using System.Threading;
 
 
 namespace Dobby {
@@ -566,11 +567,8 @@ namespace Dobby {
         /// <param name="PatchType"></param>
         public void ApplyDebugPatches(int PatchType) {
             if(Game == 0) {
-                if(!FlashThreadHasStarted) {
-                    FlashThread.Start("GameInfoLabel");
-                    FlashThreadHasStarted = true;
-                }
-                LabelShouldFlash = true;
+                (FlashThread = new Thread(LabelFlashMethod)).Start("GameInfoLabel");
+                
                 SetInfoLabelText("Please Select A Game's Executable First");
                 InfoHasImportantStr = true;
                 return;

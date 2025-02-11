@@ -607,30 +607,24 @@ namespace Dobby {
                 Print("Label Flash Interrupted.");
             }
         };
-        public static Thread FlashThread = new Thread((label) => {
-            while (true)
-            {
-                while (!LabelShouldFlash)
-                    Thread.Sleep(1);
-                
-                try {
-                    for (int flashes = 0; flashes < 16; flashes++)
-                    {
-                        ActiveForm?.Invoke(SetLabelColour, label, (flashes & 1) == 0 ? Color.FromArgb(255, 227, 0) : Color.White);
-                        Thread.Sleep(135);
-                    }
-                }
-                catch (Exception) {
-                    Print("Form Changed or Lost Focus, Killing Label Flash");
-                    while (ActiveForm == null);
-                }
-                finally {
-                    LabelShouldFlash = false;
-                    ActiveForm?.Invoke(SetLabelColour, label, Color.FromArgb(255, 227, 0));
-                }
 
+        public static Thread FlashThread;
+        public static void LabelFlashMethod(dynamic label) {
+            try {
+                for (int flashes = 0; flashes < 16; flashes++)
+                {
+                    ActiveForm?.Invoke(SetLabelColour, (string) label, (flashes & 1) == 0 ? Color.FromArgb(255, 227, 0) : Color.White);
+                    Thread.Sleep(135);
+                }
             }
-        });
+            catch (Exception) {
+                Print("Form Changed or Lost Focus, Killing Label Flash");
+                while (ActiveForm == null);
+            }
+            finally {
+                ActiveForm?.Invoke(SetLabelColour, (string) label, Color.FromArgb(255, 227, 0));
+            }
+        }
         #endregion
 
 

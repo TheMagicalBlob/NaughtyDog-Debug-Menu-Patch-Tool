@@ -245,6 +245,7 @@
           "* 4.49-beta.261.728 | Removed duplicate Credits and Info/Help Page intialization events from main page (forgot to remove 'em after making that dynamic), fixed the previously half-reworked ChangeForm function. NOTE: Debug builds randomly ignore mouse click events now. kill me.",
           "* 4.49.264.741 | Finished neglected GP4CreationPage to remove that damn beta tag, Added check to see whether Click events are being dropped in release builds as well",
           "* 4.49.266.748 | Slight update to the DrawSeperatorLine method. (Just realized the lines aren't centered >:(. ), Changed label flash method to be less clunky, as well as support the main info label (or any control with a Color property, really...)",
+          "* 4.49.266.750 | Slight LabelFlash tweaks, again."
         };
 
 

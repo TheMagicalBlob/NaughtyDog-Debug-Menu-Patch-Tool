@@ -433,11 +433,8 @@ Read:       MainStream.Position = TmpAddr++;
 
         private void DisableDebugBtn_Click(object sender, EventArgs e) {
             if(Game == 0) {
-                if(!FlashThreadHasStarted) {
-                    FlashThread.Start("GameInfoLabel");
-                    FlashThreadHasStarted = true;
-                }
-                LabelShouldFlash = true;
+                (FlashThread = new Thread(LabelFlashMethod)).Start("GameInfoLabel");
+                
                 SetInfoLabelText("Please Select A Game's Executable First");
                 Common.InfoHasImportantStr = true;
                 return;
@@ -482,11 +479,8 @@ Read:       MainStream.Position = TmpAddr++;
 
         private void BaseDebugBtn_Click(object sender, EventArgs e) {
             if (Game == 0) {
-                if (!FlashThreadHasStarted) {
-                    FlashThread.Start("GameInfoLabel");
-                    FlashThreadHasStarted = true;
-                }
-                LabelShouldFlash = true;
+                (FlashThread = new Thread(LabelFlashMethod)).Start("GameInfoLabel");
+            
                 SetInfoLabelText("Please Select A Game's Executable First");
                 InfoHasImportantStr = true;
                 return;
