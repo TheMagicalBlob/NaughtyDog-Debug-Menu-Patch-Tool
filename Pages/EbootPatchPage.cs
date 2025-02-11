@@ -567,7 +567,7 @@ namespace Dobby {
         public void ApplyDebugPatches(int PatchType) {
             if(Game == 0) {
                 if(!FlashThreadHasStarted) {
-                    FlashThread.Start();
+                    FlashThread.Start("GameInfoLabel");
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;

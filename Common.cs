@@ -116,6 +116,8 @@ namespace Dobby {
         public static Size OriginalBorderScale;
 
         public static Form MainForm, PopupBox;
+
+        /// <summary> Refference to the current form's Info label. </summary>
         public static Control InfoLabel;
         public static GroupBox PopupGroupBox;
 
@@ -135,7 +137,7 @@ namespace Dobby {
         
         public delegate void InfoLabelUpdateCallback(string InfoText);
 
-        public delegate void LabelFlashDelegate();
+        public delegate void LabelFlashCallback(string Control, System.Drawing.Color colour);
 
 
 
@@ -183,7 +185,7 @@ namespace Dobby {
         public static string GetCurrentGame(FileStream stream) {
             var LocalExecutableCheck = new byte[160];
 
-            // 
+             
             stream.Position = 0;
             stream.Read(LocalExecutableCheck, 0, 4);
             if (BitConverter.ToInt32(LocalExecutableCheck, 0) != 1179403647)
@@ -492,8 +494,11 @@ namespace Dobby {
 
             PassedControl.Text = EventIsMouseEnter ? ($">{PassedControl.Text}") : PassedControl.Text.Substring(1);
 
+            // Resize controls to fit the arrow, unless they're already horizontally flush with the form
             if (PassedControl.Size.Width + PassedControl.Location.X != PassedControl.Parent.Size.Width - 1)
+            {
                 PassedControl.Size = new Size(EventIsMouseEnter ? PassedControl.Width + ArrowWidth : PassedControl.Width - ArrowWidth, PassedControl.Height);
+            }
         }
 
 
@@ -543,34 +548,43 @@ namespace Dobby {
             e.Graphics.DrawLines(BorderPen, Border);
         }
 
+
         /// <summary> Create and draw a thin white line from one end of the form to the other. (placeholder code atm)
         ///</summary>
-        public static void DrawSeperatorLine(object sender, PaintEventArgs e)
+        public static void DrawSeperatorLine(object sender, PaintEventArgs @event)
         {
             var item = sender as Label;
 
             if (item == null) {
                 Print("!! ERROR: Invalid control passed as Seperator line.");
-                Print($"  - Control \"{(((Control)sender).Name)}\" location: {((Control)sender).Location}.");
+                Print($"  - Control \"{item.Name}\" location: {item.Location}.");
             }
-            if (item.Size.Height != 15) {
-                Print($"# WARNING: A label on page \"{item.Parent.Name}\" has an invalid height!!! (Label at {item.Location} is {item.Size.Height} pixels in height)");
+            if (item.Height != 15) {
+                Print($"# WARNING: \"{item.Name}\" has an invalid height!!! (Label is {item.Height} pixels in hight)");
                 //item.Size = new Size(item.Size.Width, 15);
             }
+            if (!(item.Location.X == 2 && item.Width == item.Parent.Width - 4)) {
+                //Print($"# WARNING: A label on page \"{item.Parent.Name}\" has an invalid width and / or horizontal location!!! (Label at {item.Location} is {item.Width} pixels in width)");
+
+                Print($"Moved And Resized {item.Name} ({item.Parent.Name}).");
+                item.Location = new Point(2, item.Location.Y);
+                item.Width = item.Parent.Width - 4;
+            }
 
 
-            e.Graphics.Clear(Color.FromArgb(100, 100, 100));
-            e.Graphics.DrawLines(BorderPen, new Point[] {
-                new Point(1, 9),
-                new Point(item.Parent.Size.Width - 1, 9)
+            @event.Graphics.Clear(Color.FromArgb(100, 100, 100));
+            @event.Graphics.DrawLines(BorderPen, new Point[] {
+                new Point(0, 9),
+                new Point(item.Parent.Width, 9)
             });
         }
 
 
+        // TODO: rework this crap (the next three nethods)
+
         public static void WriteLabel(Form form, string message) => form.Invoke(SetInfoText, message);
 
 
-        
         public static InfoLabelUpdateCallback SetInfoText = value =>
         {
             if(ActiveForm != null)
@@ -580,29 +594,29 @@ namespace Dobby {
         };
 
 
+        /// <summary> Info Label Flash Delegate- for Cross-Threaded Label Setting. (I still suck with threads) </summary>
+        public static readonly LabelFlashCallback SetLabelColour = (control, colour) =>
+        {
+            try {
+                if (ActiveForm == null) return;
 
-        // TODO: rework this crap
-        public static readonly LabelFlashDelegate White = () => {
-            ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.White;
-            ActiveForm?.Update();
+                ActiveForm.Controls.Find(control, true)[0].ForeColor = colour;
+                ActiveForm?.Update();
+            }
+            catch (Exception) {
+                Print("Label Flash Interrupted.");
+            }
         };
-        public static readonly LabelFlashDelegate Yellow = () => {
-            ActiveForm.Controls.Find("GameInfoLabel", true)[0].ForeColor = Color.FromArgb(255, 227, 0);
-            ActiveForm?.Update();
-        };
-
-        public static Thread FlashThread = new Thread(() => {
+        public static Thread FlashThread = new Thread((label) => {
             while (true)
             {
                 while (!LabelShouldFlash)
                     Thread.Sleep(1);
                 
                 try {
-                    for (int Flashes = 0; Flashes < 8; Flashes++)
+                    for (int flashes = 0; flashes < 16; flashes++)
                     {
-                        ActiveForm?.Invoke(White);
-                        Thread.Sleep(135);
-                        ActiveForm?.Invoke(Yellow);
+                        ActiveForm?.Invoke(SetLabelColour, label, (flashes & 1) == 0 ? Color.FromArgb(255, 227, 0) : Color.White);
                         Thread.Sleep(135);
                     }
                 }
@@ -612,7 +626,7 @@ namespace Dobby {
                 }
                 finally {
                     LabelShouldFlash = false;
-                    ActiveForm?.Invoke(Yellow);
+                    ActiveForm?.Invoke(SetLabelColour, label, Color.FromArgb(255, 227, 0));
                 }
 
             }

@@ -434,7 +434,7 @@ Read:       MainStream.Position = TmpAddr++;
         private void DisableDebugBtn_Click(object sender, EventArgs e) {
             if(Game == 0) {
                 if(!FlashThreadHasStarted) {
-                    FlashThread.Start();
+                    FlashThread.Start("GameInfoLabel");
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;
@@ -483,7 +483,7 @@ Read:       MainStream.Position = TmpAddr++;
         private void BaseDebugBtn_Click(object sender, EventArgs e) {
             if (Game == 0) {
                 if (!FlashThreadHasStarted) {
-                    FlashThread.Start();
+                    FlashThread.Start("GameInfoLabel");
                     FlashThreadHasStarted = true;
                 }
                 LabelShouldFlash = true;

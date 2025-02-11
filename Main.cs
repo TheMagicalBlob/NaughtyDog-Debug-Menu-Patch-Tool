@@ -38,19 +38,19 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
             this.Info = new System.Windows.Forms.Label();
-            this.PS4DebugPageBtn = new Dobby.Button();
-            this.EbootPatchPageBtn = new Dobby.Button();
-            this.PS4MenuSettingsPageBtn = new Dobby.Button();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
             this.SeperatorLine3 = new System.Windows.Forms.Label();
-            this.PkgCreationPageBtn = new Dobby.Button();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.PCDebugMenuPageBtn = new Dobby.Button();
-            this.CreditsBtn = new Dobby.Button();
-            this.InfoHelpBtn = new Dobby.Button();
             this.Playstation4Label = new System.Windows.Forms.Label();
             this.PCLabel = new System.Windows.Forms.Label();
             this.DownloadSourceBtn = new Dobby.Button();
+            this.InfoHelpBtn = new Dobby.Button();
+            this.CreditsBtn = new Dobby.Button();
+            this.PCDebugMenuPageBtn = new Dobby.Button();
+            this.PkgCreationPageBtn = new Dobby.Button();
+            this.PS4DebugPageBtn = new Dobby.Button();
+            this.EbootPatchPageBtn = new Dobby.Button();
+            this.PS4MenuSettingsPageBtn = new Dobby.Button();
             this.SuspendLayout();
             // 
             // MainLabel
@@ -74,58 +74,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             this.Info.TabIndex = 7;
             this.Info.Text = "=====================================";
             // 
-            // PS4DebugPageBtn
-            // 
-            this.PS4DebugPageBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.PS4DebugPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.PS4DebugPageBtn.FlatAppearance.BorderSize = 0;
-            this.PS4DebugPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PS4DebugPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
-            this.PS4DebugPageBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.PS4DebugPageBtn.Location = new System.Drawing.Point(1, 51);
-            this.PS4DebugPageBtn.Name = "PS4DebugPageBtn";
-            this.PS4DebugPageBtn.Size = new System.Drawing.Size(262, 23);
-            this.PS4DebugPageBtn.TabIndex = 20;
-            this.PS4DebugPageBtn.Text = "Enable Debug Mode With PS4Debug...";
-            this.PS4DebugPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.PS4DebugPageBtn.UseVisualStyleBackColor = false;
-            this.PS4DebugPageBtn.Click += new System.EventHandler(this.PS4DebugPageBtn_Click);
-            // 
-            // EbootPatchPageBtn
-            // 
-            this.EbootPatchPageBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.EbootPatchPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.EbootPatchPageBtn.FlatAppearance.BorderSize = 0;
-            this.EbootPatchPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.EbootPatchPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
-            this.EbootPatchPageBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.EbootPatchPageBtn.Location = new System.Drawing.Point(1, 76);
-            this.EbootPatchPageBtn.Name = "EbootPatchPageBtn";
-            this.EbootPatchPageBtn.Size = new System.Drawing.Size(275, 23);
-            this.EbootPatchPageBtn.TabIndex = 25;
-            this.EbootPatchPageBtn.Text = "Patch eboot.bin With The Debug Menu...";
-            this.EbootPatchPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.EbootPatchPageBtn.UseVisualStyleBackColor = false;
-            this.EbootPatchPageBtn.Click += new System.EventHandler(this.EbootPatchPageBtn_Click);
-            // 
-            // PS4MenuSettingsPageBtn
-            // 
-            this.PS4MenuSettingsPageBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.PS4MenuSettingsPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.PS4MenuSettingsPageBtn.FlatAppearance.BorderSize = 0;
-            this.PS4MenuSettingsPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PS4MenuSettingsPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
-            this.PS4MenuSettingsPageBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.PS4MenuSettingsPageBtn.Location = new System.Drawing.Point(1, 102);
-            this.PS4MenuSettingsPageBtn.Name = "PS4MenuSettingsPageBtn";
-            this.PS4MenuSettingsPageBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.PS4MenuSettingsPageBtn.Size = new System.Drawing.Size(203, 23);
-            this.PS4MenuSettingsPageBtn.TabIndex = 27;
-            this.PS4MenuSettingsPageBtn.Text = "Misc. Debug Menu Settings...";
-            this.PS4MenuSettingsPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.PS4MenuSettingsPageBtn.UseVisualStyleBackColor = false;
-            this.PS4MenuSettingsPageBtn.Click += new System.EventHandler(this.PS4MenuSettingsPageBtn_Click);
-            // 
             // SeperatorLine0
             // 
             this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
@@ -140,28 +88,11 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             // 
             this.SeperatorLine3.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine3.Location = new System.Drawing.Point(3, 194);
+            this.SeperatorLine3.Location = new System.Drawing.Point(2, 194);
             this.SeperatorLine3.Name = "SeperatorLine3";
             this.SeperatorLine3.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine3.TabIndex = 32;
             this.SeperatorLine3.Text = "--------------------------------------------------------------";
-            // 
-            // PkgPageBtn
-            // 
-            this.PkgCreationPageBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.PkgCreationPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.PkgCreationPageBtn.FlatAppearance.BorderSize = 0;
-            this.PkgCreationPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PkgCreationPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
-            this.PkgCreationPageBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.PkgCreationPageBtn.Location = new System.Drawing.Point(1, 127);
-            this.PkgCreationPageBtn.Name = "PkgPageBtn";
-            this.PkgCreationPageBtn.Size = new System.Drawing.Size(260, 23);
-            this.PkgCreationPageBtn.TabIndex = 35;
-            this.PkgCreationPageBtn.Text = "Build New Patch Or Base Game .pkg...";
-            this.PkgCreationPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.PkgCreationPageBtn.UseVisualStyleBackColor = false;
-            this.PkgCreationPageBtn.Click += new System.EventHandler(this.PkgPageBtn_Click);
             // 
             // SeperatorLine1
             // 
@@ -172,57 +103,6 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             this.SeperatorLine1.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine1.TabIndex = 36;
             this.SeperatorLine1.Text = "--------------------------------------------------------------";
-            // 
-            // PCDebugMenuPageBtn
-            // 
-            this.PCDebugMenuPageBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.PCDebugMenuPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.PCDebugMenuPageBtn.FlatAppearance.BorderSize = 0;
-            this.PCDebugMenuPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PCDebugMenuPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
-            this.PCDebugMenuPageBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.PCDebugMenuPageBtn.Location = new System.Drawing.Point(1, 177);
-            this.PCDebugMenuPageBtn.Name = "PCDebugMenuPageBtn";
-            this.PCDebugMenuPageBtn.Size = new System.Drawing.Size(240, 23);
-            this.PCDebugMenuPageBtn.TabIndex = 37;
-            this.PCDebugMenuPageBtn.Text = "Patch .exe With The Debug Menu...";
-            this.PCDebugMenuPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.PCDebugMenuPageBtn.UseVisualStyleBackColor = false;
-            this.PCDebugMenuPageBtn.Click += new System.EventHandler(this.PCDebugMenuPageBtn_Click);
-            // 
-            // CreditsBtn
-            // 
-            this.CreditsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.CreditsBtn.FlatAppearance.BorderSize = 0;
-            this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CreditsBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
-            this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 233);
-            this.CreditsBtn.Name = "CreditsBtn";
-            this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.CreditsBtn.Size = new System.Drawing.Size(68, 23);
-            this.CreditsBtn.TabIndex = 28;
-            this.CreditsBtn.Text = "Credits...";
-            this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.CreditsBtn.UseVisualStyleBackColor = false;
-            // 
-            // InfoHelpBtn
-            // 
-            this.InfoHelpBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.InfoHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.InfoHelpBtn.FlatAppearance.BorderSize = 0;
-            this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InfoHelpBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
-            this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 210);
-            this.InfoHelpBtn.Name = "InfoHelpBtn";
-            this.InfoHelpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.InfoHelpBtn.Size = new System.Drawing.Size(139, 23);
-            this.InfoHelpBtn.TabIndex = 29;
-            this.InfoHelpBtn.Text = "Information / Help...";
-            this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.InfoHelpBtn.UseVisualStyleBackColor = false;
             // 
             // Playstation4Label
             // 
@@ -262,7 +142,135 @@ namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
             this.DownloadSourceBtn.Text = "Download Latest Source Code (Download Link)";
             this.DownloadSourceBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DownloadSourceBtn.UseVisualStyleBackColor = false;
+            this.DownloadSourceBtn.Variable = null;
             this.DownloadSourceBtn.Click += new System.EventHandler(this.DownloadSourceBtn_Click);
+            // 
+            // InfoHelpBtn
+            // 
+            this.InfoHelpBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.InfoHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.InfoHelpBtn.FlatAppearance.BorderSize = 0;
+            this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.InfoHelpBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
+            this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 210);
+            this.InfoHelpBtn.Name = "InfoHelpBtn";
+            this.InfoHelpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.InfoHelpBtn.Size = new System.Drawing.Size(139, 23);
+            this.InfoHelpBtn.TabIndex = 29;
+            this.InfoHelpBtn.Text = "Information / Help...";
+            this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.InfoHelpBtn.UseVisualStyleBackColor = false;
+            this.InfoHelpBtn.Variable = null;
+            // 
+            // CreditsBtn
+            // 
+            this.CreditsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.CreditsBtn.FlatAppearance.BorderSize = 0;
+            this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CreditsBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
+            this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 233);
+            this.CreditsBtn.Name = "CreditsBtn";
+            this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.CreditsBtn.Size = new System.Drawing.Size(68, 23);
+            this.CreditsBtn.TabIndex = 28;
+            this.CreditsBtn.Text = "Credits...";
+            this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.CreditsBtn.UseVisualStyleBackColor = false;
+            this.CreditsBtn.Variable = null;
+            // 
+            // PCDebugMenuPageBtn
+            // 
+            this.PCDebugMenuPageBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.PCDebugMenuPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.PCDebugMenuPageBtn.FlatAppearance.BorderSize = 0;
+            this.PCDebugMenuPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PCDebugMenuPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
+            this.PCDebugMenuPageBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.PCDebugMenuPageBtn.Location = new System.Drawing.Point(1, 177);
+            this.PCDebugMenuPageBtn.Name = "PCDebugMenuPageBtn";
+            this.PCDebugMenuPageBtn.Size = new System.Drawing.Size(240, 23);
+            this.PCDebugMenuPageBtn.TabIndex = 37;
+            this.PCDebugMenuPageBtn.Text = "Patch .exe With The Debug Menu...";
+            this.PCDebugMenuPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.PCDebugMenuPageBtn.UseVisualStyleBackColor = false;
+            this.PCDebugMenuPageBtn.Variable = null;
+            this.PCDebugMenuPageBtn.Click += new System.EventHandler(this.PCDebugMenuPageBtn_Click);
+            // 
+            // PkgCreationPageBtn
+            // 
+            this.PkgCreationPageBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.PkgCreationPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.PkgCreationPageBtn.FlatAppearance.BorderSize = 0;
+            this.PkgCreationPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PkgCreationPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
+            this.PkgCreationPageBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.PkgCreationPageBtn.Location = new System.Drawing.Point(1, 127);
+            this.PkgCreationPageBtn.Name = "PkgCreationPageBtn";
+            this.PkgCreationPageBtn.Size = new System.Drawing.Size(260, 23);
+            this.PkgCreationPageBtn.TabIndex = 35;
+            this.PkgCreationPageBtn.Text = "Build New Patch Or Base Game .pkg...";
+            this.PkgCreationPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.PkgCreationPageBtn.UseVisualStyleBackColor = false;
+            this.PkgCreationPageBtn.Variable = null;
+            this.PkgCreationPageBtn.Click += new System.EventHandler(this.PkgPageBtn_Click);
+            // 
+            // PS4DebugPageBtn
+            // 
+            this.PS4DebugPageBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.PS4DebugPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.PS4DebugPageBtn.FlatAppearance.BorderSize = 0;
+            this.PS4DebugPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PS4DebugPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
+            this.PS4DebugPageBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.PS4DebugPageBtn.Location = new System.Drawing.Point(1, 51);
+            this.PS4DebugPageBtn.Name = "PS4DebugPageBtn";
+            this.PS4DebugPageBtn.Size = new System.Drawing.Size(262, 23);
+            this.PS4DebugPageBtn.TabIndex = 20;
+            this.PS4DebugPageBtn.Text = "Enable Debug Mode With PS4Debug...";
+            this.PS4DebugPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.PS4DebugPageBtn.UseVisualStyleBackColor = false;
+            this.PS4DebugPageBtn.Variable = null;
+            this.PS4DebugPageBtn.Click += new System.EventHandler(this.PS4DebugPageBtn_Click);
+            // 
+            // EbootPatchPageBtn
+            // 
+            this.EbootPatchPageBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.EbootPatchPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.EbootPatchPageBtn.FlatAppearance.BorderSize = 0;
+            this.EbootPatchPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.EbootPatchPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
+            this.EbootPatchPageBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.EbootPatchPageBtn.Location = new System.Drawing.Point(1, 76);
+            this.EbootPatchPageBtn.Name = "EbootPatchPageBtn";
+            this.EbootPatchPageBtn.Size = new System.Drawing.Size(275, 23);
+            this.EbootPatchPageBtn.TabIndex = 25;
+            this.EbootPatchPageBtn.Text = "Patch eboot.bin With The Debug Menu...";
+            this.EbootPatchPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.EbootPatchPageBtn.UseVisualStyleBackColor = false;
+            this.EbootPatchPageBtn.Variable = null;
+            this.EbootPatchPageBtn.Click += new System.EventHandler(this.EbootPatchPageBtn_Click);
+            // 
+            // PS4MenuSettingsPageBtn
+            // 
+            this.PS4MenuSettingsPageBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.PS4MenuSettingsPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.PS4MenuSettingsPageBtn.FlatAppearance.BorderSize = 0;
+            this.PS4MenuSettingsPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PS4MenuSettingsPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
+            this.PS4MenuSettingsPageBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.PS4MenuSettingsPageBtn.Location = new System.Drawing.Point(1, 102);
+            this.PS4MenuSettingsPageBtn.Name = "PS4MenuSettingsPageBtn";
+            this.PS4MenuSettingsPageBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.PS4MenuSettingsPageBtn.Size = new System.Drawing.Size(203, 23);
+            this.PS4MenuSettingsPageBtn.TabIndex = 27;
+            this.PS4MenuSettingsPageBtn.Text = "Misc. Debug Menu Settings...";
+            this.PS4MenuSettingsPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.PS4MenuSettingsPageBtn.UseVisualStyleBackColor = false;
+            this.PS4MenuSettingsPageBtn.Variable = null;
+            this.PS4MenuSettingsPageBtn.Click += new System.EventHandler(this.PS4MenuSettingsPageBtn_Click);
             // 
             // Main
             // 
