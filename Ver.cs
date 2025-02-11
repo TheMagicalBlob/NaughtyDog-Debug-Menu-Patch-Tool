@@ -248,7 +248,8 @@
           "* 4.49.266.750 | Slight LabelFlash tweaks, again.",
           "* 4.49.268.754 | Slightly sorted Common variables/properties, Misc.",
           "* 4.49.271.761 | Misc GP4 Creation Page / libgp4 BS.",
-          "* 4.50.272.764 | GP4CreationPage base functionality implemented"
+          "* 4.50.272.764 | GP4CreationPage base functionality implemented",
+          "* 4.50.272.765 | Tiny PKGCreationPage fix. Oops.",
         };
 
 

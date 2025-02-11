@@ -90,7 +90,7 @@ namespace Dobby {
                     stream.Read(Check, 0, 4);
 
                     if(Check.SequenceEqual(new byte[] { 0x46, 0xD1, 0xB8 }) || Check.SequenceEqual(new byte[] { 0x50, 0x45, 0x00 }) || file.Contains("orbis-pub-cmd") || file.Contains("-keystone")) {
-                        CmdPathBox.Text = OrbisToolPath = file;
+                        OrbisCmdPathBox.Text = OrbisToolPath = file;
 
                         Print($"{file}\\{OrbisToolPath} Set As OrbisPubCmdPath");
                         return;
@@ -105,6 +105,8 @@ namespace Dobby {
                 goto CheckFiles;
             }
             */
+#else
+            SetInfoLabelText("Disabled Because it's sus to AV's.");
 #endif
         }
 
