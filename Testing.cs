@@ -146,6 +146,10 @@ namespace Dobby {
 
         public static void DebugControlHover(object sender, EventArgs e) => HoveredControl = (Control)sender;
 
+        
+        public static string TestGamedataFolder;
+        public static string TestGP4Path;
+
         public bool OverrideMsgOut;
 
         internal int ClickErrors = 1;

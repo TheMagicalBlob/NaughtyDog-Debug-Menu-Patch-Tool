@@ -243,9 +243,12 @@
           "* 4.49-beta.252.706 | Slight PS4DBG usage tweak in PS4DebugPage.Toggle() methods, *mostly finished reworking PS4DBG connection thread setup and other related background functionality *(I have a migraine and need to clean it up later, but it works)",
           "* 4.49-beta.256.723 | Reworking Dobby.Dev and Dobby.Dev.LogWindow classes; renamed Dobby.Dev => Dobby.Testing. Small PS4DebugPage fix.",
           "* 4.49-beta.261.728 | Removed duplicate Credits and Info/Help Page intialization events from main page (forgot to remove 'em after making that dynamic), fixed the previously half-reworked ChangeForm function. NOTE: Debug builds randomly ignore mouse click events now. kill me.",
-          "* 4.49.264.741 | Finished neglected GP4CreationPage to remove that damn beta tag, Added check to see whether Click events are being dropped in release builds as well",
+          "* 4.49.264.741 | Finished neglected GP4CreationPage base to remove that damn beta tag, Added check to see whether Click events are being dropped in release builds as well",
           "* 4.49.266.748 | Slight update to the DrawSeperatorLine method. (Just realized the lines aren't centered >:(. ), Changed label flash method to be less clunky, as well as support the main info label (or any control with a Color property, really...)",
-          "* 4.49.266.750 | Slight LabelFlash tweaks, again."
+          "* 4.49.266.750 | Slight LabelFlash tweaks, again.",
+          "* 4.49.268.754 | Slightly sorted Common variables/properties, Misc.",
+          "* 4.49.271.761 | Misc GP4 Creation Page / libgp4 BS.",
+          "* 4.50.272.764 | GP4CreationPage base functionality implemented"
         };
 
 

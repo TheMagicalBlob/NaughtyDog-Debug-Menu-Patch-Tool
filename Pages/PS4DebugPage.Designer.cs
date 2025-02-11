@@ -4,10 +4,10 @@ namespace Dobby
     internal partial class PS4DebugPage
     {
 
-        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     Designer Crap, No Touchie      --\\\
-        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
-        #region Designer Crap, No Touchie
+        //======================================\\
+        //--|   Designer Crap, No Touchie   |--\\\
+        //======================================\\
+        #region [Designer Crap, No Touchie]
         /// <summary>
         /// Required designer variable.
         /// </summary>

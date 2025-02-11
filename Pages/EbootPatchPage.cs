@@ -567,7 +567,7 @@ namespace Dobby {
         /// <param name="PatchType"></param>
         public void ApplyDebugPatches(int PatchType) {
             if(Game == 0) {
-                (FlashThread = new Thread(LabelFlashMethod)).Start("GameInfoLabel");
+                (LabelFlashThread = new Thread(LabelFlashMethod)).Start("GameInfoLabel");
                 
                 SetInfoLabelText("Please Select A Game's Executable First");
                 InfoHasImportantStr = true;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -13,7 +14,7 @@ using System.Diagnostics;
 
 namespace Dobby {
     
-    public class Common : Main {
+    internal class Common : Main {
         //#error version
 
         // Spacing:
@@ -47,46 +48,37 @@ namespace Dobby {
         //  - PS4DebugPage Consistency Fix (Can't Seem To Reproduce? [The Bug, I Mean. Not That I Don't Want The Other Thing])
 
 
-        /*
-        //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///--  MAIN APPLICATION VARIABLES & Functions  --\\\
-        //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
-        */
+        //==============================================================\\
+        //--|   Main Application Functions & Variable Declarations   |--\\
+        //==============================================================\\
         #region Main Application Functions & Variable Declarations
 
-    #if DEBUG
-        /// <summary> Debug class instance. </summary>
-        public static Testing Dev;
-    #endif
+
+        
+        // Basic Functionality Components
+        #region [Basic Functionality Components]
 
 
+        public static Point LastFormPosition, MousePos, MouseDif;
+        public static Point[] OriginalControlPositions;
 
-        /// <summary>
-        /// ID's for the various pages (forms) in the application.
-        /// </summary>
-        public enum PageID : byte {
-            MainPage = 0,
-            PS4DebugPage = 1,
-            PS4DebugHelpPage = 11,
-            EbootPatchPage = 2,
-            EbootPatchHelpPage = 21,
-            PS4MenuSettingsPage = 3,
-            PS4MenuSettingsHelpPage = 31,
-            PkgCreationPage = 4,
-            PkgCreationHelpPage = 41,
-            Gp4CreationPage = 5,
-            Gp4CreationHelpPage = 51,
-            PCDebugMenuPage = 6,
-            InfoHelpPage = 7,
-            CreditsPage = 8
-        }
-
+        public static Size OriginalFormScale = Size.Empty;
+        public static Size OriginalBorderScale;
 
         public static string
             CurrentControl,
             TempStringStore,
             ActiveGameID = "UNK"
         ;
+        
+        
+    #if DEBUG
+        /// <summary> Debug class instance. </summary>
+        public static Testing Dev;
+    #endif
+        #endregion [Basic Functionality Components]
+
+
 
         /// <summary> ID for the active game. </summary>
         public static GameIDs Game;
@@ -108,36 +100,53 @@ namespace Dobby {
             MainStreamIsOpen
         ;
 
-        
-        public static Point LastFormPosition, MousePos, MouseDif;
-        public static Point[] OriginalControlPositions;
 
-        public static Size OriginalFormScale = Size.Empty;
-        public static Size OriginalBorderScale;
 
-        public static Form MainForm, PopupBox;
+        // Control Refferences
+        #region [Control Refferences]
+        /// <summary> Refference to the originally launched form. </summary>
+        private static Form MainForm;
+        public static Form PopupBox;
 
         /// <summary> Refference to the current form's Info label. </summary>
         public static Control InfoLabel;
+
+        /// <summary> GroupBox for eventual use in yet-unfinished custom popup box function. (so they fit the app's "theme") </summary>
         public static GroupBox PopupGroupBox;
+        #endregion Control Refferences
+        
+        
 
-        public static TcpClient TcpClient;
-        public static NetworkStream NetStream;
-        public static FileStream MainStream;
-
-
-        #region    Design-Related
+        // Design-Related Components
+        #region [Design Components]
         public static Font MainFont = new Font("Consolas", 9.75F, FontStyle.Bold);
+        public static Font DefaultTextFont = new Font("Consolas", 9.75F, FontStyle.Bold | FontStyle.Italic);
         public static Color MainColour = Color.FromArgb(100, 100, 100);
+        public static Color HighlightColour = Color.White;
         
         ///<summary> Form Border Pen </summary>
-        public static Pen BorderPen = new Pen(Color.White);
-        #endregion Design-Related
-
+        private static Pen BorderPen = new Pen(HighlightColour);
+        #endregion [Design Components]
         
+
+
+        // Threading Components
+        #region [Threading Components]
+        public static Thread LabelFlashThread;
+
         public delegate void InfoLabelUpdateCallback(string InfoText);
 
         public delegate void LabelFlashCallback(string Control, System.Drawing.Color colour);
+        #endregion [Threading Components]
+        //^
+
+        // Network-Related Components
+        #region [Network-Related Components]
+        public static TcpClient TcpClient;
+        public static NetworkStream NetStream;
+        public static FileStream MainStream;
+        #endregion [Network-Related Components]
+        //^
 
 
 
@@ -147,6 +156,11 @@ namespace Dobby {
             Dev.Print(message);
             #endif
         }
+
+
+        /// <summary> Save a refference to the orignal launch form. </summary>
+        /// <param name="form"> The orignal form </param>
+        public static void SaveMainForm(Form form) => MainForm = form;
 
 
         /// <summary> Write A Byte To The MainStream And Flush The Data </summary>
@@ -608,7 +622,6 @@ namespace Dobby {
             }
         };
 
-        public static Thread FlashThread;
         public static void LabelFlashMethod(dynamic label) {
             try {
                 for (int flashes = 0; flashes < 16; flashes++)
@@ -911,10 +924,31 @@ namespace Dobby {
 
 
 
-        //================================================\\
-        ///-- DEBUG MODE OFFSETS AND GAME INDENTIFIERS --\\\
-        //================================================\\
-        #region Debug Offsets & Game Identifiers
+        //=======================\\
+        //--|   Enumerators   |--\\
+        //=======================\\
+        #region [Enumerators]
+        
+        /// <summary> ID's for the various pages (forms) in the application. </summary>
+        public enum PageID : byte {
+            MainPage = 0,
+            PS4DebugPage = 1,
+            PS4DebugHelpPage = 11,
+            EbootPatchPage = 2,
+            EbootPatchHelpPage = 21,
+            PS4MenuSettingsPage = 3,
+            PS4MenuSettingsHelpPage = 31,
+            PkgCreationPage = 4,
+            PkgCreationHelpPage = 41,
+            Gp4CreationPage = 5,
+            Gp4CreationHelpPage = 51,
+            PCDebugMenuPage = 6,
+            InfoHelpPage = 7,
+            CreditsPage = 8
+        }
+
+
+
         public enum GameIDs : long {
             // Read 160 bytes at 0x5100 as SHA256 Then Checked As Int32 Because I'm An Idiot And Don't Feel Like Correcting It Since It Works
             UC1100 = -679355525,
@@ -1064,7 +1098,75 @@ namespace Dobby {
     //-|   Custom Class Extensions   |-\\
     //=================================\\
     #region [Class Extensions]
+    
+    
+    /// <summary> Custom TextBox Class to Better Handle Default TextBox Contents. </summary>
+    public class TextBox : System.Windows.Forms.TextBox
+    {
+        /// <summary> Create New Control Instance. </summary>
+        public TextBox()
+        {
+            IsDefault = true;
+
+            Click += (bite, me) => ClearControl();
+            GotFocus += (bite, me) => ClearControl(); // Both Events, Just-In-Case.
+            TextChanged += SetDefaultText;
+
+            // Reset control if nothing different was entered
+            LostFocus += (bite, me) => {
+                if(Text.Trim().Length == 0 || DefaultText.Contains(Text)) {
+                    Font = Common.DefaultTextFont;
+                    Text = DefaultText;
+                    IsDefault = true;
+                }
+            };
+        }
+/*
+        public override string Text { get { if (IsDefault) return "fag"; return _Text; } set { _Text = value; base.Text = value; } }
+        private string _Text;
+*/
+
+
+        private void ClearControl()
+        {
+            if(IsDefault) {
+                IsDefault = false;
+                Font = Common.MainFont;
+                Clear();
+            }
+        }
+
+        /// <summary> Yoink Default Text From First Text Assignment (Ideally right after being created). </summary>
+        private void SetDefaultText(object _, EventArgs __) {
+            DefaultText = Text;
+            TextChanged -= SetDefaultText;
+            TextChanged += (sender, e) => Text = Text.Replace("\"", string.Empty);
+        }
+
+        /// <summary> Set Control Text and State Properly (meh). </summary>
+        public void Set(string text) {
+            if (text != string.Empty && !DefaultText.Contains(text))
+            {   
+                Font = Common.DefaultTextFont;
+                Text = text;
+                IsDefault = false;
+            }
+        }
+
+
+
+
+
+
+        // Default Control Text to Be Displayed When "Empty".
+        private string DefaultText;
+
+        // Help Better Keep Track of Whether the User's Changed the Text, Because I'm a Moron.
+        public bool IsDefault { get; private set; }
         
+    }
+
+/*
     public class TextBox : System.Windows.Forms.TextBox {
         public TextBox() {
 
@@ -1117,6 +1219,7 @@ namespace Dobby {
             };
         }
     }
+*/
 
 
     /// <summary>
@@ -1133,8 +1236,7 @@ namespace Dobby {
             base.OnClick(args);
         }
         #endif
-
-
+        
 
         /// <summary>
         /// Custom value associated with the control to be rendered alongside it, and edited via manually assigned per-control events.

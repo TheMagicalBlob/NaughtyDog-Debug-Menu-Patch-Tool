@@ -66,10 +66,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Main.Designer.cs">
+      <SubType>Form</SubType>
+      <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Pages\Gp4CreationPage.Designer.cs">
       <SubType>Form</SubType>
       <DependentUpon>Gp4CreationPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PkgCreationPage.Designer.cs">
+      <SubType>Form</SubType>
+      <DependentUpon>PkgCreationPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Pages\PS4DebugPage.Designer.cs">
       <SubType>Form</SubType>
