@@ -89,7 +89,6 @@ namespace Dobby {
         /// <summary> Thread for sending the ps4debug payload to a client PS4 "bin loader", specified by the IP and Port boxes. </summary>
         public Thread PayloadThread;
 
-
         /// <summary> If true, manually assigns a default title id matching the chosen game. </summary>
         private bool IgnoreTitleID;
 

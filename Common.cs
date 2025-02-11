@@ -20,19 +20,17 @@ namespace Dobby {
         // Spacing:
         // Info & Back Btn; Info: Form.Size.Y - Info.Size.Y | BackBtn Pos: (Info Vertical Pos - BackBtn.Size.Y - 3)
 
-        /*
-        ////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///                 Design Bullshit                  \\\
-        ///__________________________________________________\\\
-        /// * FONT USAGE: (Use Bold For Both)                \\\
-        /// - Use Franklin Gothic 10pt For Basic Controls    \\\
-        /// - Use Cambria 9.75pt For Information Pages       \\\
-        ///                                                  \\\
-        /// * Borders And Seperator Lines                    \\\
-        /// - Keep Controls At Least 1 Pixel From Form Edge  \\\
-        /// - Lines Should Be 2 Pixels From Either Form Edge \\\
-        ////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        */
+        //==================================================\\
+        //                 Design Bullshit                  \\
+        //__________________________________________________\\
+        // * FONT USAGE: (Use Bold For Both)                \\
+        // - Use Franklin Gothic 10pt For Basic Controls    \\
+        // - Use Cambria 9.75pt For Information Pages       \\
+        //                                                  \\
+        // * Borders And Seperator Lines                    \\
+        // - Keep Controls At Least 1 Pixel From Form Edge  \\
+        // - Lines Should Be 2 Pixels From Either Form Edge \\
+        //==================================================\\
 
 
         // TODO:
@@ -40,11 +38,11 @@ namespace Dobby {
         //  - Create Remaining Two Help Pages
         //  - Refactor EbootPatchPage Code. Check The Others, Too
         //  - Gp4CreationPage Unfinished, Only Base Functionality Added
-        // * MINOR 
-        //  - Label Flash Stays On White If Inturrupted at the right time
-        //  - Update PKG Creation Page To Be More Like GP4 Creation Page
         //  - Standardize Help Page Styles
-        //  - Standardize Info Label And Back Button Positioning, As Well As Space Between Controls
+        // * MINOR 
+        //  - Update PKG Creation Page To Be More Like GP4 Creation Page
+        //  - Standardize Info Label And Back Button Positioning / Spacing
+        //  - Standardize Spaceing Between Controls
         //  - PS4DebugPage Consistency Fix (Can't Seem To Reproduce? [The Bug, I Mean. Not That I Don't Want The Other Thing])
 
 
@@ -138,7 +136,8 @@ namespace Dobby {
 
         public delegate void LabelFlashCallback(string Control, System.Drawing.Color colour);
         #endregion [Threading Components]
-        //^
+        
+
 
         // Network-Related Components
         #region [Network-Related Components]
@@ -146,10 +145,11 @@ namespace Dobby {
         public static NetworkStream NetStream;
         public static FileStream MainStream;
         #endregion [Network-Related Components]
-        //^
 
 
-
+        /// <summary>
+        /// Dev.Print overload, for some reason. //!
+        /// </summary>
         public static void Print(object message = null)
         {
             #if DEBUG
@@ -749,11 +749,6 @@ namespace Dobby {
         }
 
 
-
-
-        /// <summary>
-        /// Apply Basic Event Handlers To Form And It's Items
-        /// </summary>
 
 
         /// <summary>
