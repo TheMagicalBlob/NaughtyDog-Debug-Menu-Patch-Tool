@@ -28,7 +28,13 @@ namespace Dobby {
             AbsoluteFilePathsBtn.Variable = false;
             IgnoreKeystoneBtn.Variable = false;
 
-            gp4 = new GP4Creator();
+            gp4 = new GP4Creator() {
+        #if DEBUG
+                VerboseOutput = true,
+        #endif
+                SkipEndComment = true,
+                SkipIntegrityCheck = false
+            };
         }
 
 
@@ -54,9 +60,7 @@ namespace Dobby {
             //#
             //## Assign Defaults/Verify Options.
             //#
-            #region [Assign Defaults/Verify Options]
-
-
+            
             // Check for Unassigned Gamedata Path Before Proceeding
             if (GamedataPathTextBox.IsDefault)
             {
@@ -82,17 +86,13 @@ namespace Dobby {
             }
 
 
+            // Load these two twats
             gp4.UseAbsoluteFilePaths = (bool) AbsoluteFilePathsBtn.Variable;
-
-            gp4.IgnoreKeystone = (bool) IgnoreKeystoneBtn.Variable;
-
-            #endregion [Assign Defaults/Verify Options]
+            gp4.IgnoreKeystone       = (bool) IgnoreKeystoneBtn.Variable;
 
 
 
-            //#
-            //## Begin .gp4 Creation if all's well
-            //#
+            //# Begin .gp4 Creation if all's well
             gp4.CreateGP4();
         }
 
