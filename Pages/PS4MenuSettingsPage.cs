@@ -841,8 +841,8 @@ namespace Dobby {
             Print();
 #else
             if (offset != null)
-            MainStream.Position = (int)offset;
-            MainStream.Write(data, 0, data.Length);
+            fileStream.Position = (int)offset;
+            fileStream.Write(data, 0, data.Length);
 #endif
         }
         private  void WriteByte(int? offset = null, byte data = 0) {
@@ -856,8 +856,8 @@ namespace Dobby {
             Print(msg);
 #else
             if(offset != null)
-            MainStream.Position = (int)offset;
-            MainStream.WriteByte(data);
+            fileStream.Position = (int)offset;
+            fileStream.WriteByte(data);
 #endif
         }
         private  void WriteVar(int? offset = null, object data = null) {
@@ -888,17 +888,17 @@ namespace Dobby {
             Print($"var: {msg}");
 #else
             if(offset != null)
-                MainStream.Position = (int)offset;
+                fileStream.Position = (int)offset;
 
             try { // this is stupid
                 if(data.GetType() == typeof(byte))
-                    MainStream.WriteByte(BitConverter.GetBytes((byte)data)[0]);
+                    fileStream.WriteByte(BitConverter.GetBytes((byte)data)[0]);
                 
                 else if(data.GetType() == typeof(bool))
-                    MainStream.WriteByte(BitConverter.GetBytes((bool)data)[0]);
+                    fileStream.WriteByte(BitConverter.GetBytes((bool)data)[0]);
 
                 else if(data.GetType() == typeof(float))
-                    MainStream.Write(BitConverter.GetBytes((float)data), 0, BitConverter.GetBytes((float)data).Length);
+                    fileStream.Write(BitConverter.GetBytes((float)data), 0, BitConverter.GetBytes((float)data).Length);
             }
             catch (Exception) {}
 #endif

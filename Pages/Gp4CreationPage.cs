@@ -56,6 +56,9 @@ namespace Dobby {
         //=================================\\
         #region [Function Declarations]
 
+        /// <summary>
+        /// Apply all the non-default .gp4 options and attempt project file creation.
+        /// </summary>
         private void StartGp4CreationBtn_Click(object sender, EventArgs e) {
             
 
@@ -135,9 +138,12 @@ namespace Dobby {
 
 
 
-        
+        /// <summary>
+        /// Initialize a new FolderBrowserDialogue instance in which to select the gamedata folder.
+        /// <br/> TODO: Implement switch.
+        /// </summary>
         private void GamedataPathBrowseBtn_Click(object sender, EventArgs e)
-        {//! TODO: Implement switch.
+        {
             // Use the ghastly Directory Tree Dialogue to Choose A Folder
             if (true)
             {
@@ -149,7 +155,7 @@ namespace Dobby {
                 }
 
             }
-            // Use The Newer "Hackey" Method
+            // Use The Newer "Hackey" Method //!
             else {
                 using(fileDialogue = new OpenFileDialog {
                     ValidateNames   = false,
@@ -168,6 +174,11 @@ namespace Dobby {
             ((Dobby.Button)sender).ForeColor = Color.White;
         }
 
+
+
+        /// <summary>
+        /// Initialize a new FolderBrowserDialogue Instance in which to choose the output directory for the created .gp4 project.
+        /// </summary>
         private void Gp4OutputDirectoryBrowseBtn_Click(object sender, EventArgs e)
         {
             using(folderDialogue = new FolderBrowserDialog {

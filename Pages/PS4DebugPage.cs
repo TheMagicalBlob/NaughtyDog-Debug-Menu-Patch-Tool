@@ -394,9 +394,7 @@ namespace Dobby {
             }
             catch(Exception tabarnack) {
                 ActiveForm?.Invoke(SetInfoText, $"Connection to {IP} Failed.");
-                #if DEBUG
-                Dev.PrintError(tabarnack);
-                #endif
+                Print(tabarnack);
             }
         }
 

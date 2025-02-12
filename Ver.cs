@@ -251,7 +251,8 @@
           "* 4.50.272.764 | GP4CreationPage base functionality implemented",
           "* 4.50.272.765 | Tiny PKGCreationPage fix. Oops.",
           "* 4.51.275.772 | GP4CreationPage should be alright to go now, other misc formatting and background tweaks",
-          "* 4.51.279.778 | Replaced mass int declarations with enums (for GameID's and Debug Addresses), Reworking non-ps4debug patch pages (background, not user-side)."
+          "* 4.51.279.778 | Replaced mass int declarations with enums (for GameID's and Debug Addresses), Reworking non-ps4debug patch pages (background, not user-side).",
+          "* 4.51.280.781 | Miscellaneous crap",
         };
 
 

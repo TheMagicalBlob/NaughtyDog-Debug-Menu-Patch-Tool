@@ -155,6 +155,16 @@ namespace Dobby {
             #endif
         }
 
+                
+        /// <summary>
+        /// Basic error logging function (not yet fully implemented)
+        /// </summary>
+        public static void PrintError(Exception tabarnack) {
+#if DEBUG
+            Print($"!! ERROR: {tabarnack.Message}\n{tabarnack.StackTrace.Replace("\n", "  \n")}");
+#endif
+        }
+
 
         /// <summary> Save a refference to the orignal launch form. </summary>
         /// <param name="form"> The orignal form </param>

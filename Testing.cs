@@ -62,17 +62,7 @@ namespace Dobby {
                 Console.WriteLine(str);
 #endif
         }
-        
-        /// <summary>
-        /// Basic error logging function (not yet fully implemented)
-        /// </summary>
-        public void PrintError(Exception tabarnack) {
-#if DEBUG
-            Print($"!! ERROR: {tabarnack.Message}\n{tabarnack.StackTrace.Replace("\n", "  \n")}");
-            
-            // placeholder
-#endif
-        }
+
 
 
 
