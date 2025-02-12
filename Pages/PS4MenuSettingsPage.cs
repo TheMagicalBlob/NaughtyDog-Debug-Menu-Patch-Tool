@@ -29,11 +29,11 @@ namespace Dobby {
 #endif
         }
 
-
-        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     Designer Crap, No Touchie      --\\\
-        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
-        #region Designer Crap, No Touchie
+        
+        //=====================================\\
+        //--|   Designer Crap, No Touchie   |--\\
+        //=====================================\\
+        #region [Designer Crap, No Touchie]
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -223,7 +223,6 @@ namespace Dobby {
             this.BackBtn.Text = "Back...";
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
-            this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
             // 
             // CustomDebugOptionsLabel
             // 
@@ -795,7 +794,7 @@ namespace Dobby {
             RB_StartPos
         ;
 
-        internal GameIDs Game = GameIDs.Empty;
+        internal GameID Game = GameID.Empty;
 
         /// <summary>
         /// 0:  UC1100<br/>
@@ -826,15 +825,18 @@ namespace Dobby {
         private static bool MultipleButtonsEnabled;
 
 
+        FileStream fileStream;
 
-        public static void WriteBytes(int? offset = null, byte[] data = null) {
+
+
+        private void WriteBytes(int? offset = null, byte[] data = null) {
 #if DEBUG
             var msg = $"Data {BitConverter.ToString(data).Replace("-", "")} Written To ";
             if(offset != null)
-                MainStream.Position = (int)offset;
-            msg += MainStream.Position.ToString("X"); // trust issues
+                fileStream.Position = (int)offset;
+            msg += fileStream.Position.ToString("X"); // trust issues
 
-            MainStream.Write(data, 0, data.Length);
+            fileStream.Write(data, 0, data.Length);
             Print(msg);
             Print();
 #else
@@ -843,14 +845,14 @@ namespace Dobby {
             MainStream.Write(data, 0, data.Length);
 #endif
         }
-        public static void WriteByte(int? offset = null, byte data = 0) {
+        private  void WriteByte(int? offset = null, byte data = 0) {
 #if DEBUG
             var msg = $"Byte {data:X} Written To ";
             if(offset != null)
-                MainStream.Position = (int)offset;
-            msg += MainStream.Position.ToString("X"); // trust issues
+                fileStream.Position = (int)offset;
+            msg += fileStream.Position.ToString("X"); // trust issues
 
-            MainStream.WriteByte(data);
+            fileStream.WriteByte(data);
             Print(msg);
 #else
             if(offset != null)
@@ -858,26 +860,26 @@ namespace Dobby {
             MainStream.WriteByte(data);
 #endif
         }
-        public static void WriteVar(int? offset = null, object data = null) {
+        private  void WriteVar(int? offset = null, object data = null) {
 #if DEBUG
             var msg = " Written To ";
 
             if(offset != null)
-                MainStream.Position = (int)offset;
-            msg += MainStream.Position.ToString("X");
+                fileStream.Position = (int)offset;
+            msg += fileStream.Position.ToString("X");
 
             try { // this is stupid
                 if(data.GetType() == typeof(byte)) {
-                    MainStream.WriteByte(BitConverter.GetBytes((byte)data)[0]);
+                    fileStream.WriteByte(BitConverter.GetBytes((byte)data)[0]);
                     msg = (byte)data + msg;
                 }
                 else if(data.GetType() == typeof(bool)) {
-                    MainStream.WriteByte(BitConverter.GetBytes((bool)data)[0]);
+                    fileStream.WriteByte(BitConverter.GetBytes((bool)data)[0]);
                     msg = (bool)data + msg;
                 }
 
                 else if(data.GetType() == typeof(float)) {
-                    MainStream.Write(BitConverter.GetBytes((float)data), 0, BitConverter.GetBytes((float)data).Length);
+                    fileStream.Write(BitConverter.GetBytes((float)data), 0, BitConverter.GetBytes((float)data).Length);
                     msg = (float)data + msg;
                 }
             }
@@ -904,10 +906,10 @@ namespace Dobby {
         /// <summary> Compare Data Read At The Given Address
         /// </summary>
         /// <returns> True If The Data Read Matches The Array Given </returns>
-        public static bool ArrayCmp(int Address, byte[] DataToCompare) {
-            MainStream.Position = Address;
+        private  bool ArrayCmp(int Address, byte[] DataToCompare) {
+            fileStream.Position = Address;
             byte[] DataPresent = new byte[DataToCompare.Length];
-            MainStream.Read(DataPresent, 0, DataToCompare.Length);
+            fileStream.Read(DataPresent, 0, DataToCompare.Length);
             return DataPresent.SequenceEqual<byte>(DataToCompare);
         }
         #endregion
@@ -1251,14 +1253,14 @@ namespace Dobby {
 
 
             if(OpenedFile.ShowDialog() == DialogResult.OK) {
-                if(OriginalFormScale != Size.Empty || MainStreamIsOpen) ResetCustomDebugOptions();
+                if(OriginalFormScale != Size.Empty) ResetCustomDebugOptions();
 
-                MainStream?.Dispose();
-                MainStream = File.Open(ExecutablePathBox.Text = OpenedFile.FileName, FileMode.Open, FileAccess.ReadWrite);
+                fileStream?.Dispose();
+                fileStream = File.Open(ExecutablePathBox.Text = OpenedFile.FileName, FileMode.Open, FileAccess.ReadWrite);
                 
-                GameInfoLabel.Text = GetCurrentGame(MainStream);
+                GameInfoLabel.Text = GetCurrentGame(fileStream);
 
-                MainStreamIsOpen = true;
+
                 CustomDebugOptionsLabel.Visible = IsActiveFilePCExe = false;
 
                 GameIndex = GetGameIndex(Game);
@@ -1290,7 +1292,7 @@ namespace Dobby {
         private object ApplyMenuSettings(int GameIndex) {
             var Message = string.Empty;
 
-            using(MainStream) {
+            using(fileStream) {
               try {
                     if(UniversalPatchValues.Length != UniversalBootSettingsPointers.Length || DynamicPatchButtons.GameSpecificPatchValues.Length != GameSpecificBootSettingsPointers.Length)
                         MessageBox.Show($"Universal:\n  Vars: {UniversalPatchValues.Length}\n  Pointers: {UniversalBootSettingsPointers.Length}\nDynamic:\n  Vars: {DynamicPatchButtons.GameSpecificPatchValues.Length}\n  Pointers: {GameSpecificBootSettingsPointers.Length}", "Mismatch In Array Value vs pointer Length.");
@@ -1419,45 +1421,45 @@ namespace Dobby {
 
 
         /// <summary> Get The MenuSettingsPage-Specific GameIndex Used For... Well, Take A Fking Guess.<br/><br/>Does Not Include Game Versions I Don't Indend To Support, Just Oldest And Latest<br/>(Plus A Couple Still Commonly Used In-Between Ones) </summary>
-        private int GetGameIndex(GameIDs Game) {
+        private int GetGameIndex(GameID Game) {
             switch(Game) {
                 default:
                     return 999999999;
 
-                case GameIDs.UC1100:
-                case GameIDs.UC1102:
-                case GameIDs.UC2100:
-                case GameIDs.UC2102:
-                case GameIDs.UC3100:
-                case GameIDs.UC3102:
+                case GameID.UC1100:
+                case GameID.UC1102:
+                case GameID.UC2100:
+                case GameID.UC2102:
+                case GameID.UC3100:
+                case GameID.UC3102:
                     return 0xBADBEEF;
 
-                case GameIDs.UC4100:
+                case GameID.UC4100:
                     return 6;
-                case GameIDs.UC4101:
+                case GameID.UC4101:
                     return 7;
-                case GameIDs.UC4127_133:
+                case GameID.UC4127_133:
                     return 8;
-                case GameIDs.UC4133MP:
+                case GameID.UC4133MP:
                     return 0xBADBEEF;
-                case GameIDs.TLL100:
+                case GameID.TLL100:
                     return 10;
-                case GameIDs.TLL10X:
+                case GameID.TLL10X:
                     return 11;
 
-                case GameIDs.T1R100:
+                case GameID.T1R100:
                     return 11;
-                case GameIDs.T1R109:
+                case GameID.T1R109:
                     return 13;
-                case GameIDs.T1R110:
-                case GameIDs.T1R111:
+                case GameID.T1R110:
+                case GameID.T1R111:
                     return 14;
-                case GameIDs.T2100:
+                case GameID.T2100:
                     return 15;
-                case GameIDs.T2107:
+                case GameID.T2107:
                     return 16;
-                case GameIDs.T2108:
-                case GameIDs.T2109:
+                case GameID.T2108:
+                case GameID.T2109:
                     return 17;
             }
         }
@@ -1510,33 +1512,33 @@ namespace Dobby {
         /// Returns The Data For The Custom Function Used To Call BootSettings To Write Over The Quick Menu Function Call<br/>
         /// (Redirected Quick Menu Function Call Prepends BootSettings' Code)
         ///</summary>
-        private static byte[] GetBootSettingsFunctionCall(GameIDs GameID) {
+        private static byte[] GetBootSettingsFunctionCall(GameID GameID) {
             switch(GameID) {
-                case GameIDs.UC1100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+                case GameID.UC1100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
 
-                case GameIDs.UC1102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+                case GameID.UC1102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
 
-                case GameIDs.UC2100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+                case GameID.UC2100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
 
-                case GameIDs.UC2102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+                case GameID.UC2102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
 
-                case GameIDs.UC3100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+                case GameID.UC3100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
 
-                case GameIDs.UC3102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+                case GameID.UC3102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
 
-                case GameIDs.T1R100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+                case GameID.T1R100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
 
-                case GameIDs.T1R109: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+                case GameID.T1R109: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
 
-                case GameIDs.T1R110:
-                case GameIDs.T1R111: return new byte[] { 0xe8, 0xc0, 0x15, 0x01, 0x00 }; // 
+                case GameID.T1R110:
+                case GameID.T1R111: return new byte[] { 0xe8, 0xc0, 0x15, 0x01, 0x00 }; // 
 
-                case GameIDs.T2100: return new byte[] { 0xe8, 0x43, 0x95, 0xe1, 0xff };  // CALL 0x7e0fc0
+                case GameID.T2100: return new byte[] { 0xe8, 0x43, 0x95, 0xe1, 0xff };  // CALL 0x7e0fc0
 
-                case GameIDs.T2107: return new byte[] { 0xe8, 0xb1, 0x91, 0xe1, 0xff };  // CALL 0x407330
+                case GameID.T2107: return new byte[] { 0xe8, 0xb1, 0x91, 0xe1, 0xff };  // CALL 0x407330
 
-                case GameIDs.T2108:
-                case GameIDs.T2109: return new byte[] { 0xe8, 0x31, 0x19, 0x9d, 0xff };  // CALL 0x4015f0
+                case GameID.T2108:
+                case GameID.T2109: return new byte[] { 0xe8, 0x31, 0x19, 0x9d, 0xff };  // CALL 0x4015f0
                 default:
                     return Array.Empty<byte>();
             }
@@ -1650,7 +1652,7 @@ namespace Dobby {
 
         private void ResetCustomDebugOptions(object _ = null, EventArgs __ = null)
         {
-            if (Game == GameIDs.Empty) {
+            if (Game == GameID.Empty) {
                 Print("ResetCustomDebugOptions(): Game was unset, aborting.");
                 return;
             }
@@ -1664,8 +1666,7 @@ namespace Dobby {
             OriginalFormScale = Size.Empty;
 
             // Kill MainStream
-            MainStreamIsOpen = false;
-            MainStream?.Dispose();
+            fileStream?.Dispose();
 
             // Nuke Dynamic Patch Buttons
             gsButtons.Reset();
@@ -1683,25 +1684,17 @@ namespace Dobby {
                 ActiveForm.Controls.Find("ExecutablePathBox", true)[0].Text = " Select A .elf To Patch";
             }
 
-            Game = GameIDs.Empty;
+            Game = GameID.Empty;
             MultipleButtonsEnabled = false;
         }
 #endregion
 
 
 
-        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     Repeated Page Functions & Control Declarations     --\\\
-        /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        #region Repeat Functions & Control Declarations
-        
-        
-        private void BackBtn_Click(object sender, EventArgs e) {
-#if DEBUG
-            Dev.OverrideMsgOut = false;
-#endif
-        }
-
+        //================================\\
+        //--|   Control Declarations   |--\\
+        //================================\\
+        #region [Control Declarations]
         private Button BrowseButton;
         private Button InfoHelpBtn;
         private Button CreditsBtn;

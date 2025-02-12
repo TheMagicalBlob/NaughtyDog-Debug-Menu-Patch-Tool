@@ -14,7 +14,7 @@ using System.Diagnostics;
 
 namespace Dobby {
     
-    internal class Common : Main {
+    internal class Common : Main, IDisposable {
         //#error version
 
         // Spacing:
@@ -79,7 +79,7 @@ namespace Dobby {
 
 
         /// <summary> ID for the active game. </summary>
-        public static GameIDs Game;
+        public static GameID Game;
 
         /// <summary> ID for the currently loaded form. </summary>
         public static PageID? Page;
@@ -94,8 +94,7 @@ namespace Dobby {
             LastMsgOutputWasInfoString,
             LabelShouldFlash,
             FlashThreadHasStarted,
-            IsActiveFilePCExe,
-            MainStreamIsOpen
+            IsActiveFilePCExe
         ;
 
 
@@ -143,7 +142,6 @@ namespace Dobby {
         #region [Network-Related Components]
         public static TcpClient TcpClient;
         public static NetworkStream NetStream;
-        public static FileStream MainStream;
         #endregion [Network-Related Components]
 
 
@@ -163,17 +161,6 @@ namespace Dobby {
         public static void SaveMainForm(Form form) => MainForm = form;
 
 
-        /// <summary> Write A Byte To The MainStream And Flush The Data </summary>
-        public static void WriteByte(int offset, byte data) {
-            if (MainStream == null) {
-                MessageBox.Show($"!! ERROR: No Active Data Stream To Write To ({MainStreamIsOpen})", $"Addr: {offset:X} Byte: 0x{data:X}");
-                return;
-            }
-
-            MainStream.Position = offset;
-            MainStream.WriteByte(data);
-            MainStream.Flush();
-        }
 
 
         /// <summary>
@@ -208,65 +195,65 @@ namespace Dobby {
 
             stream.Position = 0x5100;
             stream.Read(LocalExecutableCheck, 0, 160);
-            Game = (GameIDs)BitConverter.ToInt32(SHA256.Create().ComputeHash(LocalExecutableCheck), 0);
+            Game = (GameID)BitConverter.ToInt32(SHA256.Create().ComputeHash(LocalExecutableCheck), 0);
 
             switch (Game) {
-                case GameIDs.UC1100: return "Uncharted 1 1.00";
-                case GameIDs.UC1102: return "Uncharted 1 1.02";
-                case GameIDs.UC2100: return "Uncharted 2 1.00";
-                case GameIDs.UC2102: return "Uncharted 2 1.02";
-                case GameIDs.UC3100: return "Uncharted 3 1.00";
-                case GameIDs.UC3102: return "Uncharted 3 1.02";
-                case GameIDs.UC4100: return "Uncharted 4 1.00";
-                case GameIDs.UC4101: return "Uncharted 4 1.01";
-                case GameIDs.UC4102: return "Uncharted 4 1.02";
-                case GameIDs.UC4103: return "Uncharted 4 1.03";
-                case GameIDs.UC4104: return "Uncharted 4 1.04";
-                case GameIDs.UC4105: return "Uncharted 4 1.05";
-                case GameIDs.UC4106: return "Uncharted 4 1.06";
-                case GameIDs.UC4108: return "Uncharted 4 1.08";
-                case GameIDs.UC4110: return "Uncharted 4 1.10";
-                case GameIDs.UC4111: return "Uncharted 4 1.11";
-                case GameIDs.UC4112: return "Uncharted 4 1.12";
-                case GameIDs.UC4113: return "Uncharted 4 1.13";
-                case GameIDs.UC4115: return "Uncharted 4 1.15";
-                case GameIDs.UC4116: return "Uncharted 4 1.16";
-                case GameIDs.UC4117: return "Uncharted 4 1.17";
-                case GameIDs.UC4118: return "Uncharted 4 1.18 SP/MP";
-                case GameIDs.UC4119: return "Uncharted 4 1.19 SP/MP";
-                case GameIDs.UC4120MP: return "Uncharted 4 1.20 MP";
-                case GameIDs.UC4120: return "Uncharted 4 1.20 SP";
-                case GameIDs.UC4121MP: return "Uncharted 4 1.21 MP";
-                case GameIDs.UC4121: return "Uncharted 4 1.21 SP";
-                case GameIDs.UC4122MP: return "Uncharted 4 1.22 MP";
-                case GameIDs.UC4122_23: return "Uncharted 4 1.22/23 SP";
-                case GameIDs.UC4123MP: return "Uncharted 4 1.23 MP";
-                case GameIDs.UC4124MP: return "Uncharted 4 1.24 MP";
-                case GameIDs.UC4124_25: return "Uncharted 4 1.24/25 SP";
-                case GameIDs.UC4125MP: return "Uncharted 4 1.25 MP";
-                case GameIDs.UC4127_28MP: return "Uncharted 4 1.27/28 MP";
-                case GameIDs.UC4127_133: return "Uncharted 4 1.27+ SP";
-                case GameIDs.UC4129MP: return "Uncharted 4 1.29 MP";
-                case GameIDs.UC4130MP: return "Uncharted 4 1.30 MP";
-                case GameIDs.UC4131MP: return "Uncharted 4 1.31 MP";
-                case GameIDs.UC4132MP: return "Uncharted 4 1.32/TLL 1.08 MP";
-                case GameIDs.UC4133MP: return "Uncharted 4 1.33/TLL 1.09 MP";
-                case GameIDs.UC4MPBETA100: return "Uncharted 4 MP Beta 1.00";
-                case GameIDs.UC4MPBETA109: return "Uncharted 4 MP Beta 1.09";
-                case GameIDs.TLL100MP: return "Uncharted Lost Legacy 1.00 MP";
-                case GameIDs.TLL100: return "Uncharted Lost Legacy 1.00 SP";
-                case GameIDs.TLL10X: return "Uncharted Lost Legacy 1.08/9 SP";
-                case GameIDs.T1R100: return "The Last Of Us 1.00";
-                case GameIDs.T1R109: return "The Last Of Us 1.09";
-                case GameIDs.T1R110: return "The Last Of Us 1.10";
-                case GameIDs.T1R111: return "The Last Of Us 1.11";
-                case GameIDs.T2100: return "The Last Of Us 2 1.00";
-                case GameIDs.T2101: return "The Last Of Us 2 1.01";
-                case GameIDs.T2102: return "The Last Of Us 2 1.02";
-                case GameIDs.T2105: return "The Last Of Us 2 1.05";
-                case GameIDs.T2107: return "The Last Of Us 2 1.07";
-                case GameIDs.T2108: return "The Last Of Us 2 1.08";
-                case GameIDs.T2109: return "The Last Of Us 2 1.09";
+                case GameID.UC1100: return "Uncharted 1 1.00";
+                case GameID.UC1102: return "Uncharted 1 1.02";
+                case GameID.UC2100: return "Uncharted 2 1.00";
+                case GameID.UC2102: return "Uncharted 2 1.02";
+                case GameID.UC3100: return "Uncharted 3 1.00";
+                case GameID.UC3102: return "Uncharted 3 1.02";
+                case GameID.UC4100: return "Uncharted 4 1.00";
+                case GameID.UC4101: return "Uncharted 4 1.01";
+                case GameID.UC4102: return "Uncharted 4 1.02";
+                case GameID.UC4103: return "Uncharted 4 1.03";
+                case GameID.UC4104: return "Uncharted 4 1.04";
+                case GameID.UC4105: return "Uncharted 4 1.05";
+                case GameID.UC4106: return "Uncharted 4 1.06";
+                case GameID.UC4108: return "Uncharted 4 1.08";
+                case GameID.UC4110: return "Uncharted 4 1.10";
+                case GameID.UC4111: return "Uncharted 4 1.11";
+                case GameID.UC4112: return "Uncharted 4 1.12";
+                case GameID.UC4113: return "Uncharted 4 1.13";
+                case GameID.UC4115: return "Uncharted 4 1.15";
+                case GameID.UC4116: return "Uncharted 4 1.16";
+                case GameID.UC4117: return "Uncharted 4 1.17";
+                case GameID.UC4118: return "Uncharted 4 1.18 SP/MP";
+                case GameID.UC4119: return "Uncharted 4 1.19 SP/MP";
+                case GameID.UC4120MP: return "Uncharted 4 1.20 MP";
+                case GameID.UC4120: return "Uncharted 4 1.20 SP";
+                case GameID.UC4121MP: return "Uncharted 4 1.21 MP";
+                case GameID.UC4121: return "Uncharted 4 1.21 SP";
+                case GameID.UC4122MP: return "Uncharted 4 1.22 MP";
+                case GameID.UC4122_23: return "Uncharted 4 1.22/23 SP";
+                case GameID.UC4123MP: return "Uncharted 4 1.23 MP";
+                case GameID.UC4124MP: return "Uncharted 4 1.24 MP";
+                case GameID.UC4124_25: return "Uncharted 4 1.24/25 SP";
+                case GameID.UC4125MP: return "Uncharted 4 1.25 MP";
+                case GameID.UC4127_28MP: return "Uncharted 4 1.27/28 MP";
+                case GameID.UC4127_133: return "Uncharted 4 1.27+ SP";
+                case GameID.UC4129MP: return "Uncharted 4 1.29 MP";
+                case GameID.UC4130MP: return "Uncharted 4 1.30 MP";
+                case GameID.UC4131MP: return "Uncharted 4 1.31 MP";
+                case GameID.UC4132MP: return "Uncharted 4 1.32/TLL 1.08 MP";
+                case GameID.UC4133MP: return "Uncharted 4 1.33/TLL 1.09 MP";
+                case GameID.UC4MPBETA100: return "Uncharted 4 MP Beta 1.00";
+                case GameID.UC4MPBETA109: return "Uncharted 4 MP Beta 1.09";
+                case GameID.TLL100MP: return "Uncharted Lost Legacy 1.00 MP";
+                case GameID.TLL100: return "Uncharted Lost Legacy 1.00 SP";
+                case GameID.TLL10X: return "Uncharted Lost Legacy 1.08/9 SP";
+                case GameID.T1R100: return "The Last Of Us 1.00";
+                case GameID.T1R109: return "The Last Of Us 1.09";
+                case GameID.T1R110: return "The Last Of Us 1.10";
+                case GameID.T1R111: return "The Last Of Us 1.11";
+                case GameID.T2100: return "The Last Of Us 2 1.00";
+                case GameID.T2101: return "The Last Of Us 2 1.01";
+                case GameID.T2102: return "The Last Of Us 2 1.02";
+                case GameID.T2105: return "The Last Of Us 2 1.05";
+                case GameID.T2107: return "The Last Of Us 2 1.07";
+                case GameID.T2108: return "The Last Of Us 2 1.08";
+                case GameID.T2109: return "The Last Of Us 2 1.09";
 
                 default:
                     return $"Unknown Game (Game ID: {Game})";
@@ -875,7 +862,7 @@ namespace Dobby {
         #region [Form Event Handlers]
         internal static void ExitBtn_Click(object sender, EventArgs e)
         {
-            MainStream?.Dispose();
+            MainForm.Dispose();
             Environment.Exit(0);
         }
         internal static void ExitBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
@@ -944,7 +931,7 @@ namespace Dobby {
 
 
 
-        public enum GameIDs : long {
+        public enum GameID : long {
             // Read 160 bytes at 0x5100 as SHA256 Then Checked As Int32 Because I'm An Idiot And Don't Feel Like Correcting It Since It Works
             UC1100 = -679355525,
             UC1102 = 104877429,
@@ -1002,15 +989,26 @@ namespace Dobby {
             T2107 = 154664618,
             T2108 = 537380869,
             T2109 = 1174398197,
+            
+            // PC Eboot Identifiers - Very Limited Though | 0x1EC + 0x1F8 (Kept Seperate Through Immense Laziness)
+            T1X101 = 42695168 + 16007532,
+            T1XL101 = 42670080 + 16010844,
+            T1X1015 = 2228464 + 95625728,
+            T1XL1015 = 2228464 + 95627776,
+            T1X1016 = 42698752 + 16007532,
+            T1XL1016 = 42673664 + 16010828,
+            T1X1017 = 42702336 + 16007852,
+            T1XL1017 = 42677248 + 16011148,
+            T1X102 = 2228464 + 95631360,
+            T1XL102 = 2228464 + 95634432,
 
             Empty = 0xDEADBEEF
-            }
-        ;
+        }
 
 
 
         /// <summary> .elf Addresses For Enabling The Debug Mode In Various PS4 Naughty Dog Games<br/>[On: 0xEB]<br/>[Off: 0x74]</summary>
-        public const int
+        public enum DebugJumpAddress : int {
             T1R100Debug = 0x5C5A,
             T1R109Debug = 0x61A0,
             T1R110Debug = 0x61A0,
@@ -1051,26 +1049,8 @@ namespace Dobby {
             TLL100Debug = 0x1CCFDA,
             TLLMP108Debug = 0x1CCE85,
             TLLMP109Debug = 0x1CCEA5,
-            TLL10XDebug = 0x1CD01A
-        ;
-
-        /// <summary> Int Value Used To Identify The Specific Executable Selected By The User.<br/>(0x1EC + 0x1F8) <br/>VERY LIMITED </summary>
-        public const int
-            // PC Eboot Identifiers - Very Limited Though | 0x1EC + 0x1F8 (Kept Seperate Through Immense Laziness)
-            T1X101 = 42695168 + 16007532,
-            T1XL101 = 42670080 + 16010844,
-            T1X1015 = 2228464 + 95625728,
-            T1XL1015 = 2228464 + 95627776,
-            T1X1016 = 42698752 + 16007532,
-            T1XL1016 = 42673664 + 16010828,
-            T1X1017 = 42702336 + 16007852,
-            T1XL1017 = 42677248 + 16011148,
-            T1X102 = 2228464 + 95631360,
-            T1XL102 = 2228464 + 95634432
-        ;
-
-        /// <summary> Offsets To Enable The Debug Mode in the pc version of the game<br/>(0x97 -> 0x8F) </summary>
-        public const int
+            TLL10XDebug = 0x1CD01A,
+            
             // PC Debug Offsets (0x97 -> 0x8F)
             T1X101Debug = 0x3B66CD,
             T1XL101Debug = 0x3B64B9,
@@ -1081,9 +1061,12 @@ namespace Dobby {
             T1X1017Debug = 0x3B6A2E,
             T1XL1017Debug = 0x03B680A,
             T1X102Debug = 0x3B6AA9,
-            T1XL102Debug = 0x3B6885
-        ;
-        #endregion
+            T1XL102Debug = 0x3B6885,
+
+            Empty = 0xDEADDAD
+        }
+
+    #endregion
     }
 
 
@@ -1117,7 +1100,7 @@ namespace Dobby {
             };
         }
 /*
-        public override string Text { get { if (IsDefault) return "fag"; return _Text; } set { _Text = value; base.Text = value; } }
+        public override string Text { get { if (IsDefault) return "oops"; return _Text; } set { _Text = value; base.Text = value; } }
         private string _Text;
 */
 

@@ -8,7 +8,7 @@ using System.Threading;
 
 
 namespace Dobby {
-    internal class EbootPatchPage : Form {
+    public partial class EbootPatchPage : Form {
         public EbootPatchPage() {
             InitializeComponent();
             
@@ -17,267 +17,7 @@ namespace Dobby {
                 ExecutablePathBox.Text = ActiveFilePath;
         }
 
-
-        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     Designer Crap, No Touchie      --\\\
-        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
-        #region Designer Crap, No Touchie
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
-
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing) {
-            if(disposing && (components != null)) {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        public void InitializeComponent() {
-            this.GameInfoLabel = new System.Windows.Forms.Label();
-            this.BrowseButton = new Button();
-            this.ExecutablePathBox = new Dobby.TextBox();
-            this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.RestoredDebugBtn = new Button();
-            this.InfoHelpBtn = new Button();
-            this.SeperatorLine2 = new System.Windows.Forms.Label();
-            this.BackBtn = new Button();
-            this.DisableDebugBtn = new Button();
-            this.EnableDebugBtn = new Button();
-            this.Info = new System.Windows.Forms.Label();
-            this.CreditsBtn = new Button();
-            this.MainLabel = new System.Windows.Forms.Label();
-            this.SeperatorLine0 = new System.Windows.Forms.Label();
-            this.SuspendLayout();
-            // 
-            // GameInfoLabel
-            // 
-            this.GameInfoLabel.Font = new System.Drawing.Font("Cambria", 10F);
-            this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.GameInfoLabel.Location = new System.Drawing.Point(1, 142);
-            this.GameInfoLabel.Name = "GameInfoLabel";
-            this.GameInfoLabel.Size = new System.Drawing.Size(316, 19);
-            this.GameInfoLabel.TabIndex = 32;
-            this.GameInfoLabel.Text = "No File Selected";
-            this.GameInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // BrowseButton
-            // 
-            this.BrowseButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.BrowseButton.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.BrowseButton.FlatAppearance.BorderSize = 0;
-            this.BrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BrowseButton.Font = new System.Drawing.Font("Cambria", 8.5F, System.Drawing.FontStyle.Bold);
-            this.BrowseButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.BrowseButton.Location = new System.Drawing.Point(238, 116);
-            this.BrowseButton.Name = "BrowseButton";
-            this.BrowseButton.Size = new System.Drawing.Size(67, 19);
-            this.BrowseButton.TabIndex = 31;
-            this.BrowseButton.Text = "Browse...";
-            this.BrowseButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BrowseButton.UseVisualStyleBackColor = false;
-            this.BrowseButton.Click += new System.EventHandler(this.BrowseButton_Click);
-            // 
-            // ExecutablePathBox
-            // 
-            this.ExecutablePathBox.BackColor = System.Drawing.Color.Gray;
-            this.ExecutablePathBox.Font = new System.Drawing.Font("Cambria", 10F);
-            this.ExecutablePathBox.ForeColor = System.Drawing.SystemColors.Window;
-            this.ExecutablePathBox.Location = new System.Drawing.Point(6, 116);
-            this.ExecutablePathBox.Name = "ExecutablePathBox";
-            this.ExecutablePathBox.Size = new System.Drawing.Size(233, 23);
-            this.ExecutablePathBox.TabIndex = 30;
-            this.ExecutablePathBox.Text = " Select A .bin/.elf To Modify";
-            this.ExecutablePathBox.TextChanged += new System.EventHandler(this.ExecutablePathBox_TextChanged);
-            // 
-            // SeperatorLine1
-            // 
-            this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 98);
-            this.SeperatorLine1.Name = "SeperatorLine1";
-            this.SeperatorLine1.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine1.TabIndex = 29;
-            this.SeperatorLine1.Text = "--------------------------------------------------------------";
-            // 
-            // RestoredDebugBtn
-            // 
-            this.RestoredDebugBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.RestoredDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.RestoredDebugBtn.FlatAppearance.BorderSize = 0;
-            this.RestoredDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.RestoredDebugBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
-            this.RestoredDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.RestoredDebugBtn.Location = new System.Drawing.Point(1, 80);
-            this.RestoredDebugBtn.Name = "RestoredDebugBtn";
-            this.RestoredDebugBtn.Size = new System.Drawing.Size(283, 23);
-            this.RestoredDebugBtn.TabIndex = 23;
-            this.RestoredDebugBtn.Text = "Enable Debug Mode - Restored/Custom";
-            this.RestoredDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.RestoredDebugBtn.UseVisualStyleBackColor = false;
-            this.RestoredDebugBtn.Click += new System.EventHandler(this.RestoredDebugBtn_Click);
-            // 
-            // InfoHelpBtn
-            // 
-            this.InfoHelpBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.InfoHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.InfoHelpBtn.FlatAppearance.BorderSize = 0;
-            this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InfoHelpBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
-            this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 168);
-            this.InfoHelpBtn.Name = "InfoHelpBtn";
-            this.InfoHelpBtn.Size = new System.Drawing.Size(147, 23);
-            this.InfoHelpBtn.TabIndex = 15;
-            this.InfoHelpBtn.Text = "Information / Help...";
-            this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.InfoHelpBtn.UseVisualStyleBackColor = false;
-            // 
-            // SeperatorLine2
-            // 
-            this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(2, 155);
-            this.SeperatorLine2.Name = "SeperatorLine2";
-            this.SeperatorLine2.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine2.TabIndex = 14;
-            this.SeperatorLine2.Text = "--------------------------------------------------------------";
-            // 
-            // BackBtn
-            // 
-            this.BackBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.BackBtn.FlatAppearance.BorderSize = 0;
-            this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BackBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
-            this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 215);
-            this.BackBtn.Name = "BackBtn";
-            this.BackBtn.Size = new System.Drawing.Size(60, 23);
-            this.BackBtn.TabIndex = 13;
-            this.BackBtn.Text = "Back...";
-            this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BackBtn.UseVisualStyleBackColor = false;
-            this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
-            // 
-            // DisableDebugBtn
-            // 
-            this.DisableDebugBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.DisableDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.DisableDebugBtn.FlatAppearance.BorderSize = 0;
-            this.DisableDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DisableDebugBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
-            this.DisableDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.DisableDebugBtn.Location = new System.Drawing.Point(1, 28);
-            this.DisableDebugBtn.Name = "DisableDebugBtn";
-            this.DisableDebugBtn.Size = new System.Drawing.Size(150, 23);
-            this.DisableDebugBtn.TabIndex = 12;
-            this.DisableDebugBtn.Text = "Disable Debug Mode";
-            this.DisableDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.DisableDebugBtn.UseVisualStyleBackColor = false;
-            this.DisableDebugBtn.Click += new System.EventHandler(this.DisableDebugBtn_Click);
-            // 
-            // EnableDebugBtn
-            // 
-            this.EnableDebugBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.EnableDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.EnableDebugBtn.FlatAppearance.BorderSize = 0;
-            this.EnableDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.EnableDebugBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
-            this.EnableDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.EnableDebugBtn.Location = new System.Drawing.Point(1, 53);
-            this.EnableDebugBtn.Name = "EnableDebugBtn";
-            this.EnableDebugBtn.Size = new System.Drawing.Size(205, 23);
-            this.EnableDebugBtn.TabIndex = 9;
-            this.EnableDebugBtn.Text = "Enable Debug Mode - Default";
-            this.EnableDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.EnableDebugBtn.UseVisualStyleBackColor = false;
-            this.EnableDebugBtn.Click += new System.EventHandler(this.EnableDebugBtn_Click);
-            // 
-            // Info
-            // 
-            this.Info.Font = new System.Drawing.Font("Cambria", 10F);
-            this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(3, 240);
-            this.Info.Name = "Info";
-            this.Info.Size = new System.Drawing.Size(313, 19);
-            this.Info.TabIndex = 7;
-            this.Info.Text = "======================================";
-            // 
-            // CreditsBtn
-            // 
-            this.CreditsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.CreditsBtn.FlatAppearance.BorderSize = 0;
-            this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CreditsBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
-            this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 191);
-            this.CreditsBtn.Name = "CreditsBtn";
-            this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.CreditsBtn.Size = new System.Drawing.Size(74, 23);
-            this.CreditsBtn.TabIndex = 28;
-            this.CreditsBtn.Text = "Credits...";
-            this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.CreditsBtn.UseVisualStyleBackColor = false;
-            // 
-            // MainLabel
-            // 
-            this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MainLabel.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Bold);
-            this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.MainLabel.Location = new System.Drawing.Point(1, 1);
-            this.MainLabel.Name = "MainLabel";
-            this.MainLabel.Size = new System.Drawing.Size(314, 22);
-            this.MainLabel.TabIndex = 0;
-            this.MainLabel.Text = "Eboot Patch Page";
-            // 
-            // SeperatorLine0
-            // 
-            this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine0.Location = new System.Drawing.Point(2, 15);
-            this.SeperatorLine0.Name = "SeperatorLine0";
-            this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine0.TabIndex = 33;
-            this.SeperatorLine0.Text = "--------------------------------------------------------------";
-            // 
-            // EbootPatchPage
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ClientSize = new System.Drawing.Size(320, 264);
-            this.Controls.Add(this.MainLabel);
-            this.Controls.Add(this.GameInfoLabel);
-            this.Controls.Add(this.BrowseButton);
-            this.Controls.Add(this.ExecutablePathBox);
-            this.Controls.Add(this.RestoredDebugBtn);
-            this.Controls.Add(this.InfoHelpBtn);
-            this.Controls.Add(this.BackBtn);
-            this.Controls.Add(this.DisableDebugBtn);
-            this.Controls.Add(this.CreditsBtn);
-            this.Controls.Add(this.Info);
-            this.Controls.Add(this.SeperatorLine2);
-            this.Controls.Add(this.SeperatorLine1);
-            this.Controls.Add(this.EnableDebugBtn);
-            this.Controls.Add(this.SeperatorLine0);
-            this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "EbootPatchPage";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
-        }
-        #endregion
+        
 
 
         /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -287,7 +27,7 @@ namespace Dobby {
 
         private readonly byte[] E9Jump = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 };
 
-        private static int DebugAddressForSelectedGame;
+        private static DebugJumpAddress DebugAddressForSelectedGame;
 
         private static string ActiveFilePath, ActiveGameID = "?";
         private static readonly string[] ResultStrings = new string[] {
@@ -298,37 +38,32 @@ namespace Dobby {
         };
 
 
-        public static void WriteBytes(int offset, byte[] data) {
-            MainStream.Position = offset;
-            MainStream.Write(data, 0, data.Length);
-            MainStream.Flush();
+        private FileStream fileStream;
+
+        private  void WriteBytes(int offset, byte[] data) {
+            fileStream.Position = offset;
+            fileStream.Write(data, 0, data.Length);
+            fileStream.Flush();
         }
-        public static void WriteBytes(int[] offset, byte[] data) {
-            foreach(int ofs in offset) {
-                MainStream.Position = ofs;
-                MainStream.Write(data, 0, data.Length);
-                MainStream.Flush();
-            }
-        }
-        public static void WriteBytes(int[] offset, byte[][] data) {
+        private void WriteBytes(int[] offset, params byte[][] data) {
             int i = 0;
             foreach(byte[] bytes in data) {
-                MainStream.Position = offset[i];
-                MainStream.Write(bytes, 0, data.Length);
-                MainStream.Flush();
+                fileStream.Position = offset[i];
+                fileStream.Write(bytes, 0, data.Length);
+                fileStream.Flush();
                 ++i;
             }
         }
-        public static void WriteByte(int offset, byte data) {
-            MainStream.Position = offset;
-            MainStream.WriteByte(data);
-            MainStream.Flush();
+        private void WriteByte(int offset, byte data) {
+            fileStream.Position = offset;
+            fileStream.WriteByte(data);
+            fileStream.Flush();
         }
-        public static void WriteByte(int[] offset, byte data) {
+        private void WriteByte(int[] offset, byte data) {
             foreach(int ofs in offset) {
-                MainStream.Position = ofs;
-                MainStream.WriteByte(data);
-                MainStream.Flush();
+                fileStream.Position = ofs;
+                fileStream.WriteByte(data);
+                fileStream.Flush();
             }
         }
         #endregion
@@ -348,32 +83,26 @@ namespace Dobby {
 
         /// <summary> Open A File Dialog Window To Select A File For Checking/Patching </summary>
         private void BrowseButton_Click(object sender, EventArgs e) {
-            FileDialog fileDialog = new OpenFileDialog {
+            var fileDialog = new OpenFileDialog {
                 Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
                 Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned / Decrypted (The First 4 Bytes Will Be .elf If It Is)"
             };
 
             if(fileDialog.ShowDialog() == DialogResult.OK) {
-                BrowseButtonOverride ^= true;
                 ExecutablePathBox.Text = fileDialog.FileName;
 
-                LoadFileToBePatched(fileDialog.FileName, MainStream);
+                LoadFileToBePatched(fileDialog.FileName);
                 fileDialog.Dispose();
             }
         }
 
-        private bool BrowseButtonOverride = false;
         /// <summary> Load A File For Checking/Patching If The Path In The ExecutablePathBox Exists </summary>
         private void ExecutablePathBox_TextChanged(object sender, EventArgs e) {
-            if(BrowseButtonOverride) {
-                BrowseButtonOverride ^= true;
-                return;
-            }
 
             var TextBoxData = (((Control)sender).Text.Replace("\"", ""));
 
             if(File.Exists(TextBoxData))
-            LoadFileToBePatched(TextBoxData, MainStream);
+            LoadFileToBePatched(TextBoxData);
         }
 
         /// <summary>
@@ -381,103 +110,101 @@ namespace Dobby {
         /// Loads The File Path, Creats A New Stream, Then Runs GetGameID() To Determine The Selected Executable's Source.<br/>
         /// Then Assigns The RestoredDebugBtn's Button Text
         /// </summary>
-        /// <param name="FilePath"> The Opened File </param>
-        /// <param name="FilePath"> The Opened File </param>
-        private void LoadFileToBePatched(string FilePath, FileStream mainStream) {
+        /// <param name="filePath"> The fuck you think it is> </param>
+        private void LoadFileToBePatched(string filePath) {
             try { 
-                mainStream?.Dispose();
-                Common.Print(FilePath);
-                mainStream = new FileStream(FilePath, FileMode.Open, FileAccess.ReadWrite);
+                fileStream?.Dispose();
+                Print($"Initializing fileStream with \"{filePath}\".");
+                fileStream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite);
             }
             catch(IOException Oop) {
                 Print(Oop.Message); SetGameInfoLabelText("Access Denied, File In Use Elsewhere");
                 return;
             }
 
-            ActiveFilePath = FilePath;
+            ActiveFilePath = filePath;
 
-            GameInfoLabel.Text = ActiveGameID = GetCurrentGame(mainStream);
+            GameInfoLabel.Text = ActiveGameID = GetCurrentGame(fileStream);
                 
             DebugAddressForSelectedGame = GetDebugAddress(Game);
 
             RestoredDebugBtn.Text = $"{RestoredDebugBtn.Text.Remove(RestoredDebugBtn.Text.LastIndexOf(' '))}{GetMenuPatchTypeAvailability(Game)}";
 
-            MainStreamIsOpen = true;
             IsActiveFilePCExe = false;
 
         }
 
         /// <returns> Patch Type Name For Restored/Custom Debug Button </returns>
-        private string GetMenuPatchTypeAvailability(GameIDs GameID) {
+        private string GetMenuPatchTypeAvailability(GameID GameID) {
             switch(GameID) {
                 ///
                 // Games I've Only Made Debug Mode Toggles For
                 ///
-                case GameIDs.T1R100:
-                case GameIDs.T1R109:
-                case GameIDs.T2100:
-                case GameIDs.T2101:
-                case GameIDs.T2102:
-                case GameIDs.T2105:
-                case GameIDs.UC4100:
-                case GameIDs.UC4101:
-                case GameIDs.UC4102:
-                case GameIDs.UC4103:
-                case GameIDs.UC4104:
-                case GameIDs.UC4105:
-                case GameIDs.UC4106:
-                case GameIDs.UC4108:
-                case GameIDs.UC4110:
-                case GameIDs.UC4111:
-                case GameIDs.UC4112:
-                case GameIDs.UC4113:
-                case GameIDs.UC4115:
-                case GameIDs.UC4116:
-                case GameIDs.UC4118:
-                case GameIDs.UC4119:
-                case GameIDs.UC4120:
-                case GameIDs.UC4120MP:
-                case GameIDs.UC4121:
-                case GameIDs.UC4121MP:
-                case GameIDs.UC4122_23:
-                case GameIDs.UC4122MP:
-                case GameIDs.UC4123MP:
-                case GameIDs.UC4124_25:
-                case GameIDs.UC4124MP:
-                case GameIDs.UC4125MP:
-                case GameIDs.UC4127_133:
-                case GameIDs.UC4127_28MP:
-                case GameIDs.UC4129MP:
-                case GameIDs.UC4130MP:
-                case GameIDs.UC4131MP:
-                case GameIDs.UC4132MP:
-                case GameIDs.TLL100MP:
-                case GameIDs.TLL100:
-                case GameIDs.TLL10X:
+                case GameID.T1R100:
+                case GameID.T1R109:
+                case GameID.T2100:
+                case GameID.T2101:
+                case GameID.T2102:
+                case GameID.T2105:
+                case GameID.UC4100:
+                case GameID.UC4101:
+                case GameID.UC4102:
+                case GameID.UC4103:
+                case GameID.UC4104:
+                case GameID.UC4105:
+                case GameID.UC4106:
+                case GameID.UC4108:
+                case GameID.UC4110:
+                case GameID.UC4111:
+                case GameID.UC4112:
+                case GameID.UC4113:
+                case GameID.UC4115:
+                case GameID.UC4116:
+                case GameID.UC4118:
+                case GameID.UC4119:
+                case GameID.UC4120:
+                case GameID.UC4120MP:
+                case GameID.UC4121:
+                case GameID.UC4121MP:
+                case GameID.UC4122_23:
+                case GameID.UC4122MP:
+                case GameID.UC4123MP:
+                case GameID.UC4124_25:
+                case GameID.UC4124MP:
+                case GameID.UC4125MP:
+                case GameID.UC4127_133:
+                case GameID.UC4127_28MP:
+                case GameID.UC4129MP:
+                case GameID.UC4130MP:
+                case GameID.UC4131MP:
+                case GameID.UC4132MP:
+                case GameID.TLL100MP:
+                case GameID.TLL100:
+                case GameID.TLL10X:
                     RestoredDebugBtn.Font = new Font("Cambria", 9.25F, FontStyle.Bold | FontStyle.Strikeout);
                     RestoredDebugBtn.Enabled = false; return " Restored/Custom";
 
                 ////
                 // Games I've Made Customizations For
                 ////
-                case GameIDs.T2107:
-                case GameIDs.T2108:
-                case GameIDs.T2109:
+                case GameID.T2107:
+                case GameID.T2108:
+                case GameID.T2109:
                     RestoredDebugBtn.Font = new Font("Cambria", 9.25F, FontStyle.Bold);
                     RestoredDebugBtn.Enabled = true; return " Custom";
                 ////
                 // Games I've Made Restorations For
                 ////
-                case GameIDs.T1R110:
-                case GameIDs.T1R111:
-                case GameIDs.UC1100:
-                case GameIDs.UC1102:
-                case GameIDs.UC2100:
-                case GameIDs.UC2102:
-                case GameIDs.UC3100:
-                case GameIDs.UC3102:
-                case GameIDs.UC4117:
-                case GameIDs.UC4133MP:
+                case GameID.T1R110:
+                case GameID.T1R111:
+                case GameID.UC1100:
+                case GameID.UC1102:
+                case GameID.UC2100:
+                case GameID.UC2102:
+                case GameID.UC3100:
+                case GameID.UC3102:
+                case GameID.UC4117:
+                case GameID.UC4133MP:
                     RestoredDebugBtn.Font = new Font("Cambria", 9.25F, FontStyle.Bold);
                     RestoredDebugBtn.Enabled = true; return " Restored";
                 ////
@@ -492,73 +219,75 @@ namespace Dobby {
 
 
         /// <returns> The .elf Address For Enabling The Debug Mode By Patching In 0xEB </returns>
-#if DEBUG
-        public
-        static
-#else
-        private
-#endif
-        int GetDebugAddress(GameIDs GameID) {
+        private DebugJumpAddress GetDebugAddress(GameID GameID) {
             switch(GameID) {
-                case GameIDs.UC1100:       return UC1100Debug;
-                case GameIDs.UC1102:       return UC1102Debug;
-                case GameIDs.UC2100:       return UC2100Debug;
-                case GameIDs.UC2102:       return UC2102Debug;
-                case GameIDs.UC3100:       return UC3100Debug;
-                case GameIDs.UC3102:       return UC3102Debug;
-                case GameIDs.UC4100:       return UC4100Debug;
-                case GameIDs.UC4101:       return UC4101_106Debug;
-                case GameIDs.UC4102:       return UC4101_106Debug;
-                case GameIDs.UC4103:       return UC4101_106Debug;
-                case GameIDs.UC4104:       return UC4101_106Debug;
-                case GameIDs.UC4105:       return UC4101_106Debug;
-                case GameIDs.UC4106:       return UC4101_106Debug;
-                case GameIDs.UC4108:       return UC4108_111Debug;
-                case GameIDs.UC4110:       return UC4108_111Debug;
-                case GameIDs.UC4111:       return UC4108_111Debug;
-                case GameIDs.UC4112:       return UC4112_113Debug;
-                case GameIDs.UC4113:       return UC4112_113Debug;
-                case GameIDs.UC4115:       return UC4115Debug;
-                case GameIDs.UC4116:       return UC4116Debug;
-                case GameIDs.UC4117:       return UC4117Debug;
-                case GameIDs.UC4118:       return UC4118_119Debug;
-                case GameIDs.UC4119:       return UC4118_119Debug;
-                case GameIDs.UC4120MP:     return UC4120MPDebug;
-                case GameIDs.UC4120:     return UC4120SPDebug;
-                case GameIDs.UC4121MP:     return UC4121MPDebug;
-                case GameIDs.UC4121:     return UC4121SPDebug;
-                case GameIDs.UC4122MP:     return UC4122_125MPDebug;
-                case GameIDs.UC4122_23:  return UC4122_125SPDebug;
-                case GameIDs.UC4123MP:     return UC4122_125MPDebug;
-                case GameIDs.UC4124MP:     return UC4122_125MPDebug;
-                case GameIDs.UC4124_25:  return UC4122_125SPDebug;
-                case GameIDs.UC4125MP:     return UC4122_125MPDebug;
-                case GameIDs.UC4127_28MP:  return UC4127_132MPDebug;
-                case GameIDs.UC4127_133:     return UC4127_133SPDebug;
-                case GameIDs.UC4129MP:     return UC4127_132MPDebug;
-                case GameIDs.UC4130MP:     return UC4127_132MPDebug;
-                case GameIDs.UC4131MP:     return UC4127_132MPDebug;
-                case GameIDs.UC4132MP:     return UC4127_132MPDebug;
-                case GameIDs.UC4133MP:     return UC4133MPDebug;
-                case GameIDs.UC4MPBETA100: return UC4MPBETA100Debug;
-                case GameIDs.UC4MPBETA109: return UC4MPBETA109Debug;
-                case GameIDs.TLL100MP:     return TLL100MPDebug;
-                case GameIDs.TLL100:     return TLL100Debug;
-                case GameIDs.TLL10X:     return TLL10XDebug;
-                case GameIDs.T1R100:       return T1R100Debug;
-                case GameIDs.T1R109:       return T1R109Debug;
-                case GameIDs.T1R110:       return T1R110Debug;
-                case GameIDs.T1R111:       return T1R111Debug;
-                case GameIDs.T2100:        return T2100Debug;
-                case GameIDs.T2101:        return T2101Debug;
-                case GameIDs.T2102:        return T2102Debug;
-                case GameIDs.T2105:        return T2105Debug;
-                case GameIDs.T2107:        return T2107Debug;
-                case GameIDs.T2108:        return T2108Debug;
-                case GameIDs.T2109:        return T2109Debug;
-                default:           return 0xBADBEEF ;
+                case GameID.UC1100:       return DebugJumpAddress.UC1100Debug;
+                case GameID.UC1102:       return DebugJumpAddress.UC1102Debug;
+                case GameID.UC2100:       return DebugJumpAddress.UC2100Debug;
+                case GameID.UC2102:       return DebugJumpAddress.UC2102Debug;
+                case GameID.UC3100:       return DebugJumpAddress.UC3100Debug;
+                case GameID.UC3102:       return DebugJumpAddress.UC3102Debug;
+                case GameID.UC4100:       return DebugJumpAddress.UC4100Debug;
+                case GameID.UC4101:       return DebugJumpAddress.UC4101_106Debug;
+                case GameID.UC4102:       return DebugJumpAddress.UC4101_106Debug;
+                case GameID.UC4103:       return DebugJumpAddress.UC4101_106Debug;
+                case GameID.UC4104:       return DebugJumpAddress.UC4101_106Debug;
+                case GameID.UC4105:       return DebugJumpAddress.UC4101_106Debug;
+                case GameID.UC4106:       return DebugJumpAddress.UC4101_106Debug;
+                case GameID.UC4108:       return DebugJumpAddress.UC4108_111Debug;
+                case GameID.UC4110:       return DebugJumpAddress.UC4108_111Debug;
+                case GameID.UC4111:       return DebugJumpAddress.UC4108_111Debug;
+                case GameID.UC4112:       return DebugJumpAddress.UC4112_113Debug;
+                case GameID.UC4113:       return DebugJumpAddress.UC4112_113Debug;
+                case GameID.UC4115:       return DebugJumpAddress.UC4115Debug;
+                case GameID.UC4116:       return DebugJumpAddress.UC4116Debug;
+                case GameID.UC4117:       return DebugJumpAddress.UC4117Debug;
+                case GameID.UC4118:       return DebugJumpAddress.UC4118_119Debug;
+                case GameID.UC4119:       return DebugJumpAddress.UC4118_119Debug;
+                case GameID.UC4120MP:     return DebugJumpAddress.UC4120MPDebug;
+                case GameID.UC4120:       return DebugJumpAddress.UC4120SPDebug;
+                case GameID.UC4121MP:     return DebugJumpAddress.UC4121MPDebug;
+                case GameID.UC4121:       return DebugJumpAddress.UC4121SPDebug;
+                case GameID.UC4122MP:     return DebugJumpAddress.UC4122_125MPDebug;
+                case GameID.UC4122_23:    return DebugJumpAddress.UC4122_125SPDebug;
+                case GameID.UC4123MP:     return DebugJumpAddress.UC4122_125MPDebug;
+                case GameID.UC4124MP:     return DebugJumpAddress.UC4122_125MPDebug;
+                case GameID.UC4124_25:    return DebugJumpAddress.UC4122_125SPDebug;
+                case GameID.UC4125MP:     return DebugJumpAddress.UC4122_125MPDebug;
+                case GameID.UC4127_28MP:  return DebugJumpAddress.UC4127_132MPDebug;
+                case GameID.UC4127_133:   return DebugJumpAddress.UC4127_133SPDebug;
+                case GameID.UC4129MP:     return DebugJumpAddress.UC4127_132MPDebug;
+                case GameID.UC4130MP:     return DebugJumpAddress.UC4127_132MPDebug;
+                case GameID.UC4131MP:     return DebugJumpAddress.UC4127_132MPDebug;
+                case GameID.UC4132MP:     return DebugJumpAddress.UC4127_132MPDebug;
+                case GameID.UC4133MP:     return DebugJumpAddress.UC4133MPDebug;
+                case GameID.UC4MPBETA100: return DebugJumpAddress.UC4MPBETA100Debug;
+                case GameID.UC4MPBETA109: return DebugJumpAddress.UC4MPBETA109Debug;
+                case GameID.TLL100MP:     return DebugJumpAddress.TLL100MPDebug;
+                case GameID.TLL100:       return DebugJumpAddress.TLL100Debug;
+                case GameID.TLL10X:       return DebugJumpAddress.TLL10XDebug;
+                case GameID.T1R100:       return DebugJumpAddress.T1R100Debug;
+                case GameID.T1R109:       return DebugJumpAddress.T1R109Debug;
+                case GameID.T1R110:       return DebugJumpAddress.T1R110Debug;
+                case GameID.T1R111:       return DebugJumpAddress.T1R111Debug;
+                case GameID.T2100:        return DebugJumpAddress.T2100Debug;
+                case GameID.T2101:        return DebugJumpAddress.T2101Debug;
+                case GameID.T2102:        return DebugJumpAddress.T2102Debug;
+                case GameID.T2105:        return DebugJumpAddress.T2105Debug;
+                case GameID.T2107:        return DebugJumpAddress.T2107Debug;
+                case GameID.T2108:        return DebugJumpAddress.T2108Debug;
+                case GameID.T2109:        return DebugJumpAddress.T2109Debug;
+
+
+                case GameID.Empty:
+                    return DebugJumpAddress.Empty;
+
+                default:
+                    Print($"ERROR: Invalid Game ID during EbootPatchPage.GetDebugAddress");
+                    return DebugJumpAddress.Empty;
             }
         }
+
 
 
 
@@ -575,8 +304,8 @@ namespace Dobby {
             }
 
 
-            // Enable Debug Mode / Menus  (Also Checks Whether The Game's Tlou R 1.00 Because That's The Only One Without a JNZ)
-            WriteByte(DebugAddressForSelectedGame, (byte)(PatchType == 0 ? (DebugAddressForSelectedGame == 0x5C5A ? 0x74 : 0x75) : 0xEB));
+            // Enable Debug Mode / Menus  (Also Checks Whether The Game's TlouR 1.00 (0x5C5A), Because That's The Only One Without a JNZ)
+            WriteByte((int)DebugAddressForSelectedGame, (byte)(PatchType == 0 ? (DebugAddressForSelectedGame == (DebugJumpAddress) 0x5C5A ? 0x74 : 0x75) : 0xEB));
 
             if(PatchType < 2) { // Return If Patch Is Basic Debug Toggle
                 SetInfoLabelText($"{ActiveGameID} {ResultStrings[PatchType]}");
@@ -587,57 +316,57 @@ namespace Dobby {
                 default:
                     MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported\n" + Game);
                     break;
-                case GameIDs.T1R100:
-                case GameIDs.T1R109:
-                case GameIDs.T1R110:
-                case GameIDs.T1R111:
+                case GameID.T1R100:
+                case GameID.T1R109:
+                case GameID.T1R110:
+                case GameID.T1R111:
                     T1R11X_RestoredMenu();
                     break;
-                case GameIDs.T2100:
-                case GameIDs.T2101:
-                case GameIDs.T2102:
-                case GameIDs.T2105:
-                case GameIDs.T2107:
+                case GameID.T2100:
+                case GameID.T2101:
+                case GameID.T2102:
+                case GameID.T2105:
+                case GameID.T2107:
                     T2107_CustomMenu();
                     break;
-                case GameIDs.T2108:
-                case GameIDs.T2109:
+                case GameID.T2108:
+                case GameID.T2109:
                     T2109_CustomMenu();
                     break;
-                case GameIDs.UC1100: // Uncharted 1 1.00 Restored Debug Ver. 2.6.1
+                case GameID.UC1100: // Uncharted 1 1.00 Restored Debug Ver. 2.6.1
                     UC1100_RestoredMenu();
                     break;
-                case GameIDs.UC1102: // Uncharted 1 1.02 Restored Debug Ver. 2.7
+                case GameID.UC1102: // Uncharted 1 1.02 Restored Debug Ver. 2.7
                     UC1102_RestoredMenu();
                     break;
-                case GameIDs.UC2100: // Uncharted 2 1.00 Restored Debug Ver. 1.0
+                case GameID.UC2100: // Uncharted 2 1.00 Restored Debug Ver. 1.0
                     UC2100_RestoredMenu();
                     break;
-                case GameIDs.UC2102: // Uncharted 2 1.02 Restored Debug Ver. 1.0
+                case GameID.UC2102: // Uncharted 2 1.02 Restored Debug Ver. 1.0
                   //UC2102_RestoredMenu();
                     break;
-                case GameIDs.UC3100:
+                case GameID.UC3100:
                     UC3100_RestoredMenu();
                     break;
-                case GameIDs.UC3102:
+                case GameID.UC3102:
                   //UC3100_RestoredMenu();
                     break;
-                case GameIDs.UC4100:
+                case GameID.UC4100:
                   //UC4SP100_CustomMenu();
                     break;
-                case GameIDs.UC4127_133:
+                case GameID.UC4127_133:
                   //UC4SP127_CustomMenu();
                     break;
-                case GameIDs.UC4133MP:
+                case GameID.UC4133MP:
                     UC4MP133_RestoredMenu();
                     break;
-                case GameIDs.TLL100MP:
+                case GameID.TLL100MP:
                   //TLLMP100_RestoredMenu();
                     break;
-                case GameIDs.TLL100:
+                case GameID.TLL100:
                   //TLLSP100_CustomMenu();
                     break;
-                case GameIDs.TLL10X:
+                case GameID.TLL10X:
                   //TLLMP100_RestoredMenu();
                     break;
             }
@@ -1391,7 +1120,7 @@ namespace Dobby {
             for(; i < CustomFunctions.Length; ++i)
                 WriteBytes(Addresses[i], CustomFunctions[i]);
 
-            Print($"Wrote {i} Patches To {MainStream.Name}");
+            Print($"Wrote {i} Patches To {fileStream.Name}");
         }
 
 

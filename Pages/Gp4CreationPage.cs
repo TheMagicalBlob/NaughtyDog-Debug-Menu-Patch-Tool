@@ -60,15 +60,16 @@ namespace Dobby {
             
 
             //#
-            //## Assign Defaults/Verify Options.
+            //## Apply and Verify .gp4 Options.
             //#
             
             // Check for Unassigned Gamedata Path Before Proceeding
             if (GamedataPathTextBox.IsDefault)
             {
 #if DEBUG
-                if (gp4.GamedataFolder.Remove(gp4.GamedataFolder.LastIndexOf('-')) == Testing.TestGamedataFolder.Remove(Testing.TestGamedataFolder.LastIndexOf('-')))
-                  Print("Using Test Gamedata Folder.");
+                if (gp4.GamedataFolder.Remove(gp4.GamedataFolder.LastIndexOf('-')) == Testing.TestGamedataFolder.Remove(Testing.TestGamedataFolder.LastIndexOf('-'))) {
+                    Print("Using Test Gamedata Folder.");
+                }
                 else
 #endif
                 {
@@ -105,7 +106,10 @@ namespace Dobby {
 
 
 
-            //# Begin .gp4 Creation if all's well
+
+            //#
+            //## Begin .gp4 Creation if all's well
+            //#
             var newGp4 = gp4.CreateGP4();
 
             if (!Directory.Exists(newGp4))

@@ -278,7 +278,7 @@ namespace Dobby {
         /// <summary>
         /// Class for standard debug display / logging;
         /// </summary>
-        private partial class LogWindow : Form {
+        private partial class LogWindow : Form, IDisposable {
             public LogWindow(Form Gaia, Testing dev)
             {
                 var DButtonFont = new Font("Cambria", 7F, FontStyle.Bold);
@@ -492,11 +492,6 @@ namespace Dobby {
                                         $" Size: {HoveredControl?.Size} | Pos: {HoveredControl?.Location}",
                                         $" Parent [{HoveredControl?.Parent?.Name}]",
                                         $" Nex_Pos' [{Dev.Next_Base}]",
-
-                                        (MainStreamIsOpen ? " " : ""),
-
-                                        $"{(MainStreamIsOpen ? $"PS4Stream: {MainStream.Name}" : (PCDebugMenuPage.MainStreamIsOpen ? " " : ""))}",
-                                        $"{(MainStreamIsOpen ? $"Length: {(MainStream.Length.ToString().Length > 6 ? $"{MainStream.Length.ToString().Remove(2)}MB" : $"{MainStream.Length} bytes")} | Read: {MainStream.CanRead} | Write: {MainStream.CanWrite}" : (PCDebugMenuPage.MainStreamIsOpen ? " " : ""))}",
                                     };
                                     break;
                                 case PageID.PS4DebugHelpPage:
@@ -516,11 +511,6 @@ namespace Dobby {
                                         $" Size: {HoveredControl?.Size} | Pos: {HoveredControl?.Location}",
                                         $" Parent [{HoveredControl?.Parent?.Name}]",
                                         $" Nex_Pos' [{Dev.Next_Base}]",
-
-                                        (MainStreamIsOpen ? " " : ""),
-
-                                        $"{(MainStreamIsOpen ? $"PS4Stream: {MainStream.Name}" : (PCDebugMenuPage.MainStreamIsOpen ? " " : ""))}",
-                                        $"{(MainStreamIsOpen ? $"Length: {(MainStream.Length.ToString().Length > 6 ? $"{MainStream.Length.ToString().Remove(2)}MB" : $"{MainStream.Length} bytes")} | Read: {MainStream.CanRead} | Write: {MainStream.CanWrite}" : (PCDebugMenuPage.MainStreamIsOpen ? " " : ""))}",
                                     };
                                 break;
                                 case PageID.PS4MenuSettingsPage:

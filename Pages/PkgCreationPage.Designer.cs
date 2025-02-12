@@ -158,13 +158,13 @@ namespace Dobby
             this.SeperatorLine1.TabIndex = 29;
             this.SeperatorLine1.Text = "--------------------------------------------------------------";
             // 
-            // CmdPathBox
+            // OrbisCmdPathBox
             // 
             this.OrbisCmdPathBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.OrbisCmdPathBox.Font = new System.Drawing.Font("Cambria", 10F);
             this.OrbisCmdPathBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
             this.OrbisCmdPathBox.Location = new System.Drawing.Point(11, 82);
-            this.OrbisCmdPathBox.Name = "CmdPathBox";
+            this.OrbisCmdPathBox.Name = "OrbisCmdPathBox";
             this.OrbisCmdPathBox.Size = new System.Drawing.Size(335, 23);
             this.OrbisCmdPathBox.TabIndex = 50;
             this.OrbisCmdPathBox.Text = "No Program Path Loaded";
@@ -387,6 +387,7 @@ namespace Dobby
             this.LaunchOrbisPubCmdBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.LaunchOrbisPubCmdBtn.UseVisualStyleBackColor = false;
             this.LaunchOrbisPubCmdBtn.Variable = null;
+            this.LaunchOrbisPubCmdBtn.Click += new System.EventHandler(this.LaunchOrbisPubCmdBtn_Click);
             // 
             // SeperatorLine3
             // 

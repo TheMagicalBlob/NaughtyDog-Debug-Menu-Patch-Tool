@@ -71,6 +71,13 @@
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Pages\PCDebugMenuPage.Designer.cs">
+      <DependentUpon>PCDebugMenuPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\EbootPatchPage.Designer.cs">
+      <SubType>Form</SubType>
+      <DependentUpon>EbootPatchPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Gp4CreationPage.Designer.cs">
       <SubType>Form</SubType>
       <DependentUpon>Gp4CreationPage.cs</DependentUpon>

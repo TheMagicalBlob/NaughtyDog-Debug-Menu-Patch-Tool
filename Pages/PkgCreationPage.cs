@@ -69,10 +69,10 @@ namespace Dobby {
 
 
 
-        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     Page Background Functions      --\\\
-        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
-        #region Page Background Functions
+        //=====================================\\
+        //--|   Page Background Functions   |--\\
+        //=====================================\\
+        #region [Page Background Functions]
         private void ScanForOrbisPubTools() {
 #if DEBUG // Too Sus
 
@@ -98,8 +98,8 @@ namespace Dobby {
                 }
             }
 
-
-            /* A Bit Of An Intrusion, And Still Sus Even If The Exact Intent's Explicitly Stated
+            /*
+            // A Bit Of An Intrusion, And Still Sus Even If The Exact Intent's Explicitly Stated
             for(; i < FoldersInCurrentDirectory.Length; ) {
                 FilesInCurrentDirectory = Directory.GetFiles(FoldersInCurrentDirectory[++i]);
                 goto CheckFiles;
@@ -112,9 +112,7 @@ namespace Dobby {
 
 
 
-        /// <summary>
-        /// addme
-        /// </summary>
+        
         private void LaunchOrbisPubCmdBtn_Click(object sender, EventArgs e) {
 
             // Verfiy Publishing Tool Directory
