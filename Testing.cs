@@ -275,24 +275,27 @@ namespace Dobby {
 
                 var DButtons = new Button[] {
                     new Button {
-                        TabIndex = 1,
                         ForeColor = SystemColors.Control,
                         Font = DButtonFont,
                         Text = "LogTxt",
                         Name = "DebugControl"
                     },
                     new Button {
-                        TabIndex = 2,
                         ForeColor = SystemColors.Control,
                         Font = DButtonFont,
                         Text = "Boot Release",
                         Name = "DebugControl"
                     },
                     new Button {
-                        TabIndex = 2,
                         ForeColor = SystemColors.Control,
                         Font = DButtonFont,
                         Text = "Clear Info Label",
+                        Name = "DebugControl"
+                    },
+                    new Button {
+                        ForeColor = SystemColors.Control,
+                        Font = DButtonFont,
+                        Text = "Theme tst",
                         Name = "DebugControl"
                     }
                 };
@@ -311,8 +314,8 @@ namespace Dobby {
                         System.Diagnostics.Process.Start($@"{Directory.GetParent(Directory.GetCurrentDirectory())}\Release\ND Debug Enabler.exe");
                         Environment.Exit(1);
                     }),
-                    new EventHandler((control, args) => ActiveForm?.Invoke(SetInfoText)),
-                    new EventHandler((control, args) => ActiveForm?.Invoke(SetInfoText))
+                    new EventHandler((control, args) => ActiveForm?.Invoke(SetInfoText, string.Empty)),
+                    new EventHandler((control, args) => HighlightColour = Color.FromArgb(255, 0, 255))
                 };
 
 
@@ -322,11 +325,15 @@ namespace Dobby {
                 BackColor = Gaia.BackColor;
                 FormBorderStyle = FormBorderStyle.None;
                 Name = "LogWindow";
-                foreach(Button debugControl in DButtons) {
+                for (int i = 0; i < DButtons.Length; i++) {
+                    var debugControl = DButtons[i];
+                    var debugMethod = Handlers[i];
+
+
                     Controls.Add(debugControl);
                     debugControl.FlatStyle = FlatStyle.Flat;
                     debugControl.FlatAppearance.BorderSize = 0;
-                    debugControl.Click += Handlers[debugControl.TabIndex];
+                    debugControl.Click += debugMethod;
                     debugControl.Size = Dev.TryAutosize(debugControl);
                     debugControl.BringToFront();
 

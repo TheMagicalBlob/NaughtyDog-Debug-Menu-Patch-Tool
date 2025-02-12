@@ -253,6 +253,8 @@
           "* 4.51.275.772 | GP4CreationPage should be alright to go now, other misc formatting and background tweaks",
           "* 4.51.279.778 | Replaced mass int declarations with enums (for GameID's and Debug Addresses), Reworking non-ps4debug patch pages (background, not user-side).",
           "* 4.51.280.781 | Miscellaneous crap",
+          "* 4.51.281.783 | Slight DebugButtons tweak",
+          "* 4.51.285.790 | GP4CreationPage design tweak (will update PkgCreationPage later), Small Dobby.TextBox addition; Yet another font change (kill me), other random sh7t"
         };
 
 

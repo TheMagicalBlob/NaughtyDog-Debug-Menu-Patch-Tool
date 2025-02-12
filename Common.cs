@@ -117,12 +117,21 @@ namespace Dobby {
         // Design-Related Components
         #region [Design Components]
         public static Font MainFont = new Font("Consolas", 9.75F, FontStyle.Bold);
-        public static Font DefaultTextFont = new Font("Consolas", 9.75F, FontStyle.Bold | FontStyle.Italic);
+        public static Font SmallControlFont = new Font("Cambria", 8F, FontStyle.Bold);
+
+        public static Font TextFont = new Font("Cambria", 10F);
+        public static Font DefaultTextFont = new Font("Cambria", 10F, FontStyle.Italic);
+
+
         public static Color MainColour = Color.FromArgb(100, 100, 100);
-        public static Color HighlightColour = Color.White;
-        
+        public static Color HighlightColour {
+            get => BorderPen.Color;
+
+            set { BorderPen.Color = value; ActiveForm?.PerformLayout(); ActiveForm?.Update(); }
+        }
+
         ///<summary> Form Border Pen </summary>
-        private static Pen BorderPen = new Pen(HighlightColour);
+        private static Pen BorderPen = new Pen(Color.White);
         #endregion [Design Components]
         
 
@@ -1106,6 +1115,7 @@ namespace Dobby {
                     Font = Common.DefaultTextFont;
                     Text = DefaultText;
                     IsDefault = true;
+                    TextAlign = HorizontalAlignment.Center;
                 }
             };
         }
@@ -1120,6 +1130,7 @@ namespace Dobby {
             if(IsDefault) {
                 IsDefault = false;
                 Font = Common.MainFont;
+                TextAlign = HorizontalAlignment.Left;
                 Clear();
             }
         }
@@ -1138,6 +1149,7 @@ namespace Dobby {
                 Font = Common.DefaultTextFont;
                 Text = text;
                 IsDefault = false;
+
             }
         }
 

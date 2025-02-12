@@ -59,13 +59,13 @@ namespace Dobby {
         /// <summary>
         /// Apply all the non-default .gp4 options and attempt project file creation.
         /// </summary>
-        private void StartGp4CreationBtn_Click(object sender, EventArgs e) {
-            
+        private void StartGp4CreationBtn_Click(object sender, EventArgs e)
+        {
+            //#
+            //## Apply and Verify .gp4 Options
+            //#
+            #region [Apply and Verify .gp4 Options]
 
-            //#
-            //## Apply and Verify .gp4 Options.
-            //#
-            
             // Check for Unassigned Gamedata Path Before Proceeding
             if (GamedataPathTextBox.IsDefault)
             {
@@ -76,21 +76,21 @@ namespace Dobby {
                 else
 #endif
                 {
-                    Print("Please Assign A Valid Gamedata Folder Before Building.\n");
+                    SetInfoLabelText("Please Assign A Valid Gamedata Folder Before Building.\n");
                     return;
                 }
             }
             else // Read Current Gamedata Folder Path From The Text Box
             {
                 gp4.GamedataFolder = GamedataPathTextBox.Text.Replace("\"", string.Empty);
-                Print($"Set \"{gp4.GamedataFolder}\" as Gamedata Folder.");
+                SetInfoLabelText($"Set \"{gp4.GamedataFolder}\" as Gamedata Folder.");
             }
 
 
             // Ensure Keystone is Present if Applicable
             if (gp4.SfoParams.category == "gd" && !gp4.IgnoreKeystone && !File.Exists($@"{gp4.GamedataFolder}\sce_sys\keystone"))
             {
-                Print($"ERROR; No keystone File Found In Project Folder.\n\n");
+                SetInfoLabelText($"ERROR; No keystone File Found In Project Folder.\n\n");
                 return;
             }
 
@@ -106,6 +106,7 @@ namespace Dobby {
             // Load these two twats
             gp4.UseAbsoluteFilePaths = (bool) AbsoluteFilePathsBtn.Variable;
             gp4.IgnoreKeystone       = (bool) IgnoreKeystoneBtn.Variable;
+            #endregion
 
 
 
@@ -119,21 +120,18 @@ namespace Dobby {
             {
                 if (newGp4 == string.Empty)
                 {
-                    Print($"One or multiple errors were detected during .gp4 creation. (newGp4: \"{newGp4}\")");
                     SetInfoLabelText("One or multiple errors were detected during .gp4 creation");
+                    Print($"  - newGp4: \"{newGp4}\")");
                 }
                 else {
-                    Print($"An unexpected error occured during the .gp4 creation process. (newGp4: \"{newGp4}\")");
                     SetInfoLabelText("An unexpected error occured during .gp4 creation.");
+                    Print($"  - newGp4: \"{newGp4}\")");
                 }
             }
             else {
                 SetInfoLabelText(".gp4 Creation Successful.");
-                Print($".gp4 Project file saved at: \"{newGp4}\"");
+                Print($"  - .gp4 saved at: \"{newGp4}\"");
             }
-
-            // TODO:
-            // add some check for gp4 creation success, and have it trigger an option to use the generated .gp4 on the PkgCreationPage
         }
 
 
@@ -268,6 +266,26 @@ namespace Dobby {
         private Label SeperatorLine4;
         private Label SeperatorLine0;
         #endregion
+
+        private void BaseGamePackagePathTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void PasscodeTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void FileBlacklistTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Gp4OutputDirectoryTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 
 }

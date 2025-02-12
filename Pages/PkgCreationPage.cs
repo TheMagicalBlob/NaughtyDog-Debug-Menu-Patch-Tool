@@ -254,13 +254,11 @@ namespace Dobby {
 
 
         private Label SeperatorLine0;
-        private Label SeperatorLine1;
         private Label SeperatorLine2;
         private Label OrbisToolPathLabel;
         private Label Gp4PathLabel;
         private Label OutputDirectoryLabel;
         private Label TmpDirectoryLabel;
-        private Button CreditsBtn;
         private Label MainLabel;
         private Button Gp4PageBtn;
         private TextBox OrbisCmdPathBox;
@@ -271,9 +269,6 @@ namespace Dobby {
         private Button OutputDirectoryBtn;
         private TextBox TMPDirectoryBox;
         private Button TMPDirectoryBtn;
-        private Button InfoHelpBtn;
-        private Button BackBtn;
-        private Label Info;
         #endregion
     }
 }
