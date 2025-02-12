@@ -1,7 +1,7 @@
 ﻿
 namespace Dobby
 {
-    internal partial class Gp4CreationPage
+    internal partial class Gp4CreationPage : System.Windows.Forms.Form
     {
         //=====================================\\
         //--|   Designer Crap, No Touchie   |--\\

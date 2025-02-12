@@ -9,7 +9,7 @@ using System.Linq;
 
 
 namespace Dobby {
-    internal partial class Gp4CreationPage : PkgCreationPage {
+    internal partial class Gp4CreationPage : Form {
 
         public Gp4CreationPage() { //! Page Unfinished, Only Base Functionality Added
             InitializeComponent();
@@ -43,7 +43,9 @@ namespace Dobby {
         //=================================\\
         #region [Variable Declarations]
         private GP4Creator gp4;
-
+        
+        public OpenFileDialog fileDialogue;
+        public FolderBrowserDialog folderDialogue;
         #endregion
 
 
@@ -74,8 +76,11 @@ namespace Dobby {
                     return;
                 }
             }
-            // Read Current Gamedata Folder Path From The Text Box
-            else gp4.GamedataFolder = GamedataPathTextBox.Text.Replace("\"", string.Empty);
+            else // Read Current Gamedata Folder Path From The Text Box
+            {
+                gp4.GamedataFolder = GamedataPathTextBox.Text.Replace("\"", string.Empty);
+                Print($"Set \"{gp4.GamedataFolder}\" as Gamedata Folder.");
+            }
 
 
             // Ensure Keystone is Present if Applicable
@@ -86,6 +91,14 @@ namespace Dobby {
             }
 
 
+            // Assign blacklist contents
+            gp4.FileBlacklist = FileBlacklistTextBox.Text.Split(',', ';', '|');
+
+
+            // Set Package Passcode
+            gp4.Passcode = PasscodeTextBox.Text;
+
+
             // Load these two twats
             gp4.UseAbsoluteFilePaths = (bool) AbsoluteFilePathsBtn.Variable;
             gp4.IgnoreKeystone       = (bool) IgnoreKeystoneBtn.Variable;
@@ -93,7 +106,27 @@ namespace Dobby {
 
 
             //# Begin .gp4 Creation if all's well
-            gp4.CreateGP4();
+            var newGp4 = gp4.CreateGP4();
+
+            if (!Directory.Exists(newGp4))
+            {
+                if (newGp4 == string.Empty)
+                {
+                    Print($"One or multiple errors were detected during .gp4 creation. (newGp4: \"{newGp4}\")");
+                    SetInfoLabelText("One or multiple errors were detected during .gp4 creation");
+                }
+                else {
+                    Print($"An unexpected error occured during the .gp4 creation process. (newGp4: \"{newGp4}\")");
+                    SetInfoLabelText("An unexpected error occured during .gp4 creation.");
+                }
+            }
+            else {
+                SetInfoLabelText(".gp4 Creation Successful.");
+                Print($".gp4 Project file saved at: \"{newGp4}\"");
+            }
+
+            // TODO:
+            // add some check for gp4 creation success, and have it trigger an option to use the generated .gp4 on the PkgCreationPage
         }
 
 
@@ -133,9 +166,8 @@ namespace Dobby {
 
         private void Gp4OutputDirectoryBrowseBtn_Click(object sender, EventArgs e)
         {
-            using(fileDialogue = new OpenFileDialog {
-                Filter = ".gp4 Project File|*.gp4",
-                Title = "Select Your .gp4 File"
+            using(folderDialogue = new FolderBrowserDialog {
+                Description = "Select the intended output directory of the .gp4 project file."
             })
             if(fileDialogue.ShowDialog() == DialogResult.OK)
                 Gp4OutputDirectoryTextBox.Set(fileDialogue.FileName);
@@ -144,11 +176,16 @@ namespace Dobby {
             ((Dobby.Button)sender).ForeColor = Color.White;
         }
 
+
+
+        /// <summary>
+        /// Initialize a new OpenFileDialogue instance in which to select the base application package, for use in creating patch .gp4/.pkg's
+        /// </summary>
         private void BaseGamePackageBrowseBtn_Click(object sender, EventArgs e)
         {
             using(fileDialogue = new OpenFileDialog {
-                Filter = ".gp4 Project File|*.gp4",
-                Title = "Select Your .gp4 File"
+                Filter = "PS4 Application Package|*.pkg",
+                Title = "Select the package /.pkg the patch package will be installed to."
             })
             if(fileDialogue.ShowDialog() == DialogResult.OK)
                 BaseGamePackagePathTextBox.Set(fileDialogue.FileName);
@@ -157,10 +194,15 @@ namespace Dobby {
             ((Dobby.Button)sender).ForeColor = Color.White;
         }
 
+
+        /// <summary>
+        /// Initialize a new OpenFileDialogue instance in which to select the desired files to exclude from the .gp4's file listing
+        /// </summary>
         private void FileBlacklistBrowseBtn_Click(object sender, EventArgs e)
         {
             using(fileDialogue = new OpenFileDialog {
-                Title = "Select Your .gp4 File"
+                Title = "Select files you wish to exclude from the .gp4 project file (folders must be added manually, blame MS)",
+                Multiselect = true
             })
             if(fileDialogue.ShowDialog() == DialogResult.OK)
                 BaseGamePackagePathTextBox.Set(string.Join("; ", fileDialogue.FileNames));
