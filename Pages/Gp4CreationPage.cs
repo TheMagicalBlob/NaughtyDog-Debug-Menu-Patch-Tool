@@ -15,16 +15,15 @@ namespace Dobby {
             InitializeComponent();
             
             InitializeAdditionalEventHandlers(Controls);
-
-
-            //! Why am I doing this?
+            
             foreach(Control control in Controls) {
-                if(control.Name.Contains("PathLabel")) {
-                    control.MouseEnter += new EventHandler((sender, args) => ((Control)sender).Font = new Font(((Control)sender).Font.FontFamily, ((Control)sender).Font.Size, FontStyle.Bold | FontStyle.Underline));
-                    control.MouseLeave += new EventHandler((sender, args) => ((Control)sender).Font = new Font(((Control)sender).Font.FontFamily, ((Control)sender).Font.Size, FontStyle.Bold));
+                if(control.Name.Contains("PathBox")) {
+                    control.MouseEnter += (sender, _) => ((Control)sender).Font = new Font(((Control)sender).Font.FontFamily, ((Control)sender).Font.Size, ((Control)sender).Font.Style ^ FontStyle.Underline);
+                    control.MouseLeave += (sender, _) => ((Control)sender).Font = new Font(((Control)sender).Font.FontFamily, ((Control)sender).Font.Size, ((Control)sender).Font.Style ^ FontStyle.Underline);
                 }
             }
-            
+
+
             AbsoluteFilePathsBtn.Variable = false;
             IgnoreKeystoneBtn.Variable = false;
 

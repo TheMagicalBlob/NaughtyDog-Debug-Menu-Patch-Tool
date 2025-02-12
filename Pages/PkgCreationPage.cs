@@ -16,9 +16,9 @@ namespace Dobby {
             InitializeAdditionalEventHandlers(Controls);
 
             foreach(Control control in Controls) {
-                if(control.Name.Contains("PathBox") || control.Name.Contains("DirectoryBox")) {
-                    control.MouseEnter += (sender, _) => ((Control)sender).Font = new Font(((Control)sender).Font.FontFamily, ((Control)sender).Font.Size, ((Control)sender).Font.Underline ? FontStyle.Bold : FontStyle.Bold | FontStyle.Underline);
-                    control.MouseLeave += (sender, _) => ((Control)sender).Font = new Font(((Control)sender).Font.FontFamily, ((Control)sender).Font.Size, ((Control)sender).Font.Underline ? FontStyle.Bold : FontStyle.Bold | FontStyle.Underline);
+                if(control.Name.Contains("PathBox")) {
+                    control.MouseEnter += (sender, _) => ((Control)sender).Font = new Font(((Control)sender).Font.FontFamily, ((Control)sender).Font.Size, ((Control)sender).Font.Style ^ FontStyle.Underline);
+                    control.MouseLeave += (sender, _) => ((Control)sender).Font = new Font(((Control)sender).Font.FontFamily, ((Control)sender).Font.Size, ((Control)sender).Font.Style ^ FontStyle.Underline);
                 }
             }
 
@@ -171,11 +171,11 @@ namespace Dobby {
 
             if(!(UseCstmTMPDirectory ^= true)) {
                 TMPDirectory = string.Empty;
-                TMPDirectoryBox.Text = "Using This PC's Default TMP Directory";
+                TMPDirectoryPathBox.Text = "Using This PC's Default TMP Directory";
                 return;
             }
 
-            TMPDirectoryBox.Text = TMPDirectory = $"{Directory.GetCurrentDirectory()}\\TMP";
+            TMPDirectoryPathBox.Text = TMPDirectory = $"{Directory.GetCurrentDirectory()}\\TMP";
             Update();
         }
 #endregion
@@ -224,7 +224,7 @@ namespace Dobby {
                 Description = "Chose A Directory You Want The Finished .pkg To Go, Or Close This Window To Use The App Directory"
             })
             if(folderDialogue.ShowDialog() == DialogResult.OK)
-                OutputDirectoryBox.Text = OutputPath = folderDialogue.SelectedPath;
+                OutputDirectoryPathBox.Text = OutputPath = folderDialogue.SelectedPath;
 
             ((Dobby.Button)sender).ForeColor = Color.White;
         }
@@ -237,7 +237,7 @@ namespace Dobby {
                 Description = "Chose A Temp Directory For Files Created During The .pkg Build Process"
             })
             if(folderDialogue.ShowDialog() == DialogResult.OK)
-                TMPDirectoryBox.Text = TMPDirectory = folderDialogue.SelectedPath;
+                TMPDirectoryPathBox.Text = TMPDirectory = folderDialogue.SelectedPath;
 
 
             ((Dobby.Button)sender).ForeColor = Color.White;
@@ -255,21 +255,21 @@ namespace Dobby {
 
         private Label SeperatorLine0;
         private Label SeperatorLine2;
-        private Label OrbisToolPathLabel;
+        private Label OrbisCmdPathLabel;
         private Label Gp4PathLabel;
         private Label OutputDirectoryLabel;
-        private Label TmpDirectoryLabel;
+        private Label TmpDirectoryPathLabel;
         private Label MainLabel;
         private Button Gp4PageBtn;
         private TextBox OrbisCmdPathBox;
-        private Button CmdPathBtn;
+        private Button OrbisCmdPathBrowseBtn;
         private TextBox GP4PathBox;
-        private Button GP4PathBtn;
+        private Button GP4PathBrowseBtn;
 
-        private TextBox OutputDirectoryBox;
-        private Button OutputDirectoryBtn;
-        private TextBox TMPDirectoryBox;
-        private Button TMPDirectoryBtn;
+        private TextBox OutputDirectoryPathBox;
+        private Button OutputDirectoryBrowseBtn;
+        private TextBox TMPDirectoryPathBox;
+        private Button TMPDirectoryBrowseBtn;
         #endregion
     }
 }

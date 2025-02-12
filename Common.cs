@@ -579,6 +579,9 @@ namespace Dobby {
                 Print("!! ERROR: Invalid control passed as Seperator line.");
                 Print($"  - Control \"{item.Name}\" location: {item.Location}.");
             }
+            if (item.Name == "Se" && item.Location != new Point(2, 20)) {
+                Print($"Seperator Line 0 Improperly positioned on {item.Parent.Name}");
+            }
             if (item.Height != 15) {
                 Print($"# WARNING: \"{item.Name}\" has an invalid height!!! (Label is {item.Height} pixels in hight)");
                 //item.Size = new Size(item.Size.Width, 15);
