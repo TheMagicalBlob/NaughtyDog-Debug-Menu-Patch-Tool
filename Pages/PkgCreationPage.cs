@@ -265,6 +265,7 @@ namespace Dobby {
         private Button CmdPathBtn;
         private TextBox GP4PathBox;
         private Button GP4PathBtn;
+
         private TextBox OutputDirectoryBox;
         private Button OutputDirectoryBtn;
         private TextBox TMPDirectoryBox;
