@@ -55,7 +55,6 @@ namespace Dobby {
             //^
 
 
-
             LogWindow.LogOut(str);
             System.Diagnostics.Debug.WriteLine(str);
             if (!Console.IsInputRedirected)
@@ -93,7 +92,7 @@ namespace Dobby {
         /// </summary>
         public dynamic ActivePage {
             private get => activePage;
-            set => Log.SetLogParent(activePage = value);
+            set => Log?.SetLogParent(activePage = value);
         }
         private dynamic activePage;
 
@@ -142,7 +141,7 @@ namespace Dobby {
 
         public bool OverrideMsgOut;
 
-        internal int ClickErrors = 1;
+        internal int ClickErrors = 0;
         internal int ClickEventCheck = 0;
 
 
@@ -261,7 +260,7 @@ namespace Dobby {
 
 
 
-
+        public void Dispose() => Log.Dispose();
 
         //public void MoveLogToAppEdge() => Log.MoveLogToAppEdge
 
@@ -353,6 +352,7 @@ namespace Dobby {
                 (LogThread = new Thread(new ThreadStart(UpdateConsoleOutput))).Start();
 
                 Dev = dev;
+
             }
 
 
@@ -454,28 +454,32 @@ namespace Dobby {
             /// <summary> Main LogWindow output loop. </summary>
             public void UpdateConsoleOutput()
             {
-                string Out;
-                string[] Output, chk1 = Array.Empty<string>(), chk2 = Array.Empty<string>();
+                string output;
+                string[] rawOutput;
+                string[]
+                    chk1 = Array.Empty<string>(),
+                    chk2 = Array.Empty<string>()
+                ;
 
-                var pen   = new Pen(Color.White);
-                var DFont = new Font("Consolas", 8.5f, FontStyle.Bold);
+                var logPen   = new Pen(Common.HighlightColour);
+                var logFont = new Font("Consolas", 8.5f, FontStyle.Bold);
 
                 while(true) {
                     try {
-                        Out = string.Empty;
-                        var ControlType = HoveredControl?.GetType().ToString();
+                        // Lazy way to pause output.
+                        while(LogShouldPause);
 
-                        var DynamicVars = PS4MenuSettingsPage.PeekGameSpecificPatchValues();
+                        output = string.Empty;
+                        var controlType = HoveredControl?.GetType().ToString();
+
+                        var dynamicVars = PS4MenuSettingsPage.PeekGameSpecificPatchValues();
 
                         try {
-
-                            // Lazy way to pause output.
-                            while(LogShouldPause);
 
                             // Switch between various formats of debug output based on the current page.
                             switch(Page) {
                                 default:
-                                    Output = new string[] {
+                                    rawOutput = new string[] {
                                         $"Build: {Ver.Build} ClickErrors: {Dev.ClickErrors}",
                                         " ",
                                         $"Parent Form: {(ActiveForm != null ? $"{ActiveForm?.Name} | # Of Children: {ActiveForm?.Controls?.Count}" : "Console")}",
@@ -484,7 +488,7 @@ namespace Dobby {
                                         $"  Pages: {string.Join(", ", Pages)}",
                                         " ",
                                         $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}",
-                                        $"Control: {HoveredControl?.Name} | {ControlType?.Substring(ControlType.LastIndexOf('.') + 1)}",
+                                        $"Control: {HoveredControl?.Name} | {controlType?.Substring(controlType.LastIndexOf('.') + 1)}",
                                         $"{(HoveredControl?.GetType() == typeof(Button) ? ((Button)HoveredControl)?.Variable : " ")}",
                                         $" Size: {HoveredControl?.Size} | Pos: {HoveredControl?.Location}",
                                         $" Parent [{HoveredControl?.Parent?.Name}]",
@@ -493,7 +497,7 @@ namespace Dobby {
                                     break;
                                 case PageID.PS4DebugHelpPage:
 
-                                    Output = new string[] {
+                                    rawOutput = new string[] {
                                         $"Build: {Ver.Build}",
                                         " ",
                                         $"Parent Form: {(ActiveForm != null ? $"{ActiveForm?.Name} | # Of Children: {ActiveForm?.Controls?.Count}" : "Console")}",
@@ -503,7 +507,7 @@ namespace Dobby {
                                         //$"ProcessName: {PS4DebugPage.ProcessName} | PDbg Connected: {PS4DebugPage.PS4DebugIsConnected}",
                                         " ",
                                         $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}",
-                                        $"Control: {HoveredControl?.Name} | {ControlType?.Substring(ControlType.LastIndexOf('.') + 1)}",
+                                        $"Control: {HoveredControl?.Name} | {controlType?.Substring(controlType.LastIndexOf('.') + 1)}",
                                         $"{(HoveredControl?.GetType() == typeof(Button) ? ((Button)HoveredControl)?.Variable : " ")}",
                                         $" Size: {HoveredControl?.Size} | Pos: {HoveredControl?.Location}",
                                         $" Parent [{HoveredControl?.Parent?.Name}]",
@@ -511,7 +515,7 @@ namespace Dobby {
                                     };
                                 break;
                                 case PageID.PS4MenuSettingsPage:
-                                    Output = new string[] {
+                                    rawOutput = new string[] {
                                         "",
                                         $"| Game Index:           {PS4MenuSettingsPage.GameIndex}",
                                         $"| Disable FPS:          {PS4MenuSettingsPage.UniversalPatchValues[0]}",
@@ -520,44 +524,32 @@ namespace Dobby {
                                         $"| ProgPauseOnExit:      {PS4MenuSettingsPage.UniversalPatchValues[3]}",
                                         $"| Novis:                {PS4MenuSettingsPage.UniversalPatchValues[4]}",
                                          "| ",
-                                        $"| Menu Scale:           {DynamicVars[0]}",
-                                        $"| Menu Alpha:           {DynamicVars[1]}",
-                                        $"| Non-ADS FOV:          {DynamicVars[2]}",
-                                        $"| Camera X-Align:       {DynamicVars[3]}",
-                                        $"| Shadowed Text:        {DynamicVars[4]}",
-                                        $"| Swap Square & Circle: {DynamicVars[5]}",
-                                        $"| Right Align:          {DynamicVars[6]}",
-                                        $"|    Right Margin:      {DynamicVars[7]}\n"
-                                    };
-                                break;
-                                case PageID.PkgCreationPage:
-                                    var arr = PkgCreationPage.DebugPeek();
-                                    Output = new string[] {
-                                        $"| Build Is Ready: {!(arr[0].Equals("?") && arr[1].Equals("?"))}",
-                                        $"| ",
-                                        $"| ",
-                                        $"| ",
-                                        $"| ",
-                                        $"| ",
-                                        $"| ",
+                                        $"| Menu Scale:           {dynamicVars[0]}",
+                                        $"| Menu Alpha:           {dynamicVars[1]}",
+                                        $"| Non-ADS FOV:          {dynamicVars[2]}",
+                                        $"| Camera X-Align:       {dynamicVars[3]}",
+                                        $"| Shadowed Text:        {dynamicVars[4]}",
+                                        $"| Swap Square & Circle: {dynamicVars[5]}",
+                                        $"| Right Align:          {dynamicVars[6]}",
+                                        $"|    Right Margin:      {dynamicVars[7]}\n"
                                     };
                                 break;
                             }
                         }
                         catch(Exception e) {
-                            Output = new string[] { "Error.", e.Message };
+                            rawOutput = new string[] { "Error.", e.Message };
                             Dev.Print($"!! ERROR: an exception occured during debug output loop while setting \"frame\".\nException: {e.Message}");
                         }
 
-                        if(LogShouldRefresh || !chk1.SequenceEqual(Output) || chk1 == null || !chk2.SequenceEqual(OutputStrings)) {
-                            chk1 = Output;
+                        if(LogShouldRefresh || !chk1.SequenceEqual(rawOutput) || chk1 == null || !chk2.SequenceEqual(OutputStrings)) {
+                            chk1 = rawOutput;
                             chk2 = OutputStrings;
                             SizeF TextSize;
                             FormScale = Size.Empty;
 
                             // Resize LogWindow To Fit Rendered Text, With A Padding of 6 Pixels (Half Because It's Also Placed 6 Pixles In On Each Axis Below)
-                            foreach(string line in Output) {
-                                TextSize = LogWindowRenderer.MeasureString(line, DFont);
+                            foreach(string line in rawOutput) {
+                                TextSize = LogWindowRenderer.MeasureString(line, logFont);
 
                                 if((int)TextSize.Width > FormScale.Width - 12)
                                     FormScale.Width = (int)TextSize.Width + 12;
@@ -565,48 +557,51 @@ namespace Dobby {
                                 FormScale.Height += (int)TextSize.Height;
 
                                 if(line != "")
-                                    Out += $"{line}\n";
+                                    output += $"{line}\n";
                             }
 
-                            Out += " \n";
+                            output += " \n";
                             
-                            foreach(string line in OutputStrings) {
-                                TextSize = LogWindowRenderer.MeasureString(line, DFont);
+                            foreach(string line in OutputStrings)
+                            {
+                                TextSize = LogWindowRenderer.MeasureString(line, logFont);
 
                                 if(TextSize.Width > FormScale.Width - 12)
                                     FormScale.Width = (int)TextSize.Width + 12;
 
                                 FormScale.Height += (int)TextSize.Height;
 
-                                if(line != "")
-                                    Out += $"{line}\n";
-
+                                if(line == "")
+                                    output += "!\n";
                                 else
-                                    Out += "!\n";
+                                    output += $"{line}\n";
                             }
 
                             FormScale.Height += 50; // Border Offset + Padding
 
                             // Resize Form Back On Main LogWindow Thread
-                            try { LogPtr.Invoke(ResizeLog); }
+                            try {
+                                LogPtr.Invoke(ResizeLog);
+                            }
+                            catch(InvalidOperationException) {
+                                MessageBox.Show("Error Resizing Log Form");
+                            }
 
-                            catch(InvalidOperationException) { MessageBox.Show("Resize Error Noti"); }
 
+                            // Clear Last "Frame", Draw Text And Border
+                            LogWindowRenderer.Clear(Common.MainColour);
+                            LogWindowRenderer.DrawLine(logPen, 0f, 30f, (float)LogPtr.Width, 30f);
 
-                            // Border Setup
-                            Point[] Border = new Point[] {
+                            LogWindowRenderer.DrawLines(logPen, new Point[] {
                                     Point.Empty,
                                     new Point(LogPtr.Width-1, 0),
                                     new Point(LogPtr.Width-1, LogPtr.Height-1),
                                     new Point(0, LogPtr.Height-1),
                                     Point.Empty
-                            };
+                            });
 
-                            // Clear Last "Frame", Draw Text And Border
-                            LogWindowRenderer.Clear(Color.FromArgb(100, 100, 100));
-                            LogWindowRenderer.DrawLine(pen, 0f, 30f, (float)LogPtr.Width, 30f);
-                            LogWindowRenderer.DrawLines(pen, Border);
-                            LogWindowRenderer.DrawString(Out, DFont, Brushes.White, new PointF(6f, 35f));
+                            // Draw 
+                            LogWindowRenderer.DrawString(output, logFont, Brushes.White, new PointF(6f, 35f));
                             LogShouldRefresh ^= LogShouldRefresh;
                         }
                     }

@@ -78,9 +78,9 @@
       <SubType>Form</SubType>
       <DependentUpon>EbootPatchPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Gp4CreationPage.Designer.cs">
+    <Compile Include="Pages\GP4CreationPage.Designer.cs">
       <SubType>Form</SubType>
-      <DependentUpon>Gp4CreationPage.cs</DependentUpon>
+      <DependentUpon>GP4CreationPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Pages\PkgCreationPage.Designer.cs">
       <SubType>Form</SubType>
@@ -94,7 +94,7 @@
       <SubType>Form</SubType>
       <DependentUpon>CreditsPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Gp4CreationPage.cs">
+    <Compile Include="Pages\GP4CreationPage.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Pages\PkgCreationHelpPage.cs">
@@ -159,8 +159,8 @@
       <DependentUpon>EbootPatchPage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Gp4CreationPage.resx">
-      <DependentUpon>Gp4CreationPage.cs</DependentUpon>
+    <EmbeddedResource Include="Pages\GP4CreationPage.resx">
+      <DependentUpon>GP4CreationPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\InfoHelpPage.resx">
       <DependentUpon>InfoHelpPage.cs</DependentUpon>

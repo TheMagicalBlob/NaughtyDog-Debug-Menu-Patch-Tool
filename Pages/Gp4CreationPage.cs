@@ -9,17 +9,16 @@ using System.Linq;
 
 
 namespace Dobby {
-    internal partial class Gp4CreationPage : Form {
+    internal partial class GP4CreationPage : Form {
 
-        public Gp4CreationPage() { //! Page Unfinished, Only Base Functionality Added
+        public GP4CreationPage() { //! Page Unfinished, Only Base Functionality Added
             InitializeComponent();
-            
             InitializeAdditionalEventHandlers(Controls);
             
             foreach(Control control in Controls) {
                 if(control.Name.Contains("PathBox")) {
-                    control.MouseEnter += (sender, _) => ((Control)sender).Font = new Font(((Control)sender).Font.FontFamily, ((Control)sender).Font.Size, ((Control)sender).Font.Style ^ FontStyle.Underline);
-                    control.MouseLeave += (sender, _) => ((Control)sender).Font = new Font(((Control)sender).Font.FontFamily, ((Control)sender).Font.Size, ((Control)sender).Font.Style ^ FontStyle.Underline);
+                    control.MouseEnter += (sender, _) => ((Control)sender).Font = new Font(((Control)sender).Font.FontFamily, ((Control)sender).Font.Size, ((Control)sender).Font.Style |~ FontStyle.Underline);
+                    control.MouseLeave += (sender, _) => ((Control)sender).Font = new Font(((Control)sender).Font.FontFamily, ((Control)sender).Font.Size, ((Control)sender).Font.Style |~ FontStyle.Underline);
                 }
             }
 
@@ -66,7 +65,7 @@ namespace Dobby {
             #region [Apply and Verify .gp4 Options]
 
             // Check for Unassigned Gamedata Path Before Proceeding
-            if (GamedataPathTextBox.IsDefault)
+            if (GamedataPathBox.IsDefault)
             {
 #if DEBUG
                 if (gp4.GamedataFolder.Remove(gp4.GamedataFolder.LastIndexOf('-')) == Testing.TestGamedataFolder.Remove(Testing.TestGamedataFolder.LastIndexOf('-'))) {
@@ -81,7 +80,7 @@ namespace Dobby {
             }
             else // Read Current Gamedata Folder Path From The Text Box
             {
-                gp4.GamedataFolder = GamedataPathTextBox.Text.Replace("\"", string.Empty);
+                gp4.GamedataFolder = GamedataPathBox.Text.Replace("\"", string.Empty);
                 SetInfoLabelText($"Set \"{gp4.GamedataFolder}\" as Gamedata Folder.");
             }
 
@@ -95,11 +94,11 @@ namespace Dobby {
 
 
             // Assign blacklist contents
-            gp4.FileBlacklist = FileBlacklistTextBox.Text.Split(',', ';', '|');
+            gp4.FileBlacklist = FileBlacklistPathBox.Text.Split(',', ';', '|');
 
 
             // Set Package Passcode
-            gp4.Passcode = PasscodeTextBox.Text;
+            gp4.Passcode = PasscodePathBox.Text;
 
 
             // Load these two twats
@@ -147,7 +146,7 @@ namespace Dobby {
                 using (var FBrowser = new FolderBrowserDialog { Description = "Please Select the Desired Gamedata Folder" })
                 {
                     if (FBrowser.ShowDialog() == DialogResult.OK) {
-                        GamedataPathTextBox.Set(FBrowser.SelectedPath);
+                        GamedataPathBox.Set(FBrowser.SelectedPath);
                     }
                 }
 
@@ -163,7 +162,7 @@ namespace Dobby {
                     FileName = "Press 'Open' Inside The Desired Folder."
                 })
                 if (fileDialogue.ShowDialog() == DialogResult.OK)
-                    GamedataPathTextBox.Set(fileDialogue.FileName.Remove(fileDialogue.FileName.LastIndexOf('\\')));
+                    GamedataPathBox.Set(fileDialogue.FileName.Remove(fileDialogue.FileName.LastIndexOf('\\')));
             }
             
 
@@ -182,7 +181,7 @@ namespace Dobby {
                 Description = "Select the intended output directory of the .gp4 project file."
             })
             if(fileDialogue.ShowDialog() == DialogResult.OK)
-                Gp4OutputDirectoryTextBox.Set(fileDialogue.FileName);
+                GP4OutputDirectoryPathBox.Set(fileDialogue.FileName);
 
             
             ((Dobby.Button)sender).ForeColor = Color.White;
@@ -200,7 +199,7 @@ namespace Dobby {
                 Title = "Select the package /.pkg the patch package will be installed to."
             })
             if(fileDialogue.ShowDialog() == DialogResult.OK)
-                BaseGamePackagePathTextBox.Set(fileDialogue.FileName);
+                BaseGamePackagePathBox.Set(fileDialogue.FileName);
             
             
             ((Dobby.Button)sender).ForeColor = Color.White;
@@ -217,7 +216,7 @@ namespace Dobby {
                 Multiselect = true
             })
             if(fileDialogue.ShowDialog() == DialogResult.OK)
-                BaseGamePackagePathTextBox.Set(string.Join("; ", fileDialogue.FileNames));
+                BaseGamePackagePathBox.Set(string.Join("; ", fileDialogue.FileNames));
 
 
             ((Dobby.Button)sender).ForeColor = Color.White;
@@ -234,24 +233,23 @@ namespace Dobby {
 
 
 
-
         //================================\\
         //--|   Control Declarations   |--\\
         //================================\\
         #region [Control Declarations]
         private Label GamedataPathLabel;
-        private TextBox GamedataPathTextBox;
+        private TextBox GamedataPathBox;
         private Button GamedataPathBrowseBtn;
-        private Button Gp4OutputDirectoryBrowseBtn;
-        private TextBox Gp4OutputDirectoryTextBox;
-        private Label Gp4OutputPathLabel;
+        private Button GP4OutputDirectoryBrowseBtn;
+        private TextBox GP4OutputDirectoryPathBox;
+        private Label GP4OutputPathLabel;
         private Label PasscodeLabel;
-        private TextBox PasscodeTextBox;
+        private TextBox PasscodePathBox;
         private Label FileBlacklistPathLabel;
-        private TextBox FileBlacklistTextBox;
+        private TextBox FileBlacklistPathBox;
         private Button FileBlacklistBrowseBtn;
         private Label BaseGamePackagePathLabel;
-        private TextBox BaseGamePackagePathTextBox;
+        private TextBox BaseGamePackagePathBox;
         private Button BaseGamePackageBrowseBtn;
         private Label SeperatorLine2;
         private Label SeperatorLine3;
@@ -265,26 +263,5 @@ namespace Dobby {
         private Label SeperatorLine4;
         private Label SeperatorLine0;
         #endregion
-
-        private void BaseGamePackagePathTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void PasscodeTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void FileBlacklistTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Gp4OutputDirectoryTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
     }
-
 }

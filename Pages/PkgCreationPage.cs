@@ -12,7 +12,6 @@ namespace Dobby {
     public partial class PkgCreationPage : Form {
         public PkgCreationPage() {
             InitializeComponent();
-            
             InitializeAdditionalEventHandlers(Controls);
 
             foreach(Control control in Controls) {
@@ -25,40 +24,15 @@ namespace Dobby {
             InfoLabel.AccessibleRole = AccessibleRole;
 
             // TODO: Maintain Settings For Page When Swapping Between gp4/pkg Creation Pages.. Or Just In General.
-
-            OutputPath = Directory.GetCurrentDirectory();
-            TempDirectoryBtn.Variable = false;
         }
 
 
 
-        //////////////////\\\\\\\\\\\\\\\\\
-        ///--     Page Variables      --\\\
-        //////////////////\\\\\\\\\\\\\\\\\
+        //==========================\\
+        //--|   Page Variables   |--\\
+        //==========================\\
+        #region [Page Variables]
 
-#if DEBUG
-        public static object[] DebugPeek() {
-            return new object[] {
-                OrbisToolPath,
-                GP4Path,
-                TMPDirectory,
-                OutputPath,
-                //VerboseOutput,
-                //UseCstmTMPDirectory
-            };
-        }
-
-        private static string
-#else
-        private string
-#endif
-            OrbisToolPath = "?",
-            GP4Path       = "?",
-            TMPDirectory  = "?",
-            OutputPath    = "?"
-        ;
-
-        
         private bool
             VerboseOutput,
             UseCstmTMPDirectory
@@ -66,6 +40,8 @@ namespace Dobby {
 
         public OpenFileDialog fileDialogue;
         public FolderBrowserDialog folderDialogue;
+        #endregion
+
 
 
 
@@ -73,6 +49,26 @@ namespace Dobby {
         //--|   Page Background Functions   |--\\
         //=====================================\\
         #region [Page Background Functions]
+        private void DebugBtn1_Click(object sender, EventArgs e)
+        {
+            foreach (var item in Controls)
+            {
+                if (item.GetType() == typeof(TextBox))
+                {
+                    var control = (TextBox) item;
+                    control.TextAlign ^= (HorizontalAlignment) 2;
+                }
+            }
+        }
+
+        private void DebugBtn2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Gp4PageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.Gp4CreationPage);
+
+
         private void ScanForOrbisPubTools() {
 #if DEBUG // Too Sus
 
@@ -90,9 +86,10 @@ namespace Dobby {
                     stream.Read(Check, 0, 4);
 
                     if(Check.SequenceEqual(new byte[] { 0x46, 0xD1, 0xB8 }) || Check.SequenceEqual(new byte[] { 0x50, 0x45, 0x00 }) || file.Contains("orbis-pub-cmd") || file.Contains("-keystone")) {
-                        OrbisCmdPathBox.Text = OrbisToolPath = file;
+                        OrbisToolPathBox.Set(file);
 
-                        Print($"{file}\\{OrbisToolPath} Set As OrbisPubCmdPath");
+                        SetInfoLabelText("Successfully found orbis-pub-cmd.exe");
+                        Print($"  - \"{file}\" Set As OrbisPubCmdPath");
                         return;
                     }
                 }
@@ -113,10 +110,57 @@ namespace Dobby {
 
 
         
-        private void LaunchOrbisPubCmdBtn_Click(object sender, EventArgs e) {
+        private void LaunchOrbisPubCmdBtn_Click(object sender, EventArgs e)
+        {
+            string
+                orbisToolPath,
+                gp4Path,
+                outputPath,
+                tempDirectory
+            ;
+
+
+            if (OrbisToolPathBox.IsDefault)
+            {
+                SetInfoLabelText("Please provide a path to the FPKG tools");
+                // TODO: add label flash here
+                return;
+            }
+            else
+                orbisToolPath = OrbisToolPathBox.Text.Replace("\n", string.Empty);
+
+            
+            if (GP4PathBox.IsDefault)
+            {
+                Print("//!");
+                return;
+            }
+            else
+                gp4Path = GP4PathBox.Text.Replace("\n", string.Empty);
+            
+
+            if (OutputDirectoryPathBox.IsDefault)
+            {
+                Print("Output directory unset, using same folder as .gp4 path");
+                outputPath = Directory.GetParent(gp4Path).FullName;
+            }
+            else
+                outputPath = OutputDirectoryPathBox.Text.Replace("\n", string.Empty);
+
+
+            if (TempDirectoryPathBox.IsDefault)
+            {
+                Print("//!");
+                tempDirectory = null;
+            }
+            else
+                tempDirectory = TempDirectoryPathBox.Text.Replace("\n", string.Empty);
+
+
+
 
             // Verfiy Publishing Tool Directory
-            if(!File.Exists(OrbisToolPath)) {
+            if(!File.Exists(orbisToolPath)) {
                 if (MessageBox.Show("A Valid Path To The Fake Package / fpkg Toolset Was Not Provided, Would You Like To Scan The Current Folder For Publishing Tools Folder?", "Toolset Not Found, Provide A Valid Path", MessageBoxButtons.YesNo) == DialogResult.OK)
                     ScanForOrbisPubTools(); // Maybe Just Remove This And Make Them Do It Themselves
 
@@ -126,8 +170,8 @@ namespace Dobby {
             }
 
             // Verfiy .gp4 Project Path
-            else if(!File.Exists(GP4Path)) {
-                MessageBox.Show($"Error: The Path Provided For The .gp4 Project Wasn't Valid. A Valid .gp4 Is Mandatory For .pkg Creation.\n\nProvided Path: {GP4Path}", "Invalid .gp4 Project File Path");
+            else if(!File.Exists(gp4Path)) {
+                MessageBox.Show($"Error: The Path Provided For The .gp4 Project Wasn't Valid. A Valid .gp4 Is Mandatory For .pkg Creation.\n\nProvided Path: {gp4Path}", "Invalid .gp4 Project File Path");
 
                 // Force Reset Control Highlight, As The Message Box Stops The Control From Ever Resetting Automatically (Fix The Underlying Issue//!!!) 
                 ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
@@ -142,15 +186,15 @@ namespace Dobby {
             }
 
 
-            // Set Output Directory As The Current Directory Dobby's In
-            if(!Directory.Exists(OutputPath))
-                OutputPath = GP4Path.Remove(GP4Path.LastIndexOf(@"\"));
+            // Set Output Directory as the current
+            if(!Directory.Exists(outputPath))
+                outputPath = gp4Path.Remove(gp4Path.LastIndexOf("\\"));
 
-            string Parameters = $"img_create --oformat pkg  {(VerboseOutput ? "--no_progress_bar" : string.Empty)} --skip_digest {(UseCstmTMPDirectory ? $"--tmp_path \"{TMPDirectory}\"" : string.Empty)} \"{GP4Path}\" \"{OutputPath}\" > \"C:\\Users\\Blob\\Desktop\\out.txt\"";
+            string Parameters = $"img_create --oformat pkg  {(VerboseOutput ? "--no_progress_bar" : string.Empty)} --skip_digest {(UseCstmTMPDirectory ? $"--tmp_path \"{tempDirectory}\"" : string.Empty)} \"{gp4Path}\" \"{outputPath}\" > \"C:\\Users\\Blob\\Desktop\\out.txt\"";
 #if DEBUG
             Dev.StartReadLogTest();
 #endif
-            System.Diagnostics.Process.Start(OrbisToolPath, Parameters);
+            var buildProcess = System.Diagnostics.Process.Start(orbisToolPath, Parameters);
             Print(Parameters);
 #if !DEBUG
             MessageBox.Show(Parameters);
@@ -159,58 +203,40 @@ namespace Dobby {
             MessageBox.Show(".pkg Creation Started; If The CMD Window Just Closes Immediately, Something Is Wrong With Your .gp4 Or Gamedata (Likely The Latter). Check Info/Help Page -> Pkg Creation Page Help");
         }
 
-
-        /// <summary> Invert the VerboseOutput bool And Replace The Last Word In The Button Text To Reflect The Change
-        /// </summary>
-        private void VerbosityBtn_Click(object sender, EventArgs e) => ToggleBtnVar<bool>(sender);
-
-        /// <summary> Toggle Whether Or Not To Add The -tmp-
-        /// </summary>
-        private void TempDirectoryBtn_Click(object sender, EventArgs e) {
-            ToggleBtnVar<bool>(sender);
-
-            if(!(UseCstmTMPDirectory ^= true)) {
-                TMPDirectory = string.Empty;
-                TMPDirectoryPathBox.Text = "Using This PC's Default TMP Directory";
-                return;
-            }
-
-            TMPDirectoryPathBox.Text = TMPDirectory = $"{Directory.GetCurrentDirectory()}\\TMP";
-            Update();
-        }
-#endregion
+        #endregion
 
 
-        /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     Path Box/Button Interactions      --\\\
-        /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\
 
-        /// <summary> Load orbis-pub-cmd.exe Binary And The Reqired .gp4 file If The Path Is Right
+        //=================================\\
+        //--|   Control Event Methods   |--\\
+        //=================================\\
+        #region [Control Event Methods]
+        /// <summary>
+        /// Load orbis-pub-cmd.exe Binary And The Reqired .gp4 file If The Path Is Right
         /// </summary>
         private void OrbisCmdPathBrowseBtn_Click(object sender, EventArgs e) {
-            using(var fileDialog = new OpenFileDialog {
+            using(fileDialogue = new OpenFileDialog {
                     Filter = "Executable|*.exe",
                     Title = "Select orbis-pub-cmd.exe"
             })
-            if(fileDialog.ShowDialog() == DialogResult.OK)
-                OrbisCmdPathBox.Text = OrbisToolPath = fileDialog.FileName;
+            if(fileDialogue.ShowDialog() == DialogResult.OK)
+                OrbisToolPathBox.Set(fileDialogue.FileName);
 
          
             ((Dobby.Button)sender).ForeColor = Color.White;
         }
 
+
         /// <summary>
         /// addme
         /// </summary>
-        private void GP4Path_Interact(object sender, EventArgs e) {
-            if(((Control)sender).GetType() == typeof(Button)) {
-                using(fileDialogue = new OpenFileDialog { Filter = ".gp4 Project File|*.gp4", Title = "Select Your .gp4 File"  })
-                    if(fileDialogue.ShowDialog() == DialogResult.OK)
-                        GP4PathBox.Text = GP4Path = fileDialogue.FileName;
-            }
-            else
-                if(File.Exists(((Control)sender).Text.Replace("\"", "")))
-                    GP4PathBox.Text = GP4Path = ((Control)sender).Text.Replace("\"", "");
+        private void GP4PathBrowseBtn_Click(object sender, EventArgs e) {
+            using(fileDialogue = new OpenFileDialog {
+                Filter = ".gp4 Project File|*.gp4",
+                Title = "Select Your .gp4 File" 
+            })
+            if(fileDialogue.ShowDialog() == DialogResult.OK)
+                GP4PathBox.Set(fileDialogue.FileName);
 
 
             ((Dobby.Button)sender).ForeColor = Color.White;
@@ -224,7 +250,7 @@ namespace Dobby {
                 Description = "Chose A Directory You Want The Finished .pkg To Go, Or Close This Window To Use The App Directory"
             })
             if(folderDialogue.ShowDialog() == DialogResult.OK)
-                OutputDirectoryPathBox.Text = OutputPath = folderDialogue.SelectedPath;
+                OutputDirectoryPathBox.Set(folderDialogue.SelectedPath);
 
             ((Dobby.Button)sender).ForeColor = Color.White;
         }
@@ -237,7 +263,7 @@ namespace Dobby {
                 Description = "Chose A Temp Directory For Files Created During The .pkg Build Process"
             })
             if(folderDialogue.ShowDialog() == DialogResult.OK)
-                TMPDirectoryPathBox.Text = TMPDirectory = folderDialogue.SelectedPath;
+                TempDirectoryPathBox.Set(folderDialogue.SelectedPath);
 
 
             ((Dobby.Button)sender).ForeColor = Color.White;
@@ -246,30 +272,7 @@ namespace Dobby {
         
 
 
-        //================================\\
-        //--|   Control Declarations   |--\\
-        //================================\\
-        #region [Control Declarations]
-        private void Gp4PageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.Gp4CreationPage);
-
-
-        private Label SeperatorLine0;
-        private Label SeperatorLine2;
-        private Label OrbisCmdPathLabel;
-        private Label Gp4PathLabel;
-        private Label OutputDirectoryLabel;
-        private Label TmpDirectoryPathLabel;
-        private Label MainLabel;
-        private Button Gp4PageBtn;
-        private TextBox OrbisCmdPathBox;
-        private Button OrbisCmdPathBrowseBtn;
-        private TextBox GP4PathBox;
-        private Button GP4PathBrowseBtn;
-
-        private TextBox OutputDirectoryPathBox;
-        private Button OutputDirectoryBrowseBtn;
-        private TextBox TMPDirectoryPathBox;
-        private Button TMPDirectoryBrowseBtn;
+        private void VerbosityBtn_Click(object sender, EventArgs e) => CycleButtonVariable(sender);
         #endregion
     }
 }

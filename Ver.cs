@@ -257,6 +257,10 @@
           "* 4.51.285.790 | GP4CreationPage design tweak (will update PkgCreationPage later), Small Dobby.TextBox addition; Yet another font change (kill me), other random sh7t",
           "* 4.51.286.791 | Removed that dumb label highlight on the Pkg & GP4 Creation Pages- added the text box underline to gp4 page.",
           "* 4.51.288.792 | \"Standardized\" Pkg & GP4 Creation Page designs.",
+          "* 4.51.288.796 | Slight design tweaks (mostly adjusting things by a few pixles every time I say that)",
+          "* 4.51.288.796 | Misc PkgCreationPage fixes (controls had inconsistent names for some reason- designer must've borked something, 'cause I never renamed 'em...)",
+          "* 4.51.289.807 | Disabled alignment bs until I can figure out the cause",
+          "* 4.52.293.811 | Removed pointless Temp Directory toggle on PkgCreationPage (why tf wasn't it already tied to the temp path box's state!? Drunk-ass...), Directory/path text box underline fix for GP4 & PKG creation pages, Tiny HoverLeave() tweaks.",
         };
 
 

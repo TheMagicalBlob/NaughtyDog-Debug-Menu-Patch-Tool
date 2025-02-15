@@ -1,7 +1,7 @@
 ﻿
 namespace Dobby
 {
-    internal partial class Gp4CreationPage : System.Windows.Forms.Form
+    internal partial class GP4CreationPage : System.Windows.Forms.Form
     {
         //=====================================\\
         //--|   Designer Crap, No Touchie   |--\\
@@ -28,7 +28,7 @@ namespace Dobby
             this.SeperatorLine0 = new System.Windows.Forms.Label();
             this.SeperatorLine4 = new System.Windows.Forms.Label();
             this.GamedataPathLabel = new System.Windows.Forms.Label();
-            this.Gp4OutputPathLabel = new System.Windows.Forms.Label();
+            this.GP4OutputPathLabel = new System.Windows.Forms.Label();
             this.PasscodeLabel = new System.Windows.Forms.Label();
             this.FileBlacklistPathLabel = new System.Windows.Forms.Label();
             this.BaseGamePackagePathLabel = new System.Windows.Forms.Label();
@@ -38,14 +38,14 @@ namespace Dobby
             this.StartGp4CreationBtn = new Dobby.Button();
             this.IgnoreKeystoneBtn = new Dobby.Button();
             this.AbsoluteFilePathsBtn = new Dobby.Button();
-            this.BaseGamePackagePathTextBox = new Dobby.TextBox();
+            this.BaseGamePackagePathBox = new Dobby.TextBox();
             this.BaseGamePackageBrowseBtn = new Dobby.Button();
-            this.PasscodeTextBox = new Dobby.TextBox();
-            this.FileBlacklistTextBox = new Dobby.TextBox();
+            this.PasscodePathBox = new Dobby.TextBox();
+            this.FileBlacklistPathBox = new Dobby.TextBox();
             this.FileBlacklistBrowseBtn = new Dobby.Button();
-            this.Gp4OutputDirectoryTextBox = new Dobby.TextBox();
-            this.Gp4OutputDirectoryBrowseBtn = new Dobby.Button();
-            this.GamedataPathTextBox = new Dobby.TextBox();
+            this.GP4OutputDirectoryPathBox = new Dobby.TextBox();
+            this.GP4OutputDirectoryBrowseBtn = new Dobby.Button();
+            this.GamedataPathBox = new Dobby.TextBox();
             this.GamedataPathBrowseBtn = new Dobby.Button();
             this.InfoHelpBtn = new Dobby.Button();
             this.BackBtn = new Dobby.Button();
@@ -56,7 +56,7 @@ namespace Dobby
             // 
             this.Info.Font = new System.Drawing.Font("Cambria", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(6, 479);
+            this.Info.Location = new System.Drawing.Point(6, 474);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(452, 19);
             this.Info.TabIndex = 7;
@@ -69,7 +69,7 @@ namespace Dobby
             this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
             this.MainLabel.Location = new System.Drawing.Point(1, 1);
             this.MainLabel.Name = "MainLabel";
-            this.MainLabel.Size = new System.Drawing.Size(314, 23);
+            this.MainLabel.Size = new System.Drawing.Size(465, 23);
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "GP4 Creation Page";
             // 
@@ -82,16 +82,18 @@ namespace Dobby
             this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine0.TabIndex = 33;
             this.SeperatorLine0.Text = "--------------------------------------------------------------";
+            this.SeperatorLine0.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // SeperatorLine4
             // 
             this.SeperatorLine4.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine4.Location = new System.Drawing.Point(2, 389);
+            this.SeperatorLine4.Location = new System.Drawing.Point(2, 382);
             this.SeperatorLine4.Name = "SeperatorLine4";
             this.SeperatorLine4.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine4.TabIndex = 29;
             this.SeperatorLine4.Text = "--------------------------------------------------------------";
+            this.SeperatorLine4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // GamedataPathLabel
             // 
@@ -104,16 +106,16 @@ namespace Dobby
             this.GamedataPathLabel.TabIndex = 73;
             this.GamedataPathLabel.Text = "Application/Patch Data Path:";
             // 
-            // Gp4OutputPathLabel
+            // GP4OutputPathLabel
             // 
-            this.Gp4OutputPathLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Gp4OutputPathLabel.Font = new System.Drawing.Font("Cambria", 9F, System.Drawing.FontStyle.Bold);
-            this.Gp4OutputPathLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.Gp4OutputPathLabel.Location = new System.Drawing.Point(3, 97);
-            this.Gp4OutputPathLabel.Name = "Gp4OutputPathLabel";
-            this.Gp4OutputPathLabel.Size = new System.Drawing.Size(342, 16);
-            this.Gp4OutputPathLabel.TabIndex = 76;
-            this.Gp4OutputPathLabel.Text = ".gp4 Project Output Directory:";
+            this.GP4OutputPathLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.GP4OutputPathLabel.Font = new System.Drawing.Font("Cambria", 9F, System.Drawing.FontStyle.Bold);
+            this.GP4OutputPathLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.GP4OutputPathLabel.Location = new System.Drawing.Point(3, 97);
+            this.GP4OutputPathLabel.Name = "GP4OutputPathLabel";
+            this.GP4OutputPathLabel.Size = new System.Drawing.Size(342, 16);
+            this.GP4OutputPathLabel.TabIndex = 76;
+            this.GP4OutputPathLabel.Text = ".gp4 Project Output Directory:";
             // 
             // PasscodeLabel
             // 
@@ -155,9 +157,10 @@ namespace Dobby
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.SeperatorLine2.Location = new System.Drawing.Point(2, 82);
             this.SeperatorLine2.Name = "SeperatorLine2";
-            this.SeperatorLine2.Size = new System.Drawing.Size(391, 15);
+            this.SeperatorLine2.Size = new System.Drawing.Size(295, 15);
             this.SeperatorLine2.TabIndex = 86;
             this.SeperatorLine2.Text = "--------------------------------------------------------------";
+            this.SeperatorLine2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // SeperatorLine3
             // 
@@ -168,16 +171,18 @@ namespace Dobby
             this.SeperatorLine3.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine3.TabIndex = 87;
             this.SeperatorLine3.Text = "--------------------------------------------------------------";
+            this.SeperatorLine3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // SeperatorLine1
             // 
             this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 323);
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 319);
             this.SeperatorLine1.Name = "SeperatorLine1";
             this.SeperatorLine1.Size = new System.Drawing.Size(326, 15);
             this.SeperatorLine1.TabIndex = 91;
             this.SeperatorLine1.Text = "--------------------------------------------------------------";
+            this.SeperatorLine1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // StartGp4CreationBtn
             // 
@@ -187,7 +192,7 @@ namespace Dobby
             this.StartGp4CreationBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.StartGp4CreationBtn.Font = new System.Drawing.Font("Cambria", 10.25F, System.Drawing.FontStyle.Bold);
             this.StartGp4CreationBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.StartGp4CreationBtn.Location = new System.Drawing.Point(3, 300);
+            this.StartGp4CreationBtn.Location = new System.Drawing.Point(3, 297);
             this.StartGp4CreationBtn.Name = "StartGp4CreationBtn";
             this.StartGp4CreationBtn.Size = new System.Drawing.Size(183, 24);
             this.StartGp4CreationBtn.TabIndex = 90;
@@ -195,6 +200,7 @@ namespace Dobby
             this.StartGp4CreationBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.StartGp4CreationBtn.UseVisualStyleBackColor = false;
             this.StartGp4CreationBtn.Variable = null;
+            this.StartGp4CreationBtn.VariableTags = null;
             this.StartGp4CreationBtn.Click += new System.EventHandler(this.StartGp4CreationBtn_Click);
             // 
             // IgnoreKeystoneBtn
@@ -205,7 +211,7 @@ namespace Dobby
             this.IgnoreKeystoneBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IgnoreKeystoneBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.IgnoreKeystoneBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.IgnoreKeystoneBtn.Location = new System.Drawing.Point(3, 366);
+            this.IgnoreKeystoneBtn.Location = new System.Drawing.Point(3, 362);
             this.IgnoreKeystoneBtn.Name = "IgnoreKeystoneBtn";
             this.IgnoreKeystoneBtn.Size = new System.Drawing.Size(225, 23);
             this.IgnoreKeystoneBtn.TabIndex = 89;
@@ -213,6 +219,7 @@ namespace Dobby
             this.IgnoreKeystoneBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.IgnoreKeystoneBtn.UseVisualStyleBackColor = false;
             this.IgnoreKeystoneBtn.Variable = null;
+            this.IgnoreKeystoneBtn.VariableTags = null;
             this.IgnoreKeystoneBtn.Click += new System.EventHandler(this.IgnoreKeystoneBtn_Click);
             // 
             // AbsoluteFilePathsBtn
@@ -223,7 +230,7 @@ namespace Dobby
             this.AbsoluteFilePathsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AbsoluteFilePathsBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.AbsoluteFilePathsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.AbsoluteFilePathsBtn.Location = new System.Drawing.Point(3, 341);
+            this.AbsoluteFilePathsBtn.Location = new System.Drawing.Point(3, 337);
             this.AbsoluteFilePathsBtn.Name = "AbsoluteFilePathsBtn";
             this.AbsoluteFilePathsBtn.Size = new System.Drawing.Size(225, 23);
             this.AbsoluteFilePathsBtn.TabIndex = 88;
@@ -231,20 +238,21 @@ namespace Dobby
             this.AbsoluteFilePathsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.AbsoluteFilePathsBtn.UseVisualStyleBackColor = false;
             this.AbsoluteFilePathsBtn.Variable = null;
+            this.AbsoluteFilePathsBtn.VariableTags = null;
             this.AbsoluteFilePathsBtn.Click += new System.EventHandler(this.AbsoluteFilePathsBtn_Click);
             // 
-            // BaseGamePackagePathTextBox
+            // BaseGamePackagePathBox
             // 
-            this.BaseGamePackagePathTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.BaseGamePackagePathTextBox.Font = new System.Drawing.Font("Cambria", 10F, System.Drawing.FontStyle.Italic);
-            this.BaseGamePackagePathTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.BaseGamePackagePathTextBox.Location = new System.Drawing.Point(7, 164);
-            this.BaseGamePackagePathTextBox.MaxLength = 32;
-            this.BaseGamePackagePathTextBox.Name = "BaseGamePackagePathTextBox";
-            this.BaseGamePackagePathTextBox.Size = new System.Drawing.Size(395, 23);
-            this.BaseGamePackagePathTextBox.TabIndex = 83;
-            this.BaseGamePackagePathTextBox.Text = "Base Game Package Path";
-            this.BaseGamePackagePathTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.BaseGamePackagePathBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.BaseGamePackagePathBox.Font = new System.Drawing.Font("Cambria", 10F, System.Drawing.FontStyle.Italic);
+            this.BaseGamePackagePathBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.BaseGamePackagePathBox.Location = new System.Drawing.Point(7, 164);
+            this.BaseGamePackagePathBox.MaxLength = 32;
+            this.BaseGamePackagePathBox.Name = "BaseGamePackagePathBox";
+            this.BaseGamePackagePathBox.Size = new System.Drawing.Size(395, 23);
+            this.BaseGamePackagePathBox.TabIndex = 83;
+            this.BaseGamePackagePathBox.Text = "Base Game Package Path";
+            this.BaseGamePackagePathBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // BaseGamePackageBrowseBtn
             // 
@@ -262,32 +270,33 @@ namespace Dobby
             this.BaseGamePackageBrowseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BaseGamePackageBrowseBtn.UseVisualStyleBackColor = false;
             this.BaseGamePackageBrowseBtn.Variable = null;
+            this.BaseGamePackageBrowseBtn.VariableTags = null;
             this.BaseGamePackageBrowseBtn.Click += new System.EventHandler(this.BaseGamePackageBrowseBtn_Click);
             // 
-            // PasscodeTextBox
+            // PasscodePathBox
             // 
-            this.PasscodeTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.PasscodeTextBox.Font = new System.Drawing.Font("Cambria", 10F, System.Drawing.FontStyle.Italic);
-            this.PasscodeTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.PasscodeTextBox.Location = new System.Drawing.Point(7, 258);
-            this.PasscodeTextBox.MaxLength = 32;
-            this.PasscodeTextBox.Name = "PasscodeTextBox";
-            this.PasscodeTextBox.Size = new System.Drawing.Size(395, 23);
-            this.PasscodeTextBox.TabIndex = 80;
-            this.PasscodeTextBox.Text = "00000000000000000000000000000000000";
-            this.PasscodeTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.PasscodePathBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.PasscodePathBox.Font = new System.Drawing.Font("Cambria", 10F, System.Drawing.FontStyle.Italic);
+            this.PasscodePathBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.PasscodePathBox.Location = new System.Drawing.Point(7, 258);
+            this.PasscodePathBox.MaxLength = 32;
+            this.PasscodePathBox.Name = "PasscodePathBox";
+            this.PasscodePathBox.Size = new System.Drawing.Size(395, 23);
+            this.PasscodePathBox.TabIndex = 80;
+            this.PasscodePathBox.Text = "00000000000000000000000000000000000";
+            this.PasscodePathBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // FileBlacklistTextBox
+            // FileBlacklistPathBox
             // 
-            this.FileBlacklistTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.FileBlacklistTextBox.Font = new System.Drawing.Font("Cambria", 10F, System.Drawing.FontStyle.Italic);
-            this.FileBlacklistTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.FileBlacklistTextBox.Location = new System.Drawing.Point(7, 211);
-            this.FileBlacklistTextBox.Name = "FileBlacklistTextBox";
-            this.FileBlacklistTextBox.Size = new System.Drawing.Size(395, 23);
-            this.FileBlacklistTextBox.TabIndex = 77;
-            this.FileBlacklistTextBox.Text = "Blacklisted Files/Folders To Exclude, Seperated By ; or ,";
-            this.FileBlacklistTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.FileBlacklistPathBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.FileBlacklistPathBox.Font = new System.Drawing.Font("Cambria", 10F, System.Drawing.FontStyle.Italic);
+            this.FileBlacklistPathBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.FileBlacklistPathBox.Location = new System.Drawing.Point(7, 211);
+            this.FileBlacklistPathBox.Name = "FileBlacklistPathBox";
+            this.FileBlacklistPathBox.Size = new System.Drawing.Size(395, 23);
+            this.FileBlacklistPathBox.TabIndex = 77;
+            this.FileBlacklistPathBox.Text = "Blacklisted Files/Folders To Exclude, Seperated By ; or ,";
+            this.FileBlacklistPathBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // FileBlacklistBrowseBtn
             // 
@@ -305,49 +314,51 @@ namespace Dobby
             this.FileBlacklistBrowseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.FileBlacklistBrowseBtn.UseVisualStyleBackColor = false;
             this.FileBlacklistBrowseBtn.Variable = null;
+            this.FileBlacklistBrowseBtn.VariableTags = null;
             this.FileBlacklistBrowseBtn.Click += new System.EventHandler(this.FileBlacklistBrowseBtn_Click);
             // 
-            // Gp4OutputDirectoryTextBox
+            // GP4OutputDirectoryPathBox
             // 
-            this.Gp4OutputDirectoryTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.Gp4OutputDirectoryTextBox.Font = new System.Drawing.Font("Cambria", 10F, System.Drawing.FontStyle.Italic);
-            this.Gp4OutputDirectoryTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Gp4OutputDirectoryTextBox.Location = new System.Drawing.Point(7, 117);
-            this.Gp4OutputDirectoryTextBox.Name = "Gp4OutputDirectoryTextBox";
-            this.Gp4OutputDirectoryTextBox.Size = new System.Drawing.Size(395, 23);
-            this.Gp4OutputDirectoryTextBox.TabIndex = 74;
-            this.Gp4OutputDirectoryTextBox.Text = "Using Default Output Directory";
-            this.Gp4OutputDirectoryTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.GP4OutputDirectoryPathBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.GP4OutputDirectoryPathBox.Font = new System.Drawing.Font("Cambria", 10F, System.Drawing.FontStyle.Italic);
+            this.GP4OutputDirectoryPathBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.GP4OutputDirectoryPathBox.Location = new System.Drawing.Point(7, 117);
+            this.GP4OutputDirectoryPathBox.Name = "GP4OutputDirectoryPathBox";
+            this.GP4OutputDirectoryPathBox.Size = new System.Drawing.Size(395, 23);
+            this.GP4OutputDirectoryPathBox.TabIndex = 74;
+            this.GP4OutputDirectoryPathBox.Text = "Using Default Output Directory";
+            this.GP4OutputDirectoryPathBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // Gp4OutputDirectoryBrowseBtn
+            // GP4OutputDirectoryBrowseBtn
             // 
-            this.Gp4OutputDirectoryBrowseBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.Gp4OutputDirectoryBrowseBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.Gp4OutputDirectoryBrowseBtn.FlatAppearance.BorderSize = 0;
-            this.Gp4OutputDirectoryBrowseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Gp4OutputDirectoryBrowseBtn.Font = new System.Drawing.Font("Verdana", 8F);
-            this.Gp4OutputDirectoryBrowseBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.Gp4OutputDirectoryBrowseBtn.Location = new System.Drawing.Point(407, 118);
-            this.Gp4OutputDirectoryBrowseBtn.Name = "Gp4OutputDirectoryBrowseBtn";
-            this.Gp4OutputDirectoryBrowseBtn.Size = new System.Drawing.Size(57, 19);
-            this.Gp4OutputDirectoryBrowseBtn.TabIndex = 75;
-            this.Gp4OutputDirectoryBrowseBtn.Text = "Browse";
-            this.Gp4OutputDirectoryBrowseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Gp4OutputDirectoryBrowseBtn.UseVisualStyleBackColor = false;
-            this.Gp4OutputDirectoryBrowseBtn.Variable = null;
-            this.Gp4OutputDirectoryBrowseBtn.Click += new System.EventHandler(this.Gp4OutputDirectoryBrowseBtn_Click);
+            this.GP4OutputDirectoryBrowseBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.GP4OutputDirectoryBrowseBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.GP4OutputDirectoryBrowseBtn.FlatAppearance.BorderSize = 0;
+            this.GP4OutputDirectoryBrowseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.GP4OutputDirectoryBrowseBtn.Font = new System.Drawing.Font("Verdana", 8F);
+            this.GP4OutputDirectoryBrowseBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.GP4OutputDirectoryBrowseBtn.Location = new System.Drawing.Point(407, 118);
+            this.GP4OutputDirectoryBrowseBtn.Name = "GP4OutputDirectoryBrowseBtn";
+            this.GP4OutputDirectoryBrowseBtn.Size = new System.Drawing.Size(57, 19);
+            this.GP4OutputDirectoryBrowseBtn.TabIndex = 75;
+            this.GP4OutputDirectoryBrowseBtn.Text = "Browse";
+            this.GP4OutputDirectoryBrowseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.GP4OutputDirectoryBrowseBtn.UseVisualStyleBackColor = false;
+            this.GP4OutputDirectoryBrowseBtn.Variable = null;
+            this.GP4OutputDirectoryBrowseBtn.VariableTags = null;
+            this.GP4OutputDirectoryBrowseBtn.Click += new System.EventHandler(this.Gp4OutputDirectoryBrowseBtn_Click);
             // 
-            // GamedataPathTextBox
+            // GamedataPathBox
             // 
-            this.GamedataPathTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.GamedataPathTextBox.Font = new System.Drawing.Font("Cambria", 10F, System.Drawing.FontStyle.Italic);
-            this.GamedataPathTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.GamedataPathTextBox.Location = new System.Drawing.Point(7, 58);
-            this.GamedataPathTextBox.Name = "GamedataPathTextBox";
-            this.GamedataPathTextBox.Size = new System.Drawing.Size(395, 23);
-            this.GamedataPathTextBox.TabIndex = 65;
-            this.GamedataPathTextBox.Text = "No Gamedata Folder Path Chosen";
-            this.GamedataPathTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.GamedataPathBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.GamedataPathBox.Font = new System.Drawing.Font("Cambria", 10F, System.Drawing.FontStyle.Italic);
+            this.GamedataPathBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.GamedataPathBox.Location = new System.Drawing.Point(7, 58);
+            this.GamedataPathBox.Name = "GamedataPathBox";
+            this.GamedataPathBox.Size = new System.Drawing.Size(395, 23);
+            this.GamedataPathBox.TabIndex = 65;
+            this.GamedataPathBox.Text = "No Gamedata Folder Path Chosen";
+            this.GamedataPathBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // GamedataPathBrowseBtn
             // 
@@ -365,6 +376,7 @@ namespace Dobby
             this.GamedataPathBrowseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.GamedataPathBrowseBtn.UseVisualStyleBackColor = false;
             this.GamedataPathBrowseBtn.Variable = null;
+            this.GamedataPathBrowseBtn.VariableTags = null;
             this.GamedataPathBrowseBtn.Click += new System.EventHandler(this.GamedataPathBrowseBtn_Click);
             // 
             // InfoHelpBtn
@@ -375,7 +387,7 @@ namespace Dobby
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 407);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 401);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.Size = new System.Drawing.Size(142, 23);
             this.InfoHelpBtn.TabIndex = 15;
@@ -383,6 +395,7 @@ namespace Dobby
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
             this.InfoHelpBtn.Variable = null;
+            this.InfoHelpBtn.VariableTags = null;
             // 
             // BackBtn
             // 
@@ -392,7 +405,7 @@ namespace Dobby
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 455);
+            this.BackBtn.Location = new System.Drawing.Point(1, 449);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(58, 23);
             this.BackBtn.TabIndex = 13;
@@ -400,6 +413,7 @@ namespace Dobby
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
             this.BackBtn.Variable = null;
+            this.BackBtn.VariableTags = null;
             // 
             // CreditsBtn
             // 
@@ -409,7 +423,7 @@ namespace Dobby
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 431);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 425);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(68, 23);
@@ -418,13 +432,14 @@ namespace Dobby
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
             this.CreditsBtn.Variable = null;
+            this.CreditsBtn.VariableTags = null;
             // 
-            // Gp4CreationPage
+            // GP4CreationPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ClientSize = new System.Drawing.Size(467, 504);
+            this.ClientSize = new System.Drawing.Size(467, 498);
             this.Controls.Add(this.SeperatorLine1);
             this.Controls.Add(this.StartGp4CreationBtn);
             this.Controls.Add(this.IgnoreKeystoneBtn);
@@ -432,18 +447,18 @@ namespace Dobby
             this.Controls.Add(this.SeperatorLine3);
             this.Controls.Add(this.SeperatorLine2);
             this.Controls.Add(this.BaseGamePackagePathLabel);
-            this.Controls.Add(this.BaseGamePackagePathTextBox);
+            this.Controls.Add(this.BaseGamePackagePathBox);
             this.Controls.Add(this.BaseGamePackageBrowseBtn);
             this.Controls.Add(this.PasscodeLabel);
-            this.Controls.Add(this.PasscodeTextBox);
+            this.Controls.Add(this.PasscodePathBox);
             this.Controls.Add(this.FileBlacklistPathLabel);
-            this.Controls.Add(this.FileBlacklistTextBox);
+            this.Controls.Add(this.FileBlacklistPathBox);
             this.Controls.Add(this.FileBlacklistBrowseBtn);
-            this.Controls.Add(this.Gp4OutputPathLabel);
-            this.Controls.Add(this.Gp4OutputDirectoryTextBox);
-            this.Controls.Add(this.Gp4OutputDirectoryBrowseBtn);
+            this.Controls.Add(this.GP4OutputPathLabel);
+            this.Controls.Add(this.GP4OutputDirectoryPathBox);
+            this.Controls.Add(this.GP4OutputDirectoryBrowseBtn);
             this.Controls.Add(this.GamedataPathLabel);
-            this.Controls.Add(this.GamedataPathTextBox);
+            this.Controls.Add(this.GamedataPathBox);
             this.Controls.Add(this.GamedataPathBrowseBtn);
             this.Controls.Add(this.MainLabel);
             this.Controls.Add(this.InfoHelpBtn);
@@ -456,7 +471,7 @@ namespace Dobby
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "Gp4CreationPage";
+            this.Name = "GP4CreationPage";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
@@ -73,6 +75,8 @@ namespace Dobby {
     #if DEBUG
         /// <summary> Debug class instance. </summary>
         public static Testing Dev;
+        //!
+        public static int tmp = 1;
     #endif
         #endregion [Basic Functionality Components]
 
@@ -185,20 +189,25 @@ namespace Dobby {
         /// <summary>
         /// Toggle between various states of custom Button controls
         /// </summary>
-        /// <typeparam name="T"> The button variable's type. </typeparam>
-        /// <param name="control"> The control to edit the variable of </param>
-        public static void ToggleBtnVar<T>(object control)
+        /// <param name="sender"> The control to edit the variable of </param>
+        public static void CycleButtonVariable(object sender)
         {
-            // Cast sender to correct control type
-            var Control = control as Dobby.Button;
+            var control = (Dobby.Button) sender;
+            var controlType = control.Variable.GetType();
 
 
-            if (typeof(T) != Control.Variable.GetType())
-                throw new Exception($"Invalid Type Provided. (I think?).\n  Type Provided: ({Control.Variable.GetType()})");
+            if (controlType == typeof(bool))
+            {
+                control.Variable = !(bool) control.Variable;
+                return;
+            }
 
+            if (controlType == typeof(int)) {
+                if (control.VariableTags != null)
+                {
 
-            if (typeof(T) == typeof(bool))
-                ((Dobby.Button)control).Variable = !(bool) ((Dobby.Button)control).Variable;
+                }
+            }
         }
 
 
@@ -482,9 +491,12 @@ namespace Dobby {
         ///--   Form Drawing Functions  --\\\
         ///////////////////\\\\\\\\\\\\\\\\\\
         #region Form Drawing Functions
-        /// <summary> Highlights A Control In Yellow With A > Preceeding It When Hovered Over </summary>
-        /// <param name="PassedControl">The Control To Highlight</param>
-        /// <param name="EventIsMouseEnter">Highlight If True</param>
+
+        /// <summary>
+        /// Appends a > to a hovered control, or removes it when the mouse leaves it's bounds. (also resizes the control by the arrow's size in pixels)
+        /// </summary>
+        /// <param name="PassedControl"> The control to append the arrow to. </param>
+        /// <param name="EventIsMouseEnter"> Whether or not the  </param>
         public static void HoverLeave(Control PassedControl, bool EventIsMouseEnter) {
             int ArrowWidth;
 
@@ -499,26 +511,36 @@ namespace Dobby {
                 return;
             }
 
-            if (MouseScrolled = EventIsMouseEnter) {
+
+
+            if (MouseScrolled = EventIsMouseEnter) { //! is this intentional? could swear it should only be set to false in one of the cases and left alone in the other, not set to true
 #if DEBUG
                 Testing.HoveredControl = PassedControl;
 #endif
                 CurrentControl = PassedControl.Name;
                 PassedControl.MouseDown += HighlightItemOnMouseDown;
                 PassedControl.MouseUp += ResetItemHighlight;
+
+                PassedControl.Text = '>' + PassedControl.Text;
             }
             else {
+                //ArrowWidth = ~ArrowWidth ^ 1; I'm an idiot, this is excessive lmao. keeping it as a reminder
+                ArrowWidth = -ArrowWidth;
+
                 PassedControl.MouseDown -= HighlightItemOnMouseDown;
                 PassedControl.MouseUp -= ResetItemHighlight;
+
+                PassedControl.Text = PassedControl.Text.Substring(1);
             }
 
-            PassedControl.Text = EventIsMouseEnter ? ($">{PassedControl.Text}") : PassedControl.Text.Substring(1);
 
-            // Resize controls to fit the arrow, unless they're already horizontally flush with the form
-            if (PassedControl.Size.Width + PassedControl.Location.X != PassedControl.Parent.Size.Width - 1)
-            {
-                PassedControl.Size = new Size(EventIsMouseEnter ? PassedControl.Width + ArrowWidth : PassedControl.Width - ArrowWidth, PassedControl.Height);
-            }
+            // Avoid resizing controls when they're already horizontally flush with the form
+            if (PassedControl.Size.Width + PassedControl.Location.X == PassedControl.Parent.Size.Width - 1)
+                return;
+
+
+            // Resize controls to fit the arrow
+            PassedControl.Size = new Size(PassedControl.Width + ArrowWidth, PassedControl.Height);
         }
 
 
@@ -531,18 +553,18 @@ namespace Dobby {
             // Convert control to avoid constant casting
             var control = item as Dobby.Button;
 
-            // Load the string representation of the Variable property
-            var Variable = control.Variable?.ToString();
-
             // Check for stupidity.
-            if (Variable == null) {
+            if (control.Variable == null) {
                 Print($"!! ERROR: Variable property for control \"{control.Name}\" was null");
                 return;
             }
 
+            
+            // Load the string representation of the Variable property
+            var Variable = control.Variable.ToString();
 
             // Format boolean values
-            if (control.Variable.GetType() == typeof(bool))
+            if (control.Variable.GetType() == typeof(bool) && control.VariableTags == Array.Empty<string>())
                 Variable = (bool) control.Variable ? "Yes" : "No";
 
             // Draw the Variable's string representation appended to the rightmost side of the control's bounds
@@ -702,7 +724,7 @@ namespace Dobby {
                     break;
 
                 case PageID.Gp4CreationPage:
-                    NewPage = new Gp4CreationPage();
+                    NewPage = new GP4CreationPage();
                     break;
 
                 case PageID.Gp4CreationHelpPage:
@@ -874,6 +896,8 @@ namespace Dobby {
         {
             if (ActiveForm != null)
                 InfoLabel.Text = s;
+
+            Print($"[info]: {s}");
         }
         #endregion
 
@@ -884,8 +908,12 @@ namespace Dobby {
         #region [Form Event Handlers]
         internal static void ExitBtn_Click(object sender, EventArgs e)
         {
-            MainForm.Dispose();
-            Environment.Exit(0);
+            MainForm.Dispose();  //! 90% sure neither of these are implemented properly.
+            #if DEBUG
+            Dev.Dispose();       // ^
+            #endif
+
+            Environment.Exit(0); // off we fuck
         }
         internal static void ExitBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
         internal static void ExitBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
@@ -899,7 +927,8 @@ namespace Dobby {
             ++Dev.ClickEventCheck;
             #endif
             MouseIsDown = true;
-            LastFormPosition = ActiveForm.Location;
+            
+            LastFormPosition = ActiveForm?.Location ?? LastFormPosition; //! Lazy fix(?)
             MouseDif = new Point(MousePosition.X - LastFormPosition.X, MousePosition.Y - LastFormPosition.Y);
         }
 
@@ -1099,7 +1128,8 @@ namespace Dobby {
     //=================================\\
     #region [Class Extensions]
     
-    
+    delegate void TextBoxStateDelegate();
+
     /// <summary> Custom TextBox Class to Better Handle Default TextBox Contents. </summary>
     public class TextBox : System.Windows.Forms.TextBox
     {
@@ -1107,43 +1137,46 @@ namespace Dobby {
         public TextBox()
         {
             IsDefault = true;
+            
+            TextChanged += SetDefaultText; // Save the first Text assignment as the DefaultText
+            TextChanged += (sender, e) => Text = Text.Replace("\"", string.Empty);
 
-            Click += (bite, me) => ClearControl();
-            GotFocus += (bite, me) => ClearControl(); // Both Events, Just-In-Case.
-            TextChanged += SetDefaultText;
 
-            // Reset control if nothing different was entered
-            LostFocus += (bite, me) => {
-                if(Text.Trim().Length == 0 || DefaultText.Contains(Text)) {
-                    Font = Common.DefaultTextFont;
-                    Text = DefaultText;
-                    IsDefault = true;
-                    TextAlign = HorizontalAlignment.Center;
-                }
-            };
+            GotFocus += ReadyControl;
+            LostFocus += ResetControl; // Reset control if nothing was entered, or the text is a portion of the default text
         }
-/*
-        public override string Text { get { if (IsDefault) return "oops"; return _Text; } set { _Text = value; base.Text = value; } }
-        private string _Text;
-*/
-
-
-        private void ClearControl()
-        {
-            if(IsDefault) {
-                IsDefault = false;
-                Font = Common.MainFont;
-                TextAlign = HorizontalAlignment.Left;
-                Clear();
-            }
-        }
+  
 
         /// <summary> Yoink Default Text From First Text Assignment (Ideally right after being created). </summary>
         private void SetDefaultText(object _, EventArgs __) {
             DefaultText = Text;
             TextChanged -= SetDefaultText;
-            TextChanged += (sender, e) => Text = Text.Replace("\"", string.Empty);
         }
+
+
+        private void ReadyControl(object eat, EventArgs pant)
+        {
+            if(IsDefault) {
+                Clear();
+                IsDefault = false;
+
+                Font = Common.TextFont;
+                //TextAlign = HorizontalAlignment.Left; // Disabled alignment change until I can figure out the looping logic that results from it
+            }
+        }
+
+
+        private void ResetControl(object bite, EventArgs me)
+        {
+            if(Text.Length < 1 || DefaultText.Contains(Text)) {
+                Text = DefaultText;
+                IsDefault = true;
+
+                Font = Common.DefaultTextFont;
+                //TextAlign = HorizontalAlignment.Center; // Disabled alignment change until I can figure out the looping logic that results from it (seriously, what the fuck?)
+            }
+        }
+
 
         /// <summary> Set Control Text and State Properly (meh). </summary>
         public void Set(string text) {
@@ -1152,7 +1185,6 @@ namespace Dobby {
                 Font = Common.DefaultTextFont;
                 Text = text;
                 IsDefault = false;
-
             }
         }
 
@@ -1168,6 +1200,7 @@ namespace Dobby {
         public bool IsDefault { get; private set; }
         
     }
+
 
 /*
     public class TextBox : System.Windows.Forms.TextBox {
@@ -1228,9 +1261,10 @@ namespace Dobby {
     /// <summary>
     /// Custom Button Class extention so I can attach a value to them. 
     /// </summary>
-    public class Button : System.Windows.Forms.Button {
-        
-        # if DEBUG
+    public class Button : System.Windows.Forms.Button
+    {
+
+#if DEBUG
         /// <summary> OnClick event override to track dropped Click events (when tf did that start??)
         ///</summary>
         /// <param name="args"> The event args instance to send to the base OnClick event. </param>
@@ -1241,9 +1275,11 @@ namespace Dobby {
         #endif
         
 
+
         /// <summary>
         /// Custom value associated with the control to be rendered alongside it, and edited via manually assigned per-control events.
         /// </summary>
+        [DefaultValue(typeof(bool), "false")]
         public object Variable
         {
             get => _Variable;
@@ -1257,6 +1293,29 @@ namespace Dobby {
             }
         }
         private object _Variable;
+
+
+        /// <summary>
+        /// An Array of names to display in place of basic values (//! IMPLEMENT ME)
+        /// </summary>
+        public string[] VariableTags
+        {
+            get => _VariableTags;
+
+            set {
+                //Common.Print($"{value}");
+                //if (value != null)
+                //{
+                //    if (value.GetType() != typeof(int) && value.GetType() != typeof(bool)) {
+                //        Common.Print("Invalid VariableTags usage; only supports integers and booleans at the moment");
+                //        return;
+                //    }
+                //}
+
+                _VariableTags = value;
+            }
+        }
+        private string[] _VariableTags;
     }
     #endregion [Class Extensions]
 }
