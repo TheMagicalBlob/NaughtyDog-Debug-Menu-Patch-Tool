@@ -21,7 +21,6 @@ namespace Dobby {
                 }
             }
 
-            InfoLabel.AccessibleRole = AccessibleRole;
 
             // TODO: Maintain Settings For Page When Swapping Between gp4/pkg Creation Pages.. Or Just In General.
         }
@@ -49,14 +48,14 @@ namespace Dobby {
         //--|   Page Background Functions   |--\\
         //=====================================\\
         #region [Page Background Functions]
-        private void DebugBtn1_Click(object sender, EventArgs e)
+        private void StyleTestBtn_Click(object sender, EventArgs e)
         {
             foreach (var item in Controls)
             {
                 if (item.GetType() == typeof(TextBox))
                 {
                     var control = (TextBox) item;
-                    control.TextAlign ^= (HorizontalAlignment) 2;
+                    control.TextAlign ^= HorizontalAlignment.Center;
                 }
             }
         }
@@ -272,7 +271,7 @@ namespace Dobby {
         
 
 
-        private void VerbosityBtn_Click(object sender, EventArgs e) => CycleButtonVariable(sender);
+        private void VerbosityBtn_Click(object sender, EventArgs e) => CycleButtonVariable<bool>(sender);
         #endregion
     }
 }

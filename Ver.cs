@@ -262,6 +262,8 @@
           "* 4.51.289.807 | Disabled alignment bs until I can figure out the cause",
           "* 4.52.293.811 | Removed pointless Temp Directory toggle on PkgCreationPage (why tf wasn't it already tied to the temp path box's state!? Drunk-ass...), Directory/path text box underline fix for GP4 & PKG creation pages, Tiny HoverLeave() tweaks.",
           "* 4.52.294.811 | oops.",
+          "* 4.52.296.813 | oops 2, electric boogaloo (left in a random line of code after earlier tests). Also renamed and duplicated DebugBtn1 to the gp4 creation page as StyleTestBtn",
+          "* 4.52.299.821 | I forgot to write this message and have forgotten what I did. Meh.",
         };
 
 

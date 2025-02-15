@@ -4,7 +4,6 @@ using System.Drawing;
 using static Dobby.Common;
 using System.Windows.Forms;
 using libgp4;
-using System.Linq;
 
 
 
@@ -23,8 +22,6 @@ namespace Dobby {
             }
 
 
-            AbsoluteFilePathsBtn.Variable = false;
-            IgnoreKeystoneBtn.Variable = false;
 
             gp4 = new GP4Creator() {
         #if DEBUG
@@ -53,6 +50,19 @@ namespace Dobby {
         //--|   Function Declarations   |--\\
         //=================================\\
         #region [Function Declarations]
+        
+        private void StyleTestBtn_Click(object sender, EventArgs e)
+        {
+            foreach (var item in Controls)
+            {
+                if (item.GetType() == typeof(TextBox))
+                {
+                    var control = (TextBox) item;
+                    control.TextAlign ^= HorizontalAlignment.Center;
+                }
+            }
+        }
+
 
         /// <summary>
         /// Apply all the non-default .gp4 options and attempt project file creation.
@@ -224,9 +234,9 @@ namespace Dobby {
 
         
 
-        private void AbsoluteFilePathsBtn_Click(object control, EventArgs _) => ((Dobby.Button)control).Variable = !(bool) ((Dobby.Button)control).Variable;
+        private void AbsoluteFilePathsBtn_Click(object control, EventArgs _) => CycleButtonVariable<bool>(control);
         
-        private void IgnoreKeystoneBtn_Click(object control, EventArgs e) => ((Dobby.Button)control).Variable = !(bool) ((Dobby.Button)control).Variable;
+        private void IgnoreKeystoneBtn_Click(object control, EventArgs _)    => CycleButtonVariable<bool>(control);
 
         #endregion
 

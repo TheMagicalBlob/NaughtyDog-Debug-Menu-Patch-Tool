@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -10,6 +11,7 @@ using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
+using libdebug;
 #if DEBUG
 using System.Diagnostics;
 #endif
@@ -168,7 +170,6 @@ namespace Dobby {
             #endif
         }
 
-                
         /// <summary>
         /// Basic error logging function (not yet fully implemented)
         /// </summary>
@@ -178,39 +179,7 @@ namespace Dobby {
 #endif
         }
 
-
-        /// <summary> Save a refference to the orignal launch form. </summary>
-        /// <param name="form"> The orignal form </param>
-        public static void SaveMainForm(Form form) => MainForm = form;
-
-
-
-
-        /// <summary>
-        /// Toggle between various states of custom Button controls
-        /// </summary>
-        /// <param name="sender"> The control to edit the variable of </param>
-        public static void CycleButtonVariable(object sender)
-        {
-            var control = (Dobby.Button) sender;
-            var controlType = control.Variable.GetType();
-
-
-            if (controlType == typeof(bool))
-            {
-                control.Variable = !(bool) control.Variable;
-                return;
-            }
-
-            if (controlType == typeof(int)) {
-                if (control.VariableTags != null)
-                {
-
-                }
-            }
-        }
-
-
+        
         public static string GetCurrentGame(FileStream stream) {
             var LocalExecutableCheck = new byte[160];
 
@@ -287,6 +256,12 @@ namespace Dobby {
                     return $"Unknown Game (Game ID: {Game})";
             }
         }
+
+
+
+        /// <summary> Save a refference to the orignal launch form. (why is this a function, again? //!) </summary>
+        /// <param name="form"> The orignal form </param>
+        public static void SaveMainForm(Form form) => MainForm = form;
 
 
 
@@ -487,10 +462,119 @@ namespace Dobby {
         private static void KillTextBox(object sender, MouseEventArgs e) => PopupGroupBox?.Dispose();
 
 
+        
+
+        /// <summary>
+        /// Toggle between various states of custom Button controls
+        /// </summary>
+        /// <param name="sender"> The control to edit the variable of </param>
+        public static void CycleButtonVariable<T>(object sender, object maxValue = null, object minValue = null)
+        {
+            var control = (Dobby.Button) sender;
+            var controlType = control?.Variable?.GetType();
+
+            if (controlType == null) {
+                Print("CycleButtonVariable(): Control's variable was null, fix your trash.");
+            }
+
+
+            //#
+            //## Booleans
+            //#
+            if (controlType == typeof(bool))
+            {
+                if (maxValue != null)
+                    Print("WARNING: A maximum value was for some reason provided for a button with a boolean variable attached");
+
+
+                if (control.VariableTags != null)
+                {
+                    if (control.VariableTags.Length > 2)
+                        Print($"WARNING: Invalid VariableTags array provided for boolean toggle; ignoring [{control.VariableTags.Length-2}] tag(s)");
+                    
+                    else if (control.VariableTags.Length < 2)
+                        Print($"ERROR: Invalid VariableTags array provided for boolean toggle; less than two options provided ({control.VariableTags.Length})"); // output tag array length in case it's somehow negative, I suppose
+                }
+                else
+                    control.Variable = !(bool) control.Variable;
+
+                return;
+            }
+
+
+            
+            //#
+            //## Integers
+            //#
+            if (controlType == typeof(short) || controlType == typeof(int) || controlType == typeof(long))
+            {
+                if (maxValue == null) {
+                    control.Variable = (int)control.Variable + 1;
+                }
+                else {
+                    if (maxValue == control.Variable)
+                    {
+                        control.Variable = minValue ?? 0;
+                    }
+
+                }
+
+                return;
+            }
+            
+
+            
+            //#
+            //## Floating-Points
+            //#
+            if (controlType == typeof(float) || controlType == typeof(double))
+            {
+                if (maxValue != null) {
+
+                }
+                else {
+                    control.Variable = (int)control.Variable + 1;
+                }
+
+                return;
+            }
+
+
+            
+/*
+            if (controlType == typeof(bool))
+            {
+                if (control.VariableTags != null)
+                {
+                    if (control.VariableTags.Length > 2) {
+                        Print($"WARNING: Invalid VariableTags array provided for boolean toggle; ignoring [{control.VariableTags.Length-2}] tag(s)");
+                    }
+                    else if (control.VariableTags.Length < 2) {
+                        Print($"ERROR: Invalid VariableTags array provided for boolean toggle; less than two options provided ({control.VariableTags.Length})"); // output tag array length in case it's somehow negative, I suppose
+                        return;
+                    }
+                }
+                else
+                    control.Variable = !(bool) control.Variable;
+                return;
+            }
+
+            if (controlType == typeof(int)) {
+                if (control.VariableTags != null)
+                {
+
+                }
+            }
+*/
+        }
+
+
+
+
         ///////////////////\\\\\\\\\\\\\\\\\\
         ///--   Form Drawing Functions  --\\\
         ///////////////////\\\\\\\\\\\\\\\\\\
-        #region Form Drawing Functions
+        #region [Form Drawing Functions]
 
         /// <summary>
         /// Appends a > to a hovered control, or removes it when the mouse leaves it's bounds. (also resizes the control by the arrow's size in pixels)
@@ -561,7 +645,7 @@ namespace Dobby {
 
             
             // Load the string representation of the Variable property
-            var Variable = control.Variable.ToString();
+            var Variable = control?.Variable?.ToString();
 
             // Format boolean values
             if (control.Variable.GetType() == typeof(bool) && control.VariableTags == Array.Empty<string>())

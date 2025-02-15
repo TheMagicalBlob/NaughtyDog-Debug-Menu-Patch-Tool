@@ -50,6 +50,7 @@ namespace Dobby
             this.InfoHelpBtn = new Dobby.Button();
             this.BackBtn = new Dobby.Button();
             this.CreditsBtn = new Dobby.Button();
+            this.StyleTestBtn = new Dobby.Button();
             this.SuspendLayout();
             // 
             // Info
@@ -215,11 +216,13 @@ namespace Dobby
             this.IgnoreKeystoneBtn.Name = "IgnoreKeystoneBtn";
             this.IgnoreKeystoneBtn.Size = new System.Drawing.Size(225, 23);
             this.IgnoreKeystoneBtn.TabIndex = 89;
-            this.IgnoreKeystoneBtn.Text = "Ignore Keystone: ";
+            this.IgnoreKeystoneBtn.Text = "Keystone: ";
             this.IgnoreKeystoneBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.IgnoreKeystoneBtn.UseVisualStyleBackColor = false;
-            this.IgnoreKeystoneBtn.Variable = null;
-            this.IgnoreKeystoneBtn.VariableTags = null;
+            this.IgnoreKeystoneBtn.Variable = false;
+            this.IgnoreKeystoneBtn.VariableTags = new string[] {
+        "Include",
+        "Ignore"};
             this.IgnoreKeystoneBtn.Click += new System.EventHandler(this.IgnoreKeystoneBtn_Click);
             // 
             // AbsoluteFilePathsBtn
@@ -237,7 +240,7 @@ namespace Dobby
             this.AbsoluteFilePathsBtn.Text = "Use Absolute File Paths: ";
             this.AbsoluteFilePathsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.AbsoluteFilePathsBtn.UseVisualStyleBackColor = false;
-            this.AbsoluteFilePathsBtn.Variable = null;
+            this.AbsoluteFilePathsBtn.Variable = false;
             this.AbsoluteFilePathsBtn.VariableTags = null;
             this.AbsoluteFilePathsBtn.Click += new System.EventHandler(this.AbsoluteFilePathsBtn_Click);
             // 
@@ -434,12 +437,32 @@ namespace Dobby
             this.CreditsBtn.Variable = null;
             this.CreditsBtn.VariableTags = null;
             // 
+            // StyleTestBtn
+            // 
+            this.StyleTestBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.StyleTestBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.StyleTestBtn.FlatAppearance.BorderSize = 0;
+            this.StyleTestBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.StyleTestBtn.Font = new System.Drawing.Font("Verdana", 8F);
+            this.StyleTestBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.StyleTestBtn.Location = new System.Drawing.Point(294, 1);
+            this.StyleTestBtn.Name = "StyleTestBtn";
+            this.StyleTestBtn.Size = new System.Drawing.Size(112, 24);
+            this.StyleTestBtn.TabIndex = 92;
+            this.StyleTestBtn.Text = "Toggle Style Test";
+            this.StyleTestBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.StyleTestBtn.UseVisualStyleBackColor = false;
+            this.StyleTestBtn.Variable = null;
+            this.StyleTestBtn.VariableTags = null;
+            this.StyleTestBtn.Click += new System.EventHandler(this.StyleTestBtn_Click);
+            // 
             // GP4CreationPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ClientSize = new System.Drawing.Size(467, 498);
+            this.Controls.Add(this.StyleTestBtn);
             this.Controls.Add(this.SeperatorLine1);
             this.Controls.Add(this.StartGp4CreationBtn);
             this.Controls.Add(this.IgnoreKeystoneBtn);
@@ -481,5 +504,6 @@ namespace Dobby
 
         private System.Windows.Forms.Label SeperatorLine1;
         private Button StartGp4CreationBtn;
+        private Button StyleTestBtn;
     }
 }
