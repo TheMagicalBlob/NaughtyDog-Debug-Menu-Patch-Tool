@@ -23,6 +23,13 @@ namespace Dobby {
 
 
 
+            IgnoreKeystoneBtn.Variable = false;
+            IgnoreKeystoneBtn.VariableTags = new string[] { "Include", "Ignore" };
+            
+            AbsoluteFilePathsBtn.Variable = false;
+            AbsoluteFilePathsBtn.VariableTags = new string[] { "Relative", "Absolute" };
+
+
             gp4 = new GP4Creator() {
         #if DEBUG
                 VerboseOutput = true,

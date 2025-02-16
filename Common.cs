@@ -487,17 +487,7 @@ namespace Dobby {
                     Print("WARNING: A maximum value was for some reason provided for a button with a boolean variable attached");
 
 
-                if (control.VariableTags != null)
-                {
-                    if (control.VariableTags.Length > 2)
-                        Print($"WARNING: Invalid VariableTags array provided for boolean toggle; ignoring [{control.VariableTags.Length-2}] tag(s)");
-                    
-                    else if (control.VariableTags.Length < 2)
-                        Print($"ERROR: Invalid VariableTags array provided for boolean toggle; less than two options provided ({control.VariableTags.Length})"); // output tag array length in case it's somehow negative, I suppose
-                }
-                else
-                    control.Variable = !(bool) control.Variable;
-
+                control.Variable = !(bool) control.Variable;
                 return;
             }
 
@@ -636,23 +626,45 @@ namespace Dobby {
         {
             // Convert control to avoid constant casting
             var control = item as Dobby.Button;
+            string Variable;
+
 
             // Check for stupidity.
-            if (control.Variable == null) {
+            if (control.Variable == null || control?.Variable?.ToString() == null) {
                 Print($"!! ERROR: Variable property for control \"{control.Name}\" was null");
                 return;
             }
 
             
             // Load the string representation of the Variable property
-            var Variable = control?.Variable?.ToString();
+            Variable = control?.Variable?.ToString();
+
 
             // Format boolean values
             if (control.Variable.GetType() == typeof(bool) && control.VariableTags == Array.Empty<string>())
-                Variable = (bool) control.Variable ? "Yes" : "No";
+            {
+                if (control.VariableTags != null)
+                {
+                    Print($"[{control.VariableTags.Length}] alternate bool tags provided");
+
+                    if (control.VariableTags.Length > 2)
+                        Print($"WARNING: Invalid VariableTags array provided for boolean toggle; ignoring [{control.VariableTags.Length-2}] tag(s)");
+                    
+                    else if (control.VariableTags.Length < 2)
+                        Print($"ERROR: Invalid VariableTags array provided for boolean toggle; less than two options provided ({control.VariableTags.Length})"); // output tag array length in case it's somehow negative, I suppose
+
+                    else
+                        Variable = (bool) control.Variable ? control.VariableTags[1] : control.VariableTags[0];
+                    
+                }
+                else {
+                    Print("No alternate bool tags provided");
+                    Variable = (bool) control.Variable ? "Yes" : "No";
+                }
+            }
 
             // Draw the Variable's string representation appended to the rightmost side of the control's bounds
-            args.Graphics.DrawString(Variable, MainFont, Brushes.LightGreen, new Point((int) (control.Width - args.Graphics.MeasureString(Variable, control.Font).Width - 5), 5));
+            args.Graphics.DrawString(Variable, MainFont, Brushes.LightGreen, new Point((int) (control.Width - args.Graphics.MeasureString(Variable, control.Font).Width - 5), 3));
         }
 
 
@@ -1212,8 +1224,6 @@ namespace Dobby {
     //=================================\\
     #region [Class Extensions]
     
-    delegate void TextBoxStateDelegate();
-
     /// <summary> Custom TextBox Class to Better Handle Default TextBox Contents. </summary>
     public class TextBox : System.Windows.Forms.TextBox
     {
@@ -1363,10 +1373,11 @@ namespace Dobby {
         /// <summary>
         /// Custom value associated with the control to be rendered alongside it, and edited via manually assigned per-control events.
         /// </summary>
-        [DefaultValue(typeof(bool), "false")]
+        [DefaultValue(false)]
         public object Variable
         {
             get => _Variable;
+
             set {
                 if (value != null && value.ToString().Length > 0)
                     Paint += Common.DrawButtonVariable;

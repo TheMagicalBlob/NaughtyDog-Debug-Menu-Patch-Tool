@@ -176,8 +176,6 @@ namespace Dobby
             this.StyleTestBtn.Text = "Toggle Style Test";
             this.StyleTestBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.StyleTestBtn.UseVisualStyleBackColor = false;
-            this.StyleTestBtn.Variable = null;
-            this.StyleTestBtn.VariableTags = null;
             this.StyleTestBtn.Click += new System.EventHandler(this.StyleTestBtn_Click);
             // 
             // InfoHelpBtn
@@ -195,8 +193,6 @@ namespace Dobby
             this.InfoHelpBtn.Text = "Information / Help...";
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
-            this.InfoHelpBtn.Variable = null;
-            this.InfoHelpBtn.VariableTags = null;
             // 
             // BackBtn
             // 
@@ -213,8 +209,6 @@ namespace Dobby
             this.BackBtn.Text = "Back...";
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
-            this.BackBtn.Variable = null;
-            this.BackBtn.VariableTags = null;
             // 
             // CreditsBtn
             // 
@@ -232,8 +226,6 @@ namespace Dobby
             this.CreditsBtn.Text = "Credits...";
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
-            this.CreditsBtn.Variable = null;
-            this.CreditsBtn.VariableTags = null;
             // 
             // VerbosityBtn
             // 
@@ -245,13 +237,11 @@ namespace Dobby
             this.VerbosityBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.VerbosityBtn.Location = new System.Drawing.Point(1, 312);
             this.VerbosityBtn.Name = "VerbosityBtn";
-            this.VerbosityBtn.Size = new System.Drawing.Size(270, 23);
+            this.VerbosityBtn.Size = new System.Drawing.Size(230, 23);
             this.VerbosityBtn.TabIndex = 65;
             this.VerbosityBtn.Text = "orbis-pub-cmd Output Mode: ";
             this.VerbosityBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.VerbosityBtn.UseVisualStyleBackColor = false;
-            this.VerbosityBtn.Variable = true;
-            this.VerbosityBtn.VariableTags = null;
             this.VerbosityBtn.Click += new System.EventHandler(this.VerbosityBtn_Click);
             // 
             // LaunchOrbisPubCmdBtn
@@ -269,8 +259,6 @@ namespace Dobby
             this.LaunchOrbisPubCmdBtn.Text = "Build Package/.pkg File";
             this.LaunchOrbisPubCmdBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.LaunchOrbisPubCmdBtn.UseVisualStyleBackColor = false;
-            this.LaunchOrbisPubCmdBtn.Variable = null;
-            this.LaunchOrbisPubCmdBtn.VariableTags = null;
             this.LaunchOrbisPubCmdBtn.Click += new System.EventHandler(this.LaunchOrbisPubCmdBtn_Click);
             // 
             // GP4PageBtn
@@ -288,8 +276,6 @@ namespace Dobby
             this.GP4PageBtn.Text = "Create New .gp4 File...";
             this.GP4PageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.GP4PageBtn.UseVisualStyleBackColor = false;
-            this.GP4PageBtn.Variable = null;
-            this.GP4PageBtn.VariableTags = null;
             this.GP4PageBtn.Click += new System.EventHandler(this.Gp4PageBtn_Click);
             // 
             // TempDirectoryPathBox
@@ -319,8 +305,6 @@ namespace Dobby
             this.TempDirectoryBrowseBtn.Text = "Browse";
             this.TempDirectoryBrowseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.TempDirectoryBrowseBtn.UseVisualStyleBackColor = false;
-            this.TempDirectoryBrowseBtn.Variable = null;
-            this.TempDirectoryBrowseBtn.VariableTags = null;
             this.TempDirectoryBrowseBtn.Click += new System.EventHandler(this.TMPDirectoryItem_Click);
             // 
             // OrbisToolPathBox
@@ -350,8 +334,6 @@ namespace Dobby
             this.OrbisCmdPathBrowseBtn.Text = "Browse";
             this.OrbisCmdPathBrowseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.OrbisCmdPathBrowseBtn.UseVisualStyleBackColor = false;
-            this.OrbisCmdPathBrowseBtn.Variable = null;
-            this.OrbisCmdPathBrowseBtn.VariableTags = null;
             this.OrbisCmdPathBrowseBtn.Click += new System.EventHandler(this.OrbisCmdPathBrowseBtn_Click);
             // 
             // GP4PathBox
@@ -381,8 +363,6 @@ namespace Dobby
             this.GP4PathBrowseBtn.Text = "Browse";
             this.GP4PathBrowseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.GP4PathBrowseBtn.UseVisualStyleBackColor = false;
-            this.GP4PathBrowseBtn.Variable = null;
-            this.GP4PathBrowseBtn.VariableTags = null;
             this.GP4PathBrowseBtn.Click += new System.EventHandler(this.GP4PathBrowseBtn_Click);
             // 
             // OutputDirectoryPathBox
@@ -412,8 +392,6 @@ namespace Dobby
             this.OutputDirectoryBrowseBtn.Text = "Browse";
             this.OutputDirectoryBrowseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.OutputDirectoryBrowseBtn.UseVisualStyleBackColor = false;
-            this.OutputDirectoryBrowseBtn.Variable = null;
-            this.OutputDirectoryBrowseBtn.VariableTags = null;
             this.OutputDirectoryBrowseBtn.Click += new System.EventHandler(this.OutputDirectory_Click);
             // 
             // PkgCreationPage
