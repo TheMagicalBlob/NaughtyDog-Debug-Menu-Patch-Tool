@@ -21,6 +21,7 @@ namespace Dobby {
                 }
             }
 
+            VerbosityBtn.Variable = true;
 
             // TODO: Maintain Settings For Page When Swapping Between gp4/pkg Creation Pages.. Or Just In General.
         }

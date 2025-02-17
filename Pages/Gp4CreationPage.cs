@@ -29,6 +29,7 @@ namespace Dobby {
             AbsoluteFilePathsBtn.Variable = false;
             AbsoluteFilePathsBtn.VariableTags = new string[] { "Relative", "Absolute" };
 
+            
 
             gp4 = new GP4Creator() {
         #if DEBUG
@@ -241,9 +242,9 @@ namespace Dobby {
 
         
 
-        private void AbsoluteFilePathsBtn_Click(object control, EventArgs _) => CycleButtonVariable<bool>(control);
+        private void AbsoluteFilePathsBtn_Click(object control, MouseEventArgs eventArgs) => CycleButtonVariable<bool>(control);
         
-        private void IgnoreKeystoneBtn_Click(object control, EventArgs _)    => CycleButtonVariable<bool>(control);
+        private void IgnoreKeystoneBtn_Click(object control, MouseEventArgs eventArgs)    => CycleButtonVariable<bool>(control);
 
         #endregion
 
@@ -270,7 +271,6 @@ namespace Dobby {
         private Button BaseGamePackageBrowseBtn;
         private Label SeperatorLine2;
         private Label SeperatorLine3;
-        private Button AbsoluteFilePathsBtn;
         private Button IgnoreKeystoneBtn;
         private Button InfoHelpBtn;
         private Button BackBtn;
@@ -280,5 +280,10 @@ namespace Dobby {
         private Label SeperatorLine4;
         private Label SeperatorLine0;
         #endregion
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -2,6 +2,8 @@
 using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
+using System.ComponentModel.Design.Serialization;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Dynamic;
@@ -11,6 +13,7 @@ using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Forms.Design;
 using libdebug;
 #if DEBUG
 using System.Diagnostics;
@@ -50,16 +53,34 @@ namespace Dobby {
         //  - PS4DebugPage Consistency Fix (Can't Seem To Reproduce? [The Bug, I Mean. Not That I Don't Want The Other Thing])
 
 
-        //==============================================================\\
-        //--|   Main Application Functions & Variable Declarations   |--\\
-        //==============================================================\\
-        #region Main Application Functions & Variable Declarations
+        //========================================\\
+        //--|   Global Variable Declarations   |--\\
+        //========================================\\
+        #region [Global Variable Declarations]
 
 
         
         // Basic Functionality Components
         #region [Basic Functionality Components]
+        
+        /// <summary> ID for the active game. </summary>
+        public static GameID Game;
 
+        /// <summary> ID for the currently loaded form. </summary>
+        public static PageID? Page;
+        public static List<PageID?> Pages = new List<PageID?>();
+
+        public static bool
+            MouseScrolled,
+            MouseIsDown,
+            FormActive,
+            InfoHasImportantStr,
+            IsPageGoingBack,
+            LastMsgOutputWasInfoString,
+            LabelShouldFlash,
+            FlashThreadHasStarted,
+            IsActiveFilePCExe
+        ;
 
         public static Point LastFormPosition, MousePos, MouseDif;
         public static Point[] OriginalControlPositions;
@@ -84,24 +105,6 @@ namespace Dobby {
 
 
 
-        /// <summary> ID for the active game. </summary>
-        public static GameID Game;
-
-        /// <summary> ID for the currently loaded form. </summary>
-        public static PageID? Page;
-        public static List<PageID?> Pages = new List<PageID?>();
-
-        public static bool
-            MouseScrolled,
-            MouseIsDown,
-            FormActive,
-            InfoHasImportantStr,
-            IsPageGoingBack,
-            LastMsgOutputWasInfoString,
-            LabelShouldFlash,
-            FlashThreadHasStarted,
-            IsActiveFilePCExe
-        ;
 
 
 
@@ -122,8 +125,9 @@ namespace Dobby {
 
         // Design-Related Components
         #region [Design Components]
-        public static Font MainFont = new Font("Consolas", 9.75F, FontStyle.Bold);
-        public static Font SmallControlFont = new Font("Cambria", 8F, FontStyle.Bold);
+        public static Font ControlFont = new Font("Cambria", 9.75F, FontStyle.Bold);
+        public static Font AltControlFont = new Font("Consolas", 9.75F, FontStyle.Bold);
+        public static Font SmallControlFont = new Font("Verdana", 8F);
 
         public static Font TextFont = new Font("Cambria", 10F);
         public static Font DefaultTextFont = new Font("Cambria", 10F, FontStyle.Italic);
@@ -159,6 +163,10 @@ namespace Dobby {
         public static NetworkStream NetStream;
         #endregion [Network-Related Components]
 
+
+
+        // Miscellaneous Static Function Declarations
+        #region [Miscellaneous Static Function Declarations]
 
         /// <summary>
         /// Dev.Print overload, for some reason. //!
@@ -462,26 +470,26 @@ namespace Dobby {
         private static void KillTextBox(object sender, MouseEventArgs e) => PopupGroupBox?.Dispose();
 
 
-        
 
         /// <summary>
         /// Toggle between various states of custom Button controls
         /// </summary>
         /// <param name="sender"> The control to edit the variable of </param>
-        public static void CycleButtonVariable<T>(object sender, object maxValue = null, object minValue = null)
+        public static void CycleButtonVariable<T>(object sender, object maxValue = null, object minValue = null, MouseEventArgs eventArgs = null)
         {
             var control = (Dobby.Button) sender;
-            var controlType = control?.Variable?.GetType();
+            Type type = typeof(T);
 
-            if (controlType == null) {
+            if (control.Variable == null) {
                 Print("CycleButtonVariable(): Control's variable was null, fix your trash.");
             }
+
 
 
             //#
             //## Booleans
             //#
-            if (controlType == typeof(bool))
+            if (type == typeof(bool))
             {
                 if (maxValue != null)
                     Print("WARNING: A maximum value was for some reason provided for a button with a boolean variable attached");
@@ -491,18 +499,23 @@ namespace Dobby {
                 return;
             }
 
-
             
             //#
             //## Integers
             //#
-            if (controlType == typeof(short) || controlType == typeof(int) || controlType == typeof(long))
+            if (type == typeof(int) || type == typeof(long))
             {
                 if (maxValue == null) {
-                    control.Variable = (int)control.Variable + 1;
+                    control.Variable = (long)control.Variable + 1;
                 }
                 else {
-                    if (maxValue == control.Variable)
+                    // avoid going out of bounds in the VariableTags array
+                    if (control.VariableTags.Length < (long)maxValue) {
+                        maxValue = control.VariableTags.Length;
+                        Print($"ERORR: Maximum value for control Variable was larger than the amount of provided VariableTags; lowered maxValue to [{maxValue}]");
+                    }
+
+                    if (maxValue == control.Variable) //! this might compare types when they're both objects...
                     {
                         control.Variable = minValue ?? 0;
                     }
@@ -512,52 +525,25 @@ namespace Dobby {
                 return;
             }
             
-
             
             //#
             //## Floating-Points
             //#
-            if (controlType == typeof(float) || controlType == typeof(double))
+            if (type == typeof(float) || type == typeof(double))
             {
-                if (maxValue != null) {
+                control.Variable = (double)control.Variable + eventArgs.Delta != 0 ? eventArgs.Delta / 2 : .1f;
 
-                }
-                else {
-                    control.Variable = (int)control.Variable + 1;
-                }
-
-                return;
-            }
-
-
-            
-/*
-            if (controlType == typeof(bool))
-            {
-                if (control.VariableTags != null)
+                if (maxValue != null)
                 {
-                    if (control.VariableTags.Length > 2) {
-                        Print($"WARNING: Invalid VariableTags array provided for boolean toggle; ignoring [{control.VariableTags.Length-2}] tag(s)");
-                    }
-                    else if (control.VariableTags.Length < 2) {
-                        Print($"ERROR: Invalid VariableTags array provided for boolean toggle; less than two options provided ({control.VariableTags.Length})"); // output tag array length in case it's somehow negative, I suppose
-                        return;
-                    }
-                }
-                else
-                    control.Variable = !(bool) control.Variable;
-                return;
-            }
+                    if ((double)control.Variable >= (double)maxValue)
+                        control.Variable = minValue ?? 0;
 
-            if (controlType == typeof(int)) {
-                if (control.VariableTags != null)
-                {
-
+                    else if ((double)control.Variable <= (double)minValue)
+                        control.Variable = minValue ?? 10;
                 }
             }
-*/
         }
-
+        #endregion
 
 
 
@@ -622,31 +608,38 @@ namespace Dobby {
         /// <summary>
         /// Draw the string representation of the Dobby.Button's Variable property to the right of the control text.
         ///</summary>
-        public static void DrawButtonVariable(object item, PaintEventArgs args)
+        public static void DrawButtonVariable(object item, PaintEventArgs paintEvent)
         {
             // Convert control to avoid constant casting
             var control = item as Dobby.Button;
-            string Variable;
+            var variable = control?.Variable?.ToString();
+            var padding = 5; // distance from the right-most bounds of the control to the start of the control's Text (at least, seems to be for the font and size most of the buttons are using)
+
+
+            float
+                controlTextSize = paintEvent.Graphics.MeasureString(control.Text, control.Font).Width,
+                variableSize,
+                expectedSize,
+                baseContentSize
+            ;
 
 
             // Check for stupidity.
-            if (control.Variable == null || control?.Variable?.ToString() == null) {
+            if (variable == null) {
                 Print($"!! ERROR: Variable property for control \"{control.Name}\" was null");
                 return;
             }
 
             
-            // Load the string representation of the Variable property
-            Variable = control?.Variable?.ToString();
+            
 
-
-            // Format boolean values
-            if (control.Variable.GetType() == typeof(bool) && control.VariableTags == Array.Empty<string>())
+            //#
+            //## Boolean
+            //#
+            if (control.Variable.GetType() == typeof(bool))
             {
                 if (control.VariableTags != null)
                 {
-                    Print($"[{control.VariableTags.Length}] alternate bool tags provided");
-
                     if (control.VariableTags.Length > 2)
                         Print($"WARNING: Invalid VariableTags array provided for boolean toggle; ignoring [{control.VariableTags.Length-2}] tag(s)");
                     
@@ -654,17 +647,64 @@ namespace Dobby {
                         Print($"ERROR: Invalid VariableTags array provided for boolean toggle; less than two options provided ({control.VariableTags.Length})"); // output tag array length in case it's somehow negative, I suppose
 
                     else
-                        Variable = (bool) control.Variable ? control.VariableTags[1] : control.VariableTags[0];
+                        variable = control.VariableTags[(bool)control.Variable ? 1 : 0];
                     
                 }
                 else {
                     Print("No alternate bool tags provided");
-                    Variable = (bool) control.Variable ? "Yes" : "No";
+                    variable = (bool) control.Variable ? "Yes" : "No";
                 }
             }
 
+            
+            //#
+            //## Integer
+            //#
+            if (control.Variable.GetType() == typeof(int))
+            {
+                if (control.VariableTags != null)
+                {
+                    if (control.VariableTags.Length > (int)control.Variable)
+                        Print($"WARNING: Invalid VariableTags array provided for boolean toggle; ignoring [{control.VariableTags.Length-2}] tag(s)");
+                    
+                    else if (control.VariableTags.Length < (int)control.Variable)
+                        Print($"ERROR: Invalid VariableTags array provided for boolean toggle; less than two options provided ({control.VariableTags.Length})"); // output tag array length in case it's somehow negative, I suppose
+
+                    variable = control.VariableTags[(int)control.Variable];
+                    
+                }
+                else {
+                    variable = (string) control.Variable;
+                }
+            }
+            
+            //#
+            //## Floating-Points
+            //#
+            if (control.Variable.GetType() == typeof(float) || control.Variable.GetType() == typeof(double))
+            {
+                Print("Fucking no lmao");
+                return;
+            }
+
+
+
+
+            variableSize = paintEvent.Graphics.MeasureString(variable, control.Font).Width;
+            baseContentSize = controlTextSize + padding;
+            expectedSize = baseContentSize + variableSize + (padding * 2);
+
+
+            if (expectedSize != control.Width)
+            {
+                Print($"WARNING: Control variable may not fit control bounds- Attempting Resize... ({control.Width} --> {expectedSize})");
+                control.Width = (int) expectedSize - 1;
+            }
+            
+
+
             // Draw the Variable's string representation appended to the rightmost side of the control's bounds
-            args.Graphics.DrawString(Variable, MainFont, Brushes.LightGreen, new Point((int) (control.Width - args.Graphics.MeasureString(Variable, control.Font).Width - 5), 3));
+            paintEvent.Graphics.DrawString(variable, control.Font, Brushes.LightGreen, new Point((int) baseContentSize + (padding * 2), 4));
         }
 
 
@@ -674,7 +714,7 @@ namespace Dobby {
         {
             var ItemPtr = (Form)sender;
 
-            Point[] Border = new Point[] {
+            var Border = new Point[] {
                 Point.Empty,
                 new Point(ItemPtr.Width-1, 0),
                 new Point(ItemPtr.Width-1, ItemPtr.Height-1),
@@ -1224,6 +1264,8 @@ namespace Dobby {
     //=================================\\
     #region [Class Extensions]
     
+
+
     /// <summary> Custom TextBox Class to Better Handle Default TextBox Contents. </summary>
     public class TextBox : System.Windows.Forms.TextBox
     {
@@ -1296,84 +1338,33 @@ namespace Dobby {
     }
 
 
-/*
-    public class TextBox : System.Windows.Forms.TextBox {
-        public TextBox() {
-
-            Info         = ((string)Tag) ?? string.Empty;
-            TextChanged += Set;
-            IsDefault    = true;
-
-            GotFocus += (object _, EventArgs __) => {
-                if(IsDefault) {
-                    Font = new Font("Microsoft YaHei UI", 8.25F);
-                    Clear();
-                    IsDefault = false;
-                }
-            };
-
-            Click += (object _, EventArgs __) => { // Just In Case, I Suppose.
-                if(IsDefault) {
-                    Font = new Font("Microsoft YaHei UI", 8.25F);
-                    Clear();
-                    IsDefault = false;
-                }
-            };
-
-            LostFocus += (object _, EventArgs __) => {
-                if(Text.Length <= 0 || Text.Trim().Length <= 0) {
-                    Font = new Font("Microsoft YaHei UI", 8.25F, FontStyle.Italic);
-                    Text = DefaultText;
-                    IsDefault = true;
-                }
-            };
-        }
-
-
-        public bool IsDefault { get; private set; }
-        public string Info    { get; private set; }
-        
-        private string DefaultText;
-
-        /// <summary> Yoink Default Text From First Text Assignment.
-        ///</summary>
-        void Set(object s, EventArgs e) {
-            DefaultText = Text;
-
-            TextChanged -= Set;
-            TextChanged += (object control, EventArgs _) => {
-                if(IsDefault && Text.Length > 0) {
-                    Font = new Font("Microsoft YaHei UI", 8.25F);
-                    IsDefault = false;
-                }
-            };
-        }
-    }
-*/
-
 
     /// <summary>
     /// Custom Button Class extention so I can attach a value to them. 
     /// </summary>
     public class Button : System.Windows.Forms.Button
     {
+        public Button()
+        {
+            FlatStyle = FlatStyle.Flat;
+            FlatAppearance.BorderSize = 0;
+            BackColor = Color.FromArgb(100, 100, 100);
 
-#if DEBUG
-        /// <summary> OnClick event override to track dropped Click events (when tf did that start??)
-        ///</summary>
-        /// <param name="args"> The event args instance to send to the base OnClick event. </param>
-        protected override void OnClick(EventArgs args) {
-            Common.Dev.ClickEventCheck = 0;
-            base.OnClick(args);
+            Font = new Font("Cambria", 9.25F, FontStyle.Bold);
+            Cursor = Cursors.Cross;
+
+
+            Variable = null;
+            VariableTags = null;
         }
-        #endif
-        
 
 
         /// <summary>
         /// Custom value associated with the control to be rendered alongside it, and edited via manually assigned per-control events.
         /// </summary>
-        [DefaultValue(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)] // Designer autogenerates code settings the Variable & VariableTags properties to null, annoyingly. More of an issue for the former though, due to the Properties window not letting you edit objects
+        [DefaultValue(null)]
+        [Browsable(false)]
         public object Variable
         {
             get => _Variable;
@@ -1391,8 +1382,10 @@ namespace Dobby {
 
 
         /// <summary>
-        /// An Array of names to display in place of basic values (//! IMPLEMENT ME)
+        /// An Array of names to display in place of basic values.
         /// </summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [DefaultValue(null)]
         public string[] VariableTags
         {
             get => _VariableTags;
@@ -1410,6 +1403,7 @@ namespace Dobby {
                 _VariableTags = value;
             }
         }
+        
         private string[] _VariableTags;
     }
     #endregion [Class Extensions]

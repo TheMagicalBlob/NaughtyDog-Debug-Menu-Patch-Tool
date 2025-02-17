@@ -1091,7 +1091,7 @@ namespace Dobby {
                 Buttons[ButtonIndex].TabIndex = ButtonIndex;
                 Buttons[ButtonIndex].Location = new Point(1, ButtonsVerticalStartPos);
                 Buttons[ButtonIndex].Size = new Size(ActiveForm.Width - 2, 23);
-                Buttons[ButtonIndex].Font = MainFont;
+                Buttons[ButtonIndex].Font = ControlFont;
                 Buttons[ButtonIndex].Text = ControlText[ButtonIndex];
                 Buttons[ButtonIndex].Variable = GameSpecificPatchValues[ButtonIndex];
                 Buttons[ButtonIndex].TextAlign = ContentAlignment.MiddleLeft;

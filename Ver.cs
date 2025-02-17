@@ -264,7 +264,8 @@
           "* 4.52.294.811 | oops.",
           "* 4.52.296.813 | oops 2, electric boogaloo (left in a random line of code after earlier tests). Also renamed and duplicated DebugBtn1 to the gp4 creation page as StyleTestBtn",
           "* 4.52.299.822 | I forgot to write this message and have forgotten what I did. Meh.",
-          "* 4.52.299.822 | ",
+          "* 4.52.301.822 | Added attributes to Variable & VariableTags properties in Button class extension to remove Variable from the Properties panel/window, since it can't be assigned to in there anyway, as well as stop the designer from assigning them both as null in InitializeComponent()",
+          "* 4.52.310.826 | tweaking DrawButtonVariable() to replace rightmost-side alignment with consistent placement, as well as resize controls to fit the contents neatly",
         };
 
 
