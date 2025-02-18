@@ -266,6 +266,7 @@
           "* 4.52.299.822 | I forgot to write this message and have forgotten what I did. Meh.",
           "* 4.52.301.822 | Added attributes to Variable & VariableTags properties in Button class extension to remove Variable from the Properties panel/window, since it can't be assigned to in there anyway, as well as stop the designer from assigning them both as null in InitializeComponent()",
           "* 4.52.310.826 | tweaking DrawButtonVariable() to replace rightmost-side alignment with consistent placement, as well as resize controls to fit the contents neatly",
+          "* 4.52.310.827 | testing",
         };
 
 
