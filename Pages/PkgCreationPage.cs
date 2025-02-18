@@ -122,8 +122,8 @@ namespace Dobby {
 
             if (OrbisToolPathBox.IsDefault)
             {
-                SetInfoLabelText("Please provide a path to the FPKG tools");
-                // TODO: add label flash here
+                FlashLabel("Info");
+                SetInfoLabelText("Please provide a path to the FPKG tools before building.");
                 return;
             }
             else
@@ -132,7 +132,8 @@ namespace Dobby {
             
             if (GP4PathBox.IsDefault)
             {
-                Print("//!");
+                FlashLabel("Info");
+                SetInfoLabelText("Please provide a valid .gp4 path before building.");
                 return;
             }
             else

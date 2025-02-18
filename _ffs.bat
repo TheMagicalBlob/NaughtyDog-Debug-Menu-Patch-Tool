@@ -1,0 +1,1 @@
+xcopy "..\OrbisGP4\libgp4\bin\Release\libgp4.dll" "Resources\bin\" /v/y/f

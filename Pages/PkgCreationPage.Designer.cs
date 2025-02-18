@@ -271,9 +271,9 @@ namespace Dobby
             this.GP4PageBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.GP4PageBtn.Location = new System.Drawing.Point(2, 271);
             this.GP4PageBtn.Name = "GP4PageBtn";
-            this.GP4PageBtn.Size = new System.Drawing.Size(146, 23);
+            this.GP4PageBtn.Size = new System.Drawing.Size(356, 23);
             this.GP4PageBtn.TabIndex = 63;
-            this.GP4PageBtn.Text = "Create New .gp4 File...";
+            this.GP4PageBtn.Text = "Create a New .gp4 File for Fake Package (fPKG) Creation...";
             this.GP4PageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.GP4PageBtn.UseVisualStyleBackColor = false;
             this.GP4PageBtn.Click += new System.EventHandler(this.Gp4PageBtn_Click);

@@ -71,6 +71,10 @@
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Pages\PS4MenuSettingsPage.Designer.cs">
+      <SubType>Form</SubType>
+      <DependentUpon>PS4MenuSettingsPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Pages\PCDebugMenuPage.Designer.cs">
       <DependentUpon>PCDebugMenuPage.cs</DependentUpon>
     </Compile>

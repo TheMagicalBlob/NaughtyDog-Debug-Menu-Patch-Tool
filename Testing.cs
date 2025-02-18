@@ -428,6 +428,7 @@ namespace Dobby {
 
                 LogFile.WriteLine(str);
                 LogFile.Flush();
+                return;
 
                 LogShouldRefresh = true;
 

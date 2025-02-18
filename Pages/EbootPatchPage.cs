@@ -73,7 +73,9 @@ namespace Dobby {
         //===================================\\
         //--|   Page-Specific Functions   |--\\
         //===================================\\
-        #region Page-Specific Functions
+        #region [Page-Specific Functions]
+
+        //! SORT THIS FUCKING PAGE!!!
 
 
         /// <summary> Update GameInfoLabel Text To Reflect Last Action Taken </summary>
@@ -96,6 +98,7 @@ namespace Dobby {
             }
         }
 
+
         /// <summary> Load A File For Checking/Patching If The Path In The ExecutablePathBox Exists </summary>
         private void ExecutablePathBox_TextChanged(object sender, EventArgs e) {
 
@@ -104,6 +107,9 @@ namespace Dobby {
             if(File.Exists(TextBoxData))
             LoadFileToBePatched(TextBoxData);
         }
+
+
+
 
         /// <summary>
         /// Search For An Unsigned Executable To Apply Patches To. <br/>
@@ -182,7 +188,8 @@ namespace Dobby {
                 case GameID.TLL100:
                 case GameID.TLL10X:
                     RestoredDebugBtn.Font = new Font("Cambria", 9.25F, FontStyle.Bold | FontStyle.Strikeout);
-                    RestoredDebugBtn.Enabled = false; return " Restored/Custom";
+                    RestoredDebugBtn.Enabled = false;
+                    return " Restored/Custom";
 
                 ////
                 // Games I've Made Customizations For
@@ -191,7 +198,8 @@ namespace Dobby {
                 case GameID.T2108:
                 case GameID.T2109:
                     RestoredDebugBtn.Font = new Font("Cambria", 9.25F, FontStyle.Bold);
-                    RestoredDebugBtn.Enabled = true; return " Custom";
+                    RestoredDebugBtn.Enabled = true;
+                    return " Custom";
                 ////
                 // Games I've Made Restorations For
                 ////
@@ -296,10 +304,8 @@ namespace Dobby {
         /// <param name="PatchType"></param>
         public void ApplyDebugPatches(int PatchType) {
             if(Game == 0) {
-                (LabelFlashThread = new Thread(LabelFlashMethod)).Start("GameInfoLabel");
-                
+                FlashLabel("GameInfoLabel");
                 SetInfoLabelText("Please Select A Game's Executable First");
-                InfoHasImportantStr = true;
                 return;
             }
 

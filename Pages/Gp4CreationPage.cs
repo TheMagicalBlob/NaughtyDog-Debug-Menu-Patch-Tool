@@ -36,7 +36,8 @@ namespace Dobby {
                 VerboseOutput = true,
         #endif
                 SkipEndComment = true,
-                SkipIntegrityCheck = false
+                SkipIntegrityCheck = false,
+                LoggingMethod = (object msg) => Print(msg)
             };
         }
 
@@ -92,6 +93,7 @@ namespace Dobby {
                 else
 #endif
                 {
+                    FlashLabel("Info");
                     SetInfoLabelText("Please Assign A Valid Gamedata Folder Before Building.\n");
                     return;
                 }
@@ -106,6 +108,7 @@ namespace Dobby {
             // Ensure Keystone is Present if Applicable
             if (gp4.SfoParams.category == "gd" && !gp4.IgnoreKeystone && !File.Exists($@"{gp4.GamedataFolder}\sce_sys\keystone"))
             {
+                FlashLabel("Info");
                 SetInfoLabelText($"ERROR; No keystone File Found In Project Folder.\n\n");
                 return;
             }
@@ -132,17 +135,18 @@ namespace Dobby {
             //#
             var newGp4 = gp4.CreateGP4();
 
-            if (!Directory.Exists(newGp4))
+            // Check return value
+            if (!File.Exists(newGp4))
             {
-                if (newGp4 == string.Empty)
-                {
+                if (newGp4 == string.Empty) {
                     SetInfoLabelText("One or multiple errors were detected during .gp4 creation");
-                    Print($"  - newGp4: \"{newGp4}\")");
                 }
                 else {
                     SetInfoLabelText("An unexpected error occured during .gp4 creation.");
-                    Print($"  - newGp4: \"{newGp4}\")");
                 }
+
+
+                Print($"  - newGp4: \"{newGp4}\")");
             }
             else {
                 SetInfoLabelText(".gp4 Creation Successful.");
@@ -161,10 +165,10 @@ namespace Dobby {
             // Use the ghastly Directory Tree Dialogue to Choose A Folder
             if (true)
             {
-                using (var FBrowser = new FolderBrowserDialog { Description = "Please Select the Desired Gamedata Folder" })
+                using (folderDialogue = new FolderBrowserDialog { Description = "Please Select the Desired Gamedata Folder" })
                 {
-                    if (FBrowser.ShowDialog() == DialogResult.OK) {
-                        GamedataPathBox.Set(FBrowser.SelectedPath);
+                    if (folderDialogue.ShowDialog() == DialogResult.OK) {
+                        GamedataPathBox.Set(folderDialogue.SelectedPath);
                     }
                 }
 
@@ -198,8 +202,8 @@ namespace Dobby {
             using(folderDialogue = new FolderBrowserDialog {
                 Description = "Select the intended output directory of the .gp4 project file."
             })
-            if(fileDialogue.ShowDialog() == DialogResult.OK)
-                GP4OutputDirectoryPathBox.Set(fileDialogue.FileName);
+            if(folderDialogue.ShowDialog() == DialogResult.OK)
+                GP4OutputDirectoryPathBox.Set(folderDialogue.SelectedPath);
 
             
             ((Dobby.Button)sender).ForeColor = Color.White;

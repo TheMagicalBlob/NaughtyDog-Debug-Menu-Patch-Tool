@@ -150,7 +150,7 @@ namespace Dobby {
         #region [Threading Components]
         public static Thread LabelFlashThread;
 
-        public delegate void InfoLabelUpdateCallback(string InfoText);
+        public delegate void LabelUpdateCallback(string InfoText);
 
         public delegate void LabelFlashCallback(string Control, System.Drawing.Color colour);
         #endregion [Threading Components]
@@ -187,6 +187,10 @@ namespace Dobby {
 #endif
         }
 
+        public static void FlashLabel(string label)
+        {
+            (LabelFlashThread = new Thread(LabelFlashMethod)).Start(label);
+        }
         
         public static string GetCurrentGame(FileStream stream) {
             var LocalExecutableCheck = new byte[160];
@@ -276,6 +280,8 @@ namespace Dobby {
         /// <summary> [deprecated] Sets The Info Label String Based On The Currently Hovered Control </summary>
         /// <param name="Sender">The Hovered Control</param>
         public static void SetInfoLabelStringOnControlHover(Control Sender, float FontAdjustment = 10f) {
+            throw new NotImplementedException();
+
             // SetInfo
             // TODO: this is fucking stupid, change or delete it.
 
@@ -415,6 +421,82 @@ namespace Dobby {
         }
 
 
+        
+        /// <summary>
+        /// Toggle between various states of custom Button controls
+        /// </summary>
+        /// <param name="sender"> The control to edit the variable of </param>
+        public static void CycleButtonVariable<T>(object sender, object maxValue = null, object minValue = null, MouseEventArgs eventArgs = null)
+        {
+            var control = (Dobby.Button) sender;
+            Type type = typeof(T);
+
+            if (control.Variable == null) {
+                Print("CycleButtonVariable(): Control's variable was null, fix your trash.");
+            }
+
+
+
+            //#
+            //## Booleans
+            //#
+            if (type == typeof(bool))
+            {
+                if (maxValue != null)
+                    Print("WARNING: A maximum value was for some reason provided for a button with a boolean variable attached");
+
+
+                control.Variable = !(bool) control.Variable;
+                return;
+            }
+
+            
+            //#
+            //## Integers
+            //#
+            if (type == typeof(int) || type == typeof(long))
+            {
+                if (maxValue == null) {
+                    control.Variable = (long)control.Variable + 1;
+                }
+                else {
+                    // avoid going out of bounds in the VariableTags array
+                    if (control.VariableTags.Length < (long)maxValue)
+                    {
+                        maxValue = control.VariableTags.Length;
+                        Print($"ERORR: Maximum value for control Variable was larger than the amount of provided VariableTags; lowered maxValue to [{maxValue}]");
+                    }
+
+                    if (maxValue == control.Variable) //! this might compare types when they're both objects...
+                    {
+                        control.Variable = minValue ?? 0;
+                    }
+
+                }
+
+                return;
+            }
+            
+            
+            //#
+            //## Floating-Points
+            //#
+            if (type == typeof(float) || type == typeof(double))
+            {
+                control.Variable = (double)control.Variable + eventArgs.Delta != 0 ? eventArgs.Delta / 2 : .1f;
+
+                if (maxValue != null)
+                {
+                    if ((double)control.Variable >= (double)maxValue)
+                        control.Variable = minValue ?? 0;
+
+                    else if ((double)control.Variable <= (double)minValue)
+                        control.Variable = minValue ?? 10;
+                }
+            }
+        }
+
+
 
         public static RichTextBox CreateTextBox(string Title) {
             PopupGroupBox?.Dispose();
@@ -468,81 +550,6 @@ namespace Dobby {
         }
 
         private static void KillTextBox(object sender, MouseEventArgs e) => PopupGroupBox?.Dispose();
-
-
-
-        /// <summary>
-        /// Toggle between various states of custom Button controls
-        /// </summary>
-        /// <param name="sender"> The control to edit the variable of </param>
-        public static void CycleButtonVariable<T>(object sender, object maxValue = null, object minValue = null, MouseEventArgs eventArgs = null)
-        {
-            var control = (Dobby.Button) sender;
-            Type type = typeof(T);
-
-            if (control.Variable == null) {
-                Print("CycleButtonVariable(): Control's variable was null, fix your trash.");
-            }
-
-
-
-            //#
-            //## Booleans
-            //#
-            if (type == typeof(bool))
-            {
-                if (maxValue != null)
-                    Print("WARNING: A maximum value was for some reason provided for a button with a boolean variable attached");
-
-
-                control.Variable = !(bool) control.Variable;
-                return;
-            }
-
-            
-            //#
-            //## Integers
-            //#
-            if (type == typeof(int) || type == typeof(long))
-            {
-                if (maxValue == null) {
-                    control.Variable = (long)control.Variable + 1;
-                }
-                else {
-                    // avoid going out of bounds in the VariableTags array
-                    if (control.VariableTags.Length < (long)maxValue) {
-                        maxValue = control.VariableTags.Length;
-                        Print($"ERORR: Maximum value for control Variable was larger than the amount of provided VariableTags; lowered maxValue to [{maxValue}]");
-                    }
-
-                    if (maxValue == control.Variable) //! this might compare types when they're both objects...
-                    {
-                        control.Variable = minValue ?? 0;
-                    }
-
-                }
-
-                return;
-            }
-            
-            
-            //#
-            //## Floating-Points
-            //#
-            if (type == typeof(float) || type == typeof(double))
-            {
-                control.Variable = (double)control.Variable + eventArgs.Delta != 0 ? eventArgs.Delta / 2 : .1f;
-
-                if (maxValue != null)
-                {
-                    if ((double)control.Variable >= (double)maxValue)
-                        control.Variable = minValue ?? 0;
-
-                    else if ((double)control.Variable <= (double)minValue)
-                        control.Variable = minValue ?? 10;
-                }
-            }
-        }
         #endregion
 
 
@@ -612,7 +619,7 @@ namespace Dobby {
         {
             // Convert control to avoid constant casting
             var control = item as Dobby.Button;
-            var variable = control?.Variable?.ToString();
+            string variable = null;
             var padding = 5; // distance from the right-most bounds of the control to the start of the control's Text (at least, seems to be for the font and size most of the buttons are using)
 
 
@@ -625,7 +632,7 @@ namespace Dobby {
 
 
             // Check for stupidity.
-            if (variable == null) {
+            if (control.Variable == null) {
                 Print($"!! ERROR: Variable property for control \"{control.Name}\" was null");
                 return;
             }
@@ -683,10 +690,15 @@ namespace Dobby {
             //#
             if (control.Variable.GetType() == typeof(float) || control.Variable.GetType() == typeof(double))
             {
-                Print("Fucking no lmao");
+                Print("Fucking no, lmao");
                 return;
             }
 
+            if (variable == null)
+            {
+
+                return;
+            }
 
 
 
@@ -697,7 +709,6 @@ namespace Dobby {
 
             if (expectedSize != control.Width)
             {
-                Print($"WARNING: Control variable may not fit control bounds- Attempting Resize... ({control.Width} --> {expectedSize})");
                 control.Width = (int) expectedSize - 1;
             }
             
@@ -766,7 +777,7 @@ namespace Dobby {
         public static void WriteLabel(Form form, string message) => form.Invoke(SetInfoText, message);
 
 
-        public static InfoLabelUpdateCallback SetInfoText = value =>
+        public static LabelUpdateCallback SetInfoText = value =>
         {
             if(ActiveForm != null)
                 InfoLabel.Text = value;
@@ -789,6 +800,11 @@ namespace Dobby {
             }
         };
 
+
+        /// <summary>
+        /// Flash the Info label white/yellow to get the user's attention/indicate a skill issue.
+        /// </summary>
+        /// <param name="label"> The Control.Name property of the label to flash </param>
         public static void LabelFlashMethod(dynamic label) {
             try {
                 for (int flashes = 0; flashes < 16; flashes++)
@@ -1059,9 +1075,6 @@ namespace Dobby {
 
         internal static void MouseDownFunc(object sender, MouseEventArgs e)
         {
-            #if DEBUG
-            ++Dev.ClickEventCheck;
-            #endif
             MouseIsDown = true;
             
             LastFormPosition = ActiveForm?.Location ?? LastFormPosition; //! Lazy fix(?)
@@ -1070,11 +1083,6 @@ namespace Dobby {
 
         internal static void MouseUpFunc(object sender, MouseEventArgs e) {
             MouseScrolled = MouseIsDown = false;
-            #if DEBUG
-            if (Dev.ClickEventCheck > 1)
-                ActiveForm?.Invoke(SetInfoText, $"Possible OnClick() Event Error. #{++Dev.ClickErrors}");
-            ++Dev.ClickEventCheck;
-            #endif
         }
 
         public static void MoveForm(object sender, MouseEventArgs e)
