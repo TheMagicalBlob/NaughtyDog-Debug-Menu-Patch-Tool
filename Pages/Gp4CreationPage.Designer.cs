@@ -37,8 +37,7 @@ namespace Dobby
             this.SeperatorLine2 = new System.Windows.Forms.Label();
             this.SeperatorLine3 = new System.Windows.Forms.Label();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.StyleTestBtn = new Dobby.Button();
-            this.StartGp4CreationBtn = new Dobby.Button();
+            this.GP4CreationBtn = new Dobby.Button();
             this.IgnoreKeystoneBtn = new Dobby.Button();
             this.AbsoluteFilePathsBtn = new Dobby.Button();
             this.BaseGamePackagePathBox = new Dobby.TextBox();
@@ -187,39 +186,22 @@ namespace Dobby
             this.SeperatorLine1.Text = "--------------------------------------------------------------";
             this.SeperatorLine1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // StyleTestBtn
+            // GP4CreationBtn
             // 
-            this.StyleTestBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.StyleTestBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.StyleTestBtn.FlatAppearance.BorderSize = 0;
-            this.StyleTestBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.StyleTestBtn.Font = new System.Drawing.Font("Verdana", 8F);
-            this.StyleTestBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.StyleTestBtn.Location = new System.Drawing.Point(294, 1);
-            this.StyleTestBtn.Name = "StyleTestBtn";
-            this.StyleTestBtn.Size = new System.Drawing.Size(112, 24);
-            this.StyleTestBtn.TabIndex = 92;
-            this.StyleTestBtn.Text = "Toggle Style Test";
-            this.StyleTestBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.StyleTestBtn.UseVisualStyleBackColor = false;
-            this.StyleTestBtn.Click += new System.EventHandler(this.StyleTestBtn_Click);
-            // 
-            // StartGp4CreationBtn
-            // 
-            this.StartGp4CreationBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.StartGp4CreationBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.StartGp4CreationBtn.FlatAppearance.BorderSize = 0;
-            this.StartGp4CreationBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.StartGp4CreationBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
-            this.StartGp4CreationBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.StartGp4CreationBtn.Location = new System.Drawing.Point(3, 297);
-            this.StartGp4CreationBtn.Name = "StartGp4CreationBtn";
-            this.StartGp4CreationBtn.Size = new System.Drawing.Size(192, 24);
-            this.StartGp4CreationBtn.TabIndex = 90;
-            this.StartGp4CreationBtn.Text = "Build New .gp4 Project File";
-            this.StartGp4CreationBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.StartGp4CreationBtn.UseVisualStyleBackColor = false;
-            this.StartGp4CreationBtn.Click += new System.EventHandler(this.StartGp4CreationBtn_Click);
+            this.GP4CreationBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.GP4CreationBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.GP4CreationBtn.FlatAppearance.BorderSize = 0;
+            this.GP4CreationBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.GP4CreationBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
+            this.GP4CreationBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.GP4CreationBtn.Location = new System.Drawing.Point(3, 297);
+            this.GP4CreationBtn.Name = "GP4CreationBtn";
+            this.GP4CreationBtn.Size = new System.Drawing.Size(192, 24);
+            this.GP4CreationBtn.TabIndex = 90;
+            this.GP4CreationBtn.Text = "Build New .gp4 Project File";
+            this.GP4CreationBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.GP4CreationBtn.UseVisualStyleBackColor = false;
+            this.GP4CreationBtn.Click += new System.EventHandler(this.GP4CreationBtn_Click);
             // 
             // IgnoreKeystoneBtn
             // 
@@ -236,7 +218,7 @@ namespace Dobby
             this.IgnoreKeystoneBtn.Text = "Keystone: ";
             this.IgnoreKeystoneBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.IgnoreKeystoneBtn.UseVisualStyleBackColor = false;
-            this.IgnoreKeystoneBtn.MouseClick += new MouseEventHandler(this.IgnoreKeystoneBtn_Click);
+            this.IgnoreKeystoneBtn.MouseClick += new System.Windows.Forms.MouseEventHandler(this.IgnoreKeystoneBtn_Click);
             // 
             // AbsoluteFilePathsBtn
             // 
@@ -253,7 +235,7 @@ namespace Dobby
             this.AbsoluteFilePathsBtn.Text = "Use Absolute File Paths: ";
             this.AbsoluteFilePathsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.AbsoluteFilePathsBtn.UseVisualStyleBackColor = false;
-            this.AbsoluteFilePathsBtn.MouseClick += new MouseEventHandler(this.AbsoluteFilePathsBtn_Click);
+            this.AbsoluteFilePathsBtn.MouseClick += new System.Windows.Forms.MouseEventHandler(this.AbsoluteFilePathsBtn_Click);
             // 
             // BaseGamePackagePathBox
             // 
@@ -440,9 +422,8 @@ namespace Dobby
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ClientSize = new System.Drawing.Size(467, 498);
-            this.Controls.Add(this.StyleTestBtn);
             this.Controls.Add(this.SeperatorLine1);
-            this.Controls.Add(this.StartGp4CreationBtn);
+            this.Controls.Add(this.GP4CreationBtn);
             this.Controls.Add(this.IgnoreKeystoneBtn);
             this.Controls.Add(this.AbsoluteFilePathsBtn);
             this.Controls.Add(this.SeperatorLine3);
@@ -479,10 +460,38 @@ namespace Dobby
 
         }
         #endregion
-
-        private System.Windows.Forms.Label SeperatorLine1;
-        private Button StartGp4CreationBtn;
-        private Button StyleTestBtn;
+        
+        //================================\\
+        //--|   Control Declarations   |--\\
+        //================================\\
+        #region [Control Declarations]
+        private Label MainLabel;
+        private Label SeperatorLine0;
+        private Label SeperatorLine1;
+        private Label SeperatorLine2;
+        private Label SeperatorLine3;
+        private Label SeperatorLine4;
+        private Label GamedataPathLabel;
+        private TextBox GamedataPathBox;
+        private Button GamedataPathBrowseBtn;
+        private Button GP4OutputDirectoryBrowseBtn;
+        private TextBox GP4OutputDirectoryPathBox;
+        private Label GP4OutputPathLabel;
+        private Label PasscodeLabel;
+        private TextBox PasscodePathBox;
+        private Button GP4CreationBtn;
         private Button AbsoluteFilePathsBtn;
+        private Label FileBlacklistPathLabel;
+        private TextBox FileBlacklistPathBox;
+        private Button FileBlacklistBrowseBtn;
+        private Label BaseGamePackagePathLabel;
+        private TextBox BaseGamePackagePathBox;
+        private Button BaseGamePackageBrowseBtn;
+        private Button IgnoreKeystoneBtn;
+        private Button InfoHelpBtn;
+        private Button CreditsBtn;
+        private Button BackBtn;
+        private Label Info;
+        #endregion
     }
 }

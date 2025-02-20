@@ -39,7 +39,6 @@ namespace Dobby
             this.SeperatorLine3 = new System.Windows.Forms.Label();
             this.Info = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.StyleTestBtn = new Dobby.Button();
             this.InfoHelpBtn = new Dobby.Button();
             this.BackBtn = new Dobby.Button();
             this.CreditsBtn = new Dobby.Button();
@@ -160,23 +159,6 @@ namespace Dobby
             this.label1.Size = new System.Drawing.Size(391, 15);
             this.label1.TabIndex = 72;
             this.label1.Text = "--------------------------------------------------------------";
-            // 
-            // StyleTestBtn
-            // 
-            this.StyleTestBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.StyleTestBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.StyleTestBtn.FlatAppearance.BorderSize = 0;
-            this.StyleTestBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.StyleTestBtn.Font = new System.Drawing.Font("Verdana", 8F);
-            this.StyleTestBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.StyleTestBtn.Location = new System.Drawing.Point(294, 1);
-            this.StyleTestBtn.Name = "StyleTestBtn";
-            this.StyleTestBtn.Size = new System.Drawing.Size(112, 24);
-            this.StyleTestBtn.TabIndex = 73;
-            this.StyleTestBtn.Text = "Toggle Style Test";
-            this.StyleTestBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.StyleTestBtn.UseVisualStyleBackColor = false;
-            this.StyleTestBtn.Click += new System.EventHandler(this.StyleTestBtn_Click);
             // 
             // InfoHelpBtn
             // 
@@ -400,7 +382,6 @@ namespace Dobby
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ClientSize = new System.Drawing.Size(467, 447);
-            this.Controls.Add(this.StyleTestBtn);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.InfoHelpBtn);
             this.Controls.Add(this.BackBtn);
@@ -466,7 +447,5 @@ namespace Dobby
         private System.Windows.Forms.Label Info;
         private System.Windows.Forms.Label label1;
         #endregion
-
-        private Button StyleTestBtn;
     }
 }

@@ -79,7 +79,6 @@ namespace Dobby
             this.TLLBtn.Text = "Uncharted: The Lost Legacy";
             this.TLLBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.TLLBtn.UseVisualStyleBackColor = false;
-            this.TLLBtn.Variable = null;
             this.TLLBtn.Click += new System.EventHandler(this.UCTLLBtn);
             // 
             // SeperatorLine0
@@ -107,7 +106,6 @@ namespace Dobby
             this.ManualConnectBtn.Text = "Connect To PS4Debug";
             this.ManualConnectBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ManualConnectBtn.UseVisualStyleBackColor = false;
-            this.ManualConnectBtn.Variable = null;
             this.ManualConnectBtn.Click += new System.EventHandler(this.ManualConnectBtn_Click);
             // 
             // IpBox
@@ -148,7 +146,6 @@ namespace Dobby
             this.T1RBtn.Text = "The Last of Us: Remastered";
             this.T1RBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.T1RBtn.UseVisualStyleBackColor = false;
-            this.T1RBtn.Variable = null;
             this.T1RBtn.Click += new System.EventHandler(this.T1RBtn_Click);
             // 
             // T2Btn
@@ -166,7 +163,6 @@ namespace Dobby
             this.T2Btn.Text = "The Last of Us Part II";
             this.T2Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.T2Btn.UseVisualStyleBackColor = false;
-            this.T2Btn.Variable = null;
             this.T2Btn.Click += new System.EventHandler(this.T2Btn_Click);
             // 
             // UC4Btn
@@ -184,7 +180,6 @@ namespace Dobby
             this.UC4Btn.Text = "Uncharted 4";
             this.UC4Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.UC4Btn.UseVisualStyleBackColor = false;
-            this.UC4Btn.Variable = null;
             this.UC4Btn.Click += new System.EventHandler(this.UC4Btn_Click);
             // 
             // BackBtn
@@ -202,7 +197,6 @@ namespace Dobby
             this.BackBtn.Text = "Back...";
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
-            this.BackBtn.Variable = null;
             // 
             // UC1Btn
             // 
@@ -219,7 +213,6 @@ namespace Dobby
             this.UC1Btn.Text = "Uncharted: Drakes Fortune";
             this.UC1Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.UC1Btn.UseVisualStyleBackColor = false;
-            this.UC1Btn.Variable = null;
             this.UC1Btn.Click += new System.EventHandler(this.UC1Btn_Click);
             // 
             // UC2Btn
@@ -237,7 +230,6 @@ namespace Dobby
             this.UC2Btn.Text = "Uncharted 2: Among Thieves";
             this.UC2Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.UC2Btn.UseVisualStyleBackColor = false;
-            this.UC2Btn.Variable = null;
             this.UC2Btn.Click += new System.EventHandler(this.UC2Btn_Click);
             // 
             // UC3Btn
@@ -255,7 +247,6 @@ namespace Dobby
             this.UC3Btn.Text = "Uncharted 3: Drakes Deception";
             this.UC3Btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.UC3Btn.UseVisualStyleBackColor = false;
-            this.UC3Btn.Variable = null;
             this.UC3Btn.Click += new System.EventHandler(this.UC3Btn_Click);
             // 
             // SeperatorLine1
@@ -283,7 +274,6 @@ namespace Dobby
             this.PS4DebugPayloadBtn.Text = "Send PS4Debug";
             this.PS4DebugPayloadBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PS4DebugPayloadBtn.UseVisualStyleBackColor = false;
-            this.PS4DebugPayloadBtn.Variable = null;
             this.PS4DebugPayloadBtn.Click += new System.EventHandler(this.SendPayloadBtn_Click);
             // 
             // PortBox
@@ -314,7 +304,6 @@ namespace Dobby
             this.IPLabelBtn.Text = "I.P. Address:";
             this.IPLabelBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.IPLabelBtn.UseVisualStyleBackColor = false;
-            this.IPLabelBtn.Variable = null;
             this.IPLabelBtn.Click += new System.EventHandler(this.IPLabelBtn_Click);
             // 
             // PortLabelBtn
@@ -332,7 +321,6 @@ namespace Dobby
             this.PortLabelBtn.Text = "Port:";
             this.PortLabelBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PortLabelBtn.UseVisualStyleBackColor = false;
-            this.PortLabelBtn.Variable = null;
             this.PortLabelBtn.Click += new System.EventHandler(this.PortLabelBtn_Click);
             // 
             // SeperatorLine3
@@ -360,7 +348,6 @@ namespace Dobby
             this.InfoHelpBtn.Text = "Information / Help";
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
-            this.InfoHelpBtn.Variable = null;
             // 
             // CreditsBtn
             // 
@@ -378,7 +365,6 @@ namespace Dobby
             this.CreditsBtn.Text = "Credits...";
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
-            this.CreditsBtn.Variable = null;
             // 
             // UC4MPBetaBtn
             // 
@@ -395,7 +381,6 @@ namespace Dobby
             this.UC4MPBetaBtn.Text = "Uncharted 4 MP Beta";
             this.UC4MPBetaBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.UC4MPBetaBtn.UseVisualStyleBackColor = false;
-            this.UC4MPBetaBtn.Variable = null;
             this.UC4MPBetaBtn.Click += new System.EventHandler(this.UC4MPBetaBtn_Click);
             // 
             // SeperatorLine2
@@ -423,7 +408,6 @@ namespace Dobby
             this.IgnoreTitleIDBtn.Text = "Ignore Game Title ID: ";
             this.IgnoreTitleIDBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.IgnoreTitleIDBtn.UseVisualStyleBackColor = false;
-            this.IgnoreTitleIDBtn.Variable = null;
             this.IgnoreTitleIDBtn.Click += new System.EventHandler(this.IgnoreTitleIDBtn_Click);
             // 
             // PS4DebugPage

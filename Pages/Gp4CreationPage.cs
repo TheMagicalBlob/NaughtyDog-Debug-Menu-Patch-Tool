@@ -1,9 +1,9 @@
-﻿using System;
+﻿using libgp4;
+using System;
 using System.IO;
 using System.Drawing;
-using static Dobby.Common;
 using System.Windows.Forms;
-using libgp4;
+using static Dobby.Common;
 
 
 
@@ -21,15 +21,13 @@ namespace Dobby {
                 }
             }
 
-
-
+            
             IgnoreKeystoneBtn.Variable = false;
             IgnoreKeystoneBtn.VariableTags = new string[] { "Include", "Ignore" };
             
             AbsoluteFilePathsBtn.Variable = false;
             AbsoluteFilePathsBtn.VariableTags = new string[] { "Relative", "Absolute" };
 
-            
 
             gp4 = new GP4Creator() {
         #if DEBUG
@@ -39,7 +37,33 @@ namespace Dobby {
                 SkipIntegrityCheck = false,
                 LoggingMethod = (object msg) => Print(msg)
             };
+            
+
+            // StyleTestBtn
+            Button styleTestButton; 
+            Controls.Add(styleTestButton = new Button()
+            {
+                Name = "StyleTestBtn",
+                Size = new Size(112, 24),
+                Location = new Point(294, 1),
+                Text = "Toggle Style Test",
+                Font = new Font("Verdana", 8F),
+                BackColor = Color.FromArgb(100, 100, 100),
+                TextAlign = ContentAlignment.MiddleLeft,
+                FlatStyle = FlatStyle.Flat,
+                ForeColor = SystemColors.Control,
+                Cursor = Cursors.Cross
+            });
+            styleTestButton.Click += StyleTestBtn_Click;
+            styleTestButton.FlatAppearance.BorderSize = 0;
+            styleTestButton.BringToFront();
+
+            // TODO:
+            // * Maintain Settings For Page When Swapping Between gp4/pkg Creation Pages.. Or Just In General.
         }
+
+
+
 
 
         //=================================\\
@@ -48,41 +72,17 @@ namespace Dobby {
         #region [Variable Declarations]
         private GP4Creator gp4;
         
-        public OpenFileDialog fileDialogue;
-        public FolderBrowserDialog folderDialogue;
+        private OpenFileDialog fileDialogue;
+        private FolderBrowserDialog folderDialogue;
         #endregion
 
+        //=============================================\\
+        //--|   Background Function Delcarations   |---\\
+        //=============================================\\
+        #region [Background Function Delcarations]
 
-
-        
-        //=================================\\
-        //--|   Function Declarations   |--\\
-        //=================================\\
-        #region [Function Declarations]
-        
-        private void StyleTestBtn_Click(object sender, EventArgs e)
+        private void ApplyandVerifyGP4Options(GP4Creator gp4)
         {
-            foreach (var item in Controls)
-            {
-                if (item.GetType() == typeof(TextBox))
-                {
-                    var control = (TextBox) item;
-                    control.TextAlign ^= HorizontalAlignment.Center;
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// Apply all the non-default .gp4 options and attempt project file creation.
-        /// </summary>
-        private void StartGp4CreationBtn_Click(object sender, EventArgs e)
-        {
-            //#
-            //## Apply and Verify .gp4 Options
-            //#
-            #region [Apply and Verify .gp4 Options]
-
             // Check for Unassigned Gamedata Path Before Proceeding
             if (GamedataPathBox.IsDefault)
             {
@@ -125,14 +125,12 @@ namespace Dobby {
             // Load these two twats
             gp4.UseAbsoluteFilePaths = (bool) AbsoluteFilePathsBtn.Variable;
             gp4.IgnoreKeystone       = (bool) IgnoreKeystoneBtn.Variable;
-            #endregion
+        }
 
 
 
-
-            //#
-            //## Begin .gp4 Creation if all's well
-            //#
+        private void BeginGP4Creation(GP4Creator gp4)
+        {
             var newGp4 = gp4.CreateGP4();
 
             // Check return value
@@ -152,6 +150,36 @@ namespace Dobby {
                 SetInfoLabelText(".gp4 Creation Successful.");
                 Print($"  - .gp4 saved at: \"{newGp4}\"");
             }
+        }
+        #endregion
+
+
+        //======================================\\
+        //--|   Event Handler Declarations   |--\\
+        //======================================\\
+        #region [Event Handler Declarations]
+
+        
+        private void StyleTestBtn_Click(object sender, EventArgs e)
+        {
+            foreach (var item in Controls)
+            {
+                if (item.GetType() == typeof(TextBox))
+                {
+                    var control = (TextBox) item;
+                    control.TextAlign ^= HorizontalAlignment.Center;
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Apply all the non-default .gp4 options and attempt project file creation.
+        /// </summary>
+        private void GP4CreationBtn_Click(object sender, EventArgs e)
+        {
+            ApplyandVerifyGP4Options(gp4);
+            BeginGP4Creation(gp4);
         }
 
 
@@ -249,45 +277,6 @@ namespace Dobby {
         private void AbsoluteFilePathsBtn_Click(object control, MouseEventArgs eventArgs) => CycleButtonVariable<bool>(control);
         
         private void IgnoreKeystoneBtn_Click(object control, MouseEventArgs eventArgs)    => CycleButtonVariable<bool>(control);
-
         #endregion
-
-
-
-
-        //================================\\
-        //--|   Control Declarations   |--\\
-        //================================\\
-        #region [Control Declarations]
-        private Label GamedataPathLabel;
-        private TextBox GamedataPathBox;
-        private Button GamedataPathBrowseBtn;
-        private Button GP4OutputDirectoryBrowseBtn;
-        private TextBox GP4OutputDirectoryPathBox;
-        private Label GP4OutputPathLabel;
-        private Label PasscodeLabel;
-        private TextBox PasscodePathBox;
-        private Label FileBlacklistPathLabel;
-        private TextBox FileBlacklistPathBox;
-        private Button FileBlacklistBrowseBtn;
-        private Label BaseGamePackagePathLabel;
-        private TextBox BaseGamePackagePathBox;
-        private Button BaseGamePackageBrowseBtn;
-        private Label SeperatorLine2;
-        private Label SeperatorLine3;
-        private Button IgnoreKeystoneBtn;
-        private Button InfoHelpBtn;
-        private Button BackBtn;
-        private Label Info;
-        private Button CreditsBtn;
-        private Label MainLabel;
-        private Label SeperatorLine4;
-        private Label SeperatorLine0;
-        #endregion
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

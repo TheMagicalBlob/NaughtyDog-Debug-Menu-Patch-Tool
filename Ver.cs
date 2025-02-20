@@ -267,6 +267,8 @@
           "* 4.52.301.822 | Added attributes to Variable & VariableTags properties in Button class extension to remove Variable from the Properties panel/window, since it can't be assigned to in there anyway, as well as stop the designer from assigning them both as null in InitializeComponent()",
           "* 4.52.310.826 | tweaking DrawButtonVariable() to replace rightmost-side alignment with consistent placement, as well as resize controls to fit the contents neatly",
           "* 4.52.314.835 | misc testing",
+          "* 4.53.314.835 | Disabled redundant logwindow printing, way remove the whole window in favor of using the IDE for IDE things like a normal person.",
+          "* 4.54.319.840 | Fixed invalid Port saving in PS4DebugPage, slight button event tweaks; fixed TexBox default value bs; Misc Debug Changes & addded comments, etc.",
         };
 
 

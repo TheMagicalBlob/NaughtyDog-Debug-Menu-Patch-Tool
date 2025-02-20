@@ -10,7 +10,7 @@ using static Dobby.Common;
 namespace Dobby {
     public partial class PS4MenuSettingsPage : Form {
         public PS4MenuSettingsPage() {
-            //InitializeComponent();
+            InitializeComponent();
             
 
             DisableDebugTextBtn.Variable = UniversalPatchValues[0];

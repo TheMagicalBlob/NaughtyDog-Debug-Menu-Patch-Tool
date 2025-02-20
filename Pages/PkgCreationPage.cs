@@ -1,11 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Drawing;
-using static Dobby.Common;
 using System.Windows.Forms;
+using static Dobby.Common;
 #if DEBUG
 using System.Linq;
 #endif
+
 
 
 namespace Dobby {
@@ -21,9 +22,30 @@ namespace Dobby {
                 }
             }
 
-            VerbosityBtn.Variable = true;
 
-            // TODO: Maintain Settings For Page When Swapping Between gp4/pkg Creation Pages.. Or Just In General.
+            VerbosityBtn.Variable = true;
+            
+
+            // StyleTestBtn
+            Button styleTestButton; 
+            Controls.Add(styleTestButton = new Button()
+            {
+                Name = "StyleTestBtn",
+                Size = new Size(112, 24),
+                Location = new Point(294, 1),
+                Text = "Toggle Style Test",
+                Font = new Font("Verdana", 8F),
+                BackColor = Color.FromArgb(100, 100, 100),
+                TextAlign = ContentAlignment.MiddleLeft,
+                FlatStyle = FlatStyle.Flat,
+                ForeColor = SystemColors.Control,
+                Cursor = Cursors.Cross
+            });
+            styleTestButton. Click += StyleTestBtn_Click;
+            styleTestButton.FlatAppearance.BorderSize = 0;
+            styleTestButton.BringToFront();
+            // TODO:
+            // * Maintain Settings For Page When Swapping Between gp4/pkg Creation Pages.. Or Just In General.
         }
 
 
@@ -48,7 +70,7 @@ namespace Dobby {
         //=====================================\\
         //--|   Page Background Functions   |--\\
         //=====================================\\
-        #region [Page Background Functions]
+        #region [Event Handler Functions]
         private void StyleTestBtn_Click(object sender, EventArgs e)
         {
             foreach (var item in Controls)
@@ -61,10 +83,7 @@ namespace Dobby {
             }
         }
 
-        private void DebugBtn2_Click(object sender, EventArgs e)
-        {
 
-        }
 
         private void Gp4PageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.Gp4CreationPage);
 
@@ -209,9 +228,9 @@ namespace Dobby {
 
 
         //=================================\\
-        //--|   Control Event Methods   |--\\
+        //--|   Control Event Handlers  |--\\
         //=================================\\
-        #region [Control Event Methods]
+        #region [Control Event Handlers]
         /// <summary>
         /// Load orbis-pub-cmd.exe Binary And The Reqired .gp4 file If The Path Is Right
         /// </summary>
@@ -270,9 +289,11 @@ namespace Dobby {
             ((Dobby.Button)sender).ForeColor = Color.White;
         }
 
+
         
-
-
+        /// <summary>
+        /// Cycle between using the detailed output for orbis-pub-cmd, or the less informative progress bar
+        /// </summary>
         private void VerbosityBtn_Click(object sender, EventArgs e) => CycleButtonVariable<bool>(sender);
         #endregion
     }

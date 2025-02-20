@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 using Dobby.Resources;
 using static Dobby.Common;
+using System.Linq.Expressions;
+using System.CodeDom;
 
 
 
@@ -39,23 +41,23 @@ namespace Dobby {
                     }
 
                 else
-                    ActiveForm?.Invoke(SetInfoText, $"Invalid IP specified; save aborted. (provided address: {IP})");
+                    ActiveForm?.Invoke(SetInfoText, $"Invalid IP specified; save aborted. ({IP})");
             };
             PortBox.LostFocus += (control, args) => {
                 if (!File.Exists(settingsFilePath))
                     CreateSettingsFile();
     
 
-                if (short.TryParse(settingsFilePath, out Port)) {
+                if (short.TryParse(PortBox.Text, out Port)) {
                     using (FileStream settingsFile = new FileStream(settingsFilePath, FileMode.Open, FileAccess.Write))
                     {
                         Print($"Saving \"{Port}\" as new Port");
                         settingsFile.Position = 16;
-                        settingsFile.Write(BitConverter.GetBytes(Port), 0, 4);
+                        settingsFile.Write(BitConverter.GetBytes(Port), 0, 2);
                     }
                 }
                 else
-                    ActiveForm?.Invoke(SetInfoText, $"Invalid Port specified; save aborted. (provided port: {Port})");
+                    ActiveForm?.Invoke(SetInfoText, $"Invalid Port specified; save aborted. ({Port})");
             };
 
             // Assign IgnoreTitleID variable property
@@ -410,14 +412,24 @@ namespace Dobby {
 
         /// <summary> Avoid Attempting To Toggle The Selected Bool In Memory Before The Connection Process Is Finished
         ///</summary>
-        private void CheckConnectionStatus() {
-            if((ConnectionThread == null || ConnectionThread.ThreadState == ThreadState.Unstarted) || (Geo == null || !Geo.IsConnected || Geo?.GetProcessInfo(Executable).name != ProcessName || !ExecutableNames.Contains(Geo?.GetProcessInfo(Executable).name)))
+        private bool CheckConnectionStatus()
+        {
+            try
             {
-                GameVersion = null;
-                Print("Task.Run(CheckConnectionStatus) Initializing connection thread");
-                InitializeConnectionThread();
+                if((ConnectionThread == null || ConnectionThread.ThreadState == ThreadState.Unstarted) || (Geo == null || !Geo.IsConnected || Geo?.GetProcessInfo(Executable).name != ProcessName || !ExecutableNames.Contains(Geo?.GetProcessInfo(Executable).name)))
+                {
+                    GameVersion = null;
+                    Print("Task.Run(CheckConnectionStatus) Initializing connection thread");
+                    InitializeConnectionThread();
 
-                while(GameVersion == null);
+                    while(GameVersion == null);
+                }
+
+                return true;
+            }
+            catch (Exception calice) {
+                Print($"Error checking connection status:\n{calice.Message}");
+                return false;
             }
         }
 
@@ -512,6 +524,7 @@ namespace Dobby {
                             var pointer = (ulong)(BitConverter.ToInt64(Geo.ReadMemory(Executable, Addresses[AddressIndex], 8), 0) + DebugModePointerOffset);
                             Geo.WriteMemory(Executable, pointer, !Geo.ReadMemory<bool>(Executable, pointer));
                             Print($"Toggle(ulong[] Addresses, string[] Versions) Wrote To {pointer:X}");
+                            SetInfoLabelText($"Toggled byte at {pointer:X}");
                         }
                         else if(AddressIndex != Addresses.Length - 1) AddressIndex++;
                 }
@@ -520,6 +533,8 @@ namespace Dobby {
                         $"Error Toggling Byte.\nPS4Debug {(Geo.IsConnected ? "" : "Not ")}Connected\n"
                         + $"{Geo.GetProcessInfo(Executable).name} {(Geo.GetProcessInfo(Executable).name == ProcessName ? "=" : "!")}= {ProcessName}"
                     );
+
+                    SetInfoLabelText("Unable to toggle byte (Possible connection issues)");
                 }
             }
             catch(Exception tabarnack) { Print(tabarnack.Message); }
@@ -558,7 +573,19 @@ namespace Dobby {
         /// <summary>
         /// Manually attempt to connect to the target ps4. (You Never Need To Press This, But People May Get Confused If It's Left Out)
         /// </summary>
-        private void ManualConnectBtn_Click(object sender, EventArgs e) => InitializeConnectionThread();
+        private void ManualConnectBtn_Click(object sender, EventArgs e)
+        {
+            if (ConnectionThread.ThreadState == ThreadState.Running)
+            {
+                try
+                {
+                    ConnectionThread?.Abort();
+                }
+                catch (ThreadAbortException){}
+            }
+            else
+                InitializeConnectionThread();
+        }
         #endregion
 
 
@@ -571,89 +598,137 @@ namespace Dobby {
         private async void T1RBtn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
 
-            if(IgnoreTitleID) TitleID = "CUSA00552";
-
-            if (GameVersion.Contains("Unknown")) {
-                Print($"Unknown Game Version \"{GameVersion}\".");
-                return;
-            }
             
-            Toggle(new ulong[] { 0x1B8FA20, 0x1924a70, 0x1924a70, 0x1924a70, 0x1924a70 }, new string[] { "1.00", "1.08", "1.09", "1.10", "1.11" });
+            if (Geo != null && Geo.IsConnected)
+            {
+                if(IgnoreTitleID) TitleID = "CUSA00552";
+
+                if (GameVersion.Contains("Unknown")) {
+                    Print($"Unknown Game Version \"{GameVersion}\".");
+                    return;
+                }
+
+            
+                Toggle(new ulong[] { 0x1B8FA20, 0x1924a70, 0x1924a70, 0x1924a70, 0x1924a70 }, new string[] { "1.00", "1.08", "1.09", "1.10", "1.11" });
+            }
+            else
+                Print("Error Connecting to PS4");
         }
         private async void T2Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
 
-            if(IgnoreTitleID) TitleID = "CUSA10249";
             
-            if (GameVersion.Contains("Unknown")) {
-                Print($"Unknown Game Version \"{GameVersion}\".");
-                return;
+            if (Geo != null && Geo.IsConnected)
+            {
+                if(IgnoreTitleID) TitleID = "CUSA10249";
+            
+                if (GameVersion.Contains("Unknown")) {
+                    Print($"Unknown Game Version \"{GameVersion}\".");
+                    return;
+                }
+            
+            
+                Toggle(new ulong[] { 0x3b61900, 0x3b62d00, 0x3b67130, 0x3b67530, 0x3b675b0, 0x3b7b430, 0x3b7b430 }, new string[] { "1.00", "1.01", "1.02", "1.05", "1.07", "1.08", "1.09" });
             }
-            
-            
-            Toggle(new ulong[] { 0x3b61900, 0x3b62d00, 0x3b67130, 0x3b67530, 0x3b675b0, 0x3b7b430, 0x3b7b430 }, new string[] { "1.00", "1.01", "1.02", "1.05", "1.07", "1.08", "1.09" });
+            else
+                Print("Error Connecting to PS4");
         }
         private async void UC1Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
 
-            if(IgnoreTitleID) TitleID = "CUSA02320";
+            
+            if (Geo != null && Geo.IsConnected)
+            {
+                if(IgnoreTitleID) TitleID = "CUSA02320";
 
-            if(!GameVersion.Contains("Unknown"))
-                Toggle(GameVersion == "U1 1.00" ? new ulong[] { 0xD97B41, 0xD989CC, 0xD98970 } : new ulong[] { 0xD5C9F0, 0xD5CA4C, 0xD5BBC1 });
+                if(!GameVersion.Contains("Unknown"))
+                    Toggle(GameVersion == "U1 1.00" ? new ulong[] { 0xD97B41, 0xD989CC, 0xD98970 } : new ulong[] { 0xD5C9F0, 0xD5CA4C, 0xD5BBC1 });
+                else
+                    Print($"Unknown Game Version \"{GameVersion}\".");
+            }
             else
-                Print($"Unknown Game Version \"{GameVersion}\".");
+                Print("Error Connecting to PS4");
         }
         private async void UC2Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
 
-            if(IgnoreTitleID) TitleID = "CUSA02320";
+            
+            if (Geo != null && Geo.IsConnected)
+            {
+                if(IgnoreTitleID) TitleID = "CUSA02320";
 
-            if(!GameVersion.Contains("Unknown"))
-                Toggle(GameVersion == "U2 1.00" ? new ulong[] { 0x1271431, 0x127149C, 0x12705C9 } : new ulong[] { 0x145decc, 0x145cff9, 0x145de61 });
+                if(!GameVersion.Contains("Unknown"))
+                    Toggle(GameVersion == "U2 1.00" ? new ulong[] { 0x1271431, 0x127149C, 0x12705C9 } : new ulong[] { 0x145decc, 0x145cff9, 0x145de61 });
+                else
+                    Print($"Unknown Game Version \"{GameVersion}\".");
+            }
             else
-                Print($"Unknown Game Version \"{GameVersion}\".");
+                Print("Error Connecting to PS4");
         }
         private async void UC3Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
 
-            if(IgnoreTitleID) TitleID = "CUSA02320";
+            
+            if (Geo != null && Geo.IsConnected)
+            {
+                if(IgnoreTitleID) TitleID = "CUSA02320";
 
-            if(!GameVersion.Contains("Unknown"))
-                Toggle(GameVersion == "U3 1.00" ? new ulong[] { 0x18366c9, 0x18366c4, 0x1835481 } : new ulong[] { 0x1bbaf69, 0x1bbaf64, 0x1BB9D21 });
+                if (!GameVersion.Contains("Unknown"))
+                    Toggle(GameVersion == "U3 1.00" ? new ulong[] { 0x18366c9, 0x18366c4, 0x1835481 } : new ulong[] { 0x1bbaf69, 0x1bbaf64, 0x1BB9D21 });
+                else
+                    Print($"Unknown Game Version \"{GameVersion}\".");
+            }
             else
-                Print($"Unknown Game Version \"{GameVersion}\".");
+                Print("Error Connecting to PS4");
         }
         private async void UC4Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
 
-            if(IgnoreTitleID) TitleID = "CUSA00341";
+            if (Geo != null && Geo.IsConnected)
+            {
+                if(IgnoreTitleID) TitleID = "CUSA00341";
 
-            if(!GameVersion.Contains("Unknown"))
-                Toggle(new ulong[] { 0x27a3c30, 0x2889370, 0x288d370, 0x288d370, 0x2891370, 0x2891370, 0x2891370, 0x24ed968, 0x24ed968, 0x24f1978, 0x24fd958, 0x2501738, 0x2739a20, 0x2739a20, 0x2739a20, 0x2570748, 0x2570748, 0x2580888, 0x2570748, 0x2738dc0, 0x2570748, 0x273cdc0, 0x2570748, 0x273cdc0, 0x274ccd0, 0x2570748, 0x274ccd0, 0x2750d00, 0x2570748, 0x2758d00, 0x275cd00, 0x275cd00, 0x275cd00, 0x275cd00 }, new string[] { "1.00 SP", "1.01 SP", "1.02 SP", "1.03 SP", "1.04 SP", "1.05 SP", "1.06 SP", "1.08 SP", "1.10 SP", "1.11 SP", "1.12 SP", "1.13 SP", "1.15 SP", "1.16 SP", "1.17 SP", "1.18", "1.19", "1.20 MP", "1.20 SP", "1.21 MP", "1.21 SP", "1.22 MP", "1.22/23 SP", "1.23 MP", "1.24 MP", "1.24/25 SP", "1.25 MP", "1.27/28 MP", "1.27+ SP", "1.29 MP", "1.30 MP", "1.31 MP", "1.32 MP", "1.33 MP" });
+                if(!GameVersion.Contains("Unknown"))
+                    Toggle(new ulong[] { 0x27a3c30, 0x2889370, 0x288d370, 0x288d370, 0x2891370, 0x2891370, 0x2891370, 0x24ed968, 0x24ed968, 0x24f1978, 0x24fd958, 0x2501738, 0x2739a20, 0x2739a20, 0x2739a20, 0x2570748, 0x2570748, 0x2580888, 0x2570748, 0x2738dc0, 0x2570748, 0x273cdc0, 0x2570748, 0x273cdc0, 0x274ccd0, 0x2570748, 0x274ccd0, 0x2750d00, 0x2570748, 0x2758d00, 0x275cd00, 0x275cd00, 0x275cd00, 0x275cd00 }, new string[] { "1.00 SP", "1.01 SP", "1.02 SP", "1.03 SP", "1.04 SP", "1.05 SP", "1.06 SP", "1.08 SP", "1.10 SP", "1.11 SP", "1.12 SP", "1.13 SP", "1.15 SP", "1.16 SP", "1.17 SP", "1.18", "1.19", "1.20 MP", "1.20 SP", "1.21 MP", "1.21 SP", "1.22 MP", "1.22/23 SP", "1.23 MP", "1.24 MP", "1.24/25 SP", "1.25 MP", "1.27/28 MP", "1.27+ SP", "1.29 MP", "1.30 MP", "1.31 MP", "1.32 MP", "1.33 MP" });
+                else
+                    Print($"Unknown Game Version \"{GameVersion}\".");
+            }
             else
-                Print($"Unknown Game Version \"{GameVersion}\".");
+                Print("Error Connecting to PS4");
         }
 
         private async void UC4MPBetaBtn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
 
-            if(IgnoreTitleID) TitleID = "CUSA00341";
+            
+            if (Geo != null && Geo.IsConnected)
+            {
+                if(IgnoreTitleID) TitleID = "CUSA00341";
 
-            if(!GameVersion.Contains("Unknown"))
-                Toggle(new ulong[] { 0x2bbf720, 0x2bc3720 }, new string[] { "1.00", "1.09" });
+                if(!GameVersion.Contains("Unknown"))
+                    Toggle(new ulong[] { 0x2bbf720, 0x2bc3720 }, new string[] { "1.00", "1.09" });
+                else
+                    Print($"Unknown Game Version \"{GameVersion}\".");
+            }   
             else
-                Print($"Unknown Game Version \"{GameVersion}\".");
+                Print("Error Connecting to PS4");
         }
 
         private async void UCTLLBtn(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
 
-            if(IgnoreTitleID) TitleID = "CUSA07737";
+            
+            if (Geo != null && Geo.IsConnected)
+            {
+                if(IgnoreTitleID) TitleID = "CUSA07737";
 
-            if(!GameVersion.Contains("Unknown"))
-                Toggle(new ulong[] { 0x26b4558, 0x26c0698, 0x0274cd00, 0x275cd00, 0x275cd00 }, new string[] { "1.00 SP", "1.0X SP", "1.00 MP", "1.08 MP", "1.09 MP" });
+                if(!GameVersion.Contains("Unknown"))
+                    Toggle(new ulong[] { 0x26b4558, 0x26c0698, 0x0274cd00, 0x275cd00, 0x275cd00 }, new string[] { "1.00 SP", "1.0X SP", "1.00 MP", "1.08 MP", "1.09 MP" });
+                else
+                    Print($"Unknown Game Version \"{GameVersion}\".");
+            }
             else
-                Print($"Unknown Game Version \"{GameVersion}\".");
+                Print("Error Connecting to PS4");
         }
         #endregion
 

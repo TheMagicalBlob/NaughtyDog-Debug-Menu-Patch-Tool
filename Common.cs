@@ -966,7 +966,9 @@ namespace Dobby {
                     Item.MouseLeave += new EventHandler(ControlLeave);
                 }
             }
-
+            
+            var ConstantControls = new string[] { "Info", "InfoHelpBtn", "CreditsBtn", "BackBtn" };
+            var Parent = Controls.Owner.Name;
 
             Controls.Owner.Paint += DrawBorder;
             foreach (Control Item in Controls) {
@@ -1023,9 +1025,6 @@ namespace Dobby {
             ExitBtn.MouseLeave += new EventHandler(ExitBtnML);
 
 
-            // Clear Info Label Text
-            var ConstantControls = new string[] { "Info", "InfoHelpBtn", "CreditsBtn", "BackBtn" };
-            var Parent = Controls.Owner.Name;
 
             // Avoid searching for back button on Main page
             if (Parent != "Main")
@@ -1283,7 +1282,7 @@ namespace Dobby {
             IsDefault = true;
             
             TextChanged += SetDefaultText; // Save the first Text assignment as the DefaultText
-            TextChanged += (sender, e) => Text = Text.Replace("\"", string.Empty);
+            TextChanged += (sender, e) => { Text = Text.Replace("\"", string.Empty); IsDefault = false; };
 
 
             GotFocus += ReadyControl;
