@@ -10,7 +10,8 @@ using static Dobby.Common;
 namespace Dobby {
     internal partial class GP4CreationPage : Form {
 
-        public GP4CreationPage() { //! Page Unfinished, Only Base Functionality Added
+        /// <summary> Initialize a new instance of the GP4CreationPage Form. </summary>
+        public GP4CreationPage() {
             InitializeComponent();
             InitializeAdditionalEventHandlers(Controls);
             
@@ -39,30 +40,10 @@ namespace Dobby {
             };
             
 
-            // StyleTestBtn
-            Button styleTestButton; 
-            Controls.Add(styleTestButton = new Button()
-            {
-                Name = "StyleTestBtn",
-                Size = new Size(112, 24),
-                Location = new Point(294, 1),
-                Text = "Toggle Style Test",
-                Font = new Font("Verdana", 8F),
-                BackColor = Color.FromArgb(100, 100, 100),
-                TextAlign = ContentAlignment.MiddleLeft,
-                FlatStyle = FlatStyle.Flat,
-                ForeColor = SystemColors.Control,
-                Cursor = Cursors.Cross
-            });
-            styleTestButton.Click += StyleTestBtn_Click;
-            styleTestButton.FlatAppearance.BorderSize = 0;
-            styleTestButton.BringToFront();
-
+            Testing.AddStyleTestButton(this);
             // TODO:
             // * Maintain Settings For Page When Swapping Between gp4/pkg Creation Pages.. Or Just In General.
         }
-
-
 
 
 
@@ -70,11 +51,14 @@ namespace Dobby {
         //--|   Variable Declarations   |--\\
         //=================================\\
         #region [Variable Declarations]
+
         private GP4Creator gp4;
         
         private OpenFileDialog fileDialogue;
         private FolderBrowserDialog folderDialogue;
         #endregion
+
+
 
         //=============================================\\
         //--|   Background Function Delcarations   |---\\
@@ -128,7 +112,6 @@ namespace Dobby {
         }
 
 
-
         private void BeginGP4Creation(GP4Creator gp4)
         {
             var newGp4 = gp4.CreateGP4();
@@ -154,23 +137,11 @@ namespace Dobby {
         #endregion
 
 
+
         //======================================\\
         //--|   Event Handler Declarations   |--\\
         //======================================\\
         #region [Event Handler Declarations]
-
-        
-        private void StyleTestBtn_Click(object sender, EventArgs e)
-        {
-            foreach (var item in Controls)
-            {
-                if (item.GetType() == typeof(TextBox))
-                {
-                    var control = (TextBox) item;
-                    control.TextAlign ^= HorizontalAlignment.Center;
-                }
-            }
-        }
 
 
         /// <summary>
@@ -190,29 +161,28 @@ namespace Dobby {
         /// </summary>
         private void GamedataPathBrowseBtn_Click(object sender, EventArgs e)
         {
-            // Use the ghastly Directory Tree Dialogue to Choose A Folder
-            if (true)
-            {
-                using (folderDialogue = new FolderBrowserDialog { Description = "Please Select the Desired Gamedata Folder" })
+            if (StyleTest) { // Try The Newer "Hackey" Method //!
+                using(var fileDialogue = new OpenFileDialog
                 {
-                    if (folderDialogue.ShowDialog() == DialogResult.OK) {
-                        GamedataPathBox.Set(folderDialogue.SelectedPath);
-                    }
-                }
-
-            }
-            // Use The Newer "Hackey" Method //!
-            else {
-                using(fileDialogue = new OpenFileDialog {
                     ValidateNames   = false,
                     CheckPathExists = false,
                     CheckFileExists = false,
+
                     Title    = "(Don't click anything IN the desired folder, this dialogue is terrible)", 
                     Filter   = "Folder Selection|*.",
-                    FileName = "Press 'Open' Inside The Desired Folder."
+                    FileName = "Enter the desired Folder, and press \"Open\"."
                 })
                 if (fileDialogue.ShowDialog() == DialogResult.OK)
                     GamedataPathBox.Set(fileDialogue.FileName.Remove(fileDialogue.FileName.LastIndexOf('\\')));
+
+            }
+            
+            else { // Use the ghastly Directory Tree Dialogue to Choose A Folder
+                using (var folderDialogue = new FolderBrowserDialog { Description = "Please Select the Desired Gamedata Folder" })
+                {
+                    if (folderDialogue.ShowDialog() == DialogResult.OK)
+                        GamedataPathBox.Set(folderDialogue.SelectedPath);
+                }
             }
             
 
@@ -227,13 +197,31 @@ namespace Dobby {
         /// </summary>
         private void Gp4OutputDirectoryBrowseBtn_Click(object sender, EventArgs e)
         {
-            using(folderDialogue = new FolderBrowserDialog {
-                Description = "Select the intended output directory of the .gp4 project file."
-            })
-            if(folderDialogue.ShowDialog() == DialogResult.OK)
-                GP4OutputDirectoryPathBox.Set(folderDialogue.SelectedPath);
+            if (StyleTest) { // Try The Newer "Hackey" Method //!
+                using(var fileDialogue = new OpenFileDialog
+                {
+                    ValidateNames   = false,
+                    CheckPathExists = false,
+                    CheckFileExists = false,
+                    
+                    Title    = "Select the intended output directory of the .gp4 project file.", 
+                    Filter   = "Folder Selection|*.",
+                    FileName = "Enter the desired Folder, and press \"Open\"."
+                })
+                if (fileDialogue.ShowDialog() == DialogResult.OK)
+                    GP4OutputDirectoryPathBox.Set(fileDialogue.FileName.Remove(fileDialogue.FileName.LastIndexOf('\\')));
 
+            }
             
+            else { // Use the ghastly Directory Tree Dialogue to Choose A Folder
+                using (var folderDialogue = new FolderBrowserDialog { Description = "Select the intended output directory of the .gp4 project file." })
+                {
+                    if (folderDialogue.ShowDialog() == DialogResult.OK)
+                        GP4OutputDirectoryPathBox.Set(folderDialogue.SelectedPath);
+                }
+            }
+            
+
             ((Dobby.Button)sender).ForeColor = Color.White;
         }
 
@@ -266,7 +254,7 @@ namespace Dobby {
                 Multiselect = true
             })
             if(fileDialogue.ShowDialog() == DialogResult.OK)
-                BaseGamePackagePathBox.Set(string.Join("; ", fileDialogue.FileNames));
+                BaseGamePackagePathBox.Set(string.Join(";", fileDialogue.FileNames));
 
 
             ((Dobby.Button)sender).ForeColor = Color.White;

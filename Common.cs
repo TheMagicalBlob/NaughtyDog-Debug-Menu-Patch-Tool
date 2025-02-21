@@ -58,10 +58,10 @@ namespace Dobby {
         //========================================\\
         #region [Global Variable Declarations]
 
-
-        
-        // Basic Functionality Components
-        #region [Basic Functionality Components]
+        //#
+        //## Basic Form Functionality Components
+        //#
+        #region [Basic Form Functionality Components]
         
         /// <summary> ID for the active game. </summary>
         public static GameID Game;
@@ -82,7 +82,12 @@ namespace Dobby {
             IsActiveFilePCExe
         ;
 
-        public static Point LastFormPosition, MousePos, MouseDif;
+        public static Point
+            LastFormPosition,
+            MousePos,
+            MouseDif
+        ;
+
         public static Point[] OriginalControlPositions;
 
         public static Size OriginalFormScale = Size.Empty;
@@ -90,7 +95,6 @@ namespace Dobby {
 
         public static string
             CurrentControl,
-            TempStringStore,
             ActiveGameID = "UNK"
         ;
         
@@ -101,14 +105,13 @@ namespace Dobby {
         //!
         public static int tmp = 1;
     #endif
-        #endregion [Basic Functionality Components]
+        #endregion
 
 
 
-
-
-
-        // Control Refferences
+        //#
+        //## Control Refferences
+        //#
         #region [Control Refferences]
         /// <summary> Refference to the originally launched form. </summary>
         private static Form MainForm;
@@ -123,8 +126,13 @@ namespace Dobby {
         
         
 
-        // Design-Related Components
+        //#
+        //## Design-Related Components
+        //#
         #region [Design Components]
+
+        public static bool StyleTest = false;
+
         public static Font ControlFont = new Font("Cambria", 9.75F, FontStyle.Bold);
         public static Font AltControlFont = new Font("Consolas", 9.75F, FontStyle.Bold);
         public static Font SmallControlFont = new Font("Verdana", 8F);
@@ -142,31 +150,40 @@ namespace Dobby {
 
         ///<summary> Form Border Pen </summary>
         private static Pen BorderPen = new Pen(Color.White);
-        #endregion [Design Components]
+        #endregion
         
 
 
-        // Threading Components
+        //#
+        //## Threading Components
+        //#
         #region [Threading Components]
+
         public static Thread LabelFlashThread;
 
         public delegate void LabelUpdateCallback(string InfoText);
 
         public delegate void LabelFlashCallback(string Control, System.Drawing.Color colour);
-        #endregion [Threading Components]
-        
+        #endregion
 
 
-        // Network-Related Components
+
+        //#
+        //## Network-Related Components
+        //#
         #region [Network-Related Components]
+
         public static TcpClient TcpClient;
         public static NetworkStream NetStream;
-        #endregion [Network-Related Components]
+        #endregion
+
+        #endregion (global variable declarations)
 
 
-
-        // Miscellaneous Static Function Declarations
-        #region [Miscellaneous Static Function Declarations]
+        //#
+        //## Static Function Declarations
+        //#
+        #region [Static Function Declarations]
 
         /// <summary>
         /// Dev.Print overload, for some reason. //!
@@ -186,6 +203,16 @@ namespace Dobby {
             Print($"!! ERROR: {tabarnack.Message}\n{tabarnack.StackTrace.Replace("\n", "  \n")}");
 #endif
         }
+
+
+        
+        
+        public static void StyleTestBtn_Click(object sender, EventArgs e)
+        {
+        }
+
+
+
 
         public static void FlashLabel(string label)
         {
@@ -276,152 +303,7 @@ namespace Dobby {
         public static void SaveMainForm(Form form) => MainForm = form;
 
 
-
-        /// <summary> [deprecated] Sets The Info Label String Based On The Currently Hovered Control </summary>
-        /// <param name="Sender">The Hovered Control</param>
-        public static void SetInfoLabelStringOnControlHover(Control Sender, float FontAdjustment = 10f) {
-            throw new NotImplementedException();
-
-            // SetInfo
-            // TODO: this is fucking stupid, change or delete it.
-
-            string InfoLabelString = "";
-
-            switch (Sender.Name) {
-                default:
-                    return;
-
-                //
-                // Const
-                //
-                case "CreditsBtn":
-                    InfoLabelString = "View Credits For The Tool And Included Patches";
-                    break;
-                case "InfoHelpBtn":
-                    InfoLabel.Font = new Font(InfoLabel.Font.FontFamily, 9.5F);
-                    InfoLabelString = "View Help For Each Page As Well As The App Itself";
-                    break;
-                case "BackBtn":
-                    InfoLabelString = "Return To The Previous Page";
-                    break;
-                // _______________
-                //
-                // Main Page
-                //
-                case "PS4DebugPageBtn":
-                    InfoLabel.Font = new Font(InfoLabel.Font.FontFamily, 9F);
-                    InfoLabelString = "Use A Lan Or Wifi Connection To Enable The Debug Mode";
-                    break;
-                case "EbootPatchPageBtn":
-                    InfoLabelString = "Patch An Executable To Be Added To A .pkg";
-                    break;
-                case "DownloadSourceBtn":
-                    InfoLabelString = "This Opens An External Link";
-                    break;
-                case "PCDebugMenuPageBtn":
-                    InfoLabelString = "Enable The Default Or Restored Debug Menu";
-                    break;
-                case "PCQOLPageBtn":
-                    InfoLabelString = "Enable The Default Or Restored Debug Menu";
-                    break;
-                // _______________
-                //
-                // PS4DebugPage
-                //
-                case "UC1Btn":
-                    break;
-                case "UC2Btn":
-                    break;
-                case "UC3Btn":
-                    break;
-                case "UC4Btn":
-                    break;
-                case "UC4MPBetaBtn":
-                    InfoLabelString = "Supports: 1.09 - Use .bin Patch For 1.00";
-                    break;
-                case "T1RBtn":
-                    break;
-                case "T2Btn":
-                    break;
-                case "DebugPayloadBtn":
-                    InfoLabelString = "Sends ctn123's Port Of PS4Debug";
-                    break;
-                case "ManualConnectBtn":
-                    InfoLabel.Font = new Font(InfoLabel.Font.FontFamily, 9F);
-                    InfoLabelString = "Tool Also Auto-Connects When An Option's Selected";
-                    break;
-                case "IgnoreTitleIDBtn":
-                    InfoLabelString = "Enable This If You've Changed The Title ID";
-                    break;
-                // _______________
-                //
-                // EbootPatchPage
-                //
-                case "EnableDebugBtn":
-                    InfoLabelString = "Enable Debug Mode As-Is With No Edits";
-                    break;
-                case "DisableDebugBtn":
-                    InfoLabelString = "Disable Debug Mode. Doesn't Undo Other Patches";
-                    break;
-                case "RestoredDebugBtn":
-                    InfoLabelString = "Restores The Menu As Authentically As Possible";
-                    break;
-                case "CustomDebugBtn":
-                    InfoLabelString = "Patches In My Customized Version Of The Debug Menu";
-                    break;
-                case "PS4MenuSettingsPageBtn":
-                    InfoLabelString = "Adds A Function To Write To Selected Settings On Game Boot";
-                    break;
-                // _______________
-                //
-                // PkgCreationPage
-                //
-                // _______________
-                //
-                // PkgCreationHelpPage
-                //
-                // _______________
-                //
-                // Gp4CreationPage
-                //
-                case "Gp4CreationPageBtn":
-                    InfoLabelString = "A .gp4 Is Required For .pkg Creation";
-                    break;
-                    //
-                    // Gp4CreationHelpPage
-                    //
-                    // _______________
-                    //
-                    // PS4MiscPatchesPage
-                    //
-                    // _______________
-                    //
-                    // PCExePatchPage
-                    //
-                    // _______________
-                    //
-                    // PCQOLPatchPage
-                    //
-                    // _______________
-                    //
-                    // InfoHelpPage
-                    //
-                    // _______________
-                    //
-                    // CreditsPage
-                    //
-                    // _______________
-                    //
-                    // PCQOLPatchPage
-                    //
-                    // _______________
-
-            }
-            SetInfoLabelText(InfoLabelString);
-        }
-
-
-        
+                
         /// <summary>
         /// Toggle between various states of custom Button controls
         /// </summary>
@@ -550,6 +432,105 @@ namespace Dobby {
         }
 
         private static void KillTextBox(object sender, MouseEventArgs e) => PopupGroupBox?.Dispose();
+
+        
+
+        /// <summary> [deprecated] Sets The Info Label String Based On The Currently Hovered Control </summary>
+        /// <param name="Sender">The Hovered Control</param>
+        public static void SetInfoLabelStringOnControlHover(Control Sender, float FontAdjustment = 10f) {
+            throw new NotImplementedException();
+
+            // SetInfo
+            // TODO: this is fucking stupid, change or delete it.
+
+#pragma warning disable CS0162 // Unreachable code detected
+            var InfoLabelString = "";
+
+            switch (Sender.Name) {
+                default:
+                    return;
+
+                //
+                // Const
+                case "CreditsBtn":
+                    InfoLabelString = "View Credits For The Tool And Included Patches";
+                    break;
+                case "InfoHelpBtn":
+                    InfoLabelString = "View Help For Each Page As Well As The App Itself";
+                    break;
+                case "BackBtn":
+                    InfoLabelString = "Return To The Previous Page";
+                    break;
+                //
+                // Main Page
+                case "PS4DebugPageBtn":
+                    InfoLabelString = "Use A Lan Or Wifi Connection To Enable The Debug Mode";
+                    break;
+                case "EbootPatchPageBtn":
+                    InfoLabelString = "Patch An Executable To Be Added To A .pkg";
+                    break;
+                case "DownloadSourceBtn":
+                    InfoLabelString = "This Opens An External Link";
+                    break;
+                case "PCDebugMenuPageBtn":
+                    InfoLabelString = "Enable The Default Or Restored Debug Menu";
+                    break;
+                case "PCQOLPageBtn":
+                    InfoLabelString = "Enable The Default Or Restored Debug Menu";
+                    break;
+                //
+                // PS4DebugPage
+                case "UC1Btn":
+                    break;
+                case "UC2Btn":
+                    break;
+                case "UC3Btn":
+                    break;
+                case "UC4Btn":
+                    break;
+                case "UC4MPBetaBtn":
+                    InfoLabelString = "Supports: 1.09 - Use .bin Patch For 1.00";
+                    break;
+                case "T1RBtn":
+                    break;
+                case "T2Btn":
+                    break;
+                case "DebugPayloadBtn":
+                    InfoLabelString = "Sends ctn123's Port Of PS4Debug";
+                    break;
+                case "ManualConnectBtn":
+                    InfoLabelString = "Tool Also Auto-Connects When An Option's Selected";
+                    break;
+                case "IgnoreTitleIDBtn":
+                    InfoLabelString = "Enable This If You've Changed The Title ID";
+                    break;
+                //
+                // EbootPatchPage
+                case "EnableDebugBtn":
+                    InfoLabelString = "Enable Debug Mode As-Is With No Edits";
+                    break;
+                case "DisableDebugBtn":
+                    InfoLabelString = "Disable Debug Mode. Doesn't Undo Other Patches";
+                    break;
+                case "RestoredDebugBtn":
+                    InfoLabelString = "Restores The Menu As Authentically As Possible";
+                    break;
+                case "CustomDebugBtn":
+                    InfoLabelString = "Patches In My Customized Version Of The Debug Menu";
+                    break;
+                case "PS4MenuSettingsPageBtn":
+                    InfoLabelString = "Adds A Function To Write To Selected Settings On Game Boot";
+                    break;
+                //
+                // PkgCreationPage
+                case "Gp4CreationPageBtn":
+                    InfoLabelString = "A .gp4 Is Required For .pkg Creation";
+                    break;
+
+            }
+            SetInfoLabelText(InfoLabelString);
+#pragma warning restore CS0162 // Unreachable code detected
+        }
         #endregion
 
 
@@ -1095,7 +1076,6 @@ namespace Dobby {
 
         public static void ControlHover(object sender, EventArgs _ = null) => HoverLeave((Control)sender, true);
         public static void ControlLeave(object sender, EventArgs _ = null) => HoverLeave((Control)sender, false);
-        #endregion
         #endregion
 
 

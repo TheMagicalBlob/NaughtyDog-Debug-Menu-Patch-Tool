@@ -271,6 +271,7 @@
           "* 4.54.319.840 | Fixed invalid Port saving in PS4DebugPage, slight button event tweaks; fixed TexBox default value bs; Misc Debug Changes & addded comments, etc.",
           "* 4.54.320.840 | Replaced accidental debug prints with intended SetInfoLabelText calls.",
           "* 4.55.320.842 | Added missing thread sleep in connection status check",
+          "* 4.55.323.849 | Standardizing formatting so I can fking find things without hiring a sherpa...; Miscellaneous PkgCreationPage work.",
         };
 
 

@@ -43,7 +43,7 @@ namespace Dobby
             this.BackBtn = new Dobby.Button();
             this.CreditsBtn = new Dobby.Button();
             this.VerbosityBtn = new Dobby.Button();
-            this.LaunchOrbisPubCmdBtn = new Dobby.Button();
+            this.BuildPackageBtn = new Dobby.Button();
             this.GP4PageBtn = new Dobby.Button();
             this.TempDirectoryPathBox = new Dobby.TextBox();
             this.TempDirectoryBrowseBtn = new Dobby.Button();
@@ -226,22 +226,22 @@ namespace Dobby
             this.VerbosityBtn.UseVisualStyleBackColor = false;
             this.VerbosityBtn.Click += new System.EventHandler(this.VerbosityBtn_Click);
             // 
-            // LaunchOrbisPubCmdBtn
+            // BuildPackageBtn
             // 
-            this.LaunchOrbisPubCmdBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.LaunchOrbisPubCmdBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.LaunchOrbisPubCmdBtn.FlatAppearance.BorderSize = 0;
-            this.LaunchOrbisPubCmdBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LaunchOrbisPubCmdBtn.Font = new System.Drawing.Font("Cambria", 11F, System.Drawing.FontStyle.Bold);
-            this.LaunchOrbisPubCmdBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.LaunchOrbisPubCmdBtn.Location = new System.Drawing.Point(2, 240);
-            this.LaunchOrbisPubCmdBtn.Name = "LaunchOrbisPubCmdBtn";
-            this.LaunchOrbisPubCmdBtn.Size = new System.Drawing.Size(185, 25);
-            this.LaunchOrbisPubCmdBtn.TabIndex = 64;
-            this.LaunchOrbisPubCmdBtn.Text = "Build Package/.pkg File";
-            this.LaunchOrbisPubCmdBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.LaunchOrbisPubCmdBtn.UseVisualStyleBackColor = false;
-            this.LaunchOrbisPubCmdBtn.Click += new System.EventHandler(this.LaunchOrbisPubCmdBtn_Click);
+            this.BuildPackageBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.BuildPackageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.BuildPackageBtn.FlatAppearance.BorderSize = 0;
+            this.BuildPackageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BuildPackageBtn.Font = new System.Drawing.Font("Cambria", 11F, System.Drawing.FontStyle.Bold);
+            this.BuildPackageBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.BuildPackageBtn.Location = new System.Drawing.Point(2, 240);
+            this.BuildPackageBtn.Name = "BuildPackageBtn";
+            this.BuildPackageBtn.Size = new System.Drawing.Size(185, 25);
+            this.BuildPackageBtn.TabIndex = 64;
+            this.BuildPackageBtn.Text = "Build Package/.pkg File";
+            this.BuildPackageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BuildPackageBtn.UseVisualStyleBackColor = false;
+            this.BuildPackageBtn.Click += new System.EventHandler(this.LaunchOrbisPubCmdBtn_Click);
             // 
             // GP4PageBtn
             // 
@@ -389,7 +389,7 @@ namespace Dobby
             this.Controls.Add(this.Info);
             this.Controls.Add(this.SeperatorLine3);
             this.Controls.Add(this.VerbosityBtn);
-            this.Controls.Add(this.LaunchOrbisPubCmdBtn);
+            this.Controls.Add(this.BuildPackageBtn);
             this.Controls.Add(this.GP4PageBtn);
             this.Controls.Add(this.TempDirectoryPathLabel);
             this.Controls.Add(this.OutputDirectoryLabel);
@@ -439,7 +439,7 @@ namespace Dobby
         private TextBox TempDirectoryPathBox;
         private Button TempDirectoryBrowseBtn;
         private Button VerbosityBtn;
-        private Button LaunchOrbisPubCmdBtn;
+        private Button BuildPackageBtn;
         private System.Windows.Forms.Label SeperatorLine3;
         private Button InfoHelpBtn;
         private Button BackBtn;

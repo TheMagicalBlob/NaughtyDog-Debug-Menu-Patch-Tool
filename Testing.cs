@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
 #if DEBUG
 using System.IO;
 using System.Linq;
@@ -34,6 +36,40 @@ namespace Dobby {
         #endif
 
 
+
+        public static void AddStyleTestButton(System.Windows.Forms.Form form)
+        {
+            // StyleTestBtn
+            Button styleTestButton; 
+
+            form.Controls.Add(styleTestButton = new Button()
+            {
+                Name = "StyleTestBtn",
+                Size = new Size(112, 24),
+                Location = new Point(294, 1),
+                Text = "Toggle Style Test",
+                Font = new Font("Verdana", 8F),
+                BackColor = Color.FromArgb(100, 100, 100),
+                TextAlign = ContentAlignment.MiddleLeft,
+                FlatStyle = FlatStyle.Flat,
+                ForeColor = SystemColors.Control,
+                Cursor = Cursors.Cross
+            });
+            styleTestButton.Click += (sender, args) => {
+                foreach (var item in ((Control)sender).Parent.Controls)
+                {
+                    if (item.GetType() == typeof(TextBox) && !((TextBox)item).ReadOnly)
+                    {
+                        var control = (TextBox) item;
+                        control.TextAlign ^= HorizontalAlignment.Center;
+                    }
+                }
+
+                Common.StyleTest ^= true;
+            };
+            styleTestButton.FlatAppearance.BorderSize = 0;
+            styleTestButton.BringToFront();
+        }
 
 
         /// <summary>
@@ -98,38 +134,6 @@ namespace Dobby {
 
         private readonly LogWindow Log;
 
-
-        /// <summary> PkgCreationPage-Related bs. </summary>
-        public void StartReadLogTest() => ReadTest.Start();
-
-        /// <summary> PkgCreationPage-Related bs. </summary>
-        private readonly Thread ReadTest;// = new Thread(PkgCreationLogReadTest);
-
-        /// <summary> PkgCreationPage-Related bs. </summary>
-        private void PkgCreationLogReadTest() {
-            try {
-                string[]
-                    chk = Array.Empty<string>(),
-                    lines
-                ;
-
-
-            start:
-                while(!File.Exists(@"C:\Users\Blob\Desktop\out.txt")) ;
-
-                lines = File.ReadAllLines(@"C:\Users\Blob\Desktop\out.txt");
-                if(chk.Equals(Array.Empty<string>()) || lines.SequenceEqual(chk))
-
-                    foreach(var line in lines)
-                        Print(line);
-
-                chk = lines;
-                goto start;
-            }
-            catch(Exception e) {
-                Print($"rTst Failed, Cause: {e.Message}");
-            }
-        }
 
 
 
