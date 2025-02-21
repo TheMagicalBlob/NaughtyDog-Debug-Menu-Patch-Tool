@@ -53,9 +53,6 @@ namespace Dobby {
         #region [Variable Declarations]
 
         private GP4Creator gp4;
-        
-        private OpenFileDialog fileDialogue;
-        private FolderBrowserDialog folderDialogue;
         #endregion
 
 
@@ -65,7 +62,7 @@ namespace Dobby {
         //=============================================\\
         #region [Background Function Delcarations]
 
-        private void ApplyandVerifyGP4Options(GP4Creator gp4)
+        private bool ApplyandVerifyGP4Options(GP4Creator gp4)
         {
             // Check for Unassigned Gamedata Path Before Proceeding
             if (GamedataPathBox.IsDefault)
@@ -78,14 +75,21 @@ namespace Dobby {
 #endif
                 {
                     FlashLabel("Info");
-                    SetInfoLabelText("Please Assign A Valid Gamedata Folder Before Building.\n");
-                    return;
+                    SetInfoLabelText("Please assign a valid Gamedata folder before building.\n");
+                    return false;
                 }
             }
-            else // Read Current Gamedata Folder Path From The Text Box
+            else if (Directory.Exists(GamedataPathBox.Text.Replace("\"", string.Empty)))
             {
+                // Read Current Gamedata Folder Path From The Text Box
                 gp4.GamedataFolder = GamedataPathBox.Text.Replace("\"", string.Empty);
-                SetInfoLabelText($"Set \"{gp4.GamedataFolder}\" as Gamedata Folder.");
+                Print($"Set \"{gp4.GamedataFolder}\" as Gamedata folder.");
+            }
+
+            else {
+                FlashLabel("Info");
+                SetInfoLabelText("Invalid Gamedata folder path provided.\n");
+                return false;
             }
 
 
@@ -94,7 +98,7 @@ namespace Dobby {
             {
                 FlashLabel("Info");
                 SetInfoLabelText($"ERROR; No keystone File Found In Project Folder.\n\n");
-                return;
+                return false;
             }
 
 
@@ -109,6 +113,8 @@ namespace Dobby {
             // Load these two twats
             gp4.UseAbsoluteFilePaths = (bool) AbsoluteFilePathsBtn.Variable;
             gp4.IgnoreKeystone       = (bool) IgnoreKeystoneBtn.Variable;
+
+            return true;
         }
 
 
@@ -149,8 +155,13 @@ namespace Dobby {
         /// </summary>
         private void GP4CreationBtn_Click(object sender, EventArgs e)
         {
-            ApplyandVerifyGP4Options(gp4);
-            BeginGP4Creation(gp4);
+            if (ApplyandVerifyGP4Options(gp4))
+            {
+                BeginGP4Creation(gp4);
+            }
+            else {
+                Print("Ahh fuck, eh.");
+            }
         }
 
 
@@ -232,7 +243,7 @@ namespace Dobby {
         /// </summary>
         private void BaseGamePackageBrowseBtn_Click(object sender, EventArgs e)
         {
-            using(fileDialogue = new OpenFileDialog {
+            using(var fileDialogue = new OpenFileDialog {
                 Filter = "PS4 Application Package|*.pkg",
                 Title = "Select the package /.pkg the patch package will be installed to."
             })
@@ -249,7 +260,7 @@ namespace Dobby {
         /// </summary>
         private void FileBlacklistBrowseBtn_Click(object sender, EventArgs e)
         {
-            using(fileDialogue = new OpenFileDialog {
+            using(var fileDialogue = new OpenFileDialog {
                 Title = "Select files you wish to exclude from the .gp4 project file (folders must be added manually, blame MS)",
                 Multiselect = true
             })
@@ -262,9 +273,9 @@ namespace Dobby {
 
         
 
-        private void AbsoluteFilePathsBtn_Click(object control, MouseEventArgs eventArgs) => CycleButtonVariable<bool>(control);
+        private void AbsoluteFilePathsBtn_Click(object control, EventArgs args) => CycleButtonVariable<bool>(control);
         
-        private void IgnoreKeystoneBtn_Click(object control, MouseEventArgs eventArgs)    => CycleButtonVariable<bool>(control);
+        private void IgnoreKeystoneBtn_Click(object control, EventArgs eventArgs)    => CycleButtonVariable<bool>(control);
         #endregion
     }
 }

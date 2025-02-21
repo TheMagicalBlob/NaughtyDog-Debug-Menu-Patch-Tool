@@ -2,36 +2,43 @@
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Windows.Forms;
-using System.Xml.Serialization;
 using static Dobby.Common;
 
 namespace Dobby {
     public partial class PS4MenuSettingsPage : Form {
-        public PS4MenuSettingsPage() {
-            InitializeComponent();
+        public PS4MenuSettingsPage()
+        {
+            try // this crashed while opening once and I can't reproduce it, so meh (may have been a debug-only issue, anyway)
+            {
+                InitializeComponent();
             
 
-            DisableDebugTextBtn.Variable = UniversalPatchValues[0];
-            DisablePausedIconBtn.Variable = UniversalPatchValues[1];
-            ProgPauseOnOpenBtn.Variable = UniversalPatchValues[2];
-            ProgPauseOnCloseBtn.Variable = UniversalPatchValues[3];
-            NovisBtn.Variable = UniversalPatchValues[4];
+                DisableDebugTextBtn.Variable = UniversalPatchValues[0];
+                DisablePausedIconBtn.Variable = UniversalPatchValues[1];
+                ProgPauseOnOpenBtn.Variable = UniversalPatchValues[2];
+                ProgPauseOnCloseBtn.Variable = UniversalPatchValues[3];
+                NovisBtn.Variable = UniversalPatchValues[4];
 
-            InitializeAdditionalEventHandlers(Controls);
+                InitializeAdditionalEventHandlers(Controls);
 
 
-            if(Game != 0 && gsButtons.Buttons != null)
-                ResetCustomDebugOptions();
+                if(Game != 0 && gsButtons?.Buttons != null)
+                    ResetCustomDebugOptions();
             
-            FormActive = true; // the fuck is this for??
+                FormActive = true; // the fuck is this for??
 #if DEBUG
-            Dev.OverrideMsgOut = true;
+                Dev.OverrideMsgOut = true;
 #endif
+            }
+            catch (Exception darn) {
+                PrintError(darn);
+                Print("\nError initializing PS4MenuSettingsPage, returning to main page.");
+                ChangeForm(null);
+            }
         }
 
-        
+
         //========================================================\\
         //--|   QUALITY OF LIFE/BOOTSETTINGS OFFSET POINTERS   |--\\
         //========================================================\\
@@ -433,10 +440,10 @@ namespace Dobby {
 
 
 
-        //=======================================\\
-        //--|   Misc Patches Page Variables   |--\\
-        //=======================================\\
-        #region Misc Patches Page Variables
+        //=================================\\
+        //--|   Variable Declarations   |--\\
+        //=================================\\
+        #region Variable Declarations
 
         /// <summary> Array of Controls to Move When Loading >1 Game-Specific Debug Options
         ///</summary>
@@ -597,7 +604,7 @@ namespace Dobby {
         // this doesn't need to be a struct, but whatever
         /// <summary> Struct For Creating Dynamic Patch Buttons
         /// </summary>
-        internal struct DynamicPatchButtons {
+        internal class DynamicPatchButtons {
             public DynamicPatchButtons(int?[] Ids, int VerticalStartIndex = 0) {
                 Buttons = new Button[ControlText.Length + 1];
                 ButtonsVerticalStartPos = VerticalStartIndex;
@@ -790,8 +797,10 @@ namespace Dobby {
             /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
             #region Event Handlers And Functions For Dynamic Button
             private void DynamicBtn_Click(object sender, EventArgs e) => ToggleFunc((Button)sender, ((Control)sender).TabIndex);
-            private void ToggleFunc(Button Control, int ButtonIndex) {
-                if(MouseScrolled || !MouseIsDown || CurrentControl != Control.Name) return;
+            private void ToggleFunc(Button Control, int ButtonIndex)
+            {
+                if(MouseScrolled || !MouseIsDown || CurrentControl != Control.Name)
+                    return;
 
                 GameSpecificPatchValues[ButtonIndex] = !(bool)GameSpecificPatchValues[ButtonIndex];
                 Control.Variable = GameSpecificPatchValues[ButtonIndex];
@@ -854,47 +863,29 @@ namespace Dobby {
 
 
 
+        
+        private void ToggleButtonAndUniVar(Button control, bool scrolled, int optionIndex)
+        {
+            if (scrolled || !MouseIsDown || CurrentControl != control.Name)
+                return;
+            
+            control.Variable = UniversalPatchValues[optionIndex] ^= true;
+        }
+
+
+
         ///////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ///--     Event Handlers For Basic Patches Available For Each Game     --\\\
         ///////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        #region Event Handlers For Basic Patches Available For Each Game
-        private void DisableDebugTextBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((Button)sender, e.Delta != 0, 0);
-        private void PausedIconBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((Button)sender, e.Delta != 0, 1);
-        private void ProgPauseOnOpenBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((Button)sender, e.Delta != 0, 2);
-        private void ProgPauseOnCloseBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((Button)sender, e.Delta != 0, 3);
-        private void DisableAllVisibilityBtn_Click(object sender, MouseEventArgs e) => DefaultButtonClick((Button)sender, e.Delta != 0, 4);
-        private void DefaultButtonClick(Button cnt, bool scrolled, int PatchIndex) { ToggleBool(cnt, PatchIndex); MouseScrolled = scrolled; }
-        private void ToggleBool(Button Control, int OptionIndex) {
-            if(MouseScrolled || !MouseIsDown || CurrentControl != Control.Name) {
-                Print($"{MouseScrolled} {MouseIsDown} {CurrentControl} ? {Control.Name}");
-                return;
-            }
+        #region [Control Event Handlers]
 
-            UniversalPatchValues[OptionIndex] = !(bool)UniversalPatchValues[OptionIndex];
-            Control.Variable = UniversalPatchValues[OptionIndex];
-            Control.Refresh();
-        }
+        private void DisableDebugTextBtn_Click(object sender, MouseEventArgs e) => ToggleButtonAndUniVar((Button)sender, e.Delta != 0, 0);
+        private void PausedIconBtn_Click(object sender, MouseEventArgs e) => ToggleButtonAndUniVar((Button)sender, e.Delta != 0, 1);
+        private void ProgPauseOnOpenBtn_Click(object sender, MouseEventArgs e) => ToggleButtonAndUniVar((Button)sender, e.Delta != 0, 2);
+        private void ProgPauseOnCloseBtn_Click(object sender, MouseEventArgs e) => ToggleButtonAndUniVar((Button)sender, e.Delta != 0, 3);
+        private void DisableAllVisibilityBtn_Click(object sender, MouseEventArgs e) => ToggleButtonAndUniVar((Button)sender, e.Delta != 0, 4);
         #endregion
 
-
-        // Only Gonna Be Useful If I End Up Using A Monospace Font
-#if false
-        /// <summary> Takes A Control & Variable, and Appends The Variable (As A String) To The Right Of The Control
-        ///</summary>
-        /// <param name="Variable"> The Variable To Append To The Right Side </param>
-        /// <returns>Formatted String</returns>
-        public static string AppendControlVariable(Control control, object Variable) {
-            var padding = string.Empty;
-
-            var buffer = control.Size - TextRenderer.MeasureText(control.Text, control.Font) - TextRenderer.MeasureText($"{Variable}", control.Font);
-
-            for(; TextRenderer.MeasureText(padding, control.Font).Width < buffer.Width;)
-                padding += " ";
-
-            return $"{control.Text}{padding}{Variable}";
-        }
-
-#endif
 
 
         /*////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\

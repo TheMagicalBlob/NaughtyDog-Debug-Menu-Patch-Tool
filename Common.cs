@@ -206,18 +206,12 @@ namespace Dobby {
 
 
         
-        
-        public static void StyleTestBtn_Click(object sender, EventArgs e)
-        {
-        }
-
-
-
-
         public static void FlashLabel(string label)
         {
-            (LabelFlashThread = new Thread(LabelFlashMethod)).Start(label);
+            if (LabelFlashThread == null || LabelFlashThread.ThreadState == System.Threading.ThreadState.Stopped)
+                (LabelFlashThread = new Thread(LabelFlashMethod)).Start(label);
         }
+
         
         public static string GetCurrentGame(FileStream stream) {
             var LocalExecutableCheck = new byte[160];
@@ -631,7 +625,7 @@ namespace Dobby {
                     if (control.VariableTags.Length > 2)
                         Print($"WARNING: Invalid VariableTags array provided for boolean toggle; ignoring [{control.VariableTags.Length-2}] tag(s)");
                     
-                    else if (control.VariableTags.Length < 2)
+                    if (control.VariableTags.Length < 2)
                         Print($"ERROR: Invalid VariableTags array provided for boolean toggle; less than two options provided ({control.VariableTags.Length})"); // output tag array length in case it's somehow negative, I suppose
 
                     else
@@ -639,7 +633,6 @@ namespace Dobby {
                     
                 }
                 else {
-                    Print("No alternate bool tags provided");
                     variable = (bool) control.Variable ? "Yes" : "No";
                 }
             }
@@ -696,7 +689,7 @@ namespace Dobby {
 
 
             // Draw the Variable's string representation appended to the rightmost side of the control's bounds
-            paintEvent.Graphics.DrawString(variable, control.Font, Brushes.LightGreen, new Point((int) baseContentSize + (padding * 2), 4));
+            paintEvent.Graphics.DrawString(variable, SmallControlFont, Brushes.LightGreen, new Point((int) baseContentSize + (padding * 2), 5));
         }
 
 
@@ -704,18 +697,16 @@ namespace Dobby {
         ///<summary> Create And Apply A Thin Border To The Form </summary>
         public static void DrawBorder(object sender, PaintEventArgs e)
         {
-            var ItemPtr = (Form)sender;
-
-            var Border = new Point[] {
-                Point.Empty,
-                new Point(ItemPtr.Width-1, 0),
-                new Point(ItemPtr.Width-1, ItemPtr.Height-1),
-                new Point(0, ItemPtr.Height-1),
-                Point.Empty
-            };
+            var itemPtr = sender as Form;
 
             e.Graphics.Clear(Color.FromArgb(100, 100, 100));
-            e.Graphics.DrawLines(BorderPen, Border);
+            e.Graphics.DrawLines(BorderPen, new Point[] {
+                Point.Empty,
+                new Point(itemPtr.Width - 1, 0),
+                new Point(itemPtr.Width - 1, itemPtr.Height - 1),
+                new Point(0, itemPtr.Height - 1),
+                Point.Empty
+            });
         }
 
 
