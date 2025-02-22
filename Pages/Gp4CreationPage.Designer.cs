@@ -276,7 +276,7 @@ namespace Dobby
             this.PasscodePathBox.Name = "PasscodePathBox";
             this.PasscodePathBox.Size = new System.Drawing.Size(395, 23);
             this.PasscodePathBox.TabIndex = 80;
-            this.PasscodePathBox.Text = "00000000000000000000000000000000000";
+            this.PasscodePathBox.Text = "00000000000000000000000000000000";
             this.PasscodePathBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // FileBlacklistPathBox

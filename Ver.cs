@@ -276,6 +276,9 @@
           "* 4.56.327.859 | Misc. TODO: fix improper default bs on PKG/GP4 creation pages (again ;_;)",
           "* 4.56.328.859 | File blacklist box fix",
           "* 4.57.331.864 | Added the option to clear temporary files created during the .pkg creation process; Other miscellaneous background changes.",
+          "* 4.57.335.867 | Comments lol (plus some other randy bs)",
+          "* 4.57.335.867 | Finished screwing with the GP4CreationPage; Refining PkgCreationPage output to offer more input to the user.",
+          "* 4.59.339.871 | Pkg & GP4 Creation pages essentially finished now, working on making the processes more verbose for the user, so there's no instances of \"is it doin' anything?\" while using the application. More misc background stuff like comments and formatting. (I am waayy too tired to write these damn messages. This is the one thing I wouldn't mind an AI for... still not gonna use one, though.)",
         };
 
 

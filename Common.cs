@@ -79,7 +79,8 @@ namespace Dobby {
             LastMsgOutputWasInfoString,
             LabelShouldFlash,
             FlashThreadHasStarted,
-            IsActiveFilePCExe
+            IsActiveFilePCExe,
+            DisableFormChange
         ;
 
         public static Point
@@ -529,10 +530,252 @@ namespace Dobby {
 
 
 
-        ///////////////////\\\\\\\\\\\\\\\\\\
-        ///--   Form Drawing Functions  --\\\
-        ///////////////////\\\\\\\\\\\\\\\\\\
-        #region [Form Drawing Functions]
+        
+        //====================================================\\
+        //--|   Static Background Function Delcarations   |---\\
+        //====================================================\\
+        #region [Static Background Function Delcarations]
+
+        //#
+        //## Form Functionality
+        //#
+        #region (form functionality)
+        /// <summary>
+        /// Loads The Specified Page From The PageId Group (E.g. ChangeForm(PageID.PS4MiscPageId))
+        /// </summary>
+        /// <param name="Page"> The Page To Change To. </param>
+        public static void ChangeForm(PageID? Page, bool ReturningToPreviousPage = false)
+        {
+            if (DisableFormChange) {
+                SetInfoLabelText("Disabled during .gp4 ? .pkg Creation Process.");
+                Print($"Ignoring request to change form to \"{Page ?? 0}\".");
+                return;
+            }
+
+
+            var NewPage = ActiveForm;
+            
+            switch (Page)
+            {
+                case PageID.MainPage:
+                    NewPage = MainForm;
+                    break;
+                case PageID.PS4DebugPage:
+                    NewPage = new PS4DebugPage();
+                    break;
+
+                case PageID.PS4DebugHelpPage:
+                    NewPage = new PS4DebugHelpPage();
+                    break;
+
+                case PageID.EbootPatchPage:
+                    NewPage = new EbootPatchPage();
+                    break;
+
+                case PageID.EbootPatchHelpPage:
+                    NewPage = new EbootPatchHelpPage();
+                    break;
+
+                case PageID.PS4MenuSettingsPage:
+                    NewPage = new PS4MenuSettingsPage();
+                    break;
+
+                case PageID.PS4MenuSettingsHelpPage:
+                    //PS4MiscPatchesHelpPage PS4MiscPatchesHelpPage = new PS4MiscPatchesHelpPage();
+                    //PS4MiscPatchesHelpPage.Show();
+                    break;
+
+                case PageID.PkgCreationPage:
+                    NewPage = new PkgCreationPage();
+                    break;
+
+                case PageID.PkgCreationHelpPage:
+                    NewPage = new PkgCreationHelpPage();
+                    break;
+
+                case PageID.Gp4CreationPage:
+                    NewPage = new GP4CreationPage();
+                    break;
+
+                case PageID.Gp4CreationHelpPage:
+                    break;
+
+                case PageID.PCDebugMenuPage:
+                    NewPage = new PCDebugMenuPage();
+                    //MessageBox.Show("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
+                    break;
+
+                case PageID.InfoHelpPage:
+                    NewPage = new InfoHelpPage();
+                    break;
+
+                case PageID.CreditsPage:
+                    NewPage = new CreditsPage();
+                    break;
+
+                case null:
+                    ChangeForm(Pages.Last(), true);
+                    FormActive = false;
+                    return;
+
+                default:
+                    Print($"{Page} Is Not A Page!");
+                    return;
+            }
+
+            
+            LastFormPosition = ActiveForm.Location;
+            var PageToClose = ActiveForm;
+
+            
+            if (ReturningToPreviousPage)
+                Pages.RemoveAt(Pages.Count - 1);
+            else
+                Pages.Add(Common.Page);
+
+
+            NewPage?.Show();
+#if DEBUG
+            Dev.ActivePage = NewPage;
+#endif
+            Common.Page = Page;
+            InfoLabel = (Control)ActiveForm.Controls.Find("Info", true)[0];
+            ActiveForm.Location = LastFormPosition;
+
+
+            if (PageToClose.Name == "Main")
+                PageToClose.Hide();
+            else
+                PageToClose.Close();
+        }
+
+
+        /// <summary>
+        /// Mass-Apply Basic Event Handlers To Form And It's Items. (I got sick of manually editing InitializeComponent())
+        /// </summary>
+        /// <param name="Controls">Collection of Controls to Apply Event Handlers to.</param>
+        public static void InitializeAdditionalEventHandlers(Control.ControlCollection Controls)
+        {
+            void ApplyEventHandlersToControl(object sender) {
+
+                // Convert the item to a basic control
+                var Item = sender as Control;
+
+    #if DEBUG
+                Item.MouseEnter += new EventHandler((control, e) => Testing.HoveredControl = Item);
+    #endif
+                Item.MouseDown += new MouseEventHandler(MouseDownFunc);
+                Item.MouseUp += new MouseEventHandler(MouseUpFunc);
+
+
+                if (Item.Name.Contains("Seperator") && sender.GetType() == typeof(Label))
+                    Item.Paint += DrawSeperatorLine;
+
+                if (!(Item.Name.ToLower().Contains("box") && (sender.GetType() == typeof(TextBox) || sender.GetType() == typeof(RichTextBox)))) // So You Can Drag Select The Text Lol
+                    Item.MouseMove += new MouseEventHandler(MoveForm);
+
+
+                // Avoid assigning a hover arrow to unintended controls (blacklisted ones, and any non-button controls)
+                if ((Item.GetType() == typeof(Dobby.Button) || Item.GetType() == typeof(System.Windows.Forms.Button)) && !new string[] { "DebugControl", "ExitBtn", "MinimizeBtn", "LabelBtn", "CmdPathBox", "Gp4PathBox"}.Contains(Item.Name))
+                {
+                    Item.MouseEnter += new EventHandler(ControlHover);
+                    Item.MouseLeave += new EventHandler(ControlLeave);
+                }
+            }
+            
+            var ConstantControls = new string[] { "Info", "InfoHelpBtn", "CreditsBtn", "BackBtn" };
+            var Parent = Controls.Owner.Name;
+
+            Controls.Owner.Paint += DrawBorder;
+            foreach (Control Item in Controls) {
+                ApplyEventHandlersToControl(Item);
+
+                if (Item.HasChildren) // Designer Adds Some Things To Other Controls Sometimes. This should fix those controls until I notice it. (I Am Lazy.)
+                    foreach (Control Child in Item.Controls)
+                        ApplyEventHandlersToControl(Child);
+            }
+            InfoLabel = (Control)(Controls.Find("Info", true)[0] ?? null);
+
+
+            // Create Exit And Minimize Buttons, And Add Them To The Top Right Of The Form
+            var Gray = Color.FromArgb(100, 100, 100);
+
+            Button ExitBtn = new Button() {
+                Location = new Point(Controls.Owner.Size.Width - 24, 1),
+                Size = new Size(23, 23),
+                Name = "ExitBtn",
+                Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
+                Text = "X",
+                FlatStyle = FlatStyle.Flat,
+                BackColor = Gray,
+                ForeColor = SystemColors.Control,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Cursor = Cursors.Cross
+            },
+            MinimizeBtn = new Button() {
+                Location = new Point(Controls.Owner.Size.Width - 47, 1),
+                Size = new Size(23, 23),
+                Name = "MinimizeBtn",
+                Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
+                Text = "--",
+                FlatStyle = FlatStyle.Flat,
+                BackColor = Gray,
+                ForeColor = SystemColors.Control,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Cursor = Cursors.Cross,
+            };
+
+            MinimizeBtn.FlatAppearance.BorderSize = 0;
+            Controls.Owner.Controls.Add(MinimizeBtn);
+            MinimizeBtn.BringToFront();
+            MinimizeBtn.Click += new EventHandler(MinimizeBtn_Click);
+            MinimizeBtn.MouseEnter += new EventHandler(MinimizeBtnMH);
+            MinimizeBtn.MouseLeave += new EventHandler(MinimizeBtnML);
+
+            ExitBtn.FlatAppearance.BorderSize = 0;
+            Controls.Owner.Controls.Add(ExitBtn);
+            ExitBtn.BringToFront();
+            
+            ExitBtn.Click += new EventHandler(ExitBtn_Click);
+            ExitBtn.MouseEnter += new EventHandler(ExitBtnMH);
+            ExitBtn.MouseLeave += new EventHandler(ExitBtnML);
+
+
+
+            // Avoid searching for back button on Main page
+            if (Parent != "Main")
+                Controls.Owner.Controls.Find(ConstantControls[3], true)[0].Click += (_, __) => ChangeForm(null);
+
+            try {
+                if (!Parent.Contains("Help") && Parent != "CreditsPage")
+                    Controls.Owner.Controls.Find(ConstantControls[1], true)[0].Click += (_, __) => ChangeForm(PageID.InfoHelpPage);
+                
+                Controls.Owner.Controls.Find(ConstantControls[2], true)[0].Click += (_, __) => ChangeForm(PageID.CreditsPage);
+                Controls.Owner.Controls.Find(ConstantControls[0], true)[0].Text = string.Empty;
+            }
+            catch (Exception) {}
+        }
+
+
+        /// <summary>
+        /// Set The Text of The Yellow Label At The Bottom Of The Form
+        /// </summary>
+        internal static void SetInfoLabelText(string s)
+        {
+            if (ActiveForm != null)
+                InfoLabel.Text = s;
+
+            Print($"[info]: {s}");
+        }
+
+        #endregion
+
+
+        
+        //#
+        //## Form/Control Drawing
+        //#
+        #region (form/control drawing)
 
         /// <summary>
         /// Appends a > to a hovered control, or removes it when the mouse leaves it's bounds. (also resizes the control by the arrow's size in pixels)
@@ -794,241 +1037,14 @@ namespace Dobby {
             }
         }
         #endregion
-
-
-        //================================\\
-        //--|   Basic Form Functions   |--\\
-        //================================\\
-        #region [Basic Form Functions]
-
-        /// <summary>
-        /// Loads The Specified Page From The PageId Group (E.g. ChangeForm(PageID.PS4MiscPageId))
-        /// </summary>
-        /// <param name="Page"> The Page To Change To. </param>
-        public static void ChangeForm(PageID? Page, bool ReturningToPreviousPage = false)
-        {
-            var NewPage = ActiveForm;
-            
-            switch (Page)
-            {
-                case PageID.MainPage:
-                    NewPage = MainForm;
-                    break;
-                case PageID.PS4DebugPage:
-                    NewPage = new PS4DebugPage();
-                    break;
-
-                case PageID.PS4DebugHelpPage:
-                    NewPage = new PS4DebugHelpPage();
-                    break;
-
-                case PageID.EbootPatchPage:
-                    NewPage = new EbootPatchPage();
-                    break;
-
-                case PageID.EbootPatchHelpPage:
-                    NewPage = new EbootPatchHelpPage();
-                    break;
-
-                case PageID.PS4MenuSettingsPage:
-                    NewPage = new PS4MenuSettingsPage();
-                    break;
-
-                case PageID.PS4MenuSettingsHelpPage:
-                    //PS4MiscPatchesHelpPage PS4MiscPatchesHelpPage = new PS4MiscPatchesHelpPage();
-                    //PS4MiscPatchesHelpPage.Show();
-                    break;
-
-                case PageID.PkgCreationPage:
-                    NewPage = new PkgCreationPage();
-                    break;
-
-                case PageID.PkgCreationHelpPage:
-                    NewPage = new PkgCreationHelpPage();
-                    break;
-
-                case PageID.Gp4CreationPage:
-                    NewPage = new GP4CreationPage();
-                    break;
-
-                case PageID.Gp4CreationHelpPage:
-                    break;
-
-                case PageID.PCDebugMenuPage:
-                    NewPage = new PCDebugMenuPage();
-                    //MessageBox.Show("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
-                    break;
-
-                case PageID.InfoHelpPage:
-                    NewPage = new InfoHelpPage();
-                    break;
-
-                case PageID.CreditsPage:
-                    NewPage = new CreditsPage();
-                    break;
-
-                case null:
-                    ChangeForm(Pages.Last(), true);
-                    FormActive = false;
-                    return;
-
-                default:
-                    Print($"{Page} Is Not A Page!");
-                    return;
-            }
-
-            
-            LastFormPosition = ActiveForm.Location;
-            var PageToClose = ActiveForm;
-
-            
-            if (ReturningToPreviousPage)
-                Pages.RemoveAt(Pages.Count - 1);
-            else
-                Pages.Add(Common.Page);
-
-
-            NewPage?.Show();
-#if DEBUG
-            Dev.ActivePage = NewPage;
-#endif
-            Common.Page = Page;
-            InfoLabel = (Control)ActiveForm.Controls.Find("Info", true)[0];
-            ActiveForm.Location = LastFormPosition;
-
-
-            if (PageToClose.Name == "Main")
-                PageToClose.Hide();
-            else
-                PageToClose.Close();
-        }
-
-
-
-
-        /// <summary>
-        /// Mass-Apply Basic Event Handlers To Form And It's Items. (I got sick of manually editing InitializeComponent())
-        /// </summary>
-        /// <param name="Controls">Collection of Controls to Apply Event Handlers to.</param>
-        public static void InitializeAdditionalEventHandlers(Control.ControlCollection Controls)
-        {
-            void ApplyEventHandlersToControl(object sender) {
-
-                // Convert the item to a basic control
-                var Item = sender as Control;
-
-    #if DEBUG
-                Item.MouseEnter += new EventHandler((control, e) => Testing.HoveredControl = Item);
-    #endif
-                Item.MouseDown += new MouseEventHandler(MouseDownFunc);
-                Item.MouseUp += new MouseEventHandler(MouseUpFunc);
-
-
-                if (Item.Name.Contains("Seperator") && sender.GetType() == typeof(Label))
-                    Item.Paint += DrawSeperatorLine;
-
-                if (!(Item.Name.ToLower().Contains("box") && (sender.GetType() == typeof(TextBox) || sender.GetType() == typeof(RichTextBox)))) // So You Can Drag Select The Text Lol
-                    Item.MouseMove += new MouseEventHandler(MoveForm);
-
-
-                // Avoid assigning a hover arrow to unintended controls (blacklisted ones, and any non-button controls)
-                if ((Item.GetType() == typeof(Dobby.Button) || Item.GetType() == typeof(System.Windows.Forms.Button)) && !new string[] { "DebugControl", "ExitBtn", "MinimizeBtn", "LabelBtn", "CmdPathBox", "Gp4PathBox"}.Contains(Item.Name))
-                {
-                    Item.MouseEnter += new EventHandler(ControlHover);
-                    Item.MouseLeave += new EventHandler(ControlLeave);
-                }
-            }
-            
-            var ConstantControls = new string[] { "Info", "InfoHelpBtn", "CreditsBtn", "BackBtn" };
-            var Parent = Controls.Owner.Name;
-
-            Controls.Owner.Paint += DrawBorder;
-            foreach (Control Item in Controls) {
-                ApplyEventHandlersToControl(Item);
-
-                if (Item.HasChildren) // Designer Adds Some Things To Other Controls Sometimes. This should fix those controls until I notice it. (I Am Lazy.)
-                    foreach (Control Child in Item.Controls)
-                        ApplyEventHandlersToControl(Child);
-            }
-            InfoLabel = (Control)(Controls.Find("Info", true)[0] ?? null);
-
-
-            // Create Exit And Minimize Buttons, And Add Them To The Top Right Of The Form
-            var Gray = Color.FromArgb(100, 100, 100);
-
-            Button ExitBtn = new Button() {
-                Location = new Point(Controls.Owner.Size.Width - 24, 1),
-                Size = new Size(23, 23),
-                Name = "ExitBtn",
-                Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
-                Text = "X",
-                FlatStyle = FlatStyle.Flat,
-                BackColor = Gray,
-                ForeColor = SystemColors.Control,
-                TextAlign = ContentAlignment.MiddleLeft,
-                Cursor = Cursors.Cross
-            },
-            MinimizeBtn = new Button() {
-                Location = new Point(Controls.Owner.Size.Width - 47, 1),
-                Size = new Size(23, 23),
-                Name = "MinimizeBtn",
-                Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
-                Text = "--",
-                FlatStyle = FlatStyle.Flat,
-                BackColor = Gray,
-                ForeColor = SystemColors.Control,
-                TextAlign = ContentAlignment.MiddleLeft,
-                Cursor = Cursors.Cross,
-            };
-
-            MinimizeBtn.FlatAppearance.BorderSize = 0;
-            Controls.Owner.Controls.Add(MinimizeBtn);
-            MinimizeBtn.BringToFront();
-            MinimizeBtn.Click += new EventHandler(MinimizeBtn_Click);
-            MinimizeBtn.MouseEnter += new EventHandler(MinimizeBtnMH);
-            MinimizeBtn.MouseLeave += new EventHandler(MinimizeBtnML);
-
-            ExitBtn.FlatAppearance.BorderSize = 0;
-            Controls.Owner.Controls.Add(ExitBtn);
-            ExitBtn.BringToFront();
-            
-            ExitBtn.Click += new EventHandler(ExitBtn_Click);
-            ExitBtn.MouseEnter += new EventHandler(ExitBtnMH);
-            ExitBtn.MouseLeave += new EventHandler(ExitBtnML);
-
-
-
-            // Avoid searching for back button on Main page
-            if (Parent != "Main")
-                Controls.Owner.Controls.Find(ConstantControls[3], true)[0].Click += (_, __) => ChangeForm(null);
-
-            try {
-                if (!Parent.Contains("Help") && Parent != "CreditsPage")
-                    Controls.Owner.Controls.Find(ConstantControls[1], true)[0].Click += (_, __) => ChangeForm(PageID.InfoHelpPage);
-                
-                Controls.Owner.Controls.Find(ConstantControls[2], true)[0].Click += (_, __) => ChangeForm(PageID.CreditsPage);
-                Controls.Owner.Controls.Find(ConstantControls[0], true)[0].Text = string.Empty;
-            }
-            catch (Exception) {}
-        }
-
-        /// <summary>
-        /// Set The Text of The Yellow Label At The Bottom Of The Form
-        /// </summary>
-        internal static void SetInfoLabelText(string s)
-        {
-            if (ActiveForm != null)
-                InfoLabel.Text = s;
-
-            Print($"[info]: {s}");
-        }
         #endregion
 
+        
 
-        //=============================\\
-        //|    Form Event Handlers    |\\
-        //=============================\\
-        #region [Form Event Handlers]
+        //=============================================\\
+        //--|   Static Event Handler Declarations   |--\\
+        //=============================================\\
+        #region [Static Event Handler Declarations]
         internal static void ExitBtn_Click(object sender, EventArgs e)
         {
             MainForm.Dispose();  //! 90% sure neither of these are implemented properly.
@@ -1075,7 +1091,7 @@ namespace Dobby {
         //--|   Enumerators   |--\\
         //=======================\\
         #region [Enumerators]
-        
+
         /// <summary> ID's for the various pages (forms) in the application. </summary>
         public enum PageID : byte {
             MainPage = 0,
@@ -1243,8 +1259,9 @@ namespace Dobby {
     #region [Class Extensions]
     
 
-
-    /// <summary> Custom TextBox Class to Better Handle Default TextBox Contents. </summary>
+    /// <summary>
+    /// Custom TextBox Class to Better Handle Default TextBox Contents.
+    /// </summary>
     public class TextBox : System.Windows.Forms.TextBox
     {
         /// <summary> Create New Control Instance. </summary>
@@ -1316,7 +1333,7 @@ namespace Dobby {
 
 
     /// <summary>
-    /// Custom Button Class extention so I can attach a value to them. 
+    /// Custom Button Class extention so I can attach a value to them. (saving the Tag property for hint text later on)
     /// </summary>
     public class Button : System.Windows.Forms.Button
     {

@@ -288,7 +288,7 @@ namespace Dobby
             this.TempDirectoryBrowseBtn.Text = "Browse";
             this.TempDirectoryBrowseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.TempDirectoryBrowseBtn.UseVisualStyleBackColor = false;
-            this.TempDirectoryBrowseBtn.Click += new System.EventHandler(this.TMPDirectoryItem_Click);
+            this.TempDirectoryBrowseBtn.Click += new System.EventHandler(this.TempDirectoryBrowseBtn_Click);
             // 
             // OrbisToolPathBox
             // 

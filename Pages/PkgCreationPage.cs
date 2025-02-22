@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Drawing;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using static Dobby.Common;
 #if DEBUG
@@ -51,43 +52,19 @@ namespace Dobby {
         #region [Background Function Delcarations]
 
         /// <summary>
-        /// 
+        /// Apply selected (or default) options for the package creation process, making sure there aren't any obvious errors that would cause the creation process to fail.
         /// </summary>
-        /// <param name="orbisToolPath"></param>
-        /// <param name="verbosity"></param>
-        /// <param name="gp4Path"></param>
-        /// <param name="outputPath"></param>
-        /// <param name="tempDirectory"></param>
-        /// <returns></returns>
+        /// <param name="orbisToolPath"> Absolute path to the PS4 package creation tools- specifically orbis-pub-cmd(-keystone).exe. Optionally takes a folder that it then searches for the tool inside of (by file name). </param>
+        /// <param name="verbosity"> Switch between verbose (detailed / --no_progress_bar), and the default progress bar output modes for the build tool </param>
+        /// <param name="tempDirectory"> An Alternate working/temporary directory for package creation process. </param>
+        /// <param name="gp4Path"> Absolute path to the .gp4 Project file that's to be used in the package creation process. </param>
+        /// <param name="outputPath"> The intended output directory for the completed package. </param>
+        /// <returns> True if all seems well with the current options. </returns>
         private bool ApplyAndVerifyPkgOptions(ref string orbisToolPath, ref string verbosity, ref string tempDirectory, ref string gp4Path, ref string outputPath)
         {
             if (!OrbisToolPathBox.IsDefault)
             {
                 orbisToolPath = OrbisToolPathBox.Text.Replace("\n", string.Empty);
-
-                if (Directory.Exists(orbisToolPath))
-                {
-                    Print($"Directory provided in place of .exe path. Searching the following folder for publishing tools...\n - {orbisToolPath}");
-
-                    var files = Directory.GetFiles(orbisToolPath);
-
-                    foreach (var file in files)
-                    {
-                        if (file.ToLower().Contains("pub-cmd")) {
-                            orbisToolPath = file;
-                            Print($"Using \"{orbisToolPath}\" as publishing tool path.");
-                            break;
-                        }
-                        else if (file == files.Last()) {
-
-                        }
-                    }
-
-
-                }
-                else if (File.Exists(orbisToolPath)) {
-
-                }
             }
             else {
                 FlashLabel("Info");
@@ -121,42 +98,63 @@ namespace Dobby {
 
             // Assign chosen verbosity option
             if ((bool)VerbosityBtn.Variable)
-            {
                 verbosity = "--no_progress_bar ";
-            }
+
 
             // Assign custom temp directory if one's been provided
             if (!TempDirectoryPathBox.IsDefault)
-            {
                 tempDirectory = $"--tmp_path \"{TempDirectoryPathBox.Text.Replace("\n", string.Empty)}\"";
-            }
+            
 
 
             // Verfiy Publishing Tool Directory
-            if(!File.Exists(orbisToolPath)) {
+            if (Directory.Exists(orbisToolPath))
+            {
+                Print($"Directory provided in place of .exe path. Searching the following folder for publishing tools...\n - {orbisToolPath}");
+
+                var files = Directory.GetFiles(orbisToolPath);
+
+                foreach (var file in files)
+                {
+                    if (file.ToLower().Contains("-cmd")) {
+                        orbisToolPath = file;
+                        Print($"Using \"{orbisToolPath}\" as publishing tool path.");
+                        break;
+                    }
+                    else if (file == files.Last())
+                    {
+                        FlashLabel("Info");
+                        SetInfoLabelText("Build tool not found in provided folder (Expected Name: *-cmd*)");
+                        return false;
+                    }
+                }
+            }
+            else if (!File.Exists(orbisToolPath))
+            {
+                FlashLabel("Info");
+                SetInfoLabelText("Invalid path provided for fpkg build tool. (file doesn't exist)");
                 return false;
             }
 
+
+
             // Verfiy .gp4 Project Path
-            else if(!File.Exists(gp4Path)) {
-                MessageBox.Show($"Error: The Path Provided For The .gp4 Project Wasn't Valid. A Valid .gp4 Is Mandatory For .pkg Creation.\n\nProvided Path: {gp4Path}", "Invalid .gp4 Project File Path");
-
-                // Force Reset Control Highlight, As The Message Box Stops The Control From Ever Resetting Automatically (Fix The Underlying Issue//!!!) 
-                BuildPackageBtn.ForeColor = Color.FromArgb(255, 255, 255);
-
-                if (MessageBox.Show("orbis-pub-cmd.exe And A .gp4 Are Necessary For .pkg Creation, Create New .gp4?", string.Empty,
-                    MessageBoxButtons.YesNo) == DialogResult.OK)
-                {
-                    var gp4 = new libgp4.GP4Creator();
-                    gp4.CreateGP4();
-                }
+            else if(!File.Exists(gp4Path))
+            {
+                FlashLabel("Info");
+                SetInfoLabelText("Invalid path provided for .gp4 project file. (file doesn't exist)");
                 return false;
             }
 
 
             // Set Output Directory as the current
-            if(!Directory.Exists(outputPath))
-                outputPath = gp4Path.Remove(gp4Path.LastIndexOf("\\"));
+            if (!Directory.Exists(outputPath))
+            {
+                FlashLabel("Info");
+                SetInfoLabelText("Invalid output directory provided for finished package file. (directory doesn't exist)");
+                return false;
+            }
+
 
 
             // Return successfully
@@ -167,37 +165,73 @@ namespace Dobby {
         /// <summary>
         /// Create and initialize a new Process in which to run the selected publishing tool
         /// </summary>
-        /// <param name="orbisToolPath"></param>
-        /// <param name="verbosity"></param>
-        /// <param name="tempDirectory"></param>
-        /// <param name="gp4Path"></param>
-        /// <param name="outputPath"></param>
+        /// <param name="orbisToolPath"> Absolute path to the PS4 package creation tools- specifically orbis-pub-cmd(-keystone).exe. Optionally takes a folder that it then searches for the tool inside of (by file name). </param>
+        /// <param name="verbosity"> Switch between verbose (detailed / --no_progress_bar), and the default progress bar output modes for the build tool </param>
+        /// <param name="tempDirectory"> An Alternate working/temporary directory for package creation process. </param>
+        /// <param name="gp4Path"> Absolute path to the .gp4 Project file that's to be used in the package creation process. </param>
+        /// <param name="outputPath"> The intended output directory for the completed package. </param>
         private void BeginPkgCreation(string orbisToolPath, string verbosity, string tempDirectory, string gp4Path, string outputPath)
         {
             // Put the provided options together
             var parameters = $"img_create --oformat pkg {verbosity ?? ""}--skip_digest {tempDirectory ?? ""} \"{gp4Path}\" \"{outputPath}\"";
-            
+            var errors = new List<string>();
+
+
             var buildProcess = new System.Diagnostics.Process() {
                 StartInfo = new System.Diagnostics.ProcessStartInfo(orbisToolPath, parameters)
+                {
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true
+                },
+
+                EnableRaisingEvents = true
             };
 
-            buildProcess.StartInfo.UseShellExecute = false;
-            buildProcess.StartInfo.RedirectStandardOutput = true;
-            buildProcess.OutputDataReceived += (prc, data) => Print($"[orbis-pub-cmd]: {data.Data}");
+            buildProcess.OutputDataReceived += (_, data) =>
+            {
+                if (data?.Data?.Length > 0)
+                {
+                    Print($"[orbis-pub-cmd]: {data.Data}");
+                    if (data.Data.Contains("[error]"))
+                        errors.Add(data.Data.Substring(data.Data.IndexOf("[error]") + 7));
+                }
+            };
 
-            buildProcess.BeginOutputReadLine();
+            
+
+            DisableFormChange = true;
             buildProcess.Start();
+            buildProcess.BeginOutputReadLine();
 
-            MessageBox.Show(".pkg Creation Started; If The CMD Window Just Closes Immediately, Something Is Wrong With Your .gp4 Or Gamedata (Likely The Latter). Check Info/Help Page -> Pkg Creation Page Help");
+            buildProcess.Exited += (prc, args) =>
+            {
+                if (buildProcess.ExitCode == 0)
+                {
+                    SetInfoLabelText("Fake-Package creation process completed without errors.");
+                }
+                else if (buildProcess.ExitCode == 1)
+                {
+                    FlashLabel("Info");
+                    SetInfoLabelText($"{errors.First()}.{(errors.Count > 1 ? $" ({errors.Count - 1} more errors)" : string.Empty)}");
+                }
+                else {
+                    FlashLabel("Info");
+                    SetInfoLabelText($"WARNING: Unexpected Exit Code from build tool ({buildProcess.ExitCode})");
+                }
+
+                DisableFormChange = false;
+            };
         }
         #endregion
 
 
 
-        //===================================\\
-        //--|   Event Handler Functions   |--\\
-        //===================================\\
-        #region [Event Handler Functions]
+
+        //======================================\\
+        //--|   Event Handler Declarations   |--\\
+        //======================================\\
+        #region [Event Handler Declarations]
 
         /// <summary>
         /// Switch to the GP4CreationPage to utilize libgp4.dll and make a new .gp4 project file.
@@ -235,14 +269,15 @@ namespace Dobby {
         //--|   Control Event Handlers  |--\\
         //=================================\\
         #region [Control Event Handlers]
+
         /// <summary>
-        /// Load orbis-pub-cmd.exe Binary And The Reqired .gp4 file If The Path Is Right
+        /// Initialize a new OpenFileDialogue instance in which to select the .pkg build tool
         /// </summary>
         private void OrbisCmdPathBrowseBtn_Click(object sender, EventArgs e)
         {
             using(var fileDialogue = new OpenFileDialog {
-                    Filter = "Executable|*.exe",
-                    Title = "Select orbis-pub-cmd.exe"
+                Filter = "Executable|*.exe",
+                Title = "Select the fpkg creation tool"
             })
             if(fileDialogue.ShowDialog() == DialogResult.OK)
                 OrbisToolPathBox.Set(fileDialogue.FileName);
@@ -253,7 +288,7 @@ namespace Dobby {
 
 
         /// <summary>
-        /// addme//!
+        /// Initialize a new OpenFileDialogue instance in which to choose the .gp4 project file
         /// </summary>
         private void GP4FilePathBrowseBtn_Click(object sender, EventArgs e)
         {
@@ -269,7 +304,7 @@ namespace Dobby {
         }
 
         /// <summary>
-        /// addme//!
+        /// Initialize either a new OpenFileDialogue or FolderBrowserDialog instance in which to choose the output directory of the finished package file.
         /// </summary>
         private void OutputDirectory_Click(object sender, EventArgs e)
         {
@@ -296,12 +331,15 @@ namespace Dobby {
                         OutputDirectoryPathBox.Set(folderDialogue.SelectedPath);
                 }
             }
+
+
+            ((Dobby.Button)sender).ForeColor = Color.White;
         }
 
         /// <summary>
-        /// addme//!
+        /// Initialize either a new OpenFileDialogue or FolderBrowserDialog instance in which to choose a custom path for the temporary files created during the package creation process. (the ps4pub folder)
         /// </summary>
-        private void TMPDirectoryItem_Click(object sender, EventArgs e)
+        private void TempDirectoryBrowseBtn_Click(object sender, EventArgs e)
         {
             if (StyleTest) { // Try The Newer "Hackey" Method
                 using(var fileDialogue = new OpenFileDialog
@@ -326,6 +364,9 @@ namespace Dobby {
                         TempDirectoryPathBox.Set(folderDialogue.SelectedPath);
                 }
             }
+
+
+            ((Dobby.Button)sender).ForeColor = Color.White;
         }
 
 
