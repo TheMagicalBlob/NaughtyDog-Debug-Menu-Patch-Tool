@@ -258,7 +258,7 @@ namespace Dobby
             this.GP4PageBtn.Text = "Create a New .gp4 File for Fake Package (fPKG) Creation...";
             this.GP4PageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.GP4PageBtn.UseVisualStyleBackColor = false;
-            this.GP4PageBtn.Click += new System.EventHandler(this.Gp4PageBtn_Click);
+            this.GP4PageBtn.Click += new System.EventHandler(this.GP4CreationPageBtn_Click);
             // 
             // TempDirectoryPathBox
             // 

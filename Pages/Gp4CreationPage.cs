@@ -62,6 +62,11 @@ namespace Dobby {
         //=============================================\\
         #region [Background Function Delcarations]
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gp4"></param>
+        /// <returns></returns>
         private bool ApplyandVerifyGP4Options(GP4Creator gp4)
         {
             // Check for Unassigned Gamedata Path Before Proceeding
@@ -93,7 +98,7 @@ namespace Dobby {
             }
 
 
-            // Ensure Keystone is Present if Applicable
+            // Ensure Keystone is Present in base game packages, if included
             if (gp4.SfoParams.category == "gd" && !gp4.IgnoreKeystone && !File.Exists($@"{gp4.GamedataFolder}\sce_sys\keystone"))
             {
                 FlashLabel("Info");
@@ -144,15 +149,13 @@ namespace Dobby {
 
 
 
+
         //======================================\\
         //--|   Event Handler Declarations   |--\\
         //======================================\\
         #region [Event Handler Declarations]
 
-
-        /// <summary>
-        /// Apply all the non-default .gp4 options and attempt project file creation.
-        /// </summary>
+        /// <summary> Apply all the non-default .gp4 options and attempt project file creation. </summary>
         private void GP4CreationBtn_Click(object sender, EventArgs e)
         {
             if (ApplyandVerifyGP4Options(gp4))
@@ -160,16 +163,12 @@ namespace Dobby {
                 BeginGP4Creation(gp4);
             }
             else {
-                Print("Ahh fuck, eh.");
+                Print("ApplyandVerifyGP4Options(GP4Creator) returned false, .gp4 creation not attempted.");
             }
         }
 
 
-
-        /// <summary>
-        /// Initialize a new FolderBrowserDialogue instance in which to select the gamedata folder.
-        /// <br/> TODO: Implement switch.
-        /// </summary>
+        /// <summary> Initialize a new FolderBrowserDialogue instance in which to select the gamedata folder. </summary>
         private void GamedataPathBrowseBtn_Click(object sender, EventArgs e)
         {
             if (StyleTest) { // Try The Newer "Hackey" Method //!
@@ -179,7 +178,7 @@ namespace Dobby {
                     CheckPathExists = false,
                     CheckFileExists = false,
 
-                    Title    = "(Don't click anything IN the desired folder, this dialogue is terrible)", 
+                    Title    = "Please Select the Desired Gamedata Folder", 
                     Filter   = "Folder Selection|*.",
                     FileName = "Enter the desired Folder, and press \"Open\"."
                 })
@@ -202,11 +201,8 @@ namespace Dobby {
         }
 
 
-
-        /// <summary>
-        /// Initialize a new FolderBrowserDialogue Instance in which to choose the output directory for the created .gp4 project.
-        /// </summary>
-        private void Gp4OutputDirectoryBrowseBtn_Click(object sender, EventArgs e)
+        /// <summary> Initialize a new FolderBrowserDialogue Instance in which to choose the output directory for the created .gp4 project. </summary>
+        private void GP4OutputDirectoryBrowseBtn_Click(object sender, EventArgs e)
         {
             if (StyleTest) { // Try The Newer "Hackey" Method //!
                 using(var fileDialogue = new OpenFileDialog
@@ -237,10 +233,7 @@ namespace Dobby {
         }
 
 
-
-        /// <summary>
-        /// Initialize a new OpenFileDialogue instance in which to select the base application package, for use in creating patch .gp4/.pkg's
-        /// </summary>
+        /// <summary> Initialize a new OpenFileDialogue instance in which to select the base application package, for use in creating patch .gp4/.pkg's. </summary>
         private void BaseGamePackageBrowseBtn_Click(object sender, EventArgs e)
         {
             using(var fileDialogue = new OpenFileDialog {
@@ -255,9 +248,7 @@ namespace Dobby {
         }
 
 
-        /// <summary>
-        /// Initialize a new OpenFileDialogue instance in which to select the desired files to exclude from the .gp4's file listing
-        /// </summary>
+        /// <summary> Initialize a new OpenFileDialogue instance in which to select the desired files to exclude from the .gp4's file listing. </summary>
         private void FileBlacklistBrowseBtn_Click(object sender, EventArgs e)
         {
             using(var fileDialogue = new OpenFileDialog {
@@ -265,17 +256,19 @@ namespace Dobby {
                 Multiselect = true
             })
             if(fileDialogue.ShowDialog() == DialogResult.OK)
-                BaseGamePackagePathBox.Set(string.Join(";", fileDialogue.FileNames));
+                FileBlacklistPathBox.Set(string.Join(";", fileDialogue.FileNames));
 
 
             ((Dobby.Button)sender).ForeColor = Color.White;
         }
 
         
-
+        /// <summary> Toggle the option to use absolute file paths for files in the .gp4 instead of relative to the gamedata folder. </summary>
         private void AbsoluteFilePathsBtn_Click(object control, EventArgs args) => CycleButtonVariable<bool>(control);
         
-        private void IgnoreKeystoneBtn_Click(object control, EventArgs eventArgs)    => CycleButtonVariable<bool>(control);
+
+        /// <summary> If true, avoid adding the keystone file in sce_sys to the .gp4's file listing. </summary>
+        private void IgnoreKeystoneBtn_Click(object control, EventArgs eventArgs) => CycleButtonVariable<bool>(control);
         #endregion
     }
 }

@@ -41,9 +41,9 @@ namespace Dobby {
         //--|   Variable Declarations   |--\\
         //=================================\\
         #region [Variable Declarations]
-
+        
+        // :3 |\\
         #endregion
-
 
 
 
@@ -53,9 +53,18 @@ namespace Dobby {
         //=============================================\\
         #region [Background Function Delcarations]
 
-
-        private bool ApplyAndVerifyPkgOptions(ref string orbisToolPath, ref string verbosity, ref string gp4Path, ref string outputPath, ref string tempDirectory)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="orbisToolPath"></param>
+        /// <param name="verbosity"></param>
+        /// <param name="gp4Path"></param>
+        /// <param name="outputPath"></param>
+        /// <param name="tempDirectory"></param>
+        /// <returns></returns>
+        private bool ApplyAndVerifyPkgOptions(ref string orbisToolPath, ref string verbosity, ref string tempDirectory, ref string gp4Path, ref string outputPath)
         {
+            Array.ForEach(new bool[] { OrbisToolPathBox.IsDefault, (bool)VerbosityBtn.Variable, TempDirectoryPathBox.IsDefault, GP4PathBox.IsDefault, OutputDirectoryPathBox.IsDefault }, msg => Console.WriteLine($"|:[{msg}]:|"));
 
             if (!OrbisToolPathBox.IsDefault)
             {
@@ -197,7 +206,7 @@ namespace Dobby {
         /// <summary>
         /// Switch to the GP4CreationPage to utilize libgp4.dll and make a new .gp4 project file.
         /// </summary>
-        private void Gp4PageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.Gp4CreationPage);
+        private void GP4CreationPageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.Gp4CreationPage);
 
 
         /// <summary>
@@ -218,7 +227,7 @@ namespace Dobby {
                 BeginPkgCreation(orbisToolPath, verbosity, tempDirectory, gp4Path, outputPath);
             }
             else {
-                SetInfoLabelText("ERROR: Unable to begin package creation");
+                Print("ERROR: Unable to begin package creation.");
             }
         }
 

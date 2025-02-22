@@ -336,7 +336,7 @@ namespace Dobby
             this.GP4OutputDirectoryBrowseBtn.Text = "Browse";
             this.GP4OutputDirectoryBrowseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.GP4OutputDirectoryBrowseBtn.UseVisualStyleBackColor = false;
-            this.GP4OutputDirectoryBrowseBtn.Click += new System.EventHandler(this.Gp4OutputDirectoryBrowseBtn_Click);
+            this.GP4OutputDirectoryBrowseBtn.Click += new System.EventHandler(this.GP4OutputDirectoryBrowseBtn_Click);
             // 
             // GamedataPathBox
             // 

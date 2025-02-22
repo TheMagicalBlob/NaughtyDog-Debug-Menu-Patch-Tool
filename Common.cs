@@ -1250,11 +1250,9 @@ namespace Dobby {
         /// <summary> Create New Control Instance. </summary>
         public TextBox()
         {
-            IsDefault = true;
-            
             TextChanged += SetDefaultText; // Save the first Text assignment as the DefaultText
             TextChanged += (sender, e) => { Text = Text.Replace("\"", string.Empty); IsDefault = false; };
-
+            IsDefault = true;
 
             GotFocus += ReadyControl;
             LostFocus += ResetControl; // Reset control if nothing was entered, or the text is a portion of the default text
@@ -1265,6 +1263,7 @@ namespace Dobby {
         private void SetDefaultText(object _, EventArgs __) {
             DefaultText = Text;
             TextChanged -= SetDefaultText;
+            IsDefault = true;
         }
 
 
@@ -1275,6 +1274,7 @@ namespace Dobby {
                 IsDefault = false;
 
                 Font = Common.TextFont;
+                Console.WriteLine($"Readying Control \"{((Control)eat).Name}\"");
                 //TextAlign = HorizontalAlignment.Left; // Disabled alignment change until I can figure out the looping logic that results from it
             }
         }
@@ -1311,7 +1311,8 @@ namespace Dobby {
         private string DefaultText;
 
         // Help Better Keep Track of Whether the User's Changed the Text, Because I'm a Moron.
-        public bool IsDefault { get; private set; }
+        public bool IsDefault { get { Console.WriteLine($"Read {_isDefault} from {Name}"); return _isDefault; } private set { _isDefault = value; Console.WriteLine($"Wrote {value} to {Name}"); } }
+        private bool _isDefault;
         
     }
 
