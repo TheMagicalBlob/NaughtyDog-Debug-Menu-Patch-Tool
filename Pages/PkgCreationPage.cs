@@ -1,14 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Drawing;
 using System.Windows.Forms;
 using static Dobby.Common;
-using libdebug;
-using System.Security.Cryptography;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
 #if DEBUG
-using System.Linq;
 #endif
 
 
@@ -29,7 +25,8 @@ namespace Dobby {
 
 
             VerbosityBtn.Variable = true;
-            
+            CleanTempFilesBtn.Variable = true;
+
             Testing.AddStyleTestButton(this);
             // TODO:
             // * Maintain Settings For Page When Swapping Between gp4/pkg Creation Pages.. Or Just In General.
@@ -64,8 +61,6 @@ namespace Dobby {
         /// <returns></returns>
         private bool ApplyAndVerifyPkgOptions(ref string orbisToolPath, ref string verbosity, ref string tempDirectory, ref string gp4Path, ref string outputPath)
         {
-            Array.ForEach(new bool[] { OrbisToolPathBox.IsDefault, (bool)VerbosityBtn.Variable, TempDirectoryPathBox.IsDefault, GP4PathBox.IsDefault, OutputDirectoryPathBox.IsDefault }, msg => Console.WriteLine($"|:[{msg}]:|"));
-
             if (!OrbisToolPathBox.IsDefault)
             {
                 orbisToolPath = OrbisToolPathBox.Text.Replace("\n", string.Empty);
@@ -101,9 +96,9 @@ namespace Dobby {
             }
 
             
-            if (!GP4PathBox.IsDefault)
+            if (!GP4FilePathBox.IsDefault)
             {
-                gp4Path = GP4PathBox.Text.Replace("\n", string.Empty);
+                gp4Path = GP4FilePathBox.Text.Replace("\n", string.Empty);
             }
             else {
                 FlashLabel("Info");
@@ -121,18 +116,19 @@ namespace Dobby {
                 outputPath = Directory.GetParent(gp4Path).FullName;
             }
 
-
-            // Assign custom temp directory if one's been provided
-            if (!TempDirectoryPathBox.IsDefault)
-            {
-                tempDirectory = $"\"{TempDirectoryPathBox.Text.Replace("\n", string.Empty)}\"";
-            }
+            
 
 
             // Assign chosen verbosity option
             if ((bool)VerbosityBtn.Variable)
             {
                 verbosity = "--no_progress_bar ";
+            }
+
+            // Assign custom temp directory if one's been provided
+            if (!TempDirectoryPathBox.IsDefault)
+            {
+                tempDirectory = $"--tmp_path \"{TempDirectoryPathBox.Text.Replace("\n", string.Empty)}\"";
             }
 
 
@@ -179,7 +175,7 @@ namespace Dobby {
         private void BeginPkgCreation(string orbisToolPath, string verbosity, string tempDirectory, string gp4Path, string outputPath)
         {
             // Put the provided options together
-            var parameters = $"img_create --oformat pkg {verbosity ?? ""}--skip_digest {tempDirectory ?? ""} \"{gp4Path}\" \"{outputPath}\" > \"C:\\Users\\Blob\\Desktop\\out.txt\"";
+            var parameters = $"img_create --oformat pkg {verbosity ?? ""}--skip_digest {tempDirectory ?? ""} \"{gp4Path}\" \"{outputPath}\"";
             
             var buildProcess = new System.Diagnostics.Process() {
                 StartInfo = new System.Diagnostics.ProcessStartInfo(orbisToolPath, parameters)
@@ -217,9 +213,9 @@ namespace Dobby {
             string
                 orbisToolPath = null,
                 verbosity = null,
+                tempDirectory = null,
                 gp4Path = null,
-                outputPath = null,
-                tempDirectory = null
+                outputPath = null
             ;
 
             if (ApplyAndVerifyPkgOptions(ref orbisToolPath, ref verbosity, ref tempDirectory, ref gp4Path, ref outputPath))
@@ -259,14 +255,14 @@ namespace Dobby {
         /// <summary>
         /// addme//!
         /// </summary>
-        private void GP4PathBrowseBtn_Click(object sender, EventArgs e)
+        private void GP4FilePathBrowseBtn_Click(object sender, EventArgs e)
         {
             using(var fileDialogue = new OpenFileDialog {
                 Filter = ".gp4 Project File|*.gp4",
                 Title = "Select Your .gp4 File" 
             })
             if(fileDialogue.ShowDialog() == DialogResult.OK)
-                GP4PathBox.Set(fileDialogue.FileName);
+                GP4FilePathBox.Set(fileDialogue.FileName);
 
 
             ((Dobby.Button)sender).ForeColor = Color.White;
@@ -284,7 +280,7 @@ namespace Dobby {
                     CheckPathExists = false,
                     CheckFileExists = false,
 
-                    Title    = "Chose A Directory You Want The Finished .pkg To Go, Or Close This Window To Use The App Directory",
+                    Title    = "Choose A Directory You Want The Finished .pkg To Go, Or Close This Window To Use The App Directory",
                     Filter   = "Folder Selection|*.",
                     FileName = "Enter the desired Folder, and press \"Open\"."
                 })
@@ -294,7 +290,7 @@ namespace Dobby {
             }
             
             else { // Use the ghastly Directory Tree Dialogue to Choose A Folder
-                using (var folderDialogue = new FolderBrowserDialog { Description = "Chose A Directory You Want The Finished .pkg To Go, Or Close This Window To Use The App Directory" })
+                using (var folderDialogue = new FolderBrowserDialog { Description = "Choose A Directory You Want The Finished .pkg To Go, Or Close This Window To Use The App Directory" })
                 {
                     if (folderDialogue.ShowDialog() == DialogResult.OK)
                         OutputDirectoryPathBox.Set(folderDialogue.SelectedPath);
@@ -314,7 +310,7 @@ namespace Dobby {
                     CheckPathExists = false,
                     CheckFileExists = false,
 
-                    Title    = "Chose A Temp Directory For Files Created During The .pkg Build Process",
+                    Title    = "Choose A Temp Directory For Files Created During The .pkg Build Process",
                     Filter   = "Folder Selection|*.",
                     FileName = "Enter the desired Folder, and press \"Open\"."
                 })
@@ -324,7 +320,7 @@ namespace Dobby {
             }
             
             else { // Use the ghastly Directory Tree Dialogue to Choose A Folder
-                using (var folderDialogue = new FolderBrowserDialog { Description = "Chose A Temp Directory For Files Created During The .pkg Build Process" })
+                using (var folderDialogue = new FolderBrowserDialog { Description = "Choose A Temp Directory For Files Created During The .pkg Build Process" })
                 {
                     if (folderDialogue.ShowDialog() == DialogResult.OK)
                         TempDirectoryPathBox.Set(folderDialogue.SelectedPath);
@@ -338,6 +334,12 @@ namespace Dobby {
         /// Cycle between using the detailed output for orbis-pub-cmd, or the less informative progress bar
         /// </summary>
         private void VerbosityBtn_Click(object sender, EventArgs e) => CycleButtonVariable<bool>(sender);
+
+        
+        /// <summary>
+        /// Toggle the option to delete the "ps4pub" folder orbis-pub-cmd creates during the image creation process
+        /// </summary>
+        private void CleanTempFilesBtn_Click(object sender, EventArgs e) => CycleButtonVariable<bool>(sender);
         #endregion
     }
 }

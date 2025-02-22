@@ -73,8 +73,19 @@ namespace Dobby {
             if (GamedataPathBox.IsDefault)
             {
 #if DEBUG
-                if (gp4.GamedataFolder.Remove(gp4.GamedataFolder.LastIndexOf('-')) == Testing.TestGamedataFolder.Remove(Testing.TestGamedataFolder.LastIndexOf('-'))) {
-                    Print("Using Test Gamedata Folder.");
+                if (Testing.TestGamedataFolder?.Length != 0)
+                {
+                    if (Directory.Exists(Testing.TestGamedataFolder ?? "nani??"))
+                    {
+                        Print("Using assigned TestGamedataFolder Path.");
+                    }
+                    else {
+                        Print("A value was assigned to TestGamedataFolder, but the path is not currently valid");
+
+                        FlashLabel("Info");
+                        SetInfoLabelText("Invalid TestGamedataFolder Path Provided.\n");
+                        return false;
+                    }
                 }
                 else
 #endif
@@ -256,7 +267,7 @@ namespace Dobby {
                 Multiselect = true
             })
             if(fileDialogue.ShowDialog() == DialogResult.OK)
-                FileBlacklistPathBox.Set(string.Join(";", fileDialogue.FileNames));
+                FileBlacklistPathBox.Set((FileBlacklistPathBox.IsDefault ? FileBlacklistPathBox.Text : "") + string.Join(";", fileDialogue.FileNames));
 
 
             ((Dobby.Button)sender).ForeColor = Color.White;

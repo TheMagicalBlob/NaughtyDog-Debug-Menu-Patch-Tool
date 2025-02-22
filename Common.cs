@@ -1251,7 +1251,6 @@ namespace Dobby {
         public TextBox()
         {
             TextChanged += SetDefaultText; // Save the first Text assignment as the DefaultText
-            TextChanged += (sender, e) => { Text = Text.Replace("\"", string.Empty); IsDefault = false; };
             IsDefault = true;
 
             GotFocus += ReadyControl;
@@ -1263,7 +1262,7 @@ namespace Dobby {
         private void SetDefaultText(object _, EventArgs __) {
             DefaultText = Text;
             TextChanged -= SetDefaultText;
-            IsDefault = true;
+            TextChanged += (sender, e) => { Text = Text.Replace("\"", string.Empty); IsDefault = false; };
         }
 
 
@@ -1306,13 +1305,11 @@ namespace Dobby {
 
 
 
-
         // Default Control Text to Be Displayed When "Empty".
         private string DefaultText;
 
         // Help Better Keep Track of Whether the User's Changed the Text, Because I'm a Moron.
-        public bool IsDefault { get { Console.WriteLine($"Read {_isDefault} from {Name}"); return _isDefault; } private set { _isDefault = value; Console.WriteLine($"Wrote {value} to {Name}"); } }
-        private bool _isDefault;
+        public bool IsDefault { get; private set; }
         
     }
 
