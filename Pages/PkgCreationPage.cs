@@ -190,11 +190,14 @@ namespace Dobby {
 
             buildProcess.OutputDataReceived += (_, data) =>
             {
+                Print($"[orbis-pub-cmd]: {data?.Data ?? "null"}");
+                
                 if (data?.Data?.Length > 0)
                 {
-                    Print($"[orbis-pub-cmd]: {data.Data}");
-                    if (data.Data.Contains("[error]"))
-                        errors.Add(data.Data.Substring(data.Data.IndexOf("[error]") + 7));
+                    // TODO:
+                    // * Have the section of errors orbis-pub-cmd outputs wrapped in braces appear before the more general part which otherwise preceeds it (so the useful part doesn't get cut off first)
+                    if (data.Data.Contains("[Error]"))
+                        errors.Add(data.Data.Replace("[Error]", "[ERROR] "));
                 }
             };
 
@@ -208,16 +211,16 @@ namespace Dobby {
             {
                 if (buildProcess.ExitCode == 0)
                 {
-                    SetInfoLabelText("Fake-Package creation process completed without errors.");
+                    ActiveForm?.Invoke(SetInfoText, "Fake-Package creation process completed without errors.");
                 }
                 else if (buildProcess.ExitCode == 1)
                 {
                     FlashLabel("Info");
-                    SetInfoLabelText($"{errors.First()}.{(errors.Count > 1 ? $" ({errors.Count - 1} more errors)" : string.Empty)}");
+                    ActiveForm?.Invoke(SetInfoText, $"{errors.First()}.{(errors.Count > 1 ? $" ({errors.Count - 1} more errors)" : string.Empty)}");
                 }
                 else {
                     FlashLabel("Info");
-                    SetInfoLabelText($"WARNING: Unexpected Exit Code from build tool ({buildProcess.ExitCode})");
+                    ActiveForm?.Invoke(SetInfoText, $"WARNING: Unexpected Exit Code from build tool ({buildProcess.ExitCode})");
                 }
 
                 DisableFormChange = false;
