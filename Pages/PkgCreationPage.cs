@@ -66,7 +66,7 @@ namespace Dobby {
             }
             else {
                 FlashLabel(Info);
-                SetInfoLabelText("Please provide a path to the FPKG tools before building.");
+                LabelTextMethod("Please provide a path to the FPKG tools before building.");
                 return false;
             }
 
@@ -77,7 +77,7 @@ namespace Dobby {
             }
             else {
                 FlashLabel(Info);
-                SetInfoLabelText("Please provide a valid .gp4 path before building.");
+                LabelTextMethod("Please provide a valid .gp4 path before building.");
                 return false;
             }
             

@@ -857,7 +857,7 @@ namespace Dobby {
                 Control.Refresh();
             }
 
-            private void HoverString(object sender, EventArgs e) => SetInfoLabelText(Hint[((Control)sender).TabIndex]);
+            private void HoverString(object sender, EventArgs e) => LabelTextMethod(Hint[((Control)sender).TabIndex]);
             #endregion
         }
 

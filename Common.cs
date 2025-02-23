@@ -1,20 +1,13 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.Design;
-using System.ComponentModel.Design.Serialization;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
-using System.Windows.Forms.Design;
-using libdebug;
 #if DEBUG
 using System.Diagnostics;
 #endif
@@ -114,6 +107,7 @@ namespace Dobby {
         //## Control Refferences
         //#
         #region [Control Refferences]
+
         /// <summary> Refference to the originally launched form. </summary>
         private static Form MainForm;
         public static Form PopupBox;
@@ -519,7 +513,7 @@ namespace Dobby {
                     break;
 
             }
-            SetInfoLabelText(InfoLabelString);
+            LabelTextMethod(InfoLabelString);
 #pragma warning restore CS0162 // Unreachable code detected
         }
         #endregion
@@ -543,7 +537,7 @@ namespace Dobby {
         public static void ChangeForm(PageID? Page, bool ReturningToPreviousPage = false)
         {
             if (DisableFormChange) {
-                SetInfoLabelText("Disabled during .gp4 ? .pkg Creation Process.");
+                LabelTextMethod("Disabled during .gp4 ? .pkg Creation Process.");
                 Print($"Ignoring request to change form to \"{Page ?? 0}\".");
                 return;
             }
@@ -752,17 +746,6 @@ namespace Dobby {
             catch (Exception) {}
         }
 
-
-        /// <summary>
-        /// Set The Text of The Yellow Label At The Bottom Of The Form
-        /// </summary>
-        internal static void SetInfoLabelText(string s)
-        {
-            if (ActiveForm != null)
-                InfoLabel.Text = s;
-
-            Print($"[info]: {s}");
-        }
 
         #endregion
 
@@ -1002,7 +985,7 @@ namespace Dobby {
         };
 
 
-        /// <summary> Info Label Flash Delegate- for Cross-Threaded Label Setting. (I still suck with threads) </summary>
+        /// <summary> Info Label Flash Delegate- for Cross-Threaded editing of Info Label states. (I still suck with threads) </summary>
         public static readonly LabelFlashCallback SetLabelColour = (control, colour) =>
         {
             try {
@@ -1038,8 +1021,21 @@ namespace Dobby {
                 ActiveForm?.Invoke(SetLabelColour, label, Color.FromArgb(255, 227, 0));
             }
         }
-        #endregion
-        #endregion
+
+        
+        /// <summary>
+        /// Set The Text of The Yellow Label At The Bottom Of The Form
+        /// </summary>
+        internal static void LabelTextMethod(string s)
+        {
+            if (ActiveForm != null)
+                InfoLabel.Text = s;
+
+            Print($"[info]: {s}");
+        }
+
+        #endregion (form drawing functions)
+        #endregion [Static Background Function Declarations]
 
         
 

@@ -280,7 +280,8 @@
           "* 4.57.335.867 | Finished screwing with the GP4CreationPage; Refining PkgCreationPage output to offer more input to the user.",
           "* 4.59.339.871 | Pkg & GP4 Creation pages essentially finished now, working on making the processes more verbose for the user, so there's no instances of \"is it doin' anything?\" while using the application. More misc background stuff like comments and formatting. (I am waayy too tired to write these damn messages. This is the one thing I wouldn't mind an AI for... still not gonna use one, though.)",
           "* 4.59.340.874 | Fixed improper SetInfoLabelText usage in event handlers managed on a seperate thread.",
-          "* 4.59.341.877 | Removed pointless Verbosity option in pkgcreation page (added before I was sure how the page would work); slight info label tweaks; other misc background changes."
+          "* 4.59.341.877 | Removed pointless Verbosity option in pkgcreation page (added before I was sure how the page would work); slight info label tweaks; other misc background changes.",
+          "* 4.59.341.878 | formatting/comments (pushing jic, really)"
         };
 
 

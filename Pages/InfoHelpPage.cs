@@ -286,8 +286,8 @@ namespace Dobby {
                 MessageBox.Show($"Changelist Dumped To {Directory.GetCurrentDirectory()}\\ChangeLog.txt");
             }
         }
-        void BuildLabelMH(object sender, EventArgs e) { SetInfoLabelText("Right Click To Dump ChangeList"); }
-        void BuildLabelML(object sender, EventArgs e) => SetInfoLabelText("");
+        void BuildLabelMH(object sender, EventArgs e) { LabelTextMethod("Right Click To Dump ChangeList"); }
+        void BuildLabelML(object sender, EventArgs e) => LabelTextMethod("");
 
         private void PS4DebugHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.PS4DebugHelpPage);
         private void EbootPatchPageHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.EbootPatchHelpPage);

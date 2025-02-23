@@ -18,12 +18,11 @@ namespace Dobby {
         }
 
         
-
-
-        /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///-- EBOOTPATCHPAGE VARIABLES AND FUNCTIONS  --\\\
-        /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\
-        #region EbootPatchPage Variables & Functions
+        
+        //=================================\\
+        //--|   Variable Declarations   |--\\
+        //=================================\\
+        #region [Variable Declarations]
 
         private readonly byte[] E9Jump = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 };
 
@@ -313,7 +312,7 @@ namespace Dobby {
             WriteByte((int)DebugAddressForSelectedGame, (byte)(PatchType == 0 ? (DebugAddressForSelectedGame == (DebugJumpAddress) 0x5C5A ? 0x74 : 0x75) : 0xEB));
 
             if(PatchType < 2) { // Return If Patch Is Basic Debug Toggle
-                SetInfoLabelText($"{ActiveGameID} {ResultStrings[PatchType]}");
+                LabelTextMethod($"{ActiveGameID} {ResultStrings[PatchType]}");
                 return;
             }
 
@@ -540,7 +539,7 @@ namespace Dobby {
             foreach (int Address in FunctionNops)
                 WriteBytes(Address, E9Jump);
 
-            SetInfoLabelText("Restored Debug Patch Applied");
+            LabelTextMethod("Restored Debug Patch Applied");
         }
 
         

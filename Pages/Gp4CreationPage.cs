@@ -167,17 +167,17 @@ namespace Dobby {
             if (!File.Exists(newGp4))
             {
                 if (newGp4 == string.Empty) {
-                    SetInfoLabelText("One or multiple errors were detected during .gp4 creation");
+                    LabelTextMethod("One or multiple errors were detected during .gp4 creation");
                 }
                 else {
-                    SetInfoLabelText("An unexpected error occured during .gp4 creation.");
+                    LabelTextMethod("An unexpected error occured during .gp4 creation.");
                 }
 
 
                 Print($"  - newGp4: \"{newGp4}\")");
             }
             else {
-                SetInfoLabelText(".gp4 Creation Successful.");
+                LabelTextMethod(".gp4 Creation Successful.");
                 Print($"  - .gp4 saved at: \"{newGp4}\"");
             }
         }
