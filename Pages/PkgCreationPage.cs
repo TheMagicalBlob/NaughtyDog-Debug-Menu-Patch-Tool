@@ -25,7 +25,6 @@ namespace Dobby {
             }
 
 
-            VerbosityBtn.Variable = true;
             CleanTempFilesBtn.Variable = true;
 
             Testing.AddStyleTestButton(this);
@@ -55,19 +54,18 @@ namespace Dobby {
         /// Apply selected (or default) options for the package creation process, making sure there aren't any obvious errors that would cause the creation process to fail.
         /// </summary>
         /// <param name="orbisToolPath"> Absolute path to the PS4 package creation tools- specifically orbis-pub-cmd(-keystone).exe. Optionally takes a folder that it then searches for the tool inside of (by file name). </param>
-        /// <param name="verbosity"> Switch between verbose (detailed / --no_progress_bar), and the default progress bar output modes for the build tool </param>
         /// <param name="tempDirectory"> An Alternate working/temporary directory for package creation process. </param>
         /// <param name="gp4Path"> Absolute path to the .gp4 Project file that's to be used in the package creation process. </param>
         /// <param name="outputPath"> The intended output directory for the completed package. </param>
         /// <returns> True if all seems well with the current options. </returns>
-        private bool ApplyAndVerifyPkgOptions(ref string orbisToolPath, ref string verbosity, ref string tempDirectory, ref string gp4Path, ref string outputPath)
+        private bool ApplyAndVerifyPkgOptions(ref string orbisToolPath, ref string tempDirectory, ref string gp4Path, ref string outputPath)
         {
             if (!OrbisToolPathBox.IsDefault)
             {
                 orbisToolPath = OrbisToolPathBox.Text.Replace("\n", string.Empty);
             }
             else {
-                FlashLabel("Info");
+                FlashLabel(Info);
                 SetInfoLabelText("Please provide a path to the FPKG tools before building.");
                 return false;
             }
@@ -78,7 +76,7 @@ namespace Dobby {
                 gp4Path = GP4FilePathBox.Text.Replace("\n", string.Empty);
             }
             else {
-                FlashLabel("Info");
+                FlashLabel(Info);
                 SetInfoLabelText("Please provide a valid .gp4 path before building.");
                 return false;
             }
@@ -95,15 +93,9 @@ namespace Dobby {
 
             
 
-
-            // Assign chosen verbosity option
-            if ((bool)VerbosityBtn.Variable)
-                verbosity = "--no_progress_bar ";
-
-
             // Assign custom temp directory if one's been provided
             if (!TempDirectoryPathBox.IsDefault)
-                tempDirectory = $"--tmp_path \"{TempDirectoryPathBox.Text.Replace("\n", string.Empty)}\"";
+                tempDirectory = $"--tmp_path \"{TempDirectoryPathBox.Text.Replace("\n", string.Empty)}\" ";
             
 
 
@@ -123,16 +115,14 @@ namespace Dobby {
                     }
                     else if (file == files.Last())
                     {
-                        FlashLabel("Info");
-                        SetInfoLabelText("Build tool not found in provided folder (Expected Name: *-cmd*)");
+                        FlashLabel(Info, "Build tool not found in provided folder (Expected Name: *-cmd*)");
                         return false;
                     }
                 }
             }
             else if (!File.Exists(orbisToolPath))
             {
-                FlashLabel("Info");
-                SetInfoLabelText("Invalid path provided for fpkg build tool. (file doesn't exist)");
+                FlashLabel(Info, "Invalid path provided for fpkg build tool. (file doesn't exist)");
                 return false;
             }
 
@@ -141,8 +131,7 @@ namespace Dobby {
             // Verfiy .gp4 Project Path
             else if(!File.Exists(gp4Path))
             {
-                FlashLabel("Info");
-                SetInfoLabelText("Invalid path provided for .gp4 project file. (file doesn't exist)");
+                FlashLabel(Info, "Invalid path provided for .gp4 project file. (file doesn't exist)");
                 return false;
             }
 
@@ -150,8 +139,7 @@ namespace Dobby {
             // Set Output Directory as the current
             if (!Directory.Exists(outputPath))
             {
-                FlashLabel("Info");
-                SetInfoLabelText("Invalid output directory provided for finished package file. (directory doesn't exist)");
+                FlashLabel(Info, "Invalid output directory provided for finished package file. (directory doesn't exist)");
                 return false;
             }
 
@@ -166,14 +154,13 @@ namespace Dobby {
         /// Create and initialize a new Process in which to run the selected publishing tool
         /// </summary>
         /// <param name="orbisToolPath"> Absolute path to the PS4 package creation tools- specifically orbis-pub-cmd(-keystone).exe. Optionally takes a folder that it then searches for the tool inside of (by file name). </param>
-        /// <param name="verbosity"> Switch between verbose (detailed / --no_progress_bar), and the default progress bar output modes for the build tool </param>
         /// <param name="tempDirectory"> An Alternate working/temporary directory for package creation process. </param>
         /// <param name="gp4Path"> Absolute path to the .gp4 Project file that's to be used in the package creation process. </param>
         /// <param name="outputPath"> The intended output directory for the completed package. </param>
-        private void BeginPkgCreation(string orbisToolPath, string verbosity, string tempDirectory, string gp4Path, string outputPath)
+        private void BeginPkgCreation(string orbisToolPath, string tempDirectory, string gp4Path, string outputPath)
         {
             // Put the provided options together
-            var parameters = $"img_create --oformat pkg {verbosity ?? ""}--skip_digest {tempDirectory ?? ""} \"{gp4Path}\" \"{outputPath}\"";
+            var parameters = $"img_create --oformat pkg --no_progress_bar --skip_digest {tempDirectory ?? ""}\"{gp4Path}\" \"{outputPath}\"";
             var errors = new List<string>();
 
 
@@ -211,16 +198,14 @@ namespace Dobby {
             {
                 if (buildProcess.ExitCode == 0)
                 {
-                    ActiveForm?.Invoke(SetInfoText, "Fake-Package creation process completed without errors.");
+                    ActiveForm?.Invoke(SetLabelText, "Fake-Package creation process completed without errors.");
                 }
                 else if (buildProcess.ExitCode == 1)
                 {
-                    FlashLabel("Info");
-                    ActiveForm?.Invoke(SetInfoText, $"{errors.First()}.{(errors.Count > 1 ? $" ({errors.Count - 1} more errors)" : string.Empty)}");
+                    FlashLabel(Info, $"{errors.First()}.{(errors.Count > 1 ? $" ({errors.Count - 1} more errors)" : string.Empty)}");
                 }
                 else {
-                    FlashLabel("Info");
-                    ActiveForm?.Invoke(SetInfoText, $"WARNING: Unexpected Exit Code from build tool ({buildProcess.ExitCode})");
+                    FlashLabel(Info, $"WARNING: Unexpected Exit Code from build tool ({buildProcess.ExitCode})");
                 }
 
                 DisableFormChange = false;
@@ -249,15 +234,14 @@ namespace Dobby {
         {
             string
                 orbisToolPath = null,
-                verbosity = null,
                 tempDirectory = null,
                 gp4Path = null,
                 outputPath = null
             ;
 
-            if (ApplyAndVerifyPkgOptions(ref orbisToolPath, ref verbosity, ref tempDirectory, ref gp4Path, ref outputPath))
+            if (ApplyAndVerifyPkgOptions(ref orbisToolPath, ref tempDirectory, ref gp4Path, ref outputPath))
             {
-                BeginPkgCreation(orbisToolPath, verbosity, tempDirectory, gp4Path, outputPath);
+                BeginPkgCreation(orbisToolPath, tempDirectory, gp4Path, outputPath);
             }
             else {
                 Print("ERROR: Unable to begin package creation.");

@@ -59,9 +59,9 @@ namespace Dobby {
         #region [Global Variable Declarations]
 
         //#
-        //## Basic Form Functionality Components
+        //## Basic Form Functionality
         //#
-        #region [Basic Form Functionality Components]
+        #region (Basic Form Functionality)
         
         /// <summary> ID for the active game. </summary>
         public static GameID Game;
@@ -164,7 +164,7 @@ namespace Dobby {
 
         public delegate void LabelUpdateCallback(string InfoText);
 
-        public delegate void LabelFlashCallback(string Control, System.Drawing.Color colour);
+        public delegate void LabelFlashCallback(Label control, System.Drawing.Color colour);
         #endregion
 
 
@@ -180,11 +180,11 @@ namespace Dobby {
 
         #endregion (global variable declarations)
 
-
-        //#
-        //## Static Function Declarations
-        //#
-        #region [Static Function Declarations]
+        
+        //========================================\\
+        //--|   Global Function Declarations   |--\\
+        //========================================\\
+        #region [Global Function Declarations]
 
         /// <summary>
         /// Dev.Print overload, for some reason. //!
@@ -207,7 +207,7 @@ namespace Dobby {
 
 
         
-        public static void FlashLabel(string label)
+        public static void FlashLabel(Label label, string error = null)
         {
             if (LabelFlashThread == null || LabelFlashThread.ThreadState == System.Threading.ThreadState.Stopped)
                 (LabelFlashThread = new Thread(LabelFlashMethod)).Start(label);
@@ -292,11 +292,9 @@ namespace Dobby {
         }
 
 
-
         /// <summary> Save a refference to the orignal launch form. (why is this a function, again? //!) </summary>
         /// <param name="form"> The orignal form </param>
         public static void SaveMainForm(Form form) => MainForm = form;
-
 
                 
         /// <summary>
@@ -374,7 +372,6 @@ namespace Dobby {
         }
 
 
-
         public static RichTextBox CreateTextBox(string Title) {
             PopupGroupBox?.Dispose();
 
@@ -428,7 +425,6 @@ namespace Dobby {
 
         private static void KillTextBox(object sender, MouseEventArgs e) => PopupGroupBox?.Dispose();
 
-        
 
         /// <summary> [deprecated] Sets The Info Label String Based On The Currently Hovered Control </summary>
         /// <param name="Sender">The Hovered Control</param>
@@ -837,7 +833,7 @@ namespace Dobby {
         {
             // Convert control to avoid constant casting
             var control = item as Dobby.Button;
-            string variable = null;
+            string variableText = null;
             var padding = 5; // distance from the right-most bounds of the control to the start of the control's Text (at least, seems to be for the font and size most of the buttons are using)
 
 
@@ -872,11 +868,11 @@ namespace Dobby {
                         Print($"ERROR: Invalid VariableTags array provided for boolean toggle; less than two options provided ({control.VariableTags.Length})"); // output tag array length in case it's somehow negative, I suppose
 
                     else
-                        variable = control.VariableTags[(bool)control.Variable ? 1 : 0];
+                        variableText = control.VariableTags[(bool)control.Variable ? 1 : 0];
                     
                 }
                 else {
-                    variable = (bool) control.Variable ? "Yes" : "No";
+                    variableText = (bool) control.Variable ? "Yes" : "No";
                 }
             }
 
@@ -894,11 +890,11 @@ namespace Dobby {
                     else if (control.VariableTags.Length < (int)control.Variable)
                         Print($"ERROR: Invalid VariableTags array provided for boolean toggle; less than two options provided ({control.VariableTags.Length})"); // output tag array length in case it's somehow negative, I suppose
 
-                    variable = control.VariableTags[(int)control.Variable];
+                    variableText = control.VariableTags[(int)control.Variable];
                     
                 }
                 else {
-                    variable = (string) control.Variable;
+                    variableText = (string) control.Variable;
                 }
             }
             
@@ -907,22 +903,30 @@ namespace Dobby {
             //#
             if (control.Variable.GetType() == typeof(float) || control.Variable.GetType() == typeof(double))
             {
-                Print("Fucking no, lmao");
-                return;
+                if (control.VariableTags != null)
+                {
+                    Print("WARNING: variable tags provided for floating-point button variable, cannot use a floating-point as array index. (obviously)");
+                    return;
+                }
             }
 
-            if (variable == null)
+
+            //#
+            //## Unexpected formats
+            //#
+            if (variableText == null)
             {
-
-                return;
+                Print($"WARNING: An unexpected data type was provided for the Variable tied to control \"{control.Name}\". Using unformatted string representation. (Type: {control.Variable.GetType()})");
+                variableText = (string) (control.Variable ?? (object) "null");
             }
 
 
 
-            variableSize = paintEvent.Graphics.MeasureString(variable, control.Font).Width;
+
+            // Design-related bits //!
+            variableSize = paintEvent.Graphics.MeasureString(variableText, control.Font).Width;
             baseContentSize = controlTextSize + padding;
             expectedSize = baseContentSize + variableSize + (padding * 2);
-
 
             if (expectedSize != control.Width)
             {
@@ -931,13 +935,15 @@ namespace Dobby {
             
 
 
-            // Draw the Variable's string representation appended to the rightmost side of the control's bounds
-            paintEvent.Graphics.DrawString(variable, SmallControlFont, Brushes.LightGreen, new Point((int) baseContentSize + (padding * 2), 5));
+            // Draw the Variable's string representation appended to the control's text (visually)
+            paintEvent.Graphics.DrawString(variableText, SmallControlFont, Brushes.LightGreen, new Point((int) baseContentSize + (padding * 2), 5));
         }
 
 
 
-        ///<summary> Create And Apply A Thin Border To The Form </summary>
+        ///<summary>
+        /// Create And Apply A Thin Border To The Form
+        ///</summary>
         public static void DrawBorder(object sender, PaintEventArgs e)
         {
             var itemPtr = sender as Form;
@@ -987,12 +993,7 @@ namespace Dobby {
         }
 
 
-        // TODO: rework this crap (the next three nethods)
-
-        public static void WriteLabel(Form form, string message) => form.Invoke(SetInfoText, message);
-
-
-        public static LabelUpdateCallback SetInfoText = value =>
+        public static LabelUpdateCallback SetLabelText = value =>
         {
             if(ActiveForm != null)
                 InfoLabel.Text = value;
@@ -1005,9 +1006,10 @@ namespace Dobby {
         public static readonly LabelFlashCallback SetLabelColour = (control, colour) =>
         {
             try {
-                if (ActiveForm == null) return;
+                while (ActiveForm == null)
+                    Thread.Sleep(1);
 
-                ActiveForm.Controls.Find(control, true)[0].ForeColor = colour;
+                control.ForeColor = colour;
                 ActiveForm?.Update();
             }
             catch (Exception) {
@@ -1024,7 +1026,7 @@ namespace Dobby {
             try {
                 for (int flashes = 0; flashes < 16; flashes++)
                 {
-                    ActiveForm?.Invoke(SetLabelColour, (string) label, (flashes & 1) == 0 ? Color.FromArgb(255, 227, 0) : Color.White);
+                    ActiveForm?.Invoke(SetLabelColour, label, (flashes & 1) == 0 ? Color.FromArgb(255, 227, 0) : Color.White);
                     Thread.Sleep(135);
                 }
             }
@@ -1033,7 +1035,7 @@ namespace Dobby {
                 while (ActiveForm == null);
             }
             finally {
-                ActiveForm?.Invoke(SetLabelColour, (string) label, Color.FromArgb(255, 227, 0));
+                ActiveForm?.Invoke(SetLabelColour, label, Color.FromArgb(255, 227, 0));
             }
         }
         #endregion

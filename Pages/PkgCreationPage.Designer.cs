@@ -42,7 +42,6 @@ namespace Dobby
             this.InfoHelpBtn = new Dobby.Button();
             this.BackBtn = new Dobby.Button();
             this.CreditsBtn = new Dobby.Button();
-            this.VerbosityBtn = new Dobby.Button();
             this.BuildPackageBtn = new Dobby.Button();
             this.GP4PageBtn = new Dobby.Button();
             this.TempDirectoryPathBox = new Dobby.TextBox();
@@ -145,7 +144,7 @@ namespace Dobby
             // 
             this.Info.Font = new System.Drawing.Font("Cambria", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(6, 448);
+            this.Info.Location = new System.Drawing.Point(6, 421);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(452, 19);
             this.Info.TabIndex = 68;
@@ -155,7 +154,7 @@ namespace Dobby
             // 
             this.label1.Font = new System.Drawing.Font("Cambria", 10F);
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label1.Location = new System.Drawing.Point(2, 357);
+            this.label1.Location = new System.Drawing.Point(2, 330);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(391, 15);
             this.label1.TabIndex = 72;
@@ -169,7 +168,7 @@ namespace Dobby
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 372);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 345);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.Size = new System.Drawing.Size(142, 23);
             this.InfoHelpBtn.TabIndex = 70;
@@ -185,7 +184,7 @@ namespace Dobby
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 422);
+            this.BackBtn.Location = new System.Drawing.Point(1, 395);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(58, 23);
             this.BackBtn.TabIndex = 0;
@@ -201,7 +200,7 @@ namespace Dobby
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 397);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 370);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(68, 23);
@@ -209,23 +208,6 @@ namespace Dobby
             this.CreditsBtn.Text = "Credits...";
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
-            // 
-            // VerbosityBtn
-            // 
-            this.VerbosityBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.VerbosityBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.VerbosityBtn.FlatAppearance.BorderSize = 0;
-            this.VerbosityBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VerbosityBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
-            this.VerbosityBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.VerbosityBtn.Location = new System.Drawing.Point(1, 312);
-            this.VerbosityBtn.Name = "VerbosityBtn";
-            this.VerbosityBtn.Size = new System.Drawing.Size(218, 23);
-            this.VerbosityBtn.TabIndex = 65;
-            this.VerbosityBtn.Text = "orbis-pub-cmd Output Mode: ";
-            this.VerbosityBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.VerbosityBtn.UseVisualStyleBackColor = false;
-            this.VerbosityBtn.Click += new System.EventHandler(this.VerbosityBtn_Click);
             // 
             // BuildPackageBtn
             // 
@@ -385,7 +367,7 @@ namespace Dobby
             this.CleanTempFilesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CleanTempFilesBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.CleanTempFilesBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CleanTempFilesBtn.Location = new System.Drawing.Point(1, 337);
+            this.CleanTempFilesBtn.Location = new System.Drawing.Point(1, 310);
             this.CleanTempFilesBtn.Name = "CleanTempFilesBtn";
             this.CleanTempFilesBtn.Size = new System.Drawing.Size(218, 23);
             this.CleanTempFilesBtn.TabIndex = 73;
@@ -399,7 +381,7 @@ namespace Dobby
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ClientSize = new System.Drawing.Size(467, 472);
+            this.ClientSize = new System.Drawing.Size(467, 442);
             this.Controls.Add(this.CleanTempFilesBtn);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.InfoHelpBtn);
@@ -407,7 +389,6 @@ namespace Dobby
             this.Controls.Add(this.CreditsBtn);
             this.Controls.Add(this.Info);
             this.Controls.Add(this.SeperatorLine3);
-            this.Controls.Add(this.VerbosityBtn);
             this.Controls.Add(this.BuildPackageBtn);
             this.Controls.Add(this.GP4PageBtn);
             this.Controls.Add(this.TempDirectoryPathLabel);
@@ -457,7 +438,6 @@ namespace Dobby
         private Button OutputDirectoryBrowseBtn;
         private TextBox TempDirectoryPathBox;
         private Button TempDirectoryBrowseBtn;
-        private Button VerbosityBtn;
         private Button BuildPackageBtn;
         private System.Windows.Forms.Label SeperatorLine3;
         private Button InfoHelpBtn;

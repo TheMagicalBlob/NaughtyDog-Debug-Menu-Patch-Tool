@@ -83,7 +83,7 @@ namespace Dobby {
                     else {
                         Print("A value was assigned to TestGamedataFolder, but the path is not currently valid");
 
-                        FlashLabel("Info");
+                        FlashLabel(Info);
                         SetInfoLabelText("Invalid TestGamedataFolder Path Provided.");
                         return false;
                     }
@@ -91,15 +91,13 @@ namespace Dobby {
                 else
 #endif
                 {
-                    FlashLabel("Info");
-                    SetInfoLabelText("Please assign a valid Gamedata folder before building.");
+                    FlashLabel(Info, "Please assign a valid Gamedata folder before building.");
                     return false;
                 }
             }
             else if (!Directory.Exists(GamedataPathBox?.Text?.Replace("\"", string.Empty)))
             {
-                FlashLabel("Info");
-                SetInfoLabelText("Invalid Gamedata folder path provided.");
+                FlashLabel(Info, "Invalid Gamedata folder path provided.");
                 return false;
             }
             else
@@ -110,8 +108,7 @@ namespace Dobby {
             // Ensure Keystone is Present in base game packages, if included
             if (gp4.SfoParams.category == "gd" && !gp4.IgnoreKeystone && !File.Exists($@"{gp4.GamedataFolder}\sce_sys\keystone"))
             {
-                FlashLabel("Info");
-                SetInfoLabelText($"ERROR: No keystone File Found In Project Folder. (sce_sys\\keystone)");
+                FlashLabel(Info, $"ERROR: No keystone File Found In Project Folder. (sce_sys\\keystone)");
                 return false;
             }
 

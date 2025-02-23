@@ -41,7 +41,7 @@ namespace Dobby {
                     }
 
                 else
-                    ActiveForm?.Invoke(SetInfoText, $"Invalid IP specified; save aborted. ({IP})");
+                    ActiveForm?.Invoke(SetLabelText, $"Invalid IP specified; save aborted. ({IP})");
             };
             PortBox.LostFocus += (control, args) => {
                 if (!File.Exists(settingsFilePath))
@@ -57,7 +57,7 @@ namespace Dobby {
                     }
                 }
                 else
-                    ActiveForm?.Invoke(SetInfoText, $"Invalid Port specified; save aborted. ({Port})");
+                    ActiveForm?.Invoke(SetLabelText, $"Invalid Port specified; save aborted. ({Port})");
             };
 
             // Assign IgnoreTitleID variable property
@@ -139,7 +139,7 @@ namespace Dobby {
                 var form = (Form)args.ActiveForm;
 
 
-                form?.Invoke(SetInfoText, "Sending ps4debug Payload...");
+                form?.Invoke(SetLabelText, "Sending ps4debug Payload...");
                 Print($"^- Payload Destination: {ip}:{port}.");
 
                 try {
@@ -148,7 +148,7 @@ namespace Dobby {
                 }
                 catch(Exception e) {
                     Print($"Failed To Connect To Specified Server at [{ip}:{port}]\nError: {e.Message}\n{e.StackTrace}");
-                    form.Invoke(SetInfoText, "Failed To Connect To Specified Address/Port");
+                    form.Invoke(SetLabelText, "Failed To Connect To Specified Address/Port");
                 }
                 finally {
                     payloadSocket.Close();
@@ -157,7 +157,7 @@ namespace Dobby {
 
                 if(payloadSocket.Connected)
                 {
-                    form?.Invoke(SetInfoText, "Payload Injected Successfully");
+                    form?.Invoke(SetLabelText, "Payload Injected Successfully");
                     MessageBox.Show("PS4Debug Update 1.1.15 By ctn123\nPS4Debug Created By Golden", "Payload Injected Successfully, Here's Some Credits"); // Excessive Credits To Try Avoiding Beef lol
                 }
             }
@@ -342,7 +342,7 @@ namespace Dobby {
                 var form = (Form)args.ActiveForm;
                 Executable = 0;
 
-                form?.Invoke(SetInfoText, $"Connecting to Console at \"{IP}\"");
+                form?.Invoke(SetLabelText, $"Connecting to Console at \"{IP}\"");
 
                 // Establish a connection for the new PS4Debug instance
                 try {
@@ -350,14 +350,14 @@ namespace Dobby {
                     Geo.Connect();
                 }
                 catch (SocketException oops) {
-                    form.Invoke(SetInfoText, $"Error Connecting to \"{IP}\"");
+                    form.Invoke(SetLabelText, $"Error Connecting to \"{IP}\"");
                     Print($"!! ERROR: Unable to connect to PS4, see exception below.\n{oops.Message}\n{oops.StackTrace.Replace("\n", "  \n")}");
                     return;
                 }
 
 
                 Print($"Connection Status: {Geo.IsConnected}");
-                form?.Invoke(SetInfoText, "PS4Debug Connected, Searching for Game...");
+                form?.Invoke(SetLabelText, "PS4Debug Connected, Searching for Game...");
 
 
                 foreach(libdebug.Process process in Geo.GetProcessList().processes) { // processprocessprocessprocessprocessprocessprocess
@@ -386,23 +386,23 @@ namespace Dobby {
                     // Detect the currently loaded game and app_ver (clunkily.)
                     GameVersion = GetGameTitleIDVersionAndDMenuOffset(titleId);
 
-                    form?.Invoke(SetInfoText, $"Attached to {titleId} ({GameVersion})");
+                    form?.Invoke(SetLabelText, $"Attached to {titleId} ({GameVersion})");
                     return;
                 }
 
                 // Error out if no eboot.bin (or other expected executable) was found.
                 ProcessName = "No Valid Process";
-                form?.Invoke(SetInfoText, "Couldn't Find a Valid Game Process.");
+                form?.Invoke(SetLabelText, "Couldn't Find a Valid Game Process.");
             }
             catch(Exception tabarnack) {
-                ActiveForm?.Invoke(SetInfoText, $"Connection to {IP} Failed.");
+                ActiveForm?.Invoke(SetLabelText, $"Connection to {IP} Failed.");
                 Print(tabarnack);
             }
         }
 
         private void InitializeConnectionThread()
         {
-            ActiveForm?.Invoke(SetInfoText, "Connecting to Console");
+            ActiveForm?.Invoke(SetLabelText, "Connecting to Console");
 
             if (ConnectionThread?.ThreadState == 0)
                 ConnectionThread.Abort();
@@ -445,7 +445,7 @@ namespace Dobby {
             var settingsFilePath = Directory.GetCurrentDirectory() + @"\PS4_IP.BLB";
 
             Print($"No settings file was found in current folder, creating new one...\n{settingsFilePath}");
-            ActiveForm?.Invoke(SetInfoText, "Created new settings file.");
+            ActiveForm?.Invoke(SetLabelText, "Created new settings file.");
 
             using (var newSettingsFile = new FileStream(settingsFilePath, FileMode.Create, FileAccess.Write))
             {
@@ -482,7 +482,7 @@ namespace Dobby {
                     if (!IPAddress.TryParse(Encoding.UTF8.GetString(buffer, 0, seperator), out IPAddress ip))
                     {
                         Print($"!! ERROR: Unable to part IP Address from settings file. (attempted to parse: {Encoding.UTF8.GetString(buffer, 0, seperator)})");
-                        ActiveForm?.Invoke(SetInfoText, "Unable to parse settings file.");
+                        ActiveForm?.Invoke(SetLabelText, "Unable to parse settings file.");
 
                         // use the default IP.
                         ip = IPAddress.Parse(IpBox.Text = "192.168.137.115");
@@ -569,7 +569,7 @@ namespace Dobby {
         private void PortLabelBtn_Click(object sender, EventArgs e) => PortBox.Focus();
 
         private void SendPayloadBtn_Click(object sender, EventArgs e) {
-            ActiveForm?.Invoke(SetInfoText, "Sending ps4debug Payload to PS4");
+            ActiveForm?.Invoke(SetLabelText, "Sending ps4debug Payload to PS4");
 
             if (PayloadThread?.ThreadState == 0)
                 PayloadThread.Abort();

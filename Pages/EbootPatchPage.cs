@@ -304,8 +304,7 @@ namespace Dobby {
         /// <param name="PatchType"></param>
         public void ApplyDebugPatches(int PatchType) {
             if(Game == 0) {
-                FlashLabel("GameInfoLabel");
-                SetInfoLabelText("Please Select A Game's Executable First");
+                FlashLabel(GameInfoLabel, "Please Select A Game's Executable First");
                 return;
             }
 
