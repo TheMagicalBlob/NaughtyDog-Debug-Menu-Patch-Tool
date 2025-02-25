@@ -195,82 +195,6 @@ namespace Dobby {
             return new Size((int)size.Width + 15, (int)size.Height + 10);
         }
 
-        // Style Test (fuck it, too annoying dealing with overlapping controls, and I've wasted enough time on this already)
-        #region [Style Test]
-        private Point[] OldPositions = new Point[1] { Point.Empty };
-        private Size OldFormScale;
-        private string EditedForm;
-        private int Next_Base;
-        private void ResizeTest() {
-            return;
-
-            var Mommy = LogWindow.ParentPtr;
-            int index = 0,
-                PAD = 1
-            ;
-
-            var Controls = new List<Control>(GetControlsInOrder(Mommy));
-            for(; Controls[0].Name != "SeperatorLine0"; Controls.Remove(Controls[index - index++]));
-
-            if((index ^= 3) != 0) { MessageBox.Show($"Unexpected Form Structure {index}"); Environment.Exit(1); }
-            if(OldPositions.Length == 1 || EditedForm != Mommy.Name) {
-                Print("Beeg");
-
-                // Save Orignal Item Locations
-                for(OldPositions = new Point[Mommy.Controls.Count]; index < Controls.Count;)
-                    OldPositions[index] = Controls[index++].Location;
-
-                // Avoid Breaking The Form If Used On Another Page Without Reseting
-                EditedForm = Mommy.Name;
-                // Start At The First Control After The Title Section Seperator Line
-                Next_Base = Controls[index = 0].Location.Y + Controls[index++].Size.Height + PAD;
-
-                OldFormScale = Mommy.Size;
-
-                // Attempt To Adjust Control Positions To Consistent Locations
-                for(; index != Controls.Count; index++) {
-                    var Last_Pos = Controls[index].Location;
-
-                    Controls[index].Location = new Point(Controls[index].Location.X, Next_Base);
-                    Next_Base = Controls[index].Location.Y + Controls[index].Size.Height + PAD;
-
-
-                    if(index < Controls.Count - 1 && Controls[index + 1].Location.Y < Next_Base) {
-                        var Diff = Controls[index].Location.Y - Last_Pos.Y;
-                        Controls[index + 1].Location = new Point(Controls[index + 1].Location.X, Controls[index + 1].Location.Y + Diff);
-                        if(Controls[index + 1].Name.Contains("SeperatorLine")) {
-                            Next_Base = Controls[index + 1].Location.Y + Controls[index + 1].Size.Height + PAD + 1;
-                        }
-                        index++;
-                    }
-
-                    // Adjust Form Size If The Control Has Been Moved Off The Form
-                    if(Controls[index].Location.Y + Controls[index].Size.Height > Mommy.Size.Height) {//UwU
-                        Print($"Control Went Passed Form Border, Extending Form ({Controls[index].Location.Y} > {Mommy.Size.Height})");
-                        Mommy.Size = new Size(Mommy.Size.Width, Controls[index].Location.Y + Controls[index].Size.Height + 1);
-                        Mommy.Update();
-                        Mommy.Refresh();
-                        Mommy.Update();
-                    }
-                }
-                return;
-            }
-
-            Print("Smol");
-            foreach(Control bitch in Controls) {
-                Print($"{bitch.Location} -> {OldPositions[index]}");
-                bitch.Location = OldPositions[index++];
-            }
-            Mommy.Size = OldFormScale;
-            Mommy.Update();
-
-            OldPositions = new Point[1] { Point.Empty };
-            EditedForm = string.Empty;
-        }
-        #endregion [Style Test]
-
-
-
 
         public void Dispose() => Log.Dispose();
 
@@ -505,7 +429,6 @@ namespace Dobby {
                                         $"{(HoveredControl?.GetType() == typeof(Button) ? ((Button)HoveredControl)?.Variable : " ")}",
                                         $" Size: {HoveredControl?.Size} | Pos: {HoveredControl?.Location}",
                                         $" Parent [{HoveredControl?.Parent?.Name}]",
-                                        $" Nex_Pos' [{Dev.Next_Base}]",
                                     };
                                     break;
                                 case PageID.PS4DebugHelpPage:
@@ -524,7 +447,6 @@ namespace Dobby {
                                         $"{(HoveredControl?.GetType() == typeof(Button) ? ((Button)HoveredControl)?.Variable : " ")}",
                                         $" Size: {HoveredControl?.Size} | Pos: {HoveredControl?.Location}",
                                         $" Parent [{HoveredControl?.Parent?.Name}]",
-                                        $" Nex_Pos' [{Dev.Next_Base}]",
                                     };
                                 break;
                                 case PageID.PS4MenuSettingsPage:

@@ -184,18 +184,37 @@ namespace Dobby {
 
             buildProcess.OutputDataReceived += (_, data) =>
             {
-                Print($"[orbis-pub-cmd]: {data?.Data ?? "null"}");
-                
                 if (data?.Data?.Length > 0)
                 {
                     // TODO:
                     // * Have the section of errors orbis-pub-cmd outputs wrapped in braces appear before the more general part which otherwise preceeds it (so the useful part doesn't get cut off first)
-                    if (data.Data.Contains("[Error]"))
-                        errors.Add(data.Data.Replace("[Error]", "[ERROR] "));
-
-                    else if (data.Data.Contains("[Debug]"))
-                        UpdateLabel(data.Data.Replace("[Debug]", string.Empty));
                     
+                    var output = data.Data.ToString();
+                    
+                    if (output.Contains("[Error]"))
+                    {
+                        //output = $"{output.Substring(output.IndexOf('('))} {output.Remove(output.IndexOf('(') - 2).Replace("[Error]", string.Empty)}";
+                        output = $"[error]: {output.Substring(output.IndexOf('('))}";
+                        errors.Add(output);
+                        UpdateLabel(output);
+                    }
+
+                    else {
+                        //Print($"[pub]: {output}");
+
+                        // TODO: fix the fact that these don't show consistently
+                        if (output.ToLower().Contains("process started"))
+                            UpdateLabel("Package Creation Started. (step 1/4)");
+
+                        if (output.ToLower().Contains("format of the elf file"))
+                            UpdateLabel("Processing Gamedata... (step 2/4)");
+
+                        if (output.ToLower().Contains("writing internal image"))
+                            UpdateLabel("Creating Package Base... (step 3/4)");
+
+                        if (output.ToLower().Contains("calculating image digest"))
+                            UpdateLabel("Calculating Package Digest... (step 4/4)");
+                    }
                 }
             };
 
@@ -204,6 +223,7 @@ namespace Dobby {
             DisableFormChange = true;
             buildProcess.Start();
             buildProcess.BeginOutputReadLine();
+            UpdateLabel("Beginning Package Creation...");
 
             buildProcess.Exited += (prc, args) =>
             {

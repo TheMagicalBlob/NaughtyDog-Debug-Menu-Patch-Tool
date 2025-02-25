@@ -284,6 +284,7 @@
           "* 4.59.341.878 | formatting/comments (pushing jic, really)",
           "* 4.59.344.886 | God I hate threading (I should probably read up on it). Reworked Info label bs; Other misc changes- been too long, bite me.",
           "* 4.59.345.892 | Fixed PS4 Package tool output consistency; added option to force debug output in release configuration.",
+          "* 4.59.347.894 | meh",
         };
 
 
