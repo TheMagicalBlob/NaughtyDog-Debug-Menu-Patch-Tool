@@ -303,7 +303,7 @@ namespace Dobby {
         /// <param name="PatchType"></param>
         public void ApplyDebugPatches(int PatchType) {
             if(Game == 0) {
-                FlashLabel(GameInfoLabel, "Please Select A Game's Executable First");
+                UpdateLabel("Please Select A Game's Executable First", true);
                 return;
             }
 
@@ -312,7 +312,7 @@ namespace Dobby {
             WriteByte((int)DebugAddressForSelectedGame, (byte)(PatchType == 0 ? (DebugAddressForSelectedGame == (DebugJumpAddress) 0x5C5A ? 0x74 : 0x75) : 0xEB));
 
             if(PatchType < 2) { // Return If Patch Is Basic Debug Toggle
-                LabelTextMethod($"{ActiveGameID} {ResultStrings[PatchType]}");
+                UpdateLabel($"{ActiveGameID} {ResultStrings[PatchType]}");
                 return;
             }
 
@@ -539,7 +539,7 @@ namespace Dobby {
             foreach (int Address in FunctionNops)
                 WriteBytes(Address, E9Jump);
 
-            LabelTextMethod("Restored Debug Patch Applied");
+            UpdateLabel("Restored Debug Patch Applied");
         }
 
         

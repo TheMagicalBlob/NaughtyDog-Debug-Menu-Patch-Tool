@@ -203,10 +203,7 @@ Read:       fileStream.Position = TmpAddr++;
         {
             
             if (Game == 0) {
-                (LabelFlashThread = new Thread(LabelFlashMethod)).Start("GameInfoLabel");
-            
-                LabelTextMethod("Please Select A Game's Executable First");
-                InfoHasImportantStr = true;
+                UpdateLabel("Please Select A Game's Executable First", true);
                 return;
             }
 
@@ -248,7 +245,7 @@ Read:       fileStream.Position = TmpAddr++;
 
             if (DebugAddr == DebugJumpAddress.Empty)
             {
-                LabelTextMethod("Error ");
+                UpdateLabel("Error ");
                 Print();
                 return;
             }

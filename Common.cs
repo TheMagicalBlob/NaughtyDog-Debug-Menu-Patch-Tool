@@ -66,7 +66,6 @@ namespace Dobby {
         public static bool
             MouseScrolled,
             MouseIsDown,
-            FormActive,
             InfoHasImportantStr,
             IsPageGoingBack,
             LastMsgOutputWasInfoString,
@@ -86,6 +85,8 @@ namespace Dobby {
 
         public static Size OriginalFormScale = Size.Empty;
         public static Size OriginalBorderScale;
+
+        public static Color NDYellow = Color.FromArgb(255, 227, 0);
 
         public static string
             CurrentControl,
@@ -112,8 +113,8 @@ namespace Dobby {
         private static Form MainForm;
         public static Form PopupBox;
 
-        /// <summary> Refference to the current form's Info label. </summary>
-        public static Control InfoLabel;
+        /// <summary> Static refference to the active form's "Info" label control for usage in static functions. (because I'm lazy) </summary>
+        public static Label InfoLabel;
 
         /// <summary> GroupBox for eventual use in yet-unfinished custom popup box function. (so they fit the app's "theme") </summary>
         public static GroupBox PopupGroupBox;
@@ -140,7 +141,11 @@ namespace Dobby {
         public static Color HighlightColour {
             get => BorderPen.Color;
 
-            set { BorderPen.Color = value; ActiveForm?.PerformLayout(); ActiveForm?.Update(); }
+            set {
+                BorderPen.Color = value;
+                ActiveForm?.PerformLayout();
+                ActiveForm?.Update();
+            }
         }
 
         ///<summary> Form Border Pen </summary>
@@ -154,11 +159,21 @@ namespace Dobby {
         //#
         #region [Threading Components]
 
-        public static Thread LabelFlashThread;
+        private static string infoText {
+            get {
+                var text = _infoText;
+                _infoText = null;
+                return text;
+            }
+            set => _infoText = value;
+        }
+        private static string _infoText;
 
-        public delegate void LabelUpdateCallback(string InfoText);
+        private static int flashes;
 
-        public delegate void LabelFlashCallback(Label control, System.Drawing.Color colour);
+        private static Thread LabelUpdateThread;
+
+        private delegate void LabelUpdateCallback(Label control, Color colour, string infoText = null);
         #endregion
 
 
@@ -174,11 +189,18 @@ namespace Dobby {
 
         #endregion (global variable declarations)
 
-        
+
+
+
         //========================================\\
         //--|   Global Function Declarations   |--\\
         //========================================\\
         #region [Global Function Declarations]
+
+        //#
+        //## Unsorted
+        //#
+        #region (unsorted)
 
         /// <summary>
         /// Dev.Print overload, for some reason. //!
@@ -200,14 +222,26 @@ namespace Dobby {
         }
 
 
-        
-        public static void FlashLabel(Label label, string error = null)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newText"> The string to apply to the label's Text property. </param>
+        /// <param name="flashLabel"> If true, flash the label to indicate an error or otherwise get the user's attention. (switches between white/yellow) </param>
+        public static void UpdateLabel(string newText, bool flashLabel = false)
         {
-            if (LabelFlashThread == null || LabelFlashThread.ThreadState == System.Threading.ThreadState.Stopped)
-                (LabelFlashThread = new Thread(LabelFlashMethod)).Start(label);
+            if (newText != null)
+                infoText = newText;
+
+            if (flashLabel)
+                flashes = 16;
         }
 
         
+        /// <summary>
+        /// Write a fucking summary, dicksneeze
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
         public static string GetCurrentGame(FileStream stream) {
             var LocalExecutableCheck = new byte[160];
 
@@ -285,10 +319,6 @@ namespace Dobby {
             }
         }
 
-
-        /// <summary> Save a refference to the orignal launch form. (why is this a function, again? //!) </summary>
-        /// <param name="form"> The orignal form </param>
-        public static void SaveMainForm(Form form) => MainForm = form;
 
                 
         /// <summary>
@@ -420,6 +450,7 @@ namespace Dobby {
         private static void KillTextBox(object sender, MouseEventArgs e) => PopupGroupBox?.Dispose();
 
 
+        /* [deprecated SetInfoLabelStringOnControlHover(Control Sender, float FontAdjustment = 10f)]
         /// <summary> [deprecated] Sets The Info Label String Based On The Currently Hovered Control </summary>
         /// <param name="Sender">The Hovered Control</param>
         public static void SetInfoLabelStringOnControlHover(Control Sender, float FontAdjustment = 10f) {
@@ -513,23 +544,25 @@ namespace Dobby {
                     break;
 
             }
-            LabelTextMethod(InfoLabelString);
+
+            //UpdateLabel(InfoLabelString);
 #pragma warning restore CS0162 // Unreachable code detected
         }
+        */
         #endregion
 
 
-
-        
-        //====================================================\\
-        //--|   Static Background Function Delcarations   |---\\
-        //====================================================\\
-        #region [Static Background Function Delcarations]
 
         //#
         //## Form Functionality
         //#
         #region (form functionality)
+        
+        /// <summary> Save a refference to the orignal launch form. (why is this a function, again? //!) </summary>
+        /// <param name="form"> The orignal form </param>
+        public static void SaveMainForm(Form form) => MainForm = form;
+
+
         /// <summary>
         /// Loads The Specified Page From The PageId Group (E.g. ChangeForm(PageID.PS4MiscPageId))
         /// </summary>
@@ -537,9 +570,13 @@ namespace Dobby {
         public static void ChangeForm(PageID? Page, bool ReturningToPreviousPage = false)
         {
             if (DisableFormChange) {
-                LabelTextMethod("Disabled during .gp4 ? .pkg Creation Process.");
+                UpdateLabel("Disabled during .gp4 / .pkg Creation Process.");
                 Print($"Ignoring request to change form to \"{Page ?? 0}\".");
                 return;
+            }
+            else {
+                flashes = -1;
+                LabelUpdateThread.Abort();
             }
 
 
@@ -605,7 +642,6 @@ namespace Dobby {
 
                 case null:
                     ChangeForm(Pages.Last(), true);
-                    FormActive = false;
                     return;
 
                 default:
@@ -629,7 +665,6 @@ namespace Dobby {
             Dev.ActivePage = NewPage;
 #endif
             Common.Page = Page;
-            InfoLabel = (Control)ActiveForm.Controls.Find("Info", true)[0];
             ActiveForm.Location = LastFormPosition;
 
 
@@ -640,51 +675,70 @@ namespace Dobby {
         }
 
 
+
         /// <summary>
         /// Mass-Apply Basic Event Handlers To Form And It's Items. (I got sick of manually editing InitializeComponent())
         /// </summary>
         /// <param name="Controls">Collection of Controls to Apply Event Handlers to.</param>
         public static void InitializeAdditionalEventHandlers(Control.ControlCollection Controls)
         {
-            void ApplyEventHandlersToControl(object sender) {
-
-                // Convert the item to a basic control
-                var Item = sender as Control;
-
-    #if DEBUG
-                Item.MouseEnter += new EventHandler((control, e) => Testing.HoveredControl = Item);
-    #endif
-                Item.MouseDown += new MouseEventHandler(MouseDownFunc);
-                Item.MouseUp += new MouseEventHandler(MouseUpFunc);
-
-
-                if (Item.Name.Contains("Seperator") && sender.GetType() == typeof(Label))
-                    Item.Paint += DrawSeperatorLine;
-
-                if (!(Item.Name.ToLower().Contains("box") && (sender.GetType() == typeof(TextBox) || sender.GetType() == typeof(RichTextBox)))) // So You Can Drag Select The Text Lol
-                    Item.MouseMove += new MouseEventHandler(MoveForm);
-
-
-                // Avoid assigning a hover arrow to unintended controls (blacklisted ones, and any non-button controls)
-                if ((Item.GetType() == typeof(Dobby.Button) || Item.GetType() == typeof(System.Windows.Forms.Button)) && !new string[] { "DebugControl", "ExitBtn", "MinimizeBtn", "LabelBtn", "CmdPathBox", "Gp4PathBox"}.Contains(Item.Name))
-                {
-                    Item.MouseEnter += new EventHandler(ControlHover);
-                    Item.MouseLeave += new EventHandler(ControlLeave);
-                }
-            }
-            
             var ConstantControls = new string[] { "Info", "InfoHelpBtn", "CreditsBtn", "BackBtn" };
             var Parent = Controls.Owner.Name;
 
-            Controls.Owner.Paint += DrawBorder;
-            foreach (Control Item in Controls) {
-                ApplyEventHandlersToControl(Item);
 
-                if (Item.HasChildren) // Designer Adds Some Things To Other Controls Sometimes. This should fix those controls until I notice it. (I Am Lazy.)
-                    foreach (Control Child in Item.Controls)
-                        ApplyEventHandlersToControl(Child);
+            // Mass-Apply handler methods to basic MouseDown/Up, MouseEnter/Leave and MouseMove events
+            foreach (Control item in Controls)
+            {
+            #if DEBUG
+                item.MouseEnter += new EventHandler((control, e) => Testing.HoveredControl = item);
+            #endif
+                item.MouseDown += new MouseEventHandler(MouseDownFunc);
+                item.MouseUp += new MouseEventHandler(MouseUpFunc);
+
+
+                if (item.Name.Contains("SeperatorLine") && item.GetType() == typeof(Label))
+                    item.Paint += DrawSeperatorLine;
+
+                if (!(item.Name.Contains("Box") && (item.GetType() == typeof(TextBox) || item.GetType() == typeof(RichTextBox)))) // So You Can Drag Select The Text Lol
+                    item.MouseMove += new MouseEventHandler(MoveForm);
+
+
+                // Avoid assigning a hover arrow to unintended controls (blacklisted ones, and any non-button controls)
+                var blacklistedItems = new string[] { "DebugControl", "ExitBtn", "MinimizeBtn", "LabelBtn", "PathBox" }; //! LabelBtn? The hell's that one for?
+
+                if ((item.GetType() == typeof(Dobby.Button) || item.GetType() == typeof(System.Windows.Forms.Button)) && !blacklistedItems.Contains(item.Name))
+                {
+                    item.MouseEnter += new EventHandler(ControlHover);
+                    item.MouseLeave += new EventHandler(ControlLeave);
+                }
             }
-            InfoLabel = (Control)(Controls.Find("Info", true)[0] ?? null);
+
+
+            // Apply border application method to paint event
+            Controls.Owner.Paint += DrawBorder;
+            
+
+            // Attempt to assign static Info label refference for globals
+            try {
+                InfoLabel = (Label) Controls.Find("Info", true)[0] ?? null;
+            }
+            catch (IndexOutOfRangeException) {
+                Print($"ERROR: \"Info\" label not found on form \"{Controls.Owner.Name}\".");
+                InfoLabel = null;
+            }
+
+            // Inititialize Info label thread
+            if (InfoLabel != null)
+            {
+                LabelUpdateThread = new Thread(new ParameterizedThreadStart(LabelUpdateMethod)) {
+                    Name = $"{Controls.Owner.Name} Label Update Worker"
+                };
+
+                LabelUpdateThread.Start(InfoLabel);
+            }
+            else
+                LabelUpdateThread = null;
+
 
 
             // Create Exit And Minimize Buttons, And Add Them To The Top Right Of The Form
@@ -975,69 +1029,82 @@ namespace Dobby {
             });
         }
 
-
-        public static LabelUpdateCallback SetLabelText = value =>
-        {
-            if(ActiveForm != null)
-                InfoLabel.Text = value;
-
-            Print($"[info]: {value}");
-        };
-
-
-        /// <summary> Info Label Flash Delegate- for Cross-Threaded editing of Info Label states. (I still suck with threads) </summary>
-        public static readonly LabelFlashCallback SetLabelColour = (control, colour) =>
-        {
+        /// <summary>
+        /// Change the Text and / or ForeColour properties of the current Info label.
+        /// </summary>
+        private static readonly LabelUpdateCallback SetLabelState = (label, colour, text) => {
             try {
                 while (ActiveForm == null)
                     Thread.Sleep(1);
+                
+                if (ActiveForm != null && label != null)
+                {
+                    if (text != null)
+                    {
+                        label.Text = text;
+                        Print($"[{label.Name}] (string): {text}");
+                    }
+                    if (colour != null)
+                    {
+                        label.ForeColor = colour;
+                        Print($"[{label.Name}] (Colour): {colour.Name}");
+                    }
 
-                control.ForeColor = colour;
+                    ActiveForm?.Update();
+                }
+
                 ActiveForm?.Update();
             }
             catch (Exception) {
-                Print("Label Flash Interrupted.");
+                Print("Error setting label text and / or colour.");
             }
         };
+
 
 
         /// <summary>
         /// Flash the Info label white/yellow to get the user's attention/indicate a skill issue.
         /// </summary>
         /// <param name="label"> The Control.Name property of the label to flash </param>
-        public static void LabelFlashMethod(dynamic label) {
-            try {
-                for (int flashes = 0; flashes < 16; flashes++)
-                {
-                    ActiveForm?.Invoke(SetLabelColour, label, (flashes & 1) == 0 ? Color.FromArgb(255, 227, 0) : Color.White);
-                    Thread.Sleep(135);
+        internal static void LabelUpdateMethod(object label) {
+            while (true) {
+                try {
+                    // Wait for something to do
+                    while (flashes < 1 && infoText == null)
+                        Thread.Sleep(1);
+                  
+                    // Flash the label if applicable
+                    for (; flashes > 0; --flashes)
+                    {
+                        while (ActiveForm == null)
+                            Thread.Sleep(1);
+
+                        ActiveForm?.Invoke(SetLabelState, label, (flashes & 1) == 0 ? Color.FromArgb(255, 227, 0) : Color.White, infoText);
+                        Thread.Sleep(135);
+                    }
+                    
+                    
+                    // Set The Text of The Yellow Label At The Bottom Of The Form
+                    if (infoText != null) {
+                        ActiveForm?.Invoke(SetLabelState, label, Color.FromArgb(255, 227, 0), infoText);
+                        infoText = null;
+                    }
+                }
+                catch (Exception) {
+                    Print("Form Changed or Lost Focus, Killing Label Flash");
+
+                    while (ActiveForm == null)
+                        Thread.Sleep(1);
                 }
             }
-            catch (Exception) {
-                Print("Form Changed or Lost Focus, Killing Label Flash");
-                while (ActiveForm == null);
-            }
-            finally {
-                ActiveForm?.Invoke(SetLabelColour, label, Color.FromArgb(255, 227, 0));
-            }
         }
 
-        
-        /// <summary>
-        /// Set The Text of The Yellow Label At The Bottom Of The Form
-        /// </summary>
-        internal static void LabelTextMethod(string s)
-        {
-            if (ActiveForm != null)
-                InfoLabel.Text = s;
+        #endregion (form/control drawing-related functions)
 
-            Print($"[info]: {s}");
-        }
-
-        #endregion (form drawing functions)
+        //## END
         #endregion [Static Background Function Declarations]
 
-        
+
 
         //=============================================\\
         //--|   Static Event Handler Declarations   |--\\

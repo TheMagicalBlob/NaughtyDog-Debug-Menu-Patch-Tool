@@ -65,8 +65,7 @@ namespace Dobby {
                 orbisToolPath = OrbisToolPathBox.Text.Replace("\n", string.Empty);
             }
             else {
-                FlashLabel(Info);
-                LabelTextMethod("Please provide a path to the FPKG tools before building.");
+                UpdateLabel("Please provide a path to the FPKG tools before building.", true);
                 return false;
             }
 
@@ -76,8 +75,7 @@ namespace Dobby {
                 gp4Path = GP4FilePathBox.Text.Replace("\n", string.Empty);
             }
             else {
-                FlashLabel(Info);
-                LabelTextMethod("Please provide a valid .gp4 path before building.");
+                UpdateLabel("Please provide a valid .gp4 path before building.", true);
                 return false;
             }
             
@@ -115,14 +113,14 @@ namespace Dobby {
                     }
                     else if (file == files.Last())
                     {
-                        FlashLabel(Info, "Build tool not found in provided folder (Expected Name: *-cmd*)");
+                        UpdateLabel("Build tool not found in provided folder (Expected Name: *-cmd*)");
                         return false;
                     }
                 }
             }
             else if (!File.Exists(orbisToolPath))
             {
-                FlashLabel(Info, "Invalid path provided for fpkg build tool. (file doesn't exist)");
+                UpdateLabel("Invalid path provided for fpkg build tool. (file doesn't exist)");
                 return false;
             }
 
@@ -131,7 +129,7 @@ namespace Dobby {
             // Verfiy .gp4 Project Path
             else if(!File.Exists(gp4Path))
             {
-                FlashLabel(Info, "Invalid path provided for .gp4 project file. (file doesn't exist)");
+                UpdateLabel("Invalid path provided for .gp4 project file. (file doesn't exist)");
                 return false;
             }
 
@@ -139,7 +137,7 @@ namespace Dobby {
             // Set Output Directory as the current
             if (!Directory.Exists(outputPath))
             {
-                FlashLabel(Info, "Invalid output directory provided for finished package file. (directory doesn't exist)");
+                UpdateLabel("Invalid output directory provided for finished package file. (directory doesn't exist)");
                 return false;
             }
 
@@ -198,14 +196,14 @@ namespace Dobby {
             {
                 if (buildProcess.ExitCode == 0)
                 {
-                    ActiveForm?.Invoke(SetLabelText, "Fake-Package creation process completed without errors.");
+                    UpdateLabel("Fake-Package creation process completed without errors.");
                 }
                 else if (buildProcess.ExitCode == 1)
                 {
-                    FlashLabel(Info, $"{errors.First()}.{(errors.Count > 1 ? $" ({errors.Count - 1} more errors)" : string.Empty)}");
+                    UpdateLabel($"{errors.First()}.{(errors.Count > 1 ? $" ({errors.Count - 1} more errors)" : string.Empty)}");
                 }
                 else {
-                    FlashLabel(Info, $"WARNING: Unexpected Exit Code from build tool ({buildProcess.ExitCode})");
+                    UpdateLabel($"WARNING: Unexpected Exit Code from build tool ({buildProcess.ExitCode})");
                 }
 
                 DisableFormChange = false;

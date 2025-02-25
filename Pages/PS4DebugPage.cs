@@ -21,8 +21,6 @@ namespace Dobby {
 
         public PS4DebugPage() {
             InitializeComponent();
-
-            // Run miscellaneous post-initialization setup (Variable assignment, event handler creation, etc.)
             InitializeAdditionalEventHandlers(Controls);
 
             var settingsFilePath = Directory.GetCurrentDirectory() + @"\PS4_IP.BLB";
@@ -41,7 +39,7 @@ namespace Dobby {
                     }
 
                 else
-                    ActiveForm?.Invoke(SetLabelText, $"Invalid IP specified; save aborted. ({IP})");
+                    UpdateLabel($"Invalid IP specified; save aborted. ({IP})");
             };
             PortBox.LostFocus += (control, args) => {
                 if (!File.Exists(settingsFilePath))
@@ -57,7 +55,7 @@ namespace Dobby {
                     }
                 }
                 else
-                    ActiveForm?.Invoke(SetLabelText, $"Invalid Port specified; save aborted. ({Port})");
+                    UpdateLabel($"Invalid Port specified; save aborted. ({Port})");
             };
 
             // Assign IgnoreTitleID variable property
@@ -139,7 +137,7 @@ namespace Dobby {
                 var form = (Form)args.ActiveForm;
 
 
-                form?.Invoke(SetLabelText, "Sending ps4debug Payload...");
+                UpdateLabel("Sending ps4debug Payload...");
                 Print($"^- Payload Destination: {ip}:{port}.");
 
                 try {
@@ -148,7 +146,7 @@ namespace Dobby {
                 }
                 catch(Exception e) {
                     Print($"Failed To Connect To Specified Server at [{ip}:{port}]\nError: {e.Message}\n{e.StackTrace}");
-                    form.Invoke(SetLabelText, "Failed To Connect To Specified Address/Port");
+                    UpdateLabel("Failed To Connect To Specified Address/Port");
                 }
                 finally {
                     payloadSocket.Close();
@@ -157,7 +155,7 @@ namespace Dobby {
 
                 if(payloadSocket.Connected)
                 {
-                    form?.Invoke(SetLabelText, "Payload Injected Successfully");
+                    UpdateLabel("Payload Injected Successfully");
                     MessageBox.Show("PS4Debug Update 1.1.15 By ctn123\nPS4Debug Created By Golden", "Payload Injected Successfully, Here's Some Credits"); // Excessive Credits To Try Avoiding Beef lol
                 }
             }
@@ -339,10 +337,9 @@ namespace Dobby {
                 
                 // Load Passed Parameters
                 var ip = (IPAddress)args.IP;
-                var form = (Form)args.ActiveForm;
                 Executable = 0;
 
-                form?.Invoke(SetLabelText, $"Connecting to Console at \"{IP}\"");
+                UpdateLabel($"Connecting to Console at \"{IP}\"");
 
                 // Establish a connection for the new PS4Debug instance
                 try {
@@ -350,14 +347,14 @@ namespace Dobby {
                     Geo.Connect();
                 }
                 catch (SocketException oops) {
-                    form.Invoke(SetLabelText, $"Error Connecting to \"{IP}\"");
+                    UpdateLabel($"Error Connecting to \"{IP}\"");
                     Print($"!! ERROR: Unable to connect to PS4, see exception below.\n{oops.Message}\n{oops.StackTrace.Replace("\n", "  \n")}");
                     return;
                 }
 
 
                 Print($"Connection Status: {Geo.IsConnected}");
-                form?.Invoke(SetLabelText, "PS4Debug Connected, Searching for Game...");
+                UpdateLabel("PS4Debug Connected, Searching for Game...");
 
 
                 foreach(libdebug.Process process in Geo.GetProcessList().processes) { // processprocessprocessprocessprocessprocessprocess
@@ -386,23 +383,23 @@ namespace Dobby {
                     // Detect the currently loaded game and app_ver (clunkily.)
                     GameVersion = GetGameTitleIDVersionAndDMenuOffset(titleId);
 
-                    form?.Invoke(SetLabelText, $"Attached to {titleId} ({GameVersion})");
+                    UpdateLabel($"Attached to {titleId} ({GameVersion})");
                     return;
                 }
 
                 // Error out if no eboot.bin (or other expected executable) was found.
                 ProcessName = "No Valid Process";
-                form?.Invoke(SetLabelText, "Couldn't Find a Valid Game Process.");
+                UpdateLabel("Couldn't Find a Valid Game Process.");
             }
             catch(Exception tabarnack) {
-                ActiveForm?.Invoke(SetLabelText, $"Connection to {IP} Failed.");
+                UpdateLabel($"Connection to {IP} Failed.");
                 Print(tabarnack);
             }
         }
 
         private void InitializeConnectionThread()
         {
-            ActiveForm?.Invoke(SetLabelText, "Connecting to Console");
+            UpdateLabel("Connecting to Console");
 
             if (ConnectionThread?.ThreadState == 0)
                 ConnectionThread.Abort();
@@ -445,7 +442,7 @@ namespace Dobby {
             var settingsFilePath = Directory.GetCurrentDirectory() + @"\PS4_IP.BLB";
 
             Print($"No settings file was found in current folder, creating new one...\n{settingsFilePath}");
-            ActiveForm?.Invoke(SetLabelText, "Created new settings file.");
+            UpdateLabel("Created new settings file.");
 
             using (var newSettingsFile = new FileStream(settingsFilePath, FileMode.Create, FileAccess.Write))
             {
@@ -482,7 +479,7 @@ namespace Dobby {
                     if (!IPAddress.TryParse(Encoding.UTF8.GetString(buffer, 0, seperator), out IPAddress ip))
                     {
                         Print($"!! ERROR: Unable to part IP Address from settings file. (attempted to parse: {Encoding.UTF8.GetString(buffer, 0, seperator)})");
-                        ActiveForm?.Invoke(SetLabelText, "Unable to parse settings file.");
+                        UpdateLabel("Unable to parse settings file.");
 
                         // use the default IP.
                         ip = IPAddress.Parse(IpBox.Text = "192.168.137.115");
@@ -528,13 +525,13 @@ namespace Dobby {
                             
                             
                             Print($"Toggle(ulong[] Addresses, string[] Versions) Wrote To {pointer:X}");
-                            LabelTextMethod($"Toggled byte at {pointer:X}");
+                            UpdateLabel($"Toggled byte at {pointer:X}");
                             return;
                         }
                         else if(AddressIndex != Addresses.Length - 1) AddressIndex++;
                     }
 
-                    LabelTextMethod(GameVersion + " not found.");
+                    UpdateLabel(GameVersion + " not found.");
                 }
                 else {
                     Print(
@@ -542,7 +539,7 @@ namespace Dobby {
                         + $"{Geo.GetProcessInfo(Executable).name} {(Geo.GetProcessInfo(Executable).name == ProcessName ? "=" : "!")}= {ProcessName}"
                     );
 
-                    LabelTextMethod("Unable to toggle byte (Possible connection issues)");
+                    UpdateLabel("Unable to toggle byte (Possible connection issues)");
                 }
             }
             catch(Exception tabarnack) { Print(tabarnack.Message); }
@@ -569,7 +566,7 @@ namespace Dobby {
         private void PortLabelBtn_Click(object sender, EventArgs e) => PortBox.Focus();
 
         private void SendPayloadBtn_Click(object sender, EventArgs e) {
-            ActiveForm?.Invoke(SetLabelText, "Sending ps4debug Payload to PS4");
+            UpdateLabel("Sending ps4debug Payload to PS4");
 
             if (PayloadThread?.ThreadState == 0)
                 PayloadThread.Abort();
@@ -612,14 +609,14 @@ namespace Dobby {
                 if(IgnoreTitleID) TitleID = "CUSA00552";
 
                 if (GameVersion.Contains("Unknown")) {
-                    LabelTextMethod($"Unknown Game Version \"{GameVersion}\".");
+                    UpdateLabel($"Unknown Game Version \"{GameVersion}\".");
                     return;
                 }
             
                 Toggle(new ulong[] { 0x1B8FA20, 0x1924a70, 0x1924a70, 0x1924a70, 0x1924a70 }, new string[] { "1.00", "1.08", "1.09", "1.10", "1.11" });
             }
             else
-                LabelTextMethod("Error Connecting to PS4");
+                UpdateLabel("Error Connecting to PS4");
         }
         private async void T2Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
@@ -629,14 +626,14 @@ namespace Dobby {
                 if(IgnoreTitleID) TitleID = "CUSA10249";
             
                 if (GameVersion.Contains("Unknown")) {
-                    LabelTextMethod($"Unknown Game Version \"{GameVersion}\".");
+                    UpdateLabel($"Unknown Game Version \"{GameVersion}\".");
                     return;
                 }
             
                 Toggle(new ulong[] { 0x3b61900, 0x3b62d00, 0x3b67130, 0x3b67530, 0x3b675b0, 0x3b7b430, 0x3b7b430 }, new string[] { "1.00", "1.01", "1.02", "1.05", "1.07", "1.08", "1.09" });
             }
             else{
-                LabelTextMethod("Error Connecting to PS4");
+                UpdateLabel("Error Connecting to PS4");
             }
         }
         private async void UC1Btn_Click(object sender, EventArgs e) {
@@ -650,10 +647,10 @@ namespace Dobby {
                 if(!GameVersion.Contains("Unknown"))
                     Toggle(GameVersion == "U1 1.00" ? new ulong[] { 0xD97B41, 0xD989CC, 0xD98970 } : new ulong[] { 0xD5C9F0, 0xD5CA4C, 0xD5BBC1 });
                 else
-                    LabelTextMethod($"Unknown Game Version \"{GameVersion}\".");
+                    UpdateLabel($"Unknown Game Version \"{GameVersion}\".");
             }
             else
-                LabelTextMethod("Error Connecting to PS4");
+                UpdateLabel("Error Connecting to PS4");
         }
         private async void UC2Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
@@ -666,10 +663,10 @@ namespace Dobby {
                 if(!GameVersion.Contains("Unknown"))
                     Toggle(GameVersion == "U2 1.00" ? new ulong[] { 0x1271431, 0x127149C, 0x12705C9 } : new ulong[] { 0x145decc, 0x145cff9, 0x145de61 });
                 else
-                    LabelTextMethod($"Unknown Game Version \"{GameVersion}\".");
+                    UpdateLabel($"Unknown Game Version \"{GameVersion}\".");
             }
             else
-                LabelTextMethod("Error Connecting to PS4");
+                UpdateLabel("Error Connecting to PS4");
         }
         private async void UC3Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
@@ -682,10 +679,10 @@ namespace Dobby {
                 if (!GameVersion.Contains("Unknown"))
                     Toggle(GameVersion == "U3 1.00" ? new ulong[] { 0x18366c9, 0x18366c4, 0x1835481 } : new ulong[] { 0x1bbaf69, 0x1bbaf64, 0x1BB9D21 });
                 else
-                    LabelTextMethod($"Unknown Game Version \"{GameVersion}\".");
+                    UpdateLabel($"Unknown Game Version \"{GameVersion}\".");
             }
             else
-                LabelTextMethod("Error Connecting to PS4");
+                UpdateLabel("Error Connecting to PS4");
         }
         private async void UC4Btn_Click(object sender, EventArgs e) {
             await Task.Run(CheckConnectionStatus);
@@ -697,10 +694,10 @@ namespace Dobby {
                 if(!GameVersion.Contains("Unknown"))
                     Toggle(new ulong[] { 0x27a3c30, 0x2889370, 0x288d370, 0x288d370, 0x2891370, 0x2891370, 0x2891370, 0x24ed968, 0x24ed968, 0x24f1978, 0x24fd958, 0x2501738, 0x2739a20, 0x2739a20, 0x2739a20, 0x2570748, 0x2570748, 0x2580888, 0x2570748, 0x2738dc0, 0x2570748, 0x273cdc0, 0x2570748, 0x273cdc0, 0x274ccd0, 0x2570748, 0x274ccd0, 0x2750d00, 0x2570748, 0x2758d00, 0x275cd00, 0x275cd00, 0x275cd00, 0x275cd00 }, new string[] { "1.00 SP", "1.01 SP", "1.02 SP", "1.03 SP", "1.04 SP", "1.05 SP", "1.06 SP", "1.08 SP", "1.10 SP", "1.11 SP", "1.12 SP", "1.13 SP", "1.15 SP", "1.16 SP", "1.17 SP", "1.18", "1.19", "1.20 MP", "1.20 SP", "1.21 MP", "1.21 SP", "1.22 MP", "1.22/23 SP", "1.23 MP", "1.24 MP", "1.24/25 SP", "1.25 MP", "1.27/28 MP", "1.27+ SP", "1.29 MP", "1.30 MP", "1.31 MP", "1.32 MP", "1.33 MP" });
                 else
-                    LabelTextMethod($"Unknown Game Version \"{GameVersion}\".");
+                    UpdateLabel($"Unknown Game Version \"{GameVersion}\".");
             }
             else
-                LabelTextMethod("Error Connecting to PS4");
+                UpdateLabel("Error Connecting to PS4");
         }
 
         private async void UC4MPBetaBtn_Click(object sender, EventArgs e) {
@@ -714,10 +711,10 @@ namespace Dobby {
                 if(!GameVersion.Contains("Unknown"))
                     Toggle(new ulong[] { 0x2bbf720, 0x2bc3720 }, new string[] { "1.00", "1.09" });
                 else
-                    LabelTextMethod($"Unknown Game Version \"{GameVersion}\".");
+                    UpdateLabel($"Unknown Game Version \"{GameVersion}\".");
             }   
             else
-                LabelTextMethod("Error Connecting to PS4");
+                UpdateLabel("Error Connecting to PS4");
         }
 
         private async void UCTLLBtn(object sender, EventArgs e) {
@@ -731,10 +728,10 @@ namespace Dobby {
                 if(!GameVersion.Contains("Unknown"))
                     Toggle(new ulong[] { 0x26b4558, 0x26c0698, 0x0274cd00, 0x275cd00, 0x275cd00 }, new string[] { "1.00 SP", "1.0X SP", "1.00 MP", "1.08 MP", "1.09 MP" });
                 else
-                    LabelTextMethod($"Unknown Game Version \"{GameVersion}\".");
+                    UpdateLabel($"Unknown Game Version \"{GameVersion}\".");
             }
             else
-                LabelTextMethod("Error Connecting to PS4");
+                UpdateLabel("Error Connecting to PS4");
         }
         #endregion
 

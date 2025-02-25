@@ -83,21 +83,20 @@ namespace Dobby {
                     else {
                         Print("A value was assigned to TestGamedataFolder, but the path is not currently valid");
 
-                        FlashLabel(Info);
-                        SetInfoLabelText("Invalid TestGamedataFolder Path Provided.");
+                        UpdateLabel("Invalid TestGamedataFolder Path Provided.");
                         return false;
                     }
                 }
                 else
 #endif
                 {
-                    FlashLabel(Info, "Please assign a valid Gamedata folder before building.");
+                    UpdateLabel("Please assign a valid Gamedata folder before building.");
                     return false;
                 }
             }
             else if (!Directory.Exists(GamedataPathBox?.Text?.Replace("\"", string.Empty)))
             {
-                FlashLabel(Info, "Invalid Gamedata folder path provided.");
+                UpdateLabel("Invalid Gamedata folder path provided.");
                 return false;
             }
             else
@@ -108,7 +107,7 @@ namespace Dobby {
             // Ensure Keystone is Present in base game packages, if included
             if (gp4.SfoParams.category == "gd" && !gp4.IgnoreKeystone && !File.Exists($@"{gp4.GamedataFolder}\sce_sys\keystone"))
             {
-                FlashLabel(Info, $"ERROR: No keystone File Found In Project Folder. (sce_sys\\keystone)");
+                UpdateLabel($"ERROR: No keystone File Found In Project Folder. (sce_sys\\keystone)");
                 return false;
             }
 
@@ -167,17 +166,17 @@ namespace Dobby {
             if (!File.Exists(newGp4))
             {
                 if (newGp4 == string.Empty) {
-                    LabelTextMethod("One or multiple errors were detected during .gp4 creation");
+                    UpdateLabel("One or multiple errors were detected during .gp4 creation");
                 }
                 else {
-                    LabelTextMethod("An unexpected error occured during .gp4 creation.");
+                    UpdateLabel("An unexpected error occured during .gp4 creation.");
                 }
 
 
                 Print($"  - newGp4: \"{newGp4}\")");
             }
             else {
-                LabelTextMethod(".gp4 Creation Successful.");
+                UpdateLabel(".gp4 Creation Successful.");
                 Print($"  - .gp4 saved at: \"{newGp4}\"");
             }
         }

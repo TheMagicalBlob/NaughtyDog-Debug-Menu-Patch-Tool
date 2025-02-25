@@ -317,7 +317,7 @@ namespace Dobby {
                         System.Diagnostics.Process.Start($@"{Directory.GetParent(Directory.GetCurrentDirectory())}\Release\ND Debug Enabler.exe");
                         Environment.Exit(1);
                     }),
-                    new EventHandler((control, args) => ActiveForm?.Invoke(SetInfoText, string.Empty)),
+                    new EventHandler((control, args) => UpdateLabel(string.Empty)),
                     new EventHandler((control, args) => HighlightColour = Color.FromArgb(255, 0, 255))
                 };
 
@@ -493,7 +493,7 @@ namespace Dobby {
                                         $"  Pages: {string.Join(", ", Pages)}",
                                         " ",
                                         $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}",
-                                        $"Control: {HoveredControl?.Name} | {controlType?.Substring(controlType.LastIndexOf('.') + 1)}",
+                                        $"Control: {HoveredControl?.Name} | {controlType?.Substring(controlType.LastIndexOf('.') + 1)} | {HoveredControl?.ForeColor.Name}",
                                         $"{(HoveredControl?.GetType() == typeof(Button) ? ((Button)HoveredControl)?.Variable : " ")}",
                                         $" Size: {HoveredControl?.Size} | Pos: {HoveredControl?.Location}",
                                         $" Parent [{HoveredControl?.Parent?.Name}]",
