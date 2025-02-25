@@ -32,9 +32,17 @@ namespace Dobby {
         {
             (Log = new LogWindow(Gaia, Dev = this)).Show();
             ActivePage = Gaia;
+
+            TestGamedataFolder = @"C:\Users\msblob\Misc\gp4_tst\CUSA00009-app";
+            TestPubToolPath = @"C:\Users\msblob\App\FPackageTools3.87\orbis-pub-cmd.exe";
+            TestGP4Path = @"C:\Users\msblob\Misc\gp4_tst\CUSA00009-app.gp4";
         }
         #endif
 
+        public static bool ForceDebugInRelease = true
+        ;
+
+        
 
 
         public static void AddStyleTestButton(System.Windows.Forms.Form form)
@@ -76,8 +84,7 @@ namespace Dobby {
         /// Default message output function. Prints to the debug window if present, as well as the standard output
         /// </summary>
         /// <param name="obj"></param>
-        public void Print(object obj = null) {
-#if DEBUG
+        public static void Print(object obj = null) {
             string str;
 
             // Some formatting stuff
@@ -91,18 +98,70 @@ namespace Dobby {
             //^
 
 
-            LogWindow.LogOut(str);
             System.Diagnostics.Debug.WriteLine(str);
             if (!Console.IsInputRedirected)
                 Console.WriteLine(str);
-#endif
         }
 
 
 
+        
+        //=======================================\\
+        //--|   Debug Variable Declarations   |--\\
+        //=======================================\\
+        #if DEBUG
+        #region [Debug Variable Declarations]
 
 
-#if DEBUG
+        /// <summary>
+        /// Active Page reference for debug output loop.
+        /// </summary>
+        public dynamic ActivePage {
+            private get => activePage;
+            set => Log?.SetLogParent(activePage = value);
+        }
+        private dynamic activePage;
+
+        private readonly LogWindow Log;
+        
+        public static string TestGamedataFolder;
+        public static string TestPubToolPath;
+        public static string TestGP4Path;
+
+        public bool OverrideMsgOut;
+
+
+        internal int ClickErrors = 0;
+        internal int ClickEventCheck = 0;
+
+
+        private static int OutputStringIndex = 0, ShiftIndex = 0;
+
+        public static string[] OutputStrings = new string[35];
+
+
+
+        public static Control HoveredControl = new Label(); // Just so the debugger doesn't bitch
+        #endregion
+
+
+        public delegate void Rendering(Control control);
+
+        public static Rendering RenderPause = new Rendering(PauseRendering);
+        public static Rendering RenderResume = new Rendering(ResumeRendering);
+
+        private static void PauseRendering(Control control) => UpdateRendering((IntPtr)0, control);
+        private static void ResumeRendering(Control control) => UpdateRendering((IntPtr)1, control);
+        private static void UpdateRendering(IntPtr toggle, Control control) {
+            var Window = NativeWindow.FromHandle(control.Handle);
+            var Msg = Message.Create(control.Handle, 11, toggle, IntPtr.Zero);
+
+            Window.DefWndProc(ref Msg);
+
+            if(toggle != IntPtr.Zero)
+                control.Update();
+        }
+
 
 
         public Control[] GetControlsInOrder(Form Parent) {
@@ -123,58 +182,7 @@ namespace Dobby {
         }
 
 
-        /// <summary>
-        /// Active Page reference for debug output loop.
-        /// </summary>
-        public dynamic ActivePage {
-            private get => activePage;
-            set => Log?.SetLogParent(activePage = value);
-        }
-        private dynamic activePage;
-
-        private readonly LogWindow Log;
-
-
-
-
         public static void DebugControlHover(object sender, EventArgs e) => HoveredControl = (Control)sender;
-
-        
-        public static string TestGamedataFolder;
-        public static string TestGP4Path;
-
-        public bool OverrideMsgOut;
-
-        internal int ClickErrors = 0;
-        internal int ClickEventCheck = 0;
-
-
-        private static int OutputStringIndex = 0, ShiftIndex = 0;
-
-
-
-        public static string[] OutputStrings = new string[35];
-
-
-        public static Control HoveredControl = new Label(); // Just so the debugger doesn't bitch
-
-        public delegate void Rendering(Control control);
-
-        public static Rendering RenderPause = new Rendering(PauseRendering);
-        public static Rendering RenderResume = new Rendering(ResumeRendering);
-
-        private static void PauseRendering(Control control) => UpdateRendering((IntPtr)0, control);
-        private static void ResumeRendering(Control control) => UpdateRendering((IntPtr)1, control);
-        private static void UpdateRendering(IntPtr toggle, Control control) {
-            var Window = NativeWindow.FromHandle(control.Handle);
-            var Msg = Message.Create(control.Handle, 11, toggle, IntPtr.Zero);
-
-            Window.DefWndProc(ref Msg);
-
-            if((int)toggle != 0)
-                control.Update();
-        }
-        
 
 
         /// <summary>
@@ -543,7 +551,7 @@ namespace Dobby {
                         }
                         catch(Exception e) {
                             rawOutput = new string[] { "Error.", e.Message };
-                            Dev.Print($"!! ERROR: an exception occured during debug output loop while setting \"frame\".\nException: {e.Message}");
+                            Testing.Print($"!! ERROR: an exception occured during debug output loop while setting \"frame\".\nException: {e.Message}");
                         }
 
                         if(LogShouldRefresh || !chk1.SequenceEqual(rawOutput) || chk1 == null || !chk2.SequenceEqual(OutputStrings)) {

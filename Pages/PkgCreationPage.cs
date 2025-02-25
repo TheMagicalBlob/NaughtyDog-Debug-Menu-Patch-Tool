@@ -64,6 +64,10 @@ namespace Dobby {
             {
                 orbisToolPath = OrbisToolPathBox.Text.Replace("\n", string.Empty);
             }
+            #if DEBUG
+            else if (Testing.TestPubToolPath != null && File.Exists(Testing.TestPubToolPath))
+                orbisToolPath = Testing.TestPubToolPath;
+            #endif
             else {
                 UpdateLabel("Please provide a path to the FPKG tools before building.", true);
                 return false;
@@ -74,6 +78,10 @@ namespace Dobby {
             {
                 gp4Path = GP4FilePathBox.Text.Replace("\n", string.Empty);
             }
+            #if DEBUG
+            else if (Testing.TestGP4Path != null && File.Exists(Testing.TestGP4Path ))
+                gp4Path = Testing.TestGP4Path ;
+            #endif
             else {
                 UpdateLabel("Please provide a valid .gp4 path before building.", true);
                 return false;
@@ -113,14 +121,14 @@ namespace Dobby {
                     }
                     else if (file == files.Last())
                     {
-                        UpdateLabel("Build tool not found in provided folder (Expected Name: *-cmd*)");
+                        UpdateLabel("Build tool not found in provided folder (Expected Name: *-cmd*)", true);
                         return false;
                     }
                 }
             }
             else if (!File.Exists(orbisToolPath))
             {
-                UpdateLabel("Invalid path provided for fpkg build tool. (file doesn't exist)");
+                UpdateLabel("Invalid path provided for fpkg build tool. (file doesn't exist)", true);
                 return false;
             }
 
@@ -129,7 +137,7 @@ namespace Dobby {
             // Verfiy .gp4 Project Path
             else if(!File.Exists(gp4Path))
             {
-                UpdateLabel("Invalid path provided for .gp4 project file. (file doesn't exist)");
+                UpdateLabel("Invalid path provided for .gp4 project file. (file doesn't exist)", true);
                 return false;
             }
 
@@ -137,13 +145,14 @@ namespace Dobby {
             // Set Output Directory as the current
             if (!Directory.Exists(outputPath))
             {
-                UpdateLabel("Invalid output directory provided for finished package file. (directory doesn't exist)");
+                UpdateLabel("Invalid output directory provided for finished package file. (directory doesn't exist)", true);
                 return false;
             }
 
 
 
             // Return successfully
+            UpdateLabel("Settings good, beginning .pkg creation.", false);
             return true;
         }
 
@@ -183,6 +192,10 @@ namespace Dobby {
                     // * Have the section of errors orbis-pub-cmd outputs wrapped in braces appear before the more general part which otherwise preceeds it (so the useful part doesn't get cut off first)
                     if (data.Data.Contains("[Error]"))
                         errors.Add(data.Data.Replace("[Error]", "[ERROR] "));
+
+                    else if (data.Data.Contains("[Debug]"))
+                        UpdateLabel(data.Data.Replace("[Debug]", string.Empty));
+                    
                 }
             };
 
@@ -196,14 +209,14 @@ namespace Dobby {
             {
                 if (buildProcess.ExitCode == 0)
                 {
-                    UpdateLabel("Fake-Package creation process completed without errors.");
+                    UpdateLabel("Fake-Package creation process completed without errors.", false);
                 }
                 else if (buildProcess.ExitCode == 1)
                 {
-                    UpdateLabel($"{errors.First()}.{(errors.Count > 1 ? $" ({errors.Count - 1} more errors)" : string.Empty)}");
+                    UpdateLabel($"{errors.First()}.{(errors.Count > 1 ? $" ({errors.Count - 1} more errors)" : string.Empty)}", true);
                 }
                 else {
-                    UpdateLabel($"WARNING: Unexpected Exit Code from build tool ({buildProcess.ExitCode})");
+                    UpdateLabel($"WARNING: Unexpected Exit Code from build tool ({buildProcess.ExitCode})", true);
                 }
 
                 DisableFormChange = false;
@@ -236,6 +249,9 @@ namespace Dobby {
                 gp4Path = null,
                 outputPath = null
             ;
+
+
+            UpdateLabel("Checking .pkg options...");
 
             if (ApplyAndVerifyPkgOptions(ref orbisToolPath, ref tempDirectory, ref gp4Path, ref outputPath))
             {

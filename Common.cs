@@ -75,6 +75,7 @@ namespace Dobby {
             DisableFormChange
         ;
 
+
         public static Point
             LastFormPosition,
             MousePos,
@@ -207,9 +208,10 @@ namespace Dobby {
         /// </summary>
         public static void Print(object message = null)
         {
-            #if DEBUG
-            Dev.Print(message);
+            #if !DEBUG
+            if (Testing.ForceDebugInRelease)
             #endif
+            Testing.Print(message);
         }
 
         /// <summary>
@@ -231,9 +233,12 @@ namespace Dobby {
         {
             if (newText != null)
                 infoText = newText;
+            
 
             if (flashLabel)
                 flashes = 16;
+            else
+                flashes = 0;
         }
 
         
@@ -1070,11 +1075,12 @@ namespace Dobby {
             while (true) {
                 try {
                     // Wait for something to do
-                    while (flashes < 1 && infoText == null)
+                    while (flashes < 1 && _infoText == null)
                         Thread.Sleep(1);
-                  
+
+
                     // Flash the label if applicable
-                    for (; flashes > 0; --flashes)
+                    for (; flashes >= 0; --flashes)
                     {
                         while (ActiveForm == null)
                             Thread.Sleep(1);

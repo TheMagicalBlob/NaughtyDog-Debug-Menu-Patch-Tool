@@ -90,13 +90,13 @@ namespace Dobby {
                 else
 #endif
                 {
-                    UpdateLabel("Please assign a valid Gamedata folder before building.");
+                    UpdateLabel("Please assign a valid Gamedata folder before building.", true);
                     return false;
                 }
             }
             else if (!Directory.Exists(GamedataPathBox?.Text?.Replace("\"", string.Empty)))
             {
-                UpdateLabel("Invalid Gamedata folder path provided.");
+                UpdateLabel("Invalid Gamedata folder path provided.", true);
                 return false;
             }
             else
@@ -107,7 +107,7 @@ namespace Dobby {
             // Ensure Keystone is Present in base game packages, if included
             if (gp4.SfoParams.category == "gd" && !gp4.IgnoreKeystone && !File.Exists($@"{gp4.GamedataFolder}\sce_sys\keystone"))
             {
-                UpdateLabel($"ERROR: No keystone File Found In Project Folder. (sce_sys\\keystone)");
+                UpdateLabel($"ERROR: No keystone File Found In Project Folder. (sce_sys\\keystone)", true);
                 return false;
             }
 
