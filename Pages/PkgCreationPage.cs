@@ -200,7 +200,7 @@ namespace Dobby {
                     }
 
                     else {
-                        //Print($"[pub]: {output}");
+                        //Print($"[pub]: {output.ToLower()}");
 
                         // TODO: fix the fact that these don't show consistently
                         if (output.ToLower().Contains("process started"))
@@ -213,7 +213,9 @@ namespace Dobby {
                             UpdateLabel("Creating Package Base... (step 3/4)");
 
                         if (output.ToLower().Contains("calculating image digest"))
+                        {
                             UpdateLabel("Calculating Package Digest... (step 4/4)");
+                        }
                     }
                 }
             };

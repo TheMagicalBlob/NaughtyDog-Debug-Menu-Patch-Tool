@@ -104,9 +104,9 @@ namespace Dobby
             this.GP4FilePathLabel.ForeColor = System.Drawing.SystemColors.Control;
             this.GP4FilePathLabel.Location = new System.Drawing.Point(3, 85);
             this.GP4FilePathLabel.Name = "GP4FilePathLabel";
-            this.GP4FilePathLabel.Size = new System.Drawing.Size(228, 16);
+            this.GP4FilePathLabel.Size = new System.Drawing.Size(130, 16);
             this.GP4FilePathLabel.TabIndex = 60;
-            this.GP4FilePathLabel.Text = ".gp4 Project File/Gamedata Folder Path:";
+            this.GP4FilePathLabel.Text = ".gp4 Project File Path:";
             // 
             // OutputDirectoryLabel
             // 
@@ -281,7 +281,7 @@ namespace Dobby
             this.OrbisToolPathBox.Name = "OrbisToolPathBox";
             this.OrbisToolPathBox.Size = new System.Drawing.Size(395, 23);
             this.OrbisToolPathBox.TabIndex = 50;
-            this.OrbisToolPathBox.Text = "No Program Path Loaded";
+            this.OrbisToolPathBox.Text = "No Program for Package Creation Loaded";
             this.OrbisToolPathBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // OrbisCmdPathBrowseBtn
@@ -310,7 +310,7 @@ namespace Dobby
             this.GP4FilePathBox.Name = "GP4FilePathBox";
             this.GP4FilePathBox.Size = new System.Drawing.Size(395, 23);
             this.GP4FilePathBox.TabIndex = 53;
-            this.GP4FilePathBox.Text = "No .gp4 Or Gamedata Folder Path Selected";
+            this.GP4FilePathBox.Text = "No .gp4 Project File Provided";
             this.GP4FilePathBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // GP4FilePathBrowseBtn

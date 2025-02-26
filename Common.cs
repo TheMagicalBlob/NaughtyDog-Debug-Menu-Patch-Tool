@@ -160,15 +160,7 @@ namespace Dobby {
         //#
         #region [Threading Components]
 
-        private static string infoText {
-            get {
-                var text = _infoText;
-                _infoText = null;
-                return text;
-            }
-            set => _infoText = value;
-        }
-        private static string _infoText;
+        private static string infoText;
 
         private static int flashes;
 
@@ -231,9 +223,10 @@ namespace Dobby {
         /// <param name="flashLabel"> If true, flash the label to indicate an error or otherwise get the user's attention. (switches between white/yellow) </param>
         public static void UpdateLabel(string newText, bool flashLabel = false)
         {
-            if (newText != null)
+            if (newText != null && InfoLabel.Text != newText) {
                 infoText = newText;
-            
+                Print($"Label Text => {newText}");
+            }
 
             if (flashLabel)
                 flashes = 16;
@@ -1045,15 +1038,10 @@ namespace Dobby {
                 if (ActiveForm != null && label != null)
                 {
                     if (text != null)
-                    {
                         label.Text = text;
-                        Print($"[{label.Name}] (string): {text}");
-                    }
+
                     if (colour != null)
-                    {
                         label.ForeColor = colour;
-                        Print($"[{label.Name}] (Colour): {colour.Name}");
-                    }
 
                     ActiveForm?.Update();
                 }
@@ -1075,7 +1063,7 @@ namespace Dobby {
             while (true) {
                 try {
                     // Wait for something to do
-                    while (flashes < 1 && _infoText == null)
+                    while (flashes < 1 && infoText == null)
                         Thread.Sleep(1);
 
 
@@ -1093,7 +1081,6 @@ namespace Dobby {
                     // Set The Text of The Yellow Label At The Bottom Of The Form
                     if (infoText != null) {
                         ActiveForm?.Invoke(SetLabelState, label, Color.FromArgb(255, 227, 0), infoText);
-                        infoText = null;
                     }
                 }
                 catch (Exception) {

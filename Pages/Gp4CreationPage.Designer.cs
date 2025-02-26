@@ -148,7 +148,7 @@ namespace Dobby
             this.BaseGamePackagePathLabel.ForeColor = System.Drawing.SystemColors.Control;
             this.BaseGamePackagePathLabel.Location = new System.Drawing.Point(3, 144);
             this.BaseGamePackagePathLabel.Name = "BaseGamePackagePathLabel";
-            this.BaseGamePackagePathLabel.Size = new System.Drawing.Size(342, 16);
+            this.BaseGamePackagePathLabel.Size = new System.Drawing.Size(396, 16);
             this.BaseGamePackagePathLabel.TabIndex = 85;
             this.BaseGamePackagePathLabel.Text = "Base Game Package Directory:                               (patches/updates only)" +
     "";
@@ -246,7 +246,7 @@ namespace Dobby
             this.BaseGamePackagePathBox.Name = "BaseGamePackagePathBox";
             this.BaseGamePackagePathBox.Size = new System.Drawing.Size(395, 23);
             this.BaseGamePackagePathBox.TabIndex = 83;
-            this.BaseGamePackagePathBox.Text = "Base Game Package Path";
+            this.BaseGamePackagePathBox.Text = "No Base Game .pkg Path Provided";
             this.BaseGamePackagePathBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // BaseGamePackageBrowseBtn
