@@ -417,11 +417,11 @@ namespace Dobby
 
         }
         #endregion
+
         
         //================================\\
         //--|   Control Declarations   |--\\
         //================================\\
-        #region [Control Declarations]
         private Label SeperatorLine0;
         private Label SeperatorLine2;
         private Label OrbisCmdPathLabel;
@@ -445,8 +445,6 @@ namespace Dobby
         private Button CreditsBtn;
         private System.Windows.Forms.Label Info;
         private System.Windows.Forms.Label label1;
-        #endregion
-
         private Button CleanTempFilesBtn;
     }
 }

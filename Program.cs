@@ -10,8 +10,8 @@ namespace Dobby {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        //[STAThread]
-        [MTAThread]
+        //[MTAThread]
+        [STAThread]
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

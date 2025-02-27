@@ -6,6 +6,10 @@ using static Dobby.Common;
 
 namespace Dobby {
     internal partial class CreditsPage : Form {
+
+        /// <summary>
+        /// Initialize a new instance of the CreditsPage Form.
+        /// </summary>
         public CreditsPage() {
             InitializeComponent();
             
@@ -34,7 +38,6 @@ namespace Dobby {
         }
         public void IllusionBlogBtnMH(object sender, EventArgs e) => IllusionBlogBtn.ForeColor = Color.MediumBlue;
         public void IllusionBlogBtnML(object sender, EventArgs e) => IllusionBlogBtn.ForeColor = Color.White;
-        
         #endregion
     }
 }

@@ -736,39 +736,5 @@ namespace Dobby {
                 UpdateLabel("Error Connecting to PS4");
         }
         #endregion
-
-
-
-        
-        //================================\\
-        //--|   Control Declarations   |--\\
-        //================================\\
-        #region [Control Declarations]
-        public TextBox IpBox;
-        public Label MainLabel;
-        public Button T1RBtn;
-        public Button T2Btn;
-        public Button UC1Btn;
-        public Button UC2Btn;
-        public Button UC3Btn;
-        public Button UC4Btn;
-        public Button TLLBtn;
-        public Button IPLabelBtn;
-        public Button ManualConnectBtn;
-        public Button PortLabelBtn;
-        public TextBox PortBox;
-        public Button PS4DebugPayloadBtn;
-        public Label SeperatorLine0;
-        public Label SeperatorLine1;
-        public Label SeperatorLine3;
-        public Button EPPBackBtn;
-        public Button UC4MPBetaBtn;
-        public Button InfoHelpBtn;
-        public Button CreditsBtn;
-        public Button BackBtn;
-        public Label Info;
-        public Label SeperatorLine2;
-        public Button IgnoreTitleIDBtn;
-        #endregion
     }
 }

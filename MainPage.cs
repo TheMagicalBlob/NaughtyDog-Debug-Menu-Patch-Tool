@@ -8,7 +8,7 @@ namespace Dobby {
     internal partial class MainPage : Form {
 
         /// <summary>
-        /// Initialize the new instance of the MainPage form.
+        /// Initialize the main instance of the MainPage form.
         /// </summary>
         public MainPage() {
             InitializeComponent();

@@ -4,6 +4,10 @@ using System.Windows.Forms;
 
 namespace Dobby {
     internal partial class InfoHelpPage : Form {
+
+        /// <summary>
+        /// Initialize a new instance of the InfoHelpPage Form.
+        /// </summary>
         public InfoHelpPage() {
             InitializeComponent();
             
@@ -24,8 +28,8 @@ namespace Dobby {
                 MessageBox.Show($"Changelist Dumped To {Directory.GetCurrentDirectory()}\\ChangeLog.txt");
             }
         }
-        void BuildLabelMH(object sender, EventArgs e) { Common.UpdateLabel("Right Click To Dump ChangeList"); }
-        void BuildLabelML(object sender, EventArgs e) => Common.UpdateLabel("");
+        private void BuildLabelMH(object sender, EventArgs e) { Common.UpdateLabel("Right Click To Dump ChangeList"); }
+        private void BuildLabelML(object sender, EventArgs e) => Common.UpdateLabel("");
 
         private void PS4DebugHelpBtn_Click(object sender, EventArgs e) => Common.ChangeForm(Common.PageID.PS4DebugHelpPage);
         private void EbootPatchPageHelpBtn_Click(object sender, EventArgs e) => Common.ChangeForm(Common.PageID.EbootPatchHelpPage);
@@ -40,8 +44,5 @@ namespace Dobby {
             #endif
         }
         #endregion
-
-
-        
     }
 }

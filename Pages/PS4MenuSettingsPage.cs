@@ -1349,34 +1349,5 @@ namespace Dobby {
         ;
 
         #endregion
-
-
-
-
-        //================================\\
-        //--|   Control Declarations   |--\\
-        //================================\\
-        #region [Control Declarations]
-        private Button BrowseButton;
-        private Button InfoHelpBtn;
-        private Button CreditsBtn;
-        private Button BackBtn;
-        private Button DisableDebugTextBtn;
-        private Button DisablePausedIconBtn;
-        private Button ProgPauseOnCloseBtn;
-        private Button ProgPauseOnOpenBtn;
-        private Button NovisBtn; 
-        private TextBox ExecutablePathBox;
-        private Label GameSpecificPatchesLabel;
-        private Label CustomDebugOptionsLabel;
-        private Label UniversalPatchesLabel;
-        private Label SeperatorLine0;
-        private Label SeperatorLine1;
-        private Label SeperatorLine2;
-        private Label SeperatorLine3;
-        private Label GameInfoLabel;
-        private Label MainLabel;
-        private Label Info;
-#endregion
     }
 }
