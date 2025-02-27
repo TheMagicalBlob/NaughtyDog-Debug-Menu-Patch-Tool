@@ -1,4 +1,5 @@
-﻿
+﻿using System.Windows.Forms;
+
 namespace Dobby
 {
     internal partial class CreditsPage

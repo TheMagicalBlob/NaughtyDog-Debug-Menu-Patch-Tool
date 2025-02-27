@@ -14,7 +14,7 @@ using System.Diagnostics;
 
 namespace Dobby {
     
-    internal class Common : Main, IDisposable {
+    internal class Common : MainPage, IDisposable {
         //#error version
 
         // Spacing:
@@ -66,7 +66,6 @@ namespace Dobby {
         public static bool
             MouseScrolled,
             MouseIsDown,
-            InfoHasImportantStr,
             IsPageGoingBack,
             LastMsgOutputWasInfoString,
             LabelShouldFlash,
@@ -394,59 +393,6 @@ namespace Dobby {
         }
 
 
-        public static RichTextBox CreateTextBox(string Title) {
-            PopupGroupBox?.Dispose();
-
-            PopupGroupBox = new GroupBox() {
-                Cursor = Cursors.Cross,
-                Size = new Size(250, ActiveForm.Size.Height - 65),
-                Location = new Point(35, ActiveForm.Controls.Find("SeperatorLine0", true)[0].Location.Y + 8),
-                BackColor = Color.FromArgb(255, Color.FromArgb(100, 100, 100))
-            };
-
-            var popupBoxLabel = new Label() {
-                Text = Title,
-                Font = new Font("Microsoft YaHei UI", 7.5F),
-                Size = new Size(217, 21),
-                Location = new Point(4, 8),
-                ForeColor = SystemColors.Control,
-                BackColor = Color.FromArgb(100, 100, 100)
-            };
-            var closeBtn = new Button() {
-                Text = "X",
-                Cursor = Cursors.Cross,
-                Size = new Size(19, 19),
-                BackColor = Color.FromArgb(100, 100, 100),
-                FlatStyle = FlatStyle.Flat,
-                Location = new Point(228, 9),
-                ForeColor = SystemColors.Control,
-                TextAlign = ContentAlignment.MiddleRight,
-                Font = new Font("Cambria", 6.5F)
-
-            };
-            var textBox = new RichTextBox() {
-                ReadOnly = true,
-                Cursor = Cursors.Cross,
-                Size = new Size(242, PopupGroupBox.Size.Height - 35),
-                Location = new Point(4, 29),
-                BackColor = Color.FromArgb(255, Color.DarkGray)
-            };
-
-            closeBtn.FlatAppearance.BorderSize = 0;
-            closeBtn.MouseClick += KillTextBox;
-            PopupGroupBox.Controls.Add(textBox);
-            PopupGroupBox.Controls.Add(closeBtn);
-            PopupGroupBox.Controls.Add(popupBoxLabel);
-            ActiveForm.Controls.Add(PopupGroupBox);
-
-            PopupGroupBox.BringToFront(); textBox.BringToFront();
-            closeBtn.BringToFront(); popupBoxLabel.BringToFront();
-
-            return textBox;
-        }
-
-        private static void KillTextBox(object sender, MouseEventArgs e) => PopupGroupBox?.Dispose();
-
 
         /* [deprecated SetInfoLabelStringOnControlHover(Control Sender, float FontAdjustment = 10f)]
         /// <summary> [deprecated] Sets The Info Label String Based On The Currently Hovered Control </summary>
@@ -660,7 +606,7 @@ namespace Dobby {
 
             NewPage?.Show();
 #if DEBUG
-            Dev.ActivePage = NewPage;
+            Dev.SetActivePage(NewPage);
 #endif
             Common.Page = Page;
             ActiveForm.Location = LastFormPosition;
@@ -671,6 +617,7 @@ namespace Dobby {
             else
                 PageToClose.Close();
         }
+
 
 
 
@@ -764,24 +711,52 @@ namespace Dobby {
                 BackColor = Gray,
                 ForeColor = SystemColors.Control,
                 TextAlign = ContentAlignment.MiddleLeft,
-                Cursor = Cursors.Cross,
-            };
+                Cursor = Cursors.Cross
+            }
+            #if DEBUG
+            ,LogBtn = new Button() {
+                Location = new Point(Controls.Owner.Size.Width - 70, 1),
+                Size = new Size(23, 23),
+                Name = "LogBtn",
+                Font = new Font("Franklin Gothic Medium", 6.5F, FontStyle.Bold),
+                Text = "Log",
+                FlatStyle = FlatStyle.Flat,
+                BackColor = Gray,
+                ForeColor = SystemColors.Control,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Cursor = Cursors.Cross
+            }
+            #endif
+            ;
 
+            // Minimize Button Properties
             MinimizeBtn.FlatAppearance.BorderSize = 0;
             Controls.Owner.Controls.Add(MinimizeBtn);
             MinimizeBtn.BringToFront();
-            MinimizeBtn.Click += new EventHandler(MinimizeBtn_Click);
-            MinimizeBtn.MouseEnter += new EventHandler(MinimizeBtnMH);
-            MinimizeBtn.MouseLeave += new EventHandler(MinimizeBtnML);
 
+            MinimizeBtn.Click += new EventHandler(MinimizeBtn_Click);
+            MinimizeBtn.MouseEnter += new EventHandler(WindowBtnMH);
+            MinimizeBtn.MouseLeave += new EventHandler(WindowBtnML);
+
+            // Exit Button Properties
             ExitBtn.FlatAppearance.BorderSize = 0;
             Controls.Owner.Controls.Add(ExitBtn);
             ExitBtn.BringToFront();
             
             ExitBtn.Click += new EventHandler(ExitBtn_Click);
-            ExitBtn.MouseEnter += new EventHandler(ExitBtnMH);
-            ExitBtn.MouseLeave += new EventHandler(ExitBtnML);
+            ExitBtn.MouseEnter += new EventHandler(WindowBtnMH);
+            ExitBtn.MouseLeave += new EventHandler(WindowBtnML);
 
+            #if DEBUG
+            // Log Window Button Properties
+            LogBtn.FlatAppearance.BorderSize = 0;
+            Controls.Owner.Controls.Add(LogBtn);
+            LogBtn.BringToFront();
+            
+            LogBtn.Click += (sender, args) => Dev.ToggleLogWindow();
+            LogBtn.MouseEnter += new EventHandler(WindowBtnMH);
+            LogBtn.MouseLeave += new EventHandler(WindowBtnML);
+            #endif
 
 
             // Avoid searching for back button on Main page
@@ -798,8 +773,9 @@ namespace Dobby {
             catch (Exception) {}
         }
 
-
         #endregion
+
+
 
 
         
@@ -1112,12 +1088,10 @@ namespace Dobby {
 
             Environment.Exit(0); // off we fuck
         }
-        internal static void ExitBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
-        internal static void ExitBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
+        internal static void WindowBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
+        internal static void WindowBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
         internal static void MinimizeBtn_Click(object sender, EventArgs e) => ((Control)sender).FindForm().WindowState = FormWindowState.Minimized;
-        internal static void MinimizeBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
-        internal static void MinimizeBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
-
+        
         internal static void MouseDownFunc(object sender, MouseEventArgs e)
         {
             MouseIsDown = true;
@@ -1137,6 +1111,10 @@ namespace Dobby {
 
             ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
             ActiveForm.Update();
+
+            #if DEBUG
+            Dev.MoveLogWindow();
+            #endif
         }
 
         public static void ControlHover(object sender, EventArgs _ = null) => HoverLeave((Control)sender, true);

@@ -19,65 +19,28 @@ namespace Dobby {
     /// Lazy/Messy class for general debugging/testing-related stuff.
     /// </summary>
     public class Testing {
-        //===================\\
-        //--  DEBUG CLASS  --\\
-        //===================\\
+        //=======================================\\
+        //--  Debug/Testing Class Declaration  --\\
+        //=======================================\\
         
-        #if DEBUG
+#if DEBUG
         /// <summary>
         /// Create the Dobby.Dev instance which will be running for the Program's whole runtime.
         /// </summary>
         /// <param name="Gaia"> The Main Page. I forget why it needs this one, but not the new ones; will check later. </param>
         public Testing(Form Gaia)
         {
-            (Log = new LogWindow(Gaia, Dev = this)).Show();
+            Dev = this;
             ActivePage = Gaia;
 
             TestGamedataFolder = @"C:\Users\msblob\Misc\gp4_tst\CUSA00009-app";
             TestPubToolPath = @"C:\Users\msblob\App\FPackageTools3.87\orbis-pub-cmd.exe";
             TestGP4Path = @"C:\Users\msblob\Misc\gp4_tst\CUSA00009-app.gp4";
         }
-        #endif
-
-        public static bool ForceDebugInRelease = true
-        ;
+#endif
 
         
 
-
-        public static void AddStyleTestButton(System.Windows.Forms.Form form)
-        {
-            // StyleTestBtn
-            Button styleTestButton; 
-
-            form.Controls.Add(styleTestButton = new Button()
-            {
-                Name = "StyleTestBtn",
-                Size = new Size(112, 24),
-                Location = new Point(294, 1),
-                Text = "Toggle Style Test",
-                Font = new Font("Verdana", 8F),
-                BackColor = Color.FromArgb(100, 100, 100),
-                TextAlign = ContentAlignment.MiddleLeft,
-                FlatStyle = FlatStyle.Flat,
-                ForeColor = SystemColors.Control,
-                Cursor = Cursors.Cross
-            });
-            styleTestButton.Click += (sender, args) => {
-                foreach (var item in ((Control)sender).Parent.Controls)
-                {
-                    if (item.GetType() == typeof(TextBox) && !((TextBox)item).ReadOnly)
-                    {
-                        var control = (TextBox) item;
-                        control.TextAlign ^= HorizontalAlignment.Center;
-                    }
-                }
-
-                Common.StyleTest ^= true;
-            };
-            styleTestButton.FlatAppearance.BorderSize = 0;
-            styleTestButton.BringToFront();
-        }
 
 
         /// <summary>
@@ -109,21 +72,26 @@ namespace Dobby {
         //=======================================\\
         //--|   Debug Variable Declarations   |--\\
         //=======================================\\
-        #if DEBUG
         #region [Debug Variable Declarations]
 
+        public static bool ForceDebugInRelease = true;
 
-        /// <summary>
-        /// Active Page reference for debug output loop.
-        /// </summary>
-        public dynamic ActivePage {
-            private get => activePage;
-            set => Log?.SetLogParent(activePage = value);
+#if DEBUG
+        public static Control HoveredControl;
+        private LogWindow Log;
+
+        /// <summary> Active Page reference for debug output loop. </summary>
+        private dynamic ActivePage {
+            get => activePage;
+            set {
+                activePage = value;
+                Log?.SetLogParent(ActivePage);
+            }
         }
         private dynamic activePage;
 
-        private readonly LogWindow Log;
-        
+        public static Form LogPtr, ParentPtr;
+
         public static string TestGamedataFolder;
         public static string TestPubToolPath;
         public static string TestGP4Path;
@@ -133,7 +101,15 @@ namespace Dobby {
 
         internal int ClickErrors = 0;
         internal int ClickEventCheck = 0;
+        
+        public static Size FormScale;
 
+        private static Graphics LogWindowRenderer;
+
+        private static StreamWriter LogFile;
+        public static string[] LogBuffer;
+
+        public static bool LogShouldRefresh, LogShouldPause;
 
         private static int OutputStringIndex = 0, ShiftIndex = 0;
 
@@ -141,14 +117,129 @@ namespace Dobby {
 
 
 
-        public static Control HoveredControl = new Label(); // Just so the debugger doesn't bitch
-        #endregion
-
-
         public delegate void Rendering(Control control);
 
         public static Rendering RenderPause = new Rendering(PauseRendering);
         public static Rendering RenderResume = new Rendering(ResumeRendering);
+        #endif
+        #endregion
+
+
+
+        
+        //========================================\\
+        //--|   Debug Function Delcarations   |---\\
+        //========================================\\
+        #region [Debug Function Delcarations]
+
+        /// <summary>
+        /// Toggle a few different things to try and get a feel for which is prefferable
+        /// </summary>
+        public static void AddStyleTestButton(System.Windows.Forms.Form form)
+        {
+            // StyleTestBtn
+            Button styleTestButton; 
+
+            form.Controls.Add(styleTestButton = new Button()
+            {
+                Name = "StyleTestBtn",
+                Size = new Size(120, 24),
+                Location = new Point(272, 1),
+                Text = "Toggle Style Test",
+                Font = new Font("Verdana", 8F),
+                BackColor = Color.FromArgb(100, 100, 100),
+                TextAlign = ContentAlignment.MiddleLeft,
+                FlatStyle = FlatStyle.Flat,
+                ForeColor = SystemColors.Control,
+                Cursor = Cursors.Cross
+            });
+            styleTestButton.Click += (sender, args) => {
+                foreach (var item in ((Control)sender).Parent.Controls)
+                {
+                    if (item.GetType() == typeof(TextBox) && !((TextBox)item).ReadOnly)
+                    {
+                        var control = (TextBox) item;
+                        control.TextAlign ^= HorizontalAlignment.Center;
+                    }
+                }
+
+                Common.StyleTest ^= true;
+            };
+            styleTestButton.FlatAppearance.BorderSize = 0;
+            styleTestButton.BringToFront();
+        }
+
+
+        /* [unused & incomplete test function]
+        public static RichTextBox CreateTextBox(Form ActiveForm, string Title) {
+            PopupGroupBox?.Dispose();
+
+            PopupGroupBox = new GroupBox() {
+                Cursor = Cursors.Cross,
+                Size = new Size(250, ActiveForm.Size.Height - 65),
+                Location = new Point(35, ActiveForm.Controls.Find("SeperatorLine0", true)[0].Location.Y + 8),
+                BackColor = Color.FromArgb(255, Color.FromArgb(100, 100, 100))
+            };
+
+            var popupBoxLabel = new Label() {
+                Text = Title,
+                Font = new Font("Microsoft YaHei UI", 7.5F),
+                Size = new Size(217, 21),
+                Location = new Point(4, 8),
+                ForeColor = SystemColors.Control,
+                BackColor = Color.FromArgb(100, 100, 100)
+            };
+            var closeBtn = new Button() {
+                Text = "X",
+                Cursor = Cursors.Cross,
+                Size = new Size(19, 19),
+                BackColor = Color.FromArgb(100, 100, 100),
+                FlatStyle = FlatStyle.Flat,
+                Location = new Point(228, 9),
+                ForeColor = SystemColors.Control,
+                TextAlign = ContentAlignment.MiddleRight,
+                Font = new Font("Cambria", 6.5F)
+
+            };
+            var textBox = new RichTextBox() {
+                ReadOnly = true,
+                Cursor = Cursors.Cross,
+                Size = new Size(242, PopupGroupBox.Size.Height - 35),
+                Location = new Point(4, 29),
+                BackColor = Color.FromArgb(255, Color.DarkGray)
+            };
+
+            closeBtn.FlatAppearance.BorderSize = 0;
+            closeBtn.MouseClick += KillTextBox;
+            PopupGroupBox.Controls.Add(textBox);
+            PopupGroupBox.Controls.Add(closeBtn);
+            PopupGroupBox.Controls.Add(popupBoxLabel);
+            ActiveForm.Controls.Add(PopupGroupBox);
+
+            PopupGroupBox.BringToFront(); textBox.BringToFront();
+            closeBtn.BringToFront(); popupBoxLabel.BringToFront();
+
+            return textBox;
+        }
+        private static void KillTextBox(object sender, MouseEventArgs e) => Common.PopupGroupBox?.Dispose();
+        */
+
+
+
+        #if DEBUG
+        public void SetActivePage(Form form) => ActivePage = form;
+
+
+        public void ToggleLogWindow() {
+            if (Log != null) {
+                Log.Dispose();
+                Log = null;
+            }
+            else
+                (Log = new LogWindow(ActivePage, this)).Show();
+        }
+
+        public void MoveLogWindow() => Log?.MoveLogToAppEdge(ParentPtr, null);
 
         private static void PauseRendering(Control control) => UpdateRendering((IntPtr)0, control);
         private static void ResumeRendering(Control control) => UpdateRendering((IntPtr)1, control);
@@ -196,14 +287,24 @@ namespace Dobby {
         }
 
 
-        public void Dispose() => Log.Dispose();
+        public void Dispose() => Log?.Dispose();
 
-        //public void MoveLogToAppEdge() => Log.MoveLogToAppEdge
+        #endif
+        #endregion
+
+
+
+        #if DEBUG
+        //============================================\\
+        //--|   Debug Log Window Initialization   |---\\
+        //============================================\\
+        #region [Debug Log Window Initialization]
 
         /// <summary>
         /// Class for standard debug display / logging;
         /// </summary>
-        private partial class LogWindow : Form, IDisposable {
+        private partial class LogWindow : Form, IDisposable
+        {
             public LogWindow(Form Gaia, Testing dev)
             {
                 var DButtonFont = new Font("Cambria", 7F, FontStyle.Bold);
@@ -282,6 +383,7 @@ namespace Dobby {
 
 
                 LogPtr = this;
+                ParentPtr = Gaia;
                 LogWindowRenderer = CreateGraphics();
 
                 LogFile = File.CreateText($"{Directory.GetCurrentDirectory()}\\out.txt");
@@ -291,19 +393,6 @@ namespace Dobby {
 
             }
 
-
-
-            public static Form LogPtr, ParentPtr;
-            public static Size FormScale;
-
-            private static Graphics LogWindowRenderer;
-
-            private static StreamWriter LogFile;
-            public static string[] LogBuffer;
-
-            #region timer crap
-            public static bool LogShouldRefresh, LogShouldPause;
-            #endregion
 
             
             
@@ -316,11 +405,14 @@ namespace Dobby {
                 (ParentPtr = Gaia).LocationChanged += MoveLogToAppEdge;
             }
 
-            public static void MoveLogToAppEdge(object mommy, EventArgs e)
+            public void MoveLogToAppEdge(object mommy, EventArgs e)
             {
+                if (LogPtr == null) return;
+
                 LogPtr.BringToFront();
                 ((Form) mommy).BringToFront();
                 LogPtr.Location = new Point(((Form)mommy).Location.X - LogPtr.Size.Width, ((Form)mommy).Location.Y);
+                LogPtr.Update();
             }
             public static void MoveLogToAppEdge(Point Loc) => LogPtr.Location = new Point(Loc.X - LogPtr.Size.Width, Loc.Y);
 
@@ -553,10 +645,14 @@ namespace Dobby {
             /// </summary>
             new public void Dispose()
             {
-                LogThread.Abort();
-                LogPtr.Dispose();
+                LogThread?.Abort();
+                LogPtr?.Dispose();
+                LogFile?.Dispose();
+
+                base.Dispose();
             }
         }
+        #endregion
 #endif
     }
 }

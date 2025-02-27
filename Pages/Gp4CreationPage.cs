@@ -11,8 +11,11 @@ using System.Linq;
 namespace Dobby {
     internal partial class GP4CreationPage : Form {
 
-        /// <summary> Initialize a new instance of the GP4CreationPage Form. </summary>
-        public GP4CreationPage() {
+        /// <summary>
+        /// Initialize a new instance of the GP4CreationPage Form.
+        /// </summary>
+        public GP4CreationPage()
+        {
             InitializeComponent();
             InitializeAdditionalEventHandlers(Controls);
             
@@ -169,6 +172,7 @@ namespace Dobby {
 
             return true;
         }
+
 
 
         /// <summary>

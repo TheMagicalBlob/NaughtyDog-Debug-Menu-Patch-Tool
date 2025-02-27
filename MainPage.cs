@@ -3,9 +3,14 @@ using System.Windows.Forms;
 using static Dobby.Common;
 
 
-namespace Dobby { //!      <<<<< Marker For "Remove/Check Me Before Release lol"
-    internal partial class Main : Form {
-        public Main() {
+//! == Marker For "Remove/Check Me Before Release lol"
+namespace Dobby {
+    internal partial class MainPage : Form {
+
+        /// <summary>
+        /// Initialize the new instance of the MainPage form.
+        /// </summary>
+        public MainPage() {
             InitializeComponent();
             
             InfoLabel = Info;

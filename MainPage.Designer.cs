@@ -2,7 +2,7 @@
 
 namespace Dobby
 {
-    internal partial class Main
+    internal partial class MainPage
     {
         //======================================\\
         //--|   Designer Crap, No Touchie   |--\\\

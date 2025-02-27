@@ -11,15 +11,17 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 using Dobby.Resources;
 using static Dobby.Common;
-using System.Linq.Expressions;
-using System.CodeDom;
 
 
 
 namespace Dobby {
     internal partial class PS4DebugPage : Form {
-
-        public PS4DebugPage() {
+        
+        /// <summary>
+        /// Initialize a new instance of the PS4DebugPage Form.
+        /// </summary>
+        public PS4DebugPage()
+        {
             InitializeComponent();
             InitializeAdditionalEventHandlers(Controls);
 
@@ -332,9 +334,9 @@ namespace Dobby {
         /// Asyncronously attempt to connect to a new PS4DBG instance with the current IP address
         /// </summary>
         /// <param name="args"></param>
-        private void ConnectionFunction(dynamic args) {
+        private void ConnectionFunction(dynamic args)
+        {
             try {
-                
                 // Load Passed Parameters
                 var ip = (IPAddress)args.IP;
                 Executable = 0;

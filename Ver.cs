@@ -286,7 +286,8 @@
           "* 4.59.345.892 | Fixed PS4 Package tool output consistency; added option to force debug output in release configuration.",
           "* 4.59.348.898 | Edited a couple of outdated label and text box contents; Small label updater consisteny fix (it's still a bodge for no reason, but it works. will edit it eventually)",
           "* 4.60.350.901 | Added missing OutputDirectory option assignment in gp4 creation page (woops).",
-          "* 4.60.350.904 | ",
+          "* 4.61.352.907 | Merged redundant Minimize/Exit button enter/leave event handlers, relegated log window to optional toggle.",
+          "* 4.61.355.911 | Renamed Main => MainPage, Standardizing comment fomrats and code structuring",
         };
 
 
