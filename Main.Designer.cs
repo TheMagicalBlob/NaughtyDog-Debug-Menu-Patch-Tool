@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Windows.Forms;
 
 namespace Dobby
 {
     internal partial class Main
     {
-        
         //======================================\\
         //--|   Designer Crap, No Touchie   |--\\\
         //======================================\\
@@ -292,6 +287,31 @@ namespace Dobby
             this.ResumeLayout(false);
 
         }
+        #endregion
+
+
+        
+        
+
+        //================================\\
+        //--|   Control Declarations   |--\\
+        //================================\\
+        #region [Control Declarations]
+        public Label MainLabel;
+        public Button PS4DebugPageBtn;
+        public Button EbootPatchPageBtn;
+        public Button PS4MenuSettingsPageBtn;
+        public Label Info;
+        public Label SeperatorLine0;
+        public Label SeperatorLine3;
+        public Button PkgCreationPageBtn;
+        public Label SeperatorLine1;
+        public Button PCDebugMenuPageBtn;
+        public Button CreditsBtn;
+        public Button InfoHelpBtn;
+        public Label Playstation4Label;
+        public Label PCLabel;
+        public Button DownloadSourceBtn;
         #endregion
     }
 }

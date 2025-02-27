@@ -14,6 +14,12 @@ namespace Dobby {
                 control.TabStop = false;
         }
 
+
+        
+        //======================================\\
+        //--|   Event Handler Declarations   |--\\
+        //======================================\\
+        #region [Event Handler Declarations]
         public void BlobGithubBtn_RightClick(object sender, MouseEventArgs e) {
             if (e.Button == MouseButtons.Right) MessageBox.Show("https://github.com/TheMagicalBlob");
 
@@ -28,25 +34,7 @@ namespace Dobby {
         }
         public void IllusionBlogBtnMH(object sender, EventArgs e) => IllusionBlogBtn.ForeColor = Color.MediumBlue;
         public void IllusionBlogBtnML(object sender, EventArgs e) => IllusionBlogBtn.ForeColor = Color.White;
-
-
-
         
-        //================================\\
-        //--|   Control Declarations   |--\\
-        //================================\\
-        #region [Control Declarations]
-        public Label MainLabel;
-        public Label NarcissismLabel;
-        public Label BlobGithubBtn;
-        public Label IllusionBlogBtn;
-        public Label ContributorsLabel;
-        public Button BackBtn;
-        public Label SeperatorLine1;
-        public Label Info;
-        public Label SeperatorLine2;
-        public Label label1;
-        public Label SeperatorLine0;
         #endregion
     }
 }

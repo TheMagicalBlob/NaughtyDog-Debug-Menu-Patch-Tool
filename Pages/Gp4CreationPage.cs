@@ -18,9 +18,12 @@ namespace Dobby {
             
             foreach(Control control in Controls) {
                 if(control.Name.Contains("PathBox")) {
+                    control.TabStop = false;
                     control.MouseEnter += (sender, _) => ((Control)sender).Font = new Font(((Control)sender).Font.FontFamily, ((Control)sender).Font.Size, ((Control)sender).Font.Style ^ FontStyle.Underline);
                     control.MouseLeave += (sender, _) => ((Control)sender).Font = new Font(((Control)sender).Font.FontFamily, ((Control)sender).Font.Size, ((Control)sender).Font.Style ^ FontStyle.Underline);
                 }
+                else if (control.Name.Contains("Btn"))
+                    control.TabStop = false;
             }
 
             
@@ -35,6 +38,7 @@ namespace Dobby {
         #if DEBUG
                 VerboseOutput = true,
         #endif
+                DebugOutput = true,
                 SkipEndComment = true,
                 SkipIntegrityCheck = false,
                 LoggingMethod = (object msg) => Print(msg)
@@ -99,8 +103,19 @@ namespace Dobby {
                 UpdateLabel("Invalid Gamedata folder path provided.", true);
                 return false;
             }
-            else
+            else {
                 gp4.GamedataFolder = GamedataPathBox?.Text?.Replace("\"", string.Empty);
+            }
+
+
+
+            // Apply output directory for .gp4 project if one's been provided
+            if (!GP4OutputDirectoryPathBox.IsDefault) {
+                gp4.OutputDirectory = GP4OutputDirectoryPathBox?.Text?.Replace("\n", string.Empty);
+            }
+            else {
+                Print("Using default output directory for .gp4 project file.");
+            }
 
 
 
@@ -110,6 +125,7 @@ namespace Dobby {
                 UpdateLabel($"ERROR: No keystone File Found In Project Folder. (sce_sys\\keystone)", true);
                 return false;
             }
+
 
 
             // Assign blacklist contents
@@ -122,6 +138,7 @@ namespace Dobby {
                 else
                     gp4.FileBlacklist = new string[] { FileBlacklistPathBox?.Text };
             }
+
 
 
             // Set Package Passcode

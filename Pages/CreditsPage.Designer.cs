@@ -3,11 +3,10 @@ namespace Dobby
 {
     internal partial class CreditsPage
     {
-
-        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     Designer Crap, No Touchie      --\\\
-        ///////////////////////\\\\\\\\\\\\\\\\\\\\\\\
-        #region Designer Crap, No Touchie
+        //=====================================\\
+        //--|   Designer Crap, No Touchie   |--\\
+        //=====================================\\
+        #region [Designer Crap, No Touchie]
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -189,6 +188,24 @@ namespace Dobby
             this.ResumeLayout(false);
 
         }
+        #endregion
+
+        
+        //================================\\
+        //--|   Control Declarations   |--\\
+        //================================\\
+        #region [Control Declarations]
+        public Label MainLabel;
+        public Label NarcissismLabel;
+        public Label BlobGithubBtn;
+        public Label IllusionBlogBtn;
+        public Label ContributorsLabel;
+        public Button BackBtn;
+        public Label SeperatorLine1;
+        public Label Info;
+        public Label SeperatorLine2;
+        public Label label1;
+        public Label SeperatorLine0;
         #endregion
     }
 }
