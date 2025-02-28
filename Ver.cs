@@ -288,7 +288,7 @@
           "* 4.60.350.901 | Added missing OutputDirectory option assignment in gp4 creation page (woops).",
           "* 4.61.352.907 | Merged redundant Minimize/Exit button enter/leave event handlers, relegated log window to optional toggle.",
           "* 4.61.355.911 | Renamed Main => MainPage, Standardizing comment fomrats and code structuring",
-          "* 4.61.355.913 | ",
+          "* 4.61.356.915 | ",
         };
 
 

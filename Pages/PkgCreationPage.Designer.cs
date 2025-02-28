@@ -38,7 +38,7 @@ namespace Dobby
             this.TempDirectoryPathLabel = new System.Windows.Forms.Label();
             this.SeperatorLine3 = new System.Windows.Forms.Label();
             this.Info = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.SeperatorLine4 = new System.Windows.Forms.Label();
             this.InfoHelpBtn = new Dobby.Button();
             this.BackBtn = new Dobby.Button();
             this.CreditsBtn = new Dobby.Button();
@@ -150,15 +150,15 @@ namespace Dobby
             this.Info.TabIndex = 68;
             this.Info.Text = "======================================";
             // 
-            // label1
+            // SeperatorLine4
             // 
-            this.label1.Font = new System.Drawing.Font("Cambria", 10F);
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label1.Location = new System.Drawing.Point(2, 330);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(391, 15);
-            this.label1.TabIndex = 72;
-            this.label1.Text = "--------------------------------------------------------------";
+            this.SeperatorLine4.Font = new System.Drawing.Font("Cambria", 10F);
+            this.SeperatorLine4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine4.Location = new System.Drawing.Point(2, 330);
+            this.SeperatorLine4.Name = "SeperatorLine4";
+            this.SeperatorLine4.Size = new System.Drawing.Size(391, 15);
+            this.SeperatorLine4.TabIndex = 72;
+            this.SeperatorLine4.Text = "--------------------------------------------------------------";
             // 
             // InfoHelpBtn
             // 
@@ -383,7 +383,7 @@ namespace Dobby
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ClientSize = new System.Drawing.Size(467, 442);
             this.Controls.Add(this.CleanTempFilesBtn);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.SeperatorLine4);
             this.Controls.Add(this.InfoHelpBtn);
             this.Controls.Add(this.BackBtn);
             this.Controls.Add(this.CreditsBtn);
@@ -444,7 +444,7 @@ namespace Dobby
         private Button BackBtn;
         private Button CreditsBtn;
         private System.Windows.Forms.Label Info;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label SeperatorLine4;
         private Button CleanTempFilesBtn;
     }
 }

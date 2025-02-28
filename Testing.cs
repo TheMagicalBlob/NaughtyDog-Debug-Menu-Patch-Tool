@@ -4,11 +4,8 @@ using System.Windows.Forms;
 #if DEBUG
 using System.IO;
 using System.Linq;
-using System.Drawing;
 using System.Threading;
-using System.Windows.Forms;
 using System.Collections.Generic;
-using libdebug;
 using static Dobby.Common;
 #endif
 
@@ -27,7 +24,7 @@ namespace Dobby {
         /// <summary>
         /// Create the Dobby.Dev instance which will be running for the Program's whole runtime.
         /// </summary>
-        /// <param name="Gaia"> The Main Page. I forget why it needs this one, but not the new ones; will check later. </param>
+        /// <param name="Gaia"> Main form refference to set initial ActivePage value. (otherwise set during page change) </param>
         public Testing(Form Gaia)
         {
             Dev = this;
@@ -40,31 +37,6 @@ namespace Dobby {
 #endif
 
         
-
-
-
-        /// <summary>
-        /// Default message output function. Prints to the debug window if present, as well as the standard output
-        /// </summary>
-        /// <param name="obj"></param>
-        public static void Print(object obj = null) {
-            string str;
-
-            // Some formatting stuff
-            if(obj == null || obj.ToString().Length < 1)
-                str = " ";
-            else
-                str = obj.ToString();
-
-            if(str.Contains("\n"))
-                str = str.Replace("\n", "\n "); // So It Still Has A Size (for log window scaling purposes)
-            //^
-
-
-            System.Diagnostics.Debug.WriteLine(str);
-            if (!Console.IsInputRedirected)
-                Console.WriteLine(str);
-        }
 
 
 
@@ -168,6 +140,32 @@ namespace Dobby {
             styleTestButton.FlatAppearance.BorderSize = 0;
             styleTestButton.BringToFront();
         }
+
+
+        
+        /// <summary>
+        /// Default message output function. Prints to the debug window if present, as well as the standard output
+        /// </summary>
+        /// <param name="obj"> An object to print the string representation of. </param>
+        public static void Print(object obj = null) {
+            string str;
+
+            // Some formatting stuff
+            if(obj == null || obj.ToString().Length < 1)
+                str = " ";
+            else
+                str = obj.ToString();
+
+            if(str.Contains("\n"))
+                str = str.Replace("\n", "\n "); // So It Still Has A Size (for log window scaling purposes)
+            //^
+
+
+            System.Diagnostics.Debug.WriteLine(str);
+            if (!Console.IsInputRedirected)
+                Console.WriteLine(str);
+        }
+
 
 
         /* [unused & incomplete test function]

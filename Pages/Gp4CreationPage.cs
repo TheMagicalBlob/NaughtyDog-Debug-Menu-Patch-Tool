@@ -1,10 +1,10 @@
 ﻿using libgp4;
 using System;
 using System.IO;
+using System.Linq;
 using System.Drawing;
 using System.Windows.Forms;
 using static Dobby.Common;
-using System.Linq;
 
 
 
@@ -86,6 +86,7 @@ namespace Dobby {
                     if (Directory.Exists(Testing.TestGamedataFolder ?? "nani??"))
                     {
                         Print("Using assigned TestGamedataFolder Path.");
+                        gp4.GamedataFolder = Testing.TestGamedataFolder;
                     }
                     else {
                         Print("A value was assigned to TestGamedataFolder, but the path is not currently valid");
