@@ -5,8 +5,14 @@ using System.Linq;
 using System.Windows.Forms;
 using static Dobby.Common;
 
+
+
 namespace Dobby {
     public partial class PS4MenuSettingsPage : Form {
+
+        /// <summary>
+        /// Initialize a new instance of the PS4MenuSettingsPage Form.
+        /// </summary>
         public PS4MenuSettingsPage()
         {
             try // this crashed while opening once and I can't reproduce it, so meh (may have been a debug-only issue, anyway)
@@ -38,11 +44,10 @@ namespace Dobby {
 
 
 
-
         //=================================\\
         //--|   Variable Declarations   |--\\
         //=================================\\
-        #region Variable Declarations
+        #region [Variable Declarations]
 
         /// <summary> Array of Controls to Move When Loading >1 Game-Specific Debug Options
         ///</summary>
@@ -175,12 +180,13 @@ namespace Dobby {
         #endregion
 
 
+
+
 #if DEBUG
         public static object[] PeekGameSpecificPatchValues() { return DynamicPatchButtons.GameSpecificPatchValues; }
 
 
 
-        
         /// <summary>
         ///      Booleans Used For Universal Patch Values
         ///<br/>
@@ -198,269 +204,14 @@ namespace Dobby {
 
         internal readonly bool[] DefaultUniveralPatchValues = new bool[5] { false, true, true, true, false };
 
-        // this doesn't need to be a struct, but whatever
-        /// <summary> Struct For Creating Dynamic Patch Buttons
-        /// </summary>
-        internal class DynamicPatchButtons {
-            public DynamicPatchButtons(int?[] Ids, int VerticalStartIndex = 0) {
-                Buttons = new Button[ControlText.Length + 1];
-                ButtonsVerticalStartPos = VerticalStartIndex;
-
-                if(Ids != null && Ids.Length < 2)
-                    EnableDynamicPatchButton((int)Ids[0]);
-                else
-                    EnableDynamicPatchButtons(Ids);
-            }
 
 
 
+        //=============================================\\
+        //--|   Background Function Delcarations   |---\\
+        //=============================================\\
+        #region [Background Function Delcarations]
 
-            /// <summary>
-            /// 0: Menu Alpha <br/>
-            /// 1: Menu Scale <br/>
-            /// 2: Non-ADS FOV <br/>
-            /// 3: Main Camera X-Alignment <br/>
-            /// 4: Swap Square And Circle In Debug <br/>
-            /// 5: Menu Shadowed Text <br/>
-            /// 6: Align Menus Right <br/>
-            /// 7: Right Margin <br/>
-            /// </summary>
-
-            internal static object[] GameSpecificPatchValues { get; private set; } = new object[] {
-                0.85f,
-                0.60f,
-                1f,
-                1f,
-                false,
-                false,
-                false,
-                (byte)10
-            };
-
-            internal static readonly object[] DefaultGameSpecificPatchValues = new object[] {
-                0.85f,
-                0.60f,
-                1f,
-                1f,
-                false,
-                false,
-                false,
-                (byte)10
-            };
-
-        /// <summary>
-        /// Variable Used In Dynamic Button Cration For Game-Specific Patches
-        /// </summary>
-#if DEBUG
-        public
-#else
-        private
-#endif
-            static readonly string[] Name = new string[] {
-                    "MenuAlphaBtn",
-                    "MenuScaleBtn",
-                    "FOVBtn",
-                    "XAlignBtn",
-                    "MenuShadowTextBtn",
-                    "SwapCircleInDebugBtn",
-                    "MenuRightAlignBtn",
-                    "RightMarginBtn"
-            };
-
-            private static readonly string[] ControlText = new string[] {
-                    "Set DMenu BG Opacity:",             // default=0.85
-                    "Set Dev Menu Scale:",               // default=0.60
-                    "Adjust Non-ADS FOV:",               // default=1.00
-                    "Adjust Camera X-Alignment:",        // default=1.00
-                    "Enable Debug Menu Text Shadow:",    // default=No
-                    "Swap Circle With Square In DMenu:", // default=No
-                    "Align Debug Menus To The Right:",   // default=No
-                    "Set Distance From Right Side:"      // default=10
-            };
-
-            private static readonly string[] Hint = new string[] {
-                    "Adjusts The Visibilty of The Debug Menu Backgrounds",
-                    "Adjusts The Debug Menu Scaling",
-                    "Only Effects The Camera While Not Aiming",
-                    "Adjust Camera Position On The X-Axis (smaller == left, larger == right)",
-                    "Improves Debug Menu Text Readability By Adding A Light Shadow Effect To The Text",
-                    " ",
-                    "Moves The Dev/Quick Menus To The Right Of The Screen",
-                    "Adjust the Menu's Distance From The Right Of The Screen",
-            };
-
-            /// <summary> Buttons For Game-Specific Debug Options Loaded Based On The Game Chosen <br/><br/>
-            /// 0: MenuAlphaBtn                                                                        <br/>
-            /// 1: MenuScaleBtn                                                                        <br/>
-            /// 2: FOVBtn                                                                              <br/>
-            /// 3: XAlign                                                                              <br/>
-            /// 4: MenuShadowTextBtn                                                                   <br/>
-            /// 5: SwapCircleInDebugBtn                                                                <br/>
-            /// 6: RightAlignBtn                                                                       <br/>
-            /// 7: RightMarginBtn
-            /// </summary>
-            public Button[] Buttons; // Initialized Once An Executable's Selected
-            private int ButtonsVerticalStartPos;
-
-
-
-            /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\
-            ///--     Dynamic Buttons Main Functions    --\\\
-            /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\
-            #region Dynamic Buttons Main Functions
-
-            /// <summary> Enable A Specific Button
-            ///</summary>
-            public void EnableDynamicPatchButton(int button) => Buttons[button] = new Button();
-
-            /// <summary> Enable Specific Buttons
-            ///</summary>
-            public void EnableDynamicPatchButtons(int?[] buttons = null) {
-
-                for(int i = 0; i < buttons.Length; ++i) {
-                    if(buttons != null && buttons[i] == null) continue;
-
-                    Buttons[i] = new Button();
-                }
-                MultipleButtonsEnabled = true;
-            }
-
-            /// <summary> Nuke Dynamic Patch Buttons And Reset Option Variables
-            ///</summary>
-            public void Reset() {
-                foreach(Button button in Buttons)
-                    button?.Dispose();
-
-                Buttons = null;
-                GameSpecificPatchValues = DefaultGameSpecificPatchValues;
-            }
-
-            public Button[] CreateDynamicButtons() {
-            RunCheck:
-                if(ButtonIndex >= gsButtons.Buttons.Length - 1)
-                    return Buttons;
-
-                // Skip disabled buttons or return if the end of the collection is reached
-                if(gsButtons.Buttons[ButtonIndex] == null) {
-                    ButtonIndex++;
-                    goto RunCheck;
-                }
-
-                // Create The Button
-                Buttons[ButtonIndex].Name = Name[ButtonIndex];
-                Buttons[ButtonIndex].TabIndex = ButtonIndex;
-                Buttons[ButtonIndex].Location = new Point(1, ButtonsVerticalStartPos);
-                Buttons[ButtonIndex].Size = new Size(ActiveForm.Width - 2, 23);
-                Buttons[ButtonIndex].Font = ControlFont;
-                Buttons[ButtonIndex].Text = ControlText[ButtonIndex];
-                Buttons[ButtonIndex].Variable = GameSpecificPatchValues[ButtonIndex];
-                Buttons[ButtonIndex].TextAlign = ContentAlignment.MiddleLeft;
-                Buttons[ButtonIndex].FlatAppearance.BorderSize = 0;
-                Buttons[ButtonIndex].FlatStyle = FlatStyle.Flat;
-                Buttons[ButtonIndex].ForeColor = SystemColors.Control;
-                Buttons[ButtonIndex].BackColor = MainColour;
-                Buttons[ButtonIndex].Cursor = Cursors.Cross;
-                Buttons[ButtonIndex].MouseEnter += ControlHover;
-                Buttons[ButtonIndex].MouseDown += new MouseEventHandler(MouseDownFunc);
-                Buttons[ButtonIndex].MouseUp += new MouseEventHandler(MouseUpFunc);
-                Buttons[ButtonIndex].MouseEnter += HoverString;
-                Buttons[ButtonIndex].MouseLeave += ControlLeave;
-                Buttons[ButtonIndex].Paint += DrawButtonVariable;
-                Buttons[ButtonIndex].BringToFront();
-
-                Print(Buttons[ButtonIndex].Name);
-
-                if(GameSpecificPatchValues[ButtonIndex].GetType() == typeof(bool))
-                    Buttons[ButtonIndex].Click += DynamicBtn_Click;
-
-                else if(GameSpecificPatchValues[ButtonIndex].GetType() == typeof(float)) {
-                    Buttons[ButtonIndex].MouseWheel += FloatFunc;
-                    Buttons[ButtonIndex].MouseDown += FloatClick;
-                }
-
-                else if(GameSpecificPatchValues[ButtonIndex].GetType() == typeof(byte)) {
-                    Buttons[ButtonIndex].MouseWheel += IntFunc;
-                    Buttons[ButtonIndex].MouseDown += IntClick;
-                }
-
-                ButtonsVerticalStartPos += 23; ButtonIndex++;
-                goto RunCheck;
-            }
-            #endregion
-
-
-            /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-            ///--     Event Handlers And Functions For Dynamic Button   --\\\
-            /////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-            #region Event Handlers And Functions For Dynamic Button
-            private void DynamicBtn_Click(object sender, EventArgs e) => ToggleFunc((Button)sender, ((Control)sender).TabIndex);
-            private void ToggleFunc(Button Control, int ButtonIndex)
-            {
-                if(MouseScrolled || !MouseIsDown || CurrentControl != Control.Name)
-                    return;
-
-                GameSpecificPatchValues[ButtonIndex] = !(bool)GameSpecificPatchValues[ButtonIndex];
-                Control.Variable = GameSpecificPatchValues[ButtonIndex];
-                Control.Refresh();
-            }
-
-
-            private void FloatClick(object sender, MouseEventArgs e) => FloatClickFunc((Button)sender, (int)((Button)sender).TabIndex, e.Button);
-            private void FloatClickFunc(Button Control, int ButtonIndex, MouseButtons Button) {
-                if(CurrentControl != Control.Name) return;
-                var currentFloat = (float)GameSpecificPatchValues[ButtonIndex]; // Avoid CS0445
-
-                if(Button == MouseButtons.Left) GameSpecificPatchValues[ButtonIndex] = (float)Math.Round(currentFloat += 0.1f, 4);
-                else GameSpecificPatchValues[ButtonIndex] = (float)Math.Round(currentFloat -= 0.1f, 4);
-
-                Control.Variable = GameSpecificPatchValues[ButtonIndex];
-                Control.Refresh();
-            }
-
-            private void FloatFunc(object sender, MouseEventArgs e) => FloatScrollFunc((Button)sender, (int)((Button)sender).TabIndex, e.Delta);
-            private void FloatScrollFunc(Button Control, int ButtonIndex, int WheelDelta) {
-                if(CurrentControl != Control.Name) return;
-                var currentFloat = (float)GameSpecificPatchValues[ButtonIndex]; // Avoid CS0445
-
-                GameSpecificPatchValues[ButtonIndex] = (float)Math.Round(currentFloat += WheelDelta / 12000.0F, 4);
-                Control.Variable = GameSpecificPatchValues[ButtonIndex];
-                Control.Refresh();
-            }
-
-
-            private void IntClick(object sender, MouseEventArgs e) => IntClickFunc((Button)sender, (int)((Button)sender).TabIndex, e.Button);
-            private void IntClickFunc(Button Control, int ButtonIndex, MouseButtons Button) {
-                if(CurrentControl != Control.Name) return;
-                var currentInt = (byte)GameSpecificPatchValues[ButtonIndex]; // Avoid CS0445
-
-                if(Button == MouseButtons.Left) currentInt += 5;
-                else currentInt -= 5;
-
-                GameSpecificPatchValues[ButtonIndex] = currentInt;
-             
-                Control.Variable = GameSpecificPatchValues[ButtonIndex];
-                Control.Refresh();
-            }
-
-            private void IntFunc(object sender, MouseEventArgs e) => IntScrollFunc((Button)sender, (int)((Button)sender).TabIndex, e.Delta);
-            private void IntScrollFunc(Button Control, int ButtonIndex, int WheelDelta) {
-                if(CurrentControl != Control.Name) return;
-                var currentInt = (byte)GameSpecificPatchValues[ButtonIndex]; // Avoid CS0445
-
-                currentInt += (byte)(WheelDelta / 120);
-                GameSpecificPatchValues[ButtonIndex] = currentInt;
-
-                Control.Variable = GameSpecificPatchValues[ButtonIndex];
-                Control.Refresh();
-            }
-
-            private void HoverString(object sender, EventArgs e) => UpdateLabel((string) ((Control)sender).Tag);
-            #endregion
-        }
-
-
-
-        
         private void ToggleButtonAndUniVar(Button control, bool scrolled, int optionIndex)
         {
             if (scrolled || !MouseIsDown || CurrentControl != control.Name)
@@ -469,70 +220,8 @@ namespace Dobby {
             control.Variable = UniversalPatchValues[optionIndex] ^= true;
         }
 
-
-
-        ///////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     Event Handlers For Basic Patches Available For Each Game     --\\\
-        ///////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        #region [Control Event Handlers]
-
-        private void DisableDebugTextBtn_Click(object sender, MouseEventArgs e) => ToggleButtonAndUniVar((Button)sender, e.Delta != 0, 0);
-        private void PausedIconBtn_Click(object sender, MouseEventArgs e) => ToggleButtonAndUniVar((Button)sender, e.Delta != 0, 1);
-        private void ProgPauseOnOpenBtn_Click(object sender, MouseEventArgs e) => ToggleButtonAndUniVar((Button)sender, e.Delta != 0, 2);
-        private void ProgPauseOnCloseBtn_Click(object sender, MouseEventArgs e) => ToggleButtonAndUniVar((Button)sender, e.Delta != 0, 3);
-        private void DisableAllVisibilityBtn_Click(object sender, MouseEventArgs e) => ToggleButtonAndUniVar((Button)sender, e.Delta != 0, 4);
-        #endregion
-
-
-
-        /*////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
-        ///--     Misc Patches Page Main Functions    --\\\
-        //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\*/
-        #region Misc Patches Page Main Functions
-        private void BrowseButton_Click(object sender, EventArgs e) {
-            var openedFile = new OpenFileDialog {
-                Filter = "Executable|*.elf;*.bin",
-                Title = "Please select the executable you would like to patch."
-            };
-
-
-            if(openedFile.ShowDialog() == DialogResult.OK) {
-                if(OriginalFormScale != Size.Empty) ResetCustomDebugOptions();
-
-                fileStream?.Dispose();
-                fileStream = File.Open(ExecutablePathBox.Text = openedFile.FileName, FileMode.Open, FileAccess.ReadWrite);
-                
-                GameInfoLabel.Text = GetCurrentGame(fileStream);
-
-
-                CustomDebugOptionsLabel.Visible = IsActiveFilePCExe = false;
-
-                GameIndex = GetGameIndex(Game);
-
-                if(GameIndex == 0xBADBEEF)
-                    MessageBox.Show("Selected Game Not Currently Supported", $"Patches For {GameInfoLabel.Text} Not Added Yet");
-                
-                LoadGameSpecificMenuOptions();
-            }
-        }
-
-
-        private void ConfirmBtn_Click(object sender, EventArgs e) {
-            var Result = ApplyMenuSettings(GetGameIndex(Game));
-
-            if(Result.GetType() == typeof(int)) {
-                MessageBox.Show($"An Unexpected Error Occured While Applying The Patches, Please Ensure You're Running The Latest Release Build\nIf You Are, Report It To The Moron Typing Out This Error Message", $"ApplyMenuSettings() Error 0x{Result:X}");
-                Print("ApplyMenuSettings Returned Null");
-                return;
-            }
-
-            #if !DEBUG
-            ResetCustomDebugOptions(); //! check this! I forget what I needed it for.
-            #endif
-            GameInfoLabel.Text += Result;
-        }
-
-
+        
+        
         private object ApplyMenuSettings(int GameIndex) {
             var Message = string.Empty;
 
@@ -713,7 +402,7 @@ namespace Dobby {
         /// <summary>
         /// Returns The Data For The Custom Function Used To Call BootSettings To Write Over The Quick Menu Function Call<br/>
         /// (Redirected Quick Menu Function Call Prepends BootSettings' Code)
-        ///</summary>
+        /// </summary>
         private static byte[] GetBootSettingsFunctionCall(GameID GameID) {
             switch(GameID) {
                 case GameID.UC1100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
@@ -747,8 +436,9 @@ namespace Dobby {
         }
 
 
-        /// <summary> Resize Form And Move Buttons, Then Add Enabled Custom Buttons To Form Based On The Current Game And Patch
-        ///</summary>
+        /// <summary>
+        /// Resize Form And Move Buttons, Then Add Enabled Custom Buttons To Form Based On The Current Game And Patch
+        /// </summary>
         public void LoadGameSpecificMenuOptions() {
 
             // Assign values to variables made to keep track of the default form size/control postions for the reset button. Doing it on page init is annoying 'cause designer memes
@@ -852,6 +542,7 @@ namespace Dobby {
             ResetBtn.BringToFront();
         }
 
+
         private void ResetCustomDebugOptions(object _ = null, EventArgs __ = null)
         {
             if (Game == GameID.Empty) {
@@ -903,6 +594,63 @@ namespace Dobby {
         }
 #endregion
 
+
+
+        
+        //======================================\\
+        //--|   Event Handler Declarations   |--\\
+        //======================================\\
+        #region [Event Handler Declarations]
+
+        private void BrowseButton_Click(object sender, EventArgs e) {
+            var openedFile = new OpenFileDialog {
+                Filter = "Executable|*.elf;*.bin",
+                Title = "Please select the executable you would like to patch."
+            };
+
+
+            if(openedFile.ShowDialog() == DialogResult.OK) {
+                if(OriginalFormScale != Size.Empty) ResetCustomDebugOptions();
+
+                fileStream?.Dispose();
+                fileStream = File.Open(ExecutablePathBox.Text = openedFile.FileName, FileMode.Open, FileAccess.ReadWrite);
+                
+                GameInfoLabel.Text = GetCurrentGame(fileStream);
+
+
+                CustomDebugOptionsLabel.Visible = IsActiveFilePCExe = false;
+
+                GameIndex = GetGameIndex(Game);
+
+                if(GameIndex == 0xBADBEEF)
+                    MessageBox.Show("Selected Game Not Currently Supported", $"Patches For {GameInfoLabel.Text} Not Added Yet");
+                
+                LoadGameSpecificMenuOptions();
+            }
+        }
+
+
+        private void ConfirmBtn_Click(object sender, EventArgs e) {
+            var Result = ApplyMenuSettings(GetGameIndex(Game));
+
+            if(Result.GetType() == typeof(int)) {
+                MessageBox.Show($"An Unexpected Error Occured While Applying The Patches, Please Ensure You're Running The Latest Release Build\nIf You Are, Report It To The Moron Typing Out This Error Message", $"ApplyMenuSettings() Error 0x{Result:X}");
+                Print("ApplyMenuSettings Returned Null");
+                return;
+            }
+
+            #if !DEBUG
+            ResetCustomDebugOptions(); //! check this! I forget what I needed it for.
+            #endif
+            GameInfoLabel.Text += Result;
+        }
+        
+        private void DisableDebugTextBtn_Click(object sender, MouseEventArgs e) => ToggleButtonAndUniVar((Button)sender, e.Delta != 0, 0);
+        private void PausedIconBtn_Click(object sender, MouseEventArgs e) => ToggleButtonAndUniVar((Button)sender, e.Delta != 0, 1);
+        private void ProgPauseOnOpenBtn_Click(object sender, MouseEventArgs e) => ToggleButtonAndUniVar((Button)sender, e.Delta != 0, 2);
+        private void ProgPauseOnCloseBtn_Click(object sender, MouseEventArgs e) => ToggleButtonAndUniVar((Button)sender, e.Delta != 0, 3);
+        private void DisableAllVisibilityBtn_Click(object sender, MouseEventArgs e) => ToggleButtonAndUniVar((Button)sender, e.Delta != 0, 4);
+        #endregion
 
 
 
@@ -1349,5 +1097,270 @@ namespace Dobby {
         ;
 
         #endregion
+
+
+        
+
+        /// <summary>
+        /// Class For Creating Dynamic Patch Buttons
+        /// </summary>
+        internal class DynamicPatchButtons {
+            public DynamicPatchButtons(int?[] Ids, int VerticalStartIndex = 0) {
+                Buttons = new Button[ControlText.Length + 1];
+                ButtonsVerticalStartPos = VerticalStartIndex;
+
+                if(Ids != null && Ids.Length < 2)
+                    EnableDynamicPatchButton((int)Ids[0]);
+                else
+                    EnableDynamicPatchButtons(Ids);
+            }
+
+
+            
+            //=====================================================\\
+            //--|   DynamicPatchButton Variable Declarations   |--\\
+            //=====================================================\\
+            #region [DynamicPatchButton Variable Declarations]
+
+            /// <summary>
+            /// 0: Menu Alpha<br/> 1: Menu Scale <br/> 2: Non-ADS FOV <br/> 3: Main Camera X-Alignment <br/> 4: Swap Square And Circle In Debug <br/> 5: Menu Shadowed Text <br/> 6: Align Menus Right <br/> 7: Right Margin <br/>
+            /// </summary>
+            internal static object[] GameSpecificPatchValues { get; private set; } = new object[] {
+                0.85f,
+                0.60f,
+                1f,
+                1f,
+                false,
+                false,
+                false,
+                (byte)10
+            };
+
+            internal static readonly object[] DefaultGameSpecificPatchValues = new object[] {
+                0.85f,
+                0.60f,
+                1f,
+                1f,
+                false,
+                false,
+                false,
+                (byte)10
+            };
+
+            /// <summary>
+            /// Variable Used In Dynamic Button Cration For Game-Specific Patches
+            /// </summary>
+#if DEBUG
+            public
+#else
+            private
+#endif
+            static readonly string[] Name = new string[] {
+                    "MenuAlphaBtn",
+                    "MenuScaleBtn",
+                    "FOVBtn",
+                    "XAlignBtn",
+                    "MenuShadowTextBtn",
+                    "SwapCircleInDebugBtn",
+                    "MenuRightAlignBtn",
+                    "RightMarginBtn"
+            };
+
+            private static readonly string[] ControlText = new string[] {
+                    "Set DMenu BG Opacity:",             // default=0.85
+                    "Set Dev Menu Scale:",               // default=0.60
+                    "Adjust Non-ADS FOV:",               // default=1.00
+                    "Adjust Camera X-Alignment:",        // default=1.00
+                    "Enable Debug Menu Text Shadow:",    // default=No
+                    "Swap Circle With Square In DMenu:", // default=No
+                    "Align Debug Menus To The Right:",   // default=No
+                    "Set Distance From Right Side:"      // default=10
+            };
+
+            private static readonly string[] Hint = new string[] {
+                    "Adjusts The Visibilty of The Debug Menu Backgrounds",
+                    "Adjusts The Debug Menu Scaling",
+                    "Only Effects The Camera While Not Aiming",
+                    "Adjust Camera Position On The X-Axis (smaller == left, larger == right)",
+                    "Improves Debug Menu Text Readability By Adding A Light Shadow Effect To The Text",
+                    " ",
+                    "Moves The Dev/Quick Menus To The Right Of The Screen",
+                    "Adjust the Menu's Distance From The Right Of The Screen",
+            };
+
+            /// <summary> Buttons For Game-Specific Debug Options Loaded Based On The Game Chosen <br/><br/>
+            /// 0: MenuAlphaBtn                                                                        <br/>
+            /// 1: MenuScaleBtn                                                                        <br/>
+            /// 2: FOVBtn                                                                              <br/>
+            /// 3: XAlign                                                                              <br/>
+            /// 4: MenuShadowTextBtn                                                                   <br/>
+            /// 5: SwapCircleInDebugBtn                                                                <br/>
+            /// 6: RightAlignBtn                                                                       <br/>
+            /// 7: RightMarginBtn
+            /// </summary>
+            public Button[] Buttons; // Initialized Once An Executable's Selected
+            private int ButtonsVerticalStartPos;
+            #endregion
+
+
+
+
+            //====================================================\\
+            //--|   DynamicPatchButton Function Declarations   |--\\
+            //====================================================\\
+            #region [DynamicPatchButton Function Declarations]
+
+            /// <summary> Enable A Specific Button
+            ///</summary>
+            public void EnableDynamicPatchButton(int button) => Buttons[button] = new Button();
+
+            /// <summary> Enable Specific Buttons
+            ///</summary>
+            public void EnableDynamicPatchButtons(int?[] buttons = null) {
+
+                for(int i = 0; i < buttons.Length; ++i) {
+                    if(buttons != null && buttons[i] == null) continue;
+
+                    Buttons[i] = new Button();
+                }
+                MultipleButtonsEnabled = true;
+            }
+
+            /// <summary> Nuke Dynamic Patch Buttons And Reset Option Variables
+            ///</summary>
+            public void Reset() {
+                foreach(Button button in Buttons)
+                    button?.Dispose();
+
+                Buttons = null;
+                GameSpecificPatchValues = DefaultGameSpecificPatchValues;
+            }
+
+
+            public Button[] CreateDynamicButtons() {
+            RunCheck:
+                if(ButtonIndex >= gsButtons.Buttons.Length - 1)
+                    return Buttons;
+
+                // Skip disabled buttons or return if the end of the collection is reached
+                if(gsButtons.Buttons[ButtonIndex] == null) {
+                    ButtonIndex++;
+                    goto RunCheck;
+                }
+
+                // Create The Button
+                Buttons[ButtonIndex].Name = Name[ButtonIndex];
+                Buttons[ButtonIndex].TabIndex = ButtonIndex;
+                Buttons[ButtonIndex].Location = new Point(1, ButtonsVerticalStartPos);
+                Buttons[ButtonIndex].Size = new Size(ActiveForm.Width - 2, 23);
+                Buttons[ButtonIndex].Font = ControlFont;
+                Buttons[ButtonIndex].Text = ControlText[ButtonIndex];
+                Buttons[ButtonIndex].Variable = GameSpecificPatchValues[ButtonIndex];
+                Buttons[ButtonIndex].TextAlign = ContentAlignment.MiddleLeft;
+                Buttons[ButtonIndex].FlatAppearance.BorderSize = 0;
+                Buttons[ButtonIndex].FlatStyle = FlatStyle.Flat;
+                Buttons[ButtonIndex].ForeColor = SystemColors.Control;
+                Buttons[ButtonIndex].BackColor = MainColour;
+                Buttons[ButtonIndex].Cursor = Cursors.Cross;
+                Buttons[ButtonIndex].MouseEnter += ControlHover;
+                Buttons[ButtonIndex].MouseDown += new MouseEventHandler(MouseDownFunc);
+                Buttons[ButtonIndex].MouseUp += new MouseEventHandler(MouseUpFunc);
+                Buttons[ButtonIndex].MouseEnter += HoverString;
+                Buttons[ButtonIndex].MouseLeave += ControlLeave;
+                Buttons[ButtonIndex].Paint += DrawButtonVariable;
+                Buttons[ButtonIndex].BringToFront();
+
+                Print(Buttons[ButtonIndex].Name);
+
+                if(GameSpecificPatchValues[ButtonIndex].GetType() == typeof(bool))
+                    Buttons[ButtonIndex].Click += DynamicBtn_Click;
+
+                else if(GameSpecificPatchValues[ButtonIndex].GetType() == typeof(float)) {
+                    Buttons[ButtonIndex].MouseWheel += FloatFunc;
+                    Buttons[ButtonIndex].MouseDown += FloatClick;
+                }
+
+                else if(GameSpecificPatchValues[ButtonIndex].GetType() == typeof(byte)) {
+                    Buttons[ButtonIndex].MouseWheel += IntFunc;
+                    Buttons[ButtonIndex].MouseDown += IntClick;
+                }
+
+                ButtonsVerticalStartPos += 23; ButtonIndex++;
+                goto RunCheck;
+            }
+            #endregion
+
+
+
+
+            //=========================================================\\
+            //--|   DynamicPatchButton Event Handler Declarations   |--\\
+            //=========================================================\\
+            #region [DynamicPatchButton Event Handler Declarations]
+
+            private void DynamicBtn_Click(object sender, EventArgs e) => ToggleFunc((Button)sender, ((Control)sender).TabIndex);
+            private void ToggleFunc(Button Control, int ButtonIndex)
+            {
+                if(MouseScrolled || !MouseIsDown || CurrentControl != Control.Name)
+                    return;
+
+                GameSpecificPatchValues[ButtonIndex] = !(bool)GameSpecificPatchValues[ButtonIndex];
+                Control.Variable = GameSpecificPatchValues[ButtonIndex];
+                Control.Refresh();
+            }
+
+
+            private void FloatClick(object sender, MouseEventArgs e) => FloatClickFunc((Button)sender, (int)((Button)sender).TabIndex, e.Button);
+            private void FloatClickFunc(Button Control, int ButtonIndex, MouseButtons Button) {
+                if(CurrentControl != Control.Name) return;
+                var currentFloat = (float)GameSpecificPatchValues[ButtonIndex]; // Avoid CS0445
+
+                if(Button == MouseButtons.Left) GameSpecificPatchValues[ButtonIndex] = (float)Math.Round(currentFloat += 0.1f, 4);
+                else GameSpecificPatchValues[ButtonIndex] = (float)Math.Round(currentFloat -= 0.1f, 4);
+
+                Control.Variable = GameSpecificPatchValues[ButtonIndex];
+                Control.Refresh();
+            }
+
+            private void FloatFunc(object sender, MouseEventArgs e) => FloatScrollFunc((Button)sender, (int)((Button)sender).TabIndex, e.Delta);
+            private void FloatScrollFunc(Button Control, int ButtonIndex, int WheelDelta) {
+                if(CurrentControl != Control.Name) return;
+                var currentFloat = (float)GameSpecificPatchValues[ButtonIndex]; // Avoid CS0445
+
+                GameSpecificPatchValues[ButtonIndex] = (float)Math.Round(currentFloat += WheelDelta / 12000.0F, 4);
+                Control.Variable = GameSpecificPatchValues[ButtonIndex];
+                Control.Refresh();
+            }
+
+
+            private void IntClick(object sender, MouseEventArgs e) => IntClickFunc((Button)sender, (int)((Button)sender).TabIndex, e.Button);
+            private void IntClickFunc(Button Control, int ButtonIndex, MouseButtons Button) {
+                if(CurrentControl != Control.Name) return;
+                var currentInt = (byte)GameSpecificPatchValues[ButtonIndex]; // Avoid CS0445
+
+                if(Button == MouseButtons.Left) currentInt += 5;
+                else currentInt -= 5;
+
+                GameSpecificPatchValues[ButtonIndex] = currentInt;
+             
+                Control.Variable = GameSpecificPatchValues[ButtonIndex];
+                Control.Refresh();
+            }
+
+            private void IntFunc(object sender, MouseEventArgs e) => IntScrollFunc((Button)sender, (int)((Button)sender).TabIndex, e.Delta);
+            private void IntScrollFunc(Button Control, int ButtonIndex, int WheelDelta) {
+                if(CurrentControl != Control.Name) return;
+                var currentInt = (byte)GameSpecificPatchValues[ButtonIndex]; // Avoid CS0445
+
+                currentInt += (byte)(WheelDelta / 120);
+                GameSpecificPatchValues[ButtonIndex] = currentInt;
+
+                Control.Variable = GameSpecificPatchValues[ButtonIndex];
+                Control.Refresh();
+            }
+
+            private void HoverString(object sender, EventArgs e) => UpdateLabel((string) ((Control)sender).Tag);
+            #endregion
+        }
     }
 }

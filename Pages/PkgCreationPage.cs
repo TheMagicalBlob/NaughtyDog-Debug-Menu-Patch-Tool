@@ -5,14 +5,15 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using static Dobby.Common;
-#if DEBUG
-#endif
 
 
 
 namespace Dobby {
     public partial class PkgCreationPage : Form {
-        /// <summary> Initialize a new instance of the PkgCreationPage Form. </summary>
+
+        /// <summary>
+        /// Initialize a new instance of the PkgCreationPage Form.
+        /// </summary>
         public PkgCreationPage() {
             InitializeComponent();
             InitializeAdditionalEventHandlers(Controls);
@@ -284,14 +285,7 @@ namespace Dobby {
             }
         }
 
-        #endregion
 
-
-
-        //=================================\\
-        //--|   Control Event Handlers  |--\\
-        //=================================\\
-        #region [Control Event Handlers]
 
         /// <summary>
         /// Initialize a new OpenFileDialogue instance in which to select the .pkg build tool
