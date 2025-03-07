@@ -374,7 +374,6 @@ namespace Dobby
             this.CleanTempFilesBtn.Text = "Clean Temporary Files Post-Build: ";
             this.CleanTempFilesBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CleanTempFilesBtn.UseVisualStyleBackColor = false;
-            this.CleanTempFilesBtn.Click += new System.EventHandler(this.CleanTempFilesBtn_Click);
             // 
             // PkgCreationPage
             // 

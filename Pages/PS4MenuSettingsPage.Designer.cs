@@ -62,7 +62,6 @@ namespace Dobby
             this.ProgPauseOnCloseBtn.Text = "Disable Debug Pause On Menu Close: ";
             this.ProgPauseOnCloseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ProgPauseOnCloseBtn.UseVisualStyleBackColor = false;
-            this.ProgPauseOnCloseBtn.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ProgPauseOnCloseBtn_Click);
             // 
             // ProgPauseOnOpenBtn
             // 
@@ -79,7 +78,6 @@ namespace Dobby
             this.ProgPauseOnOpenBtn.Text = "Disable Debug Pause On Menu Open: ";
             this.ProgPauseOnOpenBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ProgPauseOnOpenBtn.UseVisualStyleBackColor = false;
-            this.ProgPauseOnOpenBtn.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ProgPauseOnOpenBtn_Click);
             // 
             // DisableDebugTextBtn
             // 
@@ -96,8 +94,6 @@ namespace Dobby
             this.DisableDebugTextBtn.Text = "Disable 2D Debug Text On Startup: ";
             this.DisableDebugTextBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisableDebugTextBtn.UseVisualStyleBackColor = false;
-            this.DisableDebugTextBtn.MouseClick += new System.Windows.Forms.MouseEventHandler(this.DisableDebugTextBtn_Click);
-            this.DisableDebugTextBtn.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.DisableDebugTextBtn_Click);
             // 
             // DisablePausedIconBtn
             // 
@@ -115,7 +111,6 @@ namespace Dobby
             this.DisablePausedIconBtn.Text = "Show Debug PAUSED Icon:";
             this.DisablePausedIconBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisablePausedIconBtn.UseVisualStyleBackColor = false;
-            this.DisablePausedIconBtn.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PausedIconBtn_Click);
             // 
             // MainLabel
             // 
@@ -292,7 +287,7 @@ namespace Dobby
             // 
             // GameInfoLabel
             // 
-            this.GameInfoLabel.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
+            this.GameInfoLabel.Font = new System.Drawing.Font("Cambria", 10F);
             this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
             this.GameInfoLabel.Location = new System.Drawing.Point(2, 267);
             this.GameInfoLabel.Name = "GameInfoLabel";
@@ -316,7 +311,6 @@ namespace Dobby
             this.NovisBtn.Text = "Disable Culling Of Level Geometry:";
             this.NovisBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.NovisBtn.UseVisualStyleBackColor = false;
-            this.NovisBtn.MouseClick += new System.Windows.Forms.MouseEventHandler(this.DisableAllVisibilityBtn_Click);
             // 
             // PS4MenuSettingsPage
             // 

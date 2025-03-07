@@ -9,8 +9,8 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
 #if DEBUG
-using System.Diagnostics;
 #endif
+
 
 namespace Dobby {
     
@@ -837,120 +837,6 @@ namespace Dobby {
 
 
 
-        /// <summary>
-        /// Draw the string representation of the Dobby.Button's Variable property to the right of the control text.
-        ///</summary>
-        public static void DrawButtonVariable(object item, PaintEventArgs paintEvent)
-        {
-            // Convert control to avoid constant casting
-            var control = item as Dobby.Button;
-            string variableText = null;
-            var padding = 5; // distance from the right-most bounds of the control to the start of the control's Text (at least, seems to be for the font and size most of the buttons are using)
-
-
-            float
-                controlTextSize = paintEvent.Graphics.MeasureString(control.Text, control.Font).Width,
-                variableSize,
-                expectedSize,
-                baseContentSize
-            ;
-
-
-            // Check for stupidity.
-            if (control.Variable == null) {
-                Print($"!! ERROR: Variable property for control \"{control.Name}\" was null");
-                return;
-            }
-
-            
-            
-
-            //#
-            //## Boolean
-            //#
-            if (control.Variable.GetType() == typeof(bool))
-            {
-                if (control.VariableTags != null)
-                {
-                    if (control.VariableTags.Length > 2)
-                        Print($"WARNING: Invalid VariableTags array provided for boolean toggle; ignoring [{control.VariableTags.Length-2}] tag(s)");
-                    
-                    if (control.VariableTags.Length < 2)
-                        Print($"ERROR: Invalid VariableTags array provided for boolean toggle; less than two options provided ({control.VariableTags.Length})"); // output tag array length in case it's somehow negative, I suppose
-
-                    else
-                        variableText = control.VariableTags[(bool)control.Variable ? 1 : 0];
-                    
-                }
-                else {
-                    variableText = (bool) control.Variable ? "Yes" : "No";
-                }
-            }
-
-            
-            //#
-            //## Integer
-            //#
-            if (control.Variable.GetType() == typeof(int))
-            {
-                if (control.VariableTags != null)
-                {
-                    if (control.VariableTags.Length > (int)control.Variable)
-                        Print($"WARNING: Invalid VariableTags array provided for boolean toggle; ignoring [{control.VariableTags.Length-2}] tag(s)");
-                    
-                    else if (control.VariableTags.Length < (int)control.Variable)
-                        Print($"ERROR: Invalid VariableTags array provided for boolean toggle; less than two options provided ({control.VariableTags.Length})"); // output tag array length in case it's somehow negative, I suppose
-
-                    variableText = control.VariableTags[(int)control.Variable];
-                    
-                }
-                else {
-                    variableText = (string) control.Variable;
-                }
-            }
-            
-            //#
-            //## Floating-Points
-            //#
-            if (control.Variable.GetType() == typeof(float) || control.Variable.GetType() == typeof(double))
-            {
-                if (control.VariableTags != null)
-                {
-                    Print("WARNING: variable tags provided for floating-point button variable, cannot use a floating-point as array index. (obviously)");
-                    return;
-                }
-            }
-
-
-            //#
-            //## Unexpected formats
-            //#
-            if (variableText == null)
-            {
-                Print($"WARNING: An unexpected data type was provided for the Variable tied to control \"{control.Name}\". Using unformatted string representation. (Type: {control.Variable.GetType()})");
-                variableText = (string) (control.Variable ?? (object) "null");
-            }
-
-
-
-
-            // Design-related bits //!
-            variableSize = paintEvent.Graphics.MeasureString(variableText, control.Font).Width;
-            baseContentSize = controlTextSize + padding;
-            expectedSize = baseContentSize + variableSize + (padding * 2);
-
-            if (expectedSize != control.Width)
-            {
-                control.Width = (int) expectedSize - 1;
-            }
-            
-
-
-            // Draw the Variable's string representation appended to the control's text (visually)
-            paintEvent.Graphics.DrawString(variableText, SmallControlFont, Brushes.LightGreen, new Point((int) baseContentSize + (padding * 2), 5));
-        }
-
-
 
         ///<summary>
         /// Create And Apply A Thin Border To The Form
@@ -1400,9 +1286,22 @@ namespace Dobby {
 
             set {
                 if (value != null && value.ToString().Length > 0)
-                    Paint += Common.DrawButtonVariable;
+                {
+                    Paint += DrawButtonVariable;
+                    if (value.GetType() == typeof(bool))
+                    {
+                        Click += ToggleButtonVariable;
+                        MouseWheel += ToggleButtonVariable;
+                    }
+                }
                 else
-                    Paint -= Common.DrawButtonVariable;
+                {
+                    Paint -= DrawButtonVariable;
+                    if (true) { //!
+                        Click -= ToggleButtonVariable;
+                        MouseWheel -= ToggleButtonVariable;
+                    }
+                }
 
                 _Variable = value;
             }
@@ -1434,6 +1333,125 @@ namespace Dobby {
         }
         
         private string[] _VariableTags;
+
+
+        
+
+        /// <summary>
+        /// Draw the string representation of the Dobby.Button's Variable property to the right of the control text.
+        ///</summary>
+        void DrawButtonVariable(object item, PaintEventArgs paintEvent)
+        {
+            // Convert control to avoid constant casting
+            var control = item as Dobby.Button;
+            string variableText = null;
+            var padding = 5; // distance from the right-most bounds of the control to the start of the control's Text (at least, seems to be for the font and size most of the buttons are using)
+
+
+            float
+                controlTextSize = paintEvent.Graphics.MeasureString(control.Text, control.Font).Width,
+                variableSize,
+                expectedSize,
+                baseContentSize
+            ;
+
+
+            // Check for stupidity.
+            if (control.Variable == null) {
+                Common.Print($"!! ERROR: Variable property for control \"{control.Name}\" was null");
+                return;
+            }
+
+            
+            
+
+            //#
+            //## Boolean
+            //#
+            if (control.Variable.GetType() == typeof(bool))
+            {
+                if (control.VariableTags != null)
+                {
+                    if (control.VariableTags.Length > 2)
+                        Common.Print($"WARNING: Invalid VariableTags array provided for boolean toggle; ignoring [{control.VariableTags.Length-2}] tag(s)");
+                    
+                    if (control.VariableTags.Length < 2)
+                        Common.Print($"ERROR: Invalid VariableTags array provided for boolean toggle; less than two options provided ({control.VariableTags.Length})"); // output tag array length in case it's somehow negative, I suppose
+
+                    else
+                        variableText = control.VariableTags[(bool)control.Variable ? 1 : 0];
+                    
+                }
+                else {
+                    variableText = (bool) control.Variable ? "Yes" : "No";
+                }
+            }
+
+            
+            //#
+            //## Integer
+            //#
+            if (control.Variable.GetType() == typeof(int))
+            {
+                if (control.VariableTags != null)
+                {
+                    if (control.VariableTags.Length > (int)control.Variable)
+                        Common.Print($"WARNING: Invalid VariableTags array provided for boolean toggle; ignoring [{control.VariableTags.Length-2}] tag(s)");
+                    
+                    else if (control.VariableTags.Length < (int)control.Variable)
+                        Common.Print($"ERROR: Invalid VariableTags array provided for boolean toggle; less than two options provided ({control.VariableTags.Length})"); // output tag array length in case it's somehow negative, I suppose
+
+                    variableText = control.VariableTags[(int)control.Variable];
+                    
+                }
+                else {
+                    variableText = (string) control.Variable;
+                }
+            }
+            
+            //#
+            //## Floating-Points
+            //#
+            if (control.Variable.GetType() == typeof(float) || control.Variable.GetType() == typeof(double))
+            {
+                if (control.VariableTags != null)
+                {
+                    Common.Print("WARNING: variable tags provided for floating-point button variable, cannot use a floating-point as array index. (obviously)");
+                    return;
+                }
+            }
+
+
+            //#
+            //## Unexpected formats
+            //#
+            if (variableText == null)
+            {
+                Common.Print($"WARNING: An unexpected data type was provided for the Variable tied to control \"{control.Name}\". Using unformatted string representation. (Type: {control.Variable.GetType()})");
+                variableText = (string) (control.Variable ?? (object) "null");
+            }
+
+
+
+
+            // Design-related bits //!
+            variableSize = paintEvent.Graphics.MeasureString(variableText, control.Font).Width;
+            baseContentSize = controlTextSize + padding;
+            expectedSize = baseContentSize + variableSize + (padding * 2);
+
+            if (expectedSize != control.Width)
+            {
+                control.Width = (int) expectedSize - 1;
+            }
+            
+
+
+            // Draw the Variable's string representation appended to the control's text (visually)
+            paintEvent.Graphics.DrawString(variableText, Common.SmallControlFont, Brushes.LightGreen, new Point((int) baseContentSize + (padding * 2), 5));
+        }
+
+        void ToggleButtonVariable(object item, MouseEventArgs args) => ToggleButtonVariable(item);
+        void ToggleButtonVariable(object item, EventArgs args = null) => ((Button)item).Variable = !(bool) ((Button)item).Variable;
     }
     #endregion [Class Extensions]
 }

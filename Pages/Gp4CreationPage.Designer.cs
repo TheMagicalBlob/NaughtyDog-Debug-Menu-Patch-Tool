@@ -218,7 +218,6 @@ namespace Dobby
             this.IgnoreKeystoneBtn.Text = "Keystone: ";
             this.IgnoreKeystoneBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.IgnoreKeystoneBtn.UseVisualStyleBackColor = false;
-            this.IgnoreKeystoneBtn.Click += new System.EventHandler(this.IgnoreKeystoneBtn_Click);
             // 
             // AbsoluteFilePathsBtn
             // 
@@ -235,7 +234,6 @@ namespace Dobby
             this.AbsoluteFilePathsBtn.Text = "Use Absolute File Paths: ";
             this.AbsoluteFilePathsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.AbsoluteFilePathsBtn.UseVisualStyleBackColor = false;
-            this.AbsoluteFilePathsBtn.Click += new System.EventHandler(this.AbsoluteFilePathsBtn_Click);
             // 
             // BaseGamePackagePathBox
             // 

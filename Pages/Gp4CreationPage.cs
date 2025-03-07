@@ -41,11 +41,11 @@ namespace Dobby {
         #if DEBUG
                 VerboseOutput = true,
         #endif
-                DebugOutput = true,
                 SkipEndComment = true,
                 SkipIntegrityCheck = false,
                 LoggingMethod = (object msg) => Print(msg)
             };
+            GP4Creator.DebugOutput = true;
             
 
             Testing.AddStyleTestButton(this);
@@ -328,18 +328,6 @@ namespace Dobby {
 
             ((Dobby.Button)sender).ForeColor = Color.White;
         }
-
-        
-        /// <summary>
-        /// Toggle the option to use absolute file paths for files in the .gp4 instead of relative to the gamedata folder.
-        /// </summary>
-        private void AbsoluteFilePathsBtn_Click(object control, EventArgs args) => CycleButtonVariable<bool>(control);
-        
-
-        /// <summary>
-        /// If true, avoid adding the keystone file in sce_sys to the .gp4's file listing.
-        /// </summary>
-        private void IgnoreKeystoneBtn_Click(object control, EventArgs eventArgs) => CycleButtonVariable<bool>(control);
         #endregion
     }
 }

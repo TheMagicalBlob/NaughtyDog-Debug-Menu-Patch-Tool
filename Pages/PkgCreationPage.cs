@@ -386,18 +386,6 @@ namespace Dobby {
             ((Dobby.Button)sender).ForeColor = Color.White;
         }
 
-
-        
-        /// <summary>
-        /// Cycle between using the detailed output for orbis-pub-cmd, or the less informative progress bar
-        /// </summary>
-        private void VerbosityBtn_Click(object sender, EventArgs e) => CycleButtonVariable<bool>(sender);
-
-        
-        /// <summary>
-        /// Toggle the option to delete the "ps4pub" folder orbis-pub-cmd creates during the image creation process
-        /// </summary>
-        private void CleanTempFilesBtn_Click(object sender, EventArgs e) => CycleButtonVariable<bool>(sender);
         #endregion
     }
 }

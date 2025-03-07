@@ -54,33 +54,19 @@ namespace Dobby {
         private static Control[] ControlsToMove;
         private static DynamicPatchButtons gsButtons;
 
-        /// <summary> Variable Used When Adjusting Form Scale And Control Positions
+        /// <summary>
+        /// Why the fuck is this a static private variable? clean the code and fix that dumb crap (just in case it breaks something otherwise...)
+        /// </summary>
+        private static int ButtonIndex = 0;
+        /// <summary>
+        /// Variable Used When Adjusting Form Scale And Control Positions
         ///</summary>
-        private static int
-            ButtonIndex = 0,
-            RB_StartPos
-        ;
+        private static int RB_StartPos;
+
         private static bool MultipleButtonsEnabled;
 
         /// <summary>
-        /// 0:  UC1100<br/>
-        /// 1:  UC1102<br/>
-        /// 2:  UC2100<br/>
-        /// 3:  UC2102<br/>
-        /// 4:  UC3100<br/>
-        /// 5:  UC3102<br/>
-        /// 6:  UC4100<br/>
-        /// 7:  UC4101<br/>
-        /// 8:  UC4133<br/>
-        /// 9:  UC4133MP<br/>
-        /// 10: TLL100<br/>
-        /// 11: TLL10X<br/>
-        /// 12: T1R100<br/>
-        /// 13: T1R109<br/>
-        /// 14: T1R11X<br/>
-        /// 15: T2100<br/>
-        /// 16: T2107<br/>
-        /// 17: T2109<br/>
+        /// 0: UC1100<br/>1: UC1102<br/>2: UC2100<br/>3: UC2102<br/>4: UC3100<br/>5: UC3102<br/>6: UC4100<br/>7: UC4101<br/>8: UC4133<br/>9: UC4133MP<br/>10 TLL100<br/>11 TLL10X<br/>12 T1R100<br/>13 T1R109<br/>14 T1R11X<br/>15 T2100<br/>16 T2107<br/>17 T2109<br/>
         /// </summary>
 #if DEBUG
         public static int GameIndex;
@@ -89,104 +75,8 @@ namespace Dobby {
 #endif
 
 
-
-        private FileStream fileStream;
-
-
-
-        private void WriteBytes(int? offset = null, byte[] data = null) {
+        
 #if DEBUG
-            var msg = $"Data {BitConverter.ToString(data).Replace("-", "")} Written To ";
-            if(offset != null)
-                fileStream.Position = (int)offset;
-            msg += fileStream.Position.ToString("X"); // trust issues
-
-            fileStream.Write(data, 0, data.Length);
-            Print(msg);
-            Print();
-#else
-            if (offset != null)
-            fileStream.Position = (int)offset;
-            fileStream.Write(data, 0, data.Length);
-#endif
-        }
-        private  void WriteByte(int? offset = null, byte data = 0) {
-#if DEBUG
-            var msg = $"Byte {data:X} Written To ";
-            if(offset != null)
-                fileStream.Position = (int)offset;
-            msg += fileStream.Position.ToString("X"); // trust issues
-
-            fileStream.WriteByte(data);
-            Print(msg);
-#else
-            if(offset != null)
-            fileStream.Position = (int)offset;
-            fileStream.WriteByte(data);
-#endif
-        }
-        private  void WriteVar(int? offset = null, object data = null) {
-#if DEBUG
-            var msg = " Written To ";
-
-            if(offset != null)
-                fileStream.Position = (int)offset;
-            msg += fileStream.Position.ToString("X");
-
-            try { // this is stupid
-                if(data.GetType() == typeof(byte)) {
-                    fileStream.WriteByte(BitConverter.GetBytes((byte)data)[0]);
-                    msg = (byte)data + msg;
-                }
-                else if(data.GetType() == typeof(bool)) {
-                    fileStream.WriteByte(BitConverter.GetBytes((bool)data)[0]);
-                    msg = (bool)data + msg;
-                }
-
-                else if(data.GetType() == typeof(float)) {
-                    fileStream.Write(BitConverter.GetBytes((float)data), 0, BitConverter.GetBytes((float)data).Length);
-                    msg = (float)data + msg;
-                }
-            }
-            catch (Exception) { Print($"Error Writing Var: {data} ({data.GetType()})"); }
-
-            Print($"var: {msg}");
-#else
-            if(offset != null)
-                fileStream.Position = (int)offset;
-
-            try { // this is stupid
-                if(data.GetType() == typeof(byte))
-                    fileStream.WriteByte(BitConverter.GetBytes((byte)data)[0]);
-                
-                else if(data.GetType() == typeof(bool))
-                    fileStream.WriteByte(BitConverter.GetBytes((bool)data)[0]);
-
-                else if(data.GetType() == typeof(float))
-                    fileStream.Write(BitConverter.GetBytes((float)data), 0, BitConverter.GetBytes((float)data).Length);
-            }
-            catch (Exception) {}
-#endif
-        }
-        /// <summary> Compare Data Read At The Given Address
-        /// </summary>
-        /// <returns> True If The Data Read Matches The Array Given </returns>
-        private  bool ArrayCmp(int Address, byte[] DataToCompare) {
-            fileStream.Position = Address;
-            byte[] DataPresent = new byte[DataToCompare.Length];
-            fileStream.Read(DataPresent, 0, DataToCompare.Length);
-            return DataPresent.SequenceEqual<byte>(DataToCompare);
-        }
-        #endregion
-
-
-
-
-#if DEBUG
-        public static object[] PeekGameSpecificPatchValues() { return DynamicPatchButtons.GameSpecificPatchValues; }
-
-
-
         /// <summary>
         ///      Booleans Used For Universal Patch Values
         ///<br/>
@@ -205,6 +95,10 @@ namespace Dobby {
         internal readonly bool[] DefaultUniveralPatchValues = new bool[5] { false, true, true, true, false };
 
 
+        private FileStream fileStream;
+        #endregion
+
+
 
 
         //=============================================\\
@@ -212,97 +106,230 @@ namespace Dobby {
         //=============================================\\
         #region [Background Function Delcarations]
 
-        private void ToggleButtonAndUniVar(Button control, bool scrolled, int optionIndex)
+        private void LoadGameExecutable(string fileName)
         {
-            if (scrolled || !MouseIsDown || CurrentControl != control.Name)
-                return;
-            
-            control.Variable = UniversalPatchValues[optionIndex] ^= true;
+            if(OriginalFormScale != Size.Empty)
+            {
+                ResetCustomDebugOptions();
+            }
+
+            fileStream?.Dispose();
+            fileStream = File.Open(ExecutablePathBox.Text = fileName, FileMode.Open, FileAccess.ReadWrite);
+                
+            GameInfoLabel.Text = GetCurrentGame(fileStream);
+
+
+            CustomDebugOptionsLabel.Visible = IsActiveFilePCExe = false;
+
+            GameIndex = GetGameIndex(Game);
+
+            if(GameIndex == 0xBADBEEF)
+                MessageBox.Show("Selected Game Not Currently Supported", $"Patches For {GameInfoLabel.Text} Not Added Yet");
+                
+            LoadGameSpecificMenuOptions();
+        }
+
+        
+
+
+        private void WriteBytes(int? offset = null, byte[] data = null) {
+#if DEBUG
+            var msg = $"Data {BitConverter.ToString(data).Replace("-", "")} Written To ";
+            if(offset != null)
+                fileStream.Position = (int)offset;
+            msg += fileStream.Position.ToString("X"); // trust issues
+
+            fileStream.Write(data, 0, data.Length);
+            Print(msg);
+            Print();
+#else
+            if (offset != null)
+            fileStream.Position = (int)offset;
+            fileStream.Write(data, 0, data.Length);
+#endif
+        }
+        private void WriteByte(int? offset = null, byte data = 0) {
+#if DEBUG
+            var msg = $"Byte {data:X} Written To ";
+            if(offset != null)
+                fileStream.Position = (int)offset;
+            msg += fileStream.Position.ToString("X"); // trust issues
+
+            fileStream.WriteByte(data);
+            Print(msg);
+#else
+            if(offset != null)
+            fileStream.Position = (int)offset;
+            fileStream.WriteByte(data);
+#endif
+        }
+
+        private void WriteVar<T>(int offset = -1, object data = null)
+        {
+            var msg = " Written To ";
+
+            if(offset != -1)
+                fileStream.Position = offset;
+
+
+            msg += fileStream.Position.ToString("X");
+
+            try { //! this is stupid
+                if(typeof(T) == typeof(byte))
+                {
+                    fileStream.WriteByte(BitConverter.GetBytes((byte)data)[0]);
+                    msg = (byte)data + msg;
+                }
+                else if(typeof(T) == typeof(bool))
+                {
+                    fileStream.WriteByte(BitConverter.GetBytes((bool)data)[0]);
+                    msg = (bool)data + msg;
+                }
+
+                else if(typeof(T) == typeof(float))
+                {
+                    fileStream.Write(BitConverter.GetBytes((float)data), 0, BitConverter.GetBytes((float)data).Length);
+                    msg = (float)data + msg;
+                }
+            }
+            catch (Exception) {
+                Print($"Error Writing Var: {data} (Type: {typeof(T)})");
+            }
         }
 
         
         
-        private object ApplyMenuSettings(int GameIndex) {
+        private string ApplyMenuSettings(int GameIndex)
+        {
             var Message = string.Empty;
 
-            using(fileStream) {
               try {
+                using(fileStream) {
                     if(UniversalPatchValues.Length != UniversalBootSettingsPointers.Length || DynamicPatchButtons.GameSpecificPatchValues.Length != GameSpecificBootSettingsPointers.Length)
-                        MessageBox.Show($"Universal:\n  Vars: {UniversalPatchValues.Length}\n  Pointers: {UniversalBootSettingsPointers.Length}\nDynamic:\n  Vars: {DynamicPatchButtons.GameSpecificPatchValues.Length}\n  Pointers: {GameSpecificBootSettingsPointers.Length}", "Mismatch In Array Value vs pointer Length.");
-      
-                    int BootSettingsAddress, PatchCount = 0;
+                    {
+                        Print($"Mismatch In Array Value vs pointer Length:\n  Universal:\n  Vars: {UniversalPatchValues.Length}\n  Pointers: {UniversalBootSettingsPointers.Length}\nDynamic:\n  Vars: {DynamicPatchButtons.GameSpecificPatchValues.Length}\n  Pointers: {GameSpecificBootSettingsPointers.Length}");
+                    }
 
-                    if(BootSettingsCallAddress[GameIndex] == 0 || BootSettingsFunctionAddress[GameIndex] == 0) {
+                    else if(BootSettingsCallAddress[GameIndex] == 0 || BootSettingsFunctionAddress[GameIndex] == 0) {
                         MessageBox.Show($"Game #{GameIndex} Has Is Missing An Address For BootSettings (Function Call: {BootSettingsCallAddress[GameIndex]} / Function Data: {BootSettingsFunctionAddress[GameIndex]})");
-                        return 0;
+                        return "error";
                     }
 
                     // Write Function Call To Call BootSettings
                     WriteBytes(BootSettingsCallAddress[GameIndex], GetBootSettingsFunctionCall(Game));
 
                     // Write BootSettings Function's Assembly To Game Executable
-                    WriteBytes(BootSettingsAddress = BootSettingsFunctionAddress[GameIndex], GetBootSettingsBytes(GameIndex));
+                    WriteBytes(BootSettingsFunctionAddress[GameIndex], GetBootSettingsBytes(GameIndex));
 
-                    byte PointerType = 0x42;
-                    byte[] PatchData;
-                    PatchCount = 2;
+                    byte pointerTypeIdentifier = 0x42;
+                    byte[] patchData;
+                    object patchValue;
+                    int patchCount = 2;
 
                     // Apply Universal Options
-                    for(var index = 0; index < UniversalPatchValues.Length; index++) {
-                        if(UniversalPatchValues[index] == DefaultUniveralPatchValues[index])
+                    for(var index = 0; index < UniversalPatchValues.Length; index++)
+                    {
+                        patchData = UniversalBootSettingsPointers[index][GameIndex];
+
+                        if (UniversalPatchValues[index] == DefaultUniveralPatchValues[index])
+                        {
+                            Print("Skipping Unchanged Patch Value...");
                             continue;
+                        }
 
-                        PatchData = UniversalBootSettingsPointers[index][GameIndex];
 
-                        if(PatchData.Length == 4) PointerType = 0xFE;
-                        else if(PatchData.Length == 8) PointerType = 0xFF;
+                        else if (patchData.Length == 4)
+                        {
+                            pointerTypeIdentifier = 0xFE;
+                        }
+                        else if (patchData.Length == 8)
+                        {
+                            pointerTypeIdentifier = 0xFF;
+                        }
+                        else
+                        {
+                            Print($"Default Patch Value Pointer Data {(patchData.Length == 0 ? "Null Somehow." : $"Size Invalid ({patchData.Length})")}");
+                            continue;
+                        }
 
-                        else throw new InvalidDataException($"Default Patch Value Pointer Data {(PatchData.Length == 0 ? "Null Somehow." : $"Size Invalid ({PatchData.Length})")}");
 
-                        WriteByte(data: PointerType);
+                        WriteByte(data: pointerTypeIdentifier);
                         WriteByte(data: 0);
-                        WriteBytes(data: PatchData);
+                        WriteBytes(data: patchData);
                         WriteByte(data: (byte)(UniversalPatchValues[index] ? 1 : 0));
 
                         Print();
-                        PatchCount++;
+                        patchCount++;
                     }
 
 
                     // Apply Game-Specific Options
-                    for(var index = 0; index < DynamicPatchButtons.GameSpecificPatchValues.Length; index++ ) {
-                        if(DynamicPatchButtons.GameSpecificPatchValues[index].Equals(DynamicPatchButtons.DefaultGameSpecificPatchValues[index]))
+                    for(var i = 0; i < DynamicPatchButtons.GameSpecificPatchValues.Length; i++ )
+                    {
+                        patchValue = DynamicPatchButtons.GameSpecificPatchValues[i];
+                        patchData = GameSpecificBootSettingsPointers[i][GameIndex]; //! wait, what? this seems like a mistake
+
+                        if (patchValue.Equals(DynamicPatchButtons.DefaultGameSpecificPatchValues[i]))
+                        {
+                            Print("Skipping Unchanged Patch Value...");
                             continue;
+                        }
 
-                        PatchData = GameSpecificBootSettingsPointers[index][GameIndex];
+                        else if (patchData.Length == 4)
+                        {
+                            pointerTypeIdentifier = 0xFE;
+                        }
+                        else if (patchData.Length == 8)
+                        {
+                            pointerTypeIdentifier = 0xFF;
+                        }
+                        else {
+                            Print($"ERROR: Invalid Length for Provided Path Value! ({patchData.Length} != 4 | 8)");
+                            continue;
+                        }
 
-                        if(PatchData.Length == 4) PointerType = 0xFE;
-                        else if(PatchData.Length == 8) PointerType = 0xFF;
 
-                        else continue;
+                        // Write the identifier for Pointers vs hard Addresses
+                        WriteVar<byte>(data: pointerTypeIdentifier);
 
-                        var PatchValue = DynamicPatchButtons.GameSpecificPatchValues[index];
-                        WriteByte(data: PointerType);
-                        WriteByte(data: (byte)(PatchValue.GetType() == typeof(byte) || PatchValue.GetType() == typeof(bool) ? 0 : 1));
-                        WriteBytes(data: PatchData);
-                        WriteVar(data: PatchValue);
+                        // The fuck was this about??
+                        WriteVar<byte>(data: (byte)(patchValue.GetType() == typeof(byte) || patchValue.GetType() == typeof(bool) ? 0 : 1));
 
-                        PatchCount++;
+                        // Write path pointer/address
+                        WriteVar<byte[]>(data: patchData);
+
+                        // Write the patch data itself
+                        WriteVar<byte[]>(data: patchValue);
+
+                        patchCount++;
                         Print();
                     }
 
-                    WriteBytes(data: new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0x08 }); // padding to avoid issues
+                    // padding to avoid issues with overlapping previous larger patches
+                    WriteBytes(data: new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0x08 });
 
-                    Message = $" {PatchCount+1} Patches Applied";
+                    Message = $" {patchCount + 1} Patches Applied";
                 }
-                catch(Exception tabarnack) {
-                    Print($"{tabarnack.GetType()} | Error Applying Patches");
-                    MessageBox.Show(tabarnack.Message + $"\n{tabarnack.StackTrace}", $"Exception Type {tabarnack.GetType()}");
-                    return 1;
-                }
+            }
+            catch(Exception tabarnack)
+            {
+                Print($"{tabarnack.GetType()} | Error Applying Patches");
+                MessageBox.Show(tabarnack.Message + $"\n{tabarnack.StackTrace}", $"Exception Type {tabarnack.GetType()}");
+                return "error";
             }
 
             return (Message == string.Empty ? null : Message);
+        }
+
+        
+        public static object[] PeekGameSpecificPatchValues() { return DynamicPatchButtons.GameSpecificPatchValues; }
+
+        private void ToggleButtonAndUniVar(Button control, bool scrolled, int optionIndex)
+        {
+            if (scrolled || !MouseIsDown || CurrentControl != control.Name)
+                return;
+            
+            control.Variable = UniversalPatchValues[optionIndex] ^= true;
         }
 
 
@@ -603,46 +630,33 @@ namespace Dobby {
         #region [Event Handler Declarations]
 
         private void BrowseButton_Click(object sender, EventArgs e) {
-            var openedFile = new OpenFileDialog {
+            var fileDialogue = new OpenFileDialog {
                 Filter = "Executable|*.elf;*.bin",
                 Title = "Please select the executable you would like to patch."
             };
 
 
-            if(openedFile.ShowDialog() == DialogResult.OK) {
-                if(OriginalFormScale != Size.Empty) ResetCustomDebugOptions();
-
-                fileStream?.Dispose();
-                fileStream = File.Open(ExecutablePathBox.Text = openedFile.FileName, FileMode.Open, FileAccess.ReadWrite);
-                
-                GameInfoLabel.Text = GetCurrentGame(fileStream);
-
-
-                CustomDebugOptionsLabel.Visible = IsActiveFilePCExe = false;
-
-                GameIndex = GetGameIndex(Game);
-
-                if(GameIndex == 0xBADBEEF)
-                    MessageBox.Show("Selected Game Not Currently Supported", $"Patches For {GameInfoLabel.Text} Not Added Yet");
-                
-                LoadGameSpecificMenuOptions();
+            if(fileDialogue.ShowDialog() == DialogResult.OK)
+            {
+                LoadGameExecutable(fileDialogue.FileName);
             }
         }
 
 
-        private void ConfirmBtn_Click(object sender, EventArgs e) {
-            var Result = ApplyMenuSettings(GetGameIndex(Game));
-
-            if(Result.GetType() == typeof(int)) {
-                MessageBox.Show($"An Unexpected Error Occured While Applying The Patches, Please Ensure You're Running The Latest Release Build\nIf You Are, Report It To The Moron Typing Out This Error Message", $"ApplyMenuSettings() Error 0x{Result:X}");
+        private void ConfirmBtn_Click(object sender, EventArgs e)
+        {
+            var result = ApplyMenuSettings(GetGameIndex(Game));
+            if(result == "error")
+            {
+                MessageBox.Show($"An Unexpected Error Occured While Applying The Patches, Please Ensure You're Running The Latest Release Build\nIf You Are, Report It To The Moron Typing Out This Error Message", "Internal Error Applying Patch Data");
                 Print("ApplyMenuSettings Returned Null");
                 return;
             }
 
             #if !DEBUG
-            ResetCustomDebugOptions(); //! check this! I forget what I needed it for.
+            ResetCustomDebugOptions();
             #endif
-            GameInfoLabel.Text += Result;
+            GameInfoLabel.Text += result;
         }
         
         private void DisableDebugTextBtn_Click(object sender, MouseEventArgs e) => ToggleButtonAndUniVar((Button)sender, e.Delta != 0, 0);
@@ -1237,56 +1251,56 @@ namespace Dobby {
             }
 
 
-            public Button[] CreateDynamicButtons() {
-            RunCheck:
-                if(ButtonIndex >= gsButtons.Buttons.Length - 1)
-                    return Buttons;
+            public Button[] CreateDynamicButtons()
+            {
+                while (true) {
+                    if(ButtonIndex >= gsButtons.Buttons.Length - 1)
+                        return Buttons;
 
-                // Skip disabled buttons or return if the end of the collection is reached
-                if(gsButtons.Buttons[ButtonIndex] == null) {
-                    ButtonIndex++;
-                    goto RunCheck;
+                    // Skip disabled buttons or return if the end of the collection is reached
+                    if(gsButtons.Buttons[ButtonIndex] == null) {
+                        ButtonIndex++;
+                        continue;
+                    }
+
+                    // Create The Button
+                    Buttons[ButtonIndex].Name = Name[ButtonIndex];
+                    Buttons[ButtonIndex].TabIndex = ButtonIndex;
+                    Buttons[ButtonIndex].Location = new Point(1, ButtonsVerticalStartPos);
+                    Buttons[ButtonIndex].Size = new Size(ActiveForm.Width - 2, 23);
+                    Buttons[ButtonIndex].Font = ControlFont;
+                    Buttons[ButtonIndex].Text = ControlText[ButtonIndex];
+                    Buttons[ButtonIndex].Variable = GameSpecificPatchValues[ButtonIndex];
+                    Buttons[ButtonIndex].TextAlign = ContentAlignment.MiddleLeft;
+                    Buttons[ButtonIndex].FlatAppearance.BorderSize = 0;
+                    Buttons[ButtonIndex].FlatStyle = FlatStyle.Flat;
+                    Buttons[ButtonIndex].ForeColor = SystemColors.Control;
+                    Buttons[ButtonIndex].BackColor = MainColour;
+                    Buttons[ButtonIndex].Cursor = Cursors.Cross;
+                    Buttons[ButtonIndex].MouseEnter += ControlHover;
+                    Buttons[ButtonIndex].MouseDown += new MouseEventHandler(MouseDownFunc);
+                    Buttons[ButtonIndex].MouseUp += new MouseEventHandler(MouseUpFunc);
+                    Buttons[ButtonIndex].MouseEnter += HoverString;
+                    Buttons[ButtonIndex].MouseLeave += ControlLeave;
+                    Buttons[ButtonIndex].BringToFront();
+
+                    Print(Buttons[ButtonIndex].Name);
+
+                    if(GameSpecificPatchValues[ButtonIndex].GetType() == typeof(bool))
+                        Buttons[ButtonIndex].Click += DynamicBtn_Click;
+
+                    else if(GameSpecificPatchValues[ButtonIndex].GetType() == typeof(float)) {
+                        Buttons[ButtonIndex].MouseWheel += FloatFunc;
+                        Buttons[ButtonIndex].MouseDown += FloatClick;
+                    }
+
+                    else if(GameSpecificPatchValues[ButtonIndex].GetType() == typeof(byte)) {
+                        Buttons[ButtonIndex].MouseWheel += IntFunc;
+                        Buttons[ButtonIndex].MouseDown += IntClick;
+                    }
+
+                    ButtonsVerticalStartPos += 23; ButtonIndex++;
                 }
-
-                // Create The Button
-                Buttons[ButtonIndex].Name = Name[ButtonIndex];
-                Buttons[ButtonIndex].TabIndex = ButtonIndex;
-                Buttons[ButtonIndex].Location = new Point(1, ButtonsVerticalStartPos);
-                Buttons[ButtonIndex].Size = new Size(ActiveForm.Width - 2, 23);
-                Buttons[ButtonIndex].Font = ControlFont;
-                Buttons[ButtonIndex].Text = ControlText[ButtonIndex];
-                Buttons[ButtonIndex].Variable = GameSpecificPatchValues[ButtonIndex];
-                Buttons[ButtonIndex].TextAlign = ContentAlignment.MiddleLeft;
-                Buttons[ButtonIndex].FlatAppearance.BorderSize = 0;
-                Buttons[ButtonIndex].FlatStyle = FlatStyle.Flat;
-                Buttons[ButtonIndex].ForeColor = SystemColors.Control;
-                Buttons[ButtonIndex].BackColor = MainColour;
-                Buttons[ButtonIndex].Cursor = Cursors.Cross;
-                Buttons[ButtonIndex].MouseEnter += ControlHover;
-                Buttons[ButtonIndex].MouseDown += new MouseEventHandler(MouseDownFunc);
-                Buttons[ButtonIndex].MouseUp += new MouseEventHandler(MouseUpFunc);
-                Buttons[ButtonIndex].MouseEnter += HoverString;
-                Buttons[ButtonIndex].MouseLeave += ControlLeave;
-                Buttons[ButtonIndex].Paint += DrawButtonVariable;
-                Buttons[ButtonIndex].BringToFront();
-
-                Print(Buttons[ButtonIndex].Name);
-
-                if(GameSpecificPatchValues[ButtonIndex].GetType() == typeof(bool))
-                    Buttons[ButtonIndex].Click += DynamicBtn_Click;
-
-                else if(GameSpecificPatchValues[ButtonIndex].GetType() == typeof(float)) {
-                    Buttons[ButtonIndex].MouseWheel += FloatFunc;
-                    Buttons[ButtonIndex].MouseDown += FloatClick;
-                }
-
-                else if(GameSpecificPatchValues[ButtonIndex].GetType() == typeof(byte)) {
-                    Buttons[ButtonIndex].MouseWheel += IntFunc;
-                    Buttons[ButtonIndex].MouseDown += IntClick;
-                }
-
-                ButtonsVerticalStartPos += 23; ButtonIndex++;
-                goto RunCheck;
             }
             #endregion
 
