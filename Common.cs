@@ -317,81 +317,6 @@ namespace Dobby {
         }
 
 
-                
-        /// <summary>
-        /// Toggle between various states of custom Button controls
-        /// </summary>
-        /// <param name="sender"> The control to edit the variable of </param>
-        public static void CycleButtonVariable<T>(object sender, object maxValue = null, object minValue = null, MouseEventArgs eventArgs = null)
-        {
-            var control = (Dobby.Button) sender;
-            Type type = typeof(T);
-
-            if (control.Variable == null) {
-                Print("CycleButtonVariable(): Control's variable was null, fix your trash.");
-            }
-
-
-
-            //#
-            //## Booleans
-            //#
-            if (type == typeof(bool))
-            {
-                if (maxValue != null)
-                    Print("WARNING: A maximum value was for some reason provided for a button with a boolean variable attached");
-
-
-                control.Variable = !(bool) control.Variable;
-                return;
-            }
-
-            
-            //#
-            //## Integers
-            //#
-            if (type == typeof(int) || type == typeof(long))
-            {
-                if (maxValue == null) {
-                    control.Variable = (long)control.Variable + 1;
-                }
-                else {
-                    // avoid going out of bounds in the VariableTags array
-                    if (control.VariableTags.Length < (long)maxValue)
-                    {
-                        maxValue = control.VariableTags.Length;
-                        Print($"ERORR: Maximum value for control Variable was larger than the amount of provided VariableTags; lowered maxValue to [{maxValue}]");
-                    }
-
-                    if (maxValue == control.Variable) //! this might compare types when they're both objects...
-                    {
-                        control.Variable = minValue ?? 0;
-                    }
-
-                }
-
-                return;
-            }
-            
-            
-            //#
-            //## Floating-Points
-            //#
-            if (type == typeof(float) || type == typeof(double))
-            {
-                control.Variable = (double)control.Variable + eventArgs.Delta != 0 ? eventArgs.Delta / 2 : .1f;
-
-                if (maxValue != null)
-                {
-                    if ((double)control.Variable >= (double)maxValue)
-                        control.Variable = minValue ?? 0;
-
-                    else if ((double)control.Variable <= (double)minValue)
-                        control.Variable = minValue ?? 10;
-                }
-            }
-        }
-
 
 
         /* [deprecated SetInfoLabelStringOnControlHover(Control Sender, float FontAdjustment = 10f)]
@@ -1274,6 +1199,10 @@ namespace Dobby {
         }
 
 
+        //#
+        //## Variable Declarations
+        //#
+
         /// <summary>
         /// Custom value associated with the control to be rendered alongside it, and edited via manually assigned per-control events.
         /// </summary>
@@ -1287,23 +1216,27 @@ namespace Dobby {
             set {
                 if (value != null && value.ToString().Length > 0)
                 {
-                    Paint += DrawButtonVariable;
-                    if (value.GetType() == typeof(bool))
-                    {
-                        Click += ToggleButtonVariable;
-                        MouseWheel += ToggleButtonVariable;
+                    _Variable = value;
+                    Common.Print("adding");
+                    if (!hasEvents) {
+                        Paint += DrawButtonVariable;
+                        Click += CycleButtonVariable;
+                        MouseWheel += CycleButtonVariable;
                     }
+                    
+                    hasEvents = true;
                 }
-                else
-                {
-                    Paint -= DrawButtonVariable;
-                    if (true) { //!
-                        Click -= ToggleButtonVariable;
-                        MouseWheel -= ToggleButtonVariable;
+                else {
+                    if (hasEvents) {
+                        Paint -= DrawButtonVariable;
+                        Click -= CycleButtonVariable;
+                        MouseWheel -= CycleButtonVariable;
                     }
-                }
 
-                _Variable = value;
+                    Common.Print("removing");
+                    _Variable = value;
+                    hasEvents = false;
+                }
             }
         }
         private object _Variable;
@@ -1331,16 +1264,89 @@ namespace Dobby {
                 _VariableTags = value;
             }
         }
-        
         private string[] _VariableTags;
 
 
+
+        /// <summary>
+        /// //! Write a fuckin' summary, dicksneeze.
+        /// </summary>
+        public object MinimumValue
+        {
+            get => minValue;
+
+            set {
+                if (value != null)
+                {
+                    if (MaximumValue != null)
+                    {
+                        if (!value.GetType().Equals(MaximumValue.GetType()))
+                        {
+                            Common.Print($"ERROR: Mismatch in {Name} Min/Max Value Types. (Min: {MinimumValue.GetType()} && Max: {MaximumValue.GetType()})");
+                        }
+                    }
+
+                    if (Variable != null)
+                    {
+                        if (!value.GetType().Equals(Variable.GetType()))
+                        {
+                            Common.Print($"ERROR: Mismatch in {Name} MinimumValue and Variable Types. (Min: {MinimumValue.GetType()} && Variable: {Variable.GetType()})");
+                        }
+                    }
+                }
+
+                minValue = value;
+            }
+        }
+        private object minValue;
+
+
         
+        /// <summary>
+        /// //! Write a fuckin' summary, dicksneeze.
+        /// </summary>
+        public object MaximumValue
+        {
+            get => maxValue;
+
+            set {
+                if (value != null)
+                {
+                    if (MinimumValue != null)
+                    {
+                        if (!value.GetType().Equals(MinimumValue.GetType()))
+                        {
+                            Common.Print($"ERROR: Mismatch in {Name} Min/Max Value Types. (Min: {MinimumValue.GetType()} && Max: {MaximumValue.GetType()})");
+                        }
+                    }
+
+                    if (Variable != null)
+                    {
+                        if (!value.GetType().Equals(Variable.GetType()))
+                        {
+                            Common.Print($"ERROR: Mismatch in {Name} MaximumValue and Variable Types. (Max: {MaximumValue.GetType()} && Variable: {Variable.GetType()})");
+                        }
+                    }
+                }
+
+                maxValue = value;
+            }
+        }
+        private object maxValue;
+
+
+        private bool hasEvents = false; // Lazy Fix
+
+
+
+        //#
+        //## Function Declarations
+        //#
 
         /// <summary>
         /// Draw the string representation of the Dobby.Button's Variable property to the right of the control text.
         ///</summary>
-        void DrawButtonVariable(object item, PaintEventArgs paintEvent)
+        private void DrawButtonVariable(object item, PaintEventArgs paintEvent)
         {
             // Convert control to avoid constant casting
             var control = item as Dobby.Button;
@@ -1450,8 +1456,91 @@ namespace Dobby {
             paintEvent.Graphics.DrawString(variableText, Common.SmallControlFont, Brushes.LightGreen, new Point((int) baseContentSize + (padding * 2), 5));
         }
 
-        void ToggleButtonVariable(object item, MouseEventArgs args) => ToggleButtonVariable(item);
-        void ToggleButtonVariable(object item, EventArgs args = null) => ((Button)item).Variable = !(bool) ((Button)item).Variable;
+        
+        
+        /// <summary>
+        /// Toggle between various states of custom Button controls
+        /// </summary>
+        /// <param name="sender"> The control to edit the variable of </param>
+        private void CycleButtonVariable(object sender, EventArgs args) => CycleButtonVariable(sender);
+
+        
+        /// <summary>
+        /// Toggle between various states of custom Button controls
+        /// </summary>
+        /// <param name="sender"> The control to edit the variable of. </param>
+        private void CycleButtonVariable(object sender, MouseEventArgs eventArgs = null)
+        {
+            var type = Variable.GetType();
+
+            if (Variable == null) {
+                Common.Print("CycleButtonVariable(): Control's variable was null, fix your trash.");
+                return;
+            }
+            if (type == null) {
+                Common.Print("CycleButtonVariable(): Control's variable type was somehow null (wtf??), fix your trash.");
+                return;
+            }
+
+
+            //#
+            //## Booleans
+            //#
+            if (type == typeof(bool))
+            {
+                if (MaximumValue != null)
+                    Common.Print("WARNING: A maximum value was for some reason provided for a button with a boolean variable attached");
+
+
+                Variable = !(bool) Variable;
+                return;
+            }
+
+            
+            //#
+            //## Integers
+            //#
+            if (type == typeof(int) || type == typeof(long))
+            {
+                if (MaximumValue == null) {
+                    Variable = (long)Variable + 1;
+                }
+                else {
+                    // avoid going out of bounds in the VariableTags array
+                    if (VariableTags.Length < (long)MaximumValue)
+                    {
+                        MaximumValue = VariableTags.Length;
+                        Common.Print($"ERORR: Maximum value for control Variable was larger than the amount of provided VariableTags; lowered maxValue to [{MaximumValue}]");
+                    }
+
+                    if (MaximumValue == Variable) //! this might compare types when they're both objects...
+                    {
+                        Variable = MinimumValue ?? 0;
+                    }
+
+                }
+
+                return;
+            }
+            
+            
+            //#
+            //## Floating-Points
+            //#
+            if (type == typeof(float) || type == typeof(double))
+            {
+                Variable = (double)Variable + eventArgs.Delta != 0 ? eventArgs.Delta / 2 : .1f;
+
+                if (MaximumValue != null)
+                {
+                    if ((double)Variable >= (double)MaximumValue)
+                        Variable = MinimumValue ?? 0;
+
+                    else if ((double)Variable <= (double)MinimumValue)
+                        Variable = MinimumValue ?? 10;
+                }
+            }
+        }
     }
     #endregion [Class Extensions]
 }

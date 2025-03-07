@@ -500,13 +500,6 @@ namespace Dobby {
 
 
         /// <summary>
-        /// Toggle the IgnoreTitleID setting for use when the game has an edited title id, but is likele still supported.
-        /// </summary>
-        /// <param name="control"> The clicked control to which the Enabled/Disabled text will be appended to. </param>
-        private void IgnoreTitleIDBtn_Click(object control, EventArgs _) => CycleButtonVariable<bool>(control);
-
-
-        /// <summary>
         /// Toggles the byte at an address specified by 
         /// </summary>
         /// <param name="Addresses">Array Of Addresses To Read The Int64 From Depending On The Version</param>

@@ -409,7 +409,6 @@ namespace Dobby
             this.IgnoreTitleIDBtn.Text = "Ignore Game Title ID: ";
             this.IgnoreTitleIDBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.IgnoreTitleIDBtn.UseVisualStyleBackColor = false;
-            this.IgnoreTitleIDBtn.Click += new System.EventHandler(this.IgnoreTitleIDBtn_Click);
             // 
             // PS4DebugPage
             // 

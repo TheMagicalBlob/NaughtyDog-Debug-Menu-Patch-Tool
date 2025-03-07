@@ -19,9 +19,6 @@ namespace Dobby {
 
 #if DEBUG
             new Testing(this);
-            #else
-            PS4MenuSettingsPageBtn.Font = new System.Drawing.Font(PS4MenuSettingsPageBtn.Font.FontFamily , PS4MenuSettingsPageBtn.Font.Size, PS4MenuSettingsPageBtn.Font.Style | System.Drawing.FontStyle.Strikeout);
-            PS4MenuSettingsPageBtn.Enabled = false;
 #endif
             InitializeAdditionalEventHandlers(Controls);
         }
