@@ -1216,6 +1216,9 @@ namespace Dobby {
             get => _Variable;
 
             set {
+                #if DEBUG
+                Common.Print($"{Name ?? "Unset Name"} Variable: {value ?? "null"}");
+                #endif
                 if (value != null && value.ToString().Length > 0)
                 {
                     _Variable = value;
@@ -1224,7 +1227,7 @@ namespace Dobby {
                         Common.Print("adding");
 
                         Paint += DrawButtonVariable;
-                        Click += CycleButtonVariable;
+                        MouseClick += CycleButtonVariable;
                         MouseWheel += CycleButtonVariable;
                     }
                     
@@ -1233,7 +1236,7 @@ namespace Dobby {
                 else {
                     if (hasEvents) {
                         Paint -= DrawButtonVariable;
-                        Click -= CycleButtonVariable;
+                        MouseClick -= CycleButtonVariable;
                         MouseWheel -= CycleButtonVariable;
 
                         Common.Print($"removing {value == null}");
@@ -1344,6 +1347,8 @@ namespace Dobby {
 
 
 
+
+
         //#
         //## Function Declarations
         //#
@@ -1402,7 +1407,7 @@ namespace Dobby {
             //#
             //## Integer
             //#
-            if (control.Variable.GetType() == typeof(int))
+            if (control.Variable.GetType() == typeof(int) || control.Variable.GetType() == typeof(byte))
             {
                 if (control.VariableTags != null)
                 {
@@ -1416,7 +1421,7 @@ namespace Dobby {
                     
                 }
                 else {
-                    variableText = (string) control.Variable;
+                    variableText = control.Variable.ToString();
                 }
             }
             
@@ -1430,6 +1435,8 @@ namespace Dobby {
                     Common.Print("WARNING: variable tags provided for floating-point button variable, cannot use a floating-point as array index. (obviously)");
                     return;
                 }
+
+                variableText = control.Variable.ToString();
             }
 
 
@@ -1466,15 +1473,8 @@ namespace Dobby {
         /// <summary>
         /// Toggle between various states of custom Button controls
         /// </summary>
-        /// <param name="sender"> The control to edit the variable of </param>
-        private void CycleButtonVariable(object sender, EventArgs args) => CycleButtonVariable(sender);
-
-        
-        /// <summary>
-        /// Toggle between various states of custom Button controls
-        /// </summary>
         /// <param name="sender"> The control to edit the variable of. </param>
-        private void CycleButtonVariable(object sender, MouseEventArgs eventArgs = null)
+        private void CycleButtonVariable(object sender, MouseEventArgs eventArgs)
         {
             var type = Variable.GetType();
 
@@ -1534,7 +1534,7 @@ namespace Dobby {
             //#
             if (type == typeof(float) || type == typeof(double))
             {
-                Variable = (double)Variable + eventArgs.Delta != 0 ? eventArgs.Delta / 2 : .1f;
+                Variable = (float)Variable + (eventArgs.Delta != 0 ? eventArgs.Delta / 2 : .1f);
 
                 if (MaximumValue != null)
                 {

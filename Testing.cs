@@ -32,6 +32,7 @@ namespace Dobby {
 
             TestGamedataFolder = @"C:\Users\msblob\Misc\gp4_tst\CUSA00009-app";
             TestPubToolPath = @"C:\Users\msblob\App\FPackageTools3.87\orbis-pub-cmd.exe";
+            TestEbootPath = @"C:\Users\blob\Misc\dobby tst\CUSA07820-app\eboot.bin";
             TestGP4Path = @"C:\Users\msblob\Misc\gp4_tst\CUSA00009-app.gp4";
         }
 #endif
@@ -66,6 +67,7 @@ namespace Dobby {
 
         public static string TestGamedataFolder;
         public static string TestPubToolPath;
+        public static string TestEbootPath;
         public static string TestGP4Path;
 
         public bool OverrideMsgOut;

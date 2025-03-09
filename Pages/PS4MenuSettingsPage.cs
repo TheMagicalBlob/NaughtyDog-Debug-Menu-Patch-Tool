@@ -635,7 +635,12 @@ namespace Dobby {
                 Title = "Please select the executable you would like to patch."
             };
 
-
+            #if DEBUG
+            if (Testing.TestEbootPath != null && File.Exists(Testing.TestEbootPath)) {
+                LoadGameExecutable(Testing.TestEbootPath);
+            }
+            else
+            #endif
             if(fileDialogue.ShowDialog() == DialogResult.OK)
             {
                 LoadGameExecutable(fileDialogue.FileName);
