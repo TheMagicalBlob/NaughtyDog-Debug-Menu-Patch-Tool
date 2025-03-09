@@ -445,6 +445,7 @@ namespace Dobby {
             }
             else {
                 flashes = -1;
+                infoText = null;
                 LabelUpdateThread.Abort();
             }
 
@@ -868,6 +869,7 @@ namespace Dobby {
                     // Set The Text of The Yellow Label At The Bottom Of The Form
                     if (infoText != null) {
                         ActiveForm?.Invoke(SetLabelState, label, Color.FromArgb(255, 227, 0), infoText);
+                        infoText = null;
                     }
                 }
                 catch (Exception) {
@@ -1206,7 +1208,7 @@ namespace Dobby {
         /// <summary>
         /// Custom value associated with the control to be rendered alongside it, and edited via manually assigned per-control events.
         /// </summary>
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)] // Designer autogenerates code settings the Variable & VariableTags properties to null, annoyingly. More of an issue for the former though, due to the Properties window not letting you edit objects
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] // Designer autogenerates code settings the Variable & VariableTags properties to null, annoyingly. More of an issue for the former though, due to the Properties window not letting you edit objects
         [DefaultValue(null)]
         [Browsable(false)]
         public object Variable
@@ -1217,8 +1219,10 @@ namespace Dobby {
                 if (value != null && value.ToString().Length > 0)
                 {
                     _Variable = value;
-                    Common.Print("adding");
+
                     if (!hasEvents) {
+                        Common.Print("adding");
+
                         Paint += DrawButtonVariable;
                         Click += CycleButtonVariable;
                         MouseWheel += CycleButtonVariable;
@@ -1231,9 +1235,10 @@ namespace Dobby {
                         Paint -= DrawButtonVariable;
                         Click -= CycleButtonVariable;
                         MouseWheel -= CycleButtonVariable;
+
+                        Common.Print($"removing {value == null}");
                     }
 
-                    Common.Print("removing");
                     _Variable = value;
                     hasEvents = false;
                 }
@@ -1434,7 +1439,7 @@ namespace Dobby {
             if (variableText == null)
             {
                 Common.Print($"WARNING: An unexpected data type was provided for the Variable tied to control \"{control.Name}\". Using unformatted string representation. (Type: {control.Variable.GetType()})");
-                variableText = (string) (control.Variable ?? (object) "null");
+                variableText = $"{(control.Variable ?? (object) "null")}";
             }
 
 

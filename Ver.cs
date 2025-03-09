@@ -290,6 +290,7 @@
           "* 4.61.355.911 | Renamed Main => MainPage, Standardizing comment fomrats and code structuring",
           "* 4.61.357.917 | Miscellaneous PS4MenuSettingsPage updates (jfc that code is hideous and unsorted), Other Crap (probably foratting idk, I updated the number but left no message)",
           "* 4.61.360.919 | Re-enabled PS4MenuSettingPage in release builds (not that it's finished being updated)",
+          "* 4.61.361.923 | Stopped info label text from being carried over to other forms (forgot it was doing that, lmao). Testing misc patches page."
         };
 
 
