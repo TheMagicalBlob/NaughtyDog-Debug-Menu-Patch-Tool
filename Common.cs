@@ -1197,7 +1197,7 @@ namespace Dobby {
             Cursor = Cursors.Cross;
 
 
-            Variable = null;
+            //Variable = null;
             VariableTags = null;
         }
 
@@ -1210,7 +1210,6 @@ namespace Dobby {
         /// Custom value associated with the control to be rendered alongside it, and edited via manually assigned per-control events.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] // Designer autogenerates code settings the Variable & VariableTags properties to null, annoyingly. More of an issue for the former though, due to the Properties window not letting you edit objects
-        [DefaultValue("fuck")]
         [Browsable(false)]
         public object Variable
         {
@@ -1462,6 +1461,8 @@ namespace Dobby {
         }
 
         
+
+
         
         /// <summary>
         /// Toggle between various states of custom Button controls
@@ -1470,7 +1471,10 @@ namespace Dobby {
         private void CycleButtonVariable(object sender, MouseEventArgs eventArgs)
         {
             var type = Variable.GetType();
-
+            #if DEBUG
+            Common.Print($"Cycling: {type ?? typeof(ushort)}::{Variable ?? "null"} ({Name})");
+            #endif
+            
             if (Variable == null) {
                 Common.Print("CycleButtonVariable(): Control's variable was null, fix your trash.");
                 return;

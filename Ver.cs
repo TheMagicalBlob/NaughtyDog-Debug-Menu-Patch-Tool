@@ -292,7 +292,7 @@
           "* 4.61.360.919 | Re-enabled PS4MenuSettingPage in release builds (not that it's finished being updated)",
           "* 4.61.361.923 | Stopped info label text from being carried over to other forms (forgot it was doing that, lmao). Testing misc patches page.",
           "* 4.61.362.925 | Misc CycleButtonVariable and DrawButtonVariable method testing & fixes. TODO: Fix the double variable toggling on the misc patches page after editing the variable of a different control",
-          "* 4.61.362.928 | ",
+          "* 4.61.362.929 | ",
         };
 
 

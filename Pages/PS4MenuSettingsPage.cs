@@ -1292,8 +1292,6 @@ namespace Dobby {
                     Buttons[ButtonIndex].MouseLeave += ControlLeave;
                     Buttons[ButtonIndex].BringToFront();
 
-                    Print(Buttons[ButtonIndex].Name);
-
                     if(GameSpecificPatchValues[ButtonIndex].GetType() == typeof(bool))
                         Buttons[ButtonIndex].Click += DynamicBtn_Click;
 
