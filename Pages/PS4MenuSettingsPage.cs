@@ -659,8 +659,11 @@ namespace Dobby {
             }
 
             #if !DEBUG
+            // Reset the form automatically for debugging purposes
             ResetCustomDebugOptions();
             #endif
+
+            // Append the return status to the game id & version
             GameInfoLabel.Text += result;
         }
         

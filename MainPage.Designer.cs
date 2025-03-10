@@ -131,7 +131,6 @@ namespace Dobby
             this.DownloadSourceBtn.Text = "Download Latest Source Code (Download Link)";
             this.DownloadSourceBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DownloadSourceBtn.UseVisualStyleBackColor = false;
-            this.DownloadSourceBtn.Variable = null;
             this.DownloadSourceBtn.Click += new System.EventHandler(this.DownloadSourceBtn_Click);
             // 
             // InfoHelpBtn
@@ -150,7 +149,6 @@ namespace Dobby
             this.InfoHelpBtn.Text = "Information / Help...";
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
-            this.InfoHelpBtn.Variable = null;
             // 
             // CreditsBtn
             // 
@@ -168,7 +166,6 @@ namespace Dobby
             this.CreditsBtn.Text = "Credits...";
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
-            this.CreditsBtn.Variable = null;
             // 
             // PCDebugMenuPageBtn
             // 
@@ -185,7 +182,6 @@ namespace Dobby
             this.PCDebugMenuPageBtn.Text = "Patch .exe With The Debug Menu...";
             this.PCDebugMenuPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PCDebugMenuPageBtn.UseVisualStyleBackColor = false;
-            this.PCDebugMenuPageBtn.Variable = null;
             this.PCDebugMenuPageBtn.Click += new System.EventHandler(this.PCDebugMenuPageBtn_Click);
             // 
             // PkgCreationPageBtn
@@ -203,7 +199,6 @@ namespace Dobby
             this.PkgCreationPageBtn.Text = "Build New Patch Or Base Game .pkg...";
             this.PkgCreationPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PkgCreationPageBtn.UseVisualStyleBackColor = false;
-            this.PkgCreationPageBtn.Variable = null;
             this.PkgCreationPageBtn.Click += new System.EventHandler(this.PkgPageBtn_Click);
             // 
             // PS4DebugPageBtn
@@ -221,7 +216,6 @@ namespace Dobby
             this.PS4DebugPageBtn.Text = "Enable Debug Mode With PS4Debug...";
             this.PS4DebugPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PS4DebugPageBtn.UseVisualStyleBackColor = false;
-            this.PS4DebugPageBtn.Variable = null;
             this.PS4DebugPageBtn.Click += new System.EventHandler(this.PS4DebugPageBtn_Click);
             // 
             // EbootPatchPageBtn
@@ -239,7 +233,6 @@ namespace Dobby
             this.EbootPatchPageBtn.Text = "Patch eboot.bin With The Debug Menu...";
             this.EbootPatchPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.EbootPatchPageBtn.UseVisualStyleBackColor = false;
-            this.EbootPatchPageBtn.Variable = null;
             this.EbootPatchPageBtn.Click += new System.EventHandler(this.EbootPatchPageBtn_Click);
             // 
             // PS4MenuSettingsPageBtn
@@ -258,7 +251,6 @@ namespace Dobby
             this.PS4MenuSettingsPageBtn.Text = "Misc. Debug Menu Settings...";
             this.PS4MenuSettingsPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PS4MenuSettingsPageBtn.UseVisualStyleBackColor = false;
-            this.PS4MenuSettingsPageBtn.Variable = null;
             this.PS4MenuSettingsPageBtn.Click += new System.EventHandler(this.PS4MenuSettingsPageBtn_Click);
             // 
             // Main

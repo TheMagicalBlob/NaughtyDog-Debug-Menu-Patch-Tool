@@ -1186,6 +1186,7 @@ namespace Dobby {
     /// </summary>
     public class Button : System.Windows.Forms.Button
     {
+        /// <summary> Initialize a new instance of the Dobby.Button class extention. </summary>
         public Button()
         {
             FlatStyle = FlatStyle.Flat;
@@ -1209,7 +1210,7 @@ namespace Dobby {
         /// Custom value associated with the control to be rendered alongside it, and edited via manually assigned per-control events.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] // Designer autogenerates code settings the Variable & VariableTags properties to null, annoyingly. More of an issue for the former though, due to the Properties window not letting you edit objects
-        [DefaultValue(null)]
+        [DefaultValue("fuck")]
         [Browsable(false)]
         public object Variable
         {
@@ -1217,7 +1218,7 @@ namespace Dobby {
 
             set {
                 #if DEBUG
-                Common.Print($"{Name ?? "Unset Name"} Variable: {value ?? "null"}");
+                Common.Print($"[{((Name != null && Name.Length > 0) ? Name : "newBtn")}::Variable]={value ?? "null"}");
                 #endif
                 if (value != null && value.ToString().Length > 0)
                 {
@@ -1255,24 +1256,16 @@ namespace Dobby {
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [DefaultValue(null)]
-        public string[] VariableTags
-        {
-            get => _VariableTags;
-
-            set {
-                //Common.Print($"{value}");
-                //if (value != null)
-                //{
-                //    if (value.GetType() != typeof(int) && value.GetType() != typeof(bool)) {
-                //        Common.Print("Invalid VariableTags usage; only supports integers and booleans at the moment");
-                //        return;
-                //    }
-                //}
-
-                _VariableTags = value;
-            }
-        }
-        private string[] _VariableTags;
+        public string[] VariableTags;
+        //public string[] VariableTags
+        //{
+        //    get => _VariableTags;
+        //
+        //    set {
+        //        _VariableTags = value;
+        //    }
+        //}
+        //private string[] _VariableTags;
 
 
 
