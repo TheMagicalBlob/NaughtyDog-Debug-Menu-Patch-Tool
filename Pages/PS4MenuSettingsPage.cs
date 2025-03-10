@@ -592,7 +592,7 @@ namespace Dobby {
             gsButtons.Reset();
 
             // Move Controls Back To Their Original Positions
-            for(var i = 0; i < ControlsToMove.Length; ControlsToMove[i].Location = OriginalControlPositions[++i]) ;
+            for(var i = 0; (++i) < ControlsToMove.Length; ControlsToMove[i].Location = OriginalControlPositions[i]);
 
 
 

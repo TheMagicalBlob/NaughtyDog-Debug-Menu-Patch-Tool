@@ -22,6 +22,7 @@ namespace Dobby
             if(disposing && (components != null)) {
                 components.Dispose();
             }
+            fileStream?.Dispose();
             base.Dispose(disposing);
         }
         private void InitializeComponent() {
