@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Windows.Forms;
 
 namespace Dobby
 {
@@ -244,6 +240,27 @@ namespace Dobby
             this.PerformLayout();
 
         }
+        #endregion
+
+        
+
+        //================================\\
+        //--|   Control Declarations   |--\\
+        //================================\\
+        #region [Control Declarations]
+        public Label MainLabel;
+        public Button CreditsBtn;
+        public Button InfoHelpBtn;
+        public Label Info;
+        public Label SeperatorLine0;
+        public Label SeperatorLine2;
+        public Label SeperatorLine1;
+        public Label GameInfoLabel;
+        private Button BrowseButton;
+        private TextBox ExecutablePathBox;
+        public Button BackBtn;
+        public Button DisableDebugBtn;
+        public Button BaseDebugBtn;
         #endregion
     }
 }

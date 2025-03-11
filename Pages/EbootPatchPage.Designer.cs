@@ -20,6 +20,7 @@ namespace Dobby
             if(disposing && (components != null)) {
                 components.Dispose();
             }
+            fileStream?.Dispose();
             base.Dispose(disposing);
         }
 
@@ -78,7 +79,6 @@ namespace Dobby
             this.ExecutablePathBox.Size = new System.Drawing.Size(233, 23);
             this.ExecutablePathBox.TabIndex = 30;
             this.ExecutablePathBox.Text = " Select A .bin/.elf To Modify";
-            this.ExecutablePathBox.TextChanged += new System.EventHandler(this.ExecutablePathBox_TextChanged);
             // 
             // SeperatorLine1
             // 

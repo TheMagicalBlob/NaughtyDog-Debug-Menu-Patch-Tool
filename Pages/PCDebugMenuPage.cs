@@ -1,27 +1,27 @@
 ﻿using System;
 using System.Windows.Forms;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
-using static Dobby.Common;
 using System.IO;
 using System.Threading;
-using System.Security.Cryptography;
+using static Dobby.Common;
 
 namespace Dobby {
     internal partial class PCDebugMenuPage : Form {
+        
+        /// <summary>
+        /// Initialize a new instance of the PCDebugMenuPage Form.
+        /// </summary>
         public PCDebugMenuPage() {
             InitializeComponent();
             InitializeAdditionalEventHandlers(Controls);
         }
         
+        
 
-        //=====================================\\
-        //--|     Page-Specific Variables   |--\\
-        //=====================================\\
-        #region [Page-Specific Variables]
+        //=================================\\
+        //--|   Variable Declarations   |--\\
+        //=================================\\
+        #region [Variable Declarations]
 
         public static bool IsActiveFilePCExe, MainStreamIsOpen;
 
@@ -44,10 +44,11 @@ namespace Dobby {
 
 
 
-        //===================================\\
-        //--|   Page-Specific Functions   |--\\
-        //===================================\\
-        #region [Page-Specific Functions]
+        
+        //=============================================\\
+        //--|   Background Function Delcarations   |---\\
+        //=============================================\\
+        #region [Background Function Delcarations]
 
         private void BrowseButton_Click(object sender, EventArgs e) {
             using(var fileDialogue = new OpenFileDialog {
@@ -255,28 +256,6 @@ Read:       fileStream.Position = TmpAddr++;
             fileStream.WriteByte(@byte);
             fileStream.Flush();
         }
-        #endregion
-
-
-        //==========================================================\\
-        //--|   Repeated Page Functions & Control Declarations   |--\\
-        //==========================================================\\
-        #region [Repeat Functions & Control Declarations]
-        
-        
-        public Label MainLabel;
-        public Button CreditsBtn;
-        public Button InfoHelpBtn;
-        public Label Info;
-        public Label SeperatorLine0;
-        public Label SeperatorLine2;
-        public Label SeperatorLine1;
-        public Label GameInfoLabel;
-        private Button BrowseButton;
-        private TextBox ExecutablePathBox;
-        public Button BackBtn;
-        public Button DisableDebugBtn;
-        public Button BaseDebugBtn;
         #endregion
     }
 }

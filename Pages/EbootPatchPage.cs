@@ -1,20 +1,20 @@
 ﻿using System;
 using System.IO;
 using System.Drawing;
-using static Dobby.Common;
 using System.Windows.Forms;
 using Dobby.Resources;
-using System.Threading;
+using static Dobby.Common;
 
 
 namespace Dobby {
     public partial class EbootPatchPage : Form {
+
+        /// <summary>
+        /// Initialize a new instance of the EbootPatchPage Form.
+        /// </summary>
         public EbootPatchPage() {
             InitializeComponent();
-            
             InitializeAdditionalEventHandlers(Controls);
-            if (ActiveFilePath != null && !IsActiveFilePCExe)
-                ExecutablePathBox.Text = ActiveFilePath;
         }
 
         
@@ -68,18 +68,12 @@ namespace Dobby {
         #endregion
 
         
+        
 
-        //===================================\\
-        //--|   Page-Specific Functions   |--\\
-        //===================================\\
-        #region [Page-Specific Functions]
-
-        //! SORT THIS FUCKING PAGE!!!
-
-
-        /// <summary> Update GameInfoLabel Text To Reflect Last Action Taken </summary>
-        /// <param name="str"> Text To Apply </param>
-        public void SetGameInfoLabelText(string str) { if(ActiveForm != null) GameInfoLabel.Text = str; }
+        //=============================================\\
+        //--|   Background Function Delcarations   |---\\
+        //=============================================\\
+        #region [Background Function Delcarations]
 
 
         /// <summary> Open A File Dialog Window To Select A File For Checking/Patching </summary>
@@ -92,19 +86,9 @@ namespace Dobby {
             if(fileDialog.ShowDialog() == DialogResult.OK) {
                 ExecutablePathBox.Text = fileDialog.FileName;
 
-                LoadFileToBePatched(fileDialog.FileName);
+                LoadGameExecutable(fileDialog.FileName);
                 fileDialog.Dispose();
             }
-        }
-
-
-        /// <summary> Load A File For Checking/Patching If The Path In The ExecutablePathBox Exists </summary>
-        private void ExecutablePathBox_TextChanged(object sender, EventArgs e) {
-
-            var TextBoxData = (((Control)sender).Text.Replace("\"", ""));
-
-            if(File.Exists(TextBoxData))
-            LoadFileToBePatched(TextBoxData);
         }
 
 
@@ -116,16 +100,19 @@ namespace Dobby {
         /// Then Assigns The RestoredDebugBtn's Button Text
         /// </summary>
         /// <param name="filePath"> The fuck you think it is> </param>
-        private void LoadFileToBePatched(string filePath) {
+        private void LoadGameExecutable(string filePath) {
             try { 
                 fileStream?.Dispose();
                 Print($"Initializing fileStream with \"{filePath}\".");
                 fileStream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite);
             }
-            catch(IOException Oop) {
-                Print(Oop.Message); SetGameInfoLabelText("Access Denied, File In Use Elsewhere");
+            catch(IOException dang)
+            {
+                PrintError(dang);
+                UpdateLabel("Access Denied, File In Use Elsewhere");
                 return;
             }
+
 
             ActiveFilePath = filePath;
 
@@ -133,10 +120,8 @@ namespace Dobby {
                 
             DebugAddressForSelectedGame = GetDebugAddress(Game);
 
+            // Update the "Restored Debug" Button to reflect the available patch type(s)
             RestoredDebugBtn.Text = $"{RestoredDebugBtn.Text.Remove(RestoredDebugBtn.Text.LastIndexOf(' '))}{GetMenuPatchTypeAvailability(Game)}";
-
-            IsActiveFilePCExe = false;
-
         }
 
         /// <returns> Patch Type Name For Restored/Custom Debug Button </returns>
@@ -375,7 +360,7 @@ namespace Dobby {
                     break;
             }
 
-            SetGameInfoLabelText($"{ActiveGameID} {ResultStrings[PatchType]}");
+            UpdateLabel($"{ActiveGameID} {ResultStrings[PatchType]}", false);
 
         }
 

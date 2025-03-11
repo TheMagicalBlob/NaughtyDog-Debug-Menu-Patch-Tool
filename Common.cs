@@ -70,7 +70,6 @@ namespace Dobby {
             LastMsgOutputWasInfoString,
             LabelShouldFlash,
             FlashThreadHasStarted,
-            IsActiveFilePCExe,
             DisableFormChange
         ;
 
@@ -216,7 +215,7 @@ namespace Dobby {
 
 
         /// <summary>
-        /// 
+        /// Write a fucking //!summary, chucklefuck
         /// </summary>
         /// <param name="newText"> The string to apply to the label's Text property. </param>
         /// <param name="flashLabel"> If true, flash the label to indicate an error or otherwise get the user's attention. (switches between white/yellow) </param>
@@ -235,23 +234,27 @@ namespace Dobby {
 
         
         /// <summary>
-        /// Write a fucking summary, dicksneeze
+        /// Write a fucking //!summary, dicksneeze
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>
-        public static string GetCurrentGame(FileStream stream) {
+        public static string GetCurrentGame(FileStream stream)
+        {
             var LocalExecutableCheck = new byte[160];
 
-             
             stream.Position = 0;
             stream.Read(LocalExecutableCheck, 0, 4);
+
             if (BitConverter.ToInt32(LocalExecutableCheck, 0) != 1179403647)
                 MessageBox.Show($"Executable Still Encrypted (self) | Must Be Decrypted/Unsigned");
 
 
+
             stream.Position = 0x5100;
             stream.Read(LocalExecutableCheck, 0, 160);
-            Game = (GameID)BitConverter.ToInt32(SHA256.Create().ComputeHash(LocalExecutableCheck), 0);
+
+            Game = (GameID) BitConverter.ToInt32(SHA256.Create().ComputeHash(LocalExecutableCheck), 0);
+
 
             switch (Game) {
                 case GameID.UC1100: return "Uncharted 1 1.00";
@@ -718,9 +721,6 @@ namespace Dobby {
         public static void HoverLeave(Control PassedControl, bool EventIsMouseEnter) {
             int ArrowWidth;
 
-            void HighlightItemOnMouseDown(object sender, MouseEventArgs e = null) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
-            void ResetItemHighlight(object sender, MouseEventArgs e = null) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
-
             try {
                 ArrowWidth = (int)PassedControl.CreateGraphics().MeasureString(">", PassedControl.Font).Width;
             }
@@ -736,17 +736,12 @@ namespace Dobby {
                 Testing.HoveredControl = PassedControl;
 #endif
                 CurrentControl = PassedControl.Name;
-                PassedControl.MouseDown += HighlightItemOnMouseDown;
-                PassedControl.MouseUp += ResetItemHighlight;
 
                 PassedControl.Text = '>' + PassedControl.Text;
             }
             else {
-                //ArrowWidth = ~ArrowWidth ^ 1; I'm an idiot, this is excessive lmao. keeping it as a reminder
+                //ArrowWidth = ~ArrowWidth ^ 1; I'm an idiot, this is excessive lmao. keeping it to laugh at, tho. bite me
                 ArrowWidth = -ArrowWidth;
-
-                PassedControl.MouseDown -= HighlightItemOnMouseDown;
-                PassedControl.MouseUp -= ResetItemHighlight;
 
                 PassedControl.Text = PassedControl.Text.Substring(1);
             }
@@ -1158,7 +1153,8 @@ namespace Dobby {
 
 
         /// <summary> Set Control Text and State Properly (meh). </summary>
-        public void Set(string text) {
+        public void Set(string text)
+        {
             if (text != string.Empty && !DefaultText.Contains(text))
             {   
                 Font = Common.DefaultTextFont;
@@ -1170,13 +1166,11 @@ namespace Dobby {
 
 
 
-
         // Default Control Text to Be Displayed When "Empty".
         private string DefaultText;
 
         // Help Better Keep Track of Whether the User's Changed the Text, Because I'm a Moron.
         public bool IsDefault { get; private set; }
-        
     }
 
 
@@ -1199,7 +1193,13 @@ namespace Dobby {
 
             //Variable = null;
             VariableTags = null;
+            hasEvents = false;
+            
+
+            MouseDown += (sender, _) => ForeColor = Color.FromArgb(255, 227, 0);
+            MouseUp += (sender, _) => ForeColor = Color.FromArgb(255, 255, 255);
         }
+
 
 
         //#
@@ -1216,34 +1216,30 @@ namespace Dobby {
             get => _Variable;
 
             set {
-                #if DEBUG
-                Common.Print($"[{((Name != null && Name.Length > 0) ? Name : "newBtn")}::Variable]={value ?? "null"}");
-                #endif
                 if (value != null && value.ToString().Length > 0)
                 {
                     _Variable = value;
 
                     if (!hasEvents) {
-                        Common.Print("adding");
-
                         Paint += DrawButtonVariable;
+
                         MouseClick += CycleButtonVariable;
                         MouseWheel += CycleButtonVariable;
+
+                        hasEvents = true;
                     }
-                    
-                    hasEvents = true;
                 }
                 else {
                     if (hasEvents) {
                         Paint -= DrawButtonVariable;
+
                         MouseClick -= CycleButtonVariable;
                         MouseWheel -= CycleButtonVariable;
-
-                        Common.Print($"removing {value == null}");
+                        
+                        hasEvents = false;
                     }
 
                     _Variable = value;
-                    hasEvents = false;
                 }
             }
         }
@@ -1335,7 +1331,7 @@ namespace Dobby {
         private object maxValue;
 
 
-        private bool hasEvents = false; // Lazy Fix
+        private bool hasEvents; // Lazy Fix
 
 
 
@@ -1471,9 +1467,6 @@ namespace Dobby {
         private void CycleButtonVariable(object sender, MouseEventArgs eventArgs)
         {
             var type = Variable.GetType();
-            #if DEBUG
-            Common.Print($"Cycling: {type ?? typeof(ushort)}::{Variable ?? "null"} ({Name})");
-            #endif
             
             if (Variable == null) {
                 Common.Print("CycleButtonVariable(): Control's variable was null, fix your trash.");
@@ -1483,6 +1476,10 @@ namespace Dobby {
                 Common.Print("CycleButtonVariable(): Control's variable type was somehow null (wtf??), fix your trash.");
                 return;
             }
+            
+            #if DEBUG
+            Common.Print($"Cycling [{type}] Variable");
+            #endif
 
 
             //#
@@ -1492,7 +1489,6 @@ namespace Dobby {
             {
                 if (MaximumValue != null)
                     Common.Print("WARNING: A maximum value was for some reason provided for a button with a boolean variable attached");
-
 
                 Variable = !(bool) Variable;
                 return;

@@ -57,6 +57,8 @@ namespace Dobby
             this.ProgPauseOnCloseBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.ProgPauseOnCloseBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.ProgPauseOnCloseBtn.Location = new System.Drawing.Point(1, 119);
+            this.ProgPauseOnCloseBtn.MaximumValue = null;
+            this.ProgPauseOnCloseBtn.MinimumValue = null;
             this.ProgPauseOnCloseBtn.Name = "ProgPauseOnCloseBtn";
             this.ProgPauseOnCloseBtn.Size = new System.Drawing.Size(318, 24);
             this.ProgPauseOnCloseBtn.TabIndex = 45;
@@ -73,6 +75,8 @@ namespace Dobby
             this.ProgPauseOnOpenBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.ProgPauseOnOpenBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.ProgPauseOnOpenBtn.Location = new System.Drawing.Point(1, 96);
+            this.ProgPauseOnOpenBtn.MaximumValue = null;
+            this.ProgPauseOnOpenBtn.MinimumValue = null;
             this.ProgPauseOnOpenBtn.Name = "ProgPauseOnOpenBtn";
             this.ProgPauseOnOpenBtn.Size = new System.Drawing.Size(318, 24);
             this.ProgPauseOnOpenBtn.TabIndex = 44;
@@ -89,6 +93,8 @@ namespace Dobby
             this.DisableDebugTextBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.DisableDebugTextBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.DisableDebugTextBtn.Location = new System.Drawing.Point(1, 52);
+            this.DisableDebugTextBtn.MaximumValue = null;
+            this.DisableDebugTextBtn.MinimumValue = null;
             this.DisableDebugTextBtn.Name = "DisableDebugTextBtn";
             this.DisableDebugTextBtn.Size = new System.Drawing.Size(318, 24);
             this.DisableDebugTextBtn.TabIndex = 42;
@@ -106,6 +112,8 @@ namespace Dobby
             this.DisablePausedIconBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.DisablePausedIconBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisablePausedIconBtn.Location = new System.Drawing.Point(1, 74);
+            this.DisablePausedIconBtn.MaximumValue = null;
+            this.DisablePausedIconBtn.MinimumValue = null;
             this.DisablePausedIconBtn.Name = "DisablePausedIconBtn";
             this.DisablePausedIconBtn.Size = new System.Drawing.Size(318, 24);
             this.DisablePausedIconBtn.TabIndex = 43;
@@ -143,6 +151,8 @@ namespace Dobby
             this.CreditsBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.CreditsBtn.Location = new System.Drawing.Point(1, 319);
+            this.CreditsBtn.MaximumValue = null;
+            this.CreditsBtn.MinimumValue = null;
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(85, 22);
@@ -160,6 +170,8 @@ namespace Dobby
             this.InfoHelpBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.InfoHelpBtn.Location = new System.Drawing.Point(1, 297);
+            this.InfoHelpBtn.MaximumValue = null;
+            this.InfoHelpBtn.MinimumValue = null;
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.InfoHelpBtn.Size = new System.Drawing.Size(162, 22);
@@ -187,6 +199,8 @@ namespace Dobby
             this.BackBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.BackBtn.Location = new System.Drawing.Point(1, 340);
+            this.BackBtn.MaximumValue = null;
+            this.BackBtn.MinimumValue = null;
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.BackBtn.Size = new System.Drawing.Size(65, 22);
@@ -247,6 +261,8 @@ namespace Dobby
             this.BrowseButton.Font = new System.Drawing.Font("Cambria", 8.5F, System.Drawing.FontStyle.Bold);
             this.BrowseButton.ForeColor = System.Drawing.SystemColors.Control;
             this.BrowseButton.Location = new System.Drawing.Point(237, 242);
+            this.BrowseButton.MaximumValue = null;
+            this.BrowseButton.MinimumValue = null;
             this.BrowseButton.Name = "BrowseButton";
             this.BrowseButton.Size = new System.Drawing.Size(67, 19);
             this.BrowseButton.TabIndex = 39;
@@ -264,7 +280,8 @@ namespace Dobby
             this.ExecutablePathBox.Name = "ExecutablePathBox";
             this.ExecutablePathBox.Size = new System.Drawing.Size(233, 23);
             this.ExecutablePathBox.TabIndex = 38;
-            this.ExecutablePathBox.Text = " Select A .elf To Patch";
+            this.ExecutablePathBox.Text = "Select an executable to patch";
+            this.ExecutablePathBox.TextChanged += new System.EventHandler(this.ExecutablePathBox_TextChanged);
             // 
             // SeperatorLine1
             // 
@@ -306,6 +323,8 @@ namespace Dobby
             this.NovisBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.NovisBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.NovisBtn.Location = new System.Drawing.Point(1, 141);
+            this.NovisBtn.MaximumValue = null;
+            this.NovisBtn.MinimumValue = null;
             this.NovisBtn.Name = "NovisBtn";
             this.NovisBtn.Size = new System.Drawing.Size(318, 24);
             this.NovisBtn.TabIndex = 46;
