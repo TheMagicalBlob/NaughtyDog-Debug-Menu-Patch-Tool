@@ -509,7 +509,7 @@ namespace Dobby {
                             switch(Page) {
                                 default:
                                     rawOutput = new string[] {
-                                        $"Build: {Ver.Build} ClickErrors: {Dev.ClickErrors}",
+                                        $"Build: {Ver.Build}",
                                         " ",
                                         $"Parent Form: {(ActiveForm != null ? $"{ActiveForm?.Name} | # Of Children: {ActiveForm?.Controls?.Count}" : "Console")}",
                                         " ",
@@ -544,7 +544,6 @@ namespace Dobby {
                                 case PageID.PS4MenuSettingsPage:
                                     rawOutput = new string[] {
                                         "",
-                                        $"| Game Index:           {PS4MenuSettingsPage.GameIndex}",
                                         $"| Disable FPS:          {PS4MenuSettingsPage.UniversalPatchValues[0]}",
                                         $"| Paused Icon:          {PS4MenuSettingsPage.UniversalPatchValues[1]}",
                                         $"| ProgPauseOnOpen:      {PS4MenuSettingsPage.UniversalPatchValues[2]}",

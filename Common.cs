@@ -1117,6 +1117,17 @@ namespace Dobby {
             GotFocus += ReadyControl;
             LostFocus += ResetControl; // Reset control if nothing was entered, or the text is a portion of the default text
         }
+
+
+
+
+        // Default Control Text to Be Displayed When "Empty".
+        private string DefaultText;
+
+        // Help Better Keep Track of Whether the User's Changed the Text, Because I'm a Moron.
+        public bool IsDefault { get; private set; }
+
+
   
 
         /// <summary> Yoink Default Text From First Text Assignment (Ideally right after being created). </summary>
@@ -1162,15 +1173,6 @@ namespace Dobby {
                 IsDefault = false;
             }
         }
-
-
-
-
-        // Default Control Text to Be Displayed When "Empty".
-        private string DefaultText;
-
-        // Help Better Keep Track of Whether the User's Changed the Text, Because I'm a Moron.
-        public bool IsDefault { get; private set; }
     }
 
 
@@ -1467,7 +1469,8 @@ namespace Dobby {
         private void CycleButtonVariable(object sender, MouseEventArgs eventArgs)
         {
             var type = Variable.GetType();
-            
+            object inc = 1;
+
             if (Variable == null) {
                 Common.Print("CycleButtonVariable(): Control's variable was null, fix your trash.");
                 return;
@@ -1483,7 +1486,7 @@ namespace Dobby {
 
 
             //#
-            //## Booleans
+            //## Booleans (default)
             //#
             if (type == typeof(bool))
             {
@@ -1494,21 +1497,23 @@ namespace Dobby {
                 return;
             }
 
+
             
             //#
             //## Integers
             //#
             if (type == typeof(int) || type == typeof(long))
             {
-                if (MaximumValue == null) {
-                    Variable = (long)Variable + 1;
+                if (MaximumValue == null)
+                {
+                    Variable = (long)Variable + (eventArgs.Button == MouseButtons.Right ? -1 : 1);
                 }
                 else {
                     // avoid going out of bounds in the VariableTags array
                     if (VariableTags.Length < (long)MaximumValue)
                     {
                         MaximumValue = VariableTags.Length;
-                        Common.Print($"ERORR: Maximum value for control Variable was larger than the amount of provided VariableTags; lowered maxValue to [{MaximumValue}]");
+                        Common.Print($"ERROR: Maximum value for control Variable was larger than the amount of provided VariableTags; lowered maxValue to [{MaximumValue}]");
                     }
 
                     if (MaximumValue == Variable) //! this might compare types when they're both objects...

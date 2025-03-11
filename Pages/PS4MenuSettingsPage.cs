@@ -63,11 +63,7 @@ namespace Dobby {
         /// <summary>
         /// 0: UC1100<br/>1: UC1102<br/>2: UC2100<br/>3: UC2102<br/>4: UC3100<br/>5: UC3102<br/>6: UC4100<br/>7: UC4101<br/>8: UC4133<br/>9: UC4133MP<br/>10 TLL100<br/>11 TLL10X<br/>12 T1R100<br/>13 T1R109<br/>14 T1R11X<br/>15 T2100<br/>16 T2107<br/>17 T2109<br/>
         /// </summary>
-#if DEBUG
-        public static int GameIndex;
-#else
-        private int GameIndex;
-#endif
+        private readonly int GameIndex;
 
 
         
@@ -122,7 +118,8 @@ namespace Dobby {
 
 
             // Read the selected executable to determine the game and patch
-            GameIndex = GetGameIndex(Game);
+            var gameName = GetCurrentGame(fileStream);
+            var gameIndex = GetGameIndex(Game);
 
             if (GameIndex == 0xBADBEEF)
             {
@@ -130,14 +127,15 @@ namespace Dobby {
                 UpdateLabel("Unsupported Game Selected", true);
                 return;
             }
-            var gameName = GetCurrentGame(fileStream);
-                
+            #if DEBUG
+            Print($"Game Index: {GameIndex}");
+            #endif
 
             // Update Info Label
             GameInfoLabel.Text = gameName;
 
             // Load the selected executable
-            LoadGameSpecificMenuOptions();
+            LoadGameSpecificMenuOptions(gameIndex);
         }
 
         
@@ -477,7 +475,7 @@ namespace Dobby {
         /// <summary>
         /// Resize Form And Move Buttons, Then Add Enabled Custom Buttons To Form Based On The Current Game And Patch
         /// </summary>
-        public void LoadGameSpecificMenuOptions()
+        public void LoadGameSpecificMenuOptions(int gameIndex)
         {
             // In Case Of Repeat Uses
             int?[] IDS;
@@ -514,7 +512,7 @@ namespace Dobby {
             //! The fuck??
             IDS = new int?[GameSpecificBootSettingsPointers.Length];
             for(int i = 0; i < GameSpecificBootSettingsPointers.Length ; i++)
-                IDS[i] = GameSpecificBootSettingsPointers[i][GameIndex].Length == 0 ? null : (int?)i;
+                IDS[i] = GameSpecificBootSettingsPointers[i][gameIndex].Length == 0 ? null : (int?)i;
 
 
             // Initialize DynamicPatchButtons instance and populate the form with the created buttons
@@ -654,10 +652,12 @@ namespace Dobby {
 
         private void BrowseButton_Click(object sender, EventArgs e)
         {
-            if (ExecutablePathBox.Text == null && Testing.TestEbootPath != null && File.Exists(Testing.TestEbootPath))
+            #if DEBUG
+            if (ExecutablePathBox.IsDefault && Testing.TestEbootPath != null && File.Exists(Testing.TestEbootPath))
             {
                 ExecutablePathBox.Set(Testing.TestEbootPath);
             }
+            #endif
 
             if (ExecutablePathBox.IsDefault)
             {
