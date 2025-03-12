@@ -637,6 +637,7 @@ namespace Dobby {
             }
 
 
+            ExecutablePathBox.ResetControl();
             Game = GameID.Empty;
             MultipleButtonsEnabled = false;
         }
@@ -667,12 +668,13 @@ namespace Dobby {
                 };
 
                 
-                if (fileDialogue.ShowDialog() == DialogResult.OK)
+                if (fileDialogue.ShowDialog() == DialogResult.OK & ((((Control)sender).ForeColor = NDYellow) != Color.Empty))
                 {
                     ExecutablePathBox.Set(fileDialogue.FileName);
                 }
                 else return;
             }
+            Print($"control was not default ({ExecutablePathBox.IsDefault}:{ExecutablePathBox.Text})");
 
 
             LoadGameExecutable(ExecutablePathBox.Text);

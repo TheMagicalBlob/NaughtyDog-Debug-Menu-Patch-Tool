@@ -1150,16 +1150,19 @@ namespace Dobby {
             }
         }
 
-
+        public void ResetControl() => ResetControl(true, null);
         private void ResetControl(object bite, EventArgs me)
         {
-            if(Text.Length < 1 || DefaultText.Contains(Text)) {
+            if(Text.Length < 1 || DefaultText.Contains(Text) || (me == null && (bool)bite)) {
                 Text = DefaultText;
                 IsDefault = true;
 
                 Font = Common.DefaultTextFont;
+                Common.Print("Reset text box");
                 //TextAlign = HorizontalAlignment.Center; // Disabled alignment change until I can figure out the looping logic that results from it (seriously, what the fuck?)
             }
+            else
+                Common.Print("Skipped text box reset");
         }
 
 
