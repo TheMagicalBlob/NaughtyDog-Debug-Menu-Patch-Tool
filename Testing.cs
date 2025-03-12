@@ -361,7 +361,8 @@ namespace Dobby {
                 BackColor = Gaia.BackColor;
                 FormBorderStyle = FormBorderStyle.None;
                 Name = "LogWindow";
-                for (int i = 0; i < DButtons.Length; i++) {
+                for (int i = 0; i < DButtons.Length; i++)
+                {
                     var debugControl = DButtons[i];
                     var debugMethod = Handlers[i];
 

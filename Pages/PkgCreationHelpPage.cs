@@ -265,29 +265,31 @@ namespace Dobby {
         ///--     Page-Specific Functions     --\\\
         //////////////////////\\\\\\\\\\\\\\\\\\\\\
         #region Page-Specific Functions
-        void LoadQuestions(int Index) {
+        void LoadQuestions(int questionIndex) {
 
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PkgCreationHelpPage));
 
-            for(int i = 0; i < Questions.Length; ++i) // Reset The Other Buttons
-                if(i != Index) Questions[i] = false;
+            for(int i = 0; i < Questions.Length; i++) // Reset The Other Buttons
+                if(i != questionIndex)
+                    Questions[i] = false;
 
-            Questions[Index] = !Questions[Index];
+            Questions[questionIndex] = !Questions[questionIndex];
 
-            if(Questions[Index] == false) {
+            if(Questions[questionIndex] == false) {
                 DefaultQuestionIsActive = true;
                 DefaultQuestionBtn.Text = resources.GetString("DefaultQuestionBtn.Text");
                 return;
             }
             else DefaultQuestionIsActive = false;
 
-            DefaultQuestionBtn.Text = Headers[Index] + resources.GetString($"Question{Index}Btn.Text");
+            DefaultQuestionBtn.Text = Headers[questionIndex] + resources.GetString($"Question{questionIndex}Btn.Text");
             PopupLabel.Visible = DefaultQuestionIsActive;
         }
         private void Question1Btn_Click(object sender, EventArgs e) => LoadQuestions(0);
         private void Question2Btn_Click(object sender, EventArgs e) => LoadQuestions(1);
         private void Question3Btn_Click(object sender, EventArgs e) => LoadQuestions(2);
         private void Question4Btn_Click(object sender, EventArgs e) => LoadQuestions(3);
+
 
         private void PopupLabel_Click(object sender, EventArgs e) { }
         private void PopupLabelMH(object sender, EventArgs e) => PopupLabel.ForeColor = Color.Aqua;

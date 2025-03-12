@@ -39,26 +39,29 @@ namespace Dobby {
 
         private FileStream fileStream;
 
-        private  void WriteBytes(int offset, byte[] data) {
+        private  void WriteBytes(int offset, byte[] data)
+        {
             fileStream.Position = offset;
             fileStream.Write(data, 0, data.Length);
             fileStream.Flush();
         }
-        private void WriteBytes(int[] offset, params byte[][] data) {
-            int i = 0;
-            foreach(byte[] bytes in data) {
+        private void WriteBytes(int[] offset, params byte[][] data)
+        {
+            for (int i = 0; i < data.Length; i++) {
+                byte[] bytes = data[i];
                 fileStream.Position = offset[i];
                 fileStream.Write(bytes, 0, data.Length);
                 fileStream.Flush();
-                ++i;
             }
         }
-        private void WriteByte(int offset, byte data) {
+        private void WriteByte(int offset, byte data)
+        {
             fileStream.Position = offset;
             fileStream.WriteByte(data);
             fileStream.Flush();
         }
-        private void WriteByte(int[] offset, byte data) {
+        private void WriteByte(int[] offset, byte data)
+        {
             foreach(int ofs in offset) {
                 fileStream.Position = ofs;
                 fileStream.WriteByte(data);
@@ -1106,8 +1109,8 @@ namespace Dobby {
 
             int i = 0;
             // Write Custom Functions To .elf
-            for(; i < CustomFunctions.Length; ++i)
-                WriteBytes(Addresses[i], CustomFunctions[i]);
+            for(;i < CustomFunctions.Length;)
+                WriteBytes(Addresses[i], CustomFunctions[i++]);
 
             Print($"Wrote {i} Patches To {fileStream.Name}");
         }
@@ -1191,7 +1194,7 @@ namespace Dobby {
 
 
             // Write Custom Functions To .elf
-            for(int i = 0; i < CustomFunctions.Length; ++i)
+            for(int i = 0; i < CustomFunctions.Length; i++)
                 WriteBytes(Addresses[i], CustomFunctions[i]);
 
 

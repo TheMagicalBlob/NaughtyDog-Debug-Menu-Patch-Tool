@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 using static Dobby.Common;
 
@@ -87,7 +88,11 @@ namespace Dobby {
 
 
         private FileStream fileStream;
+
+        private Button ConfirmPatchesBtn;
+        private Button ResetBtn;
         #endregion
+
 
 
 
@@ -96,51 +101,9 @@ namespace Dobby {
         //--|   Background Function Delcarations   |---\\
         //=============================================\\
         #region [Background Function Delcarations]
-
-        private void LoadGameExecutable(string fileName)
-        {
-            if (!File.Exists(fileName))
-            {
-                // Bitch & moan if the provided file doesn't exist
-                UpdateLabel("Invalid Executable Path Provided.", true);
-                return;
-            }
-            if(OriginalFormScale != Size.Empty)
-            {
-                // Reset form before repeat uses
-                ResetCustomDebugOptions();
-            }
-
-
-            // Dispose (if in use) and initialize the file stream
-            fileStream?.Dispose();
-            fileStream = File.Open(fileName, FileMode.Open, FileAccess.ReadWrite);
-
-
-            // Read the selected executable to determine the game and patch
-            var gameName = GetCurrentGame(fileStream);
-            var gameIndex = GetGameIndex(Game);
-
-            if (GameIndex == 0xBADBEEF)
-            {
-                MessageBox.Show("Selected Game Not Currently Supported", $"Patches For {GameInfoLabel.Text} Not Added Yet");
-                UpdateLabel("Unsupported Game Selected", true);
-                return;
-            }
-            #if DEBUG
-            Print($"Game Index: {GameIndex}");
-            #endif
-
-            // Update Info Label
-            GameInfoLabel.Text = gameName;
-
-            // Load the selected executable
-            LoadGameSpecificMenuOptions(gameIndex);
-        }
-
         
-
-
+        public static object[] PeekGameSpecificPatchValues() { return DynamicPatchButtons.GSPatchValues; }
+        
         private void WriteBytes(int? offset = null, byte[] data = null) {
 #if DEBUG
             var msg = $"Data {BitConverter.ToString(data).Replace("-", "")} Written To ";
@@ -173,25 +136,26 @@ namespace Dobby {
 #endif
         }
 
-        private void WriteVar<T>(int offset = -1, object data = null)
+        private void WriteVar<T>(object data)
         {
             var msg = " Written To ";
 
-            if(offset != -1)
-                fileStream.Position = offset;
-
-
             msg += fileStream.Position.ToString("X");
 
-            try { //! this is stupid
+            try {
                 if(typeof(T) == typeof(byte))
                 {
-                    fileStream.WriteByte(BitConverter.GetBytes((byte)data)[0]);
+                    fileStream.WriteByte((byte)data);
                     msg = (byte)data + msg;
+                }
+                if(typeof(T) == typeof(byte[]))
+                {
+                    fileStream.Write((byte[])data, 0, ((byte[])data).Length);
+                    msg = Encoding.UTF8.GetString((byte[])data) + msg;
                 }
                 else if(typeof(T) == typeof(bool))
                 {
-                    fileStream.WriteByte(BitConverter.GetBytes((bool)data)[0]);
+                    fileStream.WriteByte((byte) ((bool)data ? 1 : 0));
                     msg = (bool)data + msg;
                 }
 
@@ -202,33 +166,90 @@ namespace Dobby {
                 }
             }
             catch (Exception) {
-                Print($"Error Writing Var: {data} (Type: {typeof(T)})");
+                Print($"Error Writing Var: {data ?? 0xDEADDAD:X} (Type: {typeof(T)})");
             }
+        }
+
+
+
+
+        /// <summary>
+        /// Load a decrypted/unsigned executable specified by the provided fileName.<br/><br/>
+        /// Determines the current game via an odd hashing process (redo that ffs, why the hell is it 160 bytes??? And why is a sha256 hash being read as a byte array and turned in to a 32 bit integer???)
+        /// </summary>
+        /// <param name="fileName"> The path to the executable being loaded </param>
+        private void LoadGameExecutable(string fileName)
+        {
+            if (!File.Exists(fileName))
+            {
+                // Bitch & moan if the provided file doesn't exist
+                UpdateLabel("Invalid Executable Path Provided.", true);
+                return;
+            }
+            if(OriginalFormScale != Size.Empty)
+            {
+                // Reset form before repeat uses
+                ResetCustomDebugOptions();
+            }
+
+
+            // Dispose (if in use) and initialize the file stream
+            fileStream?.Dispose();
+            fileStream = File.Open(fileName, FileMode.Open, FileAccess.ReadWrite);
+
+
+            // Read the selected executable to determine the game and patch
+            var gameName = GetCurrentGame(fileStream);
+            var gameIndex = GetGamePatchIndex(Game);
+
+            if (gameIndex == 0xBADBEEF)
+            {
+                MessageBox.Show("Selected Game Not Currently Supported", $"Patches For {GameInfoLabel.Text} Not Added Yet");
+                UpdateLabel("Unsupported Game Selected", true);
+                return;
+            }
+            if (gameIndex == 0xDEADDAD)
+            {
+                MessageBox.Show("Unknown Game Provided", $"Game unlikely to be Uncharted or Tlou");
+                UpdateLabel("Unknown Game Selected", true);
+                return;
+            }
+            #if DEBUG
+            Print($"LoadGameExecutable()::gameIndex: {gameIndex}");
+            #endif
+
+
+            // Update Info Label
+            GameInfoLabel.Text = gameName;
+
+            // Load the selected executable
+            LoadGameSpecificMenuOptions(gameIndex);
         }
 
         
         
-        private string ApplyMenuSettings(int GameIndex)
+        
+        private string ApplyMenuSettings(int gameIndex)
         {
             var Message = string.Empty;
 
               try {
                 using(fileStream) {
-                    if(UniversalPatchValues.Length != UniversalBootSettingsPointers.Length || DynamicPatchButtons.GameSpecificPatchValues.Length != GameSpecificBootSettingsPointers.Length)
+                    if(UniversalPatchValues.Length != UniversalBootSettingsPointers.Length || DynamicPatchButtons.GSPatchValues.Length != GameSpecificBootSettingsPointers.Length)
                     {
-                        Print($"Mismatch In Array Value vs pointer Length:\n  Universal:\n  Vars: {UniversalPatchValues.Length}\n  Pointers: {UniversalBootSettingsPointers.Length}\nDynamic:\n  Vars: {DynamicPatchButtons.GameSpecificPatchValues.Length}\n  Pointers: {GameSpecificBootSettingsPointers.Length}");
+                        Print($"Mismatch In Array Value vs pointer Length:\n  Universal:\n  Vars: {UniversalPatchValues.Length}\n  Pointers: {UniversalBootSettingsPointers.Length}\nDynamic:\n  Vars: {DynamicPatchButtons.GSPatchValues.Length}\n  Pointers: {GameSpecificBootSettingsPointers.Length}");
                     }
 
-                    else if(BootSettingsCallAddress[GameIndex] == 0 || BootSettingsFunctionAddress[GameIndex] == 0) {
-                        MessageBox.Show($"Game #{GameIndex} Has Is Missing An Address For BootSettings (Function Call: {BootSettingsCallAddress[GameIndex]} / Function Data: {BootSettingsFunctionAddress[GameIndex]})");
+                    else if(BootSettingsCallAddress[gameIndex] == 0 || BootSettingsFunctionAddress[gameIndex] == 0) {
+                        MessageBox.Show($"Game #{gameIndex} Has Is Missing An Address For BootSettings (Function Call: {BootSettingsCallAddress[gameIndex]} / Function Data: {BootSettingsFunctionAddress[gameIndex]})");
                         return "error";
                     }
 
                     // Write Function Call To Call BootSettings
-                    WriteBytes(BootSettingsCallAddress[GameIndex], GetBootSettingsFunctionCall(Game));
+                    WriteBytes(BootSettingsCallAddress[gameIndex], GetBootSettingsFunctionCall(Game));
 
                     // Write BootSettings Function's Assembly To Game Executable
-                    WriteBytes(BootSettingsFunctionAddress[GameIndex], GetBootSettingsBytes(GameIndex));
+                    WriteBytes(BootSettingsFunctionAddress[gameIndex], GetBootSettingsBytes(gameIndex));
 
                     byte pointerTypeIdentifier = 0x42;
                     byte[] patchData;
@@ -238,7 +259,7 @@ namespace Dobby {
                     // Apply Universal Options
                     for(var index = 0; index < UniversalPatchValues.Length; index++)
                     {
-                        patchData = UniversalBootSettingsPointers[index][GameIndex];
+                        patchData = UniversalBootSettingsPointers[index][gameIndex];
 
                         if (UniversalPatchValues[index] == DefaultUniveralPatchValues[index])
                         {
@@ -273,12 +294,12 @@ namespace Dobby {
 
 
                     // Apply Game-Specific Options
-                    for(var i = 0; i < DynamicPatchButtons.GameSpecificPatchValues.Length; i++ )
+                    for(var i = 0; i < DynamicPatchButtons.GSPatchValues.Length; i++ )
                     {
-                        patchValue = DynamicPatchButtons.GameSpecificPatchValues[i];
-                        patchData = GameSpecificBootSettingsPointers[i][GameIndex]; //! wait, what? this seems like a mistake
+                        patchValue = DynamicPatchButtons.GSPatchValues[i];
+                        patchData = GameSpecificBootSettingsPointers[i][gameIndex]; //! wait, what? this seems like a mistake
 
-                        if (patchValue.Equals(DynamicPatchButtons.DefaultGameSpecificPatchValues[i]))
+                        if (patchValue.Equals(DynamicPatchButtons.DefaultGSPatchValues[i]))
                         {
                             Print("Skipping Unchanged Patch Value...");
                             continue;
@@ -299,16 +320,16 @@ namespace Dobby {
 
 
                         // Write the identifier for Pointers vs hard Addresses
-                        WriteVar<byte>(data: pointerTypeIdentifier);
+                        WriteVar<byte>(pointerTypeIdentifier);
 
                         // The fuck was this about??
-                        WriteVar<byte>(data: (byte)(patchValue.GetType() == typeof(byte) || patchValue.GetType() == typeof(bool) ? 0 : 1));
+                        WriteVar<byte>((byte)(patchValue.GetType() == typeof(byte) || patchValue.GetType() == typeof(bool) ? 0 : 1));
 
                         // Write path pointer/address
-                        WriteVar<byte[]>(data: patchData);
+                        WriteVar<byte[]>(patchData);
 
                         // Write the patch data itself
-                        WriteVar<byte[]>(data: patchValue);
+                        WriteVar<byte[]>(patchValue);
 
                         patchCount++;
                         Print();
@@ -330,18 +351,11 @@ namespace Dobby {
             return (Message == string.Empty ? null : Message);
         }
 
-        
-        public static object[] PeekGameSpecificPatchValues() { return DynamicPatchButtons.GameSpecificPatchValues; }
-
-        private void ToggleButtonAndUniVar(Button control, bool scrolled, int optionIndex)
-        {
-            if (scrolled || !MouseIsDown || CurrentControl != control.Name)
-                return;
-            
-            control.Variable = UniversalPatchValues[optionIndex] ^= true;
-        }
 
 
+
+        ///<summary>
+        ///</summary>
         /// <param name="GameIndex"> Index Of The Selected Game, Excluding Versions I Don't Plan To Suppport </param>
         /// <returns> A byte[] containing the constructed bootsettings function data </returns>
         private static byte[] GetBootSettingsBytes(int GameIndex) {
@@ -389,11 +403,14 @@ namespace Dobby {
         }
 
 
-        /// <summary> Get The MenuSettingsPage-Specific GameIndex Used For... Well, Take A Fking Guess.<br/><br/>Does Not Include Game Versions I Don't Indend To Support, Just Oldest And Latest<br/>(Plus A Couple Still Commonly Used In-Between Ones) </summary>
-        private int GetGameIndex(GameID Game) {
+        /// <summary>
+        /// Get The MenuSettingsPage-Specific GameIndex Used For... Well, Take A Fking Guess.<br/><br/>Does Not Include Game Versions I Don't Indend To Support, Just Oldest And Latest
+        /// <br/>(Plus A Couple Still Commonly Used In-Between Ones)
+        /// </summary>
+        private int GetGamePatchIndex(GameID Game) {
             switch(Game) {
                 default:
-                    return 999999999;
+                    return 0xDEADDAD;
 
                 case GameID.UC1100:
                 case GameID.UC1102:
@@ -436,9 +453,11 @@ namespace Dobby {
 
 
         /// <summary>
-        /// Returns The Data For The Custom Function Used To Call BootSettings To Write Over The Quick Menu Function Call<br/>
-        /// (Redirected Quick Menu Function Call Prepends BootSettings' Code)
+        /// Get the data required to call the custom BootSettings function, generally redirecting the Quick Menu function call
         /// </summary>
+        /// <returns>
+        /// A byte array containing the function call to write at the address provided by 
+        /// </returns>
         private static byte[] GetBootSettingsFunctionCall(GameID GameID) {
             switch(GameID) {
                 case GameID.UC1100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
@@ -499,17 +518,18 @@ namespace Dobby {
                 OriginalFormScale = Size;
                 OriginalControlPositions = new Point[ControlsToMove.Length];
 
+
                 // Save the original Y-Axis positions of the controls being moved down to fit the custom controls
                 for(var i = 0; i < ControlsToMove.Length;)
                     OriginalControlPositions[i] = ControlsToMove[i++].Location;
             }
 
 
-            ResetButtonStartPosition = GameInfoLabel.Location.Y + GameInfoLabel.Size.Height + 1; // Right Below The GameInfoLabel
+            ResetButtonStartPosition = (GameInfoLabel.Location.Y + GameInfoLabel.Size.Height) + 1; // Right Below The GameInfoLabel
             CustomDebugOptionsLabel.Visible = false;
 
 
-            //! The fuck??
+            //! Determine which patches have data associated with them, I think?
             IDS = new int?[GameSpecificBootSettingsPointers.Length];
             for(int i = 0; i < GameSpecificBootSettingsPointers.Length ; i++)
                 IDS[i] = GameSpecificBootSettingsPointers[i][gameIndex].Length == 0 ? null : (int?)i;
@@ -525,15 +545,15 @@ namespace Dobby {
             // Only Needed If Multiple Buttons Are Being Added, As The Form Can Already Fit One More After hiding The Label
             if(MultipleButtonsEnabled)
             {
-                foreach(Control control in gsButtons.Buttons) {
-                    if(control != null)
-                    {
-                        // Move Each Control, Then Resize The BorderBox & Form
-                        foreach(Control A in ControlsToMove)
-                            A.Location = new Point(A.Location.X, A.Location.Y + 23);
+                for (int i = gsButtons.Buttons.Length - 1; i >= 0; i--)
+                {
+                    var button = gsButtons.Buttons[i];
+                    if (button == null)
+                        continue;
 
-                        Size = new Size(Size.Width, Size.Height + 20);
-                    }
+                    // Move Each Control, Then Resize The BorderBox & Form
+                    Array.ForEach(ControlsToMove, control => { control.Location = new Point(control.Location.X, (control.Location.Y + 20)); Size = new Size(Size.Width, Size.Height + 20); });
+                    break;
                 }
             }
 
@@ -542,7 +562,7 @@ namespace Dobby {
             //Size = new Size(Size.Width, Size.Height + 46);
 
             // Move The Controls Below The Confirm And Reset Buttons A Bit Farther Down To Make Room For Them
-            for(int i = 4; i < ControlsToMove.Length; ++i)
+            for(int i = 4; i < ControlsToMove.Length; i++)
                 ControlsToMove[i].Location = new Point(ControlsToMove[i].Location.X, ControlsToMove[i].Location.Y + 46);
 
 
@@ -591,6 +611,10 @@ namespace Dobby {
         }
 
 
+
+        /// <summary>
+        /// 
+        /// </summary>
         private void ResetCustomDebugOptions(object _ = null, EventArgs __ = null)
         {
             if (Game == GameID.Empty) {
@@ -613,7 +637,7 @@ namespace Dobby {
             gsButtons.Reset();
 
             // Move Controls Back To Their Original Positions
-            for(var i = 0; (++i) < ControlsToMove.Length; ControlsToMove[i].Location = OriginalControlPositions[i]);
+            for(var i = 0; i < ControlsToMove.Length; ControlsToMove[i].Location = OriginalControlPositions[i++]);
 
 
 
@@ -624,8 +648,8 @@ namespace Dobby {
                 {
                     ActiveForm?.Controls.Find("ResetBtn", true)[0]?.Dispose();
                     ActiveForm?.Controls.Find("ConfirmPatchesBtn", true)[0]?.Dispose();
-                    ActiveForm.Controls.Find("CustomDebugOptionsLabel", true)[0].Visible = true;
-                    ActiveForm.Controls.Find("ExecutablePathBox", true)[0].Text = " Select A .elf To Patch";
+                    CustomDebugOptionsLabel.Visible = true;
+                    ExecutablePathBox.Text = " Select A .elf To Patch";
                 }
             }
             catch (IndexOutOfRangeException) {
@@ -645,11 +669,22 @@ namespace Dobby {
 
 
 
+
         
         //======================================\\
         //--|   Event Handler Declarations   |--\\
         //======================================\\
         #region [Event Handler Declarations]
+        
+        private void DebugButtonCycleBtn_Click(object sender, EventArgs e)
+        {
+            if (gsButtons == null)
+            {
+                gsButtons = new DynamicPatchButtons(new int?[] { 0, 1, 2, 3, 4 }, GameSpecificPatchesLabel.Location.Y + GameSpecificPatchesLabel.Size.Height);
+            }
+        }
+
+
 
         private void BrowseButton_Click(object sender, EventArgs e)
         {
@@ -683,7 +718,7 @@ namespace Dobby {
 
         private void ConfirmBtn_Click(object sender, EventArgs e)
         {
-            var result = ApplyMenuSettings(GetGameIndex(Game));
+            var result = ApplyMenuSettings(GetGamePatchIndex(Game));
             if(result == "error")
             {
                 MessageBox.Show($"An Unexpected Error Occured While Applying The Patches, Please Ensure You're Running The Latest Release Build\nIf You Are, Report It To The Moron Typing Out This Error Message", "Internal Error Applying Patch Data");
@@ -711,13 +746,6 @@ namespace Dobby {
             else
                 BrowseButton.Text = "Browse...";
         }
-
-
-        private void DisableDebugTextBtn_Click(object sender, MouseEventArgs e) => ToggleButtonAndUniVar((Button)sender, e.Delta != 0, 0);
-        private void PausedIconBtn_Click(object sender, MouseEventArgs e) => ToggleButtonAndUniVar((Button)sender, e.Delta != 0, 1);
-        private void ProgPauseOnOpenBtn_Click(object sender, MouseEventArgs e) => ToggleButtonAndUniVar((Button)sender, e.Delta != 0, 2);
-        private void ProgPauseOnCloseBtn_Click(object sender, MouseEventArgs e) => ToggleButtonAndUniVar((Button)sender, e.Delta != 0, 3);
-        private void DisableAllVisibilityBtn_Click(object sender, MouseEventArgs e) => ToggleButtonAndUniVar((Button)sender, e.Delta != 0, 4);
         #endregion
 
 
@@ -1165,20 +1193,25 @@ namespace Dobby {
         ;
 
 
+
         #endregion
 
         /// <summary>
         /// Class For Creating Dynamic Patch Buttons
         /// </summary>
         internal class DynamicPatchButtons {
-            public DynamicPatchButtons(int?[] Ids, int VerticalStartIndex = 0) {
-                Buttons = new Button[ControlText.Length + 1];
+            public DynamicPatchButtons(int?[] Ids, int VerticalStartIndex)
+            {
+                Buttons = new Button[GSButtonsText.Length];
                 ButtonsVerticalStartPos = VerticalStartIndex;
 
-                if(Ids != null && Ids.Length < 2)
-                    EnableDynamicPatchButton((int)Ids[0]);
-                else
-                    EnableDynamicPatchButtons(Ids);
+                for(int i = 0; i < Ids.Length; i++) {
+                    if(Ids != null && Ids[i] == null)
+                        continue;
+
+                    Buttons[i] = new Button();
+                }
+                MultipleButtonsEnabled = true;
             }
 
 
@@ -1191,7 +1224,7 @@ namespace Dobby {
             /// <summary>
             /// 0: Menu Alpha<br/> 1: Menu Scale <br/> 2: Non-ADS FOV <br/> 3: Main Camera X-Alignment <br/> 4: Swap Square And Circle In Debug <br/> 5: Menu Shadowed Text <br/> 6: Align Menus Right <br/> 7: Right Margin <br/>
             /// </summary>
-            internal static object[] GameSpecificPatchValues { get; private set; } = new object[] {
+            internal static object[] GSPatchValues { get; private set; } = new object[] {
                 0.85f,
                 0.60f,
                 1f,
@@ -1201,27 +1234,13 @@ namespace Dobby {
                 false,
                 (byte)10
             };
+            internal static readonly object[] DefaultGSPatchValues = GSPatchValues;
 
-            internal static readonly object[] DefaultGameSpecificPatchValues = new object[] {
-                0.85f,
-                0.60f,
-                1f,
-                1f,
-                false,
-                false,
-                false,
-                (byte)10
-            };
 
             /// <summary>
             /// Variable Used In Dynamic Button Cration For Game-Specific Patches
             /// </summary>
-#if DEBUG
-            public
-#else
-            private
-#endif
-            static readonly string[] Name = new string[] {
+            private static readonly string[] GSButtonNames = new string[] {
                     "MenuAlphaBtn",
                     "MenuScaleBtn",
                     "FOVBtn",
@@ -1232,7 +1251,7 @@ namespace Dobby {
                     "RightMarginBtn"
             };
 
-            private static readonly string[] ControlText = new string[] {
+            private static readonly string[] GSButtonsText = new string[] {
                     "Set DMenu BG Opacity:",             // default=0.85
                     "Set Dev Menu Scale:",               // default=0.60
                     "Adjust Non-ADS FOV:",               // default=1.00
@@ -1243,7 +1262,7 @@ namespace Dobby {
                     "Set Distance From Right Side:"      // default=10
             };
 
-            private static readonly string[] Hint = new string[] {
+            private static readonly string[] GSButtonHints = new string[] {
                     "Adjusts The Visibilty of The Debug Menu Backgrounds",
                     "Adjusts The Debug Menu Scaling",
                     "Only Effects The Camera While Not Aiming",
@@ -1265,6 +1284,8 @@ namespace Dobby {
             /// 7: RightMarginBtn
             /// </summary>
             public Button[] Buttons; // Initialized Once An Executable's Selected
+
+
             private int ButtonsVerticalStartPos;
             #endregion
 
@@ -1276,31 +1297,15 @@ namespace Dobby {
             //====================================================\\
             #region [DynamicPatchButton Function Declarations]
 
-            /// <summary> Enable A Specific Button
-            ///</summary>
-            public void EnableDynamicPatchButton(int button) => Buttons[button] = new Button();
 
-            /// <summary> Enable Specific Buttons
-            ///</summary>
-            public void EnableDynamicPatchButtons(int?[] buttons = null) {
-
-                for(int i = 0; i < buttons.Length; ++i) {
-                    if(buttons != null && buttons[i] == null)
-                        continue;
-
-                    Buttons[i] = new Button();
-                }
-                MultipleButtonsEnabled = true;
-            }
-
-            /// <summary> Nuke Dynamic Patch Buttons And Reset Option Variables
+            /// <summary> Remove and dispose of dynamic patch buttons and reset options to default
             ///</summary>
             public void Reset() {
                 foreach(Button button in Buttons)
                     button?.Dispose();
 
                 Buttons = null;
-                GameSpecificPatchValues = DefaultGameSpecificPatchValues;
+                GSPatchValues = DefaultGSPatchValues;
             }
 
 
@@ -1317,9 +1322,9 @@ namespace Dobby {
                     }
 
                     // Create The Button
-                    Buttons[buttonIndex].Name = Name[buttonIndex];
+                    Buttons[buttonIndex].Name = GSButtonNames[buttonIndex];
                     Buttons[buttonIndex].TabIndex = buttonIndex;
-                    Buttons[buttonIndex].Variable = GameSpecificPatchValues[buttonIndex];
+                    Buttons[buttonIndex].Variable = GSPatchValues[buttonIndex];
                     Buttons[buttonIndex].TextAlign = ContentAlignment.MiddleLeft;
                     Buttons[buttonIndex].FlatAppearance.BorderSize = 0;
                     Buttons[buttonIndex].FlatStyle = FlatStyle.Flat;
@@ -1330,7 +1335,7 @@ namespace Dobby {
                     Buttons[buttonIndex].Location = new Point(1, ButtonsVerticalStartPos);
                     Buttons[buttonIndex].Size = new Size(ActiveForm.Width - 2, 23);
                     Buttons[buttonIndex].Font = ControlFont;
-                    Buttons[buttonIndex].Text = ControlText[buttonIndex];
+                    Buttons[buttonIndex].Text = GSButtonsText[buttonIndex];
 
                     Buttons[buttonIndex].MouseDown += MouseDownFunc;
                     Buttons[buttonIndex].MouseUp += MouseUpFunc;
@@ -1363,8 +1368,8 @@ namespace Dobby {
                 if(MouseScrolled || !MouseIsDown || CurrentControl != Control.Name)
                     return;
 
-                GameSpecificPatchValues[ButtonIndex] = !(bool)GameSpecificPatchValues[ButtonIndex];
-                Control.Variable = GameSpecificPatchValues[ButtonIndex];
+                GSPatchValues[ButtonIndex] = !(bool)GSPatchValues[ButtonIndex];
+                Control.Variable = GSPatchValues[ButtonIndex];
                 Control.Refresh();
             }
 
@@ -1380,41 +1385,41 @@ namespace Dobby {
 
 
 
-                GameSpecificPatchValues[ButtonIndex] = (float)Math.Round((float)(GameSpecificPatchValues[ButtonIndex] = (float)GameSpecificPatchValues[ButtonIndex] + inc), 4);
+                GSPatchValues[ButtonIndex] = (float)Math.Round((float)(GSPatchValues[ButtonIndex] = (float)GSPatchValues[ButtonIndex] + inc), 4);
 
-                Control.Variable = GameSpecificPatchValues[ButtonIndex];
+                Control.Variable = GSPatchValues[ButtonIndex];
                 Control.Refresh();
             }
             private void FloatScrollFunc(Button Control, int ButtonIndex, int WheelDelta) {
                 if(CurrentControl != Control.Name) return;
-                var currentFloat = (float)GameSpecificPatchValues[ButtonIndex]; // Avoid CS0445
+                var currentFloat = (float)GSPatchValues[ButtonIndex]; // Avoid CS0445
 
-                GameSpecificPatchValues[ButtonIndex] = (float)Math.Round(currentFloat += WheelDelta / 12000.0F, 4);
-                Control.Variable = GameSpecificPatchValues[ButtonIndex];
+                GSPatchValues[ButtonIndex] = (float)Math.Round(currentFloat += WheelDelta / 12000.0F, 4);
+                Control.Variable = GSPatchValues[ButtonIndex];
                 Control.Refresh();
             }
 
 
             private void IntClickFunc(Button Control, int ButtonIndex, MouseButtons Button) {
                 if(CurrentControl != Control.Name) return;
-                var currentInt = (byte)GameSpecificPatchValues[ButtonIndex]; // Avoid CS0445
+                var currentInt = (byte)GSPatchValues[ButtonIndex]; // Avoid CS0445
 
                 if(Button == MouseButtons.Left) currentInt += 5;
                 else currentInt -= 5;
 
-                GameSpecificPatchValues[ButtonIndex] = currentInt;
+                GSPatchValues[ButtonIndex] = currentInt;
              
-                Control.Variable = GameSpecificPatchValues[ButtonIndex];
+                Control.Variable = GSPatchValues[ButtonIndex];
                 Control.Refresh();
             }
             private void IntScrollFunc(Button Control, int ButtonIndex, int WheelDelta) {
                 if(CurrentControl != Control.Name) return;
-                var currentInt = (byte)GameSpecificPatchValues[ButtonIndex]; // Avoid CS0445
+                var currentInt = (byte)GSPatchValues[ButtonIndex]; // Avoid CS0445
 
                 currentInt += (byte)(WheelDelta / 120);
-                GameSpecificPatchValues[ButtonIndex] = currentInt;
+                GSPatchValues[ButtonIndex] = currentInt;
 
-                Control.Variable = GameSpecificPatchValues[ButtonIndex];
+                Control.Variable = GSPatchValues[ButtonIndex];
                 Control.Refresh();
             }
 

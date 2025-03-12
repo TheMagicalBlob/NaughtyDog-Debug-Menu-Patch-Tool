@@ -240,23 +240,24 @@ namespace Dobby {
         /// <returns></returns>
         public static string GetCurrentGame(FileStream stream)
         {
-            var LocalExecutableCheck = new byte[160];
+            byte[] LocalExecutableCheck;
 
+
+            // Ensure the provided executable has been unsigned (check for ".elf" file magic)
             stream.Position = 0;
-            stream.Read(LocalExecutableCheck, 0, 4);
+            stream.Read(LocalExecutableCheck = new byte[4], 0, 4);
 
             if (BitConverter.ToInt32(LocalExecutableCheck, 0) != 1179403647)
                 MessageBox.Show($"Executable Still Encrypted (self) | Must Be Decrypted/Unsigned");
 
 
-
+            // Read a string of data at a specific address to determine the current game (why is it 160 bytes??? I thought it was a 32-bit integer)
             stream.Position = 0x5100;
-            stream.Read(LocalExecutableCheck, 0, 160);
-
-            Game = (GameID) BitConverter.ToInt32(SHA256.Create().ComputeHash(LocalExecutableCheck), 0);
+            stream.Read(LocalExecutableCheck = new byte[160], 0, 160);
 
 
-            switch (Game) {
+            switch (Game = (GameID) BitConverter.ToInt32(SHA256.Create().ComputeHash(LocalExecutableCheck), 0))
+            {
                 case GameID.UC1100: return "Uncharted 1 1.00";
                 case GameID.UC1102: return "Uncharted 1 1.02";
                 case GameID.UC2100: return "Uncharted 2 1.00";

@@ -294,6 +294,7 @@
           "* 4.61.362.925 | Misc CycleButtonVariable and DrawButtonVariable method testing & fixes. TODO: Fix the double variable toggling on the misc patches page after editing the variable of a different control",
           "* 4.61.365.933 | Reworking the PS4MiscPatchesPage- other miscellaneous crap I've since forgotten",
           "* 4.61.366.934 | Small (and lazy) fix to allow manual text box resetting (I ate a pizza for breakfast, my brain is on low power mode now...)",
+          "* 4.61.367.938 | ",
         };
 
 

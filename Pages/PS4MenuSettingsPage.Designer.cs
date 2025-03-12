@@ -46,6 +46,7 @@ namespace Dobby
             this.SeperatorLine2 = new System.Windows.Forms.Label();
             this.GameInfoLabel = new System.Windows.Forms.Label();
             this.NovisBtn = new Dobby.Button();
+            this.DebugButtonCycleBtn = new Dobby.Button();
             this.SuspendLayout();
             // 
             // ProgPauseOnCloseBtn
@@ -332,12 +333,32 @@ namespace Dobby
             this.NovisBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.NovisBtn.UseVisualStyleBackColor = false;
             // 
+            // DebugButtonCycleBtn
+            // 
+            this.DebugButtonCycleBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.DebugButtonCycleBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.DebugButtonCycleBtn.FlatAppearance.BorderSize = 0;
+            this.DebugButtonCycleBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DebugButtonCycleBtn.Font = new System.Drawing.Font("Cambria", 8.5F, System.Drawing.FontStyle.Bold);
+            this.DebugButtonCycleBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.DebugButtonCycleBtn.Location = new System.Drawing.Point(7, 27);
+            this.DebugButtonCycleBtn.MaximumValue = null;
+            this.DebugButtonCycleBtn.MinimumValue = null;
+            this.DebugButtonCycleBtn.Name = "DebugButtonCycleBtn";
+            this.DebugButtonCycleBtn.Size = new System.Drawing.Size(18, 19);
+            this.DebugButtonCycleBtn.TabIndex = 55;
+            this.DebugButtonCycleBtn.Text = "C";
+            this.DebugButtonCycleBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.DebugButtonCycleBtn.UseVisualStyleBackColor = false;
+            this.DebugButtonCycleBtn.Click += new System.EventHandler(this.DebugButtonCycleBtn_Click);
+            // 
             // PS4MenuSettingsPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ClientSize = new System.Drawing.Size(320, 387);
+            this.Controls.Add(this.DebugButtonCycleBtn);
             this.Controls.Add(this.NovisBtn);
             this.Controls.Add(this.ProgPauseOnCloseBtn);
             this.Controls.Add(this.CustomDebugOptionsLabel);
@@ -392,6 +413,8 @@ namespace Dobby
         private Label GameInfoLabel;
         private Label MainLabel;
         private Label Info;
-#endregion
+        #endregion
+
+        private Button DebugButtonCycleBtn;
     }
 }
