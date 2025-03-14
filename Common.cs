@@ -188,6 +188,7 @@ namespace Dobby {
         //========================================\\
         #region [Global Function Declarations]
 
+
         //#
         //## Unsorted
         //#
@@ -1485,7 +1486,7 @@ namespace Dobby {
             }
             
             #if DEBUG
-            Common.Print($"Cycling [{type}] Variable");
+            Common.Print($"Cycling [{type}] Variable (Initial Value: {Variable ?? "null"})\r");
             #endif
 
 
@@ -1547,6 +1548,10 @@ namespace Dobby {
                         Variable = MinimumValue ?? 10;
                 }
             }
+
+            #if DEBUG
+            Common.Print(new string(' ', 65) + $" => [{Variable ?? "null"}]");
+            #endif
         }
     }
     #endregion [Class Extensions]

@@ -149,23 +149,32 @@ namespace Dobby {
         /// Default message output function. Prints to the debug window if present, as well as the standard output
         /// </summary>
         /// <param name="obj"> An object to print the string representation of. </param>
-        public static void Print(object obj = null) {
-            string str;
+        public static void Print(object obj)
+        {
+            var str = obj?.ToString() ?? " ";
+
+            void write(string _str) {
+                System.Diagnostics.Debug.Write(_str);
+
+                if (!Console.IsInputRedirected) {
+                    Console.Write(_str);
+                }
+            }
 
             // Some formatting stuff
-            if(obj == null || obj.ToString().Length < 1)
+            if(str.Length < 1)
+            {
                 str = " ";
-            else
+            }
+            else {
                 str = obj.ToString();
 
-            if(str.Contains("\n"))
-                str = str.Replace("\n", "\n "); // So It Still Has A Size (for log window scaling purposes)
-            //^
+                if(!str.Contains("\r"))
+                    str += "\n";
+            }
 
 
-            System.Diagnostics.Debug.WriteLine(str);
-            if (!Console.IsInputRedirected)
-                Console.WriteLine(str);
+            write(str);
         }
 
 
@@ -333,6 +342,12 @@ namespace Dobby {
                         Font = DButtonFont,
                         Text = "Theme tst",
                         Name = "DebugControl"
+                    },
+                    new Button {
+                        ForeColor = SystemColors.Control,
+                        Font = DButtonFont,
+                        Text = "GS_Btn tst",
+                        Name = "DebugControl"
                     }
                 };
 
@@ -351,7 +366,8 @@ namespace Dobby {
                         Environment.Exit(1);
                     }),
                     new EventHandler((control, args) => UpdateLabel(string.Empty)),
-                    new EventHandler((control, args) => HighlightColour = Color.FromArgb(255, 0, 255))
+                    new EventHandler((control, args) => HighlightColour = Color.FromArgb(255, 0, 255)),
+                    new EventHandler((control, args) => Dev.ActivePage.TestGSButtons())
                 };
 
 

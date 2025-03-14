@@ -26,7 +26,7 @@ namespace Dobby {
                 ProgPauseOnCloseBtn.Variable = UniversalPatchValues[3];
                 NovisBtn.Variable = UniversalPatchValues[4];
 
-
+                DynamicButtonsState = 0;
 
                 if(Game != 0 && gsButtons?.Buttons != null)
                     ResetCustomDebugOptions();
@@ -56,11 +56,12 @@ namespace Dobby {
 
         /// <summary>
         /// Variable Used When Adjusting Form Scale And Control Positions
-        ///</summary>
+        /// </summary>
         private static int ResetButtonStartPosition;
 
-        private static bool MultipleButtonsEnabled;
 
+        private static int DynamicButtonsState;
+        
         /// <summary>
         /// 0: UC1100<br/>1: UC1102<br/>2: UC2100<br/>3: UC2102<br/>4: UC3100<br/>5: UC3102<br/>6: UC4100<br/>7: UC4101<br/>8: UC4133<br/>9: UC4133MP<br/>10 TLL100<br/>11 TLL10X<br/>12 T1R100<br/>13 T1R109<br/>14 T1R11X<br/>15 T2100<br/>16 T2107<br/>17 T2109<br/>
         /// </summary>
@@ -171,6 +172,15 @@ namespace Dobby {
         }
 
 
+        
+        private void TestGSButtons(object sender, EventArgs e)
+        {
+            if (gsButtons == null)
+            {
+                //gsButtons = new DynamicPatchButtons(new int?[] { 0, 1, 2, 3, 4 }, GameSpecificPatchesLabel.Location.Y + GameSpecificPatchesLabel.Size.Height);
+            }
+        }
+
 
 
         /// <summary>
@@ -248,8 +258,8 @@ namespace Dobby {
                     // Write Function Call To Call BootSettings
                     WriteBytes(BootSettingsCallAddress[gameIndex], GetBootSettingsFunctionCall(Game));
 
-                    // Write BootSettings Function's Assembly To Game Executable
-                    WriteBytes(BootSettingsFunctionAddress[gameIndex], GetBootSettingsBytes(gameIndex));
+                    // Write BootSettings Function's Assembly constructed in GetBootSettingsMethodData(gameIndex)
+                    WriteBytes(BootSettingsFunctionAddress[gameIndex], GetBootSettingsMethodData(gameIndex));
 
                     byte pointerTypeIdentifier = 0x42;
                     byte[] patchData;
@@ -358,10 +368,10 @@ namespace Dobby {
         ///</summary>
         /// <param name="GameIndex"> Index Of The Selected Game, Excluding Versions I Don't Plan To Suppport </param>
         /// <returns> A byte[] containing the constructed bootsettings function data </returns>
-        private static byte[] GetBootSettingsBytes(int GameIndex) {
+        private static byte[] GetBootSettingsMethodData(int GameIndex) {
 
             // new byte { (Quick Menu Function Call), (Ptr to Base Addr) }
-            byte[][] BootSettingsBaseAddressPointers = new byte[][] {
+            var BootSettingsBaseAddressPointers = new byte[][] {
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC1 1.00 //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC1 1.02 //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC2 1.00 //!
@@ -374,30 +384,33 @@ namespace Dobby {
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC4 1.33 MP //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // TLL 1.00 //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // TLL 1.09 //!
-                new byte [] { 0xe8, 0x6b, 0x32, 0x04, 0x00, 0x53, 0x48, 0x8d, 0x05, 0x33, 0x28, 0xfe, 0xff }, // T1R 1.00 //!
+                new byte [] { 0xe8, 0x6b, 0x32, 0x04, 0x00, 0x53, 0x48, 0x8d, 0x05, 0x33, 0x28, 0xfe, 0xff }, // T1R 1.00 //! TEST ME
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.09 //!
                 new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.11 //!
-                new byte [] { 0xe8, 0x8b, 0x9c, 0x3d, 0x00, 0x53, 0x48, 0x8d, 0x05, 0xc3, 0x8c, 0xff, 0xff }, // T2 1.00  //!
+                new byte [] { 0xe8, 0x8b, 0x9c, 0x3d, 0x00, 0x53, 0x48, 0x8d, 0x05, 0xc3, 0x8c, 0xff, 0xff }, // T2 1.00  //! TEST ME
                 new byte [] { 0xe8, 0xcb, 0xd0, 0x3d, 0x00, 0x53, 0x48, 0x8d, 0x05, 0xc3, 0x8c, 0xff, 0xff }, // T2 1.07
                 new byte [] { 0xe8, 0x9b, 0x45, 0x82, 0x00, 0x53, 0x48, 0x8d, 0x05, 0x03, 0xea, 0xff, 0xff }  // T2 1.09
             };
 
             byte[] 
-                BootSettingsFunction = new byte[] { 0x48, 0x8d, 0x0d, 0x64, 0x00, 0x00, 0x00, 0x80, 0x3c, 0x21, 0xfe, 0x75, 0x22, 0x8b, 0x54, 0x21, 0x02, 0x01, 0xc2, 0x80, 0x79, 0x01, 0x00, 0x75, 0x0b, 0x8a, 0x59, 0x06, 0x88, 0x1a, 0x48, 0x83, 0xc1, 0x07, 0xeb, 0xe3, 0x8b, 0x59, 0x06, 0x89, 0x1a, 0x48, 0x83, 0xc1, 0x0a, 0xeb, 0xd8, 0x80, 0x39, 0xff, 0x75, 0x35, 0x8b, 0x94, 0x21, 0x02, 0x00, 0x00, 0x00, 0x01, 0xc2, 0x48, 0x8d, 0x14, 0x22, 0x48, 0x8b, 0x12, 0x8b, 0x5c, 0x21, 0x06, 0x48, 0x01, 0xda, 0x80, 0x79, 0x01, 0x00, 0x75, 0x0c, 0x8a, 0x59, 0x0a, 0x40, 0x88, 0x1a, 0x48, 0x83, 0xc1, 0x0b, 0xeb, 0xaa, 0x8b, 0x59, 0x0a, 0x48, 0x89, 0x1a, 0x48, 0x83, 0xc1, 0x0e, 0xeb, 0x9e, 0x5b, 0xc3 }
-               ,BootSettingsData
+                BootSettingsFunction = new byte[] { 0x48, 0x8d, 0x0d, 0x64, 0x00, 0x00, 0x00, 0x80, 0x3c, 0x21, 0xfe, 0x75, 0x22, 0x8b, 0x54, 0x21, 0x02, 0x01, 0xc2, 0x80, 0x79, 0x01, 0x00, 0x75, 0x0b, 0x8a, 0x59, 0x06, 0x88, 0x1a, 0x48, 0x83, 0xc1, 0x07, 0xeb, 0xe3, 0x8b, 0x59, 0x06, 0x89, 0x1a, 0x48, 0x83, 0xc1, 0x0a, 0xeb, 0xd8, 0x80, 0x39, 0xff, 0x75, 0x35, 0x8b, 0x94, 0x21, 0x02, 0x00, 0x00, 0x00, 0x01, 0xc2, 0x48, 0x8d, 0x14, 0x22, 0x48, 0x8b, 0x12, 0x8b, 0x5c, 0x21, 0x06, 0x48, 0x01, 0xda, 0x80, 0x79, 0x01, 0x00, 0x75, 0x0c, 0x8a, 0x59, 0x0a, 0x40, 0x88, 0x1a, 0x48, 0x83, 0xc1, 0x0b, 0xeb, 0xaa, 0x8b, 0x59, 0x0a, 0x48, 0x89, 0x1a, 0x48, 0x83, 0xc1, 0x0e, 0xeb, 0x9e, 0x5b, 0xc3 },
+                BootSettingsData = new byte[BootSettingsFunction.Length + BootSettingsBaseAddressPointers[GameIndex].Length]
             ;
 
-            BootSettingsData = new byte[BootSettingsFunction.Length + BootSettingsBaseAddressPointers[GameIndex].Length];
 
-            Buffer.BlockCopy(BootSettingsBaseAddressPointers[GameIndex], 0,
-                             BootSettingsData, 0,
-                             BootSettingsBaseAddressPointers[GameIndex].Length
-                             );
+            Buffer.BlockCopy
+            (
+                BootSettingsBaseAddressPointers[GameIndex], 0,
+                BootSettingsData, 0,
+                BootSettingsBaseAddressPointers[GameIndex].Length
+            );
 
-            Buffer.BlockCopy(BootSettingsFunction, 0,
-                             BootSettingsData, BootSettingsBaseAddressPointers[GameIndex].Length,
-                             BootSettingsFunction.Length
-                            );
+            Buffer.BlockCopy
+            (
+                BootSettingsFunction, 0,
+                BootSettingsData, BootSettingsBaseAddressPointers[GameIndex].Length,
+                BootSettingsFunction.Length
+            );
 
             return BootSettingsData;
         }
@@ -407,8 +420,8 @@ namespace Dobby {
         /// Get The MenuSettingsPage-Specific GameIndex Used For... Well, Take A Fking Guess.<br/><br/>Does Not Include Game Versions I Don't Indend To Support, Just Oldest And Latest
         /// <br/>(Plus A Couple Still Commonly Used In-Between Ones)
         /// </summary>
-        private int GetGamePatchIndex(GameID Game) {
-            switch(Game) {
+        private int GetGamePatchIndex(GameID game) {
+            switch(game) {
                 default:
                     return 0xDEADDAD;
 
@@ -543,7 +556,7 @@ namespace Dobby {
 
 
             // Only Needed If Multiple Buttons Are Being Added, As The Form Can Already Fit One More After hiding The Label
-            if(MultipleButtonsEnabled)
+            if(DynamicButtonsState == 2)
             {
                 for (int i = gsButtons.Buttons.Length - 1; i >= 0; i--)
                 {
@@ -663,7 +676,7 @@ namespace Dobby {
 
             ExecutablePathBox.ResetControl();
             Game = GameID.Empty;
-            MultipleButtonsEnabled = false;
+            DynamicButtonsState = 0;
         }
 #endregion
 
@@ -675,16 +688,6 @@ namespace Dobby {
         //--|   Event Handler Declarations   |--\\
         //======================================\\
         #region [Event Handler Declarations]
-        
-        private void DebugButtonCycleBtn_Click(object sender, EventArgs e)
-        {
-            if (gsButtons == null)
-            {
-                gsButtons = new DynamicPatchButtons(new int?[] { 0, 1, 2, 3, 4 }, GameSpecificPatchesLabel.Location.Y + GameSpecificPatchesLabel.Size.Height);
-            }
-        }
-
-
 
         private void BrowseButton_Click(object sender, EventArgs e)
         {
@@ -1074,7 +1077,6 @@ namespace Dobby {
                 new byte[] {  }, // T1R100
                 new byte[] {  }, // T1R109
                 new byte[] {  }, // T1R111
-                //Array.Empty<byte>(),                         Test | T2100
                 new byte[] { 0x98, 0x68, 0x24, 0x03 }, // 0x3646898 | T2100
                 new byte[] { 0xB8, 0x67, 0x24, 0x03 }, // 0x36467b8 | T2107
                 new byte[] { 0x38, 0xA6, 0x25, 0x03 }  // 0x365a638 | T2109
@@ -1148,8 +1150,11 @@ namespace Dobby {
         };
 
         
-        private static readonly int[]
-            BootSettingsCallAddress = new int[] {
+
+        /// <summary>
+        /// An array of addresses at which to place the function call to the custom BootSettings function, generally redirecting the Quick Menu initialization method
+        /// </summary>
+        private static readonly int[] BootSettingsCallAddress = new int[] {
                 0, // 0x | UC1100
                 0, // 0x | UC1102
                 0, // 0x | UC2100
@@ -1168,29 +1173,31 @@ namespace Dobby {
                 0x1F1DE8, // 0x53dde8 | T2100
                 0x1f217a, // 0x5ee17a | T2107
                 0x633cba  // 0xa2fcba | T2109
-            },
+        };
 
-            BootSettingsFunctionAddress = new int[] {
-                0, // 0x | UC1100
-                0, // 0x | UC1102
-                0, // 0x | UC2100
-                0, // 0x | UC2102
-                0, // 0x | UC3100
-                0, // 0x | UC3102
-                0, // 0x | UC4100
-                0, // 0x | UC4101
-                0, // 0x | UC4133
-                0, // 0x | UC4133MP
-                0, // 0x | TLL100
-                0, // 0x | TLL109
-                0x217C0, // 0x41d7c0 | T1R100
-                0, // 0x | T1R109
-                0, // 0x | T1R111
-                0xB330,  // 0x407330 | T2100
-                0xB330,  // 0x407330 | T2107
-                0x55f0   // 0x4015f0 | T2109
-            }
-        ;
+        /// <summary>
+        /// An array of addresses at which to place the consructed BootSettings function assembly/data
+        /// </summary>
+        private static readonly int[] BootSettingsFunctionAddress = new int[] {
+            0, // 0x | UC1100
+            0, // 0x | UC1102
+            0, // 0x | UC2100
+            0, // 0x | UC2102
+            0, // 0x | UC3100
+            0, // 0x | UC3102
+            0, // 0x | UC4100
+            0, // 0x | UC4101
+            0, // 0x | UC4133
+            0, // 0x | UC4133MP
+            0, // 0x | TLL100
+            0, // 0x | TLL109
+            0x217C0, // 0x41d7c0 | T1R100
+            0, // 0x | T1R109
+            0, // 0x | T1R111
+            0xB330,  // 0x407330 | T2100
+            0xB330,  // 0x407330 | T2107
+            0x55f0   // 0x4015f0 | T2109
+        };
 
 
 
@@ -1199,19 +1206,32 @@ namespace Dobby {
         /// <summary>
         /// Class For Creating Dynamic Patch Buttons
         /// </summary>
-        internal class DynamicPatchButtons {
-            public DynamicPatchButtons(int?[] Ids, int VerticalStartIndex)
+        internal class DynamicPatchButtons
+        {
+            /// <summary>
+            /// Initialize a new instance of the DynamicPatchButtons class, and create the buttons available for the current game &amp; patch version
+            /// </summary>
+            /// <param name="IDs"></param>
+            /// <param name="VerticalStartIndex"></param>
+            public DynamicPatchButtons(int?[] IDs, int VerticalStartIndex)
             {
                 Buttons = new Button[GSButtonsText.Length];
                 ButtonsVerticalStartPos = VerticalStartIndex;
 
-                for(int i = 0; i < Ids.Length; i++) {
-                    if(Ids != null && Ids[i] == null)
+                if (IDs == null) {
+                    Print("ERROR: null IDs Array provided for dynamic patch buttons initialization");
+                    return;
+                }
+
+
+                for(int i = 0; i < IDs.Length; i++) {
+                    if(IDs[i] == null)
                         continue;
 
                     Buttons[i] = new Button();
                 }
-                MultipleButtonsEnabled = true;
+
+                DynamicButtonsState = 2; //!
             }
 
 

@@ -350,7 +350,7 @@ namespace Dobby
             this.DebugButtonCycleBtn.Text = "C";
             this.DebugButtonCycleBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DebugButtonCycleBtn.UseVisualStyleBackColor = false;
-            this.DebugButtonCycleBtn.Click += new System.EventHandler(this.DebugButtonCycleBtn_Click);
+            this.DebugButtonCycleBtn.Click += new System.EventHandler(this.TestGSButtons);
             // 
             // PS4MenuSettingsPage
             // 
