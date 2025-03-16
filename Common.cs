@@ -235,10 +235,13 @@ namespace Dobby {
 
         
         /// <summary>
-        /// Write a fucking //!summary, dicksneeze
+        /// Hash a specific chunk of data in the provided exectutable's file stream to determine the current game, then return the game's name &amp; app version.<br/>
+        /// TODO: rework it or figure out why tf it's hashing 160 bytes and then just checking the first four bytes of said hash
         /// </summary>
-        /// <param name="stream"></param>
-        /// <returns></returns>
+        /// <returns>
+        /// The name of the game, followed by the app version.
+        /// </returns>
+        /// <param name="stream"> The active file stream for the loaded executable. </param>
         public static string GetCurrentGame(FileStream stream)
         {
             byte[] LocalExecutableCheck;

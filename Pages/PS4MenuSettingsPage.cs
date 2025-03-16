@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Text;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using static Dobby.Common;
 
@@ -28,7 +29,7 @@ namespace Dobby {
 
                 DynamicButtonsState = 0;
 
-                if(Game != 0 && gsButtons?.Buttons != null)
+                if(Game != 0 && GSButtons?.Buttons != null)
                     ResetCustomDebugOptions();
             
 #if DEBUG
@@ -52,12 +53,7 @@ namespace Dobby {
         /// <summary> Array of Controls to Move When Loading >1 Game-Specific Debug Options
         ///</summary>
         private static Control[] ControlsToMove;
-        private static DynamicPatchButtons gsButtons;
-
-        /// <summary>
-        /// Variable Used When Adjusting Form Scale And Control Positions
-        /// </summary>
-        private static int ResetButtonStartPosition;
+        private static DynamicPatchButtons GSButtons;
 
 
         private static int DynamicButtonsState;
@@ -65,7 +61,7 @@ namespace Dobby {
         /// <summary>
         /// 0: UC1100<br/>1: UC1102<br/>2: UC2100<br/>3: UC2102<br/>4: UC3100<br/>5: UC3102<br/>6: UC4100<br/>7: UC4101<br/>8: UC4133<br/>9: UC4133MP<br/>10 TLL100<br/>11 TLL10X<br/>12 T1R100<br/>13 T1R109<br/>14 T1R11X<br/>15 T2100<br/>16 T2107<br/>17 T2109<br/>
         /// </summary>
-        private readonly int GameIndex;
+        private readonly int _GameIndex;
 
 
         
@@ -175,7 +171,7 @@ namespace Dobby {
         
         private void TestGSButtons(object sender, EventArgs e)
         {
-            if (gsButtons == null)
+            if (GSButtons == null)
             {
                 //gsButtons = new DynamicPatchButtons(new int?[] { 0, 1, 2, 3, 4 }, GameSpecificPatchesLabel.Location.Y + GameSpecificPatchesLabel.Size.Height);
             }
@@ -187,53 +183,19 @@ namespace Dobby {
         /// Load a decrypted/unsigned executable specified by the provided fileName.<br/><br/>
         /// Determines the current game via an odd hashing process (redo that ffs, why the hell is it 160 bytes??? And why is a sha256 hash being read as a byte array and turned in to a 32 bit integer???)
         /// </summary>
-        /// <param name="fileName"> The path to the executable being loaded </param>
-        private void LoadGameExecutable(string fileName)
+        /// <param name="filePath"> The path to the executable being loaded </param>
+        private int LoadGameExecutable(string filePath)
         {
-            if (!File.Exists(fileName))
-            {
-                // Bitch & moan if the provided file doesn't exist
-                UpdateLabel("Invalid Executable Path Provided.", true);
-                return;
-            }
-            if(OriginalFormScale != Size.Empty)
-            {
-                // Reset form before repeat uses
-                ResetCustomDebugOptions();
-            }
-
-
             // Dispose (if in use) and initialize the file stream
             fileStream?.Dispose();
-            fileStream = File.Open(fileName, FileMode.Open, FileAccess.ReadWrite);
+            fileStream = File.Open(filePath, FileMode.Open, FileAccess.ReadWrite);
 
 
-            // Read the selected executable to determine the game and patch
-            var gameName = GetCurrentGame(fileStream);
-            var gameIndex = GetGamePatchIndex(Game);
+            // Read the selected executable to determine the game and patch &amp; update the Info label
+            GameInfoLabel.Text = GetCurrentGame(fileStream);
+            
 
-            if (gameIndex == 0xBADBEEF)
-            {
-                MessageBox.Show("Selected Game Not Currently Supported", $"Patches For {GameInfoLabel.Text} Not Added Yet");
-                UpdateLabel("Unsupported Game Selected", true);
-                return;
-            }
-            if (gameIndex == 0xDEADDAD)
-            {
-                MessageBox.Show("Unknown Game Provided", $"Game unlikely to be Uncharted or Tlou");
-                UpdateLabel("Unknown Game Selected", true);
-                return;
-            }
-            #if DEBUG
-            Print($"LoadGameExecutable()::gameIndex: {gameIndex}");
-            #endif
-
-
-            // Update Info Label
-            GameInfoLabel.Text = gameName;
-
-            // Load the selected executable
-            LoadGameSpecificMenuOptions(gameIndex);
+            return GetPatchDataGameIndex(Game);
         }
 
         
@@ -417,10 +379,13 @@ namespace Dobby {
 
 
         /// <summary>
-        /// Get The MenuSettingsPage-Specific GameIndex Used For... Well, Take A Fking Guess.<br/><br/>Does Not Include Game Versions I Don't Indend To Support, Just Oldest And Latest
-        /// <br/>(Plus A Couple Still Commonly Used In-Between Ones)
+        /// Get the game index used for the patch data's jagged array.<br/>
+        ///  - eg: array[patchIndex][gameIndex]
+        /// <br/><br/>
+        /// Does Not Include Game Versions I Don't Indend To Support, Just Oldest And Latest<br/>
+        /// (Plus A Couple Still Commonly Used In-Between Ones)
         /// </summary>
-        private int GetGamePatchIndex(GameID game) {
+        private int GetPatchDataGameIndex(GameID game) {
             switch(game) {
                 default:
                     return 0xDEADDAD;
@@ -507,11 +472,8 @@ namespace Dobby {
         /// <summary>
         /// Resize Form And Move Buttons, Then Add Enabled Custom Buttons To Form Based On The Current Game And Patch
         /// </summary>
-        public void LoadGameSpecificMenuOptions(int gameIndex)
+        public void CreateAndAddGameSpecificButtons(int gameIndex)
         {
-            // In Case Of Repeat Uses
-            int?[] IDS;
-            
             // Assign values to variables made to keep track of the default form size/control postions for the reset button. Doing it on page init is annoying 'cause designer memes
             if(OriginalFormScale == Size.Empty) {
                 Print("Setting Original Scale Variables");
@@ -537,35 +499,28 @@ namespace Dobby {
                     OriginalControlPositions[i] = ControlsToMove[i++].Location;
             }
 
-
-            ResetButtonStartPosition = (GameInfoLabel.Location.Y + GameInfoLabel.Size.Height) + 1; // Right Below The GameInfoLabel
             CustomDebugOptionsLabel.Visible = false;
 
 
-            //! Determine which patches have data associated with them, I think?
-            IDS = new int?[GameSpecificBootSettingsPointers.Length];
-            for(int i = 0; i < GameSpecificBootSettingsPointers.Length ; i++)
-                IDS[i] = GameSpecificBootSettingsPointers[i][gameIndex].Length == 0 ? null : (int?)i;
-
-
             // Initialize DynamicPatchButtons instance and populate the form with the created buttons
-            gsButtons = new DynamicPatchButtons(IDS, GameSpecificPatchesLabel.Location.Y + GameSpecificPatchesLabel.Size.Height + 1);
-
-            foreach(var btn in gsButtons.CreateButtons())
-                ActiveForm.Controls.Add(btn);
+            GSButtons = new DynamicPatchButtons(gameIndex, this, (GameSpecificPatchesLabel.Location.Y + 1 + GameSpecificPatchesLabel.Size.Height), (GameInfoLabel.Location.Y + 1 + GameInfoLabel.Size.Height));
 
 
-            // Only Needed If Multiple Buttons Are Being Added, As The Form Can Already Fit One More After hiding The Label
-            if(DynamicButtonsState == 2)
+            // Attempt to reseize the form to fit the newly added buttons, unless only one has been enabled
+            if(GSButtons.Buttons.Count > 1)
             {
-                for (int i = gsButtons.Buttons.Length - 1; i >= 0; i--)
+                for (int i = GSButtons.Buttons.Count - 1; i >= 0; i--)
                 {
-                    var button = gsButtons.Buttons[i];
+                    var button = GSButtons.Buttons[i];
                     if (button == null)
                         continue;
 
                     // Move Each Control, Then Resize The BorderBox & Form
-                    Array.ForEach(ControlsToMove, control => { control.Location = new Point(control.Location.X, (control.Location.Y + 20)); Size = new Size(Size.Width, Size.Height + 20); });
+                    Array.ForEach(ControlsToMove, control =>
+                    {
+                        control.Location = new Point(control.Location.X, (control.Location.Y + 20));
+                        Size = new Size(Size.Width, Size.Height + 20);
+                    });
                     break;
                 }
             }
@@ -578,49 +533,6 @@ namespace Dobby {
             for(int i = 4; i < ControlsToMove.Length; i++)
                 ControlsToMove[i].Location = new Point(ControlsToMove[i].Location.X, ControlsToMove[i].Location.Y + 46);
 
-
-
-            ResetButtonStartPosition = GameInfoLabel.Location.Y + GameInfoLabel.Size.Height + 1; // Right Below The GameInfoLabel
-
-            // Create the "Confirm Patches" button
-            var ConfirmPatchesBtn = new Button();
-            ConfirmPatchesBtn.Name = "ConfirmPatchesBtn";
-            ConfirmPatchesBtn.Size = new Size(Width - 11, 23);
-            ConfirmPatchesBtn.FlatStyle = FlatStyle.Flat;
-            ConfirmPatchesBtn.FlatAppearance.BorderSize = 0;
-            ConfirmPatchesBtn.Font = new Font("Cambria", 9.25F, FontStyle.Bold);
-            ConfirmPatchesBtn.TextAlign = ContentAlignment.MiddleLeft;
-            ConfirmPatchesBtn.Text = "Confirm And Apply Patches";
-            ConfirmPatchesBtn.ForeColor = SystemColors.Control;
-            ConfirmPatchesBtn.BackColor = Color.FromArgb(100, 100, 100);
-            ConfirmPatchesBtn.Cursor = Cursors.Cross;
-
-            Controls.Add(ConfirmPatchesBtn);
-            ConfirmPatchesBtn.Location = new Point(1, ResetButtonStartPosition);
-            ConfirmPatchesBtn.MouseEnter += ControlHover;
-            ConfirmPatchesBtn.MouseLeave += ControlLeave;
-            ConfirmPatchesBtn.Click += ConfirmBtn_Click;
-            ConfirmPatchesBtn.BringToFront();
-
-            // Create the "Reset Page"
-            var ResetBtn = new Button();
-            ResetBtn.Name = "ResetBtn";
-            ResetBtn.Size = new Size(Width - 11, 23);
-            ResetBtn.FlatStyle = FlatStyle.Flat;
-            ResetBtn.FlatAppearance.BorderSize = 0;
-            ResetBtn.Font = new Font("Cambria", 9.25F, FontStyle.Bold);
-            ResetBtn.TextAlign = ContentAlignment.MiddleLeft;
-            ResetBtn.Text = "Reset Page";
-            ResetBtn.ForeColor = SystemColors.Control;
-            ResetBtn.BackColor = Color.FromArgb(100, 100, 100);
-            ResetBtn.Cursor = Cursors.Cross;
-            
-            Controls.Add(ResetBtn);
-            ResetBtn.Location = new Point(1, ResetButtonStartPosition + 24);
-            ResetBtn.MouseEnter += ControlHover;
-            ResetBtn.MouseLeave += ControlLeave;
-            ResetBtn.Click += ResetCustomDebugOptions;
-            ResetBtn.BringToFront();
         }
 
 
@@ -647,7 +559,7 @@ namespace Dobby {
             fileStream?.Dispose();
 
             // Nuke Dynamic Patch Buttons
-            gsButtons.Reset();
+            GSButtons.ResetButtons();
 
             // Move Controls Back To Their Original Positions
             for(var i = 0; i < ControlsToMove.Length; ControlsToMove[i].Location = OriginalControlPositions[i++]);
@@ -678,7 +590,48 @@ namespace Dobby {
             Game = GameID.Empty;
             DynamicButtonsState = 0;
         }
-#endregion
+
+
+        private void ProcessSelectedGame(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                // Bitch & moan if the provided file doesn't exist
+                UpdateLabel("Invalid Executable Path Provided.", true);
+                return;
+            }
+            if(OriginalFormScale != Size.Empty)
+            {
+                // Reset form before repeat uses
+                ResetCustomDebugOptions();
+            }
+
+
+            
+            // Load the provided executable
+            var gameIndex = LoadGameExecutable(filePath);
+
+            if (gameIndex == 0xBADBEEF)
+            {
+                MessageBox.Show("Selected Game Not Currently Supported", $"Patches For {GameInfoLabel.Text} Not Added Yet");
+                UpdateLabel("Unsupported Game Selected", true);
+                return;
+            }
+            if (gameIndex == 0xDEADDAD)
+            {
+                MessageBox.Show("Unknown Game Provided", $"Game unlikely to be Uncharted or Tlou");
+                UpdateLabel("Unknown Game Selected", true);
+                return;
+            }
+            #if DEBUG
+            Print($"LoadGameExecutable()::gameIndex: {gameIndex}");
+            #endif
+
+            // Load the selected executable
+            CreateAndAddGameSpecificButtons(gameIndex);
+        }
+
+        #endregion
 
 
 
@@ -715,13 +668,13 @@ namespace Dobby {
             Print($"control was not default ({ExecutablePathBox.IsDefault}:{ExecutablePathBox.Text})");
 
 
-            LoadGameExecutable(ExecutablePathBox.Text);
+            ProcessSelectedGame(ExecutablePathBox.Text);
         }
 
 
         private void ConfirmBtn_Click(object sender, EventArgs e)
         {
-            var result = ApplyMenuSettings(GetGamePatchIndex(Game));
+            var result = ApplyMenuSettings(GetPatchDataGameIndex(Game));
             if(result == "error")
             {
                 MessageBox.Show($"An Unexpected Error Occured While Applying The Patches, Please Ensure You're Running The Latest Release Build\nIf You Are, Report It To The Moron Typing Out This Error Message", "Internal Error Applying Patch Data");
@@ -1211,27 +1164,123 @@ namespace Dobby {
             /// <summary>
             /// Initialize a new instance of the DynamicPatchButtons class, and create the buttons available for the current game &amp; patch version
             /// </summary>
-            /// <param name="IDs"></param>
-            /// <param name="VerticalStartIndex"></param>
-            public DynamicPatchButtons(int?[] IDs, int VerticalStartIndex)
+            /// <param name="GameIndex"></param>
+            /// <param name="Venat"></param>
+            /// <param name="ButtonsVerticalStartOffset"></param>
+            /// <param name="ResetButtonVerticalOffset"></param>
+            public DynamicPatchButtons(int GameIndex, PS4MenuSettingsPage Venat, int ButtonsVerticalStartOffset, int ResetButtonVerticalOffset)
             {
-                Buttons = new Button[GSButtonsText.Length];
-                ButtonsVerticalStartPos = VerticalStartIndex;
-
-                if (IDs == null) {
-                    Print("ERROR: null IDs Array provided for dynamic patch buttons initialization");
-                    return;
+                
+                // Determine which patches have data associated with them
+                var IDs = new List<bool>(GameSpecificBootSettingsPointers.Length);
+                for (int i = 0; i < GameSpecificBootSettingsPointers.Length;)
+                {
+                        IDs.Add(GameSpecificBootSettingsPointers[i][GameIndex].Length > 0);
                 }
+                
+            
 
+                Buttons = new List<Button>(IDs.Count);
+                ButtonsVerticalStartPosition = ButtonsVerticalStartOffset;
+                for (var i = 0; i < IDs.Count; i++)
+                {
+                    if (IDs[i])
+                    {
+                        Buttons[i] = new Button();
+                    }
+                }
+                
+                for ()
 
-                for(int i = 0; i < IDs.Length; i++) {
-                    if(IDs[i] == null)
+                var buttonIndex = 0;
+
+                while (true)
+                {
+                    // Skip disabled buttons
+                    if(GSButtons.Buttons[buttonIndex] == null) {
+                        buttonIndex++;
                         continue;
+                    }
 
-                    Buttons[i] = new Button();
+                    // Create The Button
+                    Buttons[buttonIndex].Name = GSButtonNames[buttonIndex];
+                    Buttons[buttonIndex].TabIndex = buttonIndex;
+                    Buttons[buttonIndex].Variable = GSPatchValues[buttonIndex];
+                    Buttons[buttonIndex].TextAlign = ContentAlignment.MiddleLeft;
+                    Buttons[buttonIndex].FlatAppearance.BorderSize = 0;
+                    Buttons[buttonIndex].FlatStyle = FlatStyle.Flat;
+                    Buttons[buttonIndex].ForeColor = SystemColors.Control;
+                    Buttons[buttonIndex].BackColor = MainColour;
+                    Buttons[buttonIndex].Cursor = Cursors.Cross;
+
+                    Buttons[buttonIndex].Location = new Point(1, ButtonsVerticalStartPosition);
+                    Buttons[buttonIndex].Size = new Size(ActiveForm.Width - 2, 23);
+                    Buttons[buttonIndex].Font = ControlFont;
+                    Buttons[buttonIndex].Text = GSButtonsText[buttonIndex];
+
+                    Buttons[buttonIndex].MouseDown += MouseDownFunc;
+                    Buttons[buttonIndex].MouseUp += MouseUpFunc;
+                    Buttons[buttonIndex].MouseEnter += HoverString; // For Info Label Text
+                    Buttons[buttonIndex].MouseEnter += ControlHover;
+                    Buttons[buttonIndex].MouseLeave += ControlLeave;
+                    Buttons[buttonIndex].BringToFront();
+
+
+                    if (buttonIndex == Buttons.Count - 2)
+                    {
+                        break;
+                    }
+                        
+                    ButtonsVerticalStartPosition += Buttons[buttonIndex++].Size.Height;
                 }
 
-                DynamicButtonsState = 2; //!
+
+
+
+                // Create the "Confirm Patches" button
+                var ConfirmPatchesBtn = new Button
+                {
+                    Name = "ConfirmPatchesBtn",
+                    Size = new Size(Venat.Width - 11, 23),
+                    FlatStyle = FlatStyle.Flat,
+                    Font = new Font("Cambria", 9.25F, FontStyle.Bold),
+                    TextAlign = ContentAlignment.MiddleLeft,
+                    Text = "Confirm And Apply Patches",
+                    ForeColor = SystemColors.Control,
+                    BackColor = Color.FromArgb(100, 100, 100),
+                    Cursor = Cursors.Cross
+                };
+                ConfirmPatchesBtn.FlatAppearance.BorderSize = 0;
+
+                Venat.Controls.Add(ConfirmPatchesBtn);
+                ConfirmPatchesBtn.Location = new Point(1, ResetButtonVerticalOffset); // Right Below The GameInfoLabel
+                ConfirmPatchesBtn.MouseEnter += ControlHover;
+                ConfirmPatchesBtn.MouseLeave += ControlLeave;
+                ConfirmPatchesBtn.Click += Venat.ConfirmBtn_Click;
+                ConfirmPatchesBtn.BringToFront();
+
+
+                // Create the "Reset Page"
+                var ResetBtn = new Button
+                {
+                    Name = "ResetBtn",
+                    Size = new Size(Venat.Width - 11, 23),
+                    FlatStyle = FlatStyle.Flat,
+                    Font = new Font("Cambria", 9.25F, FontStyle.Bold),
+                    TextAlign = ContentAlignment.MiddleLeft,
+                    Text = "Reset Page",
+                    ForeColor = SystemColors.Control,
+                    BackColor = Color.FromArgb(100, 100, 100),
+                    Cursor = Cursors.Cross
+                };
+                ResetBtn.FlatAppearance.BorderSize = 0;
+            
+                Venat.Controls.Add(ResetBtn);
+                ResetBtn.Location = new Point(1, ResetButtonVerticalOffset + 24);
+                ResetBtn.MouseEnter += ControlHover;
+                ResetBtn.MouseLeave += ControlLeave;
+                ResetBtn.Click += Venat.ResetCustomDebugOptions;
+                ResetBtn.BringToFront();
             }
 
 
@@ -1303,10 +1352,10 @@ namespace Dobby {
             /// 6: RightAlignBtn                                                                       <br/>
             /// 7: RightMarginBtn
             /// </summary>
-            public Button[] Buttons; // Initialized Once An Executable's Selected
+            public List<Button> Buttons; // Initialized Once An Executable's Selected
 
 
-            private int ButtonsVerticalStartPos;
+            private int ButtonsVerticalStartPosition;
             #endregion
 
 
@@ -1320,7 +1369,7 @@ namespace Dobby {
 
             /// <summary> Remove and dispose of dynamic patch buttons and reset options to default
             ///</summary>
-            public void Reset() {
+            public void ResetButtons() {
                 foreach(Button button in Buttons)
                     button?.Dispose();
 
@@ -1328,51 +1377,6 @@ namespace Dobby {
                 GSPatchValues = DefaultGSPatchValues;
             }
 
-
-            public Button[] CreateButtons()
-            {
-                var buttonIndex = 0;
-
-                while (true)
-                {
-                    // Skip disabled buttons or return if the end of the collection is reached
-                    if(gsButtons.Buttons[buttonIndex] == null) {
-                        buttonIndex++;
-                        continue;
-                    }
-
-                    // Create The Button
-                    Buttons[buttonIndex].Name = GSButtonNames[buttonIndex];
-                    Buttons[buttonIndex].TabIndex = buttonIndex;
-                    Buttons[buttonIndex].Variable = GSPatchValues[buttonIndex];
-                    Buttons[buttonIndex].TextAlign = ContentAlignment.MiddleLeft;
-                    Buttons[buttonIndex].FlatAppearance.BorderSize = 0;
-                    Buttons[buttonIndex].FlatStyle = FlatStyle.Flat;
-                    Buttons[buttonIndex].ForeColor = SystemColors.Control;
-                    Buttons[buttonIndex].BackColor = MainColour;
-                    Buttons[buttonIndex].Cursor = Cursors.Cross;
-
-                    Buttons[buttonIndex].Location = new Point(1, ButtonsVerticalStartPos);
-                    Buttons[buttonIndex].Size = new Size(ActiveForm.Width - 2, 23);
-                    Buttons[buttonIndex].Font = ControlFont;
-                    Buttons[buttonIndex].Text = GSButtonsText[buttonIndex];
-
-                    Buttons[buttonIndex].MouseDown += MouseDownFunc;
-                    Buttons[buttonIndex].MouseUp += MouseUpFunc;
-                    Buttons[buttonIndex].MouseEnter += HoverString; // For Info Label Text
-                    Buttons[buttonIndex].MouseEnter += ControlHover;
-                    Buttons[buttonIndex].MouseLeave += ControlLeave;
-                    Buttons[buttonIndex].BringToFront();
-
-
-                    if (buttonIndex == Buttons.Length - 2)
-                    {
-                        return Buttons;
-                    }
-                        
-                    ButtonsVerticalStartPos += Buttons[buttonIndex++].Size.Height;
-                }
-            }
             #endregion
 
 
