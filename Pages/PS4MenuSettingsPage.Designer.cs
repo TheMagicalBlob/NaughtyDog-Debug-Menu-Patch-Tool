@@ -61,7 +61,7 @@ namespace Dobby
             this.ProgPauseOnCloseBtn.MaximumValue = null;
             this.ProgPauseOnCloseBtn.MinimumValue = null;
             this.ProgPauseOnCloseBtn.Name = "ProgPauseOnCloseBtn";
-            this.ProgPauseOnCloseBtn.Size = new System.Drawing.Size(318, 24);
+            this.ProgPauseOnCloseBtn.Size = new System.Drawing.Size(269, 24);
             this.ProgPauseOnCloseBtn.TabIndex = 45;
             this.ProgPauseOnCloseBtn.Text = "Disable Debug Pause On Menu Close: ";
             this.ProgPauseOnCloseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -79,7 +79,7 @@ namespace Dobby
             this.ProgPauseOnOpenBtn.MaximumValue = null;
             this.ProgPauseOnOpenBtn.MinimumValue = null;
             this.ProgPauseOnOpenBtn.Name = "ProgPauseOnOpenBtn";
-            this.ProgPauseOnOpenBtn.Size = new System.Drawing.Size(318, 24);
+            this.ProgPauseOnOpenBtn.Size = new System.Drawing.Size(269, 24);
             this.ProgPauseOnOpenBtn.TabIndex = 44;
             this.ProgPauseOnOpenBtn.Text = "Disable Debug Pause On Menu Open: ";
             this.ProgPauseOnOpenBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -97,7 +97,7 @@ namespace Dobby
             this.DisableDebugTextBtn.MaximumValue = null;
             this.DisableDebugTextBtn.MinimumValue = null;
             this.DisableDebugTextBtn.Name = "DisableDebugTextBtn";
-            this.DisableDebugTextBtn.Size = new System.Drawing.Size(318, 24);
+            this.DisableDebugTextBtn.Size = new System.Drawing.Size(251, 24);
             this.DisableDebugTextBtn.TabIndex = 42;
             this.DisableDebugTextBtn.Text = "Disable 2D Debug Text On Startup: ";
             this.DisableDebugTextBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -116,7 +116,7 @@ namespace Dobby
             this.DisablePausedIconBtn.MaximumValue = null;
             this.DisablePausedIconBtn.MinimumValue = null;
             this.DisablePausedIconBtn.Name = "DisablePausedIconBtn";
-            this.DisablePausedIconBtn.Size = new System.Drawing.Size(318, 24);
+            this.DisablePausedIconBtn.Size = new System.Drawing.Size(205, 24);
             this.DisablePausedIconBtn.TabIndex = 43;
             this.DisablePausedIconBtn.Text = "Show Debug PAUSED Icon:";
             this.DisablePausedIconBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -327,7 +327,7 @@ namespace Dobby
             this.NovisBtn.MaximumValue = null;
             this.NovisBtn.MinimumValue = null;
             this.NovisBtn.Name = "NovisBtn";
-            this.NovisBtn.Size = new System.Drawing.Size(318, 24);
+            this.NovisBtn.Size = new System.Drawing.Size(251, 24);
             this.NovisBtn.TabIndex = 46;
             this.NovisBtn.Text = "Disable Culling Of Level Geometry:";
             this.NovisBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;

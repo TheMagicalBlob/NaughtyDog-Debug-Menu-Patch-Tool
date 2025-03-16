@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using static Dobby.Common;
+using System.Linq;
 
 
 
@@ -21,11 +22,11 @@ namespace Dobby {
                 InitializeComponent();
                 InitializeAdditionalEventHandlers(Controls);
             
-                DisableDebugTextBtn.Variable = UniversalPatchValues[0];
-                DisablePausedIconBtn.Variable = UniversalPatchValues[1];
-                ProgPauseOnOpenBtn.Variable = UniversalPatchValues[2];
-                ProgPauseOnCloseBtn.Variable = UniversalPatchValues[3];
-                NovisBtn.Variable = UniversalPatchValues[4];
+                //DisableDebugTextBtn.Variable = UniversalPatchValues[0];
+                //DisablePausedIconBtn.Variable = UniversalPatchValues[1];
+                //ProgPauseOnOpenBtn.Variable = UniversalPatchValues[2];
+                //ProgPauseOnCloseBtn.Variable = UniversalPatchValues[3];
+                //NovisBtn.Variable = UniversalPatchValues[4];
 
                 DynamicButtonsState = 0;
 
@@ -691,6 +692,7 @@ namespace Dobby {
             GameInfoLabel.Text += result;
         }
         
+
         private void ExecutablePathBox_TextChanged(object sender, EventArgs e)
         {
             var box = ((TextBox)sender);
@@ -1175,65 +1177,55 @@ namespace Dobby {
                 var IDs = new List<bool>(GameSpecificBootSettingsPointers.Length);
                 for (int i = 0; i < GameSpecificBootSettingsPointers.Length;)
                 {
-                        IDs.Add(GameSpecificBootSettingsPointers[i][GameIndex].Length > 0);
+                        IDs.Add(GameSpecificBootSettingsPointers[i++][GameIndex].Length > 0);
                 }
                 
             
 
                 Buttons = new List<Button>(IDs.Count);
                 ButtonsVerticalStartPosition = ButtonsVerticalStartOffset;
-                for (var i = 0; i < IDs.Count; i++)
-                {
-                    if (IDs[i])
-                    {
-                        Buttons[i] = new Button();
-                    }
-                }
-                
-                for ()
-
-                var buttonIndex = 0;
-
-                while (true)
+                for (var patchIndex = 0; patchIndex < IDs.Count; patchIndex++)
                 {
                     // Skip disabled buttons
-                    if(GSButtons.Buttons[buttonIndex] == null) {
-                        buttonIndex++;
+                    if (IDs.Last())
+                    {
                         continue;
                     }
+                    
 
                     // Create The Button
-                    Buttons[buttonIndex].Name = GSButtonNames[buttonIndex];
-                    Buttons[buttonIndex].TabIndex = buttonIndex;
-                    Buttons[buttonIndex].Variable = GSPatchValues[buttonIndex];
-                    Buttons[buttonIndex].TextAlign = ContentAlignment.MiddleLeft;
-                    Buttons[buttonIndex].FlatAppearance.BorderSize = 0;
-                    Buttons[buttonIndex].FlatStyle = FlatStyle.Flat;
-                    Buttons[buttonIndex].ForeColor = SystemColors.Control;
-                    Buttons[buttonIndex].BackColor = MainColour;
-                    Buttons[buttonIndex].Cursor = Cursors.Cross;
+                    Buttons[patchIndex] = new Button();
+                    Buttons[patchIndex].Name = GSButtonNames[patchIndex];
+                    Buttons[patchIndex].TabIndex = patchIndex;
+                    Buttons[patchIndex].Variable = GSPatchValues[patchIndex];
+                    Buttons[patchIndex].TextAlign = ContentAlignment.MiddleLeft;
+                    Buttons[patchIndex].FlatAppearance.BorderSize = 0;
+                    Buttons[patchIndex].FlatStyle = FlatStyle.Flat;
+                    Buttons[patchIndex].ForeColor = SystemColors.Control;
+                    Buttons[patchIndex].BackColor = MainColour;
+                    Buttons[patchIndex].Cursor = Cursors.Cross;
 
-                    Buttons[buttonIndex].Location = new Point(1, ButtonsVerticalStartPosition);
-                    Buttons[buttonIndex].Size = new Size(ActiveForm.Width - 2, 23);
-                    Buttons[buttonIndex].Font = ControlFont;
-                    Buttons[buttonIndex].Text = GSButtonsText[buttonIndex];
+                    Buttons[patchIndex].Location = new Point(1, ButtonsVerticalStartPosition);
+                    Buttons[patchIndex].Size = new Size(ActiveForm.Width - 2, 23);
+                    Buttons[patchIndex].Font = ControlFont;
+                    Buttons[patchIndex].Text = GSButtonsText[patchIndex];
+                    Buttons[patchIndex].Tag = GSButtonHints[patchIndex];
 
-                    Buttons[buttonIndex].MouseDown += MouseDownFunc;
-                    Buttons[buttonIndex].MouseUp += MouseUpFunc;
-                    Buttons[buttonIndex].MouseEnter += HoverString; // For Info Label Text
-                    Buttons[buttonIndex].MouseEnter += ControlHover;
-                    Buttons[buttonIndex].MouseLeave += ControlLeave;
-                    Buttons[buttonIndex].BringToFront();
+                    Buttons[patchIndex].MouseDown += MouseDownFunc;
+                    Buttons[patchIndex].MouseUp += MouseUpFunc;
+                    Buttons[patchIndex].MouseEnter += HoverString;  // For Info Label Text
+                    Buttons[patchIndex].MouseEnter += (sender, e) => HoverLeave(((Control)sender), true); 
+                    Buttons[patchIndex].MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
+                    Buttons[patchIndex].BringToFront();
 
 
-                    if (buttonIndex == Buttons.Count - 2)
+                    if (patchIndex == Buttons.Count - 2)
                     {
                         break;
                     }
                         
-                    ButtonsVerticalStartPosition += Buttons[buttonIndex++].Size.Height;
+                    ButtonsVerticalStartPosition += Buttons[patchIndex++].Size.Height;
                 }
-
 
 
 
@@ -1254,8 +1246,8 @@ namespace Dobby {
 
                 Venat.Controls.Add(ConfirmPatchesBtn);
                 ConfirmPatchesBtn.Location = new Point(1, ResetButtonVerticalOffset); // Right Below The GameInfoLabel
-                ConfirmPatchesBtn.MouseEnter += ControlHover;
-                ConfirmPatchesBtn.MouseLeave += ControlLeave;
+                ConfirmPatchesBtn.MouseEnter += (sender, e) => HoverLeave(((Control)sender), true);
+                ConfirmPatchesBtn.MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
                 ConfirmPatchesBtn.Click += Venat.ConfirmBtn_Click;
                 ConfirmPatchesBtn.BringToFront();
 
@@ -1277,8 +1269,8 @@ namespace Dobby {
             
                 Venat.Controls.Add(ResetBtn);
                 ResetBtn.Location = new Point(1, ResetButtonVerticalOffset + 24);
-                ResetBtn.MouseEnter += ControlHover;
-                ResetBtn.MouseLeave += ControlLeave;
+                ResetBtn.MouseEnter += (sender, e) => HoverLeave(((Control)sender), true);
+                ResetBtn.MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
                 ResetBtn.Click += Venat.ResetCustomDebugOptions;
                 ResetBtn.BringToFront();
             }
@@ -1446,8 +1438,6 @@ namespace Dobby {
                 Control.Variable = GSPatchValues[ButtonIndex];
                 Control.Refresh();
             }
-
-            private void HoverString(object sender, EventArgs e) => UpdateLabel((string) ((Control)sender).Tag);
             #endregion
         }
     }

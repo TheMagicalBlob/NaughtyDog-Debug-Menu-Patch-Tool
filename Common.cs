@@ -583,12 +583,19 @@ namespace Dobby {
 
 
                 // Avoid assigning a hover arrow to unintended controls (blacklisted ones, and any non-button controls)
-                var blacklistedItems = new string[] { "DebugControl", "ExitBtn", "MinimizeBtn", "LabelBtn", "PathBox" }; //! LabelBtn? The hell's that one for?
+                var blacklistedItems = new string[] {
+                    "DebugControl",
+                    "ExitBtn",
+                    "MinimizeBtn",
+                    "LabelBtn", //! LabelBtn!? The hell's that one for?
+                    "PathBox"
+                };
 
                 if ((item.GetType() == typeof(Dobby.Button) || item.GetType() == typeof(System.Windows.Forms.Button)) && !blacklistedItems.Contains(item.Name))
                 {
-                    item.MouseEnter += new EventHandler(ControlHover);
-                    item.MouseLeave += new EventHandler(ControlLeave);
+                    //item.MouseEnter += new EventHandler(ControlHover);
+                    item.MouseEnter += (sender, e) => HoverLeave(((Control)sender), true);
+                    item.MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
                 }
             }
 
@@ -743,6 +750,8 @@ namespace Dobby {
                 CurrentControl = PassedControl.Name;
 
                 PassedControl.Text = '>' + PassedControl.Text;
+
+
             }
             else {
                 //ArrowWidth = ~ArrowWidth ^ 1; I'm an idiot, this is excessive lmao. keeping it to laugh at, tho. bite me
@@ -930,8 +939,20 @@ namespace Dobby {
             #endif
         }
 
-        public static void ControlHover(object sender, EventArgs _ = null) => HoverLeave((Control)sender, true);
-        public static void ControlLeave(object sender, EventArgs _ = null) => HoverLeave((Control)sender, false);
+        
+        public static void HoverString(object sender, EventArgs e)
+        {
+            try {
+                if (((string) ((Control)sender).Tag ?? string.Empty).Length > 0)
+                {
+                    UpdateLabel((string) ((Control)sender).Tag);
+                }
+            }
+            catch (InvalidCastException)
+            {
+                Print("ERROR: A Non-string value was assigned to a control tag");
+            }
+        }
         #endregion
 
 
@@ -1220,7 +1241,8 @@ namespace Dobby {
         /// Custom value associated with the control to be rendered alongside it, and edited via manually assigned per-control events.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] // Designer autogenerates code settings the Variable & VariableTags properties to null, annoyingly. More of an issue for the former though, due to the Properties window not letting you edit objects
-        [Browsable(false)]
+        //[Browsable(false)] // Designer won't let me edit it anyway
+        [TypeConverter(typeof(BooleanConverter))] //! make sure this doesn't break functionality with other types
         public object Variable
         {
             get => _Variable;
