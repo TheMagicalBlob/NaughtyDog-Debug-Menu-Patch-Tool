@@ -197,7 +197,7 @@ namespace Dobby {
         /// <summary>
         /// Dev.Print overload, for some reason. //!
         /// </summary>
-        public static void Print(object message = null)
+        public static void Print(object message)
         {
             #if !DEBUG
             if (Testing.ForceDebugInRelease)
@@ -563,6 +563,10 @@ namespace Dobby {
         {
             var ConstantControls = new string[] { "Info", "InfoHelpBtn", "CreditsBtn", "BackBtn" };
             var Parent = Controls.Owner.Name;
+
+            #if DEBUG
+            Dev.SetActivePage(Controls.Owner.FindForm());
+            #endif
 
 
             // Mass-Apply handler methods to basic MouseDown/Up, MouseEnter/Leave and MouseMove events

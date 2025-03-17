@@ -21,21 +21,13 @@ namespace Dobby {
             {
                 InitializeComponent();
                 InitializeAdditionalEventHandlers(Controls);
-            
-                //DisableDebugTextBtn.Variable = UniversalPatchValues[0];
-                //DisablePausedIconBtn.Variable = UniversalPatchValues[1];
-                //ProgPauseOnOpenBtn.Variable = UniversalPatchValues[2];
-                //ProgPauseOnCloseBtn.Variable = UniversalPatchValues[3];
-                //NovisBtn.Variable = UniversalPatchValues[4];
+                
+                if(UniversalPatchValues.Length != UniversalBootSettingsPointers.Length || DefaultGSPatchValues.Length != GameSpecificBootSettingsPointers.Length)
+                {
+                    Print($"WARNING: Mismatch In Array Value vs pointer Length:\n  Universal:\n  Vars: {UniversalPatchValues.Length}\n  Pointers: {UniversalBootSettingsPointers.Length}\nDynamic:\n  Vars: {DefaultGSPatchValues.Length}\n  Pointers: {GameSpecificBootSettingsPointers.Length}");
+                }
 
-                DynamicButtonsState = 0;
 
-                if(Game != 0 && GSButtons?.Buttons != null)
-                    ResetCustomDebugOptions();
-            
-#if DEBUG
-                Dev.OverrideMsgOut = true;
-#endif
             }
             catch (Exception darn) {
                 PrintError(darn);
@@ -54,11 +46,7 @@ namespace Dobby {
         /// <summary> Array of Controls to Move When Loading >1 Game-Specific Debug Options
         ///</summary>
         private static Control[] ControlsToMove;
-        private static DynamicPatchButtons GSButtons;
 
-
-        private static int DynamicButtonsState;
-        
         /// <summary>
         /// 0: UC1100<br/>1: UC1102<br/>2: UC2100<br/>3: UC2102<br/>4: UC3100<br/>5: UC3102<br/>6: UC4100<br/>7: UC4101<br/>8: UC4133<br/>9: UC4133MP<br/>10 TLL100<br/>11 TLL10X<br/>12 T1R100<br/>13 T1R109<br/>14 T1R11X<br/>15 T2100<br/>16 T2107<br/>17 T2109<br/>
         /// </summary>
@@ -89,6 +77,110 @@ namespace Dobby {
 
         private Button ConfirmPatchesBtn;
         private Button ResetBtn;
+
+        
+            /// <summary>
+            /// 0: Menu Alpha <br/>
+            /// 1: Menu Scale <br/>
+            /// 2: Non-ADS FOV <br/>
+            /// 3: Main Camera X-Alignment <br/>
+            /// 4: Swap Square And Circle In Debug <br/>
+            /// 5: Menu Shadowed Text <br/>
+            /// 6: Align Menus Right <br/>
+            /// 7: Right Margin <br/>
+            /// </summary>
+            internal static readonly object[] DefaultGSPatchValues = new object[] {
+                0.85f,
+                0.60f,
+                1f,
+                1f,
+                false,
+                false,
+                false,
+                (byte)10
+            };
+
+            /// <summary>
+            /// Variable Used In Dynamic Button Cration For Game-Specific Patches<br/><br/>
+            /// 0: MenuAlphaBtn         <br/>
+            /// 1: MenuScaleBtn         <br/>
+            /// 2: FOVBtn               <br/>
+            /// 3: XAlign               <br/>
+            /// 4: MenuShadowTextBtn    <br/>
+            /// 5: SwapCircleInDebugBtn <br/>
+            /// 6: RightAlignBtn        <br/>
+            /// 7: RightMarginBtn
+            /// </summary>
+            private static readonly string[] GSButtonNames = new string[] {
+                    "MenuAlphaBtn",
+                    "MenuScaleBtn",
+                    "FOVBtn",
+                    "XAlignBtn",
+                    "MenuShadowTextBtn",
+                    "SwapCircleInDebugBtn",
+                    "MenuRightAlignBtn",
+                    "RightMarginBtn"
+            };
+
+            
+            /// <summary>
+            /// Variable Used In Dynamic Button Cration For Game-Specific Patches<br/><br/>
+            /// 0: MenuAlphaBtn         <br/>
+            /// 1: MenuScaleBtn         <br/>
+            /// 2: FOVBtn               <br/>
+            /// 3: XAlign               <br/>
+            /// 4: MenuShadowTextBtn    <br/>
+            /// 5: SwapCircleInDebugBtn <br/>
+            /// 6: RightAlignBtn        <br/>
+            /// 7: RightMarginBtn
+            /// </summary>
+            private static readonly string[] GSButtonsText = new string[] {
+                    "Set DMenu BG Opacity:",             // default=0.85
+                    "Set Dev Menu Scale:",               // default=0.60
+                    "Adjust Non-ADS FOV:",               // default=1.00
+                    "Adjust Camera X-Alignment:",        // default=1.00
+                    "Enable Debug Menu Text Shadow:",    // default=No
+                    "Swap Circle With Square In DMenu:", // default=No
+                    "Align Debug Menus To The Right:",   // default=No
+                    "Set Distance From Right Side:"      // default=10
+            };
+
+            
+            /// <summary>
+            /// Variable Used In Dynamic Button Cration For Game-Specific Patches<br/><br/>
+            /// 0: MenuAlphaBtn         <br/>
+            /// 1: MenuScaleBtn         <br/>
+            /// 2: FOVBtn               <br/>
+            /// 3: XAlign               <br/>
+            /// 4: MenuShadowTextBtn    <br/>
+            /// 5: SwapCircleInDebugBtn <br/>
+            /// 6: RightAlignBtn        <br/>
+            /// 7: RightMarginBtn
+            /// </summary>
+            private static readonly string[] GSButtonHints = new string[] {
+                    "Adjusts The Visibilty of The Debug Menu Backgrounds",
+                    "Adjusts The Debug Menu Scaling",
+                    "Only Effects The Camera While Not Aiming",
+                    "Adjust Camera Position On The X-Axis (smaller == left, larger == right)",
+                    "Improves Debug Menu Text Readability By Adding A Light Shadow Effect To The Text",
+                    " ",
+                    "Moves The Dev/Quick Menus To The Right Of The Screen",
+                    "Adjust the Menu's Distance From The Right Of The Screen",
+            };
+
+            /// <summary>
+            /// Buttons For Game-Specific Debug Options Loaded Based On The Game Chosen.
+            /// </summary>
+        #if DEBUG
+            private List<Button> GSButtons;
+        #else
+            private List<Button> GSButtons; // Initialized Once An Executable's Selected
+        #endif
+
+
+            private readonly int GSButtonHeight = 23;
+
+            private int ControlOffset;
         #endregion
 
 
@@ -100,8 +192,6 @@ namespace Dobby {
         //=============================================\\
         #region [Background Function Delcarations]
         
-        public static object[] PeekGameSpecificPatchValues() { return DynamicPatchButtons.GSPatchValues; }
-        
         private void WriteBytes(int? offset = null, byte[] data = null) {
 #if DEBUG
             var msg = $"Data {BitConverter.ToString(data).Replace("-", "")} Written To ";
@@ -111,7 +201,6 @@ namespace Dobby {
 
             fileStream.Write(data, 0, data.Length);
             Print(msg);
-            Print();
 #else
             if (offset != null)
             fileStream.Position = (int)offset;
@@ -172,10 +261,7 @@ namespace Dobby {
         
         private void TestGSButtons(object sender, EventArgs e)
         {
-            if (GSButtons == null)
-            {
-                //gsButtons = new DynamicPatchButtons(new int?[] { 0, 1, 2, 3, 4 }, GameSpecificPatchesLabel.Location.Y + GameSpecificPatchesLabel.Size.Height);
-            }
+            var buttons = InitializeDynamicPatchButtons(255, 0, 0);
         }
 
 
@@ -207,13 +293,9 @@ namespace Dobby {
             var Message = string.Empty;
 
               try {
-                using(fileStream) {
-                    if(UniversalPatchValues.Length != UniversalBootSettingsPointers.Length || DynamicPatchButtons.GSPatchValues.Length != GameSpecificBootSettingsPointers.Length)
-                    {
-                        Print($"Mismatch In Array Value vs pointer Length:\n  Universal:\n  Vars: {UniversalPatchValues.Length}\n  Pointers: {UniversalBootSettingsPointers.Length}\nDynamic:\n  Vars: {DynamicPatchButtons.GSPatchValues.Length}\n  Pointers: {GameSpecificBootSettingsPointers.Length}");
-                    }
-
-                    else if(BootSettingsCallAddress[gameIndex] == 0 || BootSettingsFunctionAddress[gameIndex] == 0) {
+                using(fileStream)
+                {
+                    if(BootSettingsCallAddress[gameIndex] == 0 || BootSettingsFunctionAddress[gameIndex] == 0) {
                         MessageBox.Show($"Game #{gameIndex} Has Is Missing An Address For BootSettings (Function Call: {BootSettingsCallAddress[gameIndex]} / Function Data: {BootSettingsFunctionAddress[gameIndex]})");
                         return "error";
                     }
@@ -261,18 +343,19 @@ namespace Dobby {
                         WriteBytes(data: patchData);
                         WriteByte(data: (byte)(UniversalPatchValues[index] ? 1 : 0));
 
-                        Print();
+                        Print("");
                         patchCount++;
                     }
 
 
                     // Apply Game-Specific Options
-                    for(var i = 0; i < DynamicPatchButtons.GSPatchValues.Length; i++ )
+                    //! TODO: UPDATE THIS, not changed since removing GSPatchValues
+                    for(var i = 0; i < DefaultGSPatchValues.Length; i++ )
                     {
-                        patchValue = DynamicPatchButtons.GSPatchValues[i];
+                        patchValue = DefaultGSPatchValues[i];
                         patchData = GameSpecificBootSettingsPointers[i][gameIndex]; //! wait, what? this seems like a mistake
 
-                        if (patchValue.Equals(DynamicPatchButtons.DefaultGSPatchValues[i]))
+                        if (patchValue.Equals(DefaultGSPatchValues[i]))
                         {
                             Print("Skipping Unchanged Patch Value...");
                             continue;
@@ -305,7 +388,7 @@ namespace Dobby {
                         WriteVar<byte[]>(patchValue);
 
                         patchCount++;
-                        Print();
+                        Print("");
                     }
 
                     // padding to avoid issues with overlapping previous larger patches
@@ -470,72 +553,6 @@ namespace Dobby {
         }
 
 
-        /// <summary>
-        /// Resize Form And Move Buttons, Then Add Enabled Custom Buttons To Form Based On The Current Game And Patch
-        /// </summary>
-        public void CreateAndAddGameSpecificButtons(int gameIndex)
-        {
-            // Assign values to variables made to keep track of the default form size/control postions for the reset button. Doing it on page init is annoying 'cause designer memes
-            if(OriginalFormScale == Size.Empty) {
-                Print("Setting Original Scale Variables");
-
-                // Every Control Below The "Game Specific Patches" Label
-                ControlsToMove = new Control[] {
-                    SeperatorLine2,
-                    BrowseButton,
-                    ExecutablePathBox,
-                    GameInfoLabel,
-                    SeperatorLine3,
-                    InfoHelpBtn,
-                    CreditsBtn,
-                    BackBtn,
-                    Info
-                };
-                OriginalFormScale = Size;
-                OriginalControlPositions = new Point[ControlsToMove.Length];
-
-
-                // Save the original Y-Axis positions of the controls being moved down to fit the custom controls
-                for(var i = 0; i < ControlsToMove.Length;)
-                    OriginalControlPositions[i] = ControlsToMove[i++].Location;
-            }
-
-            CustomDebugOptionsLabel.Visible = false;
-
-
-            // Initialize DynamicPatchButtons instance and populate the form with the created buttons
-            GSButtons = new DynamicPatchButtons(gameIndex, this, (GameSpecificPatchesLabel.Location.Y + 1 + GameSpecificPatchesLabel.Size.Height), (GameInfoLabel.Location.Y + 1 + GameInfoLabel.Size.Height));
-
-
-            // Attempt to reseize the form to fit the newly added buttons, unless only one has been enabled
-            if(GSButtons.Buttons.Count > 1)
-            {
-                for (int i = GSButtons.Buttons.Count - 1; i >= 0; i--)
-                {
-                    var button = GSButtons.Buttons[i];
-                    if (button == null)
-                        continue;
-
-                    // Move Each Control, Then Resize The BorderBox & Form
-                    Array.ForEach(ControlsToMove, control =>
-                    {
-                        control.Location = new Point(control.Location.X, (control.Location.Y + 20));
-                        Size = new Size(Size.Width, Size.Height + 20);
-                    });
-                    break;
-                }
-            }
-
-
-            // Finish resizing the PS4MenuSettingPage
-            //Size = new Size(Size.Width, Size.Height + 46);
-
-            // Move The Controls Below The Confirm And Reset Buttons A Bit Farther Down To Make Room For Them
-            for(int i = 4; i < ControlsToMove.Length; i++)
-                ControlsToMove[i].Location = new Point(ControlsToMove[i].Location.X, ControlsToMove[i].Location.Y + 46);
-
-        }
-
 
 
         /// <summary>
@@ -559,8 +576,11 @@ namespace Dobby {
             // Kill MainStream
             fileStream?.Dispose();
 
-            // Nuke Dynamic Patch Buttons
-            GSButtons.ResetButtons();
+            // Remove and dispose of dynamic patch buttons
+            foreach(Button button in GSButtons)
+                button?.Dispose();
+            GSButtons = null;
+
 
             // Move Controls Back To Their Original Positions
             for(var i = 0; i < ControlsToMove.Length; ControlsToMove[i].Location = OriginalControlPositions[i++]);
@@ -589,7 +609,6 @@ namespace Dobby {
 
             ExecutablePathBox.ResetControl();
             Game = GameID.Empty;
-            DynamicButtonsState = 0;
         }
 
 
@@ -632,6 +651,176 @@ namespace Dobby {
             CreateAndAddGameSpecificButtons(gameIndex);
         }
 
+        
+
+        private List<Button> InitializeDynamicPatchButtons(int GameIndex, int ButtonsVerticalStartOffset, int ResetButtonVerticalOffset)
+        {
+            
+            var gsButtons = new List<Button>(GameSpecificBootSettingsPointers.Length);
+            Button newButton;
+
+            for (int patchIndex = 0; patchIndex < GameSpecificBootSettingsPointers.Length; patchIndex++)
+            {
+                // Determine which patches have data associated with them
+                if (GameSpecificBootSettingsPointers[patchIndex][GameIndex].Length == 0)
+                {
+                    continue;
+                }
+
+
+                // Create The Button
+                newButton = new Button
+                {
+                    Name = GSButtonNames[patchIndex],
+                    TabIndex = patchIndex,
+                    Variable = DefaultGSPatchValues[patchIndex],
+                    TextAlign = ContentAlignment.MiddleLeft,
+                    FlatStyle = FlatStyle.Flat,
+                    ForeColor = SystemColors.Control,
+                    BackColor = MainColour,
+                    Cursor = Cursors.Cross,
+
+                    Location = new Point(1, ButtonsVerticalStartOffset),
+                    Size = new Size(ActiveForm.Width - 2, GSButtonHeight),
+                    Font = ControlFont,
+                    Text = GSButtonsText[patchIndex],
+                    Tag = GSButtonHints[patchIndex]
+                };
+                newButton.FlatAppearance.BorderSize = 0;
+
+                newButton.MouseDown += MouseDownFunc;
+                newButton.MouseUp += MouseUpFunc;
+                if (((string)newButton.Tag ?? string.Empty).Length > 0)
+                {
+                    newButton.MouseEnter += HoverString; // For Info Label Text
+                }
+                newButton.MouseEnter += (sender, e) => HoverLeave(((Control)sender), true); 
+                newButton.MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
+                Controls.Add(newButton);
+                gsButtons.Add(newButton);
+                newButton.BringToFront();
+
+
+                if (patchIndex == gsButtons.Count - 2)
+                {
+                    break;
+                }
+                        
+                ButtonsVerticalStartOffset += newButton.Size.Height;
+            }
+
+
+
+            // Create the "Confirm Patches" button
+            var ConfirmPatchesBtn = new Button
+            {
+                Name = "ConfirmPatchesBtn",
+                Size = new Size(Width - 11, GSButtonHeight),
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Cambria", 9.25F, FontStyle.Bold),
+                TextAlign = ContentAlignment.MiddleLeft,
+                Text = "Confirm And Apply Patches",
+                ForeColor = SystemColors.Control,
+                BackColor = Color.FromArgb(100, 100, 100),
+                Cursor = Cursors.Cross
+            };
+            ConfirmPatchesBtn.FlatAppearance.BorderSize = 0;
+
+            Controls.Add(ConfirmPatchesBtn);
+            ConfirmPatchesBtn.Location = new Point(1, ResetButtonVerticalOffset); // Right Below The GameInfoLabel
+            ConfirmPatchesBtn.MouseEnter += (sender, e) => HoverLeave(((Control)sender), true);
+            ConfirmPatchesBtn.MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
+            ConfirmPatchesBtn.Click += ConfirmBtn_Click;
+            ConfirmPatchesBtn.BringToFront();
+
+
+            // Create the "Reset Page"
+            var ResetBtn = new Button
+            {
+                Name = "ResetBtn",
+                Size = new Size(Width - 11, GSButtonHeight),
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Cambria", 9.25F, FontStyle.Bold),
+                TextAlign = ContentAlignment.MiddleLeft,
+                Text = "Reset Page",
+                ForeColor = SystemColors.Control,
+                BackColor = Color.FromArgb(100, 100, 100),
+                Cursor = Cursors.Cross
+            };
+            ResetBtn.FlatAppearance.BorderSize = 0;
+            
+            Controls.Add(ResetBtn);
+            ResetBtn.Location = new Point(1, ResetButtonVerticalOffset + 24);
+            ResetBtn.MouseEnter += (sender, e) => HoverLeave(((Control)sender), true);
+            ResetBtn.MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
+            ResetBtn.Click += ResetCustomDebugOptions;
+            ResetBtn.BringToFront();
+
+
+            return gsButtons;
+        }
+
+
+        /// <summary>
+        /// Resize Form And Move Buttons, Then Add Enabled Custom Buttons To Form Based On The Current Game And Patch
+        /// </summary>
+        public void CreateAndAddGameSpecificButtons(int gameIndex)
+        {
+            // Assign values to variables made to keep track of the default form size/control postions for the reset button. Doing it on page init is annoying 'cause designer memes
+            if(OriginalFormScale == Size.Empty) {
+                Print("Setting Original Scale Variables");
+
+                // Every Control Below The "Game Specific Patches" Label
+                ControlsToMove = new Control[] {
+                    SeperatorLine2,
+                    BrowseButton,
+                    ExecutablePathBox,
+                    GameInfoLabel,
+                    SeperatorLine3,
+                    InfoHelpBtn,
+                    CreditsBtn,
+                    BackBtn,
+                    Info
+                };
+                OriginalFormScale = Size;
+                OriginalControlPositions = new Point[ControlsToMove.Length];
+
+
+                // Save the original Y-Axis positions of the controls being moved down to fit the custom controls
+                for(var i = 0; i < ControlsToMove.Length;)
+                    OriginalControlPositions[i] = ControlsToMove[i++].Location;
+            }
+
+            CustomDebugOptionsLabel.Visible = false;
+
+
+            // Initialize DynamicPatchButtons instance and populate the form with the created buttons
+            GSButtons = InitializeDynamicPatchButtons(gameIndex, (GameSpecificPatchesLabel.Location.Y + 1 + GameSpecificPatchesLabel.Size.Height), (GameInfoLabel.Location.Y + 1 + GameInfoLabel.Size.Height));
+
+
+            // Attempt to reseize the form to fit the newly added buttons, unless only one has been enabled
+            if(GSButtons.Count > 1)
+            {
+                // Get the vertical distance to offset
+                var offset = (GSButtons.ElementAt(GSButtons.Count - 2).Location.Y + GSButtons.Last().Size.Height) - CustomDebugOptionsLabel.Location.Y;
+
+                // Move Each Control, Then Resize The BorderBox & Form
+                Array.ForEach(ControlsToMove, control => control.Location = new Point(control.Location.X, control.Location.Y + offset));
+
+                Size = new Size(Size.Width, Size.Height + offset);
+            }
+            this.Refresh();
+            this.PerformLayout();
+
+            // Finish resizing the PS4MenuSettingPage
+            //Size = new Size(Size.Width, Size.Height + 46);
+
+            // Move The Controls Below The Confirm And Reset Buttons A Bit Farther Down To Make Room For Them
+            for(int i = Array.FindIndex(ControlsToMove, control => control == (object)SeperatorLine3); i < ControlsToMove.Length; i++)
+                ControlsToMove[i].Location = new Point(ControlsToMove[i].Location.X, ControlsToMove[i].Location.Y + GSButtonHeight);
+
+        }
+
         #endregion
 
 
@@ -642,7 +831,7 @@ namespace Dobby {
         //--|   Event Handler Declarations   |--\\
         //======================================\\
         #region [Event Handler Declarations]
-
+        
         private void BrowseButton_Click(object sender, EventArgs e)
         {
             #if DEBUG
@@ -703,6 +892,65 @@ namespace Dobby {
             }
             else
                 BrowseButton.Text = "Browse...";
+        }
+
+
+
+        private void FloatClickFunc(Button Control, int ButtonIndex, MouseButtons Button)
+        {
+            if(CurrentControl != Control.Name)
+                return;
+
+            var inc = 0.1f;
+
+            if (Button == MouseButtons.Right)
+            {
+                inc = -inc;
+            }
+
+
+            Control.Variable = (float)Math.Round((float)((float)Control.Variable + inc), 3);
+            Control.Refresh();
+        }
+
+        private void FloatScrollFunc(Button Control, int ButtonIndex, int WheelDelta)
+        {
+            if (CurrentControl != Control.Name)
+            {
+                return;
+            }
+
+                    
+            var currentFloat = (float) Control.Variable; // Avoid CS0445
+
+            Control.Variable = (float)Math.Round(currentFloat += WheelDelta / 12000.0F, 4);
+            Control.Refresh();
+        }
+
+
+        private void IntClickFunc(Button Control, int ButtonIndex, MouseButtons Button)
+        {
+            if (CurrentControl != Control.Name)
+            {
+                return;
+            }
+
+
+            // Add or subtract an incrementation of 5,
+            Control.Variable = (byte) ((byte)Control.Variable + Button == MouseButtons.Left ? 5 : -5);
+
+            Control.Refresh();
+        }
+        private void IntScrollFunc(Button Control, int ButtonIndex, int WheelDelta)
+        {
+            if (CurrentControl != Control.Name)
+            {
+                return;
+            }
+
+
+            Control.Variable = (int) Control.Variable + (WheelDelta / 120);
+            Control.Refresh();
         }
         #endregion
 
@@ -1155,290 +1403,6 @@ namespace Dobby {
         };
 
 
-
         #endregion
-
-        /// <summary>
-        /// Class For Creating Dynamic Patch Buttons
-        /// </summary>
-        internal class DynamicPatchButtons
-        {
-            /// <summary>
-            /// Initialize a new instance of the DynamicPatchButtons class, and create the buttons available for the current game &amp; patch version
-            /// </summary>
-            /// <param name="GameIndex"></param>
-            /// <param name="Venat"></param>
-            /// <param name="ButtonsVerticalStartOffset"></param>
-            /// <param name="ResetButtonVerticalOffset"></param>
-            public DynamicPatchButtons(int GameIndex, PS4MenuSettingsPage Venat, int ButtonsVerticalStartOffset, int ResetButtonVerticalOffset)
-            {
-                
-                // Determine which patches have data associated with them
-                var IDs = new List<bool>(GameSpecificBootSettingsPointers.Length);
-                for (int i = 0; i < GameSpecificBootSettingsPointers.Length;)
-                {
-                        IDs.Add(GameSpecificBootSettingsPointers[i++][GameIndex].Length > 0);
-                }
-                
-            
-
-                Buttons = new List<Button>(IDs.Count);
-                ButtonsVerticalStartPosition = ButtonsVerticalStartOffset;
-                for (var patchIndex = 0; patchIndex < IDs.Count; patchIndex++)
-                {
-                    // Skip disabled buttons
-                    if (IDs.Last())
-                    {
-                        continue;
-                    }
-                    
-
-                    // Create The Button
-                    Buttons[patchIndex] = new Button();
-                    Buttons[patchIndex].Name = GSButtonNames[patchIndex];
-                    Buttons[patchIndex].TabIndex = patchIndex;
-                    Buttons[patchIndex].Variable = GSPatchValues[patchIndex];
-                    Buttons[patchIndex].TextAlign = ContentAlignment.MiddleLeft;
-                    Buttons[patchIndex].FlatAppearance.BorderSize = 0;
-                    Buttons[patchIndex].FlatStyle = FlatStyle.Flat;
-                    Buttons[patchIndex].ForeColor = SystemColors.Control;
-                    Buttons[patchIndex].BackColor = MainColour;
-                    Buttons[patchIndex].Cursor = Cursors.Cross;
-
-                    Buttons[patchIndex].Location = new Point(1, ButtonsVerticalStartPosition);
-                    Buttons[patchIndex].Size = new Size(ActiveForm.Width - 2, 23);
-                    Buttons[patchIndex].Font = ControlFont;
-                    Buttons[patchIndex].Text = GSButtonsText[patchIndex];
-                    Buttons[patchIndex].Tag = GSButtonHints[patchIndex];
-
-                    Buttons[patchIndex].MouseDown += MouseDownFunc;
-                    Buttons[patchIndex].MouseUp += MouseUpFunc;
-                    Buttons[patchIndex].MouseEnter += HoverString;  // For Info Label Text
-                    Buttons[patchIndex].MouseEnter += (sender, e) => HoverLeave(((Control)sender), true); 
-                    Buttons[patchIndex].MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
-                    Buttons[patchIndex].BringToFront();
-
-
-                    if (patchIndex == Buttons.Count - 2)
-                    {
-                        break;
-                    }
-                        
-                    ButtonsVerticalStartPosition += Buttons[patchIndex++].Size.Height;
-                }
-
-
-
-                // Create the "Confirm Patches" button
-                var ConfirmPatchesBtn = new Button
-                {
-                    Name = "ConfirmPatchesBtn",
-                    Size = new Size(Venat.Width - 11, 23),
-                    FlatStyle = FlatStyle.Flat,
-                    Font = new Font("Cambria", 9.25F, FontStyle.Bold),
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    Text = "Confirm And Apply Patches",
-                    ForeColor = SystemColors.Control,
-                    BackColor = Color.FromArgb(100, 100, 100),
-                    Cursor = Cursors.Cross
-                };
-                ConfirmPatchesBtn.FlatAppearance.BorderSize = 0;
-
-                Venat.Controls.Add(ConfirmPatchesBtn);
-                ConfirmPatchesBtn.Location = new Point(1, ResetButtonVerticalOffset); // Right Below The GameInfoLabel
-                ConfirmPatchesBtn.MouseEnter += (sender, e) => HoverLeave(((Control)sender), true);
-                ConfirmPatchesBtn.MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
-                ConfirmPatchesBtn.Click += Venat.ConfirmBtn_Click;
-                ConfirmPatchesBtn.BringToFront();
-
-
-                // Create the "Reset Page"
-                var ResetBtn = new Button
-                {
-                    Name = "ResetBtn",
-                    Size = new Size(Venat.Width - 11, 23),
-                    FlatStyle = FlatStyle.Flat,
-                    Font = new Font("Cambria", 9.25F, FontStyle.Bold),
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    Text = "Reset Page",
-                    ForeColor = SystemColors.Control,
-                    BackColor = Color.FromArgb(100, 100, 100),
-                    Cursor = Cursors.Cross
-                };
-                ResetBtn.FlatAppearance.BorderSize = 0;
-            
-                Venat.Controls.Add(ResetBtn);
-                ResetBtn.Location = new Point(1, ResetButtonVerticalOffset + 24);
-                ResetBtn.MouseEnter += (sender, e) => HoverLeave(((Control)sender), true);
-                ResetBtn.MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
-                ResetBtn.Click += Venat.ResetCustomDebugOptions;
-                ResetBtn.BringToFront();
-            }
-
-
-            
-            //=====================================================\\
-            //--|   DynamicPatchButton Variable Declarations   |--\\
-            //=====================================================\\
-            #region [DynamicPatchButton Variable Declarations]
-
-            /// <summary>
-            /// 0: Menu Alpha<br/> 1: Menu Scale <br/> 2: Non-ADS FOV <br/> 3: Main Camera X-Alignment <br/> 4: Swap Square And Circle In Debug <br/> 5: Menu Shadowed Text <br/> 6: Align Menus Right <br/> 7: Right Margin <br/>
-            /// </summary>
-            internal static object[] GSPatchValues { get; private set; } = new object[] {
-                0.85f,
-                0.60f,
-                1f,
-                1f,
-                false,
-                false,
-                false,
-                (byte)10
-            };
-            internal static readonly object[] DefaultGSPatchValues = GSPatchValues;
-
-
-            /// <summary>
-            /// Variable Used In Dynamic Button Cration For Game-Specific Patches
-            /// </summary>
-            private static readonly string[] GSButtonNames = new string[] {
-                    "MenuAlphaBtn",
-                    "MenuScaleBtn",
-                    "FOVBtn",
-                    "XAlignBtn",
-                    "MenuShadowTextBtn",
-                    "SwapCircleInDebugBtn",
-                    "MenuRightAlignBtn",
-                    "RightMarginBtn"
-            };
-
-            private static readonly string[] GSButtonsText = new string[] {
-                    "Set DMenu BG Opacity:",             // default=0.85
-                    "Set Dev Menu Scale:",               // default=0.60
-                    "Adjust Non-ADS FOV:",               // default=1.00
-                    "Adjust Camera X-Alignment:",        // default=1.00
-                    "Enable Debug Menu Text Shadow:",    // default=No
-                    "Swap Circle With Square In DMenu:", // default=No
-                    "Align Debug Menus To The Right:",   // default=No
-                    "Set Distance From Right Side:"      // default=10
-            };
-
-            private static readonly string[] GSButtonHints = new string[] {
-                    "Adjusts The Visibilty of The Debug Menu Backgrounds",
-                    "Adjusts The Debug Menu Scaling",
-                    "Only Effects The Camera While Not Aiming",
-                    "Adjust Camera Position On The X-Axis (smaller == left, larger == right)",
-                    "Improves Debug Menu Text Readability By Adding A Light Shadow Effect To The Text",
-                    " ",
-                    "Moves The Dev/Quick Menus To The Right Of The Screen",
-                    "Adjust the Menu's Distance From The Right Of The Screen",
-            };
-
-            /// <summary> Buttons For Game-Specific Debug Options Loaded Based On The Game Chosen <br/><br/>
-            /// 0: MenuAlphaBtn                                                                        <br/>
-            /// 1: MenuScaleBtn                                                                        <br/>
-            /// 2: FOVBtn                                                                              <br/>
-            /// 3: XAlign                                                                              <br/>
-            /// 4: MenuShadowTextBtn                                                                   <br/>
-            /// 5: SwapCircleInDebugBtn                                                                <br/>
-            /// 6: RightAlignBtn                                                                       <br/>
-            /// 7: RightMarginBtn
-            /// </summary>
-            public List<Button> Buttons; // Initialized Once An Executable's Selected
-
-
-            private int ButtonsVerticalStartPosition;
-            #endregion
-
-
-
-
-            //====================================================\\
-            //--|   DynamicPatchButton Function Declarations   |--\\
-            //====================================================\\
-            #region [DynamicPatchButton Function Declarations]
-
-
-            /// <summary> Remove and dispose of dynamic patch buttons and reset options to default
-            ///</summary>
-            public void ResetButtons() {
-                foreach(Button button in Buttons)
-                    button?.Dispose();
-
-                Buttons = null;
-                GSPatchValues = DefaultGSPatchValues;
-            }
-
-            #endregion
-
-
-
-
-            //=========================================================\\
-            //--|   DynamicPatchButton Event Handler Declarations   |--\\
-            //=========================================================\\
-            #region [DynamicPatchButton Event Handler Declarations]
-
-            private void ToggleFunc(Button Control, int ButtonIndex)
-            {
-                if(MouseScrolled || !MouseIsDown || CurrentControl != Control.Name)
-                    return;
-
-                GSPatchValues[ButtonIndex] = !(bool)GSPatchValues[ButtonIndex];
-                Control.Variable = GSPatchValues[ButtonIndex];
-                Control.Refresh();
-            }
-
-
-            private void FloatClickFunc(Button Control, int ButtonIndex, MouseButtons Button)
-            {
-                if(CurrentControl != Control.Name)
-                    return;
-
-                var inc = 0.1f;
-
-                if (Button == MouseButtons.Right) inc = -inc;
-
-
-
-                GSPatchValues[ButtonIndex] = (float)Math.Round((float)(GSPatchValues[ButtonIndex] = (float)GSPatchValues[ButtonIndex] + inc), 4);
-
-                Control.Variable = GSPatchValues[ButtonIndex];
-                Control.Refresh();
-            }
-            private void FloatScrollFunc(Button Control, int ButtonIndex, int WheelDelta) {
-                if(CurrentControl != Control.Name) return;
-                var currentFloat = (float)GSPatchValues[ButtonIndex]; // Avoid CS0445
-
-                GSPatchValues[ButtonIndex] = (float)Math.Round(currentFloat += WheelDelta / 12000.0F, 4);
-                Control.Variable = GSPatchValues[ButtonIndex];
-                Control.Refresh();
-            }
-
-
-            private void IntClickFunc(Button Control, int ButtonIndex, MouseButtons Button) {
-                if(CurrentControl != Control.Name) return;
-                var currentInt = (byte)GSPatchValues[ButtonIndex]; // Avoid CS0445
-
-                if(Button == MouseButtons.Left) currentInt += 5;
-                else currentInt -= 5;
-
-                GSPatchValues[ButtonIndex] = currentInt;
-             
-                Control.Variable = GSPatchValues[ButtonIndex];
-                Control.Refresh();
-            }
-            private void IntScrollFunc(Button Control, int ButtonIndex, int WheelDelta) {
-                if(CurrentControl != Control.Name) return;
-                var currentInt = (byte)GSPatchValues[ButtonIndex]; // Avoid CS0445
-
-                currentInt += (byte)(WheelDelta / 120);
-                GSPatchValues[ButtonIndex] = currentInt;
-
-                Control.Variable = GSPatchValues[ButtonIndex];
-                Control.Refresh();
-            }
-            #endregion
-        }
     }
 }

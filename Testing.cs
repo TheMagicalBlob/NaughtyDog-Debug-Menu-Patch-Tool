@@ -55,10 +55,10 @@ namespace Dobby {
 
         /// <summary> Active Page reference for debug output loop. </summary>
         private dynamic ActivePage {
-            get => activePage;
+            get => ActivePage;
             set {
                 activePage = value;
-                Log?.SetLogParent(ActivePage);
+                Log?.SetLogParent(value);
             }
         }
         private dynamic activePage;
@@ -69,8 +69,6 @@ namespace Dobby {
         public static string TestPubToolPath;
         public static string TestEbootPath;
         public static string TestGP4Path;
-
-        public bool OverrideMsgOut;
 
 
         internal int ClickErrors = 0;
@@ -84,6 +82,7 @@ namespace Dobby {
         public static string[] LogBuffer;
 
         public static bool LogShouldRefresh, LogShouldPause;
+        public static bool ForceDefaultOutput = false;
 
         private static int OutputStringIndex = 0, ShiftIndex = 0;
 
@@ -518,8 +517,6 @@ namespace Dobby {
                         output = string.Empty;
                         var controlType = HoveredControl?.GetType().ToString();
 
-                        var dynamicVars = PS4MenuSettingsPage.PeekGameSpecificPatchValues();
-
                         try {
 
                             // Switch between various formats of debug output based on the current page.
@@ -559,23 +556,27 @@ namespace Dobby {
                                     };
                                 break;
                                 case PageID.PS4MenuSettingsPage:
-                                    rawOutput = new string[] {
+                                    var tmpOutput = new List<string>()
+                                    {
                                         "",
-                                        $"| Disable FPS:          {PS4MenuSettingsPage.UniversalPatchValues[0]}",
-                                        $"| Paused Icon:          {PS4MenuSettingsPage.UniversalPatchValues[1]}",
-                                        $"| ProgPauseOnOpen:      {PS4MenuSettingsPage.UniversalPatchValues[2]}",
-                                        $"| ProgPauseOnExit:      {PS4MenuSettingsPage.UniversalPatchValues[3]}",
-                                        $"| Novis:                {PS4MenuSettingsPage.UniversalPatchValues[4]}",
-                                         "| ",
-                                        $"| Menu Scale:           {dynamicVars[0]}",
-                                        $"| Menu Alpha:           {dynamicVars[1]}",
-                                        $"| Non-ADS FOV:          {dynamicVars[2]}",
-                                        $"| Camera X-Align:       {dynamicVars[3]}",
-                                        $"| Shadowed Text:        {dynamicVars[4]}",
-                                        $"| Swap Square & Circle: {dynamicVars[5]}",
-                                        $"| Right Align:          {dynamicVars[6]}",
-                                        $"|    Right Margin:      {dynamicVars[7]}\n"
+                                        $"| Disable FPS:          {Dev.ActivePage.DisableDebugTextBtn.Variable}",
+                                        $"| Paused Icon:          {Dev.ActivePage.DisablePausedIconBtn.Variable}",
+                                        $"| ProgPauseOnOpen:      {Dev.ActivePage.ProgPauseOnOpenBtn.Variable}",
+                                        $"| ProgPauseOnExit:      {Dev.ActivePage.ProgPauseOnCloseBtn.Variable}",
+                                        $"| Novis:                {Dev.ActivePage.NovisBtn.Variable}",
+                                         "|"
                                     };
+
+                                    if (Dev.ActivePage.GSButtons != null)
+                                    {
+                                        foreach (var control in Dev.ActivePage.GSButtons)
+                                        {
+
+                                        }
+                                    }
+
+
+                                    rawOutput = tmpOutput.ToArray();
                                 break;
                             }
                         }

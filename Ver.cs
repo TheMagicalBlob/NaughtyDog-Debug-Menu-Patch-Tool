@@ -296,6 +296,7 @@
           "* 4.61.366.934 | Small (and lazy) fix to allow manual text box resetting (I ate a pizza for breakfast, my brain is on low power mode now...)",
           "* 4.61.368.940 | Starting to clean up the PS4 Menu Setting page",
           "* 4.62.371.946 | Finally added replacement for the hideous SetInfoStringOnControlHover method that just prints the control's Tag (if one's been provided). Still simplifying dynamic patch buttons intialization",
+          "* 4.62.373.951 | Moved the DynamicPatchButtons class contents to the parent form (why was it even a seperate class??). Other crap. (detailed, I know)",
         };
 
 

@@ -99,6 +99,7 @@ namespace Dobby
             this.DisableDebugTextBtn.Name = "DisableDebugTextBtn";
             this.DisableDebugTextBtn.Size = new System.Drawing.Size(251, 24);
             this.DisableDebugTextBtn.TabIndex = 42;
+            this.DisableDebugTextBtn.Tag = "Disable the 2D performance  & build stats";
             this.DisableDebugTextBtn.Text = "Disable 2D Debug Text On Startup: ";
             this.DisableDebugTextBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisableDebugTextBtn.UseVisualStyleBackColor = false;
@@ -137,7 +138,7 @@ namespace Dobby
             // 
             this.Info.Font = new System.Drawing.Font("Cambria", 10F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(8, 365);
+            this.Info.Location = new System.Drawing.Point(8, 360);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
             this.Info.TabIndex = 7;
@@ -151,7 +152,7 @@ namespace Dobby
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 319);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 313);
             this.CreditsBtn.MaximumValue = null;
             this.CreditsBtn.MinimumValue = null;
             this.CreditsBtn.Name = "CreditsBtn";
@@ -170,7 +171,7 @@ namespace Dobby
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 297);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 291);
             this.InfoHelpBtn.MaximumValue = null;
             this.InfoHelpBtn.MinimumValue = null;
             this.InfoHelpBtn.Name = "InfoHelpBtn";
@@ -199,7 +200,7 @@ namespace Dobby
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 340);
+            this.BackBtn.Location = new System.Drawing.Point(1, 334);
             this.BackBtn.MaximumValue = null;
             this.BackBtn.MinimumValue = null;
             this.BackBtn.Name = "BackBtn";
@@ -247,7 +248,7 @@ namespace Dobby
             // 
             this.SeperatorLine3.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine3.Location = new System.Drawing.Point(2, 280);
+            this.SeperatorLine3.Location = new System.Drawing.Point(2, 274);
             this.SeperatorLine3.Name = "SeperatorLine3";
             this.SeperatorLine3.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine3.TabIndex = 32;
@@ -261,7 +262,7 @@ namespace Dobby
             this.BrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BrowseButton.Font = new System.Drawing.Font("Cambria", 8.5F, System.Drawing.FontStyle.Bold);
             this.BrowseButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.BrowseButton.Location = new System.Drawing.Point(237, 242);
+            this.BrowseButton.Location = new System.Drawing.Point(237, 236);
             this.BrowseButton.MaximumValue = null;
             this.BrowseButton.MinimumValue = null;
             this.BrowseButton.Name = "BrowseButton";
@@ -277,7 +278,7 @@ namespace Dobby
             this.ExecutablePathBox.BackColor = System.Drawing.Color.Gray;
             this.ExecutablePathBox.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.ExecutablePathBox.ForeColor = System.Drawing.SystemColors.Window;
-            this.ExecutablePathBox.Location = new System.Drawing.Point(3, 241);
+            this.ExecutablePathBox.Location = new System.Drawing.Point(3, 235);
             this.ExecutablePathBox.Name = "ExecutablePathBox";
             this.ExecutablePathBox.Size = new System.Drawing.Size(233, 23);
             this.ExecutablePathBox.TabIndex = 38;
@@ -308,7 +309,7 @@ namespace Dobby
             // 
             this.GameInfoLabel.Font = new System.Drawing.Font("Cambria", 10F);
             this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.GameInfoLabel.Location = new System.Drawing.Point(2, 267);
+            this.GameInfoLabel.Location = new System.Drawing.Point(2, 261);
             this.GameInfoLabel.Name = "GameInfoLabel";
             this.GameInfoLabel.Size = new System.Drawing.Size(316, 19);
             this.GameInfoLabel.TabIndex = 40;
@@ -357,7 +358,7 @@ namespace Dobby
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ClientSize = new System.Drawing.Size(320, 387);
+            this.ClientSize = new System.Drawing.Size(320, 383);
             this.Controls.Add(this.DebugButtonCycleBtn);
             this.Controls.Add(this.NovisBtn);
             this.Controls.Add(this.ProgPauseOnCloseBtn);
