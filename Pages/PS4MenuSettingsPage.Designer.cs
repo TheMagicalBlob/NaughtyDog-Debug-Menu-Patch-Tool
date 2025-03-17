@@ -119,6 +119,7 @@ namespace Dobby
             this.DisablePausedIconBtn.Name = "DisablePausedIconBtn";
             this.DisablePausedIconBtn.Size = new System.Drawing.Size(205, 24);
             this.DisablePausedIconBtn.TabIndex = 43;
+            this.DisablePausedIconBtn.Tag = "Show the flashing PAUSED box on-screen when the debug menu pause is active";
             this.DisablePausedIconBtn.Text = "Show Debug PAUSED Icon:";
             this.DisablePausedIconBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisablePausedIconBtn.UseVisualStyleBackColor = false;
@@ -382,6 +383,7 @@ namespace Dobby
             this.Controls.Add(this.SeperatorLine0);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PS4MenuSettingsPage";
+            this.Tag = "";
             this.ResumeLayout(false);
             this.PerformLayout();
 

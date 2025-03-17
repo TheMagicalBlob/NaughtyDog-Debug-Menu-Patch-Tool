@@ -22,6 +22,7 @@ namespace Dobby {
                 InitializeComponent();
                 InitializeAdditionalEventHandlers(Controls);
                 
+
                 if(UniversalPatchValues.Length != UniversalBootSettingsPointers.Length || DefaultGSPatchValues.Length != GameSpecificBootSettingsPointers.Length)
                 {
                     Print($"WARNING: Mismatch In Array Value vs pointer Length:\n  Universal:\n  Vars: {UniversalPatchValues.Length}\n  Pointers: {UniversalBootSettingsPointers.Length}\nDynamic:\n  Vars: {DefaultGSPatchValues.Length}\n  Pointers: {GameSpecificBootSettingsPointers.Length}");

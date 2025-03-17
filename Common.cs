@@ -66,10 +66,7 @@ namespace Dobby {
         public static bool
             MouseScrolled,
             MouseIsDown,
-            IsPageGoingBack,
-            LastMsgOutputWasInfoString,
             LabelShouldFlash,
-            FlashThreadHasStarted,
             DisableFormChange
         ;
 
@@ -83,7 +80,6 @@ namespace Dobby {
         public static Point[] OriginalControlPositions;
 
         public static Size OriginalFormScale = Size.Empty;
-        public static Size OriginalBorderScale;
 
         public static Color NDYellow = Color.FromArgb(255, 227, 0);
 
@@ -160,7 +156,7 @@ namespace Dobby {
 
         private static string infoText;
 
-        private static int flashes;
+        private static int flashes = -1;
 
         private static Thread LabelUpdateThread;
 
@@ -174,8 +170,8 @@ namespace Dobby {
         //#
         #region [Network-Related Components]
 
-        public static TcpClient TcpClient;
-        public static NetworkStream NetStream;
+        //public static TcpClient TcpClient;
+        //public static NetworkStream NetStream;
         #endregion
 
         #endregion (global variable declarations)
@@ -215,6 +211,7 @@ namespace Dobby {
         }
 
 
+
         /// <summary>
         /// Write a fucking //!summary, chucklefuck
         /// </summary>
@@ -222,16 +219,17 @@ namespace Dobby {
         /// <param name="flashLabel"> If true, flash the label to indicate an error or otherwise get the user's attention. (switches between white/yellow) </param>
         public static void UpdateLabel(string newText, bool flashLabel = false)
         {
-            if (newText != null && InfoLabel.Text != newText) {
+            if ((infoText == " " || infoText == null) && newText != null && InfoLabel.Text != newText) {
                 infoText = newText;
-                Print($"Label Text => {newText}");
+                Print($"Label Text => {newText ?? "Reset to null"}");
             }
 
             if (flashLabel)
                 flashes = 16;
             else
-                flashes = 0;
+                flashes = -1;
         }
+
 
         
         /// <summary>
@@ -607,6 +605,11 @@ namespace Dobby {
             // Apply border application method to paint event
             Controls.Owner.Paint += DrawBorder;
             
+            // Lazy temp fix
+            Controls.Owner.Tag = " ";
+            Controls.Owner.MouseEnter += Common.HoverString;
+
+
 
             // Attempt to assign static Info label refference for globals
             try {
@@ -864,12 +867,22 @@ namespace Dobby {
             while (true) {
                 try {
                     // Wait for something to do
-                    while (flashes < 1 && infoText == null)
+                    while (flashes == -1 && infoText == null)
                         Thread.Sleep(1);
+
+                    #if DEBUG
+                    Print($"Label Updating: {{ Text: [{infoText ?? "null"}] | Flashes: [{flashes}] }}");
+                    #endif
+
+                    if (infoText != null && infoText == " ") // Try to avoid hiding info strings with the 
+                    {
+                        Print("Waiting for new string before applying reset string...");
+                        Thread.Sleep(3000);
+                    }
 
 
                     // Flash the label if applicable
-                    for (; flashes >= 0; --flashes)
+                    for (; flashes > -1; flashes--)
                     {
                         while (ActiveForm == null)
                             Thread.Sleep(1);
@@ -877,8 +890,7 @@ namespace Dobby {
                         ActiveForm?.Invoke(SetLabelState, label, (flashes & 1) == 0 ? Color.FromArgb(255, 227, 0) : Color.White, infoText);
                         Thread.Sleep(135);
                     }
-                    
-                    
+
                     // Set The Text of The Yellow Label At The Bottom Of The Form
                     if (infoText != null) {
                         ActiveForm?.Invoke(SetLabelState, label, Color.FromArgb(255, 227, 0), infoText);
@@ -946,12 +958,14 @@ namespace Dobby {
         
         public static void HoverString(object sender, EventArgs e)
         {
+            // TODO:
+            // Make this avoid assigning Hint string when the label flash thread is active
             try {
-                if (((string) ((Control)sender).Tag ?? string.Empty).Length > 0)
+                if (((string) ((Control)sender).Tag ?? string.Empty).Length > 0) //! test this
                 {
                     UpdateLabel((string) ((Control)sender).Tag);
                 }
-                else Print("Label not updated due to empty tag");
+                else Print($"Label not updated due to empty tag or active flash thread {flashes} {infoText?.Length ?? 0xDEADDAD}");
             }
             catch (InvalidCastException)
             {
@@ -1295,6 +1309,7 @@ namespace Dobby {
         /// <summary>
         /// //! Write a fuckin' summary, dicksneeze.
         /// </summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public object MinimumValue
         {
             get => minValue;
@@ -1329,6 +1344,7 @@ namespace Dobby {
         /// <summary>
         /// //! Write a fuckin' summary, dicksneeze.
         /// </summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public object MaximumValue
         {
             get => maxValue;
@@ -1364,24 +1380,15 @@ namespace Dobby {
 
         new public object Tag
         {
-            get
-            {
-                Common.Print("Getting tag for " + Name);
-                
-                return base.Tag;
-            }
+            get => base.Tag;
             
             set {
-                Common.Print("Setting tag for " + Name);
-
                 if (value?.ToString()?.Length > 0)
                 {
                     MouseEnter += Common.HoverString;
-                    Common.Print("Set tag event for " + Name);
                 }
                 else {
                     MouseEnter -= Common.HoverString;
-                    Common.Print("Removed tag event from " + Name + $" Tag: {value}");
                 }
 
                 base.Tag = value;

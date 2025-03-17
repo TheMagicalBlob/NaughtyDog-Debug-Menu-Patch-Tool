@@ -112,7 +112,7 @@ namespace Dobby {
             catch(IOException dang)
             {
                 PrintError(dang);
-                UpdateLabel("Access Denied, File In Use Elsewhere");
+                UpdateLabel("Access Denied, File In Use Elsewhere", true);
                 return;
             }
 

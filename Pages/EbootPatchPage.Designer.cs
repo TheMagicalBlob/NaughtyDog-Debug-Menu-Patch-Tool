@@ -26,17 +26,17 @@ namespace Dobby
 
         public void InitializeComponent() {
             this.GameInfoLabel = new System.Windows.Forms.Label();
-            this.BrowseButton = new Button();
+            this.BrowseButton = new Dobby.Button();
             this.ExecutablePathBox = new Dobby.TextBox();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.RestoredDebugBtn = new Button();
-            this.InfoHelpBtn = new Button();
+            this.RestoredDebugBtn = new Dobby.Button();
+            this.InfoHelpBtn = new Dobby.Button();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
-            this.BackBtn = new Button();
-            this.DisableDebugBtn = new Button();
-            this.EnableDebugBtn = new Button();
+            this.BackBtn = new Dobby.Button();
+            this.DisableDebugBtn = new Dobby.Button();
+            this.EnableDebugBtn = new Dobby.Button();
             this.Info = new System.Windows.Forms.Label();
-            this.CreditsBtn = new Button();
+            this.CreditsBtn = new Dobby.Button();
             this.MainLabel = new System.Windows.Forms.Label();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -64,6 +64,7 @@ namespace Dobby
             this.BrowseButton.Name = "BrowseButton";
             this.BrowseButton.Size = new System.Drawing.Size(67, 19);
             this.BrowseButton.TabIndex = 31;
+            this.BrowseButton.Tag = "Search for a decrypted/unsigned eboot.bin to patch";
             this.BrowseButton.Text = "Browse...";
             this.BrowseButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BrowseButton.UseVisualStyleBackColor = false;
@@ -102,6 +103,7 @@ namespace Dobby
             this.RestoredDebugBtn.Name = "RestoredDebugBtn";
             this.RestoredDebugBtn.Size = new System.Drawing.Size(283, 23);
             this.RestoredDebugBtn.TabIndex = 23;
+            this.RestoredDebugBtn.Tag = "Enable the debug menu, and appy various patches to it";
             this.RestoredDebugBtn.Text = "Enable Debug Mode - Restored/Custom";
             this.RestoredDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.RestoredDebugBtn.UseVisualStyleBackColor = false;
@@ -162,6 +164,7 @@ namespace Dobby
             this.DisableDebugBtn.Name = "DisableDebugBtn";
             this.DisableDebugBtn.Size = new System.Drawing.Size(150, 23);
             this.DisableDebugBtn.TabIndex = 12;
+            this.DisableDebugBtn.Tag = "Disable the debug menu (Does not remove other patches)";
             this.DisableDebugBtn.Text = "Disable Debug Mode";
             this.DisableDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisableDebugBtn.UseVisualStyleBackColor = false;
@@ -179,6 +182,7 @@ namespace Dobby
             this.EnableDebugBtn.Name = "EnableDebugBtn";
             this.EnableDebugBtn.Size = new System.Drawing.Size(205, 23);
             this.EnableDebugBtn.TabIndex = 9;
+            this.EnableDebugBtn.Tag = "Enable the debug menu without editing anything";
             this.EnableDebugBtn.Text = "Enable Debug Mode - Default";
             this.EnableDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.EnableDebugBtn.UseVisualStyleBackColor = false;
