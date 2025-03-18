@@ -690,10 +690,6 @@ namespace Dobby {
 
                 newButton.MouseDown += MouseDownFunc;
                 newButton.MouseUp += MouseUpFunc;
-                if (((string)newButton.Tag ?? string.Empty).Length > 0)
-                {
-                    newButton.MouseEnter += HoverString; // For Info Label Text
-                }
                 newButton.MouseEnter += (sender, e) => HoverLeave(((Control)sender), true); 
                 newButton.MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
                 Controls.Add(newButton);

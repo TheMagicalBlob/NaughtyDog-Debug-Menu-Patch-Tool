@@ -951,6 +951,7 @@ namespace Dobby {
                 {
                     UpdateLabel((string) ((Control)sender).Tag);
                 }
+                else Print("Label not updated due to empty tag");
             }
             catch (InvalidCastException)
             {
@@ -1245,7 +1246,6 @@ namespace Dobby {
         /// Custom value associated with the control to be rendered alongside it, and edited via manually assigned per-control events.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] // Designer autogenerates code settings the Variable & VariableTags properties to null, annoyingly. More of an issue for the former though, due to the Properties window not letting you edit objects
-        //[Browsable(false)] // Designer won't let me edit it anyway
         [TypeConverter(typeof(BooleanConverter))] //! make sure this doesn't break functionality with other types
         public object Variable
         {
@@ -1282,21 +1282,13 @@ namespace Dobby {
         private object _Variable;
 
 
+
         /// <summary>
         /// An Array of names to display in place of basic values.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [DefaultValue(null)]
         public string[] VariableTags;
-        //public string[] VariableTags
-        //{
-        //    get => _VariableTags;
-        //
-        //    set {
-        //        _VariableTags = value;
-        //    }
-        //}
-        //private string[] _VariableTags;
 
 
 
@@ -1370,6 +1362,31 @@ namespace Dobby {
         private bool hasEvents; // Lazy Fix
 
 
+        new public object Tag
+        {
+            get
+            {
+                Common.Print("Getting tag for " + Name);
+                
+                return base.Tag;
+            }
+            
+            set {
+                Common.Print("Setting tag for " + Name);
+
+                if (value?.ToString()?.Length > 0)
+                {
+                    MouseEnter += Common.HoverString;
+                    Common.Print("Set tag event for " + Name);
+                }
+                else {
+                    MouseEnter -= Common.HoverString;
+                    Common.Print("Removed tag event from " + Name + $" Tag: {value}");
+                }
+
+                base.Tag = value;
+            }
+        } 
 
 
 
