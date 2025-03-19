@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -226,8 +227,6 @@ namespace Dobby {
 
             if (flashLabel)
                 flashes = 16;
-            else
-                flashes = -1;
         }
 
 
@@ -870,29 +869,28 @@ namespace Dobby {
                     while (flashes == -1 && infoText == null)
                         Thread.Sleep(1);
 
-                    #if DEBUG
-                    Print($"Label Updating: {{ Text: [{infoText ?? "null"}] | Flashes: [{flashes}] }}");
-                    #endif
 
                     if (infoText != null && infoText == " ") // Try to avoid hiding info strings with the 
                     {
                         Print("Waiting for new string before applying reset string...");
-                        Thread.Sleep(3000);
+
+                        for (var time = 0; infoText == " " && time++ < 75; Thread.Sleep(1));
                     }
 
 
                     // Flash the label if applicable
-                    for (; flashes > -1; flashes--)
+                    for (var msg = infoText; flashes > -1; flashes--)
                     {
                         while (ActiveForm == null)
                             Thread.Sleep(1);
 
-                        ActiveForm?.Invoke(SetLabelState, label, (flashes & 1) == 0 ? Color.FromArgb(255, 227, 0) : Color.White, infoText);
+                        ActiveForm?.Invoke(SetLabelState, label, (flashes & 1) == 0 ? Color.FromArgb(255, 227, 0) : Color.White, msg);
                         Thread.Sleep(135);
                     }
 
                     // Set The Text of The Yellow Label At The Bottom Of The Form
-                    if (infoText != null) {
+                    if (infoText != null)
+                    {
                         ActiveForm?.Invoke(SetLabelState, label, Color.FromArgb(255, 227, 0), infoText);
                         infoText = null;
                     }

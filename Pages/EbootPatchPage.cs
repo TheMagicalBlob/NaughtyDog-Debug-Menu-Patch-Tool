@@ -81,16 +81,15 @@ namespace Dobby {
 
         /// <summary> Open A File Dialog Window To Select A File For Checking/Patching </summary>
         private void BrowseButton_Click(object sender, EventArgs e) {
-            var fileDialog = new OpenFileDialog {
+            using(var fileDialog = new OpenFileDialog {
                 Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
                 Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned / Decrypted (The First 4 Bytes Will Be .elf If It Is)"
-            };
+            })
 
-            if(fileDialog.ShowDialog() == DialogResult.OK) {
-                ExecutablePathBox.Text = fileDialog.FileName;
-
-                LoadGameExecutable(fileDialog.FileName);
-                fileDialog.Dispose();
+            if(fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                ExecutablePathBox.Set(fileDialog.FileName);
+                LoadGameExecutable(ExecutablePathBox.Text);
             }
         }
 
@@ -123,16 +122,40 @@ namespace Dobby {
                 
             DebugAddressForSelectedGame = GetDebugAddress(Game);
 
-            // Update the "Restored Debug" Button to reflect the available patch type(s)
-            RestoredDebugBtn.Text = $"{RestoredDebugBtn.Text.Remove(RestoredDebugBtn.Text.LastIndexOf(' '))}{GetMenuPatchTypeAvailability(Game)}";
-        }
+            // Determine the available patch type based on the current game, and update the restored/custom debug button to reflect it
+            switch(Game)
+            {
+                //#
+                //## Games I've Made Customizations For
+                //#
+                case GameID.T2107:
+                case GameID.T2108:
+                case GameID.T2109:
+                    RestoredDebugBtn.Font = new Font("Cambria", 9.25F, FontStyle.Bold);
+                    RestoredDebugBtn.Enabled = true;
+                    RestoredDebugBtn.Text = RestoredDebugBtn.Text.Replace("Restored/Custom", "Custom");
+                    break;
+                //#
+                //## Games I've Made Restorations For
+                //#
+                case GameID.T1R110:
+                case GameID.T1R111:
+                case GameID.UC1100:
+                case GameID.UC1102:
+                case GameID.UC2100:
+                case GameID.UC2102:
+                case GameID.UC3100:
+                case GameID.UC3102:
+                case GameID.UC4117:
+                case GameID.UC4133MP:
+                    RestoredDebugBtn.Font = new Font("Cambria", 9.25F, FontStyle.Bold);
+                    RestoredDebugBtn.Enabled = true;
+                    RestoredDebugBtn.Text = " Restored";
+                    break;
 
-        /// <returns> Patch Type Name For Restored/Custom Debug Button </returns>
-        private string GetMenuPatchTypeAvailability(GameID GameID) {
-            switch(GameID) {
-                ///
-                // Games I've Only Made Debug Mode Toggles For
-                ///
+                //#
+                //## Games I've Only Made Debug Mode Toggles For
+                //#
                 case GameID.T1R100:
                 case GameID.T1R109:
                 case GameID.T2100:
@@ -176,39 +199,18 @@ namespace Dobby {
                 case GameID.TLL10X:
                     RestoredDebugBtn.Font = new Font("Cambria", 9.25F, FontStyle.Bold | FontStyle.Strikeout);
                     RestoredDebugBtn.Enabled = false;
-                    return " Restored/Custom";
+                    RestoredDebugBtn.Text = " Restored/Custom";
+                    break;
 
-                ////
-                // Games I've Made Customizations For
-                ////
-                case GameID.T2107:
-                case GameID.T2108:
-                case GameID.T2109:
-                    RestoredDebugBtn.Font = new Font("Cambria", 9.25F, FontStyle.Bold);
-                    RestoredDebugBtn.Enabled = true;
-                    return " Custom";
-                ////
-                // Games I've Made Restorations For
-                ////
-                case GameID.T1R110:
-                case GameID.T1R111:
-                case GameID.UC1100:
-                case GameID.UC1102:
-                case GameID.UC2100:
-                case GameID.UC2102:
-                case GameID.UC3100:
-                case GameID.UC3102:
-                case GameID.UC4117:
-                case GameID.UC4133MP:
-                    RestoredDebugBtn.Font = new Font("Cambria", 9.25F, FontStyle.Bold);
-                    RestoredDebugBtn.Enabled = true; return " Restored";
-                ////
-                // Games That Aren't The Right Fucking Game You Dumbass
-                ////
+                //#
+                //## Unknown games
+                //#
                 default:
-                    Print($"Unknown Game Selected (GetGameID()) Game: {GameID}");
+                    Print($"Unknown Game Selected (GetGameID()) Game: {Game}");
                     RestoredDebugBtn.Font = new Font("Cambria", 9.75F, FontStyle.Strikeout);
-                    RestoredDebugBtn.Enabled = false; return " Invalid Game";
+                    RestoredDebugBtn.Enabled = false;
+                    RestoredDebugBtn.Text = " Invalid Game";
+                    break;
             }
         }
 

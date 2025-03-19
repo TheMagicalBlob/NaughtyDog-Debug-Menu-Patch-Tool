@@ -298,7 +298,7 @@
           "* 4.62.371.946 | Finally added replacement for the hideous SetInfoStringOnControlHover method that just prints the control's Tag (if one's been provided). Still simplifying dynamic patch buttons intialization",
           "* 4.62.373.951 | Moved the DynamicPatchButtons class contents to the parent form (why was it even a seperate class??). Other crap. (detailed, I know)",
           "* 4.62.374.953 | Actually added HoverString method implementation, no idea how I forgot to actually do that, yet still wrote the commit message. TODO: get it to remove the string when the control loses the mouse, without possibly removing the tag for the control the mouse directly moved to",
-          "* 4.62.375.955 | HoverString implementation consistency fix",
+          "* 4.62.376.959 | HoverString implementation consistency fix, misc background tweaks (forever cleaning old-ass code...)",
         };
 
 
