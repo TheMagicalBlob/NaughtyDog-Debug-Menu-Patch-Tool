@@ -861,6 +861,7 @@ namespace Dobby {
         {
             if (GSGameIndex == 0xDEADDAD)
             {
+                Print("WARNING: GSGame Index was unset for some reason, setting now..."); //! pretty sure this isn't required, unless I've already made a seperate mistake I'd need to fix anyway
                 GetGSPatchesGameIndex(Game);
             }
 

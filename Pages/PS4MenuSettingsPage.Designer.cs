@@ -26,94 +26,27 @@ namespace Dobby
             base.Dispose(disposing);
         }
         private void InitializeComponent() {
-            this.ProgPauseOnCloseBtn = new Dobby.Button();
-            this.ProgPauseOnOpenBtn = new Dobby.Button();
-            this.DisableDebugTextBtn = new Dobby.Button();
-            this.DisablePausedIconBtn = new Dobby.Button();
             this.MainLabel = new System.Windows.Forms.Label();
             this.Info = new System.Windows.Forms.Label();
-            this.CreditsBtn = new Dobby.Button();
-            this.InfoHelpBtn = new Dobby.Button();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
-            this.BackBtn = new Dobby.Button();
             this.CustomDebugOptionsLabel = new System.Windows.Forms.Label();
             this.UniversalPatchesLabel = new System.Windows.Forms.Label();
             this.GameSpecificPatchesLabel = new System.Windows.Forms.Label();
             this.SeperatorLine3 = new System.Windows.Forms.Label();
-            this.BrowseButton = new Dobby.Button();
-            this.ExecutablePathBox = new Dobby.TextBox();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
             this.GameInfoLabel = new System.Windows.Forms.Label();
             this.NovisBtn = new Dobby.Button();
+            this.ProgPauseOnCloseBtn = new Dobby.Button();
+            this.ProgPauseOnOpenBtn = new Dobby.Button();
+            this.DisableDebugTextBtn = new Dobby.Button();
+            this.BackBtn = new Dobby.Button();
+            this.DisablePausedIconBtn = new Dobby.Button();
+            this.BrowseButton = new Dobby.Button();
+            this.ExecutablePathBox = new Dobby.TextBox();
+            this.InfoHelpBtn = new Dobby.Button();
+            this.CreditsBtn = new Dobby.Button();
             this.SuspendLayout();
-            // 
-            // ProgPauseOnCloseBtn
-            // 
-            this.ProgPauseOnCloseBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ProgPauseOnCloseBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.ProgPauseOnCloseBtn.FlatAppearance.BorderSize = 0;
-            this.ProgPauseOnCloseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ProgPauseOnCloseBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
-            this.ProgPauseOnCloseBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ProgPauseOnCloseBtn.Location = new System.Drawing.Point(1, 119);
-            this.ProgPauseOnCloseBtn.Name = "ProgPauseOnCloseBtn";
-            this.ProgPauseOnCloseBtn.Size = new System.Drawing.Size(269, 24);
-            this.ProgPauseOnCloseBtn.TabIndex = 45;
-            this.ProgPauseOnCloseBtn.Text = "Disable Debug Pause On Menu Close: ";
-            this.ProgPauseOnCloseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ProgPauseOnCloseBtn.UseVisualStyleBackColor = false;
-            // 
-            // ProgPauseOnOpenBtn
-            // 
-            this.ProgPauseOnOpenBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ProgPauseOnOpenBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.ProgPauseOnOpenBtn.FlatAppearance.BorderSize = 0;
-            this.ProgPauseOnOpenBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ProgPauseOnOpenBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
-            this.ProgPauseOnOpenBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ProgPauseOnOpenBtn.Location = new System.Drawing.Point(1, 96);
-            this.ProgPauseOnOpenBtn.Name = "ProgPauseOnOpenBtn";
-            this.ProgPauseOnOpenBtn.Size = new System.Drawing.Size(269, 24);
-            this.ProgPauseOnOpenBtn.TabIndex = 44;
-            this.ProgPauseOnOpenBtn.Text = "Disable Debug Pause On Menu Open: ";
-            this.ProgPauseOnOpenBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ProgPauseOnOpenBtn.UseVisualStyleBackColor = false;
-            // 
-            // DisableDebugTextBtn
-            // 
-            this.DisableDebugTextBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.DisableDebugTextBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.DisableDebugTextBtn.FlatAppearance.BorderSize = 0;
-            this.DisableDebugTextBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DisableDebugTextBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
-            this.DisableDebugTextBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.DisableDebugTextBtn.Location = new System.Drawing.Point(1, 52);
-            this.DisableDebugTextBtn.Name = "DisableDebugTextBtn";
-            this.DisableDebugTextBtn.Size = new System.Drawing.Size(251, 24);
-            this.DisableDebugTextBtn.TabIndex = 42;
-            this.DisableDebugTextBtn.Tag = "Disable the 2D performance  & build stats";
-            this.DisableDebugTextBtn.Text = "Disable 2D Debug Text On Startup: ";
-            this.DisableDebugTextBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.DisableDebugTextBtn.UseVisualStyleBackColor = false;
-            // 
-            // DisablePausedIconBtn
-            // 
-            this.DisablePausedIconBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.DisablePausedIconBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.DisablePausedIconBtn.FlatAppearance.BorderSize = 0;
-            this.DisablePausedIconBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DisablePausedIconBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
-            this.DisablePausedIconBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.DisablePausedIconBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.DisablePausedIconBtn.Location = new System.Drawing.Point(1, 74);
-            this.DisablePausedIconBtn.Name = "DisablePausedIconBtn";
-            this.DisablePausedIconBtn.Size = new System.Drawing.Size(205, 24);
-            this.DisablePausedIconBtn.TabIndex = 43;
-            this.DisablePausedIconBtn.Tag = "Show the flashing PAUSED box on-screen when the debug menu pause is active";
-            this.DisablePausedIconBtn.Text = "Show Debug PAUSED Icon:";
-            this.DisablePausedIconBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.DisablePausedIconBtn.UseVisualStyleBackColor = false;
             // 
             // MainLabel
             // 
@@ -136,40 +69,6 @@ namespace Dobby
             this.Info.TabIndex = 7;
             this.Info.Text = "=====================================";
             // 
-            // CreditsBtn
-            // 
-            this.CreditsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.CreditsBtn.FlatAppearance.BorderSize = 0;
-            this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CreditsBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
-            this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 313);
-            this.CreditsBtn.Name = "CreditsBtn";
-            this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.CreditsBtn.Size = new System.Drawing.Size(85, 22);
-            this.CreditsBtn.TabIndex = 28;
-            this.CreditsBtn.Text = "Credits...";
-            this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.CreditsBtn.UseVisualStyleBackColor = false;
-            // 
-            // InfoHelpBtn
-            // 
-            this.InfoHelpBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.InfoHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.InfoHelpBtn.FlatAppearance.BorderSize = 0;
-            this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InfoHelpBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
-            this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 291);
-            this.InfoHelpBtn.Name = "InfoHelpBtn";
-            this.InfoHelpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.InfoHelpBtn.Size = new System.Drawing.Size(162, 22);
-            this.InfoHelpBtn.TabIndex = 29;
-            this.InfoHelpBtn.Text = "Information / Help...";
-            this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.InfoHelpBtn.UseVisualStyleBackColor = false;
-            // 
             // SeperatorLine0
             // 
             this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
@@ -179,23 +78,6 @@ namespace Dobby
             this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine0.TabIndex = 31;
             this.SeperatorLine0.Text = "--------------------------------------------------------------";
-            // 
-            // BackBtn
-            // 
-            this.BackBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.BackBtn.FlatAppearance.BorderSize = 0;
-            this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BackBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
-            this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 334);
-            this.BackBtn.Name = "BackBtn";
-            this.BackBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.BackBtn.Size = new System.Drawing.Size(65, 22);
-            this.BackBtn.TabIndex = 41;
-            this.BackBtn.Text = "Back...";
-            this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BackBtn.UseVisualStyleBackColor = false;
             // 
             // CustomDebugOptionsLabel
             // 
@@ -239,35 +121,6 @@ namespace Dobby
             this.SeperatorLine3.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine3.TabIndex = 32;
             this.SeperatorLine3.Text = "--------------------------------------------------------------";
-            // 
-            // BrowseButton
-            // 
-            this.BrowseButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.BrowseButton.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.BrowseButton.FlatAppearance.BorderSize = 0;
-            this.BrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BrowseButton.Font = new System.Drawing.Font("Cambria", 8.5F, System.Drawing.FontStyle.Bold);
-            this.BrowseButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.BrowseButton.Location = new System.Drawing.Point(237, 236);
-            this.BrowseButton.Name = "BrowseButton";
-            this.BrowseButton.Size = new System.Drawing.Size(67, 19);
-            this.BrowseButton.TabIndex = 39;
-            this.BrowseButton.Text = "Browse...";
-            this.BrowseButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BrowseButton.UseVisualStyleBackColor = false;
-            this.BrowseButton.Click += new System.EventHandler(this.BrowseButton_Click);
-            // 
-            // ExecutablePathBox
-            // 
-            this.ExecutablePathBox.BackColor = System.Drawing.Color.Gray;
-            this.ExecutablePathBox.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
-            this.ExecutablePathBox.ForeColor = System.Drawing.SystemColors.Window;
-            this.ExecutablePathBox.Location = new System.Drawing.Point(3, 235);
-            this.ExecutablePathBox.Name = "ExecutablePathBox";
-            this.ExecutablePathBox.Size = new System.Drawing.Size(233, 23);
-            this.ExecutablePathBox.TabIndex = 38;
-            this.ExecutablePathBox.Text = "Select an executable to patch";
-            this.ExecutablePathBox.TextChanged += new System.EventHandler(this.ExecutablePathBox_TextChanged);
             // 
             // SeperatorLine1
             // 
@@ -315,6 +168,162 @@ namespace Dobby
             this.NovisBtn.Text = "Disable Culling Of Level Geometry:";
             this.NovisBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.NovisBtn.UseVisualStyleBackColor = false;
+            this.NovisBtn.Variable = false;
+            // 
+            // ProgPauseOnCloseBtn
+            // 
+            this.ProgPauseOnCloseBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.ProgPauseOnCloseBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.ProgPauseOnCloseBtn.FlatAppearance.BorderSize = 0;
+            this.ProgPauseOnCloseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ProgPauseOnCloseBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
+            this.ProgPauseOnCloseBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.ProgPauseOnCloseBtn.Location = new System.Drawing.Point(1, 119);
+            this.ProgPauseOnCloseBtn.Name = "ProgPauseOnCloseBtn";
+            this.ProgPauseOnCloseBtn.Size = new System.Drawing.Size(269, 24);
+            this.ProgPauseOnCloseBtn.TabIndex = 45;
+            this.ProgPauseOnCloseBtn.Text = "Disable Debug Pause On Menu Close: ";
+            this.ProgPauseOnCloseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ProgPauseOnCloseBtn.UseVisualStyleBackColor = false;
+            this.ProgPauseOnCloseBtn.Variable = true;
+            // 
+            // ProgPauseOnOpenBtn
+            // 
+            this.ProgPauseOnOpenBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.ProgPauseOnOpenBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.ProgPauseOnOpenBtn.FlatAppearance.BorderSize = 0;
+            this.ProgPauseOnOpenBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ProgPauseOnOpenBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
+            this.ProgPauseOnOpenBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.ProgPauseOnOpenBtn.Location = new System.Drawing.Point(1, 96);
+            this.ProgPauseOnOpenBtn.Name = "ProgPauseOnOpenBtn";
+            this.ProgPauseOnOpenBtn.Size = new System.Drawing.Size(269, 24);
+            this.ProgPauseOnOpenBtn.TabIndex = 44;
+            this.ProgPauseOnOpenBtn.Text = "Disable Debug Pause On Menu Open: ";
+            this.ProgPauseOnOpenBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ProgPauseOnOpenBtn.UseVisualStyleBackColor = false;
+            this.ProgPauseOnOpenBtn.Variable = true;
+            // 
+            // DisableDebugTextBtn
+            // 
+            this.DisableDebugTextBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.DisableDebugTextBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.DisableDebugTextBtn.FlatAppearance.BorderSize = 0;
+            this.DisableDebugTextBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DisableDebugTextBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
+            this.DisableDebugTextBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.DisableDebugTextBtn.Location = new System.Drawing.Point(1, 52);
+            this.DisableDebugTextBtn.Name = "DisableDebugTextBtn";
+            this.DisableDebugTextBtn.Size = new System.Drawing.Size(251, 24);
+            this.DisableDebugTextBtn.TabIndex = 42;
+            this.DisableDebugTextBtn.Tag = "Disable the 2D performance  & build stats";
+            this.DisableDebugTextBtn.Text = "Disable 2D Debug Text On Startup: ";
+            this.DisableDebugTextBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.DisableDebugTextBtn.UseVisualStyleBackColor = false;
+            this.DisableDebugTextBtn.Variable = false;
+            // 
+            // BackBtn
+            // 
+            this.BackBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.BackBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.BackBtn.FlatAppearance.BorderSize = 0;
+            this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BackBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
+            this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.BackBtn.Location = new System.Drawing.Point(1, 334);
+            this.BackBtn.Name = "BackBtn";
+            this.BackBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.BackBtn.Size = new System.Drawing.Size(65, 22);
+            this.BackBtn.TabIndex = 41;
+            this.BackBtn.Text = "Back...";
+            this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BackBtn.UseVisualStyleBackColor = false;
+            this.BackBtn.Variable = null;
+            // 
+            // DisablePausedIconBtn
+            // 
+            this.DisablePausedIconBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.DisablePausedIconBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.DisablePausedIconBtn.FlatAppearance.BorderSize = 0;
+            this.DisablePausedIconBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DisablePausedIconBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
+            this.DisablePausedIconBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.DisablePausedIconBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.DisablePausedIconBtn.Location = new System.Drawing.Point(1, 74);
+            this.DisablePausedIconBtn.Name = "DisablePausedIconBtn";
+            this.DisablePausedIconBtn.Size = new System.Drawing.Size(205, 24);
+            this.DisablePausedIconBtn.TabIndex = 43;
+            this.DisablePausedIconBtn.Tag = "Show the flashing PAUSED box on-screen when the debug menu pause is active";
+            this.DisablePausedIconBtn.Text = "Show Debug PAUSED Icon:";
+            this.DisablePausedIconBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.DisablePausedIconBtn.UseVisualStyleBackColor = false;
+            this.DisablePausedIconBtn.Variable = true;
+            // 
+            // BrowseButton
+            // 
+            this.BrowseButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.BrowseButton.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.BrowseButton.FlatAppearance.BorderSize = 0;
+            this.BrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BrowseButton.Font = new System.Drawing.Font("Cambria", 8.5F, System.Drawing.FontStyle.Bold);
+            this.BrowseButton.ForeColor = System.Drawing.SystemColors.Control;
+            this.BrowseButton.Location = new System.Drawing.Point(237, 236);
+            this.BrowseButton.Name = "BrowseButton";
+            this.BrowseButton.Size = new System.Drawing.Size(67, 19);
+            this.BrowseButton.TabIndex = 39;
+            this.BrowseButton.Text = "Browse...";
+            this.BrowseButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BrowseButton.UseVisualStyleBackColor = false;
+            this.BrowseButton.Variable = null;
+            this.BrowseButton.Click += new System.EventHandler(this.BrowseButton_Click);
+            // 
+            // ExecutablePathBox
+            // 
+            this.ExecutablePathBox.BackColor = System.Drawing.Color.Gray;
+            this.ExecutablePathBox.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
+            this.ExecutablePathBox.ForeColor = System.Drawing.SystemColors.Window;
+            this.ExecutablePathBox.Location = new System.Drawing.Point(3, 235);
+            this.ExecutablePathBox.Name = "ExecutablePathBox";
+            this.ExecutablePathBox.Size = new System.Drawing.Size(233, 23);
+            this.ExecutablePathBox.TabIndex = 38;
+            this.ExecutablePathBox.Text = "Select an executable to patch";
+            this.ExecutablePathBox.TextChanged += new System.EventHandler(this.ExecutablePathBox_TextChanged);
+            // 
+            // InfoHelpBtn
+            // 
+            this.InfoHelpBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.InfoHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.InfoHelpBtn.FlatAppearance.BorderSize = 0;
+            this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.InfoHelpBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
+            this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 291);
+            this.InfoHelpBtn.Name = "InfoHelpBtn";
+            this.InfoHelpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.InfoHelpBtn.Size = new System.Drawing.Size(162, 22);
+            this.InfoHelpBtn.TabIndex = 29;
+            this.InfoHelpBtn.Text = "Information / Help...";
+            this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.InfoHelpBtn.UseVisualStyleBackColor = false;
+            this.InfoHelpBtn.Variable = null;
+            // 
+            // CreditsBtn
+            // 
+            this.CreditsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.CreditsBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.CreditsBtn.FlatAppearance.BorderSize = 0;
+            this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CreditsBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
+            this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 313);
+            this.CreditsBtn.Name = "CreditsBtn";
+            this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.CreditsBtn.Size = new System.Drawing.Size(85, 22);
+            this.CreditsBtn.TabIndex = 28;
+            this.CreditsBtn.Text = "Credits...";
+            this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.CreditsBtn.UseVisualStyleBackColor = false;
+            this.CreditsBtn.Variable = null;
             // 
             // PS4MenuSettingsPage
             // 
@@ -344,7 +353,7 @@ namespace Dobby
             this.Controls.Add(this.SeperatorLine0);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PS4MenuSettingsPage";
-            this.Tag = "";
+            this.Tag = " ";
             this.ResumeLayout(false);
             this.PerformLayout();
 

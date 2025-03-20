@@ -300,6 +300,8 @@
           "* 4.62.374.953 | Actually added HoverString method implementation, no idea how I forgot to actually do that, yet still wrote the commit message. TODO: get it to remove the string when the control loses the mouse, without possibly removing the tag for the control the mouse directly moved to",
           "* 4.62.376.959 | HoverString implementation consistency fix, misc background tweaks (forever cleaning old-ass code...)",
           "* 4.63.379.965 | PS4MiscPatchesPage resizing fix (not sure why I ignored that for so long). Browse/Load button text fix (Added check for the > arrow in string before removing the first character, to avoid edge cases like that in the future). Yet more miscellaneous background tweaks",
+          "* 4.63.381.966 | fixed the issue of the designer removing already assigned variables from generated InitializeComponent methods, despite the effected property being visible in the designer (it's like it's fighting itself, hah. oh well, my fault)",
+          "* 4.63.382.968 | Small CycleButtonVariable fixes",
         };
 
 

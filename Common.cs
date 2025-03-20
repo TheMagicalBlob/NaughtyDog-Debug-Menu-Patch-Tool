@@ -1257,8 +1257,9 @@ namespace Dobby {
         /// <summary>
         /// Custom value associated with the control to be rendered alongside it, and edited via manually assigned per-control events.
         /// </summary>
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] // Designer autogenerates code settings the Variable & VariableTags properties to null, annoyingly. More of an issue for the former though, due to the Properties window not letting you edit objects
-        [TypeConverter(typeof(BooleanConverter))] //! make sure this doesn't break functionality with other types
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] // Designer autogenerates code settings the Variable & VariableTags properties to null, annoyingly. More of an issue for the former though, due to the Properties window not letting you edit objects
+        [TypeConverter(typeof(BooleanConverter))]
+        //[DefaultValue(false)]
         public object Variable
         {
             get => _Variable;
@@ -1271,7 +1272,7 @@ namespace Dobby {
                     if (!hasEvents) {
                         Paint += DrawButtonVariable;
 
-                        MouseClick += CycleButtonVariable;
+                        MouseDown += CycleButtonVariable;
                         MouseWheel += CycleButtonVariable;
 
                         hasEvents = true;
@@ -1281,7 +1282,7 @@ namespace Dobby {
                     if (hasEvents) {
                         Paint -= DrawButtonVariable;
 
-                        MouseClick -= CycleButtonVariable;
+                        MouseDown -= CycleButtonVariable;
                         MouseWheel -= CycleButtonVariable;
                         
                         hasEvents = false;
@@ -1517,7 +1518,11 @@ namespace Dobby {
         
 
 
-        
+        /// <summary>
+        /// Lazy (potential) fix
+        /// </summary>
+        private void CycleButtonVariable(object sender, EventArgs args) => CycleButtonVariable(sender, new MouseEventArgs(MouseButtons.Right, 1, MousePosition.X, MousePosition.Y, 0));
+
         /// <summary>
         /// Toggle between various states of custom Button controls
         /// </summary>
@@ -1525,20 +1530,32 @@ namespace Dobby {
         private void CycleButtonVariable(object sender, MouseEventArgs eventArgs)
         {
             var type = Variable.GetType();
-            object inc = 1;
+            float inc;
 
             if (Variable == null) {
+            if (type == null) {
                 Common.Print("CycleButtonVariable(): Control's variable was null, fix your trash.");
                 return;
             }
-            if (type == null) {
                 Common.Print("CycleButtonVariable(): Control's variable type was somehow null (wtf??), fix your trash.");
                 return;
             }
             
-            #if DEBUG
-            Common.Print($"Cycling [{type}] Variable (Initial Value: {Variable ?? "null"})\r");
-            #endif
+
+            if (eventArgs.Delta != 0)
+            {
+                inc = eventArgs.Delta / 10;
+            }
+            else
+            {
+                if (eventArgs.Button == MouseButtons.Right) {
+                    inc = -1;
+                }
+                else {
+                    inc = 1;
+                }
+            }
+
 
 
             //#
@@ -1562,7 +1579,7 @@ namespace Dobby {
             {
                 if (MaximumValue == null)
                 {
-                    Variable = (long)Variable + (eventArgs.Button == MouseButtons.Right ? -1 : 1);
+                    Variable = (long)Variable + inc;
                 }
                 else {
                     // avoid going out of bounds in the VariableTags array
@@ -1586,23 +1603,23 @@ namespace Dobby {
             //#
             //## Floating-Points
             //#
-            if (type == typeof(float) || type == typeof(double))
+            if (type == typeof(float))
             {
-                Variable = (float)Variable + (eventArgs.Delta != 0 ? eventArgs.Delta / 2 : .1f);
+                Variable = (float) Math.Round((float)Variable + inc * .1f, 3);
 
                 if (MaximumValue != null)
                 {
-                    if ((double)Variable >= (double)MaximumValue)
-                        Variable = MinimumValue ?? 0;
+                    if ((float)Variable >= (float)MaximumValue)
+                    {
+                        Variable = (float) Math.Round((float)(MinimumValue ?? 0), 2);
+                    }
 
-                    else if ((double)Variable <= (double)MinimumValue)
-                        Variable = MinimumValue ?? 10;
+                    else if ((float)Variable <= (float)MinimumValue)
+                    {
+                        Variable = (float) Math.Round((float)(MinimumValue ?? 10), 2);
+                    }
                 }
             }
-
-            #if DEBUG
-            Common.Print(new string(' ', 65) + $" => [{Variable ?? "null"}]");
-            #endif
         }
     }
     #endregion [Class Extensions]
