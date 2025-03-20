@@ -71,9 +71,10 @@ namespace Dobby {
             DisableFormChange
         ;
 
+        public static MouseButtons ActiveMouseButton = MouseButtons.None;
 
         public static Point
-            LastFormPosition,
+            LastFormPosition = Point.Empty,
             MousePos,
             MouseDif
         ;
@@ -196,10 +197,9 @@ namespace Dobby {
         /// </summary>
         public static void Print(object message)
         {
-            #if !DEBUG
-            if (Testing.ForceDebugInRelease)
-            #endif
+            #if Logging
             Testing.Print(message);
+            #endif
         }
 
         /// <summary>
@@ -934,14 +934,18 @@ namespace Dobby {
         
         internal static void MouseDownFunc(object sender, MouseEventArgs e)
         {
+            ActiveMouseButton = e.Button;
             MouseIsDown = true;
             
-            LastFormPosition = ActiveForm?.Location ?? LastFormPosition; //! Lazy fix(?)
+            LastFormPosition = ActiveForm?.Location ?? LastFormPosition;
             MouseDif = new Point(MousePosition.X - LastFormPosition.X, MousePosition.Y - LastFormPosition.Y);
+
         }
 
         internal static void MouseUpFunc(object sender, MouseEventArgs e) {
             MouseScrolled = MouseIsDown = false;
+
+            ActiveMouseButton = MouseButtons.None;
         }
 
         public static void MoveForm(object sender, MouseEventArgs e)
@@ -1268,11 +1272,13 @@ namespace Dobby {
                 if (value != null && value.ToString().Length > 0)
                 {
                     _Variable = value;
+                    this.ResetFlagsandPaint();
 
                     if (!hasEvents) {
                         Paint += DrawButtonVariable;
 
-                        MouseDown += CycleButtonVariable;
+                        MouseDown += (eugh, meh) => SavePreInputVariable(Variable);
+                        MouseUp += CycleButtonVariable;
                         MouseWheel += CycleButtonVariable;
 
                         hasEvents = true;
@@ -1282,7 +1288,8 @@ namespace Dobby {
                     if (hasEvents) {
                         Paint -= DrawButtonVariable;
 
-                        MouseDown -= CycleButtonVariable;
+                        MouseDown -= (eugh, meh) => SavePreInputVariable(Variable);
+                        MouseUp -= CycleButtonVariable;
                         MouseWheel -= CycleButtonVariable;
                         
                         hasEvents = false;
@@ -1293,7 +1300,7 @@ namespace Dobby {
             }
         }
         private object _Variable;
-
+        private object _preInputvariable;
 
 
         /// <summary>
@@ -1529,22 +1536,37 @@ namespace Dobby {
         /// <param name="sender"> The control to edit the variable of. </param>
         private void CycleButtonVariable(object sender, MouseEventArgs eventArgs)
         {
-            var type = Variable.GetType();
+            var type = Variable?.GetType();
             float inc;
 
+            // Check for null variable / type.                (not that I know how the latter would be null without the former being null as well, rendering the following check redundant... meh, I'm leaving both checks anyway)
             if (Variable == null) {
+                Common.Print("CycleButtonVariable(): Control's variable type was somehow null (wtf??), fix your trash.");
+                return;
+            }
             if (type == null) {
                 Common.Print("CycleButtonVariable(): Control's variable was null, fix your trash.");
                 return;
             }
-                Common.Print("CycleButtonVariable(): Control's variable type was somehow null (wtf??), fix your trash.");
+
+
+            // Avoid incrementing options on MouseUp events when the scroll wheel was already used
+            if (Variable != _preInputvariable && eventArgs.GetType().Name != "HandledMouseEventArgs")
+            {
+                Common.Print("Variable has been scrolled, avoiding click incrementation");
                 return;
             }
-            
 
+
+            // Assign the value that the control's variable is to be incremented by
             if (eventArgs.Delta != 0)
             {
-                inc = eventArgs.Delta / 10;
+                inc = eventArgs.Delta / 1200.0f;
+
+                if (Common.MouseIsDown)
+                {
+                    inc *= 10.0f;
+                }
             }
             else
             {
@@ -1651,6 +1673,12 @@ namespace Dobby {
                     }
                 }
             }
+        }
+
+
+        private void SavePreInputVariable(object variable)
+        {
+            _preInputvariable = variable;
         }
     }
     #endregion [Class Extensions]

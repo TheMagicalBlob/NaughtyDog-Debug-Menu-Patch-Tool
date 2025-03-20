@@ -304,6 +304,7 @@
           "* 4.63.382.968 | Small CycleButtonVariable fixes",
           "* 4.63.384.971 | Fixed (I think) PS4MiscPatchesPage patch application function. needs more testing still, though.",
           "* 4.63.385.971 | Added missing condition for byte variables in CycleButtonVariable(). What an odd oversight.",
+          "* 4.63.389.974 | More general consistency improvements (cycling variables forcibly updates the control since scrolling wasn't updating anything, scrolling with the mouse down no longer still sends the click event as well, etc)",
         };
 
 

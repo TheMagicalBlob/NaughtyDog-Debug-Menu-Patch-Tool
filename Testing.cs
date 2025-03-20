@@ -47,8 +47,6 @@ namespace Dobby {
         //=======================================\\
         #region [Debug Variable Declarations]
 
-        public static bool ForceDebugInRelease = true;
-
 #if DEBUG
         public static Control HoveredControl;
         private LogWindow Log;

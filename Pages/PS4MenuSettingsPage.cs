@@ -192,45 +192,75 @@ namespace Dobby {
         //--|   Background Function Delcarations   |---\\
         //=============================================\\
         #region [Background Function Delcarations]
+
+        /// <summary>
+        /// Convert a provided object in to a byte array, then writes it to the current position in the active file stream.
+        /// </summary>
+        /// <param name="data"> The object to convert and write. </param>
         private void WriteVar(object data)
         {
-            var msg = " Written To ";
-            var type = data.GetType();
+            var type = data?.GetType();
+            #if DEBUG
+            var msg = $"] Written To 0x{fileStream.Position:X}\n";
+            #endif
 
-            msg += fileStream.Position.ToString("X");
+            if (type == null)
+            {
+                Print("ERROR: null object provided");
+                UpdateLabel("Internal error writing data to executable. (WriteVar(object) error)", true);
+            }
+
 
             try
             {
                 if (type == typeof(int))
                 {
                     fileStream.Write(BitConverter.GetBytes((int)data), 0, 4);
-                    msg = (byte)data + msg;
+
+                    #if DEBUG
+                    msg = $"[{(int)data} => {BitConverter.ToString(BitConverter.GetBytes((int)data)).Replace("-", ", 0x")}" + msg;
+                    #endif
                 }
-                if (type == typeof(byte))
+                else if (type == typeof(byte))
                 {
                     fileStream.WriteByte((byte)data);
-                    msg = ((byte)data).ToString("X") + msg;
+
+                    #if DEBUG
+                    msg = $"[{(byte)data} => {((byte)data).ToString("X").PadLeft(2, '0')}" + msg;
+                    #endif
                 }
-                if (type == typeof(byte[]))
+                else if (type == typeof(byte[]))
                 {
                     fileStream.Write((byte[])data, 0, ((byte[])data).Length);
-                    msg = BitConverter.ToString((byte[])data) + msg;
+
+                    #if DEBUG
+                    msg = $"[0x{BitConverter.ToString((byte[])data).Replace("-", ", 0x")}" + msg;
+                    #endif
                 }
                 else if (type == typeof(bool))
                 {
                     fileStream.WriteByte((byte)((bool)data ? 1 : 0));
-                    msg = (bool)data + msg;
-                }
 
+                    #if DEBUG
+                    msg = $"[{(bool)data} => {((bool)data ? 1 : 2)}" + msg;
+                    #endif
+                }
                 else if (type == typeof(float))
                 {
                     fileStream.Write(BitConverter.GetBytes((float)data), 0, BitConverter.GetBytes((float)data).Length);
-                    msg = (float)data + msg;
+
+                    #if DEBUG
+                    msg = $"[{(float)data} => 0x{BitConverter.ToString(BitConverter.GetBytes((float)data)).Replace("-", ", 0x")}" + msg;
+                    #endif
                 }
+
+                else
+                    Print($"ERROR: Unexpected Variable type ({type}).");
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 Print($"Error Writing Var: {data ?? 0xDEADDAD} (Type: {type})");
+                PrintError(e);
             }
             #if DEBUG
             finally {
@@ -238,7 +268,6 @@ namespace Dobby {
             }
             #endif
         }
-
 
 
 
@@ -280,23 +309,27 @@ namespace Dobby {
                         return "error";
                     }
 
+                    byte pointerTypeIdentifier = 0;
+                    byte[] patchData;
+                    object patchValue;
+                    var patchCount = 2;
+                    int patchIndex;
+
+
+
                     // Write Function Call To Call BootSettings
                     fileStream.Position = BootSettingsCallAddress[gameIndex];
                     WriteVar(GetBootSettingsFunctionCall(Game));
+
 
                     // Write BootSettings Function's Assembly constructed in GetBootSettingsMethodData(gameIndex)
                     fileStream.Position = BootSettingsFunctionAddress[gameIndex];
                     WriteVar(GetBootSettingsMethodData(gameIndex));
 
-                    byte pointerTypeIdentifier = 0x42;
-                    byte[] patchData;
-                    object patchValue;
-                    int patchCount = 2;
-                    int patchIndex;
 
 
                     // Apply Universal Options
-                    foreach (var button in new Button[] {  })
+                    foreach (var button in new Button[] { DisableDebugTextBtn, DisablePausedIconBtn, ProgPauseOnOpenBtn, ProgPauseOnCloseBtn, NovisBtn })
                     {
                         patchIndex = button.TabIndex;
                         patchData = UniversalBootSettingsPointers[patchIndex][gameIndex];
@@ -304,20 +337,18 @@ namespace Dobby {
 
                         if ((bool)patchValue == DefaultUniveralPatchValues[patchIndex])
                         {
+                            #if DEBUG
                             Print("Skipping Unchanged Patch Value...");
+                            #endif
                             continue;
                         }
 
 
-                        else if (patchData.Length == 4)
-                        {
-                            pointerTypeIdentifier = 0xFE;
-                        }
-                        else if (patchData.Length == 8)
-                        {
-                            pointerTypeIdentifier = 0xFF;
-                        }
-                        else
+
+
+                        pointerTypeIdentifier = (byte) (0xFD + (patchData.Length / 4));
+                        
+                        if (pointerTypeIdentifier == 0)
                         {
                             Print($"Default Patch Value Pointer Data {(patchData.Length == 0 ? "Null Somehow." : $"Size Invalid ({patchData.Length})")}");
                             continue;
@@ -342,7 +373,9 @@ namespace Dobby {
 
                         if (patchValue.Equals(DefaultGSPatchValues[patchIndex]))
                         {
+                            #if DEBUG
                             Print("Skipping Unchanged Patch Value...");
+                            #endif
                             continue;
                         }
 
@@ -358,7 +391,6 @@ namespace Dobby {
                             Print($"ERROR: Invalid Length for Provided Path Value! ({patchData.Length} != 4 | 8)");
                             continue;
                         }
-                        Print($"Writing patch data of type \"{pointerTypeIdentifier:X}\"");
 
 
                         // Write the identifier for Pointers vs hard Addresses
