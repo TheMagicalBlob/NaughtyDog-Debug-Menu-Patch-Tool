@@ -26,19 +26,19 @@ namespace Dobby
 
         public void InitializeComponent() {
             this.GameInfoLabel = new System.Windows.Forms.Label();
-            this.BrowseButton = new Dobby.Button();
-            this.ExecutablePathBox = new Dobby.TextBox();
             this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.RestoredDebugBtn = new Dobby.Button();
-            this.InfoHelpBtn = new Dobby.Button();
             this.SeperatorLine2 = new System.Windows.Forms.Label();
-            this.BackBtn = new Dobby.Button();
-            this.DisableDebugBtn = new Dobby.Button();
-            this.EnableDebugBtn = new Dobby.Button();
             this.Info = new System.Windows.Forms.Label();
-            this.CreditsBtn = new Dobby.Button();
             this.MainLabel = new System.Windows.Forms.Label();
             this.SeperatorLine0 = new System.Windows.Forms.Label();
+            this.BrowseButton = new Dobby.Button();
+            this.ExecutablePathBox = new Dobby.TextBox();
+            this.RestoredDebugBtn = new Dobby.Button();
+            this.InfoHelpBtn = new Dobby.Button();
+            this.BackBtn = new Dobby.Button();
+            this.DisableDebugBtn = new Dobby.Button();
+            this.CreditsBtn = new Dobby.Button();
+            this.EnableDebugBtn = new Dobby.Button();
             this.SuspendLayout();
             // 
             // GameInfoLabel
@@ -51,6 +51,57 @@ namespace Dobby
             this.GameInfoLabel.TabIndex = 32;
             this.GameInfoLabel.Text = "No File Selected";
             this.GameInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // SeperatorLine1
+            // 
+            this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
+            this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine1.Location = new System.Drawing.Point(2, 98);
+            this.SeperatorLine1.Name = "SeperatorLine1";
+            this.SeperatorLine1.Size = new System.Drawing.Size(316, 15);
+            this.SeperatorLine1.TabIndex = 29;
+            this.SeperatorLine1.Text = "--------------------------------------------------------------";
+            // 
+            // SeperatorLine2
+            // 
+            this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
+            this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine2.Location = new System.Drawing.Point(2, 155);
+            this.SeperatorLine2.Name = "SeperatorLine2";
+            this.SeperatorLine2.Size = new System.Drawing.Size(316, 15);
+            this.SeperatorLine2.TabIndex = 14;
+            this.SeperatorLine2.Text = "--------------------------------------------------------------";
+            // 
+            // Info
+            // 
+            this.Info.Font = new System.Drawing.Font("Cambria", 10F);
+            this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.Info.Location = new System.Drawing.Point(3, 240);
+            this.Info.Name = "Info";
+            this.Info.Size = new System.Drawing.Size(313, 19);
+            this.Info.TabIndex = 7;
+            this.Info.Text = "======================================";
+            // 
+            // MainLabel
+            // 
+            this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MainLabel.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Bold);
+            this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.MainLabel.Location = new System.Drawing.Point(1, 1);
+            this.MainLabel.Name = "MainLabel";
+            this.MainLabel.Size = new System.Drawing.Size(314, 22);
+            this.MainLabel.TabIndex = 0;
+            this.MainLabel.Text = "Eboot Patch Page";
+            // 
+            // SeperatorLine0
+            // 
+            this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
+            this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine0.Location = new System.Drawing.Point(2, 15);
+            this.SeperatorLine0.Name = "SeperatorLine0";
+            this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
+            this.SeperatorLine0.TabIndex = 33;
+            this.SeperatorLine0.Text = "--------------------------------------------------------------";
             // 
             // BrowseButton
             // 
@@ -80,16 +131,6 @@ namespace Dobby
             this.ExecutablePathBox.Size = new System.Drawing.Size(233, 23);
             this.ExecutablePathBox.TabIndex = 30;
             this.ExecutablePathBox.Text = " Select A .bin/.elf To Modify";
-            // 
-            // SeperatorLine1
-            // 
-            this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 98);
-            this.SeperatorLine1.Name = "SeperatorLine1";
-            this.SeperatorLine1.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine1.TabIndex = 29;
-            this.SeperatorLine1.Text = "--------------------------------------------------------------";
             // 
             // RestoredDebugBtn
             // 
@@ -124,16 +165,6 @@ namespace Dobby
             this.InfoHelpBtn.Text = "Information / Help...";
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
-            // 
-            // SeperatorLine2
-            // 
-            this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(2, 155);
-            this.SeperatorLine2.Name = "SeperatorLine2";
-            this.SeperatorLine2.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine2.TabIndex = 14;
-            this.SeperatorLine2.Text = "--------------------------------------------------------------";
             // 
             // BackBtn
             // 
@@ -170,34 +201,6 @@ namespace Dobby
             this.DisableDebugBtn.UseVisualStyleBackColor = false;
             this.DisableDebugBtn.Click += new System.EventHandler(this.DisableDebugBtn_Click);
             // 
-            // EnableDebugBtn
-            // 
-            this.EnableDebugBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.EnableDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.EnableDebugBtn.FlatAppearance.BorderSize = 0;
-            this.EnableDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.EnableDebugBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
-            this.EnableDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.EnableDebugBtn.Location = new System.Drawing.Point(1, 53);
-            this.EnableDebugBtn.Name = "EnableDebugBtn";
-            this.EnableDebugBtn.Size = new System.Drawing.Size(205, 23);
-            this.EnableDebugBtn.TabIndex = 9;
-            this.EnableDebugBtn.Tag = "Enable the debug menu without editing anything";
-            this.EnableDebugBtn.Text = "Enable Debug Mode - Default";
-            this.EnableDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.EnableDebugBtn.UseVisualStyleBackColor = false;
-            this.EnableDebugBtn.Click += new System.EventHandler(this.EnableDebugBtn_Click);
-            // 
-            // Info
-            // 
-            this.Info.Font = new System.Drawing.Font("Cambria", 10F);
-            this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(3, 240);
-            this.Info.Name = "Info";
-            this.Info.Size = new System.Drawing.Size(313, 19);
-            this.Info.TabIndex = 7;
-            this.Info.Text = "======================================";
-            // 
             // CreditsBtn
             // 
             this.CreditsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
@@ -215,26 +218,23 @@ namespace Dobby
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
             // 
-            // MainLabel
+            // EnableDebugBtn
             // 
-            this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MainLabel.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Bold);
-            this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.MainLabel.Location = new System.Drawing.Point(1, 1);
-            this.MainLabel.Name = "MainLabel";
-            this.MainLabel.Size = new System.Drawing.Size(314, 22);
-            this.MainLabel.TabIndex = 0;
-            this.MainLabel.Text = "Eboot Patch Page";
-            // 
-            // SeperatorLine0
-            // 
-            this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine0.Location = new System.Drawing.Point(2, 15);
-            this.SeperatorLine0.Name = "SeperatorLine0";
-            this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine0.TabIndex = 33;
-            this.SeperatorLine0.Text = "--------------------------------------------------------------";
+            this.EnableDebugBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.EnableDebugBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.EnableDebugBtn.FlatAppearance.BorderSize = 0;
+            this.EnableDebugBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.EnableDebugBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
+            this.EnableDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.EnableDebugBtn.Location = new System.Drawing.Point(1, 53);
+            this.EnableDebugBtn.Name = "EnableDebugBtn";
+            this.EnableDebugBtn.Size = new System.Drawing.Size(205, 23);
+            this.EnableDebugBtn.TabIndex = 9;
+            this.EnableDebugBtn.Tag = "Enable the debug menu without editing anything";
+            this.EnableDebugBtn.Text = "Enable Debug Mode - Default";
+            this.EnableDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.EnableDebugBtn.UseVisualStyleBackColor = false;
+            this.EnableDebugBtn.Click += new System.EventHandler(this.EnableDebugBtn_Click);
             // 
             // EbootPatchPage
             // 

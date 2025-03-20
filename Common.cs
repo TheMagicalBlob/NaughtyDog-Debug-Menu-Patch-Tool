@@ -205,10 +205,14 @@ namespace Dobby {
         /// <summary>
         /// Basic error logging function (not yet fully implemented)
         /// </summary>
-        public static void PrintError(Exception tabarnack) {
+        public static void PrintError(Exception error)
+        {
+            var message = $"{error.Message}";
 #if DEBUG
-            Print($"!! ERROR: {tabarnack.Message}\n{tabarnack.StackTrace.Replace("\n", "  \n")}");
+            message += $"\n{error.StackTrace.Replace("\n", "  \n")}";
 #endif
+
+            Print($"!! ERROR: {message}");
         }
 
 
@@ -220,13 +224,15 @@ namespace Dobby {
         /// <param name="flashLabel"> If true, flash the label to indicate an error or otherwise get the user's attention. (switches between white/yellow) </param>
         public static void UpdateLabel(string newText, bool flashLabel = false)
         {
-            if ((infoText == " " || infoText == null) && newText != null && InfoLabel.Text != newText) {
+            if ((infoText == " " || infoText == null) && newText != null && InfoLabel.Text != newText)
+            {
                 infoText = newText;
-                Print($"Label Text => {newText ?? "Reset to null"}");
             }
 
             if (flashLabel)
-                flashes = 16;
+            {
+                flashes = 15;
+            }
         }
 
 
@@ -239,7 +245,7 @@ namespace Dobby {
         /// The name of the game, followed by the app version.
         /// </returns>
         /// <param name="stream"> The active file stream for the loaded executable. </param>
-        public static string GetCurrentGame(FileStream stream)
+        public static string GetGameID(FileStream stream)
         {
             byte[] LocalExecutableCheck;
 
@@ -763,6 +769,7 @@ namespace Dobby {
                 //ArrowWidth = ~ArrowWidth ^ 1; I'm an idiot, this is excessive lmao. keeping it to laugh at, tho. bite me
                 ArrowWidth = -ArrowWidth;
 
+                if (PassedControl.Text.Contains('>'))
                 PassedControl.Text = PassedControl.Text.Substring(1);
             }
 
@@ -830,68 +837,65 @@ namespace Dobby {
             });
         }
 
-        /// <summary>
-        /// Change the Text and / or ForeColour properties of the current Info label.
-        /// </summary>
-        private static readonly LabelUpdateCallback SetLabelState = (label, colour, text) => {
-            try {
-                while (ActiveForm == null)
-                    Thread.Sleep(1);
-                
-                if (ActiveForm != null && label != null)
-                {
-                    if (text != null)
-                        label.Text = text;
-
-                    if (colour != null)
-                        label.ForeColor = colour;
-
-                    ActiveForm?.Update();
-                }
-
-                ActiveForm?.Update();
-            }
-            catch (Exception) {
-                Print("Error setting label text and / or colour.");
-            }
-        };
-
 
 
         /// <summary>
         /// Flash the Info label white/yellow to get the user's attention/indicate a skill issue.
         /// </summary>
-        /// <param name="label"> The Control.Name property of the label to flash </param>
-        internal static void LabelUpdateMethod(object label) {
+        /// <param name="Label"> The Control.Name property of the label to flash </param>
+        internal static void LabelUpdateMethod(object Label)
+        {
+            LabelUpdateCallback SetLabelState = (label, colour, text) => {
+                try {
+                    while (ActiveForm == null)
+                        Thread.Sleep(1);
+                
+                    if (ActiveForm != null && label != null)
+                    {
+                        if (text != null)
+                            label.Text = text;
+
+                        if (colour != null)
+                            label.ForeColor = colour;
+
+                        ActiveForm?.Update();
+                    }
+
+                    ActiveForm?.Update();
+                }
+                catch (Exception) {
+                    Print("Error setting label text and / or colour.");
+                }
+            };
+
             while (true) {
                 try {
                     // Wait for something to do
-                    while (flashes == -1 && infoText == null)
-                        Thread.Sleep(1);
+                    for (;flashes == -1 && infoText == null; Thread.Sleep(1))
+                        
 
 
-                    if (infoText != null && infoText == " ") // Try to avoid hiding info strings with the 
+                    // Try to avoid hiding hint strings with the label reset
+                    if (infoText != null && infoText == " ")
                     {
-                        Print("Waiting for new string before applying reset string...");
-
                         for (var time = 0; infoText == " " && time++ < 75; Thread.Sleep(1));
                     }
 
 
                     // Flash the label if applicable
-                    for (var msg = infoText; flashes > -1; flashes--)
+                    for (var msg = infoText; flashes > -1 || (infoText == " " && (infoText = null) == null);)
                     {
                         while (ActiveForm == null)
                             Thread.Sleep(1);
 
-                        ActiveForm?.Invoke(SetLabelState, label, (flashes & 1) == 0 ? Color.FromArgb(255, 227, 0) : Color.White, msg);
+                        ActiveForm?.Invoke(SetLabelState, Label, (flashes-- & 1) == 0 ? Color.FromArgb(255, 227, 0) : Color.White, msg);
                         Thread.Sleep(135);
                     }
 
                     // Set The Text of The Yellow Label At The Bottom Of The Form
                     if (infoText != null)
                     {
-                        ActiveForm?.Invoke(SetLabelState, label, Color.FromArgb(255, 227, 0), infoText);
+                        ActiveForm?.Invoke(SetLabelState, Label, Color.FromArgb(255, 227, 0), infoText);
                         infoText = null;
                     }
                 }
@@ -1188,12 +1192,11 @@ namespace Dobby {
                 IsDefault = false;
 
                 Font = Common.TextFont;
-                Console.WriteLine($"Readying Control \"{((Control)eat).Name}\"");
                 //TextAlign = HorizontalAlignment.Left; // Disabled alignment change until I can figure out the looping logic that results from it
             }
         }
 
-        public void ResetControl() => ResetControl(true, null);
+        public void Reset() => ResetControl(true, null);
         private void ResetControl(object bite, EventArgs me)
         {
             if(Text.Length < 1 || DefaultText.Contains(Text) || (me == null && (bool)bite)) {
@@ -1201,11 +1204,8 @@ namespace Dobby {
                 IsDefault = true;
 
                 Font = Common.DefaultTextFont;
-                Common.Print("Reset text box");
                 //TextAlign = HorizontalAlignment.Center; // Disabled alignment change until I can figure out the looping logic that results from it (seriously, what the fuck?)
             }
-            else
-                Common.Print("Skipped text box reset");
         }
 
 

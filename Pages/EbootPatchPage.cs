@@ -118,7 +118,7 @@ namespace Dobby {
 
             ActiveFilePath = filePath;
 
-            GameInfoLabel.Text = ActiveGameID = GetCurrentGame(fileStream);
+            GameInfoLabel.Text = ActiveGameID = GetGameID(fileStream);
                 
             DebugAddressForSelectedGame = GetDebugAddress(Game);
 
@@ -216,7 +216,8 @@ namespace Dobby {
 
 
         /// <returns> The .elf Address For Enabling The Debug Mode By Patching In 0xEB </returns>
-        private DebugJumpAddress GetDebugAddress(GameID GameID) {
+        private DebugJumpAddress GetDebugAddress(GameID GameID)
+        {
             switch(GameID) {
                 case GameID.UC1100:       return DebugJumpAddress.UC1100Debug;
                 case GameID.UC1102:       return DebugJumpAddress.UC1102Debug;
