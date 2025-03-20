@@ -192,39 +192,6 @@ namespace Dobby {
         //--|   Background Function Delcarations   |---\\
         //=============================================\\
         #region [Background Function Delcarations]
-        
-        private void WriteBytes(int? offset = null, byte[] data = null) {
-#if DEBUG
-            var msg = $"Data {BitConverter.ToString(data).Replace("-", "")} Written To ";
-            if(offset != null)
-                fileStream.Position = (int)offset;
-
-            msg += fileStream.Position.ToString("X"); // trust issues
-
-            fileStream.Write(data, 0, data.Length);
-            Print(msg);
-#else
-            if (offset != null)
-            fileStream.Position = (int)offset;
-            fileStream.Write(data, 0, data.Length);
-#endif
-        }
-        private void WriteByte(int? offset = null, byte data = 0) {
-#if DEBUG
-            var msg = $"Byte {data:X} Written To ";
-            if(offset != null)
-                fileStream.Position = (int)offset;
-            msg += fileStream.Position.ToString("X"); // trust issues
-
-            fileStream.WriteByte(data);
-            Print(msg);
-#else
-            if(offset != null)
-            fileStream.Position = (int)offset;
-            fileStream.WriteByte(data);
-#endif
-        }
-
         private void WriteVar(object data)
         {
             var msg = " Written To ";
@@ -314,10 +281,12 @@ namespace Dobby {
                     }
 
                     // Write Function Call To Call BootSettings
-                    WriteBytes(BootSettingsCallAddress[gameIndex], GetBootSettingsFunctionCall(Game));
+                    fileStream.Position = BootSettingsCallAddress[gameIndex];
+                    WriteVar(GetBootSettingsFunctionCall(Game));
 
                     // Write BootSettings Function's Assembly constructed in GetBootSettingsMethodData(gameIndex)
-                    WriteBytes(BootSettingsFunctionAddress[gameIndex], GetBootSettingsMethodData(gameIndex));
+                    fileStream.Position = BootSettingsFunctionAddress[gameIndex];
+                    WriteVar(GetBootSettingsMethodData(gameIndex));
 
                     byte pointerTypeIdentifier = 0x42;
                     byte[] patchData;
@@ -355,12 +324,11 @@ namespace Dobby {
                         }
 
 
-                        WriteByte(data: pointerTypeIdentifier);
-                        WriteByte(data: 0);
-                        WriteBytes(data: patchData);
-                        WriteByte(data: (byte)((bool)patchValue ? 1 : 0));
+                        WriteVar(pointerTypeIdentifier);
+                        WriteVar(0);
+                        WriteVar(patchData);
+                        WriteVar((byte)((bool)patchValue ? 1 : 0));
 
-                        Print("");
                         patchCount++;
                     }
 
@@ -410,7 +378,7 @@ namespace Dobby {
 
 
                     // padding to avoid issues with overlapping previous larger patches
-                    WriteBytes(data: new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0x08 });
+                    WriteVar(data: new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0x08 });
 
                     Message = $" {patchCount + 1} Patches Applied";
                 }
