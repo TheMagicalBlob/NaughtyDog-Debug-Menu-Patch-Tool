@@ -198,6 +198,7 @@ namespace Dobby {
             var msg = $"Data {BitConverter.ToString(data).Replace("-", "")} Written To ";
             if(offset != null)
                 fileStream.Position = (int)offset;
+
             msg += fileStream.Position.ToString("X"); // trust issues
 
             fileStream.Write(data, 0, data.Length);
@@ -224,38 +225,51 @@ namespace Dobby {
 #endif
         }
 
-        private void WriteVar<T>(object data)
+        private void WriteVar(object data)
         {
             var msg = " Written To ";
+            var type = data.GetType();
 
             msg += fileStream.Position.ToString("X");
 
-            try {
-                if(typeof(T) == typeof(byte))
+            try
+            {
+                if (type == typeof(int))
                 {
-                    fileStream.WriteByte((byte)data);
+                    fileStream.Write(BitConverter.GetBytes((int)data), 0, 4);
                     msg = (byte)data + msg;
                 }
-                if(typeof(T) == typeof(byte[]))
+                if (type == typeof(byte))
+                {
+                    fileStream.WriteByte((byte)data);
+                    msg = ((byte)data).ToString("X") + msg;
+                }
+                if (type == typeof(byte[]))
                 {
                     fileStream.Write((byte[])data, 0, ((byte[])data).Length);
-                    msg = Encoding.UTF8.GetString((byte[])data) + msg;
+                    msg = BitConverter.ToString((byte[])data) + msg;
                 }
-                else if(typeof(T) == typeof(bool))
+                else if (type == typeof(bool))
                 {
-                    fileStream.WriteByte((byte) ((bool)data ? 1 : 0));
+                    fileStream.WriteByte((byte)((bool)data ? 1 : 0));
                     msg = (bool)data + msg;
                 }
 
-                else if(typeof(T) == typeof(float))
+                else if (type == typeof(float))
                 {
                     fileStream.Write(BitConverter.GetBytes((float)data), 0, BitConverter.GetBytes((float)data).Length);
                     msg = (float)data + msg;
                 }
             }
-            catch (Exception) {
-                Print($"Error Writing Var: {data ?? 0xDEADDAD:X} (Type: {typeof(T)})");
+            catch (Exception)
+            {
+                Print($"Error Writing Var: {data ?? 0xDEADDAD} (Type: {type})");
             }
+            #if DEBUG
+            finally {
+                Print(msg);
+            }
+            #endif
         }
 
 
@@ -309,13 +323,17 @@ namespace Dobby {
                     byte[] patchData;
                     object patchValue;
                     int patchCount = 2;
+                    int patchIndex;
+
 
                     // Apply Universal Options
-                    for(var index = 0; index < UniversalPatchValues.Length; index++)
+                    foreach (var button in new Button[] {  })
                     {
-                        patchData = UniversalBootSettingsPointers[index][gameIndex];
+                        patchIndex = button.TabIndex;
+                        patchData = UniversalBootSettingsPointers[patchIndex][gameIndex];
+                        patchValue = button.Variable;
 
-                        if (UniversalPatchValues[index] == DefaultUniveralPatchValues[index])
+                        if ((bool)patchValue == DefaultUniveralPatchValues[patchIndex])
                         {
                             Print("Skipping Unchanged Patch Value...");
                             continue;
@@ -340,7 +358,7 @@ namespace Dobby {
                         WriteByte(data: pointerTypeIdentifier);
                         WriteByte(data: 0);
                         WriteBytes(data: patchData);
-                        WriteByte(data: (byte)(UniversalPatchValues[index] ? 1 : 0));
+                        WriteByte(data: (byte)((bool)patchValue ? 1 : 0));
 
                         Print("");
                         patchCount++;
@@ -348,13 +366,13 @@ namespace Dobby {
 
 
                     // Apply Game-Specific Options
-                    //! TODO: UPDATE THIS, not changed since removing GSPatchValues
-                    for(var i = 0; i < DefaultGSPatchValues.Length; i++ )
+                    foreach (var button in GSButtons)
                     {
-                        patchValue = DefaultGSPatchValues[i];
-                        patchData = GameSpecificBootSettingsPointers[i][gameIndex]; //! wait, what? this seems like a mistake
+                        patchIndex = button.TabIndex;
+                        patchValue = button.Variable;
+                        patchData = GameSpecificBootSettingsPointers[patchIndex][gameIndex];
 
-                        if (patchValue.Equals(DefaultGSPatchValues[i]))
+                        if (patchValue.Equals(DefaultGSPatchValues[patchIndex]))
                         {
                             Print("Skipping Unchanged Patch Value...");
                             continue;
@@ -372,23 +390,24 @@ namespace Dobby {
                             Print($"ERROR: Invalid Length for Provided Path Value! ({patchData.Length} != 4 | 8)");
                             continue;
                         }
+                        Print($"Writing patch data of type \"{pointerTypeIdentifier:X}\"");
 
 
                         // Write the identifier for Pointers vs hard Addresses
-                        WriteVar<byte>(pointerTypeIdentifier);
+                        WriteVar(pointerTypeIdentifier);
 
                         // The fuck was this about??
-                        WriteVar<byte>((byte)(patchValue.GetType() == typeof(byte) || patchValue.GetType() == typeof(bool) ? 0 : 1));
+                        WriteVar((byte)(patchValue.GetType() == typeof(byte) || patchValue.GetType() == typeof(bool) ? 0 : 1));
 
                         // Write path pointer/address
-                        WriteVar<byte[]>(patchData);
+                        WriteVar(patchData);
 
                         // Write the patch data itself
-                        WriteVar<byte[]>(patchValue);
+                        WriteVar(patchValue);
 
                         patchCount++;
-                        Print("");
                     }
+
 
                     // padding to avoid issues with overlapping previous larger patches
                     WriteBytes(data: new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0x08 });
