@@ -303,6 +303,7 @@
           "* 4.63.381.966 | fixed the issue of the designer removing already assigned variables from generated InitializeComponent methods, despite the effected property being visible in the designer (it's like it's fighting itself, hah. oh well, my fault)",
           "* 4.63.382.968 | Small CycleButtonVariable fixes",
           "* 4.63.384.971 | Fixed (I think) PS4MiscPatchesPage patch application function. needs more testing still, though.",
+          "* 4.63.385.971 | Added missing condition for byte variables in CycleButtonVariable(). What an odd oversight.",
         };
 
 

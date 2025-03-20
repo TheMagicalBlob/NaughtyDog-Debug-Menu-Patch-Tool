@@ -1575,11 +1575,11 @@ namespace Dobby {
             //#
             //## Integers
             //#
-            if (type == typeof(int) || type == typeof(long))
+            if (type == typeof(int))
             {
                 if (MaximumValue == null)
                 {
-                    Variable = (long)Variable + inc;
+                    Variable = (int) ((int)Variable + inc);
                 }
                 else {
                     // avoid going out of bounds in the VariableTags array
@@ -1598,6 +1598,37 @@ namespace Dobby {
 
                 return;
             }
+
+
+            
+            //#
+            //## Bytes
+            //#
+            if (type == typeof(byte))
+            {
+                if (MaximumValue == null)
+                {
+                    Variable = (byte) ((byte)Variable + inc);
+                }
+                else {
+                    // Avoid going out of bounds in the VariableTags array
+                    if (VariableTags.Length < (long)MaximumValue)
+                    {
+                        MaximumValue = VariableTags.Length;
+                        Common.Print($"ERROR: Maximum value for control Variable was larger than the amount of provided VariableTags; lowered maxValue to [{MaximumValue}]");
+                    }
+
+                    if (MaximumValue.Equals(Variable))
+                    {
+                        Variable = MinimumValue ?? 0;
+                    }
+
+                }
+
+                return;
+            }
+
+
             
             
             //#
