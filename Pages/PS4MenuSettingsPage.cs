@@ -192,111 +192,121 @@ namespace Dobby {
         //--|   Background Function Delcarations   |---\\
         //=============================================\\
         #region [Background Function Delcarations]
-
-        /// <summary>
-        /// Convert a provided object in to a byte array, then writes it to the current position in the active file stream.
-        /// </summary>
-        /// <param name="data"> The object to convert and write. </param>
-        private void WriteVar(object data)
-        {
-            var type = data?.GetType();
-            #if DEBUG
-            var msg = $"] Written To 0x{fileStream.Position:X}\n";
-            #endif
-
-            if (type == null)
-            {
-                Print("ERROR: null object provided");
-                UpdateLabel("Internal error writing data to executable. (WriteVar(object) error)", true);
-            }
-
-
-            try
-            {
-                if (type == typeof(int))
-                {
-                    fileStream.Write(BitConverter.GetBytes((int)data), 0, 4);
-
-                    #if DEBUG
-                    msg = $"[{(int)data} => {BitConverter.ToString(BitConverter.GetBytes((int)data)).Replace("-", ", 0x")}" + msg;
-                    #endif
-                }
-                else if (type == typeof(byte))
-                {
-                    fileStream.WriteByte((byte)data);
-
-                    #if DEBUG
-                    msg = $"[{(byte)data} => {((byte)data).ToString("X").PadLeft(2, '0')}" + msg;
-                    #endif
-                }
-                else if (type == typeof(byte[]))
-                {
-                    fileStream.Write((byte[])data, 0, ((byte[])data).Length);
-
-                    #if DEBUG
-                    msg = $"[0x{BitConverter.ToString((byte[])data).Replace("-", ", 0x")}" + msg;
-                    #endif
-                }
-                else if (type == typeof(bool))
-                {
-                    fileStream.WriteByte((byte)((bool)data ? 1 : 0));
-
-                    #if DEBUG
-                    msg = $"[{(bool)data} => {((bool)data ? 1 : 2)}" + msg;
-                    #endif
-                }
-                else if (type == typeof(float))
-                {
-                    fileStream.Write(BitConverter.GetBytes((float)data), 0, BitConverter.GetBytes((float)data).Length);
-
-                    #if DEBUG
-                    msg = $"[{(float)data} => 0x{BitConverter.ToString(BitConverter.GetBytes((float)data)).Replace("-", ", 0x")}" + msg;
-                    #endif
-                }
-
-                else
-                    Print($"ERROR: Unexpected Variable type ({type}).");
-            }
-            catch (Exception e)
-            {
-                Print($"Error Writing Var: {data ?? 0xDEADDAD} (Type: {type})");
-                PrintError(e);
-            }
-            #if DEBUG
-            finally {
-                Print(msg);
-            }
-            #endif
-        }
-
-
-
+        
 
         /// <summary>
         /// Load a decrypted/unsigned executable specified by the provided fileName.<br/><br/>
         /// Determines the current game via an odd hashing process (redo that ffs, why the hell is it 160 bytes??? And why is a sha256 hash being read as a byte array and turned in to a 32 bit integer???)
         /// </summary>
         /// <param name="filePath"> The path to the executable being loaded </param>
-        private void LoadGameExecutable(string filePath)
+        private void PrepareProvidedExecutable(string filePath)
         {
-            // Dispose (if in use) and initialize the file stream
+            if (!File.Exists(filePath))
+            {
+                // Bitch & moan if the provided file doesn't exist
+                UpdateLabel("Invalid Executable Path Provided.", true);
+                return;
+            }
+            if(OriginalFormScale != Size.Empty)
+            {
+                // Reset form before repeat uses
+                ResetCustomDebugOptions();
+            }
+
+
+            
+            // Dispose of (if in use) and initialize the file stream
             fileStream?.Dispose();
             fileStream = File.Open(filePath, FileMode.Open, FileAccess.ReadWrite);
 
-
-            // Read the selected executable to determine the game and patch &amp; update the Info label
+            // Read the selected executable to determine the game/patch, and update the Info label
             GameInfoLabel.Text = GetGameID(fileStream);
-
             GSGameIndex = GetGSPatchesGameIndex(Game);
+
+
+
+            if (GSGameIndex == 0xBADBEEF)
+            {
+                MessageBox.Show("Selected Game Not Currently Supported", $"Patches For {GameInfoLabel.Text} Not Added Yet");
+                UpdateLabel("Unsupported Game Selected", true);
+                return;
+            }
+            if (GSGameIndex == 0xDEADDAD)
+            {
+                MessageBox.Show("Unknown Game Provided", $"Game unlikely to be Uncharted or Tlou");
+                UpdateLabel("Unknown Game Selected", true);
+                return;
+            }
+            #if DEBUG
+            Print($"LoadGameExecutable()::gameIndex: {GSGameIndex}");
+            #endif
+
+
+            // Load the selected executable
+            CreateAndAddGameSpecificButtons(GSGameIndex);
+        }
+
+
+        
+        /// <summary>
+        /// Get the game index used for the patch data's jagged array.<br/>
+        ///  - eg: array[patchIndex][gameIndex]
+        /// <br/><br/>
+        /// Does Not Include Game Versions I Don't Indend To Support, Just Oldest And Latest<br/>
+        /// (Plus A Couple Still Commonly Used In-Between Ones)
+        /// </summary>
+        private int GetGSPatchesGameIndex(GameID game) {
+            switch(game) {
+                default:
+                    return 0xDEADDAD;
+
+                case GameID.UC1100:
+                case GameID.UC1102:
+                case GameID.UC2100:
+                case GameID.UC2102:
+                case GameID.UC3100:
+                case GameID.UC3102:
+                    return 0xBADBEEF;
+
+                case GameID.UC4100:
+                    return 6;
+                case GameID.UC4101:
+                    return 7;
+                case GameID.UC4127_133:
+                    return 8;
+                case GameID.UC4133MP:
+                    return 0xBADBEEF;
+                case GameID.TLL100:
+                    return 10;
+                case GameID.TLL10X:
+                    return 11;
+
+                case GameID.T1R100:
+                    return 11;
+                case GameID.T1R109:
+                    return 13;
+                case GameID.T1R110:
+                case GameID.T1R111:
+                    return 14;
+                case GameID.T2100:
+                    return 15;
+                case GameID.T2107:
+                    return 16;
+                case GameID.T2108:
+                case GameID.T2109:
+                    return 17;
+            }
         }
 
         
         
         /// <summary>
-        /// 
+        /// Construct two byte arrays containing the BootSettings function call and method assembly with the current game index, and write them to the selected executable.
         /// </summary>
-        /// <param name="gameIndex"></param>
-        /// <returns></returns>
+        /// <param name="gameIndex"> the GSPatchIndex of the current game. </param>
+        /// <returns>
+        /// A status message containing the number of applied patches.
+        /// </returns>
         private string ApplyMenuSettings(int gameIndex)
         {
             var Message = string.Empty;
@@ -319,7 +329,7 @@ namespace Dobby {
 
                     // Write Function Call To Call BootSettings
                     fileStream.Position = BootSettingsCallAddress[gameIndex];
-                    WriteVar(GetBootSettingsFunctionCall(Game));
+                    WriteVar(GetBootSettingsFunctionCallData(Game));
 
 
                     // Write BootSettings Function's Assembly constructed in GetBootSettingsMethodData(gameIndex)
@@ -331,22 +341,35 @@ namespace Dobby {
                     // Apply Universal Options
                     foreach (var button in new Button[] { DisableDebugTextBtn, DisablePausedIconBtn, ProgPauseOnOpenBtn, ProgPauseOnCloseBtn, NovisBtn })
                     {
-                        patchIndex = button.TabIndex;
-                        patchData = UniversalBootSettingsPointers[patchIndex][gameIndex];
+                        // I don't trust myself enough not to have this check, lol
+                        if (button == null) {
+                            Print($"ERROR: Static button \"{button.Name}\" was undeclared for some reason.");
+                            continue;
+                        }
+
+
                         patchValue = button.Variable;
+                        patchData = UniversalBootSettingsPointers[patchIndex = button.TabIndex][gameIndex];
 
                         if ((bool)patchValue == DefaultUniveralPatchValues[patchIndex])
                         {
                             #if DEBUG
                             Print("Skipping Unchanged Patch Value...");
                             #endif
+
                             continue;
                         }
 
 
 
-
-                        pointerTypeIdentifier = (byte) (0xFD + (patchData.Length / 4));
+                        if (patchData.Length == 4)
+                        {
+                            pointerTypeIdentifier = 0xFE;
+                        }
+                        else if (patchData.Length == 8)
+                        {
+                            pointerTypeIdentifier = 0xFF;
+                        }
                         
                         if (pointerTypeIdentifier == 0)
                         {
@@ -427,7 +450,6 @@ namespace Dobby {
 
 
 
-
         ///<summary>
         ///</summary>
         /// <param name="GameIndex"> Index Of The Selected Game, Excluding Versions I Don't Plan To Suppport </param>
@@ -480,57 +502,6 @@ namespace Dobby {
         }
 
 
-        /// <summary>
-        /// Get the game index used for the patch data's jagged array.<br/>
-        ///  - eg: array[patchIndex][gameIndex]
-        /// <br/><br/>
-        /// Does Not Include Game Versions I Don't Indend To Support, Just Oldest And Latest<br/>
-        /// (Plus A Couple Still Commonly Used In-Between Ones)
-        /// </summary>
-        private int GetGSPatchesGameIndex(GameID game) {
-            switch(game) {
-                default:
-                    return 0xDEADDAD;
-
-                case GameID.UC1100:
-                case GameID.UC1102:
-                case GameID.UC2100:
-                case GameID.UC2102:
-                case GameID.UC3100:
-                case GameID.UC3102:
-                    return 0xBADBEEF;
-
-                case GameID.UC4100:
-                    return 6;
-                case GameID.UC4101:
-                    return 7;
-                case GameID.UC4127_133:
-                    return 8;
-                case GameID.UC4133MP:
-                    return 0xBADBEEF;
-                case GameID.TLL100:
-                    return 10;
-                case GameID.TLL10X:
-                    return 11;
-
-                case GameID.T1R100:
-                    return 11;
-                case GameID.T1R109:
-                    return 13;
-                case GameID.T1R110:
-                case GameID.T1R111:
-                    return 14;
-                case GameID.T2100:
-                    return 15;
-                case GameID.T2107:
-                    return 16;
-                case GameID.T2108:
-                case GameID.T2109:
-                    return 17;
-            }
-        }
-
-
 
         /// <summary>
         /// Get the data required to call the custom BootSettings function, generally redirecting the Quick Menu function call
@@ -538,7 +509,7 @@ namespace Dobby {
         /// <returns>
         /// A byte array containing the function call to write at the address provided by 
         /// </returns>
-        private static byte[] GetBootSettingsFunctionCall(GameID GameID) {
+        private static byte[] GetBootSettingsFunctionCallData(GameID GameID) {
             switch(GameID) {
                 case GameID.UC1100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
 
@@ -569,7 +540,6 @@ namespace Dobby {
                     return Array.Empty<byte>();
             }
         }
-
 
 
 
@@ -624,48 +594,14 @@ namespace Dobby {
             Game = GameID.Empty;
         }
 
-
-        private void ProcessSelectedGame(string filePath)
-        {
-            if (!File.Exists(filePath))
-            {
-                // Bitch & moan if the provided file doesn't exist
-                UpdateLabel("Invalid Executable Path Provided.", true);
-                return;
-            }
-            if(OriginalFormScale != Size.Empty)
-            {
-                // Reset form before repeat uses
-                ResetCustomDebugOptions();
-            }
-
-
-            
-            // Load the provided executable
-            LoadGameExecutable(filePath);
-
-            if (GSGameIndex == 0xBADBEEF)
-            {
-                MessageBox.Show("Selected Game Not Currently Supported", $"Patches For {GameInfoLabel.Text} Not Added Yet");
-                UpdateLabel("Unsupported Game Selected", true);
-                return;
-            }
-            if (GSGameIndex == 0xDEADDAD)
-            {
-                MessageBox.Show("Unknown Game Provided", $"Game unlikely to be Uncharted or Tlou");
-                UpdateLabel("Unknown Game Selected", true);
-                return;
-            }
-            #if DEBUG
-            Print($"LoadGameExecutable()::gameIndex: {GSGameIndex}");
-            #endif
-
-            // Load the selected executable
-            CreateAndAddGameSpecificButtons(GSGameIndex);
-        }
-
         
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="GameIndex"></param>
+        /// <param name="ButtonsVerticalStartOffset"></param>
+        /// <returns></returns>
         private List<Button> InitializeDynamicPatchButtons(int GameIndex, int ButtonsVerticalStartOffset)
         {
             
@@ -770,6 +706,7 @@ namespace Dobby {
         }
 
 
+
         /// <summary>
         /// Resize Form And Move Buttons, Then Add Enabled Custom Buttons To Form Based On The Current Game And Patch
         /// </summary>
@@ -807,7 +744,7 @@ namespace Dobby {
 
             CustomDebugOptionsLabel.Visible = false;
 
-            Array.ForEach(GSButtons.ToArray(), button => Controls.Add(button));
+            Array.ForEach(GSButtons.ToArray(), button => { Controls.Add(button); button.BringToFront(); });
 
 
 
@@ -835,7 +772,109 @@ namespace Dobby {
             PerformLayout();
         }
 
+
+
+        /// <summary>
+        /// Convert a provided object in to a byte array, then writes it to the current position in the active file stream.
+        /// </summary>
+        /// <param name="data"> The object to convert and write. </param>
+        private void WriteVar(object data)
+        {
+            var type = data?.GetType();
+            #if DEBUG
+            var msg = $"] Written To 0x{fileStream.Position:X}\n";
+            #endif
+
+            if (type == null)
+            {
+                Print("ERROR: null object provided");
+                UpdateLabel("Internal error writing data to executable. (WriteVar(object) error)", true);
+            }
+
+
+            try
+            {
+                if (type == typeof(int))
+                {
+                    fileStream.Write(BitConverter.GetBytes((int)data), 0, 4);
+
+                    #if DEBUG
+                    msg = $"[{(int)data} => {BitConverter.ToString(BitConverter.GetBytes((int)data)).Replace("-", ", 0x")}" + msg;
+                    #endif
+                }
+                else if (type == typeof(byte))
+                {
+                    fileStream.WriteByte((byte)data);
+
+                    #if DEBUG
+                    msg = $"[{(byte)data} => {((byte)data).ToString("X").PadLeft(2, '0')}" + msg;
+                    #endif
+                }
+                else if (type == typeof(byte[]))
+                {
+                    fileStream.Write((byte[])data, 0, ((byte[])data).Length);
+
+                    #if DEBUG
+                    msg = $"[0x{BitConverter.ToString((byte[])data).Replace("-", ", 0x")}" + msg;
+                    #endif
+                }
+                else if (type == typeof(bool))
+                {
+                    fileStream.WriteByte((byte)((bool)data ? 1 : 0));
+
+                    #if DEBUG
+                    msg = $"[{(bool)data} => {((bool)data ? 1 : 2)}" + msg;
+                    #endif
+                }
+                else if (type == typeof(float))
+                {
+                    fileStream.Write(BitConverter.GetBytes((float)data), 0, BitConverter.GetBytes((float)data).Length);
+
+                    #if DEBUG
+                    msg = $"[{(float)data} => 0x{BitConverter.ToString(BitConverter.GetBytes((float)data)).Replace("-", ", 0x")}" + msg;
+                    #endif
+                }
+
+                else
+                    Print($"ERROR: Unexpected Variable type ({type}).");
+            }
+            catch (Exception e)
+            {
+                Print($"Error Writing Var: {data ?? 0xDEADDAD} (Type: {type})");
+                PrintError(e);
+            }
+            #if DEBUG
+            finally {
+                Print(msg);
+            }
+            #endif
+        }
+        
+
+        #if DEBUG
+        /// <summary>
+        /// Read the current universal and game-specific patch values and return them in a formatted string[].
+        /// </summary>
+        /// <returns> A array of strings containing the Text and Variable properties in (ignoring any controls without assigned Variable properties). </returns>
+        internal string[] PeekMenuSettingsOptions()
+        {
+            var menuOptions = new List<string>();
+
+            foreach (Control control in Controls)
+            {
+                if (control.GetType() == typeof(Dobby.Button) && ((Dobby.Button)control).Variable != null)
+                {
+                    menuOptions.Add($"{control.Text} {((Dobby.Button)control).Variable}");
+                }
+            }
+            menuOptions.Reverse();
+
+
+            return menuOptions.ToArray();
+        }
+        #endif
         #endregion
+
 
 
 
@@ -872,7 +911,7 @@ namespace Dobby {
             Print($"control was not default ({ExecutablePathBox.IsDefault}:{ExecutablePathBox.Text})");
 
 
-            ProcessSelectedGame(ExecutablePathBox.Text);
+            PrepareProvidedExecutable(ExecutablePathBox.Text);
         }
 
 

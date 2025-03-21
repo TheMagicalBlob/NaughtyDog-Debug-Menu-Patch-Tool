@@ -39,13 +39,13 @@ namespace Dobby
             this.NovisBtn = new Dobby.Button();
             this.ProgPauseOnCloseBtn = new Dobby.Button();
             this.ProgPauseOnOpenBtn = new Dobby.Button();
-            this.DisableDebugTextBtn = new Dobby.Button();
             this.BackBtn = new Dobby.Button();
             this.DisablePausedIconBtn = new Dobby.Button();
             this.BrowseButton = new Dobby.Button();
             this.ExecutablePathBox = new Dobby.TextBox();
             this.InfoHelpBtn = new Dobby.Button();
             this.CreditsBtn = new Dobby.Button();
+            this.DisableDebugTextBtn = new Dobby.Button();
             this.SuspendLayout();
             // 
             // MainLabel
@@ -164,7 +164,7 @@ namespace Dobby
             this.NovisBtn.Location = new System.Drawing.Point(1, 141);
             this.NovisBtn.Name = "NovisBtn";
             this.NovisBtn.Size = new System.Drawing.Size(251, 24);
-            this.NovisBtn.TabIndex = 46;
+            this.NovisBtn.TabIndex = 4;
             this.NovisBtn.Text = "Disable Culling Of Level Geometry:";
             this.NovisBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.NovisBtn.UseVisualStyleBackColor = false;
@@ -181,7 +181,7 @@ namespace Dobby
             this.ProgPauseOnCloseBtn.Location = new System.Drawing.Point(1, 119);
             this.ProgPauseOnCloseBtn.Name = "ProgPauseOnCloseBtn";
             this.ProgPauseOnCloseBtn.Size = new System.Drawing.Size(269, 24);
-            this.ProgPauseOnCloseBtn.TabIndex = 45;
+            this.ProgPauseOnCloseBtn.TabIndex = 3;
             this.ProgPauseOnCloseBtn.Text = "Disable Debug Pause On Menu Close: ";
             this.ProgPauseOnCloseBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ProgPauseOnCloseBtn.UseVisualStyleBackColor = false;
@@ -198,29 +198,11 @@ namespace Dobby
             this.ProgPauseOnOpenBtn.Location = new System.Drawing.Point(1, 96);
             this.ProgPauseOnOpenBtn.Name = "ProgPauseOnOpenBtn";
             this.ProgPauseOnOpenBtn.Size = new System.Drawing.Size(269, 24);
-            this.ProgPauseOnOpenBtn.TabIndex = 44;
+            this.ProgPauseOnOpenBtn.TabIndex = 2;
             this.ProgPauseOnOpenBtn.Text = "Disable Debug Pause On Menu Open: ";
             this.ProgPauseOnOpenBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ProgPauseOnOpenBtn.UseVisualStyleBackColor = false;
             this.ProgPauseOnOpenBtn.Variable = true;
-            // 
-            // DisableDebugTextBtn
-            // 
-            this.DisableDebugTextBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.DisableDebugTextBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.DisableDebugTextBtn.FlatAppearance.BorderSize = 0;
-            this.DisableDebugTextBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DisableDebugTextBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
-            this.DisableDebugTextBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.DisableDebugTextBtn.Location = new System.Drawing.Point(1, 52);
-            this.DisableDebugTextBtn.Name = "DisableDebugTextBtn";
-            this.DisableDebugTextBtn.Size = new System.Drawing.Size(251, 24);
-            this.DisableDebugTextBtn.TabIndex = 42;
-            this.DisableDebugTextBtn.Tag = "Disable the 2D performance  & build stats";
-            this.DisableDebugTextBtn.Text = "Disable 2D Debug Text On Startup: ";
-            this.DisableDebugTextBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.DisableDebugTextBtn.UseVisualStyleBackColor = false;
-            this.DisableDebugTextBtn.Variable = false;
             // 
             // BackBtn
             // 
@@ -252,7 +234,7 @@ namespace Dobby
             this.DisablePausedIconBtn.Location = new System.Drawing.Point(1, 74);
             this.DisablePausedIconBtn.Name = "DisablePausedIconBtn";
             this.DisablePausedIconBtn.Size = new System.Drawing.Size(205, 24);
-            this.DisablePausedIconBtn.TabIndex = 43;
+            this.DisablePausedIconBtn.TabIndex = 1;
             this.DisablePausedIconBtn.Tag = "Show the flashing PAUSED box on-screen when the debug menu pause is active";
             this.DisablePausedIconBtn.Text = "Show Debug PAUSED Icon:";
             this.DisablePausedIconBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -325,6 +307,24 @@ namespace Dobby
             this.CreditsBtn.UseVisualStyleBackColor = false;
             this.CreditsBtn.Variable = null;
             // 
+            // DisableDebugTextBtn
+            // 
+            this.DisableDebugTextBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.DisableDebugTextBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.DisableDebugTextBtn.FlatAppearance.BorderSize = 0;
+            this.DisableDebugTextBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DisableDebugTextBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
+            this.DisableDebugTextBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.DisableDebugTextBtn.Location = new System.Drawing.Point(1, 52);
+            this.DisableDebugTextBtn.Name = "DisableDebugTextBtn";
+            this.DisableDebugTextBtn.Size = new System.Drawing.Size(251, 24);
+            this.DisableDebugTextBtn.TabIndex = 0;
+            this.DisableDebugTextBtn.Tag = "Disable the 2D performance  & build stats";
+            this.DisableDebugTextBtn.Text = "Disable 2D Debug Text On Startup: ";
+            this.DisableDebugTextBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.DisableDebugTextBtn.UseVisualStyleBackColor = false;
+            this.DisableDebugTextBtn.Variable = false;
+            // 
             // PS4MenuSettingsPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -370,7 +370,6 @@ namespace Dobby
         private Button InfoHelpBtn;
         private Button CreditsBtn;
         private Button BackBtn;
-        private Button DisableDebugTextBtn;
         private Button DisablePausedIconBtn;
         private Button ProgPauseOnCloseBtn;
         private Button ProgPauseOnOpenBtn;
@@ -388,5 +387,6 @@ namespace Dobby
         private Label Info;
         #endregion
 
+        private Button DisableDebugTextBtn;
     }
 }

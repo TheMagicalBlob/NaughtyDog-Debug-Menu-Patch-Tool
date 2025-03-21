@@ -290,7 +290,7 @@
           "* 4.61.355.911 | Renamed Main => MainPage, Standardizing comment fomrats and code structuring",
           "* 4.61.357.917 | Miscellaneous PS4MenuSettingsPage updates (jfc that code is hideous and unsorted), Other Crap (probably foratting idk, I updated the number but left no message)",
           "* 4.61.360.919 | Re-enabled PS4MenuSettingPage in release builds (not that it's finished being updated)",
-          "* 4.61.361.923 | Stopped info label text from being carried over to other forms (forgot it was doing that, lmao). Testing misc patches page.",
+          "* 4.61.361.923 | Stopped info label text from being carried over to other forms (forgot it was doing that, lmao). Testing misc patc  hes page.",
           "* 4.61.362.925 | Misc CycleButtonVariable and DrawButtonVariable method testing & fixes. TODO: Fix the double variable toggling on the misc patches page after editing the variable of a different control",
           "* 4.61.365.933 | Reworking the PS4MiscPatchesPage- other miscellaneous crap I've since forgotten",
           "* 4.61.366.934 | Small (and lazy) fix to allow manual text box resetting (I ate a pizza for breakfast, my brain is on low power mode now...)",
@@ -304,7 +304,8 @@
           "* 4.63.382.968 | Small CycleButtonVariable fixes",
           "* 4.63.384.971 | Fixed (I think) PS4MiscPatchesPage patch application function. needs more testing still, though.",
           "* 4.63.385.971 | Added missing condition for byte variables in CycleButtonVariable(). What an odd oversight.",
-          "* 4.63.389.974 | More general consistency improvements (cycling variables forcibly updates the control since scrolling wasn't updating anything, scrolling with the mouse down no longer still sends the click event as well, etc)",
+          "* 4.63.389.974 | More general consistency improvements for PS4MenuSettingsPage, not finished, though. (cycling variables forcibly updates the control since scrolling wasn't updating anything, scrolling with the mouse down no longer still sends the click event as well, etc)",
+          "* 4.64.393.979 | Moving LogWindow class out of the Testing class and setting it up to be edited through the designer; Renamed LogWindow to DebugWindow, since it's not really used for logging anymore anyway",
         };
 
 

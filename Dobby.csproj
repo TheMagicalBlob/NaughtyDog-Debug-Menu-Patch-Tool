@@ -66,6 +66,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DebugWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DebugWindow.Designer.cs">
+      <DependentUpon>DebugWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.Designer.cs">
       <SubType>Form</SubType>
       <DependentUpon>MainPage.cs</DependentUpon>
@@ -110,9 +116,7 @@
     <Compile Include="Pages\PkgCreationPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Testing.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Testing.cs" />
     <Compile Include="Pages\PS4MenuSettingsPage.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -153,6 +157,9 @@
     <Compile Include="Ver.cs" />
     <EmbeddedResource Include="Common.resx">
       <DependentUpon>Common.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DebugWindow.resx">
+      <DependentUpon>DebugWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\EbootPatchHelpPage.resx">
       <DependentUpon>EbootPatchHelpPage.cs</DependentUpon>

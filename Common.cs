@@ -94,8 +94,7 @@ namespace Dobby {
     #if DEBUG
         /// <summary> Debug class instance. </summary>
         public static Testing Dev;
-        //!
-        public static int tmp = 1;
+        private static DebugWindow Log;
     #endif
         #endregion
 
@@ -543,7 +542,7 @@ namespace Dobby {
 
             NewPage?.Show();
 #if DEBUG
-            Dev.SetActivePage(NewPage);
+            Log?.SetLogParent(NewPage);
 #endif
             Common.Page = Page;
             ActiveForm.Location = LastFormPosition;
@@ -566,10 +565,6 @@ namespace Dobby {
         {
             var ConstantControls = new string[] { "Info", "InfoHelpBtn", "CreditsBtn", "BackBtn" };
             var Parent = Controls.Owner.Name;
-
-            #if DEBUG
-            Dev.SetActivePage(Controls.Owner.FindForm());
-            #endif
 
 
             // Mass-Apply handler methods to basic MouseDown/Up, MouseEnter/Leave and MouseMove events
@@ -706,7 +701,7 @@ namespace Dobby {
             Controls.Owner.Controls.Add(LogBtn);
             LogBtn.BringToFront();
             
-            LogBtn.Click += (sender, args) => Dev.ToggleLogWindow();
+            LogBtn.Click += LogBtn_Click;
             LogBtn.MouseEnter += new EventHandler(WindowBtnMH);
             LogBtn.MouseLeave += new EventHandler(WindowBtnML);
             #endif
@@ -919,13 +914,21 @@ namespace Dobby {
         //--|   Static Event Handler Declarations   |--\\
         //=============================================\\
         #region [Static Event Handler Declarations]
+
+        #if DEBUG
+        public static void LogBtn_Click(object sender, EventArgs args) {
+            if (Log != null) {
+                Log?.Dispose();
+                Log = null;
+            }
+            else
+                (Log = new DebugWindow(((Control)sender).FindForm())).Show();
+        }
+        #endif
+
         internal static void ExitBtn_Click(object sender, EventArgs e)
         {
             MainForm.Dispose();  //! 90% sure neither of these are implemented properly.
-            #if DEBUG
-            Dev.Dispose();       // ^
-            #endif
-
             Environment.Exit(0); // off we fuck
         }
         internal static void WindowBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
@@ -957,7 +960,7 @@ namespace Dobby {
             ActiveForm.Update();
 
             #if DEBUG
-            Dev.MoveLogWindow();
+            Log?.MoveLogToAppEdge();
             #endif
         }
 
