@@ -131,6 +131,7 @@ namespace Dobby
             this.DownloadSourceBtn.Text = "Download Latest Source Code (Download Link)";
             this.DownloadSourceBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DownloadSourceBtn.UseVisualStyleBackColor = false;
+            this.DownloadSourceBtn.Variable = null;
             this.DownloadSourceBtn.Click += new System.EventHandler(this.DownloadSourceBtn_Click);
             // 
             // InfoHelpBtn
@@ -149,6 +150,7 @@ namespace Dobby
             this.InfoHelpBtn.Text = "Information / Help...";
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
+            this.InfoHelpBtn.Variable = null;
             // 
             // CreditsBtn
             // 
@@ -166,6 +168,7 @@ namespace Dobby
             this.CreditsBtn.Text = "Credits...";
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
+            this.CreditsBtn.Variable = null;
             // 
             // PCDebugMenuPageBtn
             // 
@@ -182,6 +185,7 @@ namespace Dobby
             this.PCDebugMenuPageBtn.Text = "Patch .exe With The Debug Menu...";
             this.PCDebugMenuPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PCDebugMenuPageBtn.UseVisualStyleBackColor = false;
+            this.PCDebugMenuPageBtn.Variable = null;
             this.PCDebugMenuPageBtn.Click += new System.EventHandler(this.PCDebugMenuPageBtn_Click);
             // 
             // PkgCreationPageBtn
@@ -196,9 +200,11 @@ namespace Dobby
             this.PkgCreationPageBtn.Name = "PkgCreationPageBtn";
             this.PkgCreationPageBtn.Size = new System.Drawing.Size(260, 23);
             this.PkgCreationPageBtn.TabIndex = 35;
+            this.PkgCreationPageBtn.Tag = "Build a .pkg with the edited .elf";
             this.PkgCreationPageBtn.Text = "Build New Patch Or Base Game .pkg...";
             this.PkgCreationPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PkgCreationPageBtn.UseVisualStyleBackColor = false;
+            this.PkgCreationPageBtn.Variable = null;
             this.PkgCreationPageBtn.Click += new System.EventHandler(this.PkgPageBtn_Click);
             // 
             // PS4DebugPageBtn
@@ -213,9 +219,11 @@ namespace Dobby
             this.PS4DebugPageBtn.Name = "PS4DebugPageBtn";
             this.PS4DebugPageBtn.Size = new System.Drawing.Size(262, 23);
             this.PS4DebugPageBtn.TabIndex = 20;
+            this.PS4DebugPageBtn.Tag = "Enable the debug mode via memory editing";
             this.PS4DebugPageBtn.Text = "Enable Debug Mode With PS4Debug...";
             this.PS4DebugPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PS4DebugPageBtn.UseVisualStyleBackColor = false;
+            this.PS4DebugPageBtn.Variable = null;
             this.PS4DebugPageBtn.Click += new System.EventHandler(this.PS4DebugPageBtn_Click);
             // 
             // EbootPatchPageBtn
@@ -230,9 +238,11 @@ namespace Dobby
             this.EbootPatchPageBtn.Name = "EbootPatchPageBtn";
             this.EbootPatchPageBtn.Size = new System.Drawing.Size(275, 23);
             this.EbootPatchPageBtn.TabIndex = 25;
+            this.EbootPatchPageBtn.Tag = "Apply patches locally to a provided .elf/.bin";
             this.EbootPatchPageBtn.Text = "Patch eboot.bin With The Debug Menu...";
             this.EbootPatchPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.EbootPatchPageBtn.UseVisualStyleBackColor = false;
+            this.EbootPatchPageBtn.Variable = null;
             this.EbootPatchPageBtn.Click += new System.EventHandler(this.EbootPatchPageBtn_Click);
             // 
             // PS4MenuSettingsPageBtn
@@ -246,14 +256,16 @@ namespace Dobby
             this.PS4MenuSettingsPageBtn.Location = new System.Drawing.Point(1, 102);
             this.PS4MenuSettingsPageBtn.Name = "PS4MenuSettingsPageBtn";
             this.PS4MenuSettingsPageBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.PS4MenuSettingsPageBtn.Size = new System.Drawing.Size(203, 23);
+            this.PS4MenuSettingsPageBtn.Size = new System.Drawing.Size(223, 23);
             this.PS4MenuSettingsPageBtn.TabIndex = 27;
-            this.PS4MenuSettingsPageBtn.Text = "Misc. Debug Menu Settings...";
+            this.PS4MenuSettingsPageBtn.Tag = "Patch a .elf with user-selected menu settings";
+            this.PS4MenuSettingsPageBtn.Text = "Apply Misc. Debug Menu Settings...";
             this.PS4MenuSettingsPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PS4MenuSettingsPageBtn.UseVisualStyleBackColor = false;
+            this.PS4MenuSettingsPageBtn.Variable = null;
             this.PS4MenuSettingsPageBtn.Click += new System.EventHandler(this.PS4MenuSettingsPageBtn_Click);
             // 
-            // Main
+            // MainPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -275,7 +287,7 @@ namespace Dobby
             this.Controls.Add(this.SeperatorLine0);
             this.Controls.Add(this.SeperatorLine3);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "Main";
+            this.Name = "MainPage";
             this.ResumeLayout(false);
 
         }

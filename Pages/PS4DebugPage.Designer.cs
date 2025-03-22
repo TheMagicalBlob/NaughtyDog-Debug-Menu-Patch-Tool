@@ -444,7 +444,6 @@ namespace Dobby
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PS4DebugPage";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "Main";
             this.ResumeLayout(false);
             this.PerformLayout();
 

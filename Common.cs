@@ -548,7 +548,7 @@ namespace Dobby {
             ActiveForm.Location = LastFormPosition;
 
 
-            if (PageToClose.Name == "Main")
+            if (PageToClose.Name == "MainPage")
                 PageToClose.Hide();
             else
                 PageToClose.Close();
@@ -708,7 +708,7 @@ namespace Dobby {
 
 
             // Avoid searching for back button on Main page
-            if (Parent != "Main")
+            if (Parent != "MainPage")
                 Controls.Owner.Controls.Find(ConstantControls[3], true)[0].Click += (_, __) => ChangeForm(null);
 
             try {
@@ -925,7 +925,7 @@ namespace Dobby {
                 (Log = new DebugWindow(((Control)sender).FindForm())).Show();
         }
         #endif
-
+        
         internal static void ExitBtn_Click(object sender, EventArgs e)
         {
             MainForm.Dispose();  //! 90% sure neither of these are implemented properly.

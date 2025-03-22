@@ -18,6 +18,7 @@ namespace Dobby
         public DebugWindow(Form Gaia)
         {
             InitializeComponent();
+            return;
 
             var DButtonFont = new Font("Cambria", 7F, FontStyle.Bold);
 
@@ -84,7 +85,7 @@ namespace Dobby
             {
                 var debugControl = DButtons[i];
                 var debugMethod = Handlers[i];
-            Controls.Add(debugControl);
+                Controls.Add(debugControl);
                 debugControl.FlatStyle = FlatStyle.Flat;
                 debugControl.FlatAppearance.BorderSize = 0;
                 debugControl.Click += debugMethod;
