@@ -96,7 +96,6 @@ namespace Dobby
 
 
             // LogWindow Event Handlers
-            MouseEnter += DebugControlHover;
             MouseDown  += MouseDownFunc;
             MouseUp    += MouseUpFunc;
 
@@ -179,7 +178,7 @@ namespace Dobby
         public static Scaling ResizeLog = new Scaling(() =>
         { 
             LogPtr.Size = FormScale;
-            LogWindowRenderer = LogPtr.CreateGraphics();
+            LogWindowRenderer = LogPtr.CreateGraphics(); //! required?
 
         Reset:
             LogPtr.Location = new Point(ParentPtr.Location.X - LogPtr.Size.Width, ParentPtr.Location.Y);
@@ -252,7 +251,7 @@ namespace Dobby
                     while(LogShouldPause);
 
                     output = string.Empty;
-                    var controlType = HoveredControl?.GetType().ToString();
+                    var controlType = Common.HoveredControl?.GetType().ToString();
 
                     try {
                         activePage = OverrideDynamicOutput ? PageID.MainPage : Common.Page;
@@ -269,10 +268,10 @@ namespace Dobby
                                     $"  Pages: {string.Join(", ", Pages)}",
                                     " ",
                                     $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}",
-                                    $"Control: {HoveredControl?.Name} | {controlType?.Substring(controlType.LastIndexOf('.') + 1)} | {HoveredControl?.ForeColor.Name}",
-                                    $"{(HoveredControl?.GetType() == typeof(Button) ? ((Button)HoveredControl)?.Variable : " ")}",
-                                    $" Size: {HoveredControl?.Size} | Pos: {HoveredControl?.Location}",
-                                    $" Parent [{HoveredControl?.Parent?.Name}]",
+                                    $"Control: {Common.HoveredControl?.Name} | {controlType?.Substring(controlType.LastIndexOf('.') + 1)} | {Common.HoveredControl?.ForeColor.Name}",
+                                    $"{(Common.HoveredControl?.GetType() == typeof(Button) ? ((Button)Common.HoveredControl)?.Variable : " ")}",
+                                    $" Size: {Common.HoveredControl?.Size} | Pos: {Common.HoveredControl?.Location}",
+                                    $" Parent [{Common.HoveredControl?.Parent?.Name}]",
                                 };
                                 break;
 
@@ -288,10 +287,10 @@ namespace Dobby
                                     //$"ProcessName: {PS4DebugPage.ProcessName} | PDbg Connected: {PS4DebugPage.PS4DebugIsConnected}",
                                     " ",
                                     $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}",
-                                    $"Control: {HoveredControl?.Name} | {controlType?.Substring(controlType.LastIndexOf('.') + 1)}",
-                                    $"{(HoveredControl?.GetType() == typeof(Button) ? ((Button)HoveredControl)?.Variable : " ")}",
-                                    $" Size: {HoveredControl?.Size} | Pos: {HoveredControl?.Location}",
-                                    $" Parent [{HoveredControl?.Parent?.Name}]",
+                                    $"Control: {Common.HoveredControl?.Name} | {controlType?.Substring(controlType.LastIndexOf('.') + 1)}",
+                                    $"{(Common.HoveredControl?.GetType() == typeof(Button) ? ((Button)Common.HoveredControl)?.Variable : " ")}",
+                                    $" Size: {Common.HoveredControl?.Size} | Pos: {Common.HoveredControl?.Location}",
+                                    $" Parent [{Common.HoveredControl?.Parent?.Name}]",
                                 };
                             break;
 
@@ -305,7 +304,10 @@ namespace Dobby
                         Testing.Print($"!! ERROR: an exception occured during debug output loop while setting \"frame\".\nException: {e.Message}");
                     }
 
-                    if(LogShouldRefresh || !chk1.SequenceEqual(rawOutput) || chk1 == null || !chk2.SequenceEqual(OutputStrings)) {
+
+
+                    if(LogShouldRefresh || !chk1.SequenceEqual(rawOutput) || chk1 == null || !chk2.SequenceEqual(OutputStrings))
+                    {
                         chk1 = rawOutput;
                         chk2 = OutputStrings;
                         SizeF TextSize;

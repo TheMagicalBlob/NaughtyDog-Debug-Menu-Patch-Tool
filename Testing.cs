@@ -51,9 +51,6 @@ namespace Dobby {
 #if DEBUG
         public static bool OverrideDynamicOutput;
 
-        public static Control HoveredControl;
-
-
         public static string TestGamedataFolder;
         public static string TestPubToolPath;
         public static string TestEbootPath;
@@ -241,9 +238,6 @@ namespace Dobby {
             while(Y++ < Parent.Size.Height);
             return Cunts.ToArray();
         }
-
-
-        public static void DebugControlHover(object sender, EventArgs e) => HoveredControl = (Control)sender;
 
 
         /// <summary>

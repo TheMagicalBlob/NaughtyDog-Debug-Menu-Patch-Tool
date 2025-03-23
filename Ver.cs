@@ -307,6 +307,8 @@
           "* 4.63.389.974 | More general consistency improvements for PS4MenuSettingsPage, not finished, though. (cycling variables forcibly updates the control since scrolling wasn't updating anything, scrolling with the mouse down no longer still sends the click event as well, etc)",
           "* 4.64.393.979 | Moving LogWindow class out of the Testing class and setting it up to be edited through the designer; Renamed LogWindow to DebugWindow, since it's not really used for logging anymore anyway",
           "* 4.64.396.982 | Fixed overlapping buttons in PS4MenuSettingsPage, added a few Hint tags, other misc fixes (whoops)",
+          "* 4.64.398.985 | Added missing MouseMove/MoveForm event/event handler to DynamicPatchButtons (was just going to add a check for the current control on scroll events, but MouseEnter doesn't get sent while the mouse is down...); Other misc changes as well (eugh, not like anyone else works on this source)",
+          "* 4.64.398.985 | ",
         };
 
 

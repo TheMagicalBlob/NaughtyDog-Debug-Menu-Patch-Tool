@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
@@ -86,7 +87,6 @@ namespace Dobby {
         public static Color NDYellow = Color.FromArgb(255, 227, 0);
 
         public static string
-            CurrentControl,
             ActiveGameID = "UNK"
         ;
         
@@ -104,6 +104,9 @@ namespace Dobby {
         //## Control Refferences
         //#
         #region [Control Refferences]
+
+        public static Control HoveredControl;
+
 
         /// <summary> Refference to the originally launched form. </summary>
         private static Form MainForm;
@@ -217,7 +220,7 @@ namespace Dobby {
 
 
         /// <summary>
-        /// Write a fucking //!summary, chucklefuck
+        /// Update the current label text and/or apply a flashing effect to the label to signify an error.
         /// </summary>
         /// <param name="newText"> The string to apply to the label's Text property. </param>
         /// <param name="flashLabel"> If true, flash the label to indicate an error or otherwise get the user's attention. (switches between white/yellow) </param>
@@ -570,9 +573,6 @@ namespace Dobby {
             // Mass-Apply handler methods to basic MouseDown/Up, MouseEnter/Leave and MouseMove events
             foreach (Control item in Controls)
             {
-            #if DEBUG
-                item.MouseEnter += new EventHandler((control, e) => Testing.HoveredControl = item);
-            #endif
                 item.MouseDown += new MouseEventHandler(MouseDownFunc);
                 item.MouseUp += new MouseEventHandler(MouseUpFunc);
 
@@ -595,7 +595,6 @@ namespace Dobby {
 
                 if ((item.GetType() == typeof(Dobby.Button) || item.GetType() == typeof(System.Windows.Forms.Button)) && !blacklistedItems.Contains(item.Name))
                 {
-                    //item.MouseEnter += new EventHandler(ControlHover);
                     item.MouseEnter += (sender, e) => HoverLeave(((Control)sender), true);
                     item.MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
                 }
@@ -605,7 +604,7 @@ namespace Dobby {
             // Apply border application method to paint event
             Controls.Owner.Paint += DrawBorder;
             
-            // Lazy temp fix
+            // Apply Info label reset string to form
             Controls.Owner.Tag = " ";
             Controls.Owner.MouseEnter += Common.HoverString;
 
@@ -741,28 +740,28 @@ namespace Dobby {
             int ArrowWidth;
 
             try {
-                ArrowWidth = (int)PassedControl.CreateGraphics().MeasureString(">", PassedControl.Font).Width;
+                ArrowWidth = (int) PassedControl.CreateGraphics().MeasureString(">", PassedControl.Font).Width;
             }
             catch (Exception ex) {
-                Print($"Error Getting Width Of Hover Arror From Control ({PassedControl.Name}: {(EventIsMouseEnter ? "Hover" : "Leave")})\n\nException Of Type: {ex.GetType()}\n{ex.Message}");
+                Print($"Error Getting Width Of Hover Arror From Control ({PassedControl.Name}: {(EventIsMouseEnter ? "Hover" : "Leave")})");
+                PrintError(ex);
                 return;
             }
 
 
 
-            if (MouseScrolled = EventIsMouseEnter) { //! is this intentional? could swear it should only be set to false in one of the cases and left alone in the other, not set to true
-#if DEBUG
-                Testing.HoveredControl = PassedControl;
-#endif
-                CurrentControl = PassedControl.Name;
+            if (MouseScrolled = EventIsMouseEnter) //! <-- is this intentional? could swear it should only be set to false in one of the cases and left alone in the other, not set to true
+            {
+                HoveredControl = PassedControl;
 
-                PassedControl.Text = '>' + PassedControl.Text;
-
-
+                HoveredControl.Text = '>' + HoveredControl.Text;
             }
             else {
-                //ArrowWidth = ~ArrowWidth ^ 1; I'm an idiot, this is excessive lmao. keeping it to laugh at, tho. bite me
+                //ArrowWidth = ~ArrowWidth ^ 1; I'm an idiot
                 ArrowWidth = -ArrowWidth;
+
+                if (HoveredControl == PassedControl)
+                    HoveredControl = null;
 
                 if (PassedControl.Text.Contains('>'))
                 PassedControl.Text = PassedControl.Text.Substring(1);
@@ -964,7 +963,31 @@ namespace Dobby {
             #endif
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="control"></param>
+        public static void ControlHover(Control control)
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="control"></param>
+        public static void ControlLeave(Control control)
+        {
+
+        }
+
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public static void HoverString(object sender, EventArgs e)
         {
             // TODO:
@@ -1165,8 +1188,8 @@ namespace Dobby {
         /// <summary> Create New Control Instance. </summary>
         public TextBox()
         {
-            TextChanged += SetDefaultText; // Save the first Text assignment as the DefaultText
             IsDefault = true;
+            TextChanged += SetDefaultText; // Save the first Text assignment as the DefaultText
 
             GotFocus += ReadyControl;
             LostFocus += ResetControl; // Reset control if nothing was entered, or the text is a portion of the default text
@@ -1185,18 +1208,24 @@ namespace Dobby {
   
 
         /// <summary> Yoink Default Text From First Text Assignment (Ideally right after being created). </summary>
-        private void SetDefaultText(object _, EventArgs __) {
+        private void SetDefaultText(object _, EventArgs __)
+        {
             DefaultText = Text;
+
             TextChanged -= SetDefaultText;
-            TextChanged += (sender, e) => { Text = Text.Replace("\"", string.Empty); IsDefault = false; };
+            TextChanged += (sender, e) =>
+            {
+                IsDefault = false;
+                Text = Text.Replace("\"", string.Empty);
+            };
         }
 
 
         private void ReadyControl(object eat, EventArgs pant)
         {
             if(IsDefault) {
-                Clear();
                 IsDefault = false;
+                Clear();
 
                 Font = Common.TextFont;
                 //TextAlign = HorizontalAlignment.Left; // Disabled alignment change until I can figure out the looping logic that results from it
@@ -1207,8 +1236,8 @@ namespace Dobby {
         private void ResetControl(object bite, EventArgs me)
         {
             if(Text.Length < 1 || DefaultText.Contains(Text) || (me == null && (bool)bite)) {
-                Text = DefaultText;
                 IsDefault = true;
+                Text = DefaultText;
 
                 Font = Common.DefaultTextFont;
                 //TextAlign = HorizontalAlignment.Center; // Disabled alignment change until I can figure out the looping logic that results from it (seriously, what the fuck?)
@@ -1222,8 +1251,8 @@ namespace Dobby {
             if (text != string.Empty && !DefaultText.Contains(text))
             {   
                 Font = Common.DefaultTextFont;
-                Text = text;
                 IsDefault = false;
+                Text = text;
             }
         }
     }
@@ -1409,6 +1438,208 @@ namespace Dobby {
         //#
         //## Function Declarations
         //#
+        
+        private void SavePreInputVariable(object variable)
+        {
+            _preInputvariable = variable;
+        }
+
+
+
+        /// <summary>
+        /// Lazy (potential) fix
+        /// </summary>
+        private void CycleButtonVariable(object sender, EventArgs args) => CycleButtonVariable(sender, new MouseEventArgs(MouseButtons.Right, 1, MousePosition.X, MousePosition.Y, 0));
+
+        /// <summary>
+        /// Toggle between various states of custom Button controls
+        /// </summary>
+        /// <param name="sender"> The control to edit the variable of. </param>
+        private void CycleButtonVariable(object sender, MouseEventArgs eventArgs)
+        {
+            var type = Variable?.GetType();
+            var inc = 1f;
+
+
+            // Not entirely certain this is actually required anymore
+            if (((Control)sender) != Common.HoveredControl)
+            {
+                Common.Print("CycleButtonVariable(): Control changed, aborting variable cycling.");
+                return;
+            }
+
+
+
+            // Check for null variable / type.                (not that I know how the latter would be null without the former being null as well, rendering the following check redundant... meh, I'm leaving both checks anyway)
+            if (Variable == null) {
+                Common.Print("CycleButtonVariable(): Control's variable type was somehow null (wtf??), fix your trash.");
+                return;
+            }
+            if (type == null) {
+                Common.Print("CycleButtonVariable(): Control's variable was null, fix your trash.");
+                return;
+            }
+
+
+            // Avoid incrementing options on MouseUp events when the scroll wheel was already used
+            if (Variable != _preInputvariable && eventArgs.GetType().Name != "HandledMouseEventArgs")
+            {
+                Common.Print("Variable has been scrolled, avoiding click incrementation");
+                return;
+            }
+
+
+
+            //
+            if (type == typeof(bool))
+            {
+                goto Bool;
+            }
+
+
+            // Assign the value that the control's variable is to be incremented by
+            if (eventArgs.Delta != 0)
+            {
+                // 
+                if (type == typeof(float))
+                {
+                    inc = eventArgs.Delta / 1200.0f;
+                }
+                if (type == typeof(int) || type == typeof(byte))
+                {
+                    inc = eventArgs.Delta / 12;
+
+                }
+
+                //
+                if (Common.MouseIsDown)
+                {
+                    if (Common.ActiveMouseButton == MouseButtons.Right) {
+                        inc *= .1f;
+                    }
+                    else {
+                        inc *= 10.0f;
+                    }
+                }
+            }
+            else
+            {
+                if (type == typeof(float))
+                {
+                    inc = 0.25f;
+                }
+                if (type == typeof(int) || type == typeof(byte))
+                {
+                    inc = 5;
+
+                }
+
+
+                if (eventArgs.Button == MouseButtons.Right) {
+                    inc = -inc;
+                }
+            }
+
+
+
+            //#
+            //## Booleans (default)
+            //#
+            Bool:
+            if (type == typeof(bool))
+            {
+                if (MaximumValue != null)
+                    Common.Print("WARNING: A maximum value was for some reason provided for a button with a boolean variable attached");
+
+                Variable = !(bool) Variable;
+                return;
+            }
+
+
+            
+            //#
+            //## Integers
+            //#
+            if (type == typeof(int))
+            {
+                if (MaximumValue == null)
+                {
+                    Variable = (int) ((int)Variable + inc);
+                }
+                else {
+                    // avoid going out of bounds in the VariableTags array
+                    if (VariableTags.Length < (long)MaximumValue)
+                    {
+                        MaximumValue = VariableTags.Length;
+                        Common.Print($"ERROR: Maximum value for control Variable was larger than the amount of provided VariableTags; lowered maxValue to [{MaximumValue}]");
+                    }
+
+                    if (MaximumValue == Variable) //! this might compare types when they're both objects...
+                    {
+                        Variable = MinimumValue ?? 0;
+                    }
+
+                }
+
+                return;
+            }
+
+
+            
+            //#
+            //## Bytes
+            //#
+            if (type == typeof(byte))
+            {
+                if (MaximumValue == null)
+                {
+                    Variable = (byte) ((byte)Variable + inc);
+                }
+                else {
+                    // Avoid going out of bounds in the VariableTags array
+                    if (VariableTags.Length < (long)MaximumValue)
+                    {
+                        MaximumValue = VariableTags.Length;
+                        Common.Print($"ERROR: Maximum value for control Variable was larger than the amount of provided VariableTags; lowered maxValue to [{MaximumValue}]");
+                    }
+
+                    if (MaximumValue.Equals(Variable))
+                    {
+                        Variable = MinimumValue ?? 0;
+                    }
+
+                }
+
+                return;
+            }
+
+
+            
+            
+            //#
+            //## Floating-Points
+            //#
+            if (type == typeof(float))
+            {
+                Variable = (float) Math.Round((float)Variable + inc, 3);
+
+                if (MaximumValue != null)
+                {
+                    if ((float)Variable >= (float)MaximumValue)
+                    {
+                        Variable = (float) Math.Round((float)(MinimumValue ?? 0), 2);
+                    }
+
+                    else if ((float)Variable <= (float)MinimumValue)
+                    {
+                        Variable = (float) Math.Round((float)(MinimumValue ?? 10), 2);
+                    }
+                }
+            }
+        }
+
+
+
 
         /// <summary>
         /// Draw the string representation of the Dobby.Button's Variable property to the right of the control text.
@@ -1525,164 +1756,6 @@ namespace Dobby {
             paintEvent.Graphics.DrawString(variableText, Common.SmallControlFont, Brushes.LightGreen, new Point((int) baseContentSize + (padding * 2), 5));
         }
 
-        
-
-
-        /// <summary>
-        /// Lazy (potential) fix
-        /// </summary>
-        private void CycleButtonVariable(object sender, EventArgs args) => CycleButtonVariable(sender, new MouseEventArgs(MouseButtons.Right, 1, MousePosition.X, MousePosition.Y, 0));
-
-        /// <summary>
-        /// Toggle between various states of custom Button controls
-        /// </summary>
-        /// <param name="sender"> The control to edit the variable of. </param>
-        private void CycleButtonVariable(object sender, MouseEventArgs eventArgs)
-        {
-            var type = Variable?.GetType();
-            float inc;
-
-            // Check for null variable / type.                (not that I know how the latter would be null without the former being null as well, rendering the following check redundant... meh, I'm leaving both checks anyway)
-            if (Variable == null) {
-                Common.Print("CycleButtonVariable(): Control's variable type was somehow null (wtf??), fix your trash.");
-                return;
-            }
-            if (type == null) {
-                Common.Print("CycleButtonVariable(): Control's variable was null, fix your trash.");
-                return;
-            }
-
-
-            // Avoid incrementing options on MouseUp events when the scroll wheel was already used
-            if (Variable != _preInputvariable && eventArgs.GetType().Name != "HandledMouseEventArgs")
-            {
-                Common.Print("Variable has been scrolled, avoiding click incrementation");
-                return;
-            }
-
-
-            // Assign the value that the control's variable is to be incremented by
-            if (eventArgs.Delta != 0)
-            {
-                inc = eventArgs.Delta / 1200.0f;
-
-                if (Common.MouseIsDown)
-                {
-                    inc *= 10.0f;
-                }
-            }
-            else
-            {
-                if (eventArgs.Button == MouseButtons.Right) {
-                    inc = -1;
-                }
-                else {
-                    inc = 1;
-                }
-            }
-
-
-
-            //#
-            //## Booleans (default)
-            //#
-            if (type == typeof(bool))
-            {
-                if (MaximumValue != null)
-                    Common.Print("WARNING: A maximum value was for some reason provided for a button with a boolean variable attached");
-
-                Variable = !(bool) Variable;
-                return;
-            }
-
-
-            
-            //#
-            //## Integers
-            //#
-            if (type == typeof(int))
-            {
-                if (MaximumValue == null)
-                {
-                    Variable = (int) ((int)Variable + inc);
-                }
-                else {
-                    // avoid going out of bounds in the VariableTags array
-                    if (VariableTags.Length < (long)MaximumValue)
-                    {
-                        MaximumValue = VariableTags.Length;
-                        Common.Print($"ERROR: Maximum value for control Variable was larger than the amount of provided VariableTags; lowered maxValue to [{MaximumValue}]");
-                    }
-
-                    if (MaximumValue == Variable) //! this might compare types when they're both objects...
-                    {
-                        Variable = MinimumValue ?? 0;
-                    }
-
-                }
-
-                return;
-            }
-
-
-            
-            //#
-            //## Bytes
-            //#
-            if (type == typeof(byte))
-            {
-                if (MaximumValue == null)
-                {
-                    Variable = (byte) ((byte)Variable + inc);
-                }
-                else {
-                    // Avoid going out of bounds in the VariableTags array
-                    if (VariableTags.Length < (long)MaximumValue)
-                    {
-                        MaximumValue = VariableTags.Length;
-                        Common.Print($"ERROR: Maximum value for control Variable was larger than the amount of provided VariableTags; lowered maxValue to [{MaximumValue}]");
-                    }
-
-                    if (MaximumValue.Equals(Variable))
-                    {
-                        Variable = MinimumValue ?? 0;
-                    }
-
-                }
-
-                return;
-            }
-
-
-            
-            
-            //#
-            //## Floating-Points
-            //#
-            if (type == typeof(float))
-            {
-                Variable = (float) Math.Round((float)Variable + inc * .1f, 3);
-
-                if (MaximumValue != null)
-                {
-                    if ((float)Variable >= (float)MaximumValue)
-                    {
-                        Variable = (float) Math.Round((float)(MinimumValue ?? 0), 2);
-                    }
-
-                    else if ((float)Variable <= (float)MinimumValue)
-                    {
-                        Variable = (float) Math.Round((float)(MinimumValue ?? 10), 2);
-                    }
-                }
-            }
-        }
-
-
-        private void SavePreInputVariable(object variable)
-        {
-            _preInputvariable = variable;
-        }
     }
     #endregion [Class Extensions]
 }

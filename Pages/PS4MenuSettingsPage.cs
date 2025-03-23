@@ -641,6 +641,7 @@ namespace Dobby {
 
                 newButton.MouseDown += MouseDownFunc;
                 newButton.MouseUp += MouseUpFunc;
+                newButton.MouseMove += MoveForm;
                 newButton.MouseEnter += (sender, e) => HoverLeave(((Control)sender), true); 
                 newButton.MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
                 gsButtons.Add(newButton);
@@ -953,64 +954,6 @@ namespace Dobby {
                 BrowseButton.Text = "Browse...";
         }
 
-
-
-        private void FloatClickFunc(Button Control, int ButtonIndex, MouseButtons Button)
-        {
-            if(CurrentControl != Control.Name)
-                return;
-
-            var inc = 0.1f;
-
-            if (Button == MouseButtons.Right)
-            {
-                inc = -inc;
-            }
-
-
-            Control.Variable = (float)Math.Round((float)((float)Control.Variable + inc), 3);
-            Control.Refresh();
-        }
-
-        private void FloatScrollFunc(Button Control, int ButtonIndex, int WheelDelta)
-        {
-            if (CurrentControl != Control.Name)
-            {
-                return;
-            }
-
-                    
-            var currentFloat = (float) Control.Variable; // Avoid CS0445
-
-            Control.Variable = (float)Math.Round(currentFloat += WheelDelta / 12000.0F, 4);
-            Control.Refresh();
-        }
-
-
-        private void IntClickFunc(Button Control, int ButtonIndex, MouseButtons Button)
-        {
-            if (CurrentControl != Control.Name)
-            {
-                return;
-            }
-
-
-            // Add or subtract an incrementation of 5,
-            Control.Variable = (byte) ((byte)Control.Variable + Button == MouseButtons.Left ? 5 : -5);
-
-            Control.Refresh();
-        }
-        private void IntScrollFunc(Button Control, int ButtonIndex, int WheelDelta)
-        {
-            if (CurrentControl != Control.Name)
-            {
-                return;
-            }
-
-
-            Control.Variable = (int) Control.Variable + (WheelDelta / 120);
-            Control.Refresh();
-        }
         #endregion
 
 
@@ -1057,7 +1000,7 @@ namespace Dobby {
         ///   4:  novis<br/>
         ///</summary>
         private static readonly byte[][][] UniversalBootSettingsPointers = new byte[][][] {  // fill null bytes just in case of repeat uses with alternate options
-                // 4 = 0xfe | 8 = 0xff
+            // 4 = 0xfe | 8 = 0xff
 
             //|Disable FPS
             new byte[][] {
