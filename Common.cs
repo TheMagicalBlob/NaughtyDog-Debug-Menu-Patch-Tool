@@ -158,9 +158,9 @@ namespace Dobby {
         //#
         #region [Threading Components]
 
-        private static string infoText;
+        private static string InfoText;
 
-        private static int flashes = -1;
+        private static int InfoFlashes = -1;
 
         private static Thread LabelUpdateThread;
 
@@ -226,14 +226,14 @@ namespace Dobby {
         /// <param name="flashLabel"> If true, flash the label to indicate an error or otherwise get the user's attention. (switches between white/yellow) </param>
         public static void UpdateLabel(string newText, bool flashLabel = false)
         {
-            if ((infoText == " " || infoText == null) && newText != null && InfoLabel.Text != newText)
+            if ((InfoText == " " || InfoText == null) && newText != null && InfoLabel.Text != newText)
             {
-                infoText = newText;
+                InfoText = newText;
             }
 
             if (flashLabel)
             {
-                flashes = 15;
+                InfoFlashes = 15;
             }
         }
 
@@ -457,8 +457,8 @@ namespace Dobby {
                 return;
             }
             else {
-                flashes = -1;
-                infoText = null;
+                InfoFlashes = -1;
+                InfoText = null;
                 LabelUpdateThread.Abort();
             }
 
@@ -836,10 +836,10 @@ namespace Dobby {
         /// <summary>
         /// Flash the Info label white/yellow to get the user's attention/indicate a skill issue.
         /// </summary>
-        /// <param name="Label"> The Control.Name property of the label to flash </param>
-        internal static void LabelUpdateMethod(object Label)
+        /// <param name="infoLabel"> The Control.Name property of the label to flash </param>
+        internal static void LabelUpdateMethod(object infoLabel)
         {
-            LabelUpdateCallback SetLabelState = (label, colour, text) => {
+            LabelUpdateCallback setLabelState = (label, colour, text) => {
                 try {
                     while (ActiveForm == null)
                         Thread.Sleep(1);
@@ -862,35 +862,43 @@ namespace Dobby {
                 }
             };
 
+
+            // Main thread loop
             while (true) {
                 try {
                     // Wait for something to do
-                    for (;flashes == -1 && infoText == null; Thread.Sleep(1))
+                    for (;InfoFlashes == -1 && InfoText == null; Thread.Sleep(1));
                         
 
-
                     // Try to avoid hiding hint strings with the label reset
-                    if (infoText != null && infoText == " ")
+                    if (InfoText != null && InfoText == " ")
                     {
-                        for (var time = 0; infoText == " " && time++ < 75; Thread.Sleep(1));
+                        for (var time = 0; InfoText == " " && time++ < 75; Thread.Sleep(1));
                     }
 
 
                     // Flash the label if applicable
-                    for (var msg = infoText; flashes > -1 || (infoText == " " && (infoText = null) == null);)
+                    if (InfoFlashes != -1)
+                    for (var notifyMessage = InfoText;;)
                     {
                         while (ActiveForm == null)
                             Thread.Sleep(1);
 
-                        ActiveForm?.Invoke(SetLabelState, Label, (flashes-- & 1) == 0 ? Color.FromArgb(255, 227, 0) : Color.White, msg);
+                        ActiveForm?.Invoke(setLabelState, infoLabel, (InfoFlashes-- & 1) == 0 ? Color.FromArgb(255, 227, 0) : Color.White, notifyMessage);
+                        
+                        if (InfoFlashes == -1)
+                        {
+                            break;
+                        }
+
                         Thread.Sleep(135);
                     }
 
                     // Set The Text of The Yellow Label At The Bottom Of The Form
-                    if (infoText != null)
+                    if (InfoText != null)
                     {
-                        ActiveForm?.Invoke(SetLabelState, Label, Color.FromArgb(255, 227, 0), infoText);
-                        infoText = null;
+                        ActiveForm?.Invoke(setLabelState, infoLabel, Color.FromArgb(255, 227, 0), InfoText);
+                        InfoText = null;
                     }
                 }
                 catch (Exception) {
@@ -997,7 +1005,7 @@ namespace Dobby {
                 {
                     UpdateLabel((string) ((Control)sender).Tag);
                 }
-                else Print($"Label not updated due to empty tag or active flash thread {flashes} {infoText?.Length ?? 0xDEADDAD}");
+                else Print($"Label not updated due to empty tag or active flash thread {InfoFlashes} {InfoText?.Length ?? 0xDEADDAD}");
             }
             catch (InvalidCastException)
             {
@@ -1005,6 +1013,9 @@ namespace Dobby {
             }
         }
         #endregion
+
+
+
 
 
 
