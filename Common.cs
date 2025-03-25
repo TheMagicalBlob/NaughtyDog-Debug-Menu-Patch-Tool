@@ -878,8 +878,7 @@ namespace Dobby {
 
 
                     // Flash the label if applicable
-                    if (InfoFlashes != -1)
-                    for (var notifyMessage = InfoText;;)
+                    for (var notifyMessage = InfoText; InfoFlashes != -1;)
                     {
                         while (ActiveForm == null)
                             Thread.Sleep(1);
