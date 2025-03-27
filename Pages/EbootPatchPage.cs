@@ -79,23 +79,6 @@ namespace Dobby {
         #region [Background Function Delcarations]
 
 
-        /// <summary> Open A File Dialog Window To Select A File For Checking/Patching </summary>
-        private void BrowseButton_Click(object sender, EventArgs e) {
-            using(var fileDialog = new OpenFileDialog {
-                Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
-                Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned / Decrypted (The First 4 Bytes Will Be .elf If It Is)"
-            })
-
-            if(fileDialog.ShowDialog() == DialogResult.OK)
-            {
-                ExecutablePathBox.Set(fileDialog.FileName);
-                LoadGameExecutable(ExecutablePathBox.Text);
-            }
-        }
-
-
-
-
         /// <summary>
         /// Search For An Unsigned Executable To Apply Patches To. <br/>
         /// Loads The File Path, Creats A New Stream, Then Runs GetGameID() To Determine The Selected Executable's Source.<br/>
@@ -121,6 +104,7 @@ namespace Dobby {
             GameInfoLabel.Text = ActiveGameID = GetGameID(fileStream);
                 
             DebugAddressForSelectedGame = GetDebugAddress(Game);
+
 
             // Determine the available patch type based on the current game, and update the restored/custom debug button to reflect it
             switch(Game)
@@ -215,6 +199,7 @@ namespace Dobby {
         }
 
 
+
         /// <returns> The .elf Address For Enabling The Debug Mode By Patching In 0xEB </returns>
         private DebugJumpAddress GetDebugAddress(GameID GameID)
         {
@@ -289,21 +274,31 @@ namespace Dobby {
 
 
 
-        /// <summary> 0: Disable | 1: Enable | 2: Restored | 3: Custom 
+        /// <summary>
+        /// Patch the current executable with the chosen patch type. either enables the debug mode, disables it for some reason, patches in a custom menu, or attempts to restore it authentically.
         /// </summary>
-        /// <param name="PatchType"></param>
-        public void ApplyDebugPatches(int PatchType) {
-            if(Game == 0) {
+        /// <param name="patchType">
+        /// The type of patch being applied<br/><br/>
+        /// | 0: Disable<br/>
+        /// | 1: Enable<br/>
+        /// | 2: Restored<br/>
+        /// | 3: Custom
+        /// </param>
+        public void ApplyDebugPatches(int patchType)
+        {
+            if(Game == GameID.Empty) {
                 UpdateLabel("Please Select A Game's Executable First", true);
                 return;
             }
 
 
-            // Enable Debug Mode / Menus  (Also Checks Whether The Game's TlouR 1.00 (0x5C5A), Because That's The Only One Without a JNZ)
-            WriteByte((int)DebugAddressForSelectedGame, (byte)(PatchType == 0 ? (DebugAddressForSelectedGame == (DebugJumpAddress) 0x5C5A ? 0x74 : 0x75) : 0xEB));
+            // Apply (or revert) the basic debug menu patch
+            WriteByte((int)DebugAddressForSelectedGame, (byte)(patchType == 0 ? (DebugAddressForSelectedGame == DebugJumpAddress.T1R100Debug ? 0x74 : 0x75) : 0xEB)); // Also checks whether or not the game's T1R, as that one requires a different patch (only one without a JNZ there lol)
 
-            if(PatchType < 2) { // Return If Patch Is Basic Debug Toggle
-                UpdateLabel($"{ActiveGameID} {ResultStrings[PatchType]}");
+
+
+            if(patchType < 2) { // Return If Patch Is Basic Debug Toggle
+                UpdateLabel($"{ActiveGameID} {ResultStrings[patchType]}");
                 return;
             }
 
@@ -366,15 +361,53 @@ namespace Dobby {
                     break;
             }
 
-            UpdateLabel($"{ActiveGameID} {ResultStrings[PatchType]}", false);
+            UpdateLabel($"{ActiveGameID} {ResultStrings[patchType]}", false);
 
         }
+
+        #endregion
+
+
+        
+        
+        //======================================\\
+        //--|   Event Handler Declarations   |--\\
+        //======================================\\
+        #region [Event Handler Declarations]
+
+        /// <summary>
+        /// Create a new OpenFileDialogue instance in which to choose an executable to patch.
+        /// </summary>
+        private void BrowseButton_Click(object sender, EventArgs e) {
+            using(var fileDialog = new OpenFileDialog {
+                Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
+                Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned / Decrypted (The First 4 Bytes Will Be .elf If It Is)"
+            })
+
+            if(fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                ExecutablePathBox.Set(fileDialog.FileName);
+            }
+        }
+
+
+        /// <summary>
+        /// Process the edited executable path box text if it points to a valid file
+        /// </summary>
+        private void ExecutablePathBox_TextChanged(object sender, EventArgs e)
+        {
+            if (!((TextBox)sender).IsDefault && File.Exists(((TextBox)sender).Text))
+            {
+                LoadGameExecutable(((TextBox)sender).Text);
+            }
+        }
+
+        
 
         public void DisableDebugBtn_Click(object sender, EventArgs e) => ApplyDebugPatches(0);
         public void EnableDebugBtn_Click(object sender, EventArgs e) => ApplyDebugPatches(1);
         public void RestoredDebugBtn_Click(object sender, EventArgs e) => ApplyDebugPatches(RestoredDebugBtn.Text.Contains(" Custom") ? 3 : 2);
         #endregion
-
 
         
         //=======================================\\
@@ -1221,30 +1254,6 @@ namespace Dobby {
 
 
         }
-        #endregion
-
-        
-        //================================\\
-        //--|   Control Declarations   |--\\
-        //================================\\
-        #region [Control Declarations]
-        public void BackBtn_Click(object sender, EventArgs e) =>
-            LabelShouldFlash = false;
-        
-        public Label GameInfoLabel;
-        private Button BrowseButton;
-        private TextBox ExecutablePathBox;
-        private Label SeperatorLine1;
-        private Button RestoredDebugBtn;
-        private Button InfoHelpBtn;
-        private Label SeperatorLine2;
-        private Button BackBtn;
-        private Button DisableDebugBtn;
-        private Button EnableDebugBtn;
-        private Label Info;
-        private Button CreditsBtn;
-        private Label MainLabel;
-        private Label SeperatorLine0;
         #endregion
     }
 }

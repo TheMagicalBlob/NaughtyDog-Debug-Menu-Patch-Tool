@@ -59,7 +59,7 @@ namespace Dobby {
         #region (Basic Form Functionality)
         
         /// <summary> ID for the active game. </summary>
-        public static GameID Game;
+        public static GameID Game = GameID.Empty;
 
         /// <summary> ID for the currently loaded form. </summary>
         public static PageID? Page;
@@ -916,6 +916,8 @@ namespace Dobby {
 
 
 
+
+
         //=============================================\\
         //--|   Static Event Handler Declarations   |--\\
         //=============================================\\
@@ -928,13 +930,20 @@ namespace Dobby {
                 Log = null;
             }
             else
-                (Log = new DebugWindow(((Control)sender).FindForm())).Show();
+            {
+                Log = new DebugWindow(((Control)sender).FindForm());
+
+                Log.Visible = false;
+                Log.Show();
+                Log.MoveLogToAppEdge();
+                Log.Visible = true;
+            }
         }
         #endif
         
         internal static void ExitBtn_Click(object sender, EventArgs e)
         {
-            MainForm.Dispose();  //! 90% sure neither of these are implemented properly.
+            MainForm.Dispose();  //! 90% sure this isn't implemented properly.
             Environment.Exit(0); // off we fuck
         }
         internal static void WindowBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);

@@ -22,6 +22,8 @@ namespace Dobby
             if(disposing && (components != null)) {
                 components.Dispose();
             }
+            fileStream?.Dispose();
+            Common.Game = Common.GameID.Empty;
             base.Dispose(disposing);
         }
         public void InitializeComponent() {

@@ -18,7 +18,14 @@ namespace Dobby
         public DebugWindow(Form Gaia)
         {
             InitializeComponent();
+
+            LogPtr = this;
+            ParentPtr = Gaia;
+
+            ParentPtr.LocationChanged += (sender, args) => MoveLogToAppEdge();
             return;
+
+
 
             var DButtonFont = new Font("Cambria", 7F, FontStyle.Bold);
 
@@ -99,10 +106,6 @@ namespace Dobby
             MouseDown  += MouseDownFunc;
             MouseUp    += MouseUpFunc;
 
-
-            LogPtr = this;
-            ParentPtr = Gaia;
-            ParentPtr.LocationChanged += (sender, args) => MoveLogToAppEdge();
 
             LogWindowRenderer = CreateGraphics();
 

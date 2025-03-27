@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Linq;
+using System.Windows.Forms;
 
 namespace Dobby
 {
@@ -18,13 +19,25 @@ namespace Dobby
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing) {
-            if(disposing && (components != null)) {
+        protected override void Dispose(bool disposing)
+        {
+            if (GSButtons != null)
+            {
+                ResetCustomDebugOptions();
+            }
+
+            if(disposing && (components != null))
+            {
                 components.Dispose();
             }
+            
+            Common.OriginalControlPositions = null;
+            Common.Game = Common.GameID.Empty;
+
             fileStream?.Dispose();
             base.Dispose(disposing);
         }
+
         private void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
             this.Info = new System.Windows.Forms.Label();

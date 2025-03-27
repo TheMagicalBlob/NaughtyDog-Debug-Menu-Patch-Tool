@@ -1,4 +1,5 @@
-﻿
+﻿using System.Windows.Forms;
+
 namespace Dobby
 {
     public partial class EbootPatchPage
@@ -21,6 +22,7 @@ namespace Dobby
                 components.Dispose();
             }
             fileStream?.Dispose();
+            Common.Game = Common.GameID.Empty;
             base.Dispose(disposing);
         }
 
@@ -119,6 +121,7 @@ namespace Dobby
             this.BrowseButton.Text = "Browse...";
             this.BrowseButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BrowseButton.UseVisualStyleBackColor = false;
+            this.BrowseButton.Variable = null;
             this.BrowseButton.Click += new System.EventHandler(this.BrowseButton_Click);
             // 
             // ExecutablePathBox
@@ -131,6 +134,7 @@ namespace Dobby
             this.ExecutablePathBox.Size = new System.Drawing.Size(233, 23);
             this.ExecutablePathBox.TabIndex = 30;
             this.ExecutablePathBox.Text = " Select A .bin/.elf To Modify";
+            this.ExecutablePathBox.TextChanged += new System.EventHandler(this.ExecutablePathBox_TextChanged);
             // 
             // RestoredDebugBtn
             // 
@@ -148,6 +152,7 @@ namespace Dobby
             this.RestoredDebugBtn.Text = "Enable Debug Mode - Restored/Custom";
             this.RestoredDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.RestoredDebugBtn.UseVisualStyleBackColor = false;
+            this.RestoredDebugBtn.Variable = null;
             this.RestoredDebugBtn.Click += new System.EventHandler(this.RestoredDebugBtn_Click);
             // 
             // InfoHelpBtn
@@ -165,6 +170,7 @@ namespace Dobby
             this.InfoHelpBtn.Text = "Information / Help...";
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
+            this.InfoHelpBtn.Variable = null;
             // 
             // BackBtn
             // 
@@ -181,7 +187,7 @@ namespace Dobby
             this.BackBtn.Text = "Back...";
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
-            this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
+            this.BackBtn.Variable = null;
             // 
             // DisableDebugBtn
             // 
@@ -199,6 +205,7 @@ namespace Dobby
             this.DisableDebugBtn.Text = "Disable Debug Mode";
             this.DisableDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisableDebugBtn.UseVisualStyleBackColor = false;
+            this.DisableDebugBtn.Variable = null;
             this.DisableDebugBtn.Click += new System.EventHandler(this.DisableDebugBtn_Click);
             // 
             // CreditsBtn
@@ -217,6 +224,7 @@ namespace Dobby
             this.CreditsBtn.Text = "Credits...";
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
+            this.CreditsBtn.Variable = null;
             // 
             // EnableDebugBtn
             // 
@@ -234,6 +242,7 @@ namespace Dobby
             this.EnableDebugBtn.Text = "Enable Debug Mode - Default";
             this.EnableDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.EnableDebugBtn.UseVisualStyleBackColor = false;
+            this.EnableDebugBtn.Variable = null;
             this.EnableDebugBtn.Click += new System.EventHandler(this.EnableDebugBtn_Click);
             // 
             // EbootPatchPage
@@ -266,6 +275,28 @@ namespace Dobby
             this.PerformLayout();
 
         }
+        #endregion
+
+        
+        
+        //================================\\
+        //--|   Control Declarations   |--\\
+        //================================\\
+        #region [Control Declarations]
+        public Label GameInfoLabel;
+        private Button BrowseButton;
+        private TextBox ExecutablePathBox;
+        private Label SeperatorLine1;
+        private Button RestoredDebugBtn;
+        private Button InfoHelpBtn;
+        private Label SeperatorLine2;
+        private Button BackBtn;
+        private Button DisableDebugBtn;
+        private Button EnableDebugBtn;
+        private Label Info;
+        private Button CreditsBtn;
+        private Label MainLabel;
+        private Label SeperatorLine0;
         #endregion
     }
 }

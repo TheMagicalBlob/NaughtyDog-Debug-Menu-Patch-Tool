@@ -310,7 +310,9 @@
           "* 4.64.398.985 | Added missing MouseMove/MoveForm event/event handler to DynamicPatchButtons (was just going to add a check for the current control on scroll events, but MouseEnter doesn't get sent while the mouse is down...); Other misc changes as well (eugh, not like anyone else works on this source)",
           "* 4.64.399.986 | Fixed small info string loop typo",
           "* 4.64.400.986 | Fixed second info string loop typo, occasionally casuing the label to be set to white (I should pay attention...)",
-          "* 4.64.400.986 | ",
+          "* 4.64.401.989 | Changed start position for game-specific patch buttons, mild debug window rework \"progress\".",
+          "* 4.64.402.993 | Fixed misc crash from game-specific patches page not resetting itself properly, small fix to reset Game property once related pages are left (until the multi-page bs is implemented)",
+          "* 4.64.404.997 | Fixing my broken-ass \"reworked\" patch application bs for the menu settings page",
         };
 
 

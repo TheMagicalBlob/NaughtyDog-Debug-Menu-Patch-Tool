@@ -11,7 +11,8 @@ namespace Dobby {
         /// <summary>
         /// Initialize a new instance of the PCDebugMenuPage Form.
         /// </summary>
-        public PCDebugMenuPage() {
+        public PCDebugMenuPage()
+        {
             InitializeComponent();
             InitializeAdditionalEventHandlers(Controls);
         }
@@ -203,7 +204,7 @@ Read:       fileStream.Position = TmpAddr++;
         private void ToggleDebug(byte @byte)
         {
             
-            if (Game == 0) {
+            if (Game == GameID.Empty) {
                 UpdateLabel("Please Select A Game's Executable First", true);
                 return;
             }
