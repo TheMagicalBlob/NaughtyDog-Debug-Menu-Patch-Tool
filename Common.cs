@@ -1209,7 +1209,6 @@ namespace Dobby {
         public TextBox()
         {
             TextChanged += SetDefaultText; // Save the first Text assignment as the DefaultText
-            Font = Common.DefaultTextFont;
 
             GotFocus += (sender, args) => ReadyControl();
             LostFocus += (sender, args) => ResetControl(false); // Reset control if nothing was entered, or the text is a portion of the default text
@@ -1221,6 +1220,9 @@ namespace Dobby {
         // Default Control Text to Be Displayed When "Empty".
         private string DefaultText;
 
+        /// <summary>
+        /// Gets or sets the text associated with this control
+        /// </summary>
         public override string Text
         {
             get => base.Text;

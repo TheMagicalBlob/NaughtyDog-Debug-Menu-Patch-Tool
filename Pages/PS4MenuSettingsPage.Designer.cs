@@ -56,10 +56,9 @@ namespace Dobby
             this.BackBtn = new Dobby.Button();
             this.DisablePausedIconBtn = new Dobby.Button();
             this.BrowseButton = new Dobby.Button();
+            this.ExecutablePathBox = new Dobby.TextBox();
             this.InfoHelpBtn = new Dobby.Button();
             this.CreditsBtn = new Dobby.Button();
-            this.DebugResetBtn = new Dobby.Button();
-            this.ExecutablePathBox = new Dobby.TextBox();
             this.SuspendLayout();
             // 
             // MainLabel
@@ -291,6 +290,18 @@ namespace Dobby
             this.BrowseButton.Variable = null;
             this.BrowseButton.Click += new System.EventHandler(this.BrowseButton_Click);
             // 
+            // ExecutablePathBox
+            // 
+            this.ExecutablePathBox.BackColor = System.Drawing.Color.Gray;
+            this.ExecutablePathBox.Font = new System.Drawing.Font("Cambria", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
+            this.ExecutablePathBox.ForeColor = System.Drawing.SystemColors.Window;
+            this.ExecutablePathBox.Location = new System.Drawing.Point(3, 242);
+            this.ExecutablePathBox.Name = "ExecutablePathBox";
+            this.ExecutablePathBox.Size = new System.Drawing.Size(233, 23);
+            this.ExecutablePathBox.TabIndex = 38;
+            this.ExecutablePathBox.Text = "Select an executable to patch";
+            this.ExecutablePathBox.TextChanged += new System.EventHandler(this.ExecutablePathBox_TextChanged);
+            // 
             // InfoHelpBtn
             // 
             this.InfoHelpBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
@@ -327,43 +338,12 @@ namespace Dobby
             this.CreditsBtn.UseVisualStyleBackColor = false;
             this.CreditsBtn.Variable = null;
             // 
-            // DebugResetBtn
-            // 
-            this.DebugResetBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.DebugResetBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.DebugResetBtn.FlatAppearance.BorderSize = 0;
-            this.DebugResetBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DebugResetBtn.Font = new System.Drawing.Font("Cambria", 8.5F, System.Drawing.FontStyle.Bold);
-            this.DebugResetBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.DebugResetBtn.Location = new System.Drawing.Point(191, 1);
-            this.DebugResetBtn.Name = "DebugResetBtn";
-            this.DebugResetBtn.Size = new System.Drawing.Size(33, 19);
-            this.DebugResetBtn.TabIndex = 55;
-            this.DebugResetBtn.Text = "R";
-            this.DebugResetBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.DebugResetBtn.UseVisualStyleBackColor = false;
-            this.DebugResetBtn.Variable = null;
-            this.DebugResetBtn.Click += new System.EventHandler(this.DebugResetBtn_Click);
-            // 
-            // ExecutablePathBox
-            // 
-            this.ExecutablePathBox.BackColor = System.Drawing.Color.Gray;
-            this.ExecutablePathBox.Font = new System.Drawing.Font("Cambria", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
-            this.ExecutablePathBox.ForeColor = System.Drawing.SystemColors.Window;
-            this.ExecutablePathBox.Location = new System.Drawing.Point(3, 242);
-            this.ExecutablePathBox.Name = "ExecutablePathBox";
-            this.ExecutablePathBox.Size = new System.Drawing.Size(233, 23);
-            this.ExecutablePathBox.TabIndex = 38;
-            this.ExecutablePathBox.Text = "Select an executable to patch";
-            this.ExecutablePathBox.TextChanged += new System.EventHandler(this.ExecutablePathBox_TextChanged);
-            // 
             // PS4MenuSettingsPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ClientSize = new System.Drawing.Size(320, 391);
-            this.Controls.Add(this.DebugResetBtn);
             this.Controls.Add(this.NovisBtn);
             this.Controls.Add(this.ProgPauseOnCloseBtn);
             this.Controls.Add(this.CustomDebugOptionsLabel);
@@ -420,7 +400,6 @@ namespace Dobby
         #endregion
 
         private Button DisableDebugTextBtn;
-        private Button DebugResetBtn;
         private TextBox ExecutablePathBox;
     }
 }

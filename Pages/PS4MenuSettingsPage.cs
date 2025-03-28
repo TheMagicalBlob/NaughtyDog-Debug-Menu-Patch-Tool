@@ -206,6 +206,7 @@ namespace Dobby {
             {
                 // Bitch & moan if the provided file doesn't exist
                 UpdateLabel("Invalid Executable Path Provided.", true);
+                ExecutablePathBox.Reset();
                 return;
             }
             if(OriginalFormScale != Size.Empty)
@@ -230,13 +231,16 @@ namespace Dobby {
             {
                 MessageBox.Show("Selected Game Not Currently Supported", $"Patches For {GameInfoLabel.Text} Not Added Yet");
                 UpdateLabel("Unsupported Game Selected", true);
+                ExecutablePathBox.Reset();
                 return;
             }
             if (GSGameIndex == 0xDEADDAD)
             {
                 MessageBox.Show("Unknown Game Provided", $"Game unlikely to be Uncharted or Tlou");
                 UpdateLabel("Unknown Game Selected", true);
+                ExecutablePathBox.Reset();
                 return;
+
             }
             #if DEBUG
             Print($"LoadGameExecutable()::gameIndex: {GSGameIndex}\n");
