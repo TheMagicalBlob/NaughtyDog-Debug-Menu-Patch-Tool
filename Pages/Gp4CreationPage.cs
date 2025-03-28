@@ -79,7 +79,7 @@ namespace Dobby {
         private bool ApplyandVerifyGP4Options(GP4Creator gp4)
         {
             // Verify provided gamedata folder path for the .gp4 creation process.
-            if (GamedataPathBox.IsDefault)
+            if (GamedataPathBox.IsDefault())
             {
 #if DEBUG
                 if ((Testing.TestGamedataFolder?.Length ?? 0) != 0)
@@ -115,7 +115,7 @@ namespace Dobby {
 
 
             // Apply output directory for .gp4 project if one's been provided
-            if (!GP4OutputDirectoryPathBox.IsDefault) {
+            if (!GP4OutputDirectoryPathBox.IsDefault()) {
                 gp4.OutputDirectory = GP4OutputDirectoryPathBox?.Text?.Replace("\n", string.Empty);
             }
             else {
@@ -134,7 +134,7 @@ namespace Dobby {
 
 
             // Assign blacklist contents
-            if (!FileBlacklistPathBox.IsDefault)
+            if (!FileBlacklistPathBox.IsDefault())
             {
                 if (new char[] { ',', ';', '|' }.Any(seperator => FileBlacklistPathBox.Text.Contains(seperator)))
                 {
@@ -147,7 +147,7 @@ namespace Dobby {
 
 
             // Set Package Passcode
-            if (PasscodePathBox.IsDefault)
+            if (PasscodePathBox.IsDefault())
             {
                 gp4.Passcode = PasscodePathBox?.Text ?? "00000000000000000000000000000000";
             }
@@ -323,7 +323,7 @@ namespace Dobby {
                 Multiselect = true
             })
             if(fileDialogue.ShowDialog() == DialogResult.OK)
-                FileBlacklistPathBox.Set((FileBlacklistPathBox.IsDefault ? FileBlacklistPathBox.Text : "") + string.Join(";", fileDialogue.FileNames));
+                FileBlacklistPathBox.Set((FileBlacklistPathBox.IsDefault() ? FileBlacklistPathBox.Text : "") + string.Join(";", fileDialogue.FileNames));
 
 
             ((Dobby.Button)sender).ForeColor = Color.White;

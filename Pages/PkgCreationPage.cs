@@ -61,7 +61,7 @@ namespace Dobby {
         /// <returns> True if all seems well with the current options. </returns>
         private bool ApplyAndVerifyPkgOptions(ref string orbisToolPath, ref string tempDirectory, ref string gp4Path, ref string outputPath)
         {
-            if (!OrbisToolPathBox.IsDefault)
+            if (!OrbisToolPathBox.IsDefault())
             {
                 orbisToolPath = OrbisToolPathBox.Text.Replace("\n", string.Empty);
             }
@@ -75,7 +75,7 @@ namespace Dobby {
             }
 
             
-            if (!GP4FilePathBox.IsDefault)
+            if (!GP4FilePathBox.IsDefault())
             {
                 gp4Path = GP4FilePathBox.Text.Replace("\n", string.Empty);
             }
@@ -89,7 +89,7 @@ namespace Dobby {
             }
             
 
-            if (!OutputDirectoryPathBox.IsDefault)
+            if (!OutputDirectoryPathBox.IsDefault())
             {
                 outputPath = OutputDirectoryPathBox.Text.Replace("\n", string.Empty);
             }
@@ -101,7 +101,7 @@ namespace Dobby {
             
 
             // Assign custom temp directory if one's been provided
-            if (!TempDirectoryPathBox.IsDefault)
+            if (!TempDirectoryPathBox.IsDefault())
                 tempDirectory = $"--tmp_path \"{TempDirectoryPathBox.Text.Replace("\n", string.Empty)}\" ";
             
 

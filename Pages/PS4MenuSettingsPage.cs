@@ -598,8 +598,10 @@ namespace Dobby {
 
             // Move Controls Back To Their Original Positions
             for(var i = 0; i < ControlsToMove.Length; ControlsToMove[i].Location = OriginalControlPositions[i++]);
+
             OriginalControlPositions = null;
             OriginalFormScale = Size.Empty;
+
 
 
             // Nudge Remaining Controls Back To Their Default Positions
@@ -746,8 +748,8 @@ namespace Dobby {
                 BrowseButton,
                 ExecutablePathBox,
                 GameInfoLabel,
-                ResetBtn,
-                ConfirmBtn,
+                ResetBtn,   // These two buttons are only initialized after the game-specific patch buttons have been created. odd way to do it, but it works, and I need to do other things first
+                ConfirmBtn, // ^^^
                 SeperatorLine3,
                 InfoHelpBtn,
                 CreditsBtn,
@@ -766,25 +768,25 @@ namespace Dobby {
             // Hide label telling the user to select a binary to reveal game-specific patch buttons
             CustomDebugOptionsLabel.Visible = false;
 
-            Array.ForEach(this.GSButtons.ToArray(), button => { Controls.Add(button); button.BringToFront(); });
-
+            foreach(Dobby.Button button in GSButtons) {
+                Controls.Add(button);
+                button.BringToFront();
+            }
 
 
             // Attempt to reseize the form to fit the newly added buttons, unless only one has been enabled
             if(this.GSButtons.Count > 1)
             {
-                // Get the vertical distance to offset
+                // Get the vertical distance to offset the controls that are below the to-be-added dynamic patch buttons
                 var offset = (this.GSButtons.ElementAt(this.GSButtons.Count - 2).Location.Y + this.GSButtons.Last().Size.Height) - CustomDebugOptionsLabel.Location.Y;
 
                 // Move Each Control, Then Resize The BorderBox & Form
                 Array.ForEach(ControlsToMove, control => control.Location = new Point(control.Location.X, control.Location.Y + offset));
 
-                Size = new Size(Size.Width, Size.Height + offset);
+                Size = new Size(Size.Width, Size.Height + offset + (GSButtonHeight * 2));
             }
 
-            // Finish resizing the PS4MenuSettingPage
-            Size = new Size(Size.Width, Size.Height + GSButtonHeight * 2);
-
+            
             // Move The Controls Below The Confirm And Reset Buttons A Bit Farther Down To Make Room For Them
             for(int i = Array.FindIndex(ControlsToMove, control => control == (object)SeperatorLine3); i < ControlsToMove.Length; i++)
                 ControlsToMove[i].Location = new Point(ControlsToMove[i].Location.X, ControlsToMove[i].Location.Y + GSButtonHeight * 2);
@@ -896,16 +898,25 @@ namespace Dobby {
         //======================================\\
         #region [Event Handler Declarations]
         
+        private void DebugResetBtn_Click(object sender, EventArgs e)
+        {
+            ResetCustomDebugOptions();
+            ExecutablePathBox.Reset();
+        }
+
         private void BrowseButton_Click(object sender, EventArgs e)
         {
             #if DEBUG
-            if (ExecutablePathBox.IsDefault && Testing.TestEbootPath != null && File.Exists(Testing.TestEbootPath))
+            if (ExecutablePathBox.IsDefault() && Testing.TestEbootPath != null && File.Exists(Testing.TestEbootPath))
             {
                 ExecutablePathBox.Set(Testing.TestEbootPath);
             }
+            else
+                Print($"Unable to use TestEbootPath, as {(ExecutablePathBox.IsDefault() ? Testing.TestEbootPath == null ? "The path wasn't set" : "the file doesn't exist" : "An alternate path was provided in the ExecutablePathBox.")}");
             #endif
 
-            if (ExecutablePathBox.IsDefault)
+
+            if (ExecutablePathBox.IsDefault())
             {
                 var fileDialogue = new OpenFileDialog {
                     Filter = "Executable|*.elf;*.bin",
@@ -917,9 +928,10 @@ namespace Dobby {
                 {
                     ExecutablePathBox.Set(fileDialogue.FileName);
                 }
-                else return;
+                else
+                    return;
             }
-            Print($"control was not default ({ExecutablePathBox.IsDefault}:{ExecutablePathBox.Text})");
+            Print($"control was not default ({ExecutablePathBox.IsDefault()}:{ExecutablePathBox.Text})");
 
 
             PrepareProvidedExecutable(ExecutablePathBox.Text);
@@ -957,8 +969,9 @@ namespace Dobby {
         private void ExecutablePathBox_TextChanged(object sender, EventArgs e)
         {
             var box = ((TextBox)sender);
+            Print($"eugh: {box.Text}");
 
-            if (!box.IsDefault && box.Text?.Length > 3)
+            if (!box.IsDefault() && box.Text?.Length > 3)
             {
                 BrowseButton.Text = "Load...";
             }

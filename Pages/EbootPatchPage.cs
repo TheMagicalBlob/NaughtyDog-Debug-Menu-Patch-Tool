@@ -396,7 +396,7 @@ namespace Dobby {
         /// </summary>
         private void ExecutablePathBox_TextChanged(object sender, EventArgs e)
         {
-            if (!((TextBox)sender).IsDefault && File.Exists(((TextBox)sender).Text))
+            if (!((TextBox)sender).IsDefault() && File.Exists(((TextBox)sender).Text))
             {
                 LoadGameExecutable(((TextBox)sender).Text);
             }

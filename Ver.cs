@@ -313,6 +313,7 @@
           "* 4.64.401.989 | Changed start position for game-specific patch buttons, mild debug window rework \"progress\".",
           "* 4.64.402.993 | Fixed misc crash from game-specific patches page not resetting itself properly, small fix to reset Game property once related pages are left (until the multi-page bs is implemented)",
           "* 4.64.404.997 | Fixing my broken-ass \"reworked\" patch application bs for the menu settings page",
+          "* 4.64.406.999 | Reworked custom TextBox class override/extention (was a bit clunky), other miscellaneous consistency tweaks."
         };
 
 

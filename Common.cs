@@ -133,11 +133,12 @@ namespace Dobby {
         public static Font SmallControlFont = new Font("Verdana", 8F);
 
         public static Font TextFont = new Font("Cambria", 10F);
-        public static Font DefaultTextFont = new Font("Cambria", 10F, FontStyle.Italic);
+        public static Font DefaultTextFont = new Font("Cambria", 10F, FontStyle.Bold | FontStyle.Italic);
 
 
         public static Color MainColour = Color.FromArgb(100, 100, 100);
-        public static Color HighlightColour {
+        public static Color HighlightColour
+        {
             get => BorderPen.Color;
 
             set {
@@ -931,9 +932,11 @@ namespace Dobby {
             }
             else
             {
-                Log = new DebugWindow(((Control)sender).FindForm());
+                // Create the log window and make it invisible until it's been moved to the parent form.
+                Log = new DebugWindow(((Control)sender).FindForm()) {
+                    Visible = false
+                };
 
-                Log.Visible = false;
                 Log.Show();
                 Log.MoveLogToAppEdge();
                 Log.Visible = true;
@@ -1198,20 +1201,18 @@ namespace Dobby {
     //=================================\\
     #region [Class Extensions]
     
-
-    /// <summary>
-    /// Custom TextBox Class to Better Handle Default TextBox Contents.
-    /// </summary>
+    
+    /// <summary> Custom TextBox Class to Better Handle Default TextBox Contents. </summary>
     public class TextBox : System.Windows.Forms.TextBox
     {
         /// <summary> Create New Control Instance. </summary>
         public TextBox()
         {
-            IsDefault = true;
             TextChanged += SetDefaultText; // Save the first Text assignment as the DefaultText
+            Font = Common.DefaultTextFont;
 
-            GotFocus += ReadyControl;
-            LostFocus += ResetControl; // Reset control if nothing was entered, or the text is a portion of the default text
+            GotFocus += (sender, args) => ReadyControl();
+            LostFocus += (sender, args) => ResetControl(false); // Reset control if nothing was entered, or the text is a portion of the default text
         }
 
 
@@ -1220,46 +1221,47 @@ namespace Dobby {
         // Default Control Text to Be Displayed When "Empty".
         private string DefaultText;
 
+        public override string Text
+        {
+            get => base.Text;
+
+            set
+            {
+                base.Text = value?.Replace("\"", string.Empty);
+            }
+        }
+
+
+
         // Help Better Keep Track of Whether the User's Changed the Text, Because I'm a Moron.
-        public bool IsDefault { get; private set; }
-
-
-  
+        public bool IsDefault() => Text == DefaultText;
 
         /// <summary> Yoink Default Text From First Text Assignment (Ideally right after being created). </summary>
         private void SetDefaultText(object _, EventArgs __)
         {
             DefaultText = Text;
+            Font = Common.DefaultTextFont;
 
             TextChanged -= SetDefaultText;
-            TextChanged += (sender, e) =>
-            {
-                IsDefault = false;
-                Text = Text.Replace("\"", string.Empty);
-            };
         }
 
 
-        private void ReadyControl(object eat, EventArgs pant)
+        private void ReadyControl()
         {
-            if(IsDefault) {
-                IsDefault = false;
+            if(IsDefault()) {
                 Clear();
 
                 Font = Common.TextFont;
-                //TextAlign = HorizontalAlignment.Left; // Disabled alignment change until I can figure out the looping logic that results from it
             }
         }
 
-        public void Reset() => ResetControl(true, null);
-        private void ResetControl(object bite, EventArgs me)
+        public void Reset() => ResetControl(true);
+        private void ResetControl(bool forceReset)
         {
-            if(Text.Length < 1 || DefaultText.Contains(Text) || (me == null && (bool)bite)) {
-                IsDefault = true;
+            if(Text.Length < 1 || DefaultText.Contains(Text) || forceReset)
+            {
                 Text = DefaultText;
-
                 Font = Common.DefaultTextFont;
-                //TextAlign = HorizontalAlignment.Center; // Disabled alignment change until I can figure out the looping logic that results from it (seriously, what the fuck?)
             }
         }
 
@@ -1269,9 +1271,8 @@ namespace Dobby {
         {
             if (text != string.Empty && !DefaultText.Contains(text))
             {   
-                Font = Common.DefaultTextFont;
-                IsDefault = false;
                 Text = text;
+                Font = Common.TextFont;
             }
         }
     }
