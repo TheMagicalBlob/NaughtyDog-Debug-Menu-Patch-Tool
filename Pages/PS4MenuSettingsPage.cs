@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
-using System.Text;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using static Dobby.Common;
 using System.Linq;
-using System.Runtime.InteropServices;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Collections.Generic;
+using static Dobby.Common;
 
 
 
 namespace Dobby {
-    public partial class PS4MenuSettingsPage : Form {
-
+    public partial class PS4MenuSettingsPage : Form
+    {
         /// <summary>
         /// Initialize a new instance of the PS4MenuSettingsPage Form.
         /// </summary>
@@ -24,9 +22,9 @@ namespace Dobby {
                 InitializeAdditionalEventHandlers(Controls);
                 
 
-                if(UniversalPatchValues.Length != UniversalBootSettingsPointers.Length || DefaultGSPatchValues.Length != GameSpecificBootSettingsPointers.Length)
+                if(DefaultUniversalPatchValues.Length != UniversalBootSettingsPointers.Length || DefaultGSPatchValues.Length != GameSpecificBootSettingsPointers.Length)
                 {
-                    Print($"WARNING: Mismatch In Array Value vs pointer Length:\n  Universal:\n  Vars: {UniversalPatchValues.Length}\n  Pointers: {UniversalBootSettingsPointers.Length}\nDynamic:\n  Vars: {DefaultGSPatchValues.Length}\n  Pointers: {GameSpecificBootSettingsPointers.Length}");
+                    Print($"WARNING: Mismatch In Array Value vs pointer Length:\n  Universal:\n  Vars: {DefaultUniversalPatchValues.Length}\n  Pointers: {UniversalBootSettingsPointers.Length}\nDynamic:\n  Vars: {DefaultGSPatchValues.Length}\n  Pointers: {GameSpecificBootSettingsPointers.Length}");
                 }
 
             }
@@ -44,6 +42,12 @@ namespace Dobby {
         //=================================\\
         #region [Variable Declarations]
 
+        /// <summary>
+        /// 0: UC1100<br/>1: UC1102<br/>2: UC2100<br/>3: UC2102<br/>4: UC3100<br/>5: UC3102<br/>6: UC4100<br/>7: UC4101<br/>8: UC4133<br/>9: UC4133MP<br/>10 TLL100<br/>11 TLL10X<br/>12 T1R100<br/>13 T1R109<br/>14 T1R11X<br/>15 T2100<br/>16 T2107<br/>17 T2109<br/>
+        /// </summary>
+        private readonly int _GameIndex;
+
+
         /// <summary> Array of Controls to Move When Loading >1 Game-Specific Debug Options
         ///</summary>
         private Control[] ControlsToMove;
@@ -51,14 +55,12 @@ namespace Dobby {
         private Button ResetBtn;
         private Button ConfirmBtn;
 
-        /// <summary>
-        /// 0: UC1100<br/>1: UC1102<br/>2: UC2100<br/>3: UC2102<br/>4: UC3100<br/>5: UC3102<br/>6: UC4100<br/>7: UC4101<br/>8: UC4133<br/>9: UC4133MP<br/>10 TLL100<br/>11 TLL10X<br/>12 T1R100<br/>13 T1R109<br/>14 T1R11X<br/>15 T2100<br/>16 T2107<br/>17 T2109<br/>
-        /// </summary>
-        private readonly int _GameIndex;
+
+
+        private FileStream fileStream;
 
 
         
-#if DEBUG
         /// <summary>
         ///      Booleans Used For Universal Patch Values
         ///<br/>
@@ -68,18 +70,9 @@ namespace Dobby {
         ///<br/> 3: Prog Pause On Close
         ///<br/> 4: novis TODO: //! Add Me!
         /// </summary>
-        public static bool[] UniversalPatchValues { get; private set; }
-#else
-        private static bool[] UniversalPatchValues
-#endif
-         = new bool[5] { false, true, true, true, false };
-
-        internal readonly bool[] DefaultUniveralPatchValues = new bool[5] { false, true, true, true, false };
+        private readonly bool[] DefaultUniversalPatchValues = new bool[5] { false, true, true, true, false };
 
 
-        private FileStream fileStream;
-
-        
         /// <summary>
         /// 0: Menu Alpha <br/>
         /// 1: Menu Scale <br/>
@@ -90,7 +83,7 @@ namespace Dobby {
         /// 6: Align Menus Right <br/>
         /// 7: Right Margin <br/>
         /// </summary>
-        internal static readonly object[] DefaultGSPatchValues = new object[] {
+        private static readonly object[] DefaultGSPatchValues = new object[8] {
             0.85f,
             0.60f,
             1f,
@@ -100,6 +93,7 @@ namespace Dobby {
             false,
             (byte)10
         };
+
 
         /// <summary>
         /// Variable Used In Dynamic Button Cration For Game-Specific Patches<br/><br/>
@@ -169,15 +163,11 @@ namespace Dobby {
                 "Adjust the Menu's Distance From The Right Of The Screen",
         };
 
+
         /// <summary>
         /// Buttons For Game-Specific Debug Options Loaded Based On The Game Chosen.
         /// </summary>
-    #if DEBUG
-        private List<Button> GSButtons;
-    #else
         private List<Button> GSButtons; // Initialized Once An Executable's Selected
-    #endif
-
 
         private readonly int GSButtonHeight = 23;
 
@@ -357,7 +347,7 @@ namespace Dobby {
                     patchValue = button.Variable;
                     patchPointer = UniversalBootSettingsPointers[patchIndex = button.TabIndex][gameIndex];
 
-                    if ((bool)patchValue == DefaultUniveralPatchValues[patchIndex])
+                    if ((bool)patchValue == DefaultUniversalPatchValues[patchIndex])
                     {
                         #if DEBUG
                         Print("Skipping Unchanged Patch Value...");
@@ -668,7 +658,7 @@ namespace Dobby {
                     Cursor = Cursors.Cross,
 
                     Location = new Point(1, ButtonsVerticalStartOffset),
-                    Size = new Size(ActiveForm.Width - 2, GSButtonHeight),
+                    Size = new Size(Width - 2, GSButtonHeight),
                     Font = ControlFont,
                     Text = GSButtonsText[patchIndex],
                     Tag = GSButtonHints[patchIndex]

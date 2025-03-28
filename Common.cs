@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net.Sockets;
-using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
@@ -1469,11 +1466,6 @@ namespace Dobby {
 
 
         /// <summary>
-        /// Lazy (potential) fix
-        /// </summary>
-        private void CycleButtonVariable(object sender, EventArgs args) => CycleButtonVariable(sender, new MouseEventArgs(MouseButtons.Right, 1, MousePosition.X, MousePosition.Y, 0));
-
-        /// <summary>
         /// Toggle between various states of custom Button controls
         /// </summary>
         /// <param name="sender"> The control to edit the variable of. </param>
@@ -1501,6 +1493,23 @@ namespace Dobby {
                 Common.Print("CycleButtonVariable(): Control's variable was null, fix your trash.");
                 return;
             }
+
+            // Reimplement this properly after sleeping lmao
+            if (MaximumValue != null || MinimumValue != null)
+            {
+                if (MaximumValue == null)
+                {
+                    Common.Print("CycleButtonVariable(): No Maximum value provided to go with minumum, you didn't write the code below to account for that, dumbass. Aborting");
+                    return;
+                }
+
+                if (MinimumValue == null)
+                {
+                    Common.Print("No minimum value provided to go with maximum, defaulting it to 0.");
+                    MinimumValue = 0;
+                }
+            }
+
 
 
             // Avoid incrementing options on MouseUp events when the scroll wheel was already used
@@ -1548,7 +1557,7 @@ namespace Dobby {
             {
                 if (type == typeof(float))
                 {
-                    inc = 0.25f;
+                    inc = 0.10f;
                 }
                 if (type == typeof(int) || type == typeof(byte))
                 {
@@ -1596,7 +1605,7 @@ namespace Dobby {
                         Common.Print($"ERROR: Maximum value for control Variable was larger than the amount of provided VariableTags; lowered maxValue to [{MaximumValue}]");
                     }
 
-                    if (MaximumValue == Variable) //! this might compare types when they're both objects...
+                    if (MaximumValue.Equals(Variable))
                     {
                         Variable = MinimumValue ?? 0;
                     }
@@ -1613,26 +1622,40 @@ namespace Dobby {
             //#
             if (type == typeof(byte))
             {
-                if (MaximumValue == null)
+                // Avoid going out of bounds in the VariableTags array
+                if (MaximumValue != null && VariableTags?.Length < (long)MaximumValue)
                 {
-                    Variable = (byte) ((byte)Variable + inc);
+                    MaximumValue = VariableTags.Length;
+                    Common.Print($"ERROR: Maximum value for control Variable was larger than the amount of provided VariableTags; lowered maxValue to [{MaximumValue}]");
                 }
-                else {
-                    // Avoid going out of bounds in the VariableTags array
-                    if (VariableTags.Length < (long)MaximumValue)
-                    {
-                        MaximumValue = VariableTags.Length;
-                        Common.Print($"ERROR: Maximum value for control Variable was larger than the amount of provided VariableTags; lowered maxValue to [{MaximumValue}]");
-                    }
 
-                    if (MaximumValue.Equals(Variable))
-                    {
-                        Variable = MinimumValue ?? 0;
-                    }
 
+                // Increment control variable value
+                if ((byte)((byte)Variable + inc - 1) <= (byte)Variable && 1 + inc > 0) //! this is hideous, get sleep and fucking fix it, jeez
+                {
+                    Variable = (byte)0;
                 }
+                else if ((byte)((byte)Variable + inc + 1) >= (byte)Variable && 1 + inc < 0)
+                {
+                    Variable = (byte)255;
+                }
+                else
+                    Variable = (byte)((byte)Variable + inc);
 
                 return;
+
+
+                if (MaximumValue != null && (byte)Variable > (byte)MaximumValue)
+                {
+                    if ((byte)Variable >= ((byte)MaximumValue + (byte)inc))
+                    {
+                        Variable = (byte)MinimumValue;
+                    }
+                    else
+                        Variable = (byte)MaximumValue;
+                }
+
+
             }
 
 
