@@ -635,7 +635,10 @@ namespace Dobby {
             var ButtonsVerticalStartOffset = (GameSpecificPatchesLabel.Location.Y + 5 + GameSpecificPatchesLabel.Size.Height);
 
 
-
+            
+            //#
+            //## Initialize applicable dynamic patch buttons for the selected game
+            //#
             for (int patchIndex = 0; patchIndex < GameSpecificBootSettingsPointers.Length; patchIndex++)
             {
                 // Determine which patches have data associated with them
@@ -682,8 +685,13 @@ namespace Dobby {
 
 
 
+
+            //#
+            //## Initialize the Confirm and Reset buttons to be added below the "GameInfoLabel" status label
+            //#
+
             // Create the "Confirm Patches" button
-            ConfirmBtn = new Button
+            Controls.Add(ConfirmBtn = new Button
             {
                 Name = "ConfirmPatchesBtn",
                 Size = new Size(Width - 11, GSButtonHeight),
@@ -694,10 +702,9 @@ namespace Dobby {
                 ForeColor = SystemColors.Control,
                 BackColor = Color.FromArgb(100, 100, 100),
                 Cursor = Cursors.Cross
-            };
+            });
             ConfirmBtn.FlatAppearance.BorderSize = 0;
 
-            Controls.Add(ConfirmBtn);
             ConfirmBtn.Location = new Point(1, ResetButtonVerticalOffset); // Right Below The GameInfoLabel
             ConfirmBtn.MouseEnter += (sender, e) => HoverLeave(((Control)sender), true);
             ConfirmBtn.MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
@@ -709,7 +716,7 @@ namespace Dobby {
 
 
             // Create the "Reset Page" button
-            ResetBtn = new Button
+            Controls.Add(ResetBtn = new Button
             {
                 Name = "ResetBtn",
                 Size = new Size(Width - 11, GSButtonHeight),
@@ -720,10 +727,9 @@ namespace Dobby {
                 ForeColor = SystemColors.Control,
                 BackColor = Color.FromArgb(100, 100, 100),
                 Cursor = Cursors.Cross
-            };
+            });
             ResetBtn.FlatAppearance.BorderSize = 0;
             
-            Controls.Add(ResetBtn);
             ResetBtn.Location = new Point(1, ResetButtonVerticalOffset + GSButtonHeight + 1);
             ResetBtn.MouseEnter += (sender, e) => HoverLeave(((Control)sender), true);
             ResetBtn.MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
@@ -734,23 +740,38 @@ namespace Dobby {
 
             
 
-            // Assign values to variables made to keep track of the default form size/control postions for the reset button. Doing it on page init is annoying 'cause designer memes
+            
+            //#
+            //## Assign values to variables made to keep track of the default form size/control postions for the reset button.
+            //#
+
             Print("Saving original control positions and form vertical height.\n");
-                
-            ControlsToMove = new Control[] {
-                SeperatorLine2,
-                BrowseButton,
-                ExecutablePathBox,
-                GameInfoLabel,
-                ResetBtn,   // These two buttons are only initialized after the game-specific patch buttons have been created. odd way to do it, but it works, and I need to do other things first
-                ConfirmBtn, // ^^^
-                SeperatorLine3,
-                InfoHelpBtn,
-                CreditsBtn,
-                BackBtn,
-                Info
-            };
-            // Every Control Below The "Game Specific Patches" Label
+
+            var controlsToMove = new List<Control>();
+            Array.ForEach(Controls.Cast<Control>().ToArray(), control =>
+            {
+                if (control.Location.Y > (GameSpecificPatchesLabel.Location.Y + 5 + GameSpecificPatchesLabel.Size.Height))
+                {
+                    controlsToMove.Add(control);
+                }
+            });
+
+            ControlsToMove = controlsToMove.ToArray();
+
+            //ControlsToMove = new Control[] { // Every Control Below The "Game Specific Patches" Label
+            //    SeperatorLine2,
+            //    BrowseButton,
+            //    ExecutablePathBox,
+            //    GameInfoLabel,
+            //    ResetBtn,   // These two buttons are only initialized after the game-specific patch buttons have been created. odd way to do it, but it works, and I need to do other things first
+            //    ConfirmBtn, // ^^^
+            //    SeperatorLine3,
+            //    InfoHelpBtn,
+            //    CreditsBtn,
+            //    BackBtn,
+            //    Info
+            //};
+
             OriginalFormScale = Size;
             OriginalControlPositions = new Point[ControlsToMove.Length];
 
@@ -782,8 +803,10 @@ namespace Dobby {
 
             
             // Move The Controls Below The Confirm And Reset Buttons A Bit Farther Down To Make Room For Them
-            for(int i = Array.FindIndex(ControlsToMove, control => control == (object)SeperatorLine3); i < ControlsToMove.Length; i++)
+            for (int i = Array.FindIndex(ControlsToMove, control => control == (object)SeperatorLine3); i < ControlsToMove.Length; i++)
+            {
                 ControlsToMove[i].Location = new Point(ControlsToMove[i].Location.X, ControlsToMove[i].Location.Y + GSButtonHeight * 2);
+            }
 
             
             Refresh();
