@@ -20,7 +20,6 @@ namespace Dobby {
             {
                 InitializeComponent();
                 InitializeAdditionalEventHandlers(Controls);
-                
 
                 if(DefaultUniversalPatchValues.Length != UniversalBootSettingsPointers.Length || DefaultGSPatchValues.Length != GameSpecificBootSettingsPointers.Length)
                 {
@@ -43,32 +42,54 @@ namespace Dobby {
         #region [Variable Declarations]
 
         /// <summary>
-        /// 0: UC1100<br/>1: UC1102<br/>2: UC2100<br/>3: UC2102<br/>4: UC3100<br/>5: UC3102<br/>6: UC4100<br/>7: UC4101<br/>8: UC4133<br/>9: UC4133MP<br/>10 TLL100<br/>11 TLL10X<br/>12 T1R100<br/>13 T1R109<br/>14 T1R11X<br/>15 T2100<br/>16 T2107<br/>17 T2109<br/>
+        /// Index used to determine the inner array (game) when getting the pointer for a patch
+        /// <br/><br/>
+        /// 0:  UC1100 <br/>1:  UC1102 <br/>2:  UC2100 <br/>3:  UC2102   <br/>4: UC3100<br/>5: UC3102<br/>
+        /// 6:  UC4100 <br/>7:  UC4101 <br/>8:  UC4133 <br/>9:  UC4133MP <br/>
+        /// 10: TLL100 <br/>11: TLL10X <br/>12: T1R100 <br/>13: T1R109   <br/>14: T1R11X <br/>
+        /// 15: T2100  <br/>16: T2107  <br/>17: T2109  <br/>
         /// </summary>
-        private readonly int _GameIndex;
+        private int GSGameIndex;
+        
+
+        /// <summary>
+        /// Buttons For Game-Specific Debug Options Loaded Based On The Game Chosen.
+        /// </summary>
+        private List<Button> GSButtons; // Initialized Once An Executable's Selected
+
+        private readonly int GSButtonHeight = 23;
 
 
-        /// <summary> Array of Controls to Move When Loading >1 Game-Specific Debug Options
-        ///</summary>
+
+        /// <summary>
+        /// An array containing the controls to move when resizing the form to fit dynamic patch buttons (or resetting the page)
+        /// </summary>
         private Control[] ControlsToMove;
 
         private Button ResetBtn;
         private Button ConfirmBtn;
 
 
-
+        /// <summary>
+        /// The FileStream used for checking and patching the provided executable (well, ideally an executable. I'm not their boss).
+        /// </summary>
         private FileStream fileStream;
 
 
-        
+
+        //#
+        //## Dynamic Patch Button Property Arrays
+        //#
+        #region (dynamic patch button property arrays)
+
         /// <summary>
-        ///      Booleans Used For Universal Patch Values
+        /// Booleans Used For Universal Patch Values
         ///<br/>
         ///<br/> 0: Disable FPS
         ///<br/> 1: Disable Paused Indicator
         ///<br/> 2: Prog Pause On Open 
         ///<br/> 3: Prog Pause On Close
-        ///<br/> 4: novis TODO: //! Add Me!
+        ///<br/> 4: Disable All Visibility (novis)
         /// </summary>
         private readonly bool[] DefaultUniversalPatchValues = new bool[5] { false, true, true, true, false };
 
@@ -97,6 +118,7 @@ namespace Dobby {
 
         /// <summary>
         /// Variable Used In Dynamic Button Cration For Game-Specific Patches<br/><br/>
+        /// 
         /// 0: MenuAlphaBtn         <br/>
         /// 1: MenuScaleBtn         <br/>
         /// 2: FOVBtn               <br/>
@@ -120,6 +142,7 @@ namespace Dobby {
             
         /// <summary>
         /// Variable Used In Dynamic Button Cration For Game-Specific Patches<br/><br/>
+        /// 
         /// 0: MenuAlphaBtn         <br/>
         /// 1: MenuScaleBtn         <br/>
         /// 2: FOVBtn               <br/>
@@ -143,6 +166,7 @@ namespace Dobby {
             
         /// <summary>
         /// Variable Used In Dynamic Button Cration For Game-Specific Patches<br/><br/>
+        /// 
         /// 0: MenuAlphaBtn         <br/>
         /// 1: MenuScaleBtn         <br/>
         /// 2: FOVBtn               <br/>
@@ -162,17 +186,8 @@ namespace Dobby {
                 "Moves The Dev/Quick Menus To The Right Of The Screen",
                 "Adjust the Menu's Distance From The Right Of The Screen",
         };
-
-
-        /// <summary>
-        /// Buttons For Game-Specific Debug Options Loaded Based On The Game Chosen.
-        /// </summary>
-        private List<Button> GSButtons; // Initialized Once An Executable's Selected
-
-        private readonly int GSButtonHeight = 23;
-
-        private int GSGameIndex;
-    #endregion
+        #endregion
+        #endregion
 
 
 
@@ -183,7 +198,7 @@ namespace Dobby {
         //--|   Background Function Delcarations   |---\\
         //=============================================\\
         #region [Background Function Delcarations]
-        
+
 
         /// <summary>
         /// Load a decrypted/unsigned executable specified by the provided fileName.<br/><br/>
@@ -306,157 +321,154 @@ namespace Dobby {
         {
             var Message = string.Empty;
 
-            using(fileStream)
+            if(BootSettingsCallAddress[gameIndex] == 0 || BootSettingsFunctionAddress[gameIndex] == 0) {
+                MessageBox.Show($"Game #{gameIndex} Has Is Missing An Address For BootSettings (Function Call: {BootSettingsCallAddress[gameIndex]} / Function Data: {BootSettingsFunctionAddress[gameIndex]})");
+                return "error";
+            }
+
+            byte pointerTypeIdentifier = 0;
+            byte[] patchPointer;
+            object patchValue;
+            int patchCount = 2;
+            int patchIndex;
+
+
+
+            // Write Function Call To Call BootSettings
+            fileStream.Position = BootSettingsCallAddress[gameIndex];
+            WriteVar(GetBootSettingsFunctionCallData(Game));
+
+
+            // Write BootSettings Function's Assembly constructed in GetBootSettingsMethodData(gameIndex)
+            fileStream.Position = BootSettingsFunctionAddress[gameIndex];
+            WriteVar(GetBootSettingsMethodData(gameIndex));
+
+
+
+            // Apply Universal Options
+            Print("Applying patches from universal patch buttons...");
+
+            foreach (var button in new Dobby.Button[] { DisableDebugTextBtn, DisablePausedIconBtn, ProgPauseOnOpenBtn, ProgPauseOnCloseBtn, NovisBtn })
             {
-                if(BootSettingsCallAddress[gameIndex] == 0 || BootSettingsFunctionAddress[gameIndex] == 0) {
-                    MessageBox.Show($"Game #{gameIndex} Has Is Missing An Address For BootSettings (Function Call: {BootSettingsCallAddress[gameIndex]} / Function Data: {BootSettingsFunctionAddress[gameIndex]})");
-                    return "error";
+                // I don't trust myself enough not to have this check, lol
+                if (button == null) {
+                    Print($"ERROR: Static button \"{button.Name}\" was undeclared for some reason.");
+                    continue;
                 }
 
-                byte pointerTypeIdentifier = 0;
-                byte[] patchPointer;
-                object patchValue;
-                int patchCount = 2;
-                int patchIndex;
 
+                patchValue = button.Variable;
+                patchPointer = UniversalBootSettingsPointers[patchIndex = button.TabIndex][gameIndex];
 
-
-                // Write Function Call To Call BootSettings
-                fileStream.Position = BootSettingsCallAddress[gameIndex];
-                WriteVar(GetBootSettingsFunctionCallData(Game));
-
-
-                // Write BootSettings Function's Assembly constructed in GetBootSettingsMethodData(gameIndex)
-                fileStream.Position = BootSettingsFunctionAddress[gameIndex];
-                WriteVar(GetBootSettingsMethodData(gameIndex));
-
-
-
-                // Apply Universal Options
-                Print("Applying patches from universal patch buttons...");
-
-                foreach (var button in new Dobby.Button[] { DisableDebugTextBtn, DisablePausedIconBtn, ProgPauseOnOpenBtn, ProgPauseOnCloseBtn, NovisBtn })
+                if ((bool)patchValue == DefaultUniversalPatchValues[patchIndex])
                 {
-                    // I don't trust myself enough not to have this check, lol
-                    if (button == null) {
-                        Print($"ERROR: Static button \"{button.Name}\" was undeclared for some reason.");
-                        continue;
-                    }
+                    #if DEBUG
+                    Print("Skipping Unchanged Patch Value...");
+                    #endif
 
-
-                    patchValue = button.Variable;
-                    patchPointer = UniversalBootSettingsPointers[patchIndex = button.TabIndex][gameIndex];
-
-                    if ((bool)patchValue == DefaultUniversalPatchValues[patchIndex])
-                    {
-                        #if DEBUG
-                        Print("Skipping Unchanged Patch Value...");
-                        #endif
-
-                        continue;
-                    }
-                    Print($"Writing patch value for {button.Name}...");
-
-
-                    if (patchPointer.Length == 4)
-                    {
-                        pointerTypeIdentifier = 0xFE;
-                    }
-                    else if (patchPointer.Length == 8)
-                    {
-                        pointerTypeIdentifier = 0xFF;
-                    }
-                        
-                    if (pointerTypeIdentifier == 0)
-                    {
-                        Print($"Default Patch Value Pointer Data {(patchPointer.Length == 0 ? "Null Somehow. (WARNING!!)" : $"Size Invalid ({patchPointer.Length})")}");
-                        continue;
-                    }
-
-
-
-                    // Write the identifier for Pointers vs hard Addresses
-                    WriteVar(pointerTypeIdentifier);
-                        
-                    // Indicator for 8bit (0) vs 32bit (1) addresses
-                    WriteVar((byte)0); // They're all booleans, so no need to check before adding the data length identifier
-
-                    // Write path pointer/address
-                    WriteVar(patchPointer);
-
-                    // Write the patch data itself
-                    WriteVar(patchValue);
-
-
-                    // Increment number of applied patches
-                    patchCount++;
-
-                    Print("\n\n");
+                    continue;
                 }
+                Print($"Writing patch value for {button.Name}...");
 
 
-
-                // Apply Game-Specific Options
-                Print("Applying patches from game-specific patch buttons...");
-
-                foreach (var button in GSButtons)
+                if (patchPointer.Length == 4)
                 {
-                    patchIndex = button.TabIndex;
-                    patchValue = button.Variable;
-                    patchPointer = GameSpecificBootSettingsPointers[patchIndex][gameIndex];
-
-
-                    if (patchValue.Equals(DefaultGSPatchValues[patchIndex]))
-                    {
-                        #if DEBUG
-                        Print("Skipping Unchanged Patch Value...");
-                        #endif
-                        continue;
-                    }
-
-                    else if (patchPointer.Length == 4)
-                    {
-                        pointerTypeIdentifier = 0xFE;
-                    }
-                    else if (patchPointer.Length == 8)
-                    {
-                        pointerTypeIdentifier = 0xFF;
-                    } 
-                    else {
-                        Print($"ERROR: Invalid Length for Provided Path Value! ({patchPointer.Length} != 4 | 8)");
-                        continue;
-                    }
-
-
-
-                    // Write the identifier for Pointers vs hard Addresses
-                    WriteVar(pointerTypeIdentifier);
+                    pointerTypeIdentifier = 0xFE;
+                }
+                else if (patchPointer.Length == 8)
+                {
+                    pointerTypeIdentifier = 0xFF;
+                }
                         
-                    // Indicator for 8bit (0) vs 32bit (1) addresses
-                    WriteVar((byte) (patchValue.GetType() == typeof(byte) || patchValue.GetType() == typeof(bool) ? 0 : 1));
-
-                    // Write path pointer/address
-                    WriteVar(patchPointer);
-
-                    // Write the patch data itself
-                    WriteVar(patchValue);
-
-
-                    // Increment number of applied patches
-                    patchCount++;
-                        
-                    Print("\n\n");
+                if (pointerTypeIdentifier == 0)
+                {
+                    Print($"Default Patch Value Pointer Data {(patchPointer.Length == 0 ? "Null Somehow. (WARNING!!)" : $"Size Invalid ({patchPointer.Length})")}");
+                    continue;
                 }
 
 
-                // padding to avoid issues with overlapping previous larger patches
-                WriteVar(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0x08 });
 
-                Message = $" {patchCount + 1} Patches Applied";
+                // Write the identifier for Pointers vs hard Addresses
+                WriteVar(pointerTypeIdentifier);
+                        
+                // Indicator for 8bit (0) vs 32bit (1) addresses
+                WriteVar((byte)0); // They're all booleans, so no need to check before adding the data length identifier
+
+                // Write path pointer/address
+                WriteVar(patchPointer);
+
+                // Write the patch data itself
+                WriteVar(patchValue);
+
+
+                // Increment number of applied patches
+                patchCount++;
+
+                Print("\n\n");
             }
 
 
-            return (Message == string.Empty ? null : Message);
+
+            // Apply Game-Specific Options
+            Print("Applying patches from game-specific patch buttons...");
+
+            foreach (var button in GSButtons)
+            {
+                patchIndex = button.TabIndex;
+                patchValue = button.Variable;
+                patchPointer = GameSpecificBootSettingsPointers[patchIndex][gameIndex];
+
+
+                if (patchValue.Equals(DefaultGSPatchValues[patchIndex]))
+                {
+                    #if DEBUG
+                    Print("Skipping Unchanged Patch Value...");
+                    #endif
+                    continue;
+                }
+
+                else if (patchPointer.Length == 4)
+                {
+                    pointerTypeIdentifier = 0xFE;
+                }
+                else if (patchPointer.Length == 8)
+                {
+                    pointerTypeIdentifier = 0xFF;
+                } 
+                else {
+                    Print($"ERROR: Invalid Length for Provided Path Value! ({patchPointer.Length} != 4 | 8)");
+                    continue;
+                }
+
+
+
+                // Write the identifier for Pointers vs hard Addresses
+                WriteVar(pointerTypeIdentifier);
+                        
+                // Indicator for 8bit (0) vs 32bit (1) addresses
+                WriteVar((byte) (patchValue.GetType() == typeof(byte) || patchValue.GetType() == typeof(bool) ? 0 : 1));
+
+                // Write path pointer/address
+                WriteVar(patchPointer);
+
+                // Write the patch data itself
+                WriteVar(patchValue);
+
+
+                // Increment number of applied patches
+                ++patchCount;
+                        
+                Print("\n\n");
+            }
+
+
+            // padding to avoid issues with overlapping previous larger patches
+            WriteVar(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0x08 });
+            ++patchCount;
+
+
+
+            return $" {patchCount} Patches Applied";
         }
 
 
@@ -468,39 +480,39 @@ namespace Dobby {
         /// <returns> A byte[] containing the data for the boot settings function itself. </returns>
         private static byte[] GetBootSettingsMethodData(int GameIndex)
         {
-            // a byte array containing the data for the redirected Quick Menu function call, and base address pointer
+            // A byte array containing the data for the redirected Quick Menu function call, and base address pointer
             var BootSettingsBaseAddressPointers = new byte[][] {
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC1 1.00 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC1 1.02 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC2 1.00 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC2 1.02 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC3 1.00 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC3 1.02 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC4 1.00 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC4 1.01 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC4 1.33 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC4 1.33 MP //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // TLL 1.00 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // TLL 1.09 //!
-                new byte [] { 0xe8, 0x6b, 0x32, 0x04, 0x00, 0x53, 0x48, 0x8d, 0x05, 0x33, 0x28, 0xfe, 0xff }, // T1R 1.00 //! TEST ME
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.09 //!
-                new byte [] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.11 //!
-                new byte [] { 0xe8, 0x8b, 0x9c, 0x3d, 0x00, 0x53, 0x48, 0x8d, 0x05, 0xc3, 0x8c, 0xff, 0xff }, // T2 1.00  //! TEST ME
-                new byte [] { 0xe8, 0xcb, 0xd0, 0x3d, 0x00, 0x53, 0x48, 0x8d, 0x05, 0xc3, 0x8c, 0xff, 0xff }, // T2 1.07
-                new byte [] { 0xe8, 0x9b, 0x45, 0x82, 0x00, 0x53, 0x48, 0x8d, 0x05, 0x03, 0xea, 0xff, 0xff }  // T2 1.09
+                new byte [13] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC1 1.00 //!
+                new byte [13] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC1 1.02 //!
+                new byte [13] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC2 1.00 //!
+                new byte [13] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC2 1.02 //!
+                new byte [13] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC3 1.00 //!
+                new byte [13] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC3 1.02 //!
+                new byte [13] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC4 1.00 //!
+                new byte [13] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC4 1.01 //!
+                new byte [13] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC4 1.33 //!
+                new byte [13] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // UC4 1.33 MP //!
+                new byte [13] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // TLL 1.00 //!
+                new byte [13] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // TLL 1.09 //!
+                new byte [13] { 0xe8, 0x6b, 0x32, 0x04, 0x00, 0x53, 0x48, 0x8d, 0x05, 0x33, 0x28, 0xfe, 0xff }, // T1R 1.00 //! TEST ME
+                new byte [13] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.09 //!
+                new byte [13] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // T1R 1.11 //!
+                new byte [13] { 0xe8, 0x8b, 0x9c, 0x3d, 0x00, 0x53, 0x48, 0x8d, 0x05, 0xc3, 0x8c, 0xff, 0xff }, // T2 1.00
+                new byte [13] { 0xe8, 0xcb, 0xd0, 0x3d, 0x00, 0x53, 0x48, 0x8d, 0x05, 0xc3, 0x8c, 0xff, 0xff }, // T2 1.07
+                new byte [13] { 0xe8, 0x9b, 0x45, 0x82, 0x00, 0x53, 0x48, 0x8d, 0x05, 0x03, 0xea, 0xff, 0xff }  // T2 1.09
             };
 
-            byte[]
-                // Static assembly declaration
-                BootSettingsFunction = new byte[] {
-                    0x48, 0x8d, 0x0d, 0x64, 0x00, 0x00, 0x00, 0x80, 0x3c, 0x21, 0xfe, 0x75, 0x22, 0x8b, 0x54, 0x21, 0x02, 0x01, 0xc2, 0x80, 0x79, 0x01, 0x00, 0x75, 0x0b, 0x8a, 0x59,
-                    0x06, 0x88, 0x1a, 0x48, 0x83, 0xc1, 0x07, 0xeb, 0xe3, 0x8b, 0x59, 0x06, 0x89, 0x1a, 0x48, 0x83, 0xc1, 0x0a, 0xeb, 0xd8, 0x80, 0x39, 0xff, 0x75, 0x35, 0x8b, 0x94,
-                    0x21, 0x02, 0x00, 0x00, 0x00, 0x01, 0xc2, 0x48, 0x8d, 0x14, 0x22, 0x48, 0x8b, 0x12, 0x8b, 0x5c, 0x21, 0x06, 0x48, 0x01, 0xda, 0x80, 0x79, 0x01, 0x00, 0x75, 0x0c,
-                    0x8a, 0x59, 0x0a, 0x40, 0x88, 0x1a, 0x48, 0x83, 0xc1, 0x0b, 0xeb, 0xaa, 0x8b, 0x59, 0x0a, 0x48, 0x89, 0x1a, 0x48, 0x83, 0xc1, 0x0e, 0xeb, 0x9e, 0x5b, 0xc3
-                },
+            // Static assembly declaration
+            var BootSettingsFunction = new byte[107]
+            {
+                0x48, 0x8d, 0x0d, 0x64, 0x00, 0x00, 0x00, 0x80, 0x3c, 0x21, 0xfe, 0x75, 0x22, 0x8b, 0x54, 0x21, 0x02, 0x01, 0xc2, 0x80, 0x79, 0x01, 0x00, 0x75, 0x0b, 0x8a, 0x59,
+                0x06, 0x88, 0x1a, 0x48, 0x83, 0xc1, 0x07, 0xeb, 0xe3, 0x8b, 0x59, 0x06, 0x89, 0x1a, 0x48, 0x83, 0xc1, 0x0a, 0xeb, 0xd8, 0x80, 0x39, 0xff, 0x75, 0x35, 0x8b, 0x94,
+                0x21, 0x02, 0x00, 0x00, 0x00, 0x01, 0xc2, 0x48, 0x8d, 0x14, 0x22, 0x48, 0x8b, 0x12, 0x8b, 0x5c, 0x21, 0x06, 0x48, 0x01, 0xda, 0x80, 0x79, 0x01, 0x00, 0x75, 0x0c,
+                0x8a, 0x59, 0x0a, 0x40, 0x88, 0x1a, 0x48, 0x83, 0xc1, 0x0b, 0xeb, 0xaa, 0x8b, 0x59, 0x0a, 0x48, 0x89, 0x1a, 0x48, 0x83, 0xc1, 0x0e, 0xeb, 0x9e, 0x5b, 0xc3
+            };
 
-                BootSettingsData = new byte[BootSettingsFunction.Length + BootSettingsBaseAddressPointers[GameIndex].Length]
-            ;
+            var BootSettingsData = new byte[120];
+
 
 
             Buffer.BlockCopy
@@ -531,24 +543,24 @@ namespace Dobby {
         private static byte[] GetBootSettingsFunctionCallData(GameID GameID)
         {
             switch(GameID) {
-                case GameID.UC1100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+                case GameID.UC1100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; //!
 
-                case GameID.UC1102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+                case GameID.UC1102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; //!
 
-                case GameID.UC2100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+                case GameID.UC2100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; //!
 
-                case GameID.UC2102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+                case GameID.UC2102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; //!
 
-                case GameID.UC3100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+                case GameID.UC3100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; //!
 
-                case GameID.UC3102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+                case GameID.UC3102: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; //!
 
-                case GameID.T1R100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+                case GameID.T1R100: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; //!
 
-                case GameID.T1R109: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; // 
+                case GameID.T1R109: return new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }; //!
 
                 case GameID.T1R110:
-                case GameID.T1R111: return new byte[] { 0xe8, 0xc0, 0x15, 0x01, 0x00 }; // 
+                case GameID.T1R111: return new byte[] { 0xe8, 0xc0, 0x15, 0x01, 0x00 }; //! TEST ME & ADD ADDR
 
                 case GameID.T2100:  return new byte[] { 0xe8, 0x43, 0x95, 0xe1, 0xff }; // CALL 0x7e0fc0
 
@@ -564,9 +576,9 @@ namespace Dobby {
 
 
         /// <summary>
-        /// 
+        /// Discard the any created dynamic patch buttons and reset the form size &amp; layout to their origninal states
         /// </summary>
-        private void ResetCustomDebugOptions(object _ = null, EventArgs __ = null)
+        private void ResetCustomDebugOptions()
         {
             if (Game == GameID.Empty) {
                 Print("ResetCustomDebugOptions(): Game was unset, aborting.");
@@ -714,7 +726,6 @@ namespace Dobby {
             ConfirmBtn.BringToFront();
 
 
-
             // Create the "Reset Page" button
             Controls.Add(ResetBtn = new Button
             {
@@ -735,7 +746,7 @@ namespace Dobby {
             ResetBtn.MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
             ResetBtn.MouseUp += MouseUpFunc;
             ResetBtn.MouseDown += MouseDownFunc;
-            ResetBtn.Click += ResetCustomDebugOptions;
+            ResetBtn.Click += (_, __) => ResetCustomDebugOptions();
             ResetBtn.BringToFront();
 
             
@@ -747,30 +758,19 @@ namespace Dobby {
 
             Print("Saving original control positions and form vertical height.\n");
 
-            var controlsToMove = new List<Control>();
-            Array.ForEach(Controls.Cast<Control>().ToArray(), control =>
-            {
-                if (control.Location.Y > (GameSpecificPatchesLabel.Location.Y + 5 + GameSpecificPatchesLabel.Size.Height))
-                {
-                    controlsToMove.Add(control);
-                }
-            });
-
-            ControlsToMove = controlsToMove.ToArray();
-
-            //ControlsToMove = new Control[] { // Every Control Below The "Game Specific Patches" Label
-            //    SeperatorLine2,
-            //    BrowseButton,
-            //    ExecutablePathBox,
-            //    GameInfoLabel,
-            //    ResetBtn,   // These two buttons are only initialized after the game-specific patch buttons have been created. odd way to do it, but it works, and I need to do other things first
-            //    ConfirmBtn, // ^^^
-            //    SeperatorLine3,
-            //    InfoHelpBtn,
-            //    CreditsBtn,
-            //    BackBtn,
-            //    Info
-            //};
+            ControlsToMove = new Control[] { // Every Control Below The "Game Specific Patches" Label
+                SeperatorLine2,
+                BrowseButton,
+                ExecutablePathBox,
+                GameInfoLabel,
+                ResetBtn,   // These two buttons are only initialized after the game-specific patch buttons have been created. odd way to do it, but it works, and I need to do other things first
+                ConfirmBtn, // ^^^
+                SeperatorLine3,
+                InfoHelpBtn,
+                CreditsBtn,
+                BackBtn,
+                Info
+            };
 
             OriginalFormScale = Size;
             OriginalControlPositions = new Point[ControlsToMove.Length];
@@ -801,7 +801,7 @@ namespace Dobby {
                 Size = new Size(Size.Width, Size.Height + offset + (GSButtonHeight * 2));
             }
 
-            
+
             // Move The Controls Below The Confirm And Reset Buttons A Bit Farther Down To Make Room For Them
             for (int i = Array.FindIndex(ControlsToMove, control => control == (object)SeperatorLine3); i < ControlsToMove.Length; i++)
             {
@@ -915,12 +915,6 @@ namespace Dobby {
         //======================================\\
         #region [Event Handler Declarations]
         
-        private void DebugResetBtn_Click(object sender, EventArgs e)
-        {
-            ResetCustomDebugOptions();
-            ExecutablePathBox.Reset();
-        }
-
         private void BrowseButton_Click(object sender, EventArgs e)
         {
             #if DEBUG
@@ -957,14 +951,9 @@ namespace Dobby {
 
         private void ConfirmBtn_Click(object sender, EventArgs e)
         {
-            if (GSGameIndex == 0xDEADDAD)
-            {
-                Print("WARNING: GSGame Index was unset for some reason, setting now..."); //! pretty sure this isn't required, unless I've already made a seperate mistake I'd need to fix anyway
-                GetGSPatchesGameIndex(Game);
-            }
-
             var result = ApplyMenuSettings(GSGameIndex);
-            if(result == "error")
+
+            if (result == "error")
             {
                 #if !DEBUG
                 MessageBox.Show($"An Unexpected Error Occured While Applying The Patches, Please Ensure You're Running The Latest Release Build\nIf You Are, Report It To The Moron Typing Out This Error Message", "Internal Error Applying Patch Data");
@@ -973,28 +962,13 @@ namespace Dobby {
                 return;
             }
 
-            #if !DEBUG
-            // Reset the form automatically for debugging purposes
-            ResetCustomDebugOptions();
-            #endif
 
             // Append the return status to the game id & version
-            GameInfoLabel.Text += result;
+            GameInfoLabel.Text = GetGameID(fileStream) + result;
         }
         
 
-        private void ExecutablePathBox_TextChanged(object sender, EventArgs e)
-        {
-            var box = ((TextBox)sender);
-            Print($"eugh: {box.Text}");
-
-            if (!box.IsDefault() && box.Text?.Length > 3)
-            {
-                BrowseButton.Text = "Load...";
-            }
-            else
-                BrowseButton.Text = "Browse...";
-        }
+        private void ExecutablePathBox_TextChanged(object sender, EventArgs e) => BrowseButton.Text = ((TextBox)sender)?.Text?.Length > 3 && !((TextBox)sender).IsDefault() ? "Load..." : "Browse...";
 
         #endregion
 

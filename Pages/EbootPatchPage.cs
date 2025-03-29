@@ -37,6 +37,10 @@ namespace Dobby {
         };
 
 
+        
+        /// <summary>
+        /// The FileStream used for checking and patching the provided executable (well, ideally an executable. I'm not their boss).
+        /// </summary>
         private FileStream fileStream;
 
         private  void WriteBytes(int offset, byte[] data)
