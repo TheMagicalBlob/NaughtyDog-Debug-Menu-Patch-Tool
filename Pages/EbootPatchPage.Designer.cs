@@ -21,7 +21,7 @@ namespace Dobby
             if(disposing && (components != null)) {
                 components.Dispose();
             }
-            fileStream?.Dispose();
+            Common.fileStream?.Dispose();
             Common.Game = Common.GameID.Empty;
             base.Dispose(disposing);
         }
@@ -127,7 +127,7 @@ namespace Dobby
             // ExecutablePathBox
             // 
             this.ExecutablePathBox.BackColor = System.Drawing.Color.Gray;
-            this.ExecutablePathBox.Font = new System.Drawing.Font("Cambria", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
+            this.ExecutablePathBox.Font = new System.Drawing.Font("Cambria", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
             this.ExecutablePathBox.ForeColor = System.Drawing.SystemColors.Window;
             this.ExecutablePathBox.Location = new System.Drawing.Point(6, 116);
             this.ExecutablePathBox.Name = "ExecutablePathBox";

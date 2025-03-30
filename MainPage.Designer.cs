@@ -270,7 +270,7 @@ namespace Dobby
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ClientSize = new System.Drawing.Size(320, 309);
+            this.ClientSize = new System.Drawing.Size(319, 307);
             this.Controls.Add(this.DownloadSourceBtn);
             this.Controls.Add(this.PCLabel);
             this.Controls.Add(this.Playstation4Label);
@@ -288,6 +288,7 @@ namespace Dobby
             this.Controls.Add(this.SeperatorLine3);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "MainPage";
+            this.Load += new System.EventHandler(this.MainPage_Load);
             this.ResumeLayout(false);
 
         }

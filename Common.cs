@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.IO.Pipes;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
@@ -65,7 +66,6 @@ namespace Dobby {
         public static bool
             MouseScrolled,
             MouseIsDown,
-            LabelShouldFlash,
             DisableFormChange
         ;
 
@@ -86,6 +86,13 @@ namespace Dobby {
         public static string
             ActiveGameID = "UNK"
         ;
+
+
+        
+        /// <summary>
+        /// The FileStream used for checking and patching the provided executable (well, ideally an executable. I'm not their boss).
+        /// </summary>
+        public static FileStream fileStream;
         
         
     #if DEBUG
@@ -215,25 +222,98 @@ namespace Dobby {
             Print($"!! ERROR: {message}");
         }
 
+        
+        /// <summary>
+        /// Convert a provided object in to a byte array, then writes it to the current position in the active file stream.
+        /// </summary>
+        /// <param name="data"> The object to convert and write. </param>
+        public static void WriteVar(FileStream fileStream, long address, object data)
+        {
+            var type = data?.GetType();
+            #if DEBUG
+            var msg = $"] Written To 0x{fileStream.Position:X} ({type})\n";
+            #endif
 
+
+            if (address != 0xDEADDAD)
+            {
+                fileStream.Position = address;
+            }
+            if (data == null)
+            {
+                data = (byte) 0x00;
+            }
+
+
+
+            // Write provided data
+            if (type == typeof(int))
+            {
+                fileStream.Write(BitConverter.GetBytes((int)data), 0, 4);
+
+                #if DEBUG
+                msg = $"[{(int)data} => {BitConverter.ToString(BitConverter.GetBytes((int)data)).Replace("-", ", 0x")}" + msg;
+                #endif
+            }
+            else if (type == typeof(byte))
+            {
+                data = Convert.ToByte(data); // why the fuck does casting a byte throw an invalid cast exception?? and why only for 1's but not 0's???
+                fileStream.WriteByte((byte)data);
+
+                #if DEBUG
+                msg = $"[{(byte)data} => {((byte)data).ToString("X").PadLeft(2, '0')}" + msg;
+                #endif
+            }
+            else if (type == typeof(byte[]))
+            {
+                fileStream.Write((byte[])data, 0, ((byte[])data).Length);
+
+                #if DEBUG
+                msg = $"[0x{BitConverter.ToString((byte[])data).Replace("-", ", 0x")}" + msg;
+                #endif
+            }
+            else if (type == typeof(bool))
+            {
+                fileStream.WriteByte((byte)((bool)data ? 1 : 0));
+
+                #if DEBUG
+                msg = $"[{(bool)data} => {((bool)data ? 1 : 0)}" + msg;
+                #endif
+            }
+            else if (type == typeof(float))
+            {
+                fileStream.Write(BitConverter.GetBytes((float)data), 0, BitConverter.GetBytes((float)data).Length);
+
+                #if DEBUG
+                msg = $"[{(float)data} => 0x{BitConverter.ToString(BitConverter.GetBytes((float)data)).Replace("-", ", 0x")}" + msg;
+                #endif
+            }
+
+            else
+                Print($"ERROR: Unexpected Variable type ({type}).");
+
+
+            // Manually flush the stream just in case
+            fileStream.Flush(true);
+                
+            #if DEBUG
+            Print(msg);
+            #endif
+        }
+        
+        
+        /// <summary>
+        /// WriteVar() shorthand for writing the same data to multiple addresses.
+        /// </summary>
+        /// <param name="data"> The data to write to the provided addresses. </param>
+        /// <param name="addresses"> The addresses to write the data to each of. </param>
+        public static void WriteVar(FileStream fileStream, long[] addresses, object data) => Array.ForEach(addresses, address => WriteVar(fileStream, address, data));
 
         /// <summary>
-        /// Update the current label text and/or apply a flashing effect to the label to signify an error.
+        /// WriteVar() shorthand for writing to the file without seaking to a different position in the stream.
         /// </summary>
-        /// <param name="newText"> The string to apply to the label's Text property. </param>
-        /// <param name="flashLabel"> If true, flash the label to indicate an error or otherwise get the user's attention. (switches between white/yellow) </param>
-        public static void UpdateLabel(string newText, bool flashLabel = false)
-        {
-            if ((InfoText == " " || InfoText == null) && newText != null && InfoLabel.Text != newText)
-            {
-                InfoText = newText;
-            }
-
-            if (flashLabel)
-            {
-                InfoFlashes = 15;
-            }
-        }
+        /// <param name="data"> The data to write to the provided addresses. </param>
+        public static void WriteVar(FileStream fileStream, object data) => WriteVar(fileStream, 0xDEADDAD, data);
 
 
         
@@ -442,6 +522,25 @@ namespace Dobby {
         /// <param name="form"> The orignal form </param>
         public static void SaveMainForm(Form form) => MainForm = form;
 
+        
+
+        /// <summary>
+        /// Update the current label text and/or apply a flashing effect to the label to signify an error.
+        /// </summary>
+        /// <param name="newText"> The string to apply to the label's Text property. </param>
+        /// <param name="flashLabel"> If true, flash the label to indicate an error or otherwise get the user's attention. (switches between white/yellow) </param>
+        public static void UpdateLabel(string newText, bool flashLabel = false)
+        {
+            if ((InfoText == " " || InfoText == null) && newText != null && InfoLabel.Text != newText)
+            {
+                InfoText = newText;
+            }
+
+            if (flashLabel)
+            {
+                InfoFlashes = 15;
+            }
+        }
 
         /// <summary>
         /// Loads The Specified Page From The PageId Group (E.g. ChangeForm(PageID.PS4MiscPageId))
@@ -1539,20 +1638,22 @@ namespace Dobby {
 
                 }
 
-                //
+                // Modify the incrementation value if the mouse is being held down
                 if (Common.MouseIsDown)
                 {
+                    // Reduce it to a tenth
                     if (Common.ActiveMouseButton == MouseButtons.Right) {
                         inc *= .1f;
                     }
+                    // Multiply it tenfold
                     else {
                         inc *= 10.0f;
                     }
                 }
             }
+            // Set the incrementation value for a mouse click depending on the button variable's type
             else
             {
-                //
                 if (type == typeof(float))
                 {
                     inc = 0.10f;

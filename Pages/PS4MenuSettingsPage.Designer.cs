@@ -34,7 +34,7 @@ namespace Dobby
             Common.OriginalControlPositions = null;
             Common.Game = Common.GameID.Empty;
 
-            fileStream?.Dispose();
+            Common.fileStream?.Dispose();
             base.Dispose(disposing);
         }
 

@@ -70,11 +70,6 @@ namespace Dobby {
         private Button ConfirmBtn;
 
 
-        /// <summary>
-        /// The FileStream used for checking and patching the provided executable (well, ideally an executable. I'm not their boss).
-        /// </summary>
-        private FileStream fileStream;
-
 
 
         //#
@@ -126,7 +121,8 @@ namespace Dobby {
             (byte)0
         };
 
-        private static readonly object[] GSPatchMaximumValues = new object[8] {
+        private static readonly object[] GSPatchMaximumValues = new object[8]
+        {
             1f,
             10f,
             20f,
@@ -151,7 +147,8 @@ namespace Dobby {
         /// 6: RightAlignBtn        <br/>
         /// 7: RightMarginBtn
         /// </summary>
-        private static readonly string[] GSButtonNames = new string[] {
+        private static readonly string[] GSButtonNames = new string[8]
+        {
                 "MenuAlphaBtn",
                 "MenuScaleBtn",
                 "FOVBtn",
@@ -175,7 +172,8 @@ namespace Dobby {
         /// 6: RightAlignBtn        <br/>
         /// 7: RightMarginBtn
         /// </summary>
-        private static readonly string[] GSButtonsText = new string[] {
+        private static readonly string[] GSButtonsText = new string[]
+        {
                 "Set DMenu BG Opacity:",             // default=0.85
                 "Set Dev Menu Scale:",               // default=0.60
                 "Adjust Non-ADS FOV:",               // default=1.00
@@ -342,33 +340,43 @@ namespace Dobby {
         /// </returns>
         private string ApplyMenuSettings(int gameIndex)
         {
-            var Message = string.Empty;
-
             if(BootSettingsCallAddress[gameIndex] == 0 || BootSettingsFunctionAddress[gameIndex] == 0) {
                 MessageBox.Show($"Game #{gameIndex} Has Is Missing An Address For BootSettings (Function Call: {BootSettingsCallAddress[gameIndex]} / Function Data: {BootSettingsFunctionAddress[gameIndex]})");
                 return "error";
             }
 
+
+            //#
+            //## Local Variable Declarations
+            //#
+            var Message = string.Empty;
+
             byte pointerTypeIdentifier = 0;
             byte[] patchPointer;
+            
             object patchValue;
+            
             int patchCount = 2;
             int patchIndex;
 
 
 
+            //#
+            //## Redirect the Quick Menu Function Call to, and Construct & Write the Custom Boot Settings Function
+            //#
+
             // Write Function Call To Call BootSettings
-            fileStream.Position = BootSettingsCallAddress[gameIndex];
-            WriteVar(GetBootSettingsFunctionCallData(Game));
+            WriteVar(fileStream, BootSettingsCallAddress[gameIndex], GetBootSettingsFunctionCallData(Game));
 
 
             // Write BootSettings Function's Assembly constructed in GetBootSettingsMethodData(gameIndex)
-            fileStream.Position = BootSettingsFunctionAddress[gameIndex];
-            WriteVar(GetBootSettingsMethodData(gameIndex));
+            WriteVar(fileStream, BootSettingsFunctionAddress[gameIndex], GetBootSettingsMethodData(gameIndex));
 
 
 
-            // Apply Universal Options
+            //#
+            //## Apply Universal Options
+            //#
             Print("Applying patches from universal patch buttons...");
 
             foreach (var button in new Dobby.Button[] { DisableDebugTextBtn, DisablePausedIconBtn, ProgPauseOnOpenBtn, ProgPauseOnCloseBtn, NovisBtn })
@@ -412,16 +420,16 @@ namespace Dobby {
 
 
                 // Write the identifier for Pointers vs hard Addresses
-                WriteVar(pointerTypeIdentifier);
+                WriteVar(fileStream, pointerTypeIdentifier);
                         
                 // Indicator for 8bit (0) vs 32bit (1) addresses
-                WriteVar((byte)0); // They're all booleans, so no need to check before adding the data length identifier
+                WriteVar(fileStream, (byte)0); // They're all booleans, so no need to check before adding the data length identifier
 
                 // Write path pointer/address
-                WriteVar(patchPointer);
+                WriteVar(fileStream, data: patchPointer);
 
                 // Write the patch data itself
-                WriteVar(patchValue);
+                WriteVar(fileStream, data: patchValue);
 
 
                 // Increment number of applied patches
@@ -432,7 +440,9 @@ namespace Dobby {
 
 
 
-            // Apply Game-Specific Options
+            //#
+            //## Apply Game-Specific Options
+            //#
             Print("Applying patches from game-specific patch buttons...");
 
             foreach (var button in GSButtons)
@@ -466,16 +476,16 @@ namespace Dobby {
 
 
                 // Write the identifier for Pointers vs hard Addresses
-                WriteVar(pointerTypeIdentifier);
+                WriteVar(fileStream, pointerTypeIdentifier);
                         
                 // Indicator for 8bit (0) vs 32bit (1) addresses
-                WriteVar((byte) (patchValue.GetType() == typeof(byte) || patchValue.GetType() == typeof(bool) ? 0 : 1));
+                WriteVar(fileStream, (byte) (patchValue.GetType() == typeof(byte) || patchValue.GetType() == typeof(bool) ? 0 : 1));
 
                 // Write path pointer/address
-                WriteVar(patchPointer);
+                WriteVar(fileStream, patchPointer);
 
                 // Write the patch data itself
-                WriteVar(patchValue);
+                WriteVar(fileStream, patchValue);
 
 
                 // Increment number of applied patches
@@ -486,7 +496,7 @@ namespace Dobby {
 
 
             // padding to avoid issues with overlapping previous larger patches
-            WriteVar(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0x08 });
+            WriteVar(fileStream, new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0x08 });
             ++patchCount;
 
 
@@ -613,9 +623,12 @@ namespace Dobby {
             OriginalFormScale = Size.Empty;
 
 
-
-            // Kill MainStream
-            fileStream?.Dispose();
+            // Reset the universal patch value buttons
+            DisableDebugTextBtn.Variable = DefaultGSPatchValues[0];
+            DisablePausedIconBtn.Variable = DefaultGSPatchValues[1];
+            ProgPauseOnOpenBtn.Variable = DefaultGSPatchValues[2];
+            ProgPauseOnCloseBtn.Variable = DefaultGSPatchValues[3];
+            NovisBtn.Variable = DefaultGSPatchValues[4];
 
             // Remove and dispose of dynamic patch buttons
             if (GSButtons != null)
@@ -623,11 +636,17 @@ namespace Dobby {
                 Array.ForEach(GSButtons.ToArray(), button => button?.Dispose());
                 GSButtons = null;
             }
+            
+
+            // Kill MainStream
+            fileStream?.Dispose();
 
 
-            // Move Controls Back To Their Original Positions
-            for(var i = 0; i < ControlsToMove.Length; ControlsToMove[i].Location = OriginalControlPositions[i++]);
-
+            // Move Controls Back To Their Original Positions & reset related variables
+            for (var i = 0; i < ControlsToMove.Length;)
+            {
+                ControlsToMove[i].Location = OriginalControlPositions[i++];
+            }
             OriginalControlPositions = null;
             OriginalFormScale = Size.Empty;
 
@@ -838,20 +857,31 @@ namespace Dobby {
             PerformLayout();
         }
 
-
-
+        
         /// <summary>
         /// Convert a provided object in to a byte array, then writes it to the current position in the active file stream.
         /// </summary>
         /// <param name="data"> The object to convert and write. </param>
-        private void WriteVar(object data)
+        private void WriteVar(FileStream fileStream, long address, object data)
         {
             var type = data?.GetType();
             #if DEBUG
             var msg = $"] Written To 0x{fileStream.Position:X} ({type})\n";
             #endif
 
-            Print($"type: {type} | {data.GetType()}");
+
+            if (address != 0xDEADDAD)
+            {
+                fileStream.Position = address;
+            }
+            if (data == null)
+            {
+                data = (byte) 0x00;
+            }
+
+
+
+            // Write provided data
             if (type == typeof(int))
             {
                 fileStream.Write(BitConverter.GetBytes((int)data), 0, 4);
@@ -898,6 +928,7 @@ namespace Dobby {
                 Print($"ERROR: Unexpected Variable type ({type}).");
 
 
+            // Manually flush the stream just in case
             fileStream.Flush(true);
                 
             #if DEBUG
@@ -905,6 +936,9 @@ namespace Dobby {
             #endif
         }
         
+        private void WriteVar(FileStream fileStream, object data) => WriteVar(fileStream, 0xDEADDAD, data);
+
+
 
         #if DEBUG
         /// <summary>

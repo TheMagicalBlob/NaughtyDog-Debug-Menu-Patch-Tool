@@ -12,7 +12,8 @@ namespace Dobby {
         /// <summary>
         /// Initialize a new instance of the EbootPatchPage Form.
         /// </summary>
-        public EbootPatchPage() {
+        public EbootPatchPage()
+        {
             InitializeComponent();
             InitializeAdditionalEventHandlers(Controls);
         }
@@ -24,55 +25,22 @@ namespace Dobby {
         //=================================\\
         #region [Variable Declarations]
 
-        private readonly byte[] E9Jump = new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 };
-
         private static DebugJumpAddress DebugAddressForSelectedGame;
 
-        private static string ActiveFilePath, ActiveGameID = "?";
-        private static readonly string[] ResultStrings = new string[] {
+        private static string ActiveFilePath;
+
+        private static string ActiveGameID = "?";
+        
+        private static readonly string[] ResultStrings = new string[4]
+        {
             "Debug Menus Disabled",
             "Debug Menus Enabled",
             "Restored Menu Applied",
             "Custom Menu Applied",
         };
-
-
-        
-        /// <summary>
-        /// The FileStream used for checking and patching the provided executable (well, ideally an executable. I'm not their boss).
-        /// </summary>
-        private FileStream fileStream;
-
-        private  void WriteBytes(int offset, byte[] data)
-        {
-            fileStream.Position = offset;
-            fileStream.Write(data, 0, data.Length);
-            fileStream.Flush();
-        }
-        private void WriteBytes(int[] offset, params byte[][] data)
-        {
-            for (int i = 0; i < data.Length; i++) {
-                byte[] bytes = data[i];
-                fileStream.Position = offset[i];
-                fileStream.Write(bytes, 0, data.Length);
-                fileStream.Flush();
-            }
-        }
-        private void WriteByte(int offset, byte data)
-        {
-            fileStream.Position = offset;
-            fileStream.WriteByte(data);
-            fileStream.Flush();
-        }
-        private void WriteByte(int[] offset, byte data)
-        {
-            foreach(int ofs in offset) {
-                fileStream.Position = ofs;
-                fileStream.WriteByte(data);
-                fileStream.Flush();
-            }
-        }
         #endregion
+
+
 
         
         
@@ -274,10 +242,59 @@ namespace Dobby {
                     return DebugJumpAddress.Empty;
             }
         }
+        #endregion
+
+
+        
+        
+        //======================================\\
+        //--|   Event Handler Declarations   |--\\
+        //======================================\\
+        #region [Event Handler Declarations]
+
+        /// <summary>
+        /// Create a new OpenFileDialogue instance in which to choose an executable to patch.
+        /// </summary>
+        private void BrowseButton_Click(object sender, EventArgs e)
+        {
+            using(var fileDialog = new OpenFileDialog {
+                Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
+                Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned / Decrypted (The First 4 Bytes Will Be .elf If It Is)"
+            })
+
+            if(fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                ExecutablePathBox.Set(fileDialog.FileName);
+            }
+        }
+
+
+        /// <summary>
+        /// Process the edited executable path box text if it points to a valid file
+        /// </summary>
+        private void ExecutablePathBox_TextChanged(object sender, EventArgs e)
+        {
+            if (!((TextBox)sender).IsDefault() && File.Exists(((TextBox)sender).Text))
+            {
+                LoadGameExecutable(((TextBox)sender).Text);
+            }
+        }
+
+        
+
+        public void DisableDebugBtn_Click(object sender, EventArgs e) => ApplyDebugPatches(0);
+        public void EnableDebugBtn_Click(object sender, EventArgs e) => ApplyDebugPatches(1);
+        public void RestoredDebugBtn_Click(object sender, EventArgs e) => ApplyDebugPatches(RestoredDebugBtn.Text.Contains(" Custom") ? 3 : 2);
+        #endregion
 
 
 
-
+        
+        //=======================================\\
+        //--|   Patch Application Functions   |--\\
+        //=======================================\\
+        #region [Patch Application Functions]
+        
         /// <summary>
         /// Patch the current executable with the chosen patch type. either enables the debug mode, disables it for some reason, patches in a custom menu, or attempts to restore it authentically.
         /// </summary>
@@ -297,7 +314,7 @@ namespace Dobby {
 
 
             // Apply (or revert) the basic debug menu patch
-            WriteByte((int)DebugAddressForSelectedGame, (byte)(patchType == 0 ? (DebugAddressForSelectedGame == DebugJumpAddress.T1R100Debug ? 0x74 : 0x75) : 0xEB)); // Also checks whether or not the game's T1R, as that one requires a different patch (only one without a JNZ there lol)
+            WriteVar(fileStream, (int)DebugAddressForSelectedGame, (byte)(patchType == 0 ? (DebugAddressForSelectedGame == DebugJumpAddress.T1R100Debug ? 0x74 : 0x75) : 0xEB)); // Also checks whether or not the game's T1R, as that one requires a different patch (only one without a JNZ there lol)
 
 
 
@@ -369,57 +386,10 @@ namespace Dobby {
 
         }
 
-        #endregion
 
-
-        
-        
-        //======================================\\
-        //--|   Event Handler Declarations   |--\\
-        //======================================\\
-        #region [Event Handler Declarations]
-
-        /// <summary>
-        /// Create a new OpenFileDialogue instance in which to choose an executable to patch.
-        /// </summary>
-        private void BrowseButton_Click(object sender, EventArgs e) {
-            using(var fileDialog = new OpenFileDialog {
-                Filter = "Unsigned/Decrypted Executable|*.bin;*.elf",
-                Title = "Select A .elf/.bin Format Executable. The File Must Be Unsigned / Decrypted (The First 4 Bytes Will Be .elf If It Is)"
-            })
-
-            if(fileDialog.ShowDialog() == DialogResult.OK)
-            {
-                ExecutablePathBox.Set(fileDialog.FileName);
-            }
-        }
-
-
-        /// <summary>
-        /// Process the edited executable path box text if it points to a valid file
-        /// </summary>
-        private void ExecutablePathBox_TextChanged(object sender, EventArgs e)
+        private void UC1100_RestoredMenu()
         {
-            if (!((TextBox)sender).IsDefault() && File.Exists(((TextBox)sender).Text))
-            {
-                LoadGameExecutable(((TextBox)sender).Text);
-            }
-        }
-
-        
-
-        public void DisableDebugBtn_Click(object sender, EventArgs e) => ApplyDebugPatches(0);
-        public void EnableDebugBtn_Click(object sender, EventArgs e) => ApplyDebugPatches(1);
-        public void RestoredDebugBtn_Click(object sender, EventArgs e) => ApplyDebugPatches(RestoredDebugBtn.Text.Contains(" Custom") ? 3 : 2);
-        #endregion
-
-        
-        //=======================================\\
-        //--|   Patch Application Functions   |--\\
-        //=======================================\\
-        #region [Patch Application Functions]
-        void UC1100_RestoredMenu() {
-            int[] WhiteJumpsOneByte = new int[] {
+            var WhiteJumpsOneByte = new int[] {
                 0xE20E3,  // BP UCC...
                 0xE373A,  // Collision...
                 0xE379B,  // Gameplay...
@@ -440,7 +410,7 @@ namespace Dobby {
                 0x9FF43,  // CutScenes Menu Nest
                 0xD41B4   // CutScenes...
             };
-            int[] WhiteJumps = new int[] {
+            var WhiteJumps = new int[] {
                 0x2A7E08, // Quick Menu Character Options
                 0xE2125,  // Rendering, BP Rendering, And Rendering PS3
                 0xE2EA1,  // Spawn Character...
@@ -454,7 +424,7 @@ namespace Dobby {
                 0xE4033,  // Audio...
                 0xE536E   // Language...
             };
-            int[] FunctionNops = new int[] {
+            var FunctionNops = new int[] {
                 0x4462F6, // Particles Push
                 0x447399, // Particles Pop
                 0xD3BC9,  // CutScenes Push
@@ -462,36 +432,39 @@ namespace Dobby {
                 0xD4548   // Skip Crashing CutScenes... Function
             };
 
-            WriteByte (0x102050, 0xC3);                                        // Keep Debug Mode Enabled (It Gets Disabled On Boot, It's Actually On By Default).
+            WriteVar(fileStream, 0x102050, 0xC3);                                        // Keep Debug Mode Enabled (It Gets Disabled On Boot, It's Actually On By Default).
 
-            WriteBytes(0x2D6AD3, new byte[] { 0xE9, 0x27, 0x00, 0x00, 0x00 }); // Skip Crashing Shader Variables Code
-            WriteBytes(0x2D6B26, new byte[] { 0xEB, 0x05 });                   // Skip Some Code That Causes The Material Debug... Menu To Crash When Selected
-            WriteBytes(0x2D6C87, new byte[] { 0xE9, 0x76 });                   // Skip Crashing Shader Variables Submenu (Crashes The Game Mid-Boot)
-            WriteByte (new int[] { 0x2D6A70, 0x2D6A50 }, 0xEB);                // Fix The Material Debug... Options
+            WriteVar(fileStream, 0x2D6AD3, new byte[] { 0xE9, 0x27, 0x00, 0x00, 0x00 }); // Skip Crashing Shader Variables Code
+            WriteVar(fileStream, 0x2D6B26, new byte[] { 0xEB, 0x05 });                   // Skip Some Code That Causes The Material Debug... Menu To Crash When Selected
+            WriteVar(fileStream, 0x2D6C87, new byte[] { 0xE9, 0x76 });                   // Skip Crashing Shader Variables Submenu (Crashes The Game Mid-Boot)
+            WriteVar(fileStream, new long[2] { 0x2D6A50, 0x2D6A70 }, 0xEB);              // Fix The Material Debug... Options
 
-          //WriteBytes(0x77B2E0, new byte[] { 0x5A, 0x7D, 0x0C, 0x00 });       // Add Valid Build Number. This Enables The "Build: " & "Built: " Debug Text As Well
+            //WriteVar(fileStream, 0x77B2E0, new byte[] { 0x5A, 0x7D, 0x0C, 0x00 });     // Add Valid Build Number. This Enables The "Build: " & "Built: " Debug Text As Well
 
-            WriteBytes(0x354650, new byte[] { 0xB0, 0x01 });                   // Load HYBRID Text
-            WriteByte (0x354681, 0x00);                                        // Change HYBRID To DEBUG
+            WriteVar(fileStream, 0x354650, new byte[] { 0xB0, 0x01 });                   // Load HYBRID Text
+            WriteVar(fileStream, 0x354681, 0x00);                                        // Change HYBRID To DEBUG
 
-            WriteBytes(0x2C7230, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Create New Level Render Settings..." From Crashing The Game When "Default Render Settings..." Is Opened
-            WriteBytes(0x2C7220, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Load Existing Render Settings..." From Crashing The Game When "Default Render Settings..." Is Opened
-            WriteByte (0x2C71A1, 0xEB);                                        // Stop "Save Current Render Settings..." From Crashing When Selected
+            WriteVar(fileStream, 0x2C7230, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Create New Level Render Settings..." From Crashing The Game When "Default Render Settings..." Is Opened
+            WriteVar(fileStream, 0x2C7220, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Load Existing Render Settings..." From Crashing The Game When "Default Render Settings..." Is Opened
+            WriteVar(fileStream, 0x2C71A1, 0xEB);                                        // Stop "Save Current Render Settings..." From Crashing When Selected
 
-            foreach (int Address in WhiteJumpsOneByte)
-                WriteByte(Address, 0x00);
+            foreach (var Address in WhiteJumpsOneByte)
+                WriteVar(fileStream, Address, 0x00);
 
-            foreach (int Address in WhiteJumps)
-                WriteBytes(Address, new byte[] { 0x00, 0x00 });
+            foreach (var Address in WhiteJumps)
+                WriteVar(fileStream, Address, new byte[] { 0x00, 0x00 });
 
-            foreach (int Address in FunctionNops)
-                WriteBytes(Address, E9Jump);
-            return;
+            foreach (var Address in FunctionNops)
+                WriteVar(fileStream, Address, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 });
+
+
+            UpdateLabel("Uncharted 1 Restored Debug Patch Applied");
         }
 
 
-        void UC1102_RestoredMenu() {
-            int[] WhiteJumpsOneByte = new int[] {
+        private void UC1102_RestoredMenu()
+        {
+            var WhiteJumpsOneByte = new int[] {
                 0xE21D3,    // BP UCC...
                 0xE382A,    // Collision...
                 0xE388B,    // Gameplay...
@@ -510,7 +483,7 @@ namespace Dobby {
                 0x9FF63,    // CutScenes Menu Nest
                 0xD42A4     // CutScenes...
             };
-            int[] WhiteJumps = new int[] {
+            var WhiteJumps = new int[] {
                 0x2A83F8, // Quick Menu Character Options
                 0xE2215,  // Rendering, BP Rendering, And Rendering PS3
                 0xE2F91,  // Spawn Character...
@@ -525,7 +498,7 @@ namespace Dobby {
                 0xE545E,  // Language...
                 0x498DC8  // Some PlayGo... Options
             };
-            int[] FunctionNops = new int[] {
+            var FunctionNops = new int[] {
                 0x31B8F7,   // State Objects Push
                 0x31BA73,   // State Objects Pop
                 0x55F8E7,   // Particles Push
@@ -534,44 +507,45 @@ namespace Dobby {
                 0xD4638     // Skip Crashing CutScenes Function
             };
 
-            WriteByte(new int[] { 0x102187, 0x31B967 }, 0xEB);                 /* Keep Debug Mode Enabled (It Gets Disabled On Boot, It's Actually On By Default).
-                                                                                               Also Puts The State Objects Menu In The Main Dev Menu, Which Is Where It Shows When The
-                                                                                               Gameplay Menu Isn't Loaded. It Looks Cooler, Heh.                                    */
+            // Keep Debug Mode Enabled (It Gets Disabled On Boot, It's Actually On By Default). Also Puts The State Objects Menu In The Main Dev Menu, Which Is Where It Shows When The Gameplay Menu Isn't Loaded. It Looks Cooler, Heh.
+            WriteVar(fileStream, new long[] { 0x102187, 0x31B967 }, 0xEB);
 
 
-          //WriteBytes(0x772B80, new byte[] { 0x46, 0x7F, 0x0C, 0x00 });       // Add Valid Build Number. This Enables The "Build: " & "Built: " Debug Text As Well
+            //WriteVar(fileStream, 0x772B80, new byte[] { 0x46, 0x7F, 0x0C, 0x00 });     // Add Valid Build Number. This Enables The "Build: " & "Built: " Debug Text As Well
 
-            WriteBytes(0x44AE30, new byte[] { 0xB0, 0x01 });                   // Load HYBRID Debug Text
-          //WriteByte (0x44AE41, 0x00);                                        // Change HYBRID To DEBUG
+            WriteVar(fileStream, 0x44AE30, new byte[] { 0xB0, 0x01 });                   // Load HYBRID Debug Text
+            //WriteByte (0x44AE41, 0x00);                                    // Change HYBRID To DEBUG
 
-            WriteBytes(new int[] { 0x30FF09, 0x30FF3C }, new byte[][] { new byte[] { 0xEB, 0x2C }, new byte[] { 0xEB, 0x17 } });
-            //\       Skip Some Code In Two Spots In The State Objects Menu To Stop Tasks From Crashing The Game Mid-Load       /\
 
-            WriteBytes(0x2D70C3, new byte[] { 0xE9, 0x27, 0x00, 0x00, 0x00 }); // Skip Crashing Shader Variables Code
-            WriteBytes(0x2D7116, new byte[] { 0xEB, 0x05 });                   // Skip Some Code That Causes The Material Debug... Menu To Crash When Selected
-            WriteBytes(0x2D7277, new byte[] { 0xE9, 0x76 });                   // Skip Crashing Shader Variables Submenu
-            WriteByte (new int[] { 0x2D7060, 0x2D7040 }, 0xEB);                // Fix The Material Debug... Options
+            //Skip Some Code In Two Spots In The State Objects Menu To Stop Tasks From Crashing The Game Mid-Load
+            WriteVar(fileStream, new long[] { 0x30FF09, 0x30FF3C }, new byte[][] { new byte[] { 0xEB, 0x2C }, new byte[] { 0xEB, 0x17 } });
 
-            WriteBytes(0x2C7810, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Create New Level Render Settings..." From Crashing The Game When "Default Render Settings..." Is Opened
-            WriteBytes(0x2C7820, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Load Existing Render Settings..." From Crashing The Game When "Default Render Settings..." Is Opened
-            WriteByte(0x2C7791, 0xEB);                                         // Stop "Save Current Render Settings..." From Crashing When Selected
+            WriteVar(fileStream, 0x2D70C3, new byte[] { 0xE9, 0x27, 0x00, 0x00, 0x00 }); // Skip Crashing Shader Variables Code
+            WriteVar(fileStream, 0x2D7116, new byte[] { 0xEB, 0x05 });                   // Skip Some Code That Causes The Material Debug... Menu To Crash When Selected
+            WriteVar(fileStream, 0x2D7277, new byte[] { 0xE9, 0x76 });                   // Skip Crashing Shader Variables Submenu
+            WriteVar(fileStream, new long[] { 0x2D7060, 0x2D7040 }, 0xEB);               // Fix The Material Debug... Options
 
-            WriteBytes(0x561BB0, new byte[] { 0xE9, 0xB5, 0x00, 0x00, 0x00 }); // Particles Pop
+            WriteVar(fileStream, 0x2C7810, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Create New Level Render Settings..." From Crashing The Game When "Default Render Settings..." Is Opened
+            WriteVar(fileStream, 0x2C7820, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Load Existing Render Settings..." From Crashing The Game When "Default Render Settings..." Is Opened
+            WriteVar(fileStream, 0x2C7791, 0xEB);                                        // Stop "Save Current Render Settings..." From Crashing When Selected
+
+            WriteVar(fileStream, 0x561BB0, new byte[] { 0xE9, 0xB5, 0x00, 0x00, 0x00 }); // Particles Pop
 
             foreach (int Address in WhiteJumpsOneByte)
-                WriteByte(Address, 0x00);
+                WriteVar(fileStream, Address, 0x00);
 
             foreach (int Address in WhiteJumps)
-                WriteBytes(Address, new byte[] { 0x00, 0x00 });
+                WriteVar(fileStream, Address, new byte[] { 0x00, 0x00 });
 
             foreach (int Address in FunctionNops)
-                WriteBytes(Address, E9Jump);
+                WriteVar(fileStream, Address, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 });
 
-            UpdateLabel("Restored Debug Patch Applied");
+
+            UpdateLabel("Uncharted 1 Restored Debug Patch Applied");
         }
 
         
-        void UC2100_RestoredMenu() {
+        private void UC2100_RestoredMenu() {
             int[] WhiteJumpsOneByte = new int[] {
                 0x6C9C,   // Actor Viewer... (Quick Menu)
                 0x1C46C7, // BP UCC...
@@ -664,27 +638,27 @@ namespace Dobby {
             };
 
             // Miscellaneous Patches \\
-            WriteByte(0x1EB297, 0xEB);  // Skip Debug Disable
+            WriteVar(fileStream, 0x1EB297, 0xEB);  // Skip Debug Disable
 
             // Mass Apply Duplicate Patches \\
             foreach (int address in WhiteJumps)
-                WriteBytes(address, new byte[] { 0x00, 0x00, 0x00, 0x00 });
+                WriteVar(fileStream, address, new byte[] { 0x00, 0x00, 0x00, 0x00 });
 
             foreach (int address in WhiteJumpsOneByte)
-                WriteByte(address, 0x00);
+                WriteVar(fileStream, address, 0x00);
 
             foreach (int address in FunctionNops)
-                WriteBytes(address, E9Jump);
+                WriteVar(fileStream, address, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 });
 
             foreach (int address in Returns)
-                WriteByte(address, 0xC3);
+                WriteVar(fileStream, address, 0xC3);
         }
 
-        void UC2102_RestoredMenu() {
+        private void UC2102_RestoredMenu() {
 
         }
 
-        void UC3100_RestoredMenu() {
+        private void UC3100_RestoredMenu() {
             int[] FunctionNops = new int[] {
                 0x151743, // System Push
                 0x15183D, // System Pop
@@ -768,34 +742,34 @@ namespace Dobby {
                 0x86B170, // Skip IGC Menu Update
             };
 
-            WriteBytes(0x6cff50, new byte[] { 0x80, 0x34, 0x25, 0x6b, 0x95, 0x7f, 0x01, 0x01 }); // Change Debug Rendering Toggle To Novis One Until I Get The Rendering Menu Loaded
-            WriteBytes(0x1517A0, new byte[] { 0xe8, 0xeb, 0x4a, 0x3a, 0x00, 0x49, 0x89, 0xc7 }); // Load Mini-Rendering Menu For Now
-            WriteBytes(0x15355f, new byte[] { 0xe9, 0x66, 0x13, 0x00, 0x00 });                   // Skip Four Audio... Submenus
+            WriteVar(fileStream, 0x6cff50, new byte[] { 0x80, 0x34, 0x25, 0x6b, 0x95, 0x7f, 0x01, 0x01 }); // Change Debug Rendering Toggle To Novis One Until I Get The Rendering Menu Loaded
+            WriteVar(fileStream, 0x1517A0, new byte[] { 0xe8, 0xeb, 0x4a, 0x3a, 0x00, 0x49, 0x89, 0xc7 }); // Load Mini-Rendering Menu For Now
+            WriteVar(fileStream, 0x15355f, new byte[] { 0xe9, 0x66, 0x13, 0x00, 0x00 });                   // Skip Four Audio... Submenus
 
 
             foreach (int addr in FunctionNops)
-                WriteBytes(addr, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 });
+                WriteVar(fileStream, addr, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 });
             foreach (int addr in WhiteJumpsLorge)
-                WriteBytes(addr, new byte[] { 0x00, 0x00 });
+                WriteVar(fileStream, addr, new byte[] { 0x00, 0x00 });
             foreach (int addr in WhiteJumpsSmol)
-                WriteByte(addr, 0x00);
+                WriteVar(fileStream, addr, 0x00);
             foreach (int addr in Returns)
-                WriteByte(addr, 0xC3);
+                WriteVar(fileStream, addr, 0xC3);
             return;
         }
 
 
-        void UC3102_RestoredMenu() {
+        private void UC3102_RestoredMenu() {
         }
 
-        void UC4100_Patches() {
+        private void UC4100_Patches() {
         }
 
-        void UC4133_Patches() {
+        private void UC4133_Patches() {
         }
 
 
-        void UC4MP133_RestoredMenu() {
+        private void UC4MP133_RestoredMenu() {
             int[] WhiteJumps = new int[] {
                 0x2409ED,  // Relaunch...
                 0x18725CA, // Switch On/Off Neo Resolution Mode...
@@ -951,65 +925,66 @@ namespace Dobby {
             };
 
             // Main Patches \\
-            WriteByte (new int[] { 0x1CCEB8, 0x24E5C8 }, 0x01);                 // Enables The Debug Mode, Then The UC4 Tasks Menu
-            WriteBytes(0xA37DE1, new byte[] { 0xE9, 0x08, 0x00, 0x00, 0x00 });  // Skip PSN Sign-In Check
+            WriteVar(fileStream, new long[] { 0x1CCEB8, 0x24E5C8 }, 0x01);                 // Enables The Debug Mode, Then The UC4 Tasks Menu
+            WriteVar(fileStream, 0xA37DE1, new byte[] { 0xE9, 0x08, 0x00, 0x00, 0x00 });  // Skip PSN Sign-In Check
 
             // Misc Patches \\
-            WriteBytes(0x187B1F4, new byte[] { 0x90, 0x90, 0x90 });             // Skip Crashing Pre-Material Debug Function Call
-            WriteBytes(0x187B214, new byte[] { 0xE9, 0x07, 0x00, 0x00, 0x00 }); // Skip Material Debug Code That Breaks Some SP Tasks
-            WriteBytes(0x1B5A9C0, new byte[] { 0xE9, 0x0F, 0x00, 0x00, 0x00 }); // Stop Various Material Debug Options From Crashing After The Above Patch
-            WriteBytes(0x187B6CE, new byte[] { 0xE9, 0x27, 0x01, 0x00, 0x00 }); // Skip Shader Variables, As It Now Crashes After The Above Patch (It's Empty Anyway, No Big Deal)
-            WriteByte (0x1876A1A, 0xC8);                                        // Lower The Amount Of Loops For The Draw Mode Options By 3 To Skip The Ones That Cause Orbis Crashes
-            WriteBytes(0x1CB63D0, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Choose Lut File..." From Crashing The Game
-            WriteBytes(0x15E8AE0, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Play Cinematic..." From Crashing The Game
-            WriteBytes(0x15E9340, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Select Cinematic..." From Crashing The Game
-            WriteByte (0x18B7547, 0xEB);                                        // Stop Particles Menu From Fully Initializing And Crashing Game On Boot
-            WriteBytes(0x18AF8FD, new byte[] { 0xE9, 0x0A, 0x01, 0x00, 0x00 }); // Skip Two Unfixable "Particles..." Submenus
-            WriteBytes(0x18AFC31, new byte[] { 0xE9, 0x28, 0x03, 0x00, 0x00 }); // Skip Three More Unfixable "Particles..." Submenus
-            WriteBytes(0x166BF6B, new byte[] { 0xE9, 0x5B, 0x04, 0x00, 0x00 }); // Skip Select Spawner By Name Menu
-            WriteBytes(0x18E1900, new byte[] { 0xE9, 0x89, 0xC5, 0x00, 0x00 }); // Skip Most Of "Collision (Havok)..." Starting After "Destruction..."
+            WriteVar(fileStream, 0x187B1F4, new byte[] { 0x90, 0x90, 0x90 });             // Skip Crashing Pre-Material Debug Function Call
+            WriteVar(fileStream, 0x187B214, new byte[] { 0xE9, 0x07, 0x00, 0x00, 0x00 }); // Skip Material Debug Code That Breaks Some SP Tasks
+            WriteVar(fileStream, 0x1B5A9C0, new byte[] { 0xE9, 0x0F, 0x00, 0x00, 0x00 }); // Stop Various Material Debug Options From Crashing After The Above Patch
+            WriteVar(fileStream, 0x187B6CE, new byte[] { 0xE9, 0x27, 0x01, 0x00, 0x00 }); // Skip Shader Variables, As It Now Crashes After The Above Patch (It's Empty Anyway, No Big Deal)
+            WriteVar(fileStream, 0x1876A1A, 0xC8);                                        // Lower The Amount Of Loops For The Draw Mode Options By 3 To Skip The Ones That Cause Orbis Crashes
+            WriteVar(fileStream, 0x1CB63D0, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Choose Lut File..." From Crashing The Game
+            WriteVar(fileStream, 0x15E8AE0, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Play Cinematic..." From Crashing The Game
+            WriteVar(fileStream, 0x15E9340, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Select Cinematic..." From Crashing The Game
+            WriteVar(fileStream, 0x18B7547, 0xEB);                                        // Stop Particles Menu From Fully Initializing And Crashing Game On Boot
+            WriteVar(fileStream, 0x18AF8FD, new byte[] { 0xE9, 0x0A, 0x01, 0x00, 0x00 }); // Skip Two Unfixable "Particles..." Submenus
+            WriteVar(fileStream, 0x18AFC31, new byte[] { 0xE9, 0x28, 0x03, 0x00, 0x00 }); // Skip Three More Unfixable "Particles..." Submenus
+            WriteVar(fileStream, 0x166BF6B, new byte[] { 0xE9, 0x5B, 0x04, 0x00, 0x00 }); // Skip Select Spawner By Name Menu
+            WriteVar(fileStream, 0x18E1900, new byte[] { 0xE9, 0x89, 0xC5, 0x00, 0x00 }); // Skip Most Of "Collision (Havok)..." Starting After "Destruction..."
 
             // Mass Apply Duplicate Patches \\
             foreach (int Address in WhiteJumps)
-                WriteBytes(Address, new byte[] { 0x00, 0x00, 0x00, 0x00 });
+                WriteVar(fileStream, Address, new byte[] { 0x00, 0x00, 0x00, 0x00 });
             foreach (int Address in FunctionNops)
-                WriteBytes(Address, E9Jump);
+                WriteVar(fileStream, Address, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 });
             foreach (int Address in Returns)
-                WriteByte(Address, 0xC3);
+                WriteVar(fileStream, Address, 0xC3);
 
         }
 
 
-        void TLL100_Patches(string type) { }
-
-
-        void TLL100MP_RestoredMenu() {
-
-        }
-        void TLL100_RestoredMenu() {
-
+        private void TLL100_Patches() {
         }
 
-        void TLL108MP_RestoredMenu() {
+
+        private void TLL100MP_RestoredMenu() {
 
         }
-        void TLL108_RestoredMenu() {
-
-        }
-        void TLL109MP_RestoredMenu() {
-
-        }
-        void TLL109_RestoredMenu() {
+        private void TLL100_RestoredMenu() {
 
         }
 
-        void T1R100_RestoredMenu() {
-            WriteBytes(0x6363C,  new byte[] { 0xE8, 0xEF, 0x24, 0x6D, 0x00 }); // Replace Call To Mini-Rendering Menu With One To The Full Rendering Menu
-            WriteBytes(0x94DD35, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 }); // Skip A Function In The Material Debug Menu That Causes The Game To Crash While Booting
-            WriteBytes(0x38282C, new byte[] { 0x00, 0x00 });                   // Load Net... Contents
+        private void TLL108MP_RestoredMenu() {
+
+        }
+        private void TLL108_RestoredMenu() {
+
+        }
+        private void TLL109MP_RestoredMenu() {
+
+        }
+        private void TLL109_RestoredMenu() {
+
         }
 
-        void T1R11X_RestoredMenu() {
+        private void T1R100_RestoredMenu() {
+            WriteVar(fileStream, 0x6363C,  new byte[] { 0xE8, 0xEF, 0x24, 0x6D, 0x00 }); // Replace Call To Mini-Rendering Menu With One To The Full Rendering Menu
+            WriteVar(fileStream, 0x94DD35, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 }); // Skip A Function In The Material Debug Menu That Causes The Game To Crash While Booting
+            WriteVar(fileStream, 0x38282C, new byte[] { 0x00, 0x00 });                   // Load Net... Contents
+        }
+
+        private void T1R11X_RestoredMenu() {
             var FunctionsToSkip = new int[] {
                 0x76E62C, // State Scripts Push
                 0x76F0CF, // State Scripts Pop
@@ -1033,49 +1008,52 @@ namespace Dobby {
             };
 
             foreach (int addr in FunctionsToSkip)
-                WriteBytes(addr, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 });
+                WriteVar(fileStream, addr, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 });
             foreach (int addr in Returns)
-                WriteByte(addr, 0xC3);
+                WriteVar(fileStream, addr, 0xC3);
 
 
             // Write The 5 Chunks With The Majority Of Function Calls \\
-            WriteBytes(0x1457571, Resource.T1R_11X_Restored_Chunk2);
-            WriteBytes(0x1457D2E, Resource.T1R_11X_Restored_Chunk2);
-            WriteBytes(0x7AA10, Resource.T1R_11X_Restored_Chunk3);
-            WriteBytes(0x8492F0, Resource.T1R_11X_Restored_Chunk4);
-            WriteBytes(0x7AAC7D, Resource.T1R_11X_Restored_Chunk5);
+            WriteVar(fileStream, 0x1457571, Resource.T1R_11X_Restored_Chunk2);
+            WriteVar(fileStream, 0x1457D2E, Resource.T1R_11X_Restored_Chunk2);
+            WriteVar(fileStream, 0x7AA10, Resource.T1R_11X_Restored_Chunk3);
+            WriteVar(fileStream, 0x8492F0, Resource.T1R_11X_Restored_Chunk4);
+            WriteVar(fileStream, 0x7AAC7D, Resource.T1R_11X_Restored_Chunk5);
 
             // Root Menu Function Calls \\
-            WriteBytes(0x71F6C, new byte[] { 0xE8, 0x4F, 0x6B, 0x84, 0x00 }); // Call Large Rendering Menu Instead Of Tiny One (Yeah, That's All It Takes...)
-            WriteBytes(0x8BA76A, new byte[] { 0xe8, 0x41, 0xd9, 0xb9, 0x00 }); // Call Additional Rendering Related Functions Inside Rendering Menu)
-            WriteBytes(0x71FA8, new byte[] { 0x49, 0x8b, 0xfe, 0xe8, 0xc0, 0x8c, 0x73, 0x00, 0xeb, 0x0e }); // Call System, Spawn Character, And Custom Player Menu
-            WriteBytes(0x72012, new byte[] { 0xe8, 0xd4, 0x8a, 0x00, 0x00, 0xeb, 0x03 }); // Call Custom Collision (Havok) Menu
-            WriteBytes(0x72044, new byte[] { 0xe8, 0xa6, 0x5a, 0x3e, 0x01 }); // Call Custom Gameplay Menu
-            WriteBytes(0x721A1, new byte[] { 0xe8, 0x77, 0x8d, 0x73, 0x00 }); // Call Npc, Navigating Character, Simple Npc, Nav-Mesh
-            WriteBytes(0x722CF, new byte[] { 0x48, 0x8B, 0x5D, 0xB8, 0x48, 0x89, 0xDF, 0xE8, 0x35, 0x87, 0x00, 0x00, 0xEB, 0x1A }); // Call Interactive Background, Actors, Process, Animation, Water, Fx, And Camera
-            WriteBytes(0x7290D, new byte[] { 0xe8, 0x12, 0x57, 0x3e, 0x01 }); // Call Custom Menu & Audio Menus
+            WriteVar(fileStream, 0x71F6C, new byte[] { 0xE8, 0x4F, 0x6B, 0x84, 0x00 }); // Call Large Rendering Menu Instead Of Tiny One (Yeah, That's All It Takes...)
+            WriteVar(fileStream, 0x8BA76A, new byte[] { 0xe8, 0x41, 0xd9, 0xb9, 0x00 }); // Call Additional Rendering Related Functions Inside Rendering Menu)
+            WriteVar(fileStream, 0x71FA8, new byte[] { 0x49, 0x8b, 0xfe, 0xe8, 0xc0, 0x8c, 0x73, 0x00, 0xeb, 0x0e }); // Call System, Spawn Character, And Custom Player Menu
+            WriteVar(fileStream, 0x72012, new byte[] { 0xe8, 0xd4, 0x8a, 0x00, 0x00, 0xeb, 0x03 }); // Call Custom Collision (Havok) Menu
+            WriteVar(fileStream, 0x72044, new byte[] { 0xe8, 0xa6, 0x5a, 0x3e, 0x01 }); // Call Custom Gameplay Menu
+            WriteVar(fileStream, 0x721A1, new byte[] { 0xe8, 0x77, 0x8d, 0x73, 0x00 }); // Call Npc, Navigating Character, Simple Npc, Nav-Mesh
+            WriteVar(fileStream, 0x722CF, new byte[] { 0x48, 0x8B, 0x5D, 0xB8, 0x48, 0x89, 0xDF, 0xE8, 0x35, 0x87, 0x00, 0x00, 0xEB, 0x1A }); // Call Interactive Background, Actors, Process, Animation, Water, Fx, And Camera
+            WriteVar(fileStream, 0x7290D, new byte[] { 0xe8, 0x12, 0x57, 0x3e, 0x01 }); // Call Custom Menu & Audio Menus
 
             // Misc Functionality Patches \\
-            WriteByte(0x61A4, 0xEB); // Enable Debug Menu
-            WriteByte(0xA34FCB, 0x87); // Change Useless Debug Rendering Toggle To A On-Screen Debug Text Toggle (L3 & Triangle)
-            WriteBytes(new int[] { 0x56F1A8, 0x56F157 }, new byte[] { 0x90, 0x90 }); // Allow Aim Sensitivity To Go Over 1.00 And Under 0.00
-            WriteBytes(0xAF2A85, new byte[] { 0xBF, 0xB0, 0x00, 0x00, 0x00, 0xEB, 0x2A }); // Skip Some Broken Material Debug Stuff
-            WriteBytes(0xAF2CD2, new byte[] { 0xEB, 0x79 }); // Skip Broken Shader Variables Menu
-            WriteBytes(0xAF255E, new byte[] { 0xEB, 0x29 }); // Force Material Debug Text To Out Of Index To Avoid Crashing (What Did They Change? Wish I Knew Enough To Find Out)
-            WriteBytes(0xAF25E6, new byte[] { 0xEB, 0x57 }); // More Of The Above
-            WriteBytes(0x405405, new byte[] { 0x89, 0x3d, 0xbd, 0xbe, 0x1d, 0x01, 0x4c, 0x8b, 0x25, 0xb6, 0xbe, 0x1d, 0x01, 0xeb, 0x11, 0x48, 0x8b, 0x3d, 0xad, 0xbe, 0x1d, 0x01, 0xe8, 0x3D, 0x26, 0x05, 0x01, 0xe9, 0x37, 0x0b, 0x00, 0x00 }); // Call Custom Server Menu, Jump Like A Rabbit To Call It Last lol
-            WriteBytes(0x405F57, new byte[] { 0xe9, 0xb8, 0xf4, 0xff, 0xff, 0x48, 0x81, 0xc4, 0xc8, 0x00, 0x00, 0x00, 0x5b, 0x41, 0x5c, 0x41, 0x5d, 0x41, 0x5e, 0x41, 0x5f, 0x5d, 0xc3 }); // Another Jump, And Moved Return Instructions To Fit It
-            WriteBytes(0x280E42, new byte[] { 0xE9, 0x79, 0x00, 0x00, 0x00 });  // Skip The Broken First Half Of The Gestures Submenu
-            WriteBytes(0x280FA5, new byte[] { 0xEB, 0x42 }); // Skip Gestures Menu .cfg Check And A Pop
-            WriteBytes(0x51CE08, new byte[] { 0xe8, 0xf3, 0x4a, 0x51, 0x00, 0x48, 0x8d, 0x15, 0x6c, 0xc3, 0x0d, 0x01, 0x48, 0x8d, 0x35, 0x4a, 0xbc, 0xbd, 0x00, 0x49, 0x8b, 0xff, 0xe8, 0xcd, 0xc4, 0x32, 0x00, 0xbf, 0xa0, 0x00, 0x00, 0x00, 0xe8, 0xe3, 0x81, 0x76, 0x00, 0x48, 0x89, 0xc3, 0x48, 0x8d, 0x35, 0x5d, 0xf4, 0xbc, 0x00, 0x31, 0xc9, 0x45, 0x31, 0xc0, 0x4c, 0x89, 0xfa, 0x48, 0x89, 0xdf, 0xe8, 0x79, 0x3f, 0x51, 0x00, 0x4c, 0x89, 0xf7, 0x48, 0x89, 0xde, 0xe8, 0x6e, 0x4e, 0x51, 0x00, 0x48, 0x83, 0xc4, 0x08, 0x5b, 0x41, 0x5e, 0x41, 0x5f, 0x5d, 0xc3 }); // Rewrite Jumps Menu To Call The One Option In There Instead Of Letting It Be Empty
-            WriteBytes(0x4060DE, new byte[] { 0xE9, 0xA6, 0x02, 0x00, 0x00 }); // "Fix" Skins Menu
-            WriteBytes(0x7371F, new byte[] { 0xed, 0x4e, 0xfd, 0xff }); // Call Bonuses Menu In Quick Menu. Might As Well
+            WriteVar(fileStream, 0x61A4, 0xEB);                                                      // Enable Debug Menu
+            WriteVar(fileStream, 0xA34FCB, 0x87);                                                    // Change Useless Debug Rendering Toggle To A On-Screen Debug Text Toggle (L3 & Triangle)
+            WriteVar(fileStream, new long[] { 0x56F1A8, 0x56F157 }, new byte[] { 0x90, 0x90 });      // Allow Aim Sensitivity To Go Over 1.00 And Under 0.00
+            WriteVar(fileStream, 0xAF2A85, new byte[] { 0xBF, 0xB0, 0x00, 0x00, 0x00, 0xEB, 0x2A }); // Skip Some Broken Material Debug Stuff
+            WriteVar(fileStream, 0xAF2CD2, new byte[] { 0xEB, 0x79 });                               // Skip Broken Shader Variables Menu
+            WriteVar(fileStream, 0xAF255E, new byte[] { 0xEB, 0x29 });                               // Force Material Debug Text To Out Of Index To Aprivate void Crashing (What Did They Change? Wish I Knew Enough To Find Out)
+            WriteVar(fileStream, 0xAF25E6, new byte[] { 0xEB, 0x57 });                               // More Of The Above
+            WriteVar(fileStream, 0x280E42, new byte[] { 0xE9, 0x79, 0x00, 0x00, 0x00 });             // Skip The Broken First Half Of The Gestures Submenu
+            WriteVar(fileStream, 0x280FA5, new byte[] { 0xEB, 0x42 });                               // Skip Gestures Menu .cfg Check And A Pop
+            WriteVar(fileStream, 0x51CE08, new byte[] { 0xe8, 0xf3, 0x4a, 0x51, 0x00, 0x48, 0x8d, 0x15, 0x6c, 0xc3, 0x0d, 0x01, 0x48, 0x8d, 0x35, 0x4a, 0xbc, 0xbd, 0x00, 0x49, 0x8b, 0xff, 0xe8, 0xcd, 0xc4, 0x32, 0x00, 0xbf, 0xa0, 0x00, 0x00, 0x00, 0xe8, 0xe3, 0x81, 0x76, 0x00, 0x48, 0x89, 0xc3, 0x48, 0x8d, 0x35, 0x5d, 0xf4, 0xbc, 0x00, 0x31, 0xc9, 0x45, 0x31, 0xc0, 0x4c, 0x89, 0xfa, 0x48, 0x89, 0xdf, 0xe8, 0x79, 0x3f, 0x51, 0x00, 0x4c, 0x89, 0xf7, 0x48, 0x89, 0xde, 0xe8, 0x6e, 0x4e, 0x51, 0x00, 0x48, 0x83, 0xc4, 0x08, 0x5b, 0x41, 0x5e, 0x41, 0x5f, 0x5d, 0xc3 }); // Rewrite Jumps Menu To Call The One Option In There Instead Of Letting It Be Empty
+            WriteVar(fileStream, 0x4060DE, new byte[] { 0xE9, 0xA6, 0x02, 0x00, 0x00 });             // "Fix" Skins Menu
+            WriteVar(fileStream, 0x7371F, new byte[] { 0xed, 0x4e, 0xfd, 0xff });                    // Call Bonuses Menu In Quick Menu. Might As Well
+
+            // Call Custom Server Menu, Jump Like A Rabbit To Call It Last lol
+            WriteVar(fileStream, 0x405405, new byte[] { 0x89, 0x3d, 0xbd, 0xbe, 0x1d, 0x01, 0x4c, 0x8b, 0x25, 0xb6, 0xbe, 0x1d, 0x01, 0xeb, 0x11, 0x48, 0x8b, 0x3d, 0xad, 0xbe, 0x1d, 0x01, 0xe8, 0x3D, 0x26, 0x05, 0x01, 0xe9, 0x37, 0x0b, 0x00, 0x00 });
+            // Another Jump, And Moved Return Instructions To Fit It
+            WriteVar(fileStream, 0x405F57, new byte[] { 0xe9, 0xb8, 0xf4, 0xff, 0xff, 0x48, 0x81, 0xc4, 0xc8, 0x00, 0x00, 0x00, 0x5b, 0x41, 0x5c, 0x41, 0x5d, 0x41, 0x5e, 0x41, 0x5f, 0x5d, 0xc3 });
         }
 
 
         // TODO:
         // Convert Byte Arrays To Resource Files Once Finalized So The IDE Doesn't Shit The Bed
-        void T2107_CustomMenu() {
+        private void T2107_CustomMenu() {
             byte[][] CustomFunctions = new byte[22][];
             int[] Addresses = new int[] {
                 0x0033337c, // CustomMenuRedirect (Mem: 0072f37c)
@@ -1150,7 +1128,7 @@ namespace Dobby {
             int i = 0;
             // Write Custom Functions To .elf
             for(;i < CustomFunctions.Length;)
-                WriteBytes(Addresses[i], CustomFunctions[i++]);
+                WriteVar(fileStream, Addresses[i], CustomFunctions[i++]);
 
             Print($"Wrote {i} Patches To {fileStream.Name}");
         }
@@ -1158,11 +1136,11 @@ namespace Dobby {
 
         // TODO:
         // Convert Byte Arrays To Resource Files Once Finalized So The IDE Doesn't Shit The Bed
-        void T2109_CustomMenu() { // 1.08 as well, same offsets
+        private void T2109_CustomMenu() { // 1.08 as well, same offsets
 
             // Swap "Disable Debug Rendering" and "Disable FPS" Byte Pointers In L3 + Triangle Toggle \\
-            WriteByte(new int[] { 0x1C45085, 0x1C45092 }, 0xB8);
-            WriteByte(0x1C450A5, 0xaa);
+            WriteVar(fileStream, new long[] { 0x1C45085, 0x1C45092 }, 0xB8);
+            WriteVar(fileStream, 0x1C450A5, 0xaa);
 
             byte[][] CustomFunctions = new byte[21][];
             int[] Addresses = new int[] {
@@ -1235,7 +1213,7 @@ namespace Dobby {
 
             // Write Custom Functions To .elf
             for(int i = 0; i < CustomFunctions.Length; i++)
-                WriteBytes(Addresses[i], CustomFunctions[i]);
+                WriteVar(fileStream, Addresses[i], CustomFunctions[i]);
 
 
             //////////////\\\\\\\\\\\\\
@@ -1243,18 +1221,18 @@ namespace Dobby {
             //////////////\\\\\\\\\\\\\
 
             // Force "Search..." Menu In To DMenu Root
-            WriteBytes(0x774a46, new byte[] { 0x49, 0x8B, 0xD4 }); // 0x00774a46 R15 -> 12
-            WriteBytes(0x774a66, new byte[] { 0x49, 0x0F, 0x44, 0xC4 }); // 0x00774a66 R15 -> 12
-            WriteBytes(0x774a75, new byte[] { 0x4C, 0x89, 0x6B, 0x38 }); // 0x00774a75 R14 -> 13
-            WriteByte(0x774A7B, 0x85);   // R14 -> 13
-            WriteByte(0x00774a82, 0x85); // R14 -> 13
-            WriteByte(0x774a8a, 0xBD);   // R14 -> 13
+            WriteVar(fileStream, 0x774a46, new byte[] { 0x49, 0x8B, 0xD4 }); // 0x00774a46 R15 -> 12
+            WriteVar(fileStream, 0x774a66, new byte[] { 0x49, 0x0F, 0x44, 0xC4 }); // 0x00774a66 R15 -> 12
+            WriteVar(fileStream, 0x774a75, new byte[] { 0x4C, 0x89, 0x6B, 0x38 }); // 0x00774a75 R14 -> 13
+            WriteVar(fileStream, 0x774A7B, 0x85);   // R14 -> 13
+            WriteVar(fileStream, 0x00774a82, 0x85); // R14 -> 13
+            WriteVar(fileStream, 0x774a8a, 0xBD);   // R14 -> 13
 
             // Skip Shite Items (Render Pause & Reload Ingame Shaders)
-            WriteBytes(0x25beb89, new byte[] { 0xE9, 0xCB, 0x02, 0x00, 0x00 });
+            WriteVar(fileStream, 0x25beb89, new byte[] { 0xE9, 0xCB, 0x02, 0x00, 0x00 });
 
             // Adjust DMenu Scaling (.4 -> .75)
-            WriteBytes(0x7A4ECF, new byte[] { 0, 0, 0x40, 0x3f });
+            WriteVar(fileStream, 0x7A4ECF, new byte[] { 0, 0, 0x40, 0x3f });
 
 
         }
