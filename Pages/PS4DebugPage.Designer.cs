@@ -121,7 +121,7 @@ namespace Dobby
             this.IpBox.Location = new System.Drawing.Point(102, 228);
             this.IpBox.MaxLength = 15;
             this.IpBox.Name = "IpBox";
-            this.IpBox.Size = new System.Drawing.Size(115, 16);
+            this.IpBox.Size = new System.Drawing.Size(110, 16);
             this.IpBox.TabIndex = 8;
             this.IpBox.Text = "IP()";
             // 

@@ -115,6 +115,29 @@ namespace Dobby {
             (byte)10
         };
 
+        private static readonly object[] GSPatchMinimumValues = new object[8] {
+            0f,
+            0f,
+            -20f,
+            -20f,
+            null,
+            null,
+            null,
+            (byte)0
+        };
+
+        private static readonly object[] GSPatchMaximumValues = new object[8] {
+            1f,
+            10f,
+            20f,
+            20f,
+            null,
+            null,
+            null,
+            (byte)255
+        };
+
+
 
         /// <summary>
         /// Variable Used In Dynamic Button Cration For Game-Specific Patches<br/><br/>
@@ -666,6 +689,8 @@ namespace Dobby {
                     Name = GSButtonNames[patchIndex],
                     TabIndex = patchIndex,
                     Variable = DefaultGSPatchValues[patchIndex],
+                    MinimumValue = GSPatchMinimumValues[patchIndex],
+                    MaximumValue = GSPatchMaximumValues[patchIndex],
                     TextAlign = ContentAlignment.MiddleLeft,
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = SystemColors.Control,
@@ -1422,8 +1447,6 @@ namespace Dobby {
             0xB330,  // 0x407330 | T2107
             0x55f0   // 0x4015f0 | T2109
         };
-
-
         #endregion
     }
 }

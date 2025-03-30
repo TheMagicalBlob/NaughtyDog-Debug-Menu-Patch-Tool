@@ -317,6 +317,7 @@
           "* 4.64.407.1001 | I've forgotten the last 20 minutes, but I know I did things because I updated the build numbers at some point...",
           "* 4.64.408.1004 | Tweaked incremation amount for clicked dynamic patch buttons with float values (0.25 => 0.10); Random byte min/max value tweak. tired.",
           "* 4.64.409.1013 | UI bs; Some misc formatting and comment/summary additions and/or tweaks.",
+          "* 4.64.412.1018 | blah blah blah more small tweaks, I want this bs to be smooth and bug-free before next release",
         };
 
 

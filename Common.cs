@@ -1217,18 +1217,6 @@ namespace Dobby {
         // Default Control Text to Be Displayed When "Empty".
         private string DefaultText;
 
-        /// <summary>
-        /// Gets or sets the text associated with this control
-        /// </summary>
-        public override string Text
-        {
-            get => base.Text;
-
-            set
-            {
-                base.Text = value?.Replace("\"", string.Empty);
-            }
-        }
 
 
 
@@ -1242,6 +1230,8 @@ namespace Dobby {
             Font = Common.DefaultTextFont;
 
             TextChanged -= SetDefaultText;
+
+            TextChanged += (control, args) => Text = Text?.Replace("\"", string.Empty);
         }
 
 
@@ -1463,7 +1453,16 @@ namespace Dobby {
             _preInputvariable = variable;
         }
 
+        private float _inc;
+        private float inc
+        {
+            get => _inc;
 
+            set
+            {
+                _inc = value;
+            }
+        }
 
         /// <summary>
         /// Toggle between various states of custom Button controls
@@ -1472,7 +1471,7 @@ namespace Dobby {
         private void CycleButtonVariable(object sender, MouseEventArgs eventArgs)
         {
             var type = Variable?.GetType();
-            var inc = 1f;
+            inc = 1f;
 
 
             // Not entirely certain this is actually required anymore
@@ -1521,11 +1520,9 @@ namespace Dobby {
 
 
 
-            //
+            // Skip number-related checks for boolean values
             if (type == typeof(bool))
-            {
-                goto Bool;
-            }
+                goto skipNumericalChecksForBooleans;
 
 
             // Assign the value that the control's variable is to be incremented by
@@ -1538,7 +1535,7 @@ namespace Dobby {
                 }
                 if (type == typeof(int) || type == typeof(byte))
                 {
-                    inc = eventArgs.Delta / 12;
+                    inc = eventArgs.Delta / 120;
 
                 }
 
@@ -1555,6 +1552,7 @@ namespace Dobby {
             }
             else
             {
+                //
                 if (type == typeof(float))
                 {
                     inc = 0.10f;
@@ -1576,7 +1574,7 @@ namespace Dobby {
             //#
             //## Booleans (default)
             //#
-            Bool:
+            skipNumericalChecksForBooleans:
             if (type == typeof(bool))
             {
                 if (MaximumValue != null)
@@ -1623,14 +1621,32 @@ namespace Dobby {
             if (type == typeof(byte))
             {
                 // Avoid going out of bounds in the VariableTags array
-                if (MaximumValue != null && VariableTags?.Length < (long)MaximumValue)
+                if (MaximumValue != null && VariableTags?.Length < (byte)MaximumValue)
                 {
                     MaximumValue = VariableTags.Length;
                     Common.Print($"ERROR: Maximum value for control Variable was larger than the amount of provided VariableTags; lowered maxValue to [{MaximumValue}]");
                 }
 
 
+
                 // Increment control variable value
+                Variable = (byte) ((byte)Variable + inc);
+                
+                #if DEBUG
+                if (MaximumValue != null || MinimumValue != null)
+                {
+                    if (MaximumValue != null && (byte)MaximumValue < (byte)Variable)
+                    {
+                        Variable = (byte)(MinimumValue ?? (byte)Variable - inc);
+                    }
+
+                    else if (MinimumValue != null && (byte)MinimumValue > (byte)Variable)
+                    {
+                        Variable = (byte)(MaximumValue ?? (byte)Variable - inc);
+                    }
+                }
+                else
+                #endif
                 if ((byte)((byte)Variable + inc - 1) <= (byte)Variable && 1 + inc > 0) //! this is hideous, get sleep and fucking fix it, jeez
                 {
                     Variable = (byte)0;
@@ -1639,22 +1655,6 @@ namespace Dobby {
                 {
                     Variable = (byte)255;
                 }
-                else
-                    Variable = (byte)((byte)Variable + inc);
-
-                return;
-
-
-                if (MaximumValue != null && (byte)Variable > (byte)MaximumValue)
-                {
-                    if ((byte)Variable >= ((byte)MaximumValue + (byte)inc))
-                    {
-                        Variable = (byte)MinimumValue;
-                    }
-                    else
-                        Variable = (byte)MaximumValue;
-                }
-
 
             }
 
@@ -1668,16 +1668,16 @@ namespace Dobby {
             {
                 Variable = (float) Math.Round((float)Variable + inc, 3);
 
-                if (MaximumValue != null)
+                if (MaximumValue != null || MinimumValue != null)
                 {
-                    if ((float)Variable >= (float)MaximumValue)
+                    if ((float)Variable > (float)MaximumValue)
                     {
                         Variable = (float) Math.Round((float)(MinimumValue ?? 0), 2);
                     }
 
-                    else if ((float)Variable <= (float)MinimumValue)
+                    else if ((float)Variable < (float)MinimumValue)
                     {
-                        Variable = (float) Math.Round((float)(MinimumValue ?? 10), 2);
+                        Variable = (float) Math.Round((float)(MaximumValue ?? 10), 2);
                     }
                 }
             }
