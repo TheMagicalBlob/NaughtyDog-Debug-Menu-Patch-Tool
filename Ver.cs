@@ -322,7 +322,7 @@
           "* 4.65.417.1027 | Cleaned up the PS4DebugPage UI and fixed it's old comment/layout styles. Trying to figure out why the HoverString function keeps dying when returning to the main page.",
           "* 4.65.419.1030 | Finally reworked the info label thread to simply utilize the InfoLabel refference, rather than being killed and re-initialized on each form change",
           "* 4.65.420.1033 | Reduced the amount of time it takes to clear control Tag hints when the cursor leaves the control, also added a line to assign the empty clear string to any controls without hints.",
-          "* 4.65.421.1043 | Minor background crap. Fixed a couple of hint tags that I'd forgotten about, and added a few others.",
+          "* 4.65.427.1047 | Added a check for the right title id to the PS4DebugPage patch buttons (why on earth was it not already there??). Other minor background crap. Fixed a couple of hint tags that I'd forgotten about, and added a few others.",
         };
 
 

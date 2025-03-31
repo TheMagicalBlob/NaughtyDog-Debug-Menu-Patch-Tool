@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 using Dobby.Resources;
 using static Dobby.Common;
+using System.Runtime.CompilerServices;
 
 
 
@@ -114,6 +115,62 @@ namespace Dobby {
             "eboot-mp.elf"
         };
 
+        private readonly string[] T1RIDs = new string[]
+        {
+            "CUSA00552",
+            "CUSA00554",
+            "CUSA00556",
+            "CUSA00557",
+            "CUSA00559"
+        };
+
+        
+        private readonly string[] T2IDs = new string[]
+        {
+            "CUSA10249",
+            "CUSA14006",
+            "CUSA07820",
+            "CUSA13986"
+        };
+        
+        
+        private readonly string[] UCCIDs = new string[]
+        {
+            "CUSA01399",
+            "CUSA02320",
+            "CUSA02343",
+            "CUSA02344",
+            "CUSA02826"
+        };
+        
+        private readonly string[] UC4IDs = new string[]
+        {
+            "CUSA00341",
+            "CUSA08342",
+            "CUSA00912",
+            "CUSA00917",
+            "CUSA00918",
+            "CUSA04529"
+        };
+
+        private readonly string[] UC4BetaIDs = new string[]
+        {
+            "CUSA04030",
+            "CUSA04032",
+            "CUSA04034",
+            "CUSA04051"
+        };
+        
+        private readonly string[] TLLIDs = new string[]
+        {
+            "CUSA07737",
+            "CUSA07875",
+            "CUSA09564",
+            "CUSA08347",
+            "CUSA08352"
+        };
+
+
         public string ProcessName;
         public string GameVersion;
         public string TitleID;
@@ -131,6 +188,35 @@ namespace Dobby {
         //--|   Background Function Delcarations   |---\\
         //=============================================\\
         #region [Background Function Delcarations]
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="defaultTitleID"></param>
+        /// <param name="validIDs"></param>
+        /// <returns> True if the button pressed is valid for the connected game. </returns>
+        private bool CheckGameIsValid(string defaultTitleID, string[] validIDs)
+        {
+            if (IgnoreTitleID)
+            {
+                TitleID = defaultTitleID;
+            }
+
+            if (GameVersion.Contains("Unknown"))
+            {
+                UpdateLabel($"Unknown Game Version Connected.");
+                return false;
+            }
+            
+            if (!validIDs.Contains(TitleID))
+            {
+                UpdateLabel($"Invalid TitleID for Selected Game ({TitleID}).");
+                return false;
+            }
+
+            return true;
+        }
+
 
         private void SendPayload(dynamic args)
         {
@@ -610,135 +696,105 @@ namespace Dobby {
         //--|   Debug Mode Toggle Functions For Each Game   |--\\
         //=====================================================\\
         #region [Debug Mode Toggle Functions For Each Game]
-        private async void T1RBtn_Click(object sender, EventArgs e) {
+        
+        private async void T1RBtn_Click(object sender, EventArgs e)
+        {
             await Task.Run(CheckConnectionStatus);
-
             
-            if (Geo != null && Geo.IsConnected)
+            if (Geo != null && Geo.IsConnected && CheckGameIsValid("CUSA00552", T1RIDs))
             {
-                if(IgnoreTitleID) TitleID = "CUSA00552";
-
-                if (GameVersion.Contains("Unknown")) {
-                    UpdateLabel($"Unknown Game Version \"{GameVersion}\".");
-                    return;
-                }
-            
                 Toggle(new ulong[] { 0x1B8FA20, 0x1924a70, 0x1924a70, 0x1924a70, 0x1924a70 }, new string[] { "1.00", "1.08", "1.09", "1.10", "1.11" });
             }
             else
                 UpdateLabel("Error Connecting to PS4");
         }
-        private async void T2Btn_Click(object sender, EventArgs e) {
+
+
+        private async void T2Btn_Click(object sender, EventArgs e)
+        {
             await Task.Run(CheckConnectionStatus);
 
-            if (Geo != null && Geo.IsConnected)
+            if (Geo != null && Geo.IsConnected && CheckGameIsValid("CUSA10249", T2IDs))
             {
-                if(IgnoreTitleID) TitleID = "CUSA10249";
-            
-                if (GameVersion.Contains("Unknown")) {
-                    UpdateLabel($"Unknown Game Version \"{GameVersion}\".");
-                    return;
-                }
-            
                 Toggle(new ulong[] { 0x3b61900, 0x3b62d00, 0x3b67130, 0x3b67530, 0x3b675b0, 0x3b7b430, 0x3b7b430 }, new string[] { "1.00", "1.01", "1.02", "1.05", "1.07", "1.08", "1.09" });
             }
-            else{
-                UpdateLabel("Error Connecting to PS4");
-            }
-        }
-        private async void UC1Btn_Click(object sender, EventArgs e) {
-            await Task.Run(CheckConnectionStatus);
-
-            
-            if (Geo != null && Geo.IsConnected)
-            {
-                if(IgnoreTitleID) TitleID = "CUSA02320";
-
-                if(!GameVersion.Contains("Unknown"))
-                    Toggle(GameVersion == "U1 1.00" ? new ulong[] { 0xD97B41, 0xD989CC, 0xD98970 } : new ulong[] { 0xD5C9F0, 0xD5CA4C, 0xD5BBC1 });
-                else
-                    UpdateLabel($"Unknown Game Version \"{GameVersion}\".");
-            }
             else
                 UpdateLabel("Error Connecting to PS4");
         }
-        private async void UC2Btn_Click(object sender, EventArgs e) {
+
+
+        private async void UC1Btn_Click(object sender, EventArgs e)
+        {
             await Task.Run(CheckConnectionStatus);
 
-            
-            if (Geo != null && Geo.IsConnected)
+            if (Geo != null && Geo.IsConnected && CheckGameIsValid("CUSA02320", UCCIDs))
             {
-                if(IgnoreTitleID) TitleID = "CUSA02320";
-
-                if(!GameVersion.Contains("Unknown"))
-                    Toggle(GameVersion == "U2 1.00" ? new ulong[] { 0x1271431, 0x127149C, 0x12705C9 } : new ulong[] { 0x145decc, 0x145cff9, 0x145de61 });
-                else
-                    UpdateLabel($"Unknown Game Version \"{GameVersion}\".");
-            }
-            else
-                UpdateLabel("Error Connecting to PS4");
-        }
-        private async void UC3Btn_Click(object sender, EventArgs e) {
-            await Task.Run(CheckConnectionStatus);
-
-            
-            if (Geo != null && Geo.IsConnected)
-            {
-                if(IgnoreTitleID) TitleID = "CUSA02320";
-
-                if (!GameVersion.Contains("Unknown"))
-                    Toggle(GameVersion == "U3 1.00" ? new ulong[] { 0x18366c9, 0x18366c4, 0x1835481 } : new ulong[] { 0x1bbaf69, 0x1bbaf64, 0x1BB9D21 });
-                else
-                    UpdateLabel($"Unknown Game Version \"{GameVersion}\".");
-            }
-            else
-                UpdateLabel("Error Connecting to PS4");
-        }
-        private async void UC4Btn_Click(object sender, EventArgs e) {
-            await Task.Run(CheckConnectionStatus);
-
-            if (Geo != null && Geo.IsConnected)
-            {
-                if(IgnoreTitleID) TitleID = "CUSA00341";
-
-                if(!GameVersion.Contains("Unknown"))
-                    Toggle(new ulong[] { 0x27a3c30, 0x2889370, 0x288d370, 0x288d370, 0x2891370, 0x2891370, 0x2891370, 0x24ed968, 0x24ed968, 0x24f1978, 0x24fd958, 0x2501738, 0x2739a20, 0x2739a20, 0x2739a20, 0x2570748, 0x2570748, 0x2580888, 0x2570748, 0x2738dc0, 0x2570748, 0x273cdc0, 0x2570748, 0x273cdc0, 0x274ccd0, 0x2570748, 0x274ccd0, 0x2750d00, 0x2570748, 0x2758d00, 0x275cd00, 0x275cd00, 0x275cd00, 0x275cd00 }, new string[] { "1.00 SP", "1.01 SP", "1.02 SP", "1.03 SP", "1.04 SP", "1.05 SP", "1.06 SP", "1.08 SP", "1.10 SP", "1.11 SP", "1.12 SP", "1.13 SP", "1.15 SP", "1.16 SP", "1.17 SP", "1.18", "1.19", "1.20 MP", "1.20 SP", "1.21 MP", "1.21 SP", "1.22 MP", "1.22/23 SP", "1.23 MP", "1.24 MP", "1.24/25 SP", "1.25 MP", "1.27/28 MP", "1.27+ SP", "1.29 MP", "1.30 MP", "1.31 MP", "1.32 MP", "1.33 MP" });
-                else
-                    UpdateLabel($"Unknown Game Version \"{GameVersion}\".");
+                Toggle(GameVersion == "U1 1.00" ? new ulong[] { 0xD97B41, 0xD989CC, 0xD98970 } : new ulong[] { 0xD5C9F0, 0xD5CA4C, 0xD5BBC1 });
             }
             else
                 UpdateLabel("Error Connecting to PS4");
         }
 
-        private async void UC4MPBetaBtn_Click(object sender, EventArgs e) {
+        
+        private async void UC2Btn_Click(object sender, EventArgs e)
+        {
+            await Task.Run(CheckConnectionStatus);
+            
+            if (Geo != null && Geo.IsConnected && CheckGameIsValid("CUSA02320", UCCIDs))
+            {
+                Toggle(GameVersion == "U2 1.00" ? new ulong[] { 0x1271431, 0x127149C, 0x12705C9 } : new ulong[] { 0x145decc, 0x145cff9, 0x145de61 });
+            }
+            else
+                UpdateLabel("Error Connecting to PS4");
+        }
+
+
+        private async void UC3Btn_Click(object sender, EventArgs e)
+        {
+            await Task.Run(CheckConnectionStatus);
+            
+            if (Geo != null && Geo.IsConnected && CheckGameIsValid("CUSA02320", UCCIDs))
+            {
+                Toggle(GameVersion == "U3 1.00" ? new ulong[] { 0x18366c9, 0x18366c4, 0x1835481 } : new ulong[] { 0x1bbaf69, 0x1bbaf64, 0x1BB9D21 });
+            }
+            else
+                UpdateLabel("Error Connecting to PS4");
+        }
+        
+
+        private async void UC4Btn_Click(object sender, EventArgs e)
+        {
             await Task.Run(CheckConnectionStatus);
 
-            
-            if (Geo != null && Geo.IsConnected)
+            if (Geo != null && Geo.IsConnected && CheckGameIsValid("CUSA00341", UC4IDs))
             {
-                if(IgnoreTitleID) TitleID = "CUSA00341";
+                Toggle(new ulong[] { 0x27a3c30, 0x2889370, 0x288d370, 0x288d370, 0x2891370, 0x2891370, 0x2891370, 0x24ed968, 0x24ed968, 0x24f1978, 0x24fd958, 0x2501738, 0x2739a20, 0x2739a20, 0x2739a20, 0x2570748, 0x2570748, 0x2580888, 0x2570748, 0x2738dc0, 0x2570748, 0x273cdc0, 0x2570748, 0x273cdc0, 0x274ccd0, 0x2570748, 0x274ccd0, 0x2750d00, 0x2570748, 0x2758d00, 0x275cd00, 0x275cd00, 0x275cd00, 0x275cd00 }, new string[] { "1.00 SP", "1.01 SP", "1.02 SP", "1.03 SP", "1.04 SP", "1.05 SP", "1.06 SP", "1.08 SP", "1.10 SP", "1.11 SP", "1.12 SP", "1.13 SP", "1.15 SP", "1.16 SP", "1.17 SP", "1.18", "1.19", "1.20 MP", "1.20 SP", "1.21 MP", "1.21 SP", "1.22 MP", "1.22/23 SP", "1.23 MP", "1.24 MP", "1.24/25 SP", "1.25 MP", "1.27/28 MP", "1.27+ SP", "1.29 MP", "1.30 MP", "1.31 MP", "1.32 MP", "1.33 MP" });
+            }
+            else
+                UpdateLabel("Error Connecting to PS4");
+        }
 
-                if(!GameVersion.Contains("Unknown"))
-                    Toggle(new ulong[] { 0x2bbf720, 0x2bc3720 }, new string[] { "1.00", "1.09" });
-                else
-                    UpdateLabel($"Unknown Game Version \"{GameVersion}\".");
+
+        private async void UC4MPBetaBtn_Click(object sender, EventArgs e)
+        {
+            await Task.Run(CheckConnectionStatus);
+            
+            if (Geo != null && Geo.IsConnected && CheckGameIsValid("CUSA00341", UC4BetaIDs))
+            {
+                Toggle(new ulong[] { 0x2bbf720, 0x2bc3720 }, new string[] { "1.00", "1.09" });
             }   
             else
                 UpdateLabel("Error Connecting to PS4");
         }
 
-        private async void UCTLLBtn(object sender, EventArgs e) {
+
+        private async void UCTLLBtn(object sender, EventArgs e)
+        {
             await Task.Run(CheckConnectionStatus);
-
             
-            if (Geo != null && Geo.IsConnected)
+            if (Geo != null && Geo.IsConnected && CheckGameIsValid("CUSA07737", TLLIDs))
             {
-                if(IgnoreTitleID) TitleID = "CUSA07737";
-
-                if(!GameVersion.Contains("Unknown"))
-                    Toggle(new ulong[] { 0x26b4558, 0x26c0698, 0x0274cd00, 0x275cd00, 0x275cd00 }, new string[] { "1.00 SP", "1.0X SP", "1.00 MP", "1.08 MP", "1.09 MP" });
-                else
-                    UpdateLabel($"Unknown Game Version \"{GameVersion}\".");
+                Toggle(new ulong[] { 0x26b4558, 0x26c0698, 0x0274cd00, 0x275cd00, 0x275cd00 }, new string[] { "1.00 SP", "1.0X SP", "1.00 MP", "1.08 MP", "1.09 MP" });
             }
             else
                 UpdateLabel("Error Connecting to PS4");

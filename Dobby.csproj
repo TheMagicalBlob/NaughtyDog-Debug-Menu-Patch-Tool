@@ -66,9 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DebugWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="DebugWindow.cs" />
     <Compile Include="DebugWindow.Designer.cs">
       <DependentUpon>DebugWindow.cs</DependentUpon>
     </Compile>

@@ -648,8 +648,9 @@ namespace Dobby {
         {
             var Venat = Controls.Owner;
 
-
-            // Mass-Apply handler methods to basic MouseDown/Up, MouseEnter/Leave and MouseMove events
+            //#
+            //## Mass-Apply handler methods to basic MouseDown/Up, MouseEnter/Leave and MouseMove events
+            //#
             foreach (Control item in Controls)
             {
                 item.MouseDown += new MouseEventHandler(MouseDownFunc);
@@ -681,7 +682,7 @@ namespace Dobby {
                     "DebugControl",
                     "ExitBtn",
                     "MinimizeBtn",
-                    "LabelBtn", //! LabelBtn!? The hell's that one for?
+                    "LabelBtn",
                     "PathBox"
                 };
 
@@ -702,7 +703,9 @@ namespace Dobby {
 
 
 
-            // Create Exit And Minimize Buttons, And Add Them To The Top Right Of The Form
+            //#
+            //## Create Exit And Minimize Buttons, And Add Them To The Top Right Of The Form
+            //#
             var Gray = Color.FromArgb(100, 100, 100);
 
             Button ExitBtn = new Button() {
@@ -776,40 +779,43 @@ namespace Dobby {
 
 
 
+            //#
+            //## Apply event handlers and tags to the common buttons at the bottom of each page
+            //#
 
-            // Apply event handlers and tags to the common buttons at the bottom of each page
-            var controls = new Control[]
+            // Apply Info & Credits page crap, unless we're on one of those pages already
+            if (!new string[] { "InfoHelpPage", "CreditsPage" }.Contains(Venat.Name))
             {
-                Controls.Owner.Controls.Find("InfoHelpBtn", true)?.Last(),
-                Controls.Owner.Controls.Find("CreditsBtn", true)?.Last(),
-                Venat.Name != "MainPage" ? Controls.Owner.Controls.Find("BackBtn", true)?.Last() : null, // Avoid searching for a back button on the main page
-                Controls.Owner.Controls.Find("Info", true)?.Last()
-            };
-
-            if (!Venat.Name.Contains("Help") && Venat.Name != "CreditsPage")
-            {
-                controls[0].Click += (_, __) => ChangeForm(PageID.InfoHelpPage);
-                controls[0].Tag = "View explanations for each page/other info";
-            }
+                var helpPageButton = Controls.Owner.Controls.Find("InfoHelpBtn", true)?.Last();
+                helpPageButton.Click += (_, __) => ChangeForm(PageID.InfoHelpPage);
+                helpPageButton.Tag = "View explanations for each page/other info";
                 
-            controls[1].Click += (_, __) => ChangeForm(PageID.CreditsPage);
-            controls[1].Tag = "View various credits for the application.";
+                var creditsPageButton = Controls.Owner.Controls.Find("CreditsBtn", true)?.Last();
+                creditsPageButton.Click += (_, __) => ChangeForm(PageID.CreditsPage);
+                creditsPageButton.Tag = "View various credits for the application.";
+            }
 
-            if (Venat.Name != "MainPage") // Avoid searching for a back button on Main page
+
+            // Avoid searching for a back button on Main page
+            if (Venat.Name != "MainPage")
             {
-                controls[2].Click += (_, __) => ChangeForm(null);
-                controls[2].Tag = "Return to the previous page";
+                var backButton = Controls.Owner.Controls.Find("BackBtn", true)?.Last();
+
+                backButton.Click += (_, __) => ChangeForm(null);
+                backButton.Tag = "Return to the previous page";
             }
 
 
             // Attempt to assign static Info label refference for bs globals
-            if (controls[3] != null)
-            {
+            try {
                 int num;
-                InfoLabel = (Label) controls[3];
+                InfoLabel = (Label)Controls.Owner.Controls.Find("Info", true)?.Last();
 
                 InfoLabel.Text = string.Empty;
                 InfoLabel.Tag = ((num = new Random().Next() & 1) + (num >> num & 1)) == 0 ? "hey get that mouse off my face >:(" : " "; // appy a joke tag if a two random numbers are both even (for shits and giggles)
+            }
+            catch (InvalidOperationException) {
+                Dev.Print("ERROR: Form does not contain an info label (or it has not been named \"Info\").");
             }
         }
 
@@ -818,7 +824,7 @@ namespace Dobby {
 
 
 
-        
+
         //#
         //## Form/Control Drawing
         //#
