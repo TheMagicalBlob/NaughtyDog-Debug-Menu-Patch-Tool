@@ -13,7 +13,6 @@ namespace Dobby {
         public MainPage() {
             InitializeComponent();
             
-            InfoLabel = Info;
             Page = PageID.MainPage;
             SaveMainForm(this);
 

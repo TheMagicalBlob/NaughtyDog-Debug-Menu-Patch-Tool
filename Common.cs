@@ -646,8 +646,7 @@ namespace Dobby {
         /// <param name="Controls">Collection of Controls to Apply Event Handlers to.</param>
         public static void InitializeAdditionalEventHandlers(Control.ControlCollection Controls)
         {
-            var ConstantControls = new string[] { "Info", "InfoHelpBtn", "CreditsBtn", "BackBtn" };
-            var Parent = Controls.Owner.Name;
+            var Venat = Controls.Owner;
 
 
             // Mass-Apply handler methods to basic MouseDown/Up, MouseEnter/Leave and MouseMove events
@@ -700,21 +699,6 @@ namespace Dobby {
             // Apply Info label reset string to form
             Controls.Owner.Tag = " ";
             Controls.Owner.MouseEnter += Common.HoverString;
-
-
-
-            // Attempt to assign static Info label refference for globals
-            try {
-                if (Controls.Owner.Name != "MainPage")
-                {
-                    InfoLabel = (Label) Controls.Find("Info", true)[0] ?? null;
-                }
-            }
-            catch (IndexOutOfRangeException) {
-                Dev.Print($"ERROR: \"Info\" label not found on form \"{Controls.Owner.Name}\".");
-                InfoLabel = null;
-            }
-
 
 
 
@@ -791,18 +775,42 @@ namespace Dobby {
             #endif
 
 
-            // Avoid searching for back button on Main page
-            if (Parent != "MainPage")
-                Controls.Owner.Controls.Find(ConstantControls[3], true)[0].Click += (_, __) => ChangeForm(null);
 
-            try {
-                if (!Parent.Contains("Help") && Parent != "CreditsPage")
-                    Controls.Owner.Controls.Find(ConstantControls[1], true)[0].Click += (_, __) => ChangeForm(PageID.InfoHelpPage);
-                
-                Controls.Owner.Controls.Find(ConstantControls[2], true)[0].Click += (_, __) => ChangeForm(PageID.CreditsPage);
-                Controls.Owner.Controls.Find(ConstantControls[0], true)[0].Text = string.Empty;
+
+            // Apply event handlers and tags to the common buttons at the bottom of each page
+            var controls = new Control[]
+            {
+                Controls.Owner.Controls.Find("InfoHelpBtn", true)?.Last(),
+                Controls.Owner.Controls.Find("CreditsBtn", true)?.Last(),
+                Venat.Name != "MainPage" ? Controls.Owner.Controls.Find("BackBtn", true)?.Last() : null, // Avoid searching for a back button on the main page
+                Controls.Owner.Controls.Find("Info", true)?.Last()
+            };
+
+            if (!Venat.Name.Contains("Help") && Venat.Name != "CreditsPage")
+            {
+                controls[0].Click += (_, __) => ChangeForm(PageID.InfoHelpPage);
+                controls[0].Tag = "View explanations for each page/other info";
             }
-            catch (Exception) {}
+                
+            controls[1].Click += (_, __) => ChangeForm(PageID.CreditsPage);
+            controls[1].Tag = "View various credits for the application.";
+
+            if (Venat.Name != "MainPage") // Avoid searching for a back button on Main page
+            {
+                controls[2].Click += (_, __) => ChangeForm(null);
+                controls[2].Tag = "Return to the previous page";
+            }
+
+
+            // Attempt to assign static Info label refference for bs globals
+            if (controls[3] != null)
+            {
+                int num;
+                InfoLabel = (Label) controls[3];
+
+                InfoLabel.Text = string.Empty;
+                InfoLabel.Tag = ((num = new Random().Next() & 1) + (num >> num & 1)) == 0 ? "hey get that mouse off my face >:(" : " "; // appy a joke tag if a two random numbers are both even (for shits and giggles)
+            }
         }
 
         #endregion

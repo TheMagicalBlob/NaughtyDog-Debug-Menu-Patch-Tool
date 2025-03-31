@@ -590,7 +590,7 @@ namespace Dobby {
         /// </summary>
         private void ManualConnectBtn_Click(object sender, EventArgs e)
         {
-            if (ConnectionThread.ThreadState == ThreadState.Running)
+            if (ConnectionThread?.ThreadState == ThreadState.Running)
             {
                 try
                 {

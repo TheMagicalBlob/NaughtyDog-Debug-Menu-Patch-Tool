@@ -128,6 +128,7 @@ namespace Dobby
             this.DownloadSourceBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.DownloadSourceBtn.Size = new System.Drawing.Size(275, 23);
             this.DownloadSourceBtn.TabIndex = 30;
+            this.DownloadSourceBtn.Tag = "Download a .zip containing the latest source code";
             this.DownloadSourceBtn.Text = "Download Latest Source Code (Download Link)";
             this.DownloadSourceBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DownloadSourceBtn.UseVisualStyleBackColor = false;
@@ -182,6 +183,7 @@ namespace Dobby
             this.PCDebugMenuPageBtn.Name = "PCDebugMenuPageBtn";
             this.PCDebugMenuPageBtn.Size = new System.Drawing.Size(240, 23);
             this.PCDebugMenuPageBtn.TabIndex = 37;
+            this.PCDebugMenuPageBtn.Tag = "Patch the executable of the PC version with the debug menu";
             this.PCDebugMenuPageBtn.Text = "Patch .exe With The Debug Menu...";
             this.PCDebugMenuPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PCDebugMenuPageBtn.UseVisualStyleBackColor = false;

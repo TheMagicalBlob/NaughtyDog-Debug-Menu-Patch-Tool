@@ -85,7 +85,7 @@ namespace Dobby
             this.DisableDebugTextBtn.Name = "DisableDebugTextBtn";
             this.DisableDebugTextBtn.Size = new System.Drawing.Size(251, 24);
             this.DisableDebugTextBtn.TabIndex = 43;
-            this.DisableDebugTextBtn.Tag = "Disable the 2D performance  & build stats";
+            this.DisableDebugTextBtn.Tag = "Disable the 2D performance and build stats";
             this.DisableDebugTextBtn.Text = "Disable 2D Debug Text On Startup: ";
             this.DisableDebugTextBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisableDebugTextBtn.UseVisualStyleBackColor = false;

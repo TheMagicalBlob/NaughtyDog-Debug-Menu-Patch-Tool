@@ -148,7 +148,7 @@ namespace Dobby
             this.RestoredDebugBtn.Name = "RestoredDebugBtn";
             this.RestoredDebugBtn.Size = new System.Drawing.Size(283, 23);
             this.RestoredDebugBtn.TabIndex = 23;
-            this.RestoredDebugBtn.Tag = "Enable the debug menu, and appy various patches to it";
+            this.RestoredDebugBtn.Tag = "Enable the debug menu, and apply various patches to it";
             this.RestoredDebugBtn.Text = "Enable Debug Mode - Restored/Custom";
             this.RestoredDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.RestoredDebugBtn.UseVisualStyleBackColor = false;
