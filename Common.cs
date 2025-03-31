@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
-using System.IO.Pipes;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
@@ -95,10 +94,10 @@ namespace Dobby {
         public static FileStream fileStream;
         
         
-    #if DEBUG
         /// <summary> Debug class instance. </summary>
         public static Testing Dev;
-        private static DebugWindow Log;
+    #if DEBUG
+        private static DebugWindow DebugWindow;
     #endif
         #endregion
 
@@ -198,30 +197,6 @@ namespace Dobby {
         //## Unsorted
         //#
         #region (unsorted)
-
-        /// <summary>
-        /// Dev.Print overload, for some reason. //!
-        /// </summary>
-        public static void Print(object message)
-        {
-            #if Logging
-            Testing.Print(message);
-            #endif
-        }
-
-        /// <summary>
-        /// Basic error logging function (not yet fully implemented)
-        /// </summary>
-        public static void PrintError(Exception error)
-        {
-            var message = $"{error.Message}";
-#if DEBUG
-            message += $"\n{error.StackTrace.Replace("\n", "  \n")}";
-#endif
-
-            Print($"!! ERROR: {message}");
-        }
-
         
         /// <summary>
         /// Convert a provided object in to a byte array, then writes it to the current position in the active file stream.
@@ -290,14 +265,14 @@ namespace Dobby {
             }
 
             else
-                Print($"ERROR: Unexpected Variable type ({type}).");
+                Dev.Print($"ERROR: Unexpected Variable type ({type}).");
 
 
             // Manually flush the stream just in case
             fileStream.Flush(true);
                 
             #if DEBUG
-            Print(msg);
+            Dev.Print(msg);
             #endif
         }
         
@@ -522,7 +497,14 @@ namespace Dobby {
         /// <param name="form"> The orignal form </param>
         public static void SaveMainForm(Form form) => MainForm = form;
 
-        
+        public static void CreateInfoLabelUpdater()
+        {
+            LabelUpdateThread = new Thread(LabelUpdateMethod) {
+                Name = "MainPage Label Update Worker"
+            };
+
+            LabelUpdateThread.Start();
+        }
 
         /// <summary>
         /// Update the current label text and/or apply a flashing effect to the label to signify an error.
@@ -550,13 +532,13 @@ namespace Dobby {
         {
             if (DisableFormChange) {
                 UpdateLabel("Disabled during .gp4 / .pkg Creation Process.");
-                Print($"Ignoring request to change form to \"{Page ?? 0}\".");
+                Dev.Print($"Ignoring request to change form to \"{Page ?? 0}\".");
                 return;
             }
             else {
                 InfoFlashes = -1;
                 InfoText = null;
-                LabelUpdateThread.Abort();
+                InfoLabel = null;
             }
 
 
@@ -625,7 +607,7 @@ namespace Dobby {
                     return;
 
                 default:
-                    Print($"{Page} Is Not A Page!");
+                    Dev.Print($"{Page} Is Not A Page!");
                     return;
             }
 
@@ -634,15 +616,16 @@ namespace Dobby {
             var PageToClose = ActiveForm;
 
             
+            // Subtract a page from the list of previous pages when going back one
             if (ReturningToPreviousPage)
                 Pages.RemoveAt(Pages.Count - 1);
             else
                 Pages.Add(Common.Page);
 
-
+            
             NewPage?.Show();
 #if DEBUG
-            Log?.SetLogParent(NewPage);
+            DebugWindow?.SetDebugWindowParent(NewPage);
 #endif
             Common.Page = Page;
             ActiveForm.Location = LastFormPosition;
@@ -673,12 +656,25 @@ namespace Dobby {
                 item.MouseDown += new MouseEventHandler(MouseDownFunc);
                 item.MouseUp += new MouseEventHandler(MouseUpFunc);
 
-
+                // Apply the seperator drawing function to any seperator lines
                 if (item.Name.Contains("SeperatorLine") && item.GetType() == typeof(Label))
+                {
                     item.Paint += DrawSeperatorLine;
+                }
 
+                // Apply the event used in dragging the form, avoiding text boxes to avoid removing the ability to drag-select text.
                 if (!(item.Name.Contains("Box") && (item.GetType() == typeof(TextBox) || item.GetType() == typeof(RichTextBox)))) // So You Can Drag Select The Text Lol
+                {
                     item.MouseMove += new MouseEventHandler(MoveForm);
+                }
+
+                // Apply the Hint function to the mouse enter event, applying the resetter tag to any controls sans Tags.
+                if (item.Tag == null)
+                {
+                    item.Tag = " ";
+                }
+                item.MouseEnter += HoverString;
+
 
 
                 // Avoid assigning a hover arrow to unintended controls (blacklisted ones, and any non-button controls)
@@ -709,24 +705,16 @@ namespace Dobby {
 
             // Attempt to assign static Info label refference for globals
             try {
-                InfoLabel = (Label) Controls.Find("Info", true)[0] ?? null;
+                if (Controls.Owner.Name != "MainPage")
+                {
+                    InfoLabel = (Label) Controls.Find("Info", true)[0] ?? null;
+                }
             }
             catch (IndexOutOfRangeException) {
-                Print($"ERROR: \"Info\" label not found on form \"{Controls.Owner.Name}\".");
+                Dev.Print($"ERROR: \"Info\" label not found on form \"{Controls.Owner.Name}\".");
                 InfoLabel = null;
             }
 
-            // Inititialize Info label thread
-            if (InfoLabel != null)
-            {
-                LabelUpdateThread = new Thread(new ParameterizedThreadStart(LabelUpdateMethod)) {
-                    Name = $"{Controls.Owner.Name} Label Update Worker"
-                };
-
-                LabelUpdateThread.Start(InfoLabel);
-            }
-            else
-                LabelUpdateThread = null;
 
 
 
@@ -840,8 +828,8 @@ namespace Dobby {
                 ArrowWidth = (int) PassedControl.CreateGraphics().MeasureString(">", PassedControl.Font).Width;
             }
             catch (Exception ex) {
-                Print($"Error Getting Width Of Hover Arror From Control ({PassedControl.Name}: {(EventIsMouseEnter ? "Hover" : "Leave")})");
-                PrintError(ex);
+                Dev.Print($"Error Getting Width Of Hover Arror From Control ({PassedControl.Name}: {(EventIsMouseEnter ? "Hover" : "Leave")})");
+                Dev.PrintError(ex);
                 return;
             }
 
@@ -901,21 +889,23 @@ namespace Dobby {
         {
             var item = sender as Label;
 
-            if (item == null) {
-                Print("!! ERROR: Invalid control passed as Seperator line.");
-                Print($"  - Control \"{item.Name}\" location: {item.Location}.");
+            if (item == null)
+            {
+                Dev.Print("!! ERROR: Invalid control passed as Seperator line.");
+                Dev.Print($"  - Control \"{item.Name}\" location: {item.Location}.");
             }
-            if (item.Name == "Se" && item.Location != new Point(2, 20)) {
-                Print($"Seperator Line 0 Improperly positioned on {item.Parent.Name}");
+            if (item.Name == "SeperatorLine0" && item.Location != new Point(2, 20))
+            {
+                Dev.Print($"Seperator Line 0 Improperly positioned on {item.Parent.Name}");
             }
-            if (item.Height != 15) {
-                Print($"# WARNING: \"{item.Name}\" has an invalid height!!! (Label is {item.Height} pixels in hight)");
-                //item.Size = new Size(item.Size.Width, 15);
+            if (item.Height != 15)
+            {
+                Dev.Print($"# WARNING: \"{item.Name}\" has an invalid height!!! (Label is {item.Height} pixels in hight)");
             }
-            if (!(item.Location.X == 2 && item.Width == item.Parent.Width - 4)) {
-                //Print($"# WARNING: A label on page \"{item.Parent.Name}\" has an invalid width and / or horizontal location!!! (Label at {item.Location} is {item.Width} pixels in width)");
+            if (!(item.Location.X == 2 && item.Width == item.Parent.Width - 4))
+            {
+                Dev.Print($"Moved And Resized {item.Name} ({item.Parent.Name}).");
 
-                Print($"Moved And Resized {item.Name} ({item.Parent.Name}).");
                 item.Location = new Point(2, item.Location.Y);
                 item.Width = item.Parent.Width - 4;
             }
@@ -933,8 +923,7 @@ namespace Dobby {
         /// <summary>
         /// Flash the Info label white/yellow to get the user's attention/indicate a skill issue.
         /// </summary>
-        /// <param name="infoLabel"> The Control.Name property of the label to flash </param>
-        internal static void LabelUpdateMethod(object infoLabel)
+        private static void LabelUpdateMethod()
         {
             LabelUpdateCallback setLabelState = (label, colour, text) => {
                 try {
@@ -955,7 +944,7 @@ namespace Dobby {
                     ActiveForm?.Update();
                 }
                 catch (Exception) {
-                    Print("Error setting label text and / or colour.");
+                    Dev.Print("Error setting label text and / or colour.");
                 }
             };
 
@@ -964,13 +953,13 @@ namespace Dobby {
             while (true) {
                 try {
                     // Wait for something to do
-                    for (;InfoFlashes == -1 && InfoText == null; Thread.Sleep(1));
+                    for (;InfoLabel == null || InfoFlashes == -1 && InfoText == null; Thread.Sleep(1));
                         
 
                     // Try to avoid hiding hint strings with the label reset
                     if (InfoText != null && InfoText == " ")
                     {
-                        for (var time = 0; InfoText == " " && time++ < 75; Thread.Sleep(1));
+                        for (var time = 0; InfoText == " " && time++ < 35; Thread.Sleep(1));
                     }
 
 
@@ -980,10 +969,11 @@ namespace Dobby {
                         while (ActiveForm == null)
                             Thread.Sleep(1);
 
-                        ActiveForm?.Invoke(setLabelState, infoLabel, (InfoFlashes-- & 1) == 0 ? Color.FromArgb(255, 227, 0) : Color.White, notifyMessage);
+                        ActiveForm?.Invoke(setLabelState, InfoLabel, (InfoFlashes-- & 1) == 0 ? Color.FromArgb(255, 227, 0) : Color.White, notifyMessage);
                         
                         if (InfoFlashes == -1)
                         {
+                            InfoText = null;
                             break;
                         }
 
@@ -993,12 +983,12 @@ namespace Dobby {
                     // Set The Text of The Yellow Label At The Bottom Of The Form
                     if (InfoText != null)
                     {
-                        ActiveForm?.Invoke(setLabelState, infoLabel, Color.FromArgb(255, 227, 0), InfoText);
+                        ActiveForm?.Invoke(setLabelState, InfoLabel, Color.FromArgb(255, 227, 0), InfoText);
                         InfoText = null;
                     }
                 }
                 catch (Exception) {
-                    Print("Form Changed or Lost Focus, Killing Label Flash");
+                    Dev.Print("Form Changed or Lost Focus, Killing Label Flash");
 
                     while (ActiveForm == null)
                         Thread.Sleep(1);
@@ -1008,7 +998,6 @@ namespace Dobby {
 
         #endregion (form/control drawing-related functions)
 
-        //## END
         #endregion [Static Background Function Declarations]
 
 
@@ -1022,20 +1011,20 @@ namespace Dobby {
 
         #if DEBUG
         public static void LogBtn_Click(object sender, EventArgs args) {
-            if (Log != null) {
-                Log?.Dispose();
-                Log = null;
+            if (DebugWindow != null) {
+                DebugWindow?.Dispose();
+                DebugWindow = null;
             }
             else
             {
                 // Create the log window and make it invisible until it's been moved to the parent form.
-                Log = new DebugWindow(((Control)sender).FindForm()) {
+                DebugWindow = new DebugWindow(((Control)sender).FindForm()) {
                     Visible = false
                 };
 
-                Log.Show();
-                Log.MoveLogToAppEdge();
-                Log.Visible = true;
+                DebugWindow.Show();
+                DebugWindow.MoveLogToAppEdge();
+                DebugWindow.Visible = true;
             }
         }
         #endif
@@ -1074,7 +1063,7 @@ namespace Dobby {
             ActiveForm.Update();
 
             #if DEBUG
-            Log?.MoveLogToAppEdge();
+            DebugWindow?.MoveLogToAppEdge();
             #endif
         }
 
@@ -1105,18 +1094,23 @@ namespace Dobby {
         /// <param name="e"></param>
         public static void HoverString(object sender, EventArgs e)
         {
-            // TODO:
-            // Make this avoid assigning Hint string when the label flash thread is active
             try {
+                // Oh my god fuck it, lazy fix for winforms stupid fucking asynchronous contol initialization, god I fucking hate this stupid clunky bullshit sometimes, how the fuck is the control null after being created, initialzed, and added to the form??? I CAN LITERALLY SEE THE CONTROL, IT'S NOT FUCKING NULL
+                if (InfoLabel == null && ((Control)sender).FindForm().Name == "MainPage")
+                {
+                    InfoLabel = (Label) MainForm.Controls.Find("Info", true)?[0];
+                }
+
                 if (((string) ((Control)sender).Tag ?? string.Empty).Length > 0) //! test this
                 {
                     UpdateLabel((string) ((Control)sender).Tag);
                 }
-                else Print($"Label not updated due to empty tag or active flash thread {InfoFlashes} {InfoText?.Length ?? 0xDEADDAD}");
+                else
+                    Dev.Print($"Label not updated due to empty tag or active flash thread {InfoFlashes} {InfoText?.Length ?? 0xDEADDAD}");
             }
             catch (InvalidCastException)
             {
-                Print("ERROR: A Non-string value was assigned to a control tag");
+                Dev.Print("ERROR: A Non-string value was assigned to a control tag");
             }
         }
         #endregion
@@ -1467,7 +1461,7 @@ namespace Dobby {
                     {
                         if (!value.GetType().Equals(MaximumValue.GetType()))
                         {
-                            Common.Print($"ERROR: Mismatch in {Name} Min/Max Value Types. (Min: {MinimumValue.GetType()} && Max: {MaximumValue.GetType()})");
+                            Common.Dev.Print($"ERROR: Mismatch in {Name} Min/Max Value Types. (Min: {MinimumValue.GetType()} && Max: {MaximumValue.GetType()})");
                         }
                     }
 
@@ -1475,7 +1469,7 @@ namespace Dobby {
                     {
                         if (!value.GetType().Equals(Variable.GetType()))
                         {
-                            Common.Print($"ERROR: Mismatch in {Name} MinimumValue and Variable Types. (Min: {MinimumValue.GetType()} && Variable: {Variable.GetType()})");
+                            Common.Dev.Print($"ERROR: Mismatch in {Name} MinimumValue and Variable Types. (Min: {MinimumValue.GetType()} && Variable: {Variable.GetType()})");
                         }
                     }
                 }
@@ -1502,7 +1496,7 @@ namespace Dobby {
                     {
                         if (!value.GetType().Equals(MinimumValue.GetType()))
                         {
-                            Common.Print($"ERROR: Mismatch in {Name} Min/Max Value Types. (Min: {MinimumValue.GetType()} && Max: {MaximumValue.GetType()})");
+                            Common.Dev.Print($"ERROR: Mismatch in {Name} Min/Max Value Types. (Min: {MinimumValue.GetType()} && Max: {MaximumValue.GetType()})");
                         }
                     }
 
@@ -1510,7 +1504,7 @@ namespace Dobby {
                     {
                         if (!value.GetType().Equals(Variable.GetType()))
                         {
-                            Common.Print($"ERROR: Mismatch in {Name} MaximumValue and Variable Types. (Max: {MaximumValue.GetType()} && Variable: {Variable.GetType()})");
+                            Common.Dev.Print($"ERROR: Mismatch in {Name} MaximumValue and Variable Types. (Max: {MaximumValue.GetType()} && Variable: {Variable.GetType()})");
                         }
                     }
                 }
@@ -1523,23 +1517,6 @@ namespace Dobby {
 
         private bool hasEvents; // Lazy Fix
 
-
-        new public object Tag
-        {
-            get => base.Tag;
-            
-            set {
-                if (value?.ToString()?.Length > 0)
-                {
-                    MouseEnter += Common.HoverString;
-                }
-                else {
-                    MouseEnter -= Common.HoverString;
-                }
-
-                base.Tag = value;
-            }
-        } 
 
 
 
@@ -1576,7 +1553,7 @@ namespace Dobby {
             // Not entirely certain this is actually required anymore
             if (((Control)sender) != Common.HoveredControl)
             {
-                Common.Print("CycleButtonVariable(): Control changed, aborting variable cycling.");
+                Common.Dev.Print("CycleButtonVariable(): Control changed, aborting variable cycling.");
                 return;
             }
 
@@ -1584,11 +1561,11 @@ namespace Dobby {
 
             // Check for null variable / type.                (not that I know how the latter would be null without the former being null as well, rendering the following check redundant... meh, I'm leaving both checks anyway)
             if (Variable == null) {
-                Common.Print("CycleButtonVariable(): Control's variable type was somehow null (wtf??), fix your trash.");
+                Common.Dev.Print("CycleButtonVariable(): Control's variable type was somehow null (wtf??), fix your trash.");
                 return;
             }
             if (type == null) {
-                Common.Print("CycleButtonVariable(): Control's variable was null, fix your trash.");
+                Common.Dev.Print("CycleButtonVariable(): Control's variable was null, fix your trash.");
                 return;
             }
 
@@ -1597,13 +1574,13 @@ namespace Dobby {
             {
                 if (MaximumValue == null)
                 {
-                    Common.Print("CycleButtonVariable(): No Maximum value provided to go with minumum, you didn't write the code below to account for that, dumbass. Aborting");
+                    Common.Dev.Print("CycleButtonVariable(): No Maximum value provided to go with minumum, you didn't write the code below to account for that, dumbass. Aborting");
                     return;
                 }
 
                 if (MinimumValue == null)
                 {
-                    Common.Print("No minimum value provided to go with maximum, defaulting it to 0.");
+                    Common.Dev.Print("No minimum value provided to go with maximum, defaulting it to 0.");
                     MinimumValue = 0;
                 }
             }
@@ -1613,7 +1590,7 @@ namespace Dobby {
             // Avoid incrementing options on MouseUp events when the scroll wheel was already used
             if (Variable != _preInputvariable && eventArgs.GetType().Name != "HandledMouseEventArgs")
             {
-                Common.Print("Variable has been scrolled, avoiding click incrementation");
+                Common.Dev.Print("Variable has been scrolled, avoiding click incrementation");
                 return;
             }
 
@@ -1679,7 +1656,7 @@ namespace Dobby {
             if (type == typeof(bool))
             {
                 if (MaximumValue != null)
-                    Common.Print("WARNING: A maximum value was for some reason provided for a button with a boolean variable attached");
+                    Common.Dev.Print("WARNING: A maximum value was for some reason provided for a button with a boolean variable attached");
 
                 Variable = !(bool) Variable;
                 return;
@@ -1701,7 +1678,7 @@ namespace Dobby {
                     if (VariableTags.Length < (long)MaximumValue)
                     {
                         MaximumValue = VariableTags.Length;
-                        Common.Print($"ERROR: Maximum value for control Variable was larger than the amount of provided VariableTags; lowered maxValue to [{MaximumValue}]");
+                        Common.Dev.Print($"ERROR: Maximum value for control Variable was larger than the amount of provided VariableTags; lowered maxValue to [{MaximumValue}]");
                     }
 
                     if (MaximumValue.Equals(Variable))
@@ -1725,7 +1702,7 @@ namespace Dobby {
                 if (MaximumValue != null && VariableTags?.Length < (byte)MaximumValue)
                 {
                     MaximumValue = VariableTags.Length;
-                    Common.Print($"ERROR: Maximum value for control Variable was larger than the amount of provided VariableTags; lowered maxValue to [{MaximumValue}]");
+                    Common.Dev.Print($"ERROR: Maximum value for control Variable was larger than the amount of provided VariableTags; lowered maxValue to [{MaximumValue}]");
                 }
 
 
@@ -1808,7 +1785,7 @@ namespace Dobby {
 
             // Check for stupidity.
             if (control.Variable == null) {
-                Common.Print($"!! ERROR: Variable property for control \"{control.Name}\" was null");
+                Common.Dev.Print($"!! ERROR: Variable property for control \"{control.Name}\" was null");
                 return;
             }
 
@@ -1823,10 +1800,10 @@ namespace Dobby {
                 if (control.VariableTags != null)
                 {
                     if (control.VariableTags.Length > 2)
-                        Common.Print($"WARNING: Invalid VariableTags array provided for boolean toggle; ignoring [{control.VariableTags.Length-2}] tag(s)");
+                        Common.Dev.Print($"WARNING: Invalid VariableTags array provided for boolean toggle; ignoring [{control.VariableTags.Length-2}] tag(s)");
                     
                     if (control.VariableTags.Length < 2)
-                        Common.Print($"ERROR: Invalid VariableTags array provided for boolean toggle; less than two options provided ({control.VariableTags.Length})"); // output tag array length in case it's somehow negative, I suppose
+                        Common.Dev.Print($"ERROR: Invalid VariableTags array provided for boolean toggle; less than two options provided ({control.VariableTags.Length})"); // output tag array length in case it's somehow negative, I suppose
 
                     else
                         variableText = control.VariableTags[(bool)control.Variable ? 1 : 0];
@@ -1846,10 +1823,10 @@ namespace Dobby {
                 if (control.VariableTags != null)
                 {
                     if (control.VariableTags.Length > (int)control.Variable)
-                        Common.Print($"WARNING: Invalid VariableTags array provided for boolean toggle; ignoring [{control.VariableTags.Length-2}] tag(s)");
+                        Common.Dev.Print($"WARNING: Invalid VariableTags array provided for boolean toggle; ignoring [{control.VariableTags.Length-2}] tag(s)");
                     
                     else if (control.VariableTags.Length < (int)control.Variable)
-                        Common.Print($"ERROR: Invalid VariableTags array provided for boolean toggle; less than two options provided ({control.VariableTags.Length})"); // output tag array length in case it's somehow negative, I suppose
+                        Common.Dev.Print($"ERROR: Invalid VariableTags array provided for boolean toggle; less than two options provided ({control.VariableTags.Length})"); // output tag array length in case it's somehow negative, I suppose
 
                     variableText = control.VariableTags[(int)control.Variable];
                     
@@ -1866,7 +1843,7 @@ namespace Dobby {
             {
                 if (control.VariableTags != null)
                 {
-                    Common.Print("WARNING: variable tags provided for floating-point button variable, cannot use a floating-point as array index. (obviously)");
+                    Common.Dev.Print("WARNING: variable tags provided for floating-point button variable, cannot use a floating-point as array index. (obviously)");
                     return;
                 }
 
@@ -1879,7 +1856,7 @@ namespace Dobby {
             //#
             if (variableText == null)
             {
-                Common.Print($"WARNING: An unexpected data type was provided for the Variable tied to control \"{control.Name}\". Using unformatted string representation. (Type: {control.Variable.GetType()})");
+                Common.Dev.Print($"WARNING: An unexpected data type was provided for the Variable tied to control \"{control.Name}\". Using unformatted string representation. (Type: {control.Variable.GetType()})");
                 variableText = $"{(control.Variable ?? (object) "null")}";
             }
 

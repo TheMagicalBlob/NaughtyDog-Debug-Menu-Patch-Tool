@@ -138,7 +138,7 @@ namespace Dobby
             get => activePage;
             set {
                 activePage = value;
-                SetLogParent(value);
+                SetDebugWindowParent(value);
             }
         }
         private dynamic activePage;
@@ -149,7 +149,7 @@ namespace Dobby
         /// Sets the form to anchor the log window to.
         /// </summary>
         /// <param name="Gaia"> The anchor form. </param>
-        public void SetLogParent(Form Gaia)
+        public void SetDebugWindowParent(Form Gaia)
         {
             ParentPtr = Gaia;
         }
@@ -304,7 +304,7 @@ namespace Dobby
                     }
                     catch(Exception e) {
                         rawOutput = new string[] { "Error.", e.Message };
-                        Testing.Print($"!! ERROR: an exception occured during debug output loop while setting \"frame\".\nException: {e.Message}");
+                        Dev.Print($"!! ERROR: an exception occured during debug output loop while setting \"frame\".\nException: {e.Message}");
                     }
 
 
@@ -374,7 +374,10 @@ namespace Dobby
                         LogShouldRefresh ^= LogShouldRefresh;
                     }
                 }
-                catch(System.ObjectDisposedException) { }
+                catch(System.ObjectDisposedException)
+                {
+                    Dev.Print("UpdateConsoleOutput()");
+                }
             }
         }
 

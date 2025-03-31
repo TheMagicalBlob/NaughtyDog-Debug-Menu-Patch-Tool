@@ -9,6 +9,7 @@ namespace Dobby
         //--|   Designer Crap, No Touchie   |--\\\
         //======================================\\
         #region [Designer Crap, No Touchie]
+
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -26,6 +27,8 @@ namespace Dobby
             }
             base.Dispose(disposing);
         }
+
+
         public void InitializeComponent()
         {
             this.MainLabel = new System.Windows.Forms.Label();
@@ -44,8 +47,8 @@ namespace Dobby
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.PS4DebugPayloadBtn = new Dobby.Button();
             this.PortBox = new Dobby.TextBox();
-            this.IPLabelBtn = new Dobby.Button();
-            this.PortLabelBtn = new Dobby.Button();
+            this.IPLabel = new System.Windows.Forms.Label();
+            this.PortLabel = new System.Windows.Forms.Label();
             this.SeperatorLine3 = new System.Windows.Forms.Label();
             this.InfoHelpBtn = new Dobby.Button();
             this.CreditsBtn = new Dobby.Button();
@@ -118,7 +121,7 @@ namespace Dobby
             this.IpBox.Cursor = System.Windows.Forms.Cursors.Cross;
             this.IpBox.Font = new System.Drawing.Font("Cambria", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
             this.IpBox.ForeColor = System.Drawing.SystemColors.Control;
-            this.IpBox.Location = new System.Drawing.Point(102, 228);
+            this.IpBox.Location = new System.Drawing.Point(84, 227);
             this.IpBox.MaxLength = 15;
             this.IpBox.Name = "IpBox";
             this.IpBox.Size = new System.Drawing.Size(110, 16);
@@ -295,48 +298,42 @@ namespace Dobby
             this.PortBox.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PortBox.Font = new System.Drawing.Font("Cambria", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
             this.PortBox.ForeColor = System.Drawing.SystemColors.Control;
-            this.PortBox.Location = new System.Drawing.Point(52, 251);
+            this.PortBox.Location = new System.Drawing.Point(39, 248);
             this.PortBox.MaxLength = 4;
             this.PortBox.Name = "PortBox";
             this.PortBox.Size = new System.Drawing.Size(30, 16);
             this.PortBox.TabIndex = 23;
             this.PortBox.Text = "port";
             // 
-            // IPLabelBtn
+            // IPLabel
             // 
-            this.IPLabelBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.IPLabelBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.IPLabelBtn.FlatAppearance.BorderSize = 0;
-            this.IPLabelBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IPLabelBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
-            this.IPLabelBtn.ForeColor = System.Drawing.Color.Silver;
-            this.IPLabelBtn.Location = new System.Drawing.Point(1, 222);
-            this.IPLabelBtn.Name = "IPLabelBtn";
-            this.IPLabelBtn.Size = new System.Drawing.Size(97, 22);
-            this.IPLabelBtn.TabIndex = 24;
-            this.IPLabelBtn.Text = "I.P. Address:";
-            this.IPLabelBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.IPLabelBtn.UseVisualStyleBackColor = false;
-            this.IPLabelBtn.Variable = null;
-            this.IPLabelBtn.Click += new System.EventHandler(this.IPLabelBtn_Click);
+            this.IPLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.IPLabel.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.IPLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IPLabel.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
+            this.IPLabel.ForeColor = System.Drawing.Color.Silver;
+            this.IPLabel.Location = new System.Drawing.Point(1, 222);
+            this.IPLabel.Name = "IPLabel";
+            this.IPLabel.Size = new System.Drawing.Size(88, 22);
+            this.IPLabel.TabIndex = 24;
+            this.IPLabel.Text = "I.P. Address:";
+            this.IPLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.IPLabel.Click += new System.EventHandler(this.IPLabelBtn_Click);
             // 
-            // PortLabelBtn
+            // PortLabel
             // 
-            this.PortLabelBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.PortLabelBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.PortLabelBtn.FlatAppearance.BorderSize = 0;
-            this.PortLabelBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PortLabelBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
-            this.PortLabelBtn.ForeColor = System.Drawing.Color.Silver;
-            this.PortLabelBtn.Location = new System.Drawing.Point(1, 245);
-            this.PortLabelBtn.Name = "PortLabelBtn";
-            this.PortLabelBtn.Size = new System.Drawing.Size(47, 22);
-            this.PortLabelBtn.TabIndex = 25;
-            this.PortLabelBtn.Text = "Port:";
-            this.PortLabelBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.PortLabelBtn.UseVisualStyleBackColor = false;
-            this.PortLabelBtn.Variable = null;
-            this.PortLabelBtn.Click += new System.EventHandler(this.PortLabelBtn_Click);
+            this.PortLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.PortLabel.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.PortLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PortLabel.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
+            this.PortLabel.ForeColor = System.Drawing.Color.Silver;
+            this.PortLabel.Location = new System.Drawing.Point(1, 245);
+            this.PortLabel.Name = "PortLabel";
+            this.PortLabel.Size = new System.Drawing.Size(45, 22);
+            this.PortLabel.TabIndex = 25;
+            this.PortLabel.Text = "Port:";
+            this.PortLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.PortLabel.Click += new System.EventHandler(this.PortLabelBtn_Click);
             // 
             // SeperatorLine3
             // 
@@ -441,8 +438,8 @@ namespace Dobby
             this.Controls.Add(this.IpBox);
             this.Controls.Add(this.UC4MPBetaBtn);
             this.Controls.Add(this.InfoHelpBtn);
-            this.Controls.Add(this.PortLabelBtn);
-            this.Controls.Add(this.IPLabelBtn);
+            this.Controls.Add(this.PortLabel);
+            this.Controls.Add(this.IPLabel);
             this.Controls.Add(this.PS4DebugPayloadBtn);
             this.Controls.Add(this.UC3Btn);
             this.Controls.Add(this.UC1Btn);
@@ -483,9 +480,9 @@ namespace Dobby
         public Button UC3Btn;
         public Button UC4Btn;
         public Button TLLBtn;
-        public Button IPLabelBtn;
         public Button ManualConnectBtn;
-        public Button PortLabelBtn;
+        public Label IPLabel;
+        public Label PortLabel;
         public TextBox PortBox;
         public Button PS4DebugPayloadBtn;
         public Label SeperatorLine0;

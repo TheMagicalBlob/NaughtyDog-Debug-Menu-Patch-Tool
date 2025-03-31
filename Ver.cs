@@ -319,7 +319,9 @@
           "* 4.64.409.1013 | UI bs; Some misc formatting and comment/summary additions and/or tweaks.",
           "* 4.64.412.1018 | blah blah blah more small tweaks, I want this bs to be smooth and bug-free before next release",
           "* 4.65.414.1023 | Some final checks and sorting for the patch pages, tweaked PC patch page to match eboot patch page. I'm really good at forgetting things, so probably more.",
-          "* 4.65.414.1023 | ",
+          "* 4.65.417.1027 | Cleaned up the PS4DebugPage UI and fixed it's old comment/layout styles. Trying to figure out why the HoverString function keeps dying when returning to the main page.",
+          "* 4.65.419.1030 | Finally reworked the info label thread to simply utilize the InfoLabel refference, rather than being killed and re-initialized on each form change",
+          "* 4.65.420.1033 | Reduced the amount of time it takes to clear control Tag hints when the cursor leaves the control, also added a line to assign the empty clear string to any controls without hints.",
         };
 
 

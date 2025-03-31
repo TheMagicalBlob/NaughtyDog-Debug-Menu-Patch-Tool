@@ -50,7 +50,6 @@ namespace Dobby {
         //=============================================\\
         #region [Background Function Delcarations]
 
-
         /// <summary>
         /// Search For An Unsigned Executable To Apply Patches To. <br/>
         /// Loads The File Path, Creats A New Stream, Then Runs GetGameID() To Determine The Selected Executable's Source.<br/>
@@ -60,12 +59,12 @@ namespace Dobby {
         private void LoadGameExecutable(string filePath) {
             try { 
                 fileStream?.Dispose();
-                Print($"Initializing fileStream with \"{filePath}\".");
+                Dev.Print($"Initializing fileStream with \"{filePath}\".");
                 fileStream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite);
             }
             catch(IOException dang)
             {
-                PrintError(dang);
+                Dev.PrintError(dang);
                 UpdateLabel("Access Denied, File In Use Elsewhere", true);
                 return;
             }
@@ -162,7 +161,7 @@ namespace Dobby {
                 //## Unknown games
                 //#
                 default:
-                    Print($"Unknown Game Selected (GetGameID()) Game: {Game}");
+                    Dev.Print($"Unknown Game Selected (GetGameID()) Game: {Game}");
                     RestoredDebugBtn.Font = new Font("Cambria", 9.75F, FontStyle.Strikeout);
                     RestoredDebugBtn.Enabled = false;
                     RestoredDebugBtn.Text = " Invalid Game";
@@ -238,7 +237,7 @@ namespace Dobby {
                     return DebugJumpAddress.Empty;
 
                 default:
-                    Print($"ERROR: Invalid Game ID during EbootPatchPage.GetDebugAddress");
+                    Dev.Print($"ERROR: Invalid Game ID during EbootPatchPage.GetDebugAddress");
                     return DebugJumpAddress.Empty;
             }
         }
@@ -1130,7 +1129,7 @@ namespace Dobby {
             for(;i < CustomFunctions.Length;)
                 WriteVar(fileStream, Addresses[i], CustomFunctions[i++]);
 
-            Print($"Wrote {i} Patches To {fileStream.Name}");
+            Dev.Print($"Wrote {i} Patches To {fileStream.Name}");
         }
 
 

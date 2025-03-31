@@ -247,7 +247,7 @@ Read:       fileStream.Position = TmpAddr++;
             if (DebugAddr == DebugJumpAddress.Empty)
             {
                 UpdateLabel("Error ");
-                Print("");
+                Dev.Print("");
                 return;
             }
 

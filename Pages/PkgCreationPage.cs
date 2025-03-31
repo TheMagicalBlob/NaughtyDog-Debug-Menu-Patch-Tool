@@ -94,7 +94,7 @@ namespace Dobby {
                 outputPath = OutputDirectoryPathBox.Text.Replace("\n", string.Empty);
             }
             else {
-                Print("Output directory unset, using same folder as .gp4 path");
+                Dev.Print("Output directory unset, using same folder as .gp4 path");
                 outputPath = Directory.GetParent(gp4Path).FullName;
             }
 
@@ -109,7 +109,7 @@ namespace Dobby {
             // Verfiy Publishing Tool Directory
             if (Directory.Exists(orbisToolPath))
             {
-                Print($"Directory provided in place of .exe path. Searching the following folder for publishing tools...\n - {orbisToolPath}");
+                Dev.Print($"Directory provided in place of .exe path. Searching the following folder for publishing tools...\n - {orbisToolPath}");
 
                 var files = Directory.GetFiles(orbisToolPath);
 
@@ -117,7 +117,7 @@ namespace Dobby {
                 {
                     if (file.ToLower().Contains("-cmd")) {
                         orbisToolPath = file;
-                        Print($"Using \"{orbisToolPath}\" as publishing tool path.");
+                        Dev.Print($"Using \"{orbisToolPath}\" as publishing tool path.");
                         break;
                     }
                     else if (file == files.Last())
@@ -281,7 +281,7 @@ namespace Dobby {
                 BeginPkgCreation(orbisToolPath, tempDirectory, gp4Path, outputPath);
             }
             else {
-                Print("ERROR: Unable to begin package creation.");
+                Dev.Print("ERROR: Unable to begin package creation.");
             }
         }
 

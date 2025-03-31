@@ -17,10 +17,13 @@ namespace Dobby {
             Page = PageID.MainPage;
             SaveMainForm(this);
 
-#if DEBUG
-            new Testing(this);
-#endif
+
+            Dev = new Testing();
+
             InitializeAdditionalEventHandlers(Controls);
+            
+            // Create/Initialize the thread for updating the yellow info label at the bottom of the screen
+            CreateInfoLabelUpdater();
         }
 
 
@@ -36,10 +39,5 @@ namespace Dobby {
         private void PCDebugMenuPageBtn_Click(object sender, EventArgs e)     => ChangeForm(PageID.PCDebugMenuPage);
         private void DownloadSourceBtn_Click(object sender, EventArgs e)      => System.Diagnostics.Process.Start(@"https://github.com/TheMagicalBlob/NaughtyDog-Debug-Menu-Patch-Tool/archive/refs/heads/master.zip");
         #endregion
-
-        private void MainPage_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

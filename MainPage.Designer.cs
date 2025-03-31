@@ -288,7 +288,6 @@ namespace Dobby
             this.Controls.Add(this.SeperatorLine3);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "MainPage";
-            this.Load += new System.EventHandler(this.MainPage_Load);
             this.ResumeLayout(false);
 
         }

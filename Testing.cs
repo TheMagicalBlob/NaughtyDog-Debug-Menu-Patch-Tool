@@ -24,11 +24,8 @@ namespace Dobby {
         /// <summary>
         /// Create the Dobby.Dev instance which will be running for the Program's whole runtime.
         /// </summary>
-        /// <param name="Gaia"> Main form refference to set initial ActivePage value. (otherwise set during page change) </param>
-        public Testing(Form Gaia)
+        public Testing()
         {
-            Common.Dev = this;
-
             TestGamedataFolder = @"C:\Users\msblob\Misc\gp4_tst\CUSA00009-app";
             TestPubToolPath = @"C:\Users\msblob\App\FPackageTools3.87\orbis-pub-cmd.exe";
             TestEbootPath = @"C:\Users\blob\Misc\dobby tst\CUSA07820-patch-1.00\t2-rtm.elf";
@@ -120,32 +117,42 @@ namespace Dobby {
         /// Default message output function. Prints to the debug window if present, as well as the standard output
         /// </summary>
         /// <param name="obj"> An object to print the string representation of. </param>
-        public static void Print(object obj)
+        public void Print(object obj)
         {
             var str = obj?.ToString() ?? " ";
 
-            void write(string _str) {
-                System.Diagnostics.Debug.Write(_str);
 
-                if (!Console.IsInputRedirected) {
-                    Console.Write(_str);
-                }
-            }
-
-            // Some formatting stuff
-            if(str.Length < 1)
+            // Check & format output string
+            if (str.Length < 1)
             {
                 str = " ";
             }
-            else {
-                str = obj.ToString();
-
-                if(!str.Contains("\r"))
-                    str += "\n";
+            else if(!str.Contains("\r"))
+            {
+                str += "\n";
             }
 
 
-            write(str);
+            // Print output string
+            System.Diagnostics.Debug.Write(str);
+
+            if (!Console.IsInputRedirected) {
+                Console.Write(str);
+            }
+        }
+
+        
+        /// <summary>
+        /// Basic error logging function (not yet fully implemented)
+        /// </summary>
+        public void PrintError(Exception error)
+        {
+            var message = $"{error.Message}";
+#if DEBUG
+            message += $"\n{error.StackTrace.Replace("\n", "  \n")}";
+#endif
+
+            Print($"!! ERROR: {message}");
         }
 
 

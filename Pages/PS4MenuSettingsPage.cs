@@ -23,13 +23,13 @@ namespace Dobby {
 
                 if(DefaultUniversalPatchValues.Length != UniversalBootSettingsPointers.Length || DefaultGSPatchValues.Length != GameSpecificBootSettingsPointers.Length)
                 {
-                    Print($"WARNING: Mismatch In Array Value vs pointer Length:\n  Universal:\n  Vars: {DefaultUniversalPatchValues.Length}\n  Pointers: {UniversalBootSettingsPointers.Length}\nDynamic:\n  Vars: {DefaultGSPatchValues.Length}\n  Pointers: {GameSpecificBootSettingsPointers.Length}");
+                    Dev.Print($"WARNING: Mismatch In Array Value vs pointer Length:\n  Universal:\n  Vars: {DefaultUniversalPatchValues.Length}\n  Pointers: {UniversalBootSettingsPointers.Length}\nDynamic:\n  Vars: {DefaultGSPatchValues.Length}\n  Pointers: {GameSpecificBootSettingsPointers.Length}");
                 }
 
             }
             catch (Exception darn) {
-                PrintError(darn);
-                Print("\nError initializing PS4MenuSettingsPage, returning to main page.");
+                Dev.PrintError(darn);
+                Dev.Print("\nError initializing PS4MenuSettingsPage, returning to main page.");
                 ChangeForm(null);
             }
         }
@@ -269,7 +269,7 @@ namespace Dobby {
 
             }
             #if DEBUG
-            Print($"LoadGameExecutable()::gameIndex: {GSGameIndex}\n");
+            Dev.Print($"LoadGameExecutable()::gameIndex: {GSGameIndex}\n");
             #endif
 
 
@@ -377,13 +377,13 @@ namespace Dobby {
             //#
             //## Apply Universal Options
             //#
-            Print("Applying patches from universal patch buttons...");
+            Dev.Print("Applying patches from universal patch buttons...");
 
             foreach (var button in new Dobby.Button[] { DisableDebugTextBtn, DisablePausedIconBtn, ProgPauseOnOpenBtn, ProgPauseOnCloseBtn, NovisBtn })
             {
                 // I don't trust myself enough not to have this check, lol
                 if (button == null) {
-                    Print($"ERROR: Static button \"{button.Name}\" was undeclared for some reason.");
+                    Dev.Print($"ERROR: Static button \"{button.Name}\" was undeclared for some reason.");
                     continue;
                 }
 
@@ -394,12 +394,12 @@ namespace Dobby {
                 if ((bool)patchValue == DefaultUniversalPatchValues[patchIndex])
                 {
                     #if DEBUG
-                    Print("Skipping Unchanged Patch Value...");
+                    Dev.Print("Skipping Unchanged Patch Value...");
                     #endif
 
                     continue;
                 }
-                Print($"Writing patch value for {button.Name}...");
+                Dev.Print($"Writing patch value for {button.Name}...");
 
 
                 if (patchPointer.Length == 4)
@@ -413,7 +413,7 @@ namespace Dobby {
                         
                 if (pointerTypeIdentifier == 0)
                 {
-                    Print($"Default Patch Value Pointer Data {(patchPointer.Length == 0 ? "Null Somehow. (WARNING!!)" : $"Size Invalid ({patchPointer.Length})")}");
+                    Dev.Print($"Default Patch Value Pointer Data {(patchPointer.Length == 0 ? "Null Somehow. (WARNING!!)" : $"Size Invalid ({patchPointer.Length})")}");
                     continue;
                 }
 
@@ -435,7 +435,7 @@ namespace Dobby {
                 // Increment number of applied patches
                 patchCount++;
 
-                Print("\n\n");
+                Dev.Print("\n\n");
             }
 
 
@@ -443,7 +443,7 @@ namespace Dobby {
             //#
             //## Apply Game-Specific Options
             //#
-            Print("Applying patches from game-specific patch buttons...");
+            Dev.Print("Applying patches from game-specific patch buttons...");
 
             foreach (var button in GSButtons)
             {
@@ -455,7 +455,7 @@ namespace Dobby {
                 if (patchValue.Equals(DefaultGSPatchValues[patchIndex]))
                 {
                     #if DEBUG
-                    Print("Skipping Unchanged Patch Value...");
+                    Dev.Print("Skipping Unchanged Patch Value...");
                     #endif
                     continue;
                 }
@@ -469,7 +469,7 @@ namespace Dobby {
                     pointerTypeIdentifier = 0xFF;
                 } 
                 else {
-                    Print($"ERROR: Invalid Length for Provided Path Value! ({patchPointer.Length} != 4 | 8)");
+                    Dev.Print($"ERROR: Invalid Length for Provided Path Value! ({patchPointer.Length} != 4 | 8)");
                     continue;
                 }
 
@@ -491,7 +491,7 @@ namespace Dobby {
                 // Increment number of applied patches
                 ++patchCount;
                         
-                Print("\n\n");
+                Dev.Print("\n\n");
             }
 
 
@@ -614,7 +614,7 @@ namespace Dobby {
         private void ResetCustomDebugOptions()
         {
             if (Game == GameID.Empty) {
-                Print("ResetCustomDebugOptions(): Game was unset, aborting.");
+                Dev.Print("ResetCustomDebugOptions(): Game was unset, aborting.");
                 return;
             }
 
@@ -662,11 +662,11 @@ namespace Dobby {
                 ExecutablePathBox.Reset();
             }
             catch (IndexOutOfRangeException) {
-                Print("ERROR: Unable to fully reset control positions!!! (Unable to find one or more controls.)");
+                Dev.Print("ERROR: Unable to fully reset control positions!!! (Unable to find one or more controls.)");
             }
             catch (Exception oops) {
-                Print("ERROR: Unable to fully reset control positions!!!");
-                PrintError(oops);
+                Dev.Print("ERROR: Unable to fully reset control positions!!!");
+                Dev.PrintError(oops);
             }
 
 
@@ -800,7 +800,7 @@ namespace Dobby {
             //## Assign values to variables made to keep track of the default form size/control postions for the reset button.
             //#
 
-            Print("Saving original control positions and form vertical height.\n");
+            Dev.Print("Saving original control positions and form vertical height.\n");
 
             ControlsToMove = new Control[] { // Every Control Below The "Game Specific Patches" Label
                 SeperatorLine2,
@@ -925,14 +925,14 @@ namespace Dobby {
             }
 
             else
-                Print($"ERROR: Unexpected Variable type ({type}).");
+                Dev.Print($"ERROR: Unexpected Variable type ({type}).");
 
 
             // Manually flush the stream just in case
             fileStream.Flush(true);
                 
             #if DEBUG
-            Print(msg);
+            Dev.Print(msg);
             #endif
         }
         
@@ -982,7 +982,7 @@ namespace Dobby {
                 ExecutablePathBox.Set(Testing.TestEbootPath);
             }
             else
-                Print($"Unable to use TestEbootPath, as {(ExecutablePathBox.IsDefault() ? Testing.TestEbootPath == null ? "The path wasn't set" : "the file doesn't exist" : "An alternate path was provided in the ExecutablePathBox.")}");
+                Dev.Print($"Unable to use TestEbootPath, as {(ExecutablePathBox.IsDefault() ? Testing.TestEbootPath == null ? "The path wasn't set" : "the file doesn't exist" : "An alternate path was provided in the ExecutablePathBox.")}");
             #endif
 
 
@@ -1001,7 +1001,7 @@ namespace Dobby {
                 else
                     return;
             }
-            Print($"control was not default ({ExecutablePathBox.IsDefault()}:{ExecutablePathBox.Text})");
+            Dev.Print($"control was not default ({ExecutablePathBox.IsDefault()}:{ExecutablePathBox.Text})");
 
 
             PrepareProvidedExecutable(ExecutablePathBox.Text);
@@ -1017,7 +1017,7 @@ namespace Dobby {
                 #if !DEBUG
                 MessageBox.Show($"An Unexpected Error Occured While Applying The Patches, Please Ensure You're Running The Latest Release Build\nIf You Are, Report It To The Moron Typing Out This Error Message", "Internal Error Applying Patch Data");
                 #endif
-                Print("ApplyMenuSettings returned error status.");
+                Dev.Print("ApplyMenuSettings returned error status.");
                 return;
             }
 
