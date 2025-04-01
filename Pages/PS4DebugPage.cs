@@ -506,8 +506,7 @@ namespace Dobby {
         /// </summary>
         private void CheckConnectionStatus()
         {
-            try
-            {
+            try {
                 if((ConnectionThread == null || ConnectionThread.ThreadState == ThreadState.Unstarted) || (Geo == null || !Geo.IsConnected || Geo?.GetProcessInfo(Executable).name != ProcessName || !ExecutableNames.Contains(Geo?.GetProcessInfo(Executable).name)))
                 {
                     GameVersion = null;
@@ -600,24 +599,19 @@ namespace Dobby {
         /// <param name="Versions">Version Strings To Check Against GameVersion</param>
         private void Toggle(ulong[] Addresses, string[] Versions) {
             try {
-                if(Geo.IsConnected && Geo.GetProcessInfo(Executable).name == ProcessName)
+                if(Geo.IsConnected && Geo.GetProcessInfo(Executable).name == ProcessName) //! pretty sure this check is unnecessary, if it isn't then that's an issue on it's own
                 {
-                    var AddressIndex = 0;
-
-                    foreach(string Version in Versions)
+                    for (int i = 0; i < Versions.Length; i++)
                     {
-                        if(GameVersion == Version)
+                        if (GameVersion == Versions[i])
                         {
-                            var pointer = (ulong)(BitConverter.ToInt64(Geo.ReadMemory(Executable, Addresses[AddressIndex], 8), 0) + DebugModePointerOffset);
+                            var pointer = (ulong)(BitConverter.ToInt64(Geo.ReadMemory(Executable, Addresses[i], 8), 0) + DebugModePointerOffset);
 
                             Geo.WriteMemory(Executable, pointer, !Geo.ReadMemory<bool>(Executable, pointer));
-                            
-                            
-                            Dev.Print($"Toggle(ulong[] Addresses, string[] Versions) Wrote To {pointer:X}");
-                            UpdateLabel($"Toggled byte at {pointer:X}");
+
+                            UpdateLabel($"{(Geo.ReadMemory<bool>(Executable, pointer) ? "Enabled" : "Disabled")} Debug Mode.");
                             return;
                         }
-                        else if(AddressIndex != Addresses.Length - 1) AddressIndex++;
                     }
 
                     UpdateLabel(GameVersion + " not found.");
@@ -631,7 +625,10 @@ namespace Dobby {
                     UpdateLabel("Unable to toggle byte (Possible connection issues)");
                 }
             }
-            catch(Exception tabarnack) { Dev.Print(tabarnack.Message); }
+            catch(Exception tabarnack)
+            {
+                Dev.PrintError(tabarnack);
+            }
         }
 
 
