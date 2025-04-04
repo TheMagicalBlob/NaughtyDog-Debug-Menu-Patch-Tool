@@ -1,12 +1,16 @@
-# Naughty Dog Debug Mode Patch Tool
+# Naughty Dog Debug Menu Enabler
 _**Themed After Naughty Dog's Simple Debug Menus**_
+A windows application which can be used to enable the debug menus/mode in Naughty Dog's various PS4 games (as well as the PC release, in a limited form).
 
-Can Be Either Used With ps4debug.bin &amp; A Modded PS4 (Currently 9.00 Or Lower)
-Connected To The Same Connection As The PC In Order To Toggle The Debug Menus As-Is.
-
-Or Be Used On A Dumped Game/Game Patch's eboot.bin (or .elf) To Enable The Debug Menu And Patch In Hidden Menu Options (Assuming Any Are Available,
-And I've Made A Patch For It) Which Normally Get Skipped After A Failed Debug Memory Check (Ignoring PS4 Devkits, Obviously)
-
+The tool can either:
+  - enable the debug mode/menus that shipped with the game (local .bin patch, or RTM) without any extra modifications.
+  - _disable_ the debug menu if desired, assuming it was enabled with the same patch as the tool would use.
+  - patch out some jumps and apply a few fixes to force submenus normally exclusive to devkits to load anyway (with some issues due to the lack of a debug memory pool)
+  - patch in a thoroughly restored version of the debug menus (The Last of Us Remastered specifically)
+  - apply custom patches to the debug menu to add some additional functionality which was never normally present in the menu (unstripped or otherwise)
+ 
+There is also an additional page for creating packages with the edited executable(s) from the eboot patch page and/or ps4 menu settings page.
+****
 (ps4debug Payload Available [Here](https://github.com/jogolden/ps4debug/releases), Plus A Lightweight Payload Sender To Inject It [Here](https://github.com/TheMagicalBlob/Blobs-Payload-Sender/releases/download/1.7.1-Final/Payload.Sender.1.7.1.exe))
 
 Debug Mode/Menus Usage:
@@ -16,16 +20,33 @@ Debug Mode/Menus Usage:
 - Toggle Debug Fly (Noclip) With L3 + R3
 - L3 + Triangle Normally Toggles Debug Rendering, Though I Changed It To An FPS Toggle In Most Versions Since There's No Debug Rendering To Toggle
 
-# Pages:
+## Page Functionality:
 
-- The First (PS4Debug Page) Uses libdebug &amp; PS4Debug to enable the debug modes of any of the PS4 Naughty Dog games - Though Once The Game's Booted, Applying The Restoration Patches (Or Any Others) Won't Unlock Anything Since The Menu's Already Loaded; *It Can Only Be Toggled*
+### PS4 Debug Patch Page
+This page connects to a PS4 on the same internal network as the machine running the patch tool, and uses ps4debug to read the debug menu boolean pointer and toggle the byte at the read RAM address.
 
-- The Second (EbootPatch Page) Can Be Used On An Unsigned/Decrypted Game's Executable (usually named eboot.bin, But May Also Be self Files) 
-To Enable Or Disable The Default Debug Mode For Whichever Game's Selected, Or, If Available; Patch In A Restored Version Of The Debug Menu Through Various Methods, Or A Customized One If There's Not Enough Left To Really "Restore" It.
+The payload can be sent from the application itself, but it's also widely available elsewhere.
 
-- The Third (MiscPatch Page) I'll Type This Later, My Back's Starting To Hurt...
+The app will automatically attempt to connect (or reconnect if the game has changed) to the provided IP when a game button is selected, I've left an actual connection button just in case someone thinks it's necessary, lol.
 
-- The Fourth (PkgCreation Page) This Page Hasn't Been Finished Yet, But It'll Just Use Orbis-pub-cmd.exe To Build A Pkg For The User
+
+### Eboot Patch Page
+This page can apply either a basic debug menu patch, or a large restoration (or custom modification if there's nothing really left to restore) to a provided executable (eboot.bin, generally) for any of NaughtyDog's PS4 releases- even UC4's mp beta.
+
+
+### Misc. Debug Menu Settings Page
+This page is for patching in a custom settings function for that will apply various user-selected options to the game on-boot.
+
+
+#### `(These following two pages aren't technically NaughtyDog-related, but they might be found useful)`
+### PKG Creation Page
+This page can create a custom fpkg from a provided .gp4 project file- assuming a valid path to a folder containing the required build tools is provided (fpkg toolset- not liborbispkg)
+
+
+### GP4 Creation Page
+This page uses my libgp4 library to create a .gp4 project from a provided gamedata folder, which can be used to build said gamedata in to a fakesigned orbis package (fpkg).
+****
+
 
 
 # Methods For Restoring Debug Submenus/Options In Naughty Dog's Debug Menus
@@ -39,7 +60,6 @@ I Looked At Other Games Plus Tlou Dev Footage To See Where Things Should Go To T
 
 _In Case This Crossed Your Mind:_
 - The Most Obvious Solution Of Simply Making The Debug Memory Check Return Successful Will Cause Numerous Entirely Unusable Things To Load, And Break Far More Than I'd Like, So Individually Loading Skipped Bits Is Still The Best Solution
-
 
 
 
