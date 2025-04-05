@@ -291,6 +291,30 @@ namespace Dobby {
         public static void WriteVar(FileStream fileStream, object data) => WriteVar(fileStream, 0xDEADDAD, data);
 
 
+
+        public static int FindSubArray(byte[] array, byte[] subarray)
+        {
+            for (var i = array.Length - 1; i >= subarray.Length; --i)
+            {
+                if (array[i] == subarray.Last())
+                {
+                    var j = subarray.Length;
+
+                    for (; j > 0; --j)
+                    {
+                        if (array[i - (j - 1)] != subarray[(subarray.Length) - (j)])
+                            break;
+
+                    }
+                    if (j == 0) {
+                        return i - subarray.Length + 1;
+                    }
+                }
+            }
+
+            return -1;
+        }
+
         
         /// <summary>
         /// Hash a specific chunk of data in the provided exectutable's file stream to determine the current game, then return the game's name &amp; app version.<br/>
@@ -1159,7 +1183,8 @@ namespace Dobby {
 
 
 
-        public enum GameID : long {
+        public enum GameID : long
+        {
             // Read 160 bytes at 0x5100 as SHA256 Then Checked As Int32 Because I'm An Idiot And Don't Feel Like Correcting It Since It Works
             UC1100 = -679355525,
             UC1102 = 104877429,
@@ -1218,6 +1243,7 @@ namespace Dobby {
             T2108 = 537380869,
             T2109 = 1174398197,
             
+            //! TODO: rework this.
             // PC Eboot Identifiers - Very Limited Though | 0x1EC + 0x1F8 (Kept Seperate Through Immense Laziness)
             T1X101 = 42695168 + 16007532,
             T1XL101 = 42670080 + 16010844,
@@ -1229,6 +1255,9 @@ namespace Dobby {
             T1XL1017 = 42677248 + 16011148,
             T1X102 = 2228464 + 95631360,
             T1XL102 = 2228464 + 95634432,
+
+            T2R100 = 3735929275,
+            T2RL100 = 3735930707,
 
             Empty = 0xDEADBEEF
         }

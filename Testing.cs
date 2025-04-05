@@ -28,7 +28,7 @@ namespace Dobby {
         {
             TestGamedataFolder = @"C:\Users\msblob\Misc\gp4_tst\CUSA00009-app";
             TestPubToolPath = @"C:\Users\msblob\App\FPackageTools3.87\orbis-pub-cmd.exe";
-            TestEbootPath = @"C:\Users\blob\Misc\dobby tst\CUSA07820-patch-1.00\t2-rtm.elf";
+            //TestEbootPath = @"C:\Users\blob\Misc\dobby tst\CUSA07820-patch-1.00\t2-rtm.elf";
             TestGP4Path = @"C:\Users\msblob\Misc\gp4_tst\CUSA00009-app.gp4";
 
             OverrideDynamicOutput = false;

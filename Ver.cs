@@ -324,6 +324,8 @@
           "* 4.65.420.1033 | Reduced the amount of time it takes to clear control Tag hints when the cursor leaves the control, also added a line to assign the empty clear string to any controls without hints.",
           "* 4.65.427.1047 | Added a check for the right title id to the PS4DebugPage patch buttons (why on earth was it not already there??). Other minor background crap. Fixed a couple of hint tags that I'd forgotten about, and added a few others.",
           "* 4.65.428.1048 | Edited the message that shows upon writing to the game memory on the PS4Debug Patch Page (the user doesn't care about or need to know the dang address...); Replaced clunky foreach implementation with the for loop it should've been in the first place",
+          "* 4.65.430.1050 | Tweaked Eboot & PC exe Patch pages' patch button text",
+          "* 4.65.432.1056 | Replaced hilariously slow scaning bs with a proper pattern scan; reworking GameID's for PC executables; Misc background stuff",
         };
 
 

@@ -86,9 +86,9 @@ namespace Dobby {
                 case GameID.T2107:
                 case GameID.T2108:
                 case GameID.T2109:
-                    RestoredDebugBtn.Font = new Font("Cambria", 9.25F, FontStyle.Bold);
                     RestoredDebugBtn.Enabled = true;
-                    RestoredDebugBtn.Text = RestoredDebugBtn.Text.Replace("Restored/Custom", "Custom");
+                    RestoredDebugBtn.Font = new Font("Cambria", 9.25F, FontStyle.Bold);
+                    RestoredDebugBtn.Text = "Enable Debug Mode - Custom";
                     break;
                 //#
                 //## Games I've Made Restorations For
@@ -105,7 +105,7 @@ namespace Dobby {
                 case GameID.UC4133MP:
                     RestoredDebugBtn.Font = new Font("Cambria", 9.25F, FontStyle.Bold);
                     RestoredDebugBtn.Enabled = true;
-                    RestoredDebugBtn.Text = " Restored";
+                    RestoredDebugBtn.Text = "Enable Debug Mode - Restored";
                     break;
 
                 //#
@@ -154,7 +154,7 @@ namespace Dobby {
                 case GameID.TLL10X:
                     RestoredDebugBtn.Font = new Font("Cambria", 9.25F, FontStyle.Bold | FontStyle.Strikeout);
                     RestoredDebugBtn.Enabled = false;
-                    RestoredDebugBtn.Text = " Restored/Custom";
+                    RestoredDebugBtn.Text = "Enable Debug Mode - Unavailable";
                     break;
 
                 //#
@@ -162,9 +162,9 @@ namespace Dobby {
                 //#
                 default:
                     Dev.Print($"Unknown Game Selected (GetGameID()) Game: {Game}");
-                    RestoredDebugBtn.Font = new Font("Cambria", 9.75F, FontStyle.Strikeout);
                     RestoredDebugBtn.Enabled = false;
-                    RestoredDebugBtn.Text = " Invalid Game";
+                    RestoredDebugBtn.Font = new Font("Cambria", 9.25F, FontStyle.Strikeout);
+                    RestoredDebugBtn.Text = "Enable Debug Mode - Unavailable";
                     break;
             }
         }

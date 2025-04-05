@@ -176,6 +176,7 @@ namespace Dobby
             this.ExecutablePathBox.Size = new System.Drawing.Size(233, 23);
             this.ExecutablePathBox.TabIndex = 38;
             this.ExecutablePathBox.Text = " Select An exe To Modify";
+            this.ExecutablePathBox.TextChanged += new System.EventHandler(this.ExecutablePathBox_TextChanged);
             // 
             // SeperatorLine1
             // 
@@ -197,9 +198,9 @@ namespace Dobby
             this.BaseDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.BaseDebugBtn.Location = new System.Drawing.Point(1, 53);
             this.BaseDebugBtn.Name = "BaseDebugBtn";
-            this.BaseDebugBtn.Size = new System.Drawing.Size(231, 23);
+            this.BaseDebugBtn.Size = new System.Drawing.Size(158, 23);
             this.BaseDebugBtn.TabIndex = 20;
-            this.BaseDebugBtn.Text = "Enable The Default Debug Menus";
+            this.BaseDebugBtn.Text = "Enable the Debug Mode";
             this.BaseDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BaseDebugBtn.UseVisualStyleBackColor = false;
             this.BaseDebugBtn.Variable = null;
@@ -215,9 +216,9 @@ namespace Dobby
             this.DisableDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.DisableDebugBtn.Location = new System.Drawing.Point(1, 28);
             this.DisableDebugBtn.Name = "DisableDebugBtn";
-            this.DisableDebugBtn.Size = new System.Drawing.Size(184, 23);
+            this.DisableDebugBtn.Size = new System.Drawing.Size(161, 23);
             this.DisableDebugBtn.TabIndex = 38;
-            this.DisableDebugBtn.Text = "Disable The Debug Menus";
+            this.DisableDebugBtn.Text = "Disable the Debug Mode";
             this.DisableDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisableDebugBtn.UseVisualStyleBackColor = false;
             this.DisableDebugBtn.Variable = null;

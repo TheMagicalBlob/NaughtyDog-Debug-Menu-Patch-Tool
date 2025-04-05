@@ -27,9 +27,13 @@ namespace Dobby {
                 }
 
             }
-            catch (Exception darn) {
+            catch (Exception darn)
+            {
+                // Print some shit
                 Dev.PrintError(darn);
                 Dev.Print("\nError initializing PS4MenuSettingsPage, returning to main page.");
+                
+                // Return to the previous page
                 ChangeForm(null);
             }
         }
@@ -1437,31 +1441,33 @@ namespace Dobby {
         /// <summary>
         /// An array of addresses at which to place the function call to the custom BootSettings function, generally redirecting the Quick Menu initialization method
         /// </summary>
-        private static readonly int[] BootSettingsCallAddress = new int[] {
-                0, // 0x | UC1100
-                0, // 0x | UC1102
-                0, // 0x | UC2100
-                0, // 0x | UC2102
-                0, // 0x | UC3100
-                0, // 0x | UC3102
-                0, // 0x | UC4100
-                0, // 0x | UC4101
-                0, // 0x | UC4133
-                0, // 0x | UC4133MP
-                0, // 0x | TLL100
-                0, // 0x | TLL109
-                0x101FB,  // 0x40c1fb | T1R100
-                0, // 0x | T1R109
-                0, // 0x | T1R111
-                0x1F1DE8, // 0x53dde8 | T2100
-                0x1f217a, // 0x5ee17a | T2107
-                0x633cba  // 0xa2fcba | T2109
+        private static readonly int[] BootSettingsCallAddress = new int[]
+        {
+            0, // 0x | UC1100
+            0, // 0x | UC1102
+            0, // 0x | UC2100
+            0, // 0x | UC2102
+            0, // 0x | UC3100
+            0, // 0x | UC3102
+            0, // 0x | UC4100
+            0, // 0x | UC4101
+            0, // 0x | UC4133
+            0, // 0x | UC4133MP
+            0, // 0x | TLL100
+            0, // 0x | TLL109
+            0x101FB,  // 0x40c1fb | T1R100
+            0, // 0x | T1R109
+            0, // 0x | T1R111
+            0x1F1DE8, // 0x53dde8 | T2100
+            0x1f217a, // 0x5ee17a | T2107
+            0x633cba  // 0xa2fcba | T2109
         };
 
         /// <summary>
         /// An array of addresses at which to place the consructed BootSettings function assembly/data
         /// </summary>
-        private static readonly int[] BootSettingsFunctionAddress = new int[] {
+        private static readonly int[] BootSettingsFunctionAddress = new int[]
+        {
             0, // 0x | UC1100
             0, // 0x | UC1102
             0, // 0x | UC2100
