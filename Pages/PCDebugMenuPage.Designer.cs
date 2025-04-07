@@ -9,6 +9,7 @@ namespace Dobby
         //--|   Designer Crap, No Touchie   |--\\
         //=====================================\\
         #region [Designer Crap, No Touchie]
+
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -22,10 +23,14 @@ namespace Dobby
             if(disposing && (components != null)) {
                 components.Dispose();
             }
+
+            DebugScanThread?.Abort();
             Common.fileStream?.Dispose();
             Common.Game = Common.GameID.Empty;
+
             base.Dispose(disposing);
         }
+
         public void InitializeComponent() {
             this.MainLabel = new System.Windows.Forms.Label();
             this.Info = new System.Windows.Forms.Label();
