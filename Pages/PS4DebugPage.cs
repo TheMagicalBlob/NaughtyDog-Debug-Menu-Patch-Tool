@@ -614,7 +614,7 @@ namespace Dobby {
                         }
                     }
 
-                    UpdateLabel(GameVersion + " not found.");
+                    UpdateLabel($"Version {GameVersion} not found.");
                 }
                 else {
                     Dev.Print(
@@ -639,8 +639,12 @@ namespace Dobby {
         /// <param name="AddressArray">Array Of Addresses To Read/Write To</param>
         private void Toggle(ulong[] AddressArray) {
             try {
-                if(Geo.IsConnected && Geo.GetProcessInfo(Executable).name == ProcessName)
+                if (Geo.IsConnected && Geo.GetProcessInfo(Executable).name == ProcessName)
+                {
                     Array.ForEach(AddressArray, Address => Geo.WriteMemory(Executable, Address, !Geo.ReadMemory<bool>(Executable, Address)));
+
+                    UpdateLabel($"Patches Applied");
+                }
 
             }
             catch(Exception tabarnack) { Dev.Print(tabarnack.Message); }

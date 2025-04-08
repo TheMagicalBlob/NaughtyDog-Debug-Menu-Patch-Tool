@@ -326,7 +326,8 @@
           "* 4.65.428.1048 | Edited the message that shows upon writing to the game memory on the PS4Debug Patch Page (the user doesn't care about or need to know the dang address...); Replaced clunky foreach implementation with the for loop it should've been in the first place",
           "* 4.65.430.1050 | Tweaked Eboot & PC exe Patch pages' patch button text",
           "* 4.65.432.1056 | Replaced hilariously slow scaning bs with a proper pattern scan; reworking GameID's for PC executables; Misc background stuff",
-          "* 4.65.435.1067 | Moved enums and class extentions to seperate files (feels better, less clutter in the main Common file), Removed the game version detection crap from the PC patch page, it's just too limited and ulitmately pointless, as I'm simple scanning for the patch address anyway. Other Miscellaneous crap.",
+          "* 4.65.435.1067 | Moved enums and class extentions to seperate files (feels better, less clutter in the main Common file), Removed the game version detection crap from the PC patch page, it's just too limited and ulitmately pointless, as I'm simply scanning for the patch address anyway. Other Miscellaneous crap.",
+          "* 4.66.437.1070 | Added support for the PC release of the Last of Us Part II Remastered to the PC menu patch page, and slightly reworked the page (code-wise, not design).",
         };
 
 

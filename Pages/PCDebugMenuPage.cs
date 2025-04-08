@@ -24,11 +24,18 @@ namespace Dobby {
         //=================================\\
         #region [Variable Declarations]
 
-        /// <summary> Byte Array Used To Find The Address To Enable The Debug Mode In T1X PC. </summary>
-        private readonly byte[]
-            T1XDebugDat = new byte[] { 0x8a, 0x8f, 0xf2, 0x3e, 0x00, 0x00, 0x84, 0xc9, 0x0f, 0x94, 0xc2, 0x84, 0xc9, 0x0f, 0x95, 0xc1, 0x88, 0x8f, 0x3d, 0x3f, 0x00, 0x00, 0x88, 0x97, 0x2f, 0x3f, 0x00, 0x00 },
-            T2XDebugDat = new byte[] { 0x13, 0x3f, 0x00, 0x00, 0x84, 0xc9, 0x0f, 0x94, 0xc2 }
-        ;
+        /// <summary>
+        /// Byte Array Used To Find The Address To Enable The Debug Mode In T1X PC. (why tf is this one so long?)
+        /// </summary>
+        private readonly byte[] T1XDebugDat = new byte[] { 0x8a, 0x8f, 0xf2, 0x3e, 0x00, 0x00, 0x84, 0xc9, 0x0f, 0x94, 0xc2, 0x84, 0xc9, 0x0f, 0x95, 0xc1, 0x88, 0x8f, 0x3d, 0x3f, 0x00, 0x00, 0x88, 0x97, 0x2f, 0x3f, 0x00, 0x00 };
+        
+        /// <summary>
+        /// Byte Array Used To Find The Address To Enable The Debug Mode In T2R PC.
+        /// </summary>
+        private readonly byte[] T2RDebugDat = new byte[] { 0x13, 0x3f, 0x00, 0x00, 0x84, 0xc9, 0x0f, 0x94, 0xc2 };
+
+
+        private bool? partII;
 
         private Thread DebugScanThread;
         #endregion
@@ -43,65 +50,168 @@ namespace Dobby {
         
         private void LoadGameExecutable(string filePath)
         {
+            UpdateLabel("Scanning executable for build version...");
+            
+            
+            // Variable Declarations
             byte[] array;
             int buildNumberAddress;
-            string buildNumber;
-            
-            UpdateLabel("Scanning executable for patch address...");
+            var result = string.Empty;
 
 
-
+            // Load executable in to an array for faster reading
             array = File.ReadAllBytes(filePath);
+
+            // Check for a build number
             buildNumberAddress = FindSubArray(array, Encoding.UTF8.GetBytes("BUILD_NUMBER="));
                 
             if (buildNumberAddress != -1)
             {
-                buildNumber = string.Empty;
-
-
                 while (array[buildNumberAddress + 13] != (byte)0x00)
                 {
                     ActiveGameID += (char)array[(buildNumberAddress++) + 13];
                 }
-                if (buildNumber == string.Empty)
+                if (ActiveGameID == string.Empty)
                 {
-
+                    ActiveGameID = "Unknown Build";
                 }
 
-                foreach (var @char in buildNumber) {
-                    Game += (@char); // the build numbers are the same between AVX and non-AVX versions, while addresses are predictably not the same. maybe check the file name, I guess
+                foreach (var @char in ActiveGameID) {
+                    Game += (@char);
                 }
+                
+                
+                result = $"Build: {ActiveGameID}";
             }
 
+            
 
-            // run for each pc release and replace old checks
-            Dev.Print(Game);
+            if (filePath.ToLower().Contains("tlou-ii"))
+            {
+                partII = true;
+                result = "Tlou Part II " + result;
+            }
+            else if (filePath.ToLower().Contains("tlou-i"))
+            {
+                partII = false;
+                result = "Tlou Part I " + result;
+            }
+            if (partII != null && filePath.Contains("i-l"))
+            {
+                result += " (non-avx)";
+            }
 
-            GameInfoLabel.Text = ActiveGameID;
+            GameInfoLabel.Text = result;
 
 
-            DebugScanThread.Start(new dynamic[] { array, filePath = filePath.Substring(filePath.LastIndexOf('\\') + 1)});
+
+            UpdateLabel("Scanning executable for patch address...");
+
+            DebugScanThread = new Thread(new ParameterizedThreadStart(ScanForDebugJumpAddress), 4);
+            DebugScanThread.Start(new dynamic[] { array, filePath });
         }
 
 
         /// <summary>
         /// Attempt to find the instruction to be patched through byte pattern scan
         /// </summary>
-        private void ScanForDebugJumpAddress(dynamic filePath)
-        { 
-            var guessedDebug = FindSubArray(File.ReadAllBytes(filePath?.ToString()), T1XDebugDat) - 5;
+        private void ScanForDebugJumpAddress(dynamic args)
+        {
+            var guessedDebug = FindSubArray(File.ReadAllBytes(args[1]), T1XDebugDat);
 
-            if (guessedDebug == -6)
+            Dev.Print(string.Join("", T1XDebugDat));
+
+            if (guessedDebug != -1)
             {
-                MessageBox.Show("Unable to find patch address. (sorry!)");
+                fileStream = File.OpenWrite(args.filePath);
+                fileStream.Position = guessedDebug - 5;
+                fileStream.WriteByte(0x8F);
+                
+                UpdateLabel($"T1x PC Debug Menus Enabled");
+            }
+            else if (guessedDebug = FindSubArray(File.ReadAllBytes(args[1]), T2RDebugDat) != -1)
+            {
+                fileStream = File.OpenWrite(args.filePath);
+                fileStream.Position = guessedDebug - 1;
+                fileStream.WriteByte(0x95);
+                
+                UpdateLabel($"T2R PC Debug Menus Enabled");
+            }
+
+            fileStream?.Dispose();
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="byte"></param>
+        private void ToggleDebug(byte @byte)
+        {
+            if (Game == GameID.Empty) {
+                UpdateLabel("Please Select A Game's Executable First", true);
+                return;
+            }
+
+            var jumpAddress = DebugJumpAddress.Empty;
+
+            switch (Game)
+            {
+                // The Last of Us Part I (PC)
+                case GameID.T1X101:
+                    jumpAddress = DebugJumpAddress.T1X101Debug;
+                    break;
+                case GameID.T1XL101:
+                    jumpAddress = DebugJumpAddress.T1XL101Debug;
+                    break;
+                case GameID.T1X1015:
+                    jumpAddress = DebugJumpAddress.T1X1015Debug;
+                    break;
+                case GameID.T1XL1015:
+                    jumpAddress = DebugJumpAddress.T1XL1015Debug;
+                    break;
+                case GameID.T1X1016:
+                    jumpAddress = DebugJumpAddress.T1X1016Debug;
+                    break;
+                case GameID.T1XL1016:
+                    jumpAddress = DebugJumpAddress.T1XL1016Debug;
+                    break;
+                case GameID.T1X1017:
+                    jumpAddress = DebugJumpAddress.T1X1017Debug;
+                    break;
+                case GameID.T1XL1017:
+                    jumpAddress = DebugJumpAddress.T1XL1017Debug;
+                    break;
+                case GameID.T1X102:
+                    jumpAddress = DebugJumpAddress.T1X102Debug;
+                    break;
+                case GameID.T1XL102:
+                    jumpAddress = DebugJumpAddress.T1XL102Debug;
+                    break;
+
+                // The Last of Us Part 2 Remastered (PC)
+                case GameID.T2R100:
+                    jumpAddress = DebugJumpAddress.T2R100;
+                    break;
+                case GameID.T2RL100:
+                    jumpAddress = DebugJumpAddress.T2RL100;
+                    break;
             }
 
 
-            fileStream.Position = guessedDebug;
-            fileStream.WriteByte(0x8F);
-                
-            MessageBox.Show($"0x8F Written At {guessedDebug:X}", "That Should Work");
+            if (jumpAddress == DebugJumpAddress.Empty)
+            {
+                UpdateLabel("Error, Unknown Game Provided.");
+                return;
+            }
+
+
+            fileStream.Position = (int) jumpAddress;
+            fileStream.WriteByte(@byte);
+            fileStream.Flush();
         }
+
+        
 
 
         /// <summary>
@@ -173,72 +283,6 @@ namespace Dobby {
 
             return versionString;
             #endif
-        }
-
-
-        private void ToggleDebug(byte @byte)
-        {
-            if (Game == GameID.Empty) {
-                UpdateLabel("Please Select A Game's Executable First", true);
-                return;
-            }
-
-            var jumpAddress = DebugJumpAddress.Empty;
-
-            switch (Game)
-            {
-                // The Last of Us Part I (PC)
-                case GameID.T1X101:
-                    jumpAddress = DebugJumpAddress.T1X101Debug;
-                    break;
-                case GameID.T1XL101:
-                    jumpAddress = DebugJumpAddress.T1XL101Debug;
-                    break;
-                case GameID.T1X1015:
-                    jumpAddress = DebugJumpAddress.T1X1015Debug;
-                    break;
-                case GameID.T1XL1015:
-                    jumpAddress = DebugJumpAddress.T1XL1015Debug;
-                    break;
-                case GameID.T1X1016:
-                    jumpAddress = DebugJumpAddress.T1X1016Debug;
-                    break;
-                case GameID.T1XL1016:
-                    jumpAddress = DebugJumpAddress.T1XL1016Debug;
-                    break;
-                case GameID.T1X1017:
-                    jumpAddress = DebugJumpAddress.T1X1017Debug;
-                    break;
-                case GameID.T1XL1017:
-                    jumpAddress = DebugJumpAddress.T1XL1017Debug;
-                    break;
-                case GameID.T1X102:
-                    jumpAddress = DebugJumpAddress.T1X102Debug;
-                    break;
-                case GameID.T1XL102:
-                    jumpAddress = DebugJumpAddress.T1XL102Debug;
-                    break;
-
-                // The Last of Us Part 2 Remastered (PC)
-                case GameID.T2R100:
-                    jumpAddress = DebugJumpAddress.T2R100;
-                    break;
-                case GameID.T2RL100:
-                    jumpAddress = DebugJumpAddress.T2RL100;
-                    break;
-            }
-
-
-            if (jumpAddress == DebugJumpAddress.Empty)
-            {
-                UpdateLabel("Error, Unknown Game Provided.");
-                return;
-            }
-
-
-            fileStream.Position = (int) jumpAddress;
-            fileStream.WriteByte(@byte);
-            fileStream.Flush();
         }
         #endregion
 

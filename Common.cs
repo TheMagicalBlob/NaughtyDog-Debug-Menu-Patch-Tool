@@ -82,9 +82,7 @@ namespace Dobby {
 
         public static Color NDYellow = Color.FromArgb(255, 227, 0);
 
-        public static string
-            ActiveGameID = "UNK"
-        ;
+        public static string ActiveGameID = string.Empty;
 
 
         
