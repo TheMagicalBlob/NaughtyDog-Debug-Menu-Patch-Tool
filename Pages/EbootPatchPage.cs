@@ -27,8 +27,6 @@ namespace Dobby {
 
         private static DebugJumpAddress DebugAddressForSelectedGame;
 
-        private static string ActiveFilePath;
-
         private static string ActiveGameID = "?";
         
         private static readonly string[] ResultStrings = new string[4]
@@ -69,8 +67,6 @@ namespace Dobby {
                 return;
             }
 
-
-            ActiveFilePath = filePath;
 
             GameInfoLabel.Text = ActiveGameID = GetGameID(fileStream);
                 

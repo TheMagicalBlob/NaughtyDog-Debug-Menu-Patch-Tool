@@ -55,7 +55,9 @@ namespace Dobby {
         //#
         #region (Basic Form Functionality)
         
-        /// <summary> ID for the active game. </summary>
+        /// <summary>
+        /// GameID for the active executable.
+        /// </summary>
         public static GameID Game = GameID.Empty;
 
         /// <summary> ID for the currently loaded form. </summary>
@@ -83,6 +85,8 @@ namespace Dobby {
         public static Color NDYellow = Color.FromArgb(255, 227, 0);
 
         public static string ActiveGameID = string.Empty;
+
+        public static string ActiveFilePath = string.Empty;
 
 
         

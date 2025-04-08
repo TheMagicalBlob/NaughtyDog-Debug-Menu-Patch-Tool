@@ -328,7 +328,10 @@
           "* 4.65.432.1056 | Replaced hilariously slow scaning bs with a proper pattern scan; reworking GameID's for PC executables; Misc background stuff",
           "* 4.65.435.1067 | Moved enums and class extentions to seperate files (feels better, less clutter in the main Common file), Removed the game version detection crap from the PC patch page, it's just too limited and ulitmately pointless, as I'm simply scanning for the patch address anyway. Other Miscellaneous crap.",
           "* 4.66.437.1070 | Added support for the PC release of the Last of Us Part II Remastered to the PC menu patch page, and slightly reworked the page (code-wise, not design).",
+          "* 4.66.437.1071 | ",
         };
+
+        // TODO: fix PC debug menu page's label usage. stuff is being sent to the wrong label
 
 
         public static string Build = ChangeList[ChangeList.Length - 1].Substring(2).Substring(0, ChangeList[ChangeList.Length - 1].IndexOf('|') - 3); // Trims The Last ChangeList String For Latest The Build Number
