@@ -45,7 +45,7 @@ namespace Dobby
             // 
             // GameInfoLabel
             // 
-            this.GameInfoLabel.Font = new System.Drawing.Font("Cambria", 10F);
+            this.GameInfoLabel.Font = new System.Drawing.Font("Cambria", 9.25F);
             this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
             this.GameInfoLabel.Location = new System.Drawing.Point(1, 142);
             this.GameInfoLabel.Name = "GameInfoLabel";

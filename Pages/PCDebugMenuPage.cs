@@ -15,6 +15,11 @@ namespace Dobby {
         {
             InitializeComponent();
             InitializeAdditionalEventHandlers(Controls);
+
+            UpdateGameInfoLabel = (str) =>
+            {
+                GameInfoLabel.Text = str?.ToString();
+            };
         }
         
         
@@ -49,6 +54,9 @@ namespace Dobby {
         private byte[] JumpPatch;
 
         private Thread DebugScanThread;
+
+        private delegate void GameInfoLabelUpdater(object message);
+        private readonly GameInfoLabelUpdater UpdateGameInfoLabel;
         #endregion
 
 
@@ -58,65 +66,12 @@ namespace Dobby {
         //--|   Background Function Delcarations   |---\\
         //=============================================\\
         #region [Background Function Delcarations]
+
+        private void UpdateGILabel(object str) => ActiveForm.Invoke(UpdateGameInfoLabel, str);
+
         
         private void LoadGameExecutable(string filePath)
         {
-            UpdateLabel("Scanning executable for build version...");
-            
-            
-            // Variable Declarations
-            byte[] array;
-            int buildNumberAddress;
-            var result = string.Empty;
-
-
-            // Load executable in to an array for faster reading
-            array = File.ReadAllBytes(filePath);
-            ActiveFilePath = filePath;
-
-            // Check for a build number
-            buildNumberAddress = FindSubArray(array, Encoding.UTF8.GetBytes("BUILD_NUMBER="));
-                
-            if (buildNumberAddress != -1)
-            {
-                while (array[buildNumberAddress + 13] != (byte)0x00)
-                {
-                    ActiveGameID += (char)array[(buildNumberAddress++) + 13];
-                }
-                if (ActiveGameID == string.Empty)
-                {
-                    ActiveGameID = "Unknown Build";
-                }
-
-                foreach (var @char in ActiveGameID) {
-                    Game += (@char);
-                }
-                
-                
-                result = $"Build: {ActiveGameID}";
-            }
-
-            
-
-            if (filePath.ToLower().Contains("tlou-ii"))
-            {
-                result = "Tlou Part II " + result;
-            }
-            else if (filePath.ToLower().Contains("tlou-i"))
-            {
-                result = "Tlou Part I " + result;
-            }
-            if (filePath.ToLower().Contains("i-l"))
-            {
-                result += " (non-avx)";
-            }
-
-            GameInfoLabel.Text = result;
-
-
-
-            UpdateLabel("Scanning executable for patch address...");
-
             DebugScanThread = new Thread(new ParameterizedThreadStart(ScanForDebugJumpAddress), 4);
             DebugScanThread.Start(filePath);
         }
@@ -125,32 +80,97 @@ namespace Dobby {
         /// <summary>
         /// Attempt to find the instruction to be patched through byte pattern scan
         /// </summary>
-        private void ScanForDebugJumpAddress(object filePath)
+        private void ScanForDebugJumpAddress(object FilePath)
         {
+            // Variable Declarations
+            byte[] array;
             int guessedDebug;
+            int buildNumberAddress;
+            var game = GameID.Empty;
+            var gameID = string.Empty;
+            var result = string.Empty;
+            var filePath = FilePath.ToString().ToLower();
 
-            if ((guessedDebug = FindSubArray(File.ReadAllBytes(filePath?.ToString() ?? "Empty File Path"), T1XDebugDat)) != -1)
+
+            // Load executable in to an array for faster reading
+            UpdateGILabel("Scanning executable for build version...");
+            array = File.ReadAllBytes(filePath);
+
+
+            // Check for a build number
+            buildNumberAddress = FindSubArray(array, Encoding.UTF8.GetBytes("BUILD_NUMBER="));
+                
+            if (buildNumberAddress != -1)
+            {
+                while (array[buildNumberAddress + 13] != (byte)0x00)
+                {
+                    gameID += (char)array[(buildNumberAddress++) + 13];
+                }
+                if (ActiveGameID == string.Empty)
+                {
+                    gameID = "Unknown Build";
+                }
+
+                foreach (var @char in gameID) {
+                    game += (@char);
+                }
+                
+                
+                result = $"Build: {gameID}";
+            }
+
+            
+            // Determine the game and executable type, assuming the name hasn't been changed for whatever reason
+            if (filePath.Contains("tlou-ii"))
+            {
+                result = "Tlou Part II " + result;
+            }
+            else if (filePath.Contains("tlou-i"))
+            {
+                result = "Tlou Part I " + result;
+            }
+            if (filePath.Contains("i-l"))
+            {
+                result += " (non-avx)";
+            }
+
+
+
+            // Attempt to find the instructions responsible for setting the debug mode
+            UpdateGILabel("Scanning executable for patch address...");
+
+            if ((guessedDebug = FindSubArray(File.ReadAllBytes(FilePath?.ToString() ?? "Empty File Path"), T1XDebugDat)) != -1)
             {
                 JumpPatch = new byte[] { 0x97, 0x8f };
                 JumpAddress = (DebugJumpAddress) guessedDebug - 5;
 
-                UpdateLabel($"T1x PC Patch Address Found, Choose a Patch");
+                UpdateGILabel($"T1x PC Patch Address Found, Choose a Patch");
             }
-            else if ((guessedDebug = FindSubArray(File.ReadAllBytes(filePath?.ToString() ?? "Empty File Path"), T2RDebugDat)) != -1)
+            else if ((guessedDebug = FindSubArray(File.ReadAllBytes(FilePath?.ToString() ?? "Empty File Path"), T2RDebugDat)) != -1)
             {
                 JumpPatch = new byte[] { 0x94, 0x95 };
                 JumpAddress = (DebugJumpAddress) guessedDebug - 1;
                 
-                UpdateLabel($"T2R PC Patch Address Found, Choose a Patch");
+                UpdateGILabel($"T2R PC Patch Address Found, Choose a Patch");
             }
 
-            if (guessedDebug == -1)
+
+
+
+            // Set related instance variables or bitch & moan depending on whether the instructions were found
+            if (guessedDebug != -1)
             {
-                UpdateLabel("Unable to find instruction to patch. (sorry!)", true);
-                ActiveFilePath = string.Empty;
+                Game = game;
+                ActiveGameID = gameID;
+                ActiveFilePath = FilePath?.ToString() ?? "Empty File Path";
+                
+                UpdateGILabel(result + " | Choose a Patch");
             }
             else {
-                ActiveFilePath = filePath?.ToString() ?? "Empty File Path";
+                ActiveFilePath = string.Empty;
+
+                UpdateGILabel("Patch address scanning failed");
+                UpdateLabel("Unable to find instruction to patch. (sorry!)", true);
             }
         }
 

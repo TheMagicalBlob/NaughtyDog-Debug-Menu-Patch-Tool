@@ -126,7 +126,7 @@ namespace Dobby
             // 
             // GameInfoLabel
             // 
-            this.GameInfoLabel.Font = new System.Drawing.Font("Cambria", 10F);
+            this.GameInfoLabel.Font = new System.Drawing.Font("Cambria", 9.25F);
             this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
             this.GameInfoLabel.Location = new System.Drawing.Point(2, 116);
             this.GameInfoLabel.Name = "GameInfoLabel";
@@ -205,6 +205,7 @@ namespace Dobby
             this.BaseDebugBtn.Name = "BaseDebugBtn";
             this.BaseDebugBtn.Size = new System.Drawing.Size(158, 23);
             this.BaseDebugBtn.TabIndex = 20;
+            this.BaseDebugBtn.Tag = "Enable the debug mode/menus";
             this.BaseDebugBtn.Text = "Enable the Debug Mode";
             this.BaseDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BaseDebugBtn.UseVisualStyleBackColor = false;
@@ -223,6 +224,7 @@ namespace Dobby
             this.DisableDebugBtn.Name = "DisableDebugBtn";
             this.DisableDebugBtn.Size = new System.Drawing.Size(161, 23);
             this.DisableDebugBtn.TabIndex = 38;
+            this.DisableDebugBtn.Tag = "Disable the debug mode/menus";
             this.DisableDebugBtn.Text = "Disable the Debug Mode";
             this.DisableDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisableDebugBtn.UseVisualStyleBackColor = false;

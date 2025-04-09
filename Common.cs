@@ -84,6 +84,10 @@ namespace Dobby {
 
         public static Color NDYellow = Color.FromArgb(255, 227, 0);
 
+
+        /// <summary>
+        /// A string used as a frontend label for the active game (patch version for PS4 games, build number for PC)
+        /// </summary>
         public static string ActiveGameID = string.Empty;
 
         public static string ActiveFilePath = string.Empty;
@@ -287,13 +291,22 @@ namespace Dobby {
         public static void WriteVar(FileStream fileStream, long[] addresses, object data) => Array.ForEach(addresses, address => WriteVar(fileStream, address, data));
 
         /// <summary>
-        /// WriteVar() shorthand for writing to the file without seaking to a different position in the stream.
+        /// Shorthand for writing to the current position in <paramref name="fileStream"/>, rather than seeking to a specified address.
         /// </summary>
-        /// <param name="data"> The data to write to the provided addresses. </param>
+        /// <param name="data"> The data to write. </param>
         public static void WriteVar(FileStream fileStream, object data) => WriteVar(fileStream, 0xDEADDAD, data);
 
 
 
+        /// <summary>
+        /// Iterate through <paramref name="array"/>, searching for a provided pattern.<br/>
+        /// Searches backwards since that init function seems to be fairly low in the exe.
+        /// </summary>
+        /// <param name="array"> The array in which to scan for a sub-array </param>
+        /// <param name="subarray"> The sub-array to scan for. </param>
+        /// <returns>
+        /// If <paramref name="subarray"/> is found, the address of the final byte of <paramref name="subarray"/>; otherwise, -1.
+        /// </returns>
         public static int FindSubArray(byte[] array, byte[] subarray)
         {
             for (var i = array.Length - 1; i >= subarray.Length; --i)
@@ -304,7 +317,7 @@ namespace Dobby {
 
                     for (; j > 0; --j)
                     {
-                        if (array[i - (j - 1)] != subarray[(subarray.Length) - (j)])
+                        if (array[i - (j - 1)] != subarray[subarray.Length - j])
                             break;
 
                     }
@@ -316,6 +329,7 @@ namespace Dobby {
 
             return -1;
         }
+
 
         
         /// <summary>
@@ -408,109 +422,9 @@ namespace Dobby {
             }
         }
 
-
-
-
-        /* [deprecated SetInfoLabelStringOnControlHover(Control Sender, float FontAdjustment = 10f)]
-        /// <summary> [deprecated] Sets The Info Label String Based On The Currently Hovered Control </summary>
-        /// <param name="Sender">The Hovered Control</param>
-        public static void SetInfoLabelStringOnControlHover(Control Sender, float FontAdjustment = 10f) {
-            throw new NotImplementedException();
-
-            // SetInfo
-            // TODO: this is fucking stupid, change or delete it.
-
-#pragma warning disable CS0162 // Unreachable code detected
-            var InfoLabelString = "";
-
-            switch (Sender.Name) {
-                default:
-                    return;
-
-                //
-                // Const
-                case "CreditsBtn":
-                    InfoLabelString = "View Credits For The Tool And Included Patches";
-                    break;
-                case "InfoHelpBtn":
-                    InfoLabelString = "View Help For Each Page As Well As The App Itself";
-                    break;
-                case "BackBtn":
-                    InfoLabelString = "Return To The Previous Page";
-                    break;
-                //
-                // Main Page
-                case "PS4DebugPageBtn":
-                    InfoLabelString = "Use A Lan Or Wifi Connection To Enable The Debug Mode";
-                    break;
-                case "EbootPatchPageBtn":
-                    InfoLabelString = "Patch An Executable To Be Added To A .pkg";
-                    break;
-                case "DownloadSourceBtn":
-                    InfoLabelString = "This Opens An External Link";
-                    break;
-                case "PCDebugMenuPageBtn":
-                    InfoLabelString = "Enable The Default Or Restored Debug Menu";
-                    break;
-                case "PCQOLPageBtn":
-                    InfoLabelString = "Enable The Default Or Restored Debug Menu";
-                    break;
-                //
-                // PS4DebugPage
-                case "UC1Btn":
-                    break;
-                case "UC2Btn":
-                    break;
-                case "UC3Btn":
-                    break;
-                case "UC4Btn":
-                    break;
-                case "UC4MPBetaBtn":
-                    InfoLabelString = "Supports: 1.09 - Use .bin Patch For 1.00";
-                    break;
-                case "T1RBtn":
-                    break;
-                case "T2Btn":
-                    break;
-                case "DebugPayloadBtn":
-                    InfoLabelString = "Sends ctn123's Port Of PS4Debug";
-                    break;
-                case "ManualConnectBtn":
-                    InfoLabelString = "Tool Also Auto-Connects When An Option's Selected";
-                    break;
-                case "IgnoreTitleIDBtn":
-                    InfoLabelString = "Enable This If You've Changed The Title ID";
-                    break;
-                //
-                // EbootPatchPage
-                case "EnableDebugBtn":
-                    InfoLabelString = "Enable Debug Mode As-Is With No Edits";
-                    break;
-                case "DisableDebugBtn":
-                    InfoLabelString = "Disable Debug Mode. Doesn't Undo Other Patches";
-                    break;
-                case "RestoredDebugBtn":
-                    InfoLabelString = "Restores The Menu As Authentically As Possible";
-                    break;
-                case "CustomDebugBtn":
-                    InfoLabelString = "Patches In My Customized Version Of The Debug Menu";
-                    break;
-                case "PS4MenuSettingsPageBtn":
-                    InfoLabelString = "Adds A Function To Write To Selected Settings On Game Boot";
-                    break;
-                //
-                // PkgCreationPage
-                case "Gp4CreationPageBtn":
-                    InfoLabelString = "A .gp4 Is Required For .pkg Creation";
-                    break;
-
-            }
-
-            //UpdateLabel(InfoLabelString);
-#pragma warning restore CS0162 // Unreachable code detected
-        }
-        */
         #endregion
+
+
 
 
 
@@ -519,18 +433,12 @@ namespace Dobby {
         //#
         #region (form functionality)
         
-        /// <summary> Save a refference to the orignal launch form. (why is this a function, again? //!) </summary>
+        /// <summary>
+        /// Save a refference to the orignal launch form.
+        /// </summary>
         /// <param name="form"> The orignal form </param>
         public static void SaveMainForm(Form form) => MainForm = form;
 
-        public static void CreateInfoLabelUpdater()
-        {
-            LabelUpdateThread = new Thread(LabelUpdateMethod) {
-                Name = "MainPage Label Update Worker"
-            };
-
-            LabelUpdateThread.Start();
-        }
 
         /// <summary>
         /// Update the current label text and/or apply a flashing effect to the label to signify an error.
@@ -549,6 +457,20 @@ namespace Dobby {
                 InfoFlashes = 15;
             }
         }
+
+
+        /// <summary>
+        /// Initialize the thread responsible for setting the status of the Info label at the bottom of each form.
+        /// </summary>
+        public static void CreateInfoLabelUpdater()
+        {
+            LabelUpdateThread = new Thread(LabelUpdateMethod) {
+                Name = "MainPage Label Update Worker"
+            };
+
+            LabelUpdateThread.Start();
+        }
+
 
         /// <summary>
         /// Loads The Specified Page From The PageId Group (E.g. ChangeForm(PageID.PS4MiscPageId))
@@ -648,7 +570,9 @@ namespace Dobby {
             else
                 Pages.Add(Common.Page);
 
+
             
+            // Show the new form, then hide or dispose of the previous page
             NewPage?.Show();
 #if DEBUG
             DebugWindow?.SetDebugWindowParent(NewPage);
