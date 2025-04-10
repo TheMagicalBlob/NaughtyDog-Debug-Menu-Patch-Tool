@@ -47,7 +47,7 @@ namespace Dobby
             // 
             this.GameInfoLabel.Font = new System.Drawing.Font("Cambria", 9.25F);
             this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.GameInfoLabel.Location = new System.Drawing.Point(1, 142);
+            this.GameInfoLabel.Location = new System.Drawing.Point(1, 144);
             this.GameInfoLabel.Name = "GameInfoLabel";
             this.GameInfoLabel.Size = new System.Drawing.Size(316, 19);
             this.GameInfoLabel.TabIndex = 32;
@@ -68,7 +68,7 @@ namespace Dobby
             // 
             this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(2, 155);
+            this.SeperatorLine2.Location = new System.Drawing.Point(2, 158);
             this.SeperatorLine2.Name = "SeperatorLine2";
             this.SeperatorLine2.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine2.TabIndex = 14;
@@ -76,11 +76,11 @@ namespace Dobby
             // 
             // Info
             // 
-            this.Info.Font = new System.Drawing.Font("Cambria", 10F);
+            this.Info.Font = new System.Drawing.Font("Cambria", 9.25F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(3, 240);
+            this.Info.Location = new System.Drawing.Point(4, 244);
             this.Info.Name = "Info";
-            this.Info.Size = new System.Drawing.Size(313, 19);
+            this.Info.Size = new System.Drawing.Size(312, 19);
             this.Info.TabIndex = 7;
             this.Info.Text = "======================================";
             // 
@@ -146,10 +146,10 @@ namespace Dobby
             this.RestoredDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.RestoredDebugBtn.Location = new System.Drawing.Point(1, 80);
             this.RestoredDebugBtn.Name = "RestoredDebugBtn";
-            this.RestoredDebugBtn.Size = new System.Drawing.Size(264, 23);
+            this.RestoredDebugBtn.Size = new System.Drawing.Size(203, 23);
             this.RestoredDebugBtn.TabIndex = 23;
-            this.RestoredDebugBtn.Tag = "Enable the debug menu, and apply various patches to it";
-            this.RestoredDebugBtn.Text = "Enable Debug Mode - Other";
+            this.RestoredDebugBtn.Tag = "Enable the debug mode, and apply various patches to it";
+            this.RestoredDebugBtn.Text = "Enable the Debug Mode - Other";
             this.RestoredDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.RestoredDebugBtn.UseVisualStyleBackColor = false;
             this.RestoredDebugBtn.Variable = null;
@@ -163,7 +163,7 @@ namespace Dobby
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 168);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 171);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.Size = new System.Drawing.Size(147, 23);
             this.InfoHelpBtn.TabIndex = 15;
@@ -180,7 +180,7 @@ namespace Dobby
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 215);
+            this.BackBtn.Location = new System.Drawing.Point(1, 218);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(60, 23);
             this.BackBtn.TabIndex = 13;
@@ -199,10 +199,10 @@ namespace Dobby
             this.DisableDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.DisableDebugBtn.Location = new System.Drawing.Point(1, 28);
             this.DisableDebugBtn.Name = "DisableDebugBtn";
-            this.DisableDebugBtn.Size = new System.Drawing.Size(150, 23);
+            this.DisableDebugBtn.Size = new System.Drawing.Size(161, 23);
             this.DisableDebugBtn.TabIndex = 12;
-            this.DisableDebugBtn.Tag = "Disable the debug menu (Does not remove other patches)";
-            this.DisableDebugBtn.Text = "Disable Debug Mode";
+            this.DisableDebugBtn.Tag = "Disable the debug mode/menus";
+            this.DisableDebugBtn.Text = "Disable the Debug Mode";
             this.DisableDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisableDebugBtn.UseVisualStyleBackColor = false;
             this.DisableDebugBtn.Variable = null;
@@ -216,7 +216,7 @@ namespace Dobby
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 191);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 194);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(74, 23);
@@ -236,10 +236,10 @@ namespace Dobby
             this.EnableDebugBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.EnableDebugBtn.Location = new System.Drawing.Point(1, 53);
             this.EnableDebugBtn.Name = "EnableDebugBtn";
-            this.EnableDebugBtn.Size = new System.Drawing.Size(205, 23);
+            this.EnableDebugBtn.Size = new System.Drawing.Size(212, 23);
             this.EnableDebugBtn.TabIndex = 9;
-            this.EnableDebugBtn.Tag = "Enable the debug menu without editing anything";
-            this.EnableDebugBtn.Text = "Enable Debug Mode - Default";
+            this.EnableDebugBtn.Tag = "Enable the unedited debug mode/menus";
+            this.EnableDebugBtn.Text = "Enable the Debug Mode - Default";
             this.EnableDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.EnableDebugBtn.UseVisualStyleBackColor = false;
             this.EnableDebugBtn.Variable = null;
@@ -250,7 +250,7 @@ namespace Dobby
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ClientSize = new System.Drawing.Size(320, 264);
+            this.ClientSize = new System.Drawing.Size(320, 267);
             this.Controls.Add(this.MainLabel);
             this.Controls.Add(this.GameInfoLabel);
             this.Controls.Add(this.BrowseButton);

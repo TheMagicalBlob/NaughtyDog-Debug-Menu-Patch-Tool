@@ -55,7 +55,7 @@ namespace Dobby
             // 
             // Info
             // 
-            this.Info.Font = new System.Drawing.Font("Cambria", 10F);
+            this.Info.Font = new System.Drawing.Font("Cambria", 9.25F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
             this.Info.Location = new System.Drawing.Point(7, 286);
             this.Info.Name = "Info";
@@ -181,10 +181,10 @@ namespace Dobby
             this.PCDebugMenuPageBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.PCDebugMenuPageBtn.Location = new System.Drawing.Point(1, 177);
             this.PCDebugMenuPageBtn.Name = "PCDebugMenuPageBtn";
-            this.PCDebugMenuPageBtn.Size = new System.Drawing.Size(240, 23);
+            this.PCDebugMenuPageBtn.Size = new System.Drawing.Size(246, 23);
             this.PCDebugMenuPageBtn.TabIndex = 37;
-            this.PCDebugMenuPageBtn.Tag = "Patch the executable of the PC version with the debug menu";
-            this.PCDebugMenuPageBtn.Text = "Patch .exe With The Debug Menu...";
+            this.PCDebugMenuPageBtn.Tag = "Patch the executable for one of the PC releases";
+            this.PCDebugMenuPageBtn.Text = "Patch tlou.exe With The Debug Menu...";
             this.PCDebugMenuPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PCDebugMenuPageBtn.UseVisualStyleBackColor = false;
             this.PCDebugMenuPageBtn.Variable = null;
@@ -202,7 +202,7 @@ namespace Dobby
             this.PkgCreationPageBtn.Name = "PkgCreationPageBtn";
             this.PkgCreationPageBtn.Size = new System.Drawing.Size(260, 23);
             this.PkgCreationPageBtn.TabIndex = 35;
-            this.PkgCreationPageBtn.Tag = "Build a .pkg with the edited .elf";
+            this.PkgCreationPageBtn.Tag = "Build a .pkg with the edited eboot.bin/.elf";
             this.PkgCreationPageBtn.Text = "Build New Patch Or Base Game .pkg...";
             this.PkgCreationPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PkgCreationPageBtn.UseVisualStyleBackColor = false;
@@ -221,7 +221,7 @@ namespace Dobby
             this.PS4DebugPageBtn.Name = "PS4DebugPageBtn";
             this.PS4DebugPageBtn.Size = new System.Drawing.Size(262, 23);
             this.PS4DebugPageBtn.TabIndex = 20;
-            this.PS4DebugPageBtn.Tag = "Enable the debug mode via memory editing";
+            this.PS4DebugPageBtn.Tag = "Enable the debug mode via memory editing (RTM)";
             this.PS4DebugPageBtn.Text = "Enable Debug Mode With PS4Debug...";
             this.PS4DebugPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PS4DebugPageBtn.UseVisualStyleBackColor = false;
@@ -240,7 +240,7 @@ namespace Dobby
             this.EbootPatchPageBtn.Name = "EbootPatchPageBtn";
             this.EbootPatchPageBtn.Size = new System.Drawing.Size(275, 23);
             this.EbootPatchPageBtn.TabIndex = 25;
-            this.EbootPatchPageBtn.Tag = "Apply patches locally to a provided .elf/.bin";
+            this.EbootPatchPageBtn.Tag = "Patch the eboot of the PS4 versions for use in a fpkg";
             this.EbootPatchPageBtn.Text = "Patch eboot.bin With The Debug Menu...";
             this.EbootPatchPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.EbootPatchPageBtn.UseVisualStyleBackColor = false;
@@ -258,10 +258,10 @@ namespace Dobby
             this.PS4MenuSettingsPageBtn.Location = new System.Drawing.Point(1, 102);
             this.PS4MenuSettingsPageBtn.Name = "PS4MenuSettingsPageBtn";
             this.PS4MenuSettingsPageBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.PS4MenuSettingsPageBtn.Size = new System.Drawing.Size(223, 23);
+            this.PS4MenuSettingsPageBtn.Size = new System.Drawing.Size(189, 23);
             this.PS4MenuSettingsPageBtn.TabIndex = 27;
-            this.PS4MenuSettingsPageBtn.Tag = "Patch a .elf with user-selected menu settings";
-            this.PS4MenuSettingsPageBtn.Text = "Apply Misc. Debug Menu Settings...";
+            this.PS4MenuSettingsPageBtn.Tag = "Patch an eboot with various debug-related settings";
+            this.PS4MenuSettingsPageBtn.Text = "Change Debug Mode Settings";
             this.PS4MenuSettingsPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PS4MenuSettingsPageBtn.UseVisualStyleBackColor = false;
             this.PS4MenuSettingsPageBtn.Variable = null;

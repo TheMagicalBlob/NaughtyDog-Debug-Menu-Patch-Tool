@@ -60,11 +60,11 @@ namespace Dobby
             // 
             // Info
             // 
-            this.Info.Font = new System.Drawing.Font("Cambria", 10F);
+            this.Info.Font = new System.Drawing.Font("Cambria", 9.25F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(5, 224);
+            this.Info.Location = new System.Drawing.Point(4, 224);
             this.Info.Name = "Info";
-            this.Info.Size = new System.Drawing.Size(313, 17);
+            this.Info.Size = new System.Drawing.Size(312, 17);
             this.Info.TabIndex = 7;
             this.Info.Text = "=====================================";
             // 
@@ -76,7 +76,7 @@ namespace Dobby
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 172);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 173);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
@@ -94,7 +94,7 @@ namespace Dobby
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 147);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 148);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.InfoHelpBtn.Size = new System.Drawing.Size(147, 23);
@@ -118,7 +118,7 @@ namespace Dobby
             // 
             this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(3, 129);
+            this.SeperatorLine2.Location = new System.Drawing.Point(3, 130);
             this.SeperatorLine2.Name = "SeperatorLine2";
             this.SeperatorLine2.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine2.TabIndex = 32;
@@ -143,7 +143,7 @@ namespace Dobby
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 197);
+            this.BackBtn.Location = new System.Drawing.Point(1, 198);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.BackBtn.Size = new System.Drawing.Size(75, 23);
@@ -205,7 +205,7 @@ namespace Dobby
             this.BaseDebugBtn.Name = "BaseDebugBtn";
             this.BaseDebugBtn.Size = new System.Drawing.Size(158, 23);
             this.BaseDebugBtn.TabIndex = 20;
-            this.BaseDebugBtn.Tag = "Enable the debug mode/menus";
+            this.BaseDebugBtn.Tag = "Enable the unedited debug mode/menus";
             this.BaseDebugBtn.Text = "Enable the Debug Mode";
             this.BaseDebugBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BaseDebugBtn.UseVisualStyleBackColor = false;
@@ -236,7 +236,7 @@ namespace Dobby
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ClientSize = new System.Drawing.Size(320, 250);
+            this.ClientSize = new System.Drawing.Size(320, 245);
             this.Controls.Add(this.GameInfoLabel);
             this.Controls.Add(this.SeperatorLine2);
             this.Controls.Add(this.BaseDebugBtn);

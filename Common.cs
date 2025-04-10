@@ -448,7 +448,7 @@ namespace Dobby {
         /// <param name="flashLabel"> If true, flash the label to indicate an error or otherwise get the user's attention. (switches between white/yellow) </param>
         public static void UpdateLabel(string newText, bool flashLabel = false)
         {
-            if ((InfoText == " " || InfoText == null) && newText != null && InfoLabel.Text != newText)
+            if ((InfoText == " " || InfoText == null) && newText != null)
             {
                 InfoText = newText;
             }

@@ -74,7 +74,7 @@ namespace Dobby
             // 
             // Info
             // 
-            this.Info.Font = new System.Drawing.Font("Cambria", 10F);
+            this.Info.Font = new System.Drawing.Font("Cambria", 9.25F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
             this.Info.Location = new System.Drawing.Point(8, 367);
             this.Info.Name = "Info";

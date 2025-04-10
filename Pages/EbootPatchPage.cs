@@ -15,7 +15,7 @@ namespace Dobby {
         public EbootPatchPage()
         {
             InitializeComponent();
-            InitializeAdditionalEventHandlers(Controls);
+            InitializeAdditionalEventHandlers(Controls); 
         }
 
         
