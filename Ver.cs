@@ -329,6 +329,7 @@
           "* 4.65.435.1067 | Moved enums and class extentions to seperate files (feels better, less clutter in the main Common file), Removed the game version detection crap from the PC patch page, it's just too limited and ulitmately pointless, as I'm simply scanning for the patch address anyway. Other Miscellaneous crap.",
           "* 4.66.437.1070 | Added support for the PC release of the Last of Us Part II Remastered to the PC menu patch page, and slightly reworked the page (code-wise, not design).",
           "* 4.67.440.1076 | Replaced PC menu patch page info label setters with intended GameInfoLabel ones; Misc background changes for the aforementioned page; Slightly resized the font for both GameInfoLabel's. Added missing hint tags to PC debug menu page's patch buttons.",
+          "* 4.67.444.1081 | Replaced old T1x debug pattern scan with newer version (I think I accidentally copied the original array from an edited .exe...); Removed dumb ActiveForm refference in an instance method that was causing crashes when the label was updated without the application having focus (moron...); Edited the pc patch page button's hint tag, as it didn't even fit the label (woops)",
         };
 
         // TODO: fix PC debug menu page's label usage. stuff is being sent to the wrong label

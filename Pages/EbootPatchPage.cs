@@ -27,8 +27,6 @@ namespace Dobby {
 
         private static DebugJumpAddress DebugAddressForSelectedGame;
 
-        private static string ActiveGameID = "?";
-        
         private static readonly string[] ResultStrings = new string[4]
         {
             "Debug Menus Disabled",

@@ -300,12 +300,14 @@ namespace Dobby {
 
         /// <summary>
         /// Iterate through <paramref name="array"/>, searching for a provided pattern.<br/>
-        /// Searches backwards since that init function seems to be fairly low in the exe.
+        /// Searches backwards since that init function seems to be fairly low in the exe.<br/><br/>
+        /// 
+        /// Note: Does not check for duplicates, simply returns the first instance found.
         /// </summary>
         /// <param name="array"> The array in which to scan for a sub-array </param>
         /// <param name="subarray"> The sub-array to scan for. </param>
         /// <returns>
-        /// If <paramref name="subarray"/> is found, the address of the final byte of <paramref name="subarray"/>; otherwise, -1.
+        /// If <paramref name="subarray"/> is found, the address of the first byte of <paramref name="subarray"/>; otherwise, -1.
         /// </returns>
         public static int FindSubArray(byte[] array, byte[] subarray)
         {
@@ -321,9 +323,8 @@ namespace Dobby {
                             break;
 
                     }
-                    if (j == 0) {
-                        return i - subarray.Length + 1;
-                    }
+                    if (j == 0)
+                        return i;
                 }
             }
 

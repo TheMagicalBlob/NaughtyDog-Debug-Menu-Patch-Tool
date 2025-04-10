@@ -4,6 +4,9 @@ using System.Threading;
 using System.Windows.Forms;
 using static Dobby.Common;
 using System.Text;
+using System.Linq;
+using Microsoft.Win32.SafeHandles;
+using System.Collections.Generic;
 
 namespace Dobby {
     internal partial class PCDebugMenuPage : Form {
@@ -30,28 +33,28 @@ namespace Dobby {
         #region [Variable Declarations]
 
         /// <summary>
-        /// Byte Array Used To Find The Address To Enable The Debug Mode In T1X PC. (why tf is this one so long?)
+        /// Path to the provided executable that's been scanned and found to likely have the debug menu
         /// </summary>
-        private readonly byte[] T1XDebugDat = new byte[] { 0x8a, 0x8f, 0xf2, 0x3e, 0x00, 0x00, 0x84, 0xc9, 0x0f, 0x94, 0xc2, 0x84, 0xc9, 0x0f, 0x95, 0xc1, 0x88, 0x8f, 0x3d, 0x3f, 0x00, 0x00, 0x88, 0x97, 0x2f, 0x3f, 0x00, 0x00 };
+        private string ActiveFilePath = string.Empty; // Override the one in Common.cs, since there's no need for cross-page functionality for pc executables
+        
         
         /// <summary>
-        /// 0: 0ff <br/> 1: On
+        /// Byte Array Used To Find The Address To Enable The Debug Mode In T1X PC. (why tf is this one so long?)
         /// </summary>
-        private readonly byte[] T1xJumpDat = new byte[] { 0x97, 0x8f };
-
+        private readonly byte[] T1XDebugDat0 = new byte[] { 0xf3, 0x3e, 0x00, 0x00, 0x84, 0xc9, 0x0f, 0x94, 0xc2 }; // off
+        private readonly byte[] T1XDebugDat1 = new byte[] { 0xf3, 0x3e, 0x00, 0x00, 0x84, 0xc9, 0x0f, 0x95, 0xc2 }; // on
+        
         /// <summary>
         /// Byte Array Used To Find The Address To Enable The Debug Mode In T2R PC.
         /// </summary>
-        private readonly byte[] T2RDebugDat = new byte[] { 0x13, 0x3f, 0x00, 0x00, 0x84, 0xc9, 0x0f, 0x94, 0xc2 };
+        private readonly byte[] T2RDebugDat0 = new byte[] { 0x13, 0x3f, 0x00, 0x00, 0x84, 0xc9, 0x0f, 0x94, 0xc2 }; // off
+        private readonly byte[] T2RDebugDat1 = new byte[] { 0x13, 0x3f, 0x00, 0x00, 0x84, 0xc9, 0x0f, 0x95, 0xc2 }; // on
         
-        /// <summary>
-        /// 0: 0ff <br/> 1: On
-        /// </summary>
-        private readonly byte[] T2RJumpDat = new byte[] { 0x94, 0x95 };
+
 
         private DebugJumpAddress JumpAddress = DebugJumpAddress.Empty;
 
-        private byte[] JumpPatch;
+
 
         private Thread DebugScanThread;
 
@@ -67,7 +70,7 @@ namespace Dobby {
         //=============================================\\
         #region [Background Function Delcarations]
 
-        private void UpdateGILabel(object str) => ActiveForm.Invoke(UpdateGameInfoLabel, str);
+        private void UpdateGILabel(object str) => Invoke(UpdateGameInfoLabel, str);
 
         
         private void LoadGameExecutable(string filePath)
@@ -82,6 +85,9 @@ namespace Dobby {
         /// </summary>
         private void ScanForDebugJumpAddress(object FilePath)
         {
+            UpdateGILabel("Scanning executable for build version...");
+
+
             // Variable Declarations
             byte[] array;
             int guessedDebug;
@@ -90,10 +96,12 @@ namespace Dobby {
             var gameID = string.Empty;
             var result = string.Empty;
             var filePath = FilePath.ToString().ToLower();
+            JumpAddress = DebugJumpAddress.Empty;
+            game = GameID.Empty;
+
 
 
             // Load executable in to an array for faster reading
-            UpdateGILabel("Scanning executable for build version...");
             array = File.ReadAllBytes(filePath);
 
 
@@ -102,11 +110,11 @@ namespace Dobby {
                 
             if (buildNumberAddress != -1)
             {
-                while (array[buildNumberAddress + 13] != (byte)0x00)
+                while (array[++buildNumberAddress] != (byte)0x00)
                 {
-                    gameID += (char)array[(buildNumberAddress++) + 13];
+                    gameID += (char)array[buildNumberAddress];
                 }
-                if (ActiveGameID == string.Empty)
+                if (gameID == string.Empty)
                 {
                     gameID = "Unknown Build";
                 }
@@ -136,22 +144,20 @@ namespace Dobby {
 
 
 
+
             // Attempt to find the instructions responsible for setting the debug mode
             UpdateGILabel("Scanning executable for patch address...");
 
-            if ((guessedDebug = FindSubArray(File.ReadAllBytes(FilePath?.ToString() ?? "Empty File Path"), T1XDebugDat)) != -1)
+            // check for patterns with both disabled and enabled debug patches (I don't want to make the pattern it's scanning for TOO small by simply removing the final two bytes)
+            if ((guessedDebug = FindSubArray(array, T1XDebugDat0)) != -1 || (guessedDebug = FindSubArray(array, T1XDebugDat1)) != -1)
             {
-                JumpPatch = new byte[] { 0x97, 0x8f };
-                JumpAddress = (DebugJumpAddress) guessedDebug - 5;
+                JumpAddress = (DebugJumpAddress) guessedDebug - 1;
 
-                UpdateGILabel($"T1x PC Patch Address Found, Choose a Patch");
             }
-            else if ((guessedDebug = FindSubArray(File.ReadAllBytes(FilePath?.ToString() ?? "Empty File Path"), T2RDebugDat)) != -1)
+            else if ((guessedDebug = FindSubArray(array, T2RDebugDat0)) != -1 || (guessedDebug = FindSubArray(array, T2RDebugDat1)) != -1)
             {
-                JumpPatch = new byte[] { 0x94, 0x95 };
                 JumpAddress = (DebugJumpAddress) guessedDebug - 1;
                 
-                UpdateGILabel($"T2R PC Patch Address Found, Choose a Patch");
             }
 
 
@@ -169,32 +175,61 @@ namespace Dobby {
             else {
                 ActiveFilePath = string.Empty;
 
-                UpdateGILabel("Patch address scanning failed");
-                UpdateLabel("Unable to find instruction to patch. (sorry!)", true);
+                UpdateLabel("Patch address scanning failed.", true);
+                UpdateGILabel("Unable to find instruction to patch. (sorry!)");
             }
         }
 
 
         /// <summary>
-        /// Enable or disable the debug mode depending on the patch selected.
+        /// Apply the provided debug patch byte to the current JumpAddress
         /// </summary>
         /// <param name="patch">true: enable<br/>false: disable</param>
-        private void ToggleDebug(byte patch)
+        private void ApplyPatch(byte patch)
         {
-            if (JumpAddress == DebugJumpAddress.Empty) {
+            if (JumpAddress == DebugJumpAddress.Empty)
+            {
                 UpdateLabel("Please Select A Game's Executable First", true);
                 return;
             }
+            if (JumpAddress < 0)
+            {
+                Dev.Print($"ERROR: JumpAddress was negative. (fix your trash)");
 
+                UpdateGILabel("Unable to Apply Debug Patch. (address > .exe length)");
+                UpdateLabel("ERROR: Invalid Jump Address (please make a bug report!)", true);
+            }
+            if (!File.Exists(ActiveFilePath))
+            {
+                Dev.Print($"ERROR: The provided executable no longer exists.\n - Expected Path: [{ActiveFilePath ?? "null"}]");
+
+                UpdateLabel("ERROR: Executable no longer exists.", true);
+                return;
+            }
+
+
+
+            // Backup the file just in case we're both idiots.
+            for (int? extention = null; File.Exists($"{ActiveFilePath}.bak{extention}"); ++extention)
+
+            File.Copy(ActiveFilePath, $"{ActiveFilePath}.bak{extention}");
+
+
+
+            // Re-open the executable and apply the selected debug patch.
             using (fileStream = File.OpenWrite(ActiveFilePath))
             {
                 fileStream.Position = (int) JumpAddress;
                 fileStream.WriteByte(patch);
                 fileStream.Flush();
+
+                #if DEBUG
+                Dev.Print($"Wrote PC Menu Patch {patch:X} to {JumpAddress:X}.");
+                #endif
             }
 
 
-            UpdateLabel("Debug Patch Applied");
+            UpdateGILabel("Debug Patch Applied");
         }
 
         #endregion
@@ -233,9 +268,9 @@ namespace Dobby {
         }
 
         
-        private void DisableDebugBtn_Click(object sender, EventArgs e) => ToggleDebug(JumpPatch[0]);
+        private void DisableDebugBtn_Click(object sender, EventArgs e) => ApplyPatch(0x94);
         
-        private void BaseDebugBtn_Click(object sender, EventArgs e) => ToggleDebug(JumpPatch[1]);
+        private void BaseDebugBtn_Click(object sender, EventArgs e) => ApplyPatch(0x95);
         #endregion
     }
 }
