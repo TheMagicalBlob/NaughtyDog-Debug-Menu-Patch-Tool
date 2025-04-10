@@ -148,15 +148,10 @@ namespace Dobby {
             UpdateGILabel("Scanning executable for patch address...");
 
             // check for patterns with both disabled and enabled debug patches (I don't want to make the pattern it's scanning for TOO small by simply removing the final two bytes)
-            if ((guessedDebug = FindSubArray(array, T1XDebugDat0)) != -1 || (guessedDebug = FindSubArray(array, T1XDebugDat1)) != -1)
+            if ((guessedDebug = FindSubArray(array, T1XDebugDat0)) != -1 || (guessedDebug = FindSubArray(array, T1XDebugDat1)) != -1 || // Tlou Part I
+                (guessedDebug = FindSubArray(array, T2RDebugDat0)) != -1 || (guessedDebug = FindSubArray(array, T2RDebugDat1)) != -1)   // Tlou Part II Remastered
             {
                 JumpAddress = (DebugJumpAddress) guessedDebug - 1;
-
-            }
-            else if ((guessedDebug = FindSubArray(array, T2RDebugDat0)) != -1 || (guessedDebug = FindSubArray(array, T2RDebugDat1)) != -1)
-            {
-                JumpAddress = (DebugJumpAddress) guessedDebug - 1;
-                
             }
 
 
@@ -209,9 +204,13 @@ namespace Dobby {
 
 
             // Backup the file just in case we're both idiots.
-            for (int? extention = null; File.Exists($"{ActiveFilePath}.bak{extention}"); ++extention)
+            var extention = ".bak";
+            for (var i = 0; File.Exists($"{ActiveFilePath}{extention}");)
+            {
+                extention = $".{i++}.bak";
+            }
 
-            File.Copy(ActiveFilePath, $"{ActiveFilePath}.bak{extention}");
+            File.Copy(ActiveFilePath, $"{ActiveFilePath}{extention}");
 
 
 
