@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using static Dobby.Common;
 
@@ -12,11 +13,9 @@ namespace Dobby {
         /// </summary>
         public MainPage() {
             InitializeComponent();
-            
             Page = PageID.MainPage;
+            
             SaveMainForm(this);
-
-
             Dev = new Testing();
 
             InitializeAdditionalEventHandlers(Controls);

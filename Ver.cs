@@ -332,11 +332,12 @@
           "* 4.67.444.1081 | Replaced old T1x debug pattern scan with newer version (I think I accidentally copied the original array from an edited .exe...); Removed dumb ActiveForm refference in an instance method that was causing crashes when the label was updated without the application having focus (moron...); Edited the pc patch page button's hint tag, as it didn't even fit the label (woops)",
           "* 4.67.447.1083 | Slightly altered the text of the page buttons on the main page, as well as their hint tags. Shrunk info label font to match GameInfoLabel font. Was limiting what I could write too much for comfort.",
           "* 4.67.448.1083 | Removed a check for what I thought was redundant assignment in the info label, as it was hiding hint tags with resets after specific timing, and I can't find any reason to have it there.",
+          "* 4.67.451.1087 | Misc. EbootPatchPage background/formatting changes, 'cause ADHD, I suppose.",
         };
 
         // TODO: Finish standardizing the locations and spacing of the constant controls at the bottom of most forms, based off the Eboot and PC patch pages
 
-
+        
 
         public static string Build = ChangeList[ChangeList.Length - 1].Substring(2).Substring(0, ChangeList[ChangeList.Length - 1].IndexOf('|') - 3); // Trims The Last ChangeList String For Latest The Build Number
     }

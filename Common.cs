@@ -118,7 +118,7 @@ namespace Dobby {
 
 
         /// <summary> Refference to the originally launched form. </summary>
-        private static Form MainForm;
+        private static Form Venat;
         public static Form PopupBox;
 
         /// <summary> Static refference to the active form's "Info" label control for usage in static functions. (because I'm lazy) </summary>
@@ -438,7 +438,7 @@ namespace Dobby {
         /// Save a refference to the orignal launch form.
         /// </summary>
         /// <param name="form"> The orignal form </param>
-        public static void SaveMainForm(Form form) => MainForm = form;
+        public static void SaveMainForm(Form form) => Venat = form;
 
 
         /// <summary>
@@ -496,7 +496,7 @@ namespace Dobby {
             switch (Page)
             {
                 case PageID.MainPage:
-                    NewPage = MainForm;
+                    NewPage = Venat;
                     break;
                 case PageID.PS4DebugPage:
                     NewPage = new PS4DebugPage();
@@ -996,7 +996,7 @@ namespace Dobby {
         
         internal static void ExitBtn_Click(object sender, EventArgs e)
         {
-            MainForm.Dispose();  //! 90% sure this isn't implemented properly.
+            Venat.Dispose();  //! 90% sure this isn't implemented properly.
             Environment.Exit(0); // off we fuck
         }
         internal static void WindowBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
@@ -1063,7 +1063,7 @@ namespace Dobby {
                 // Oh my god fuck it, lazy fix for winforms stupid fucking asynchronous contol initialization, god I fucking hate this stupid clunky bullshit sometimes, how the fuck is the control null after being created, initialzed, and added to the form??? I CAN LITERALLY SEE THE CONTROL, IT'S NOT FUCKING NULL
                 if (InfoLabel == null && ((Control)sender).FindForm().Name == "MainPage")
                 {
-                    InfoLabel = (Label) MainForm.Controls.Find("Info", true)?[0];
+                    InfoLabel = (Label) Venat.Controls.Find("Info", true)?[0];
                 }
 
                 if (((string) ((Control)sender).Tag ?? string.Empty).Length > 0) //! test this
