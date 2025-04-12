@@ -336,6 +336,7 @@ namespace Dobby {
           "* 4.67.448.1083 | Removed a check for what I thought was redundant assignment in the info label, as it was hiding hint tags with resets after specific timing, and I can't find any reason to have it there.",
           "* 4.67.451.1087 | Misc. EbootPatchPage background/formatting changes, 'cause ADHD, I suppose.",
           "* 4.67.451.1090 | *happy blob noises* ",
+          "* 4.67.451.1093 | OCD.",
         };
 
         // TODO: Finish standardizing the locations and spacing of the constant controls at the bottom of most forms, based off the Eboot and PC patch pages

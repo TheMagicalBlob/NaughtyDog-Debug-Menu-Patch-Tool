@@ -29,7 +29,8 @@ namespace Dobby {
             var settingsFilePath = Directory.GetCurrentDirectory() + @"\PS4_IP.BLB";
 
             // Create and set event handlers for the IP and Port text boxes
-            IpBox.LostFocus += (control, args) => {
+            IpBox.LostFocus += (control, args) =>
+            {
                 if (!File.Exists(settingsFilePath))
                     CreateSettingsFile();
 
@@ -44,7 +45,8 @@ namespace Dobby {
                 else
                     UpdateLabel($"Invalid IP specified; save aborted. ({IP})");
             };
-            PortBox.LostFocus += (control, args) => {
+            PortBox.LostFocus += (control, args) =>
+            {
                 if (!File.Exists(settingsFilePath))
                     CreateSettingsFile();
     
@@ -91,9 +93,6 @@ namespace Dobby {
 
         /// <summary> Thread for sending the ps4debug payload to a client PS4 "bin loader", specified by the IP and Port boxes. </summary>
         public Thread PayloadThread;
-
-        /// <summary> If true, manually assigns a default title id matching the chosen game. </summary>
-        private bool IgnoreTitleID;
 
         /// <summary> Active PS4DBG Process ID </summary>
         private int Executable;
@@ -197,7 +196,7 @@ namespace Dobby {
         /// <returns> True if the button pressed is valid for the connected game. </returns>
         private bool CheckGameIsValid(string defaultTitleID, string[] validIDs)
         {
-            if (IgnoreTitleID)
+            if ((bool)IgnoreTitleIDBtn.Variable)
             {
                 TitleID = defaultTitleID;
             }

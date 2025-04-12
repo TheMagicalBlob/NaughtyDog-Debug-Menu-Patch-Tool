@@ -96,8 +96,7 @@ namespace Dobby {
             var result = string.Empty;
             var filePath = FilePath.ToString().ToLower();
             JumpAddress = DebugJumpAddress.Empty;
-            game = GameID.Empty;
-
+            Game = GameID.Empty;
 
 
             // Load executable in to an array for faster reading
@@ -151,23 +150,18 @@ namespace Dobby {
             if ((guessedDebug = FindSubArray(array, T1XDebugDat0)) != -1 || (guessedDebug = FindSubArray(array, T1XDebugDat1)) != -1 || // Tlou Part I
                 (guessedDebug = FindSubArray(array, T2RDebugDat0)) != -1 || (guessedDebug = FindSubArray(array, T2RDebugDat1)) != -1)   // Tlou Part II Remastered
             {
-                JumpAddress = (DebugJumpAddress) guessedDebug - 1;
-            }
-
-
-
-
-            // Set related instance variables or bitch & moan depending on whether the instructions were found
-            if (guessedDebug != -1)
-            {
                 Game = game;
                 ActiveGameID = gameID;
                 ActiveFilePath = FilePath?.ToString() ?? "Empty File Path";
+                JumpAddress = (DebugJumpAddress) guessedDebug - 1;
                 
                 UpdateGILabel(result + " | Choose a Patch");
             }
+            // Bitch & moan if the instructions weren't found
             else {
+                Game = GameID.Empty;
                 ActiveFilePath = string.Empty;
+                JumpAddress = DebugJumpAddress.Empty;
 
                 UpdateLabel("Patch address scanning failed.", true);
                 UpdateGILabel("Unable to find instruction to patch. (sorry!)");
