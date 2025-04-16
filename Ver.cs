@@ -338,6 +338,7 @@ namespace Dobby {
           "* 4.67.451.1090 | *happy blob noises* ",
           "* 4.67.451.1093 | OCD.",
           "* 4.68.452.1098 | Added an option to the PC debug menu patch page to enable the Disable FPS option by default (or disable it, if they're disabling the debug menus).",
+          "* 4.68.454.1101 | Tested and tweaked the PC patch page's \"Disable FPS\" option; Tweaked text shown when a patch is prematurely chosen on the PC patch page to reflect the current state; Fixed unnamed SeperatorLine3.",
         };
 
         // TODO: Finish standardizing the locations and spacing of the constant controls at the bottom of most forms, based off the Eboot and PC patch pages

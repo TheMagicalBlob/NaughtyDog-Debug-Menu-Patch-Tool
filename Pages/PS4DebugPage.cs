@@ -542,7 +542,7 @@ namespace Dobby {
             {
                 newSettingsFile.Write(Encoding.UTF8.GetBytes("192.168.137.115;"), 0, 16);
                 newSettingsFile.Write(BitConverter.GetBytes((short)9090), 0, 2);
-                newSettingsFile.Flush();
+                newSettingsFile.Flush(true);
 
                 newSettingsFile.Dispose();
             }

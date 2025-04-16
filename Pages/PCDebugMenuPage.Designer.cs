@@ -45,7 +45,7 @@ namespace Dobby
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.BaseDebugBtn = new Dobby.Button();
             this.DisableDebugBtn = new Dobby.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.SeperatorLabel3 = new System.Windows.Forms.Label();
             this.DisableFPSBtn = new Dobby.Button();
             this.SuspendLayout();
             // 
@@ -233,15 +233,15 @@ namespace Dobby
             this.DisableDebugBtn.Variable = null;
             this.DisableDebugBtn.Click += new System.EventHandler(this.DisableDebugBtn_Click);
             // 
-            // label1
+            // SeperatorLabel3
             // 
-            this.label1.Font = new System.Drawing.Font("Cambria", 10F);
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.label1.Location = new System.Drawing.Point(2, 158);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(316, 15);
-            this.label1.TabIndex = 42;
-            this.label1.Text = "--------------------------------------------------------------";
+            this.SeperatorLabel3.Font = new System.Drawing.Font("Cambria", 10F);
+            this.SeperatorLabel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLabel3.Location = new System.Drawing.Point(2, 158);
+            this.SeperatorLabel3.Name = "SeperatorLabel3";
+            this.SeperatorLabel3.Size = new System.Drawing.Size(316, 15);
+            this.SeperatorLabel3.TabIndex = 42;
+            this.SeperatorLabel3.Text = "--------------------------------------------------------------";
             // 
             // DisableFPSBtn
             // 
@@ -268,7 +268,7 @@ namespace Dobby
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ClientSize = new System.Drawing.Size(320, 272);
             this.Controls.Add(this.DisableFPSBtn);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.SeperatorLabel3);
             this.Controls.Add(this.GameInfoLabel);
             this.Controls.Add(this.SeperatorLine2);
             this.Controls.Add(this.BaseDebugBtn);
@@ -311,7 +311,7 @@ namespace Dobby
         public Button BaseDebugBtn;
         #endregion
 
-        public Label label1;
+        public Label SeperatorLabel3;
         private Button DisableFPSBtn;
     }
 }

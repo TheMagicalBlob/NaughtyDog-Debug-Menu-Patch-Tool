@@ -154,7 +154,6 @@ namespace Dobby {
                 ActiveGameID = gameID;
                 ActiveFilePath = FilePath?.ToString() ?? "Empty File Path";
                 JumpAddress = (DebugJumpAddress) guessedDebug - 1;
-                DisableFPSBtn.Variable = false;
                 
                 UpdateGILabel(result + " | Choose a Patch");
             }
@@ -178,7 +177,7 @@ namespace Dobby {
         {
             if (JumpAddress == DebugJumpAddress.Empty)
             {
-                UpdateLabel("Please Select A Game's Executable First", true);
+                UpdateLabel((DebugScanThread?.ThreadState == ThreadState.Running ? "Please Wait For The Scan To Finish" : "Please Select A Game's Executable First"), true);
                 return;
             }
             if (JumpAddress < 0)
@@ -210,50 +209,54 @@ namespace Dobby {
 
 
             // Re-open the executable and apply the selected debug patch.
-            using (fileStream = File.OpenWrite(ActiveFilePath))
+            using (fileStream = File.Open(ActiveFilePath, FileMode.Open))
             {
                 fileStream.Position = (int) JumpAddress;
                 fileStream.WriteByte(patch);
-                fileStream.Flush();
+                fileStream.Flush(true);
 
                 #if DEBUG
                 Dev.Print($"Wrote PC Menu Patch {patch:X} to {JumpAddress:X}.");
                 #endif
 
+
+                // Redirect the instruction which enables the "Disable Debug Rendering" to instead enable the "Disable FPS" option
                 if ((bool)DisableFPSBtn.Variable)
                 {
+                    // Seek to and read the byte a the instruction's expected offset from JumpAddress (specifically the latter half of the uint_16 offset for the boolean option)
                     fileStream.Position = (int) JumpAddress + 11;
-
                     var currentData = fileStream.ReadByte();
+                    
+                    
+                    // Determine the provided game by checking the current offset in the instruction,
+                    // then apply the applicable patch byte, depending on the selected patch.
                     if (currentData == 0x5e || currentData == 0x88)
                     {
-                        --fileStream.Position;
-                        fileStream.WriteByte((byte) (patch == 0x95 ? 0x88 : 0x5e));
-                        fileStream.Flush();
+                        patch = (byte) (patch == 0x95 ? 0x88 : 0x5e);
                     }
                     else if (currentData == 0x3d || currentData == 0x64)
                     {
-                        --fileStream.Position;
-                        fileStream.WriteByte((byte) (patch == 0x95 ? 0x64 : 0x3d));
-                        fileStream.Flush();
+                        patch = (byte) (patch == 0x95 ? 0x64 : 0x3d);
                     }
-                    else
-                    {
+                    // Complain if the data read isn't an expected value; in case the instruction has finally changed for once, idk
+                    else {
                         UpdateLabel("Unable to safely apply \"Disable FPS\" patch! (unexpected value)", true);
                         return;
                     }
-
                     
                     #if DEBUG
-                    Dev.Print($"Wrote PC Menu Disable FPS Patch //!ADD_DATA_WRITTEN to {JumpAddress + 11:X}.");
+                    Dev.Print($"Wrote PC Menu Disable FPS Patch {patch:X} to {JumpAddress + 11:X}.");
                     #endif
 
-                    fileStream.Flush();
+
+                    --fileStream.Position;
+                    fileStream.WriteByte(patch);
+                    fileStream.Flush(true);
                 }
             }
 
-
-            UpdateGILabel($"Debug Patch{((bool)DisableDebugBtn.Variable ? "es" : string.Empty)} Applied");
+            
+            UpdateGILabel($"Debug Patch{((bool)DisableFPSBtn.Variable ? "es" : string.Empty)} Applied");
         }
 
         #endregion
