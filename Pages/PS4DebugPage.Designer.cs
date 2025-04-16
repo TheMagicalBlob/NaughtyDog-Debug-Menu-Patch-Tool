@@ -132,9 +132,9 @@ namespace Dobby
             // 
             this.Info.Font = new System.Drawing.Font("Cambria", 9.25F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(9, 417);
+            this.Info.Location = new System.Drawing.Point(4, 427);
             this.Info.Name = "Info";
-            this.Info.Size = new System.Drawing.Size(304, 17);
+            this.Info.Size = new System.Drawing.Size(311, 17);
             this.Info.TabIndex = 7;
             this.Info.Text = "=======================================";
             // 
@@ -200,7 +200,7 @@ namespace Dobby
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 393);
+            this.BackBtn.Location = new System.Drawing.Point(1, 399);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(60, 22);
             this.BackBtn.TabIndex = 14;
@@ -353,7 +353,7 @@ namespace Dobby
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 347);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 349);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.Size = new System.Drawing.Size(135, 23);
             this.InfoHelpBtn.TabIndex = 27;
@@ -370,7 +370,7 @@ namespace Dobby
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 370);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 374);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
@@ -418,19 +418,19 @@ namespace Dobby
             this.IgnoreTitleIDBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.IgnoreTitleIDBtn.Location = new System.Drawing.Point(1, 318);
             this.IgnoreTitleIDBtn.Name = "IgnoreTitleIDBtn";
-            this.IgnoreTitleIDBtn.Size = new System.Drawing.Size(175, 23);
+            this.IgnoreTitleIDBtn.Size = new System.Drawing.Size(162, 23);
             this.IgnoreTitleIDBtn.TabIndex = 32;
             this.IgnoreTitleIDBtn.Text = "Ignore Game Title ID: ";
             this.IgnoreTitleIDBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.IgnoreTitleIDBtn.UseVisualStyleBackColor = false;
-            this.IgnoreTitleIDBtn.Variable = null;
+            this.IgnoreTitleIDBtn.Variable = false;
             // 
             // PS4DebugPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ClientSize = new System.Drawing.Size(320, 440);
+            this.ClientSize = new System.Drawing.Size(320, 448);
             this.Controls.Add(this.IgnoreTitleIDBtn);
             this.Controls.Add(this.ManualConnectBtn);
             this.Controls.Add(this.SeperatorLine2);

@@ -154,6 +154,7 @@ namespace Dobby {
                 ActiveGameID = gameID;
                 ActiveFilePath = FilePath?.ToString() ?? "Empty File Path";
                 JumpAddress = (DebugJumpAddress) guessedDebug - 1;
+                DisableFPSBtn.Variable = false;
                 
                 UpdateGILabel(result + " | Choose a Patch");
             }
@@ -218,10 +219,41 @@ namespace Dobby {
                 #if DEBUG
                 Dev.Print($"Wrote PC Menu Patch {patch:X} to {JumpAddress:X}.");
                 #endif
+
+                if ((bool)DisableFPSBtn.Variable)
+                {
+                    fileStream.Position = (int) JumpAddress + 11;
+
+                    var currentData = fileStream.ReadByte();
+                    if (currentData == 0x5e || currentData == 0x88)
+                    {
+                        --fileStream.Position;
+                        fileStream.WriteByte((byte) (patch == 0x95 ? 0x88 : 0x5e));
+                        fileStream.Flush();
+                    }
+                    else if (currentData == 0x3d || currentData == 0x64)
+                    {
+                        --fileStream.Position;
+                        fileStream.WriteByte((byte) (patch == 0x95 ? 0x64 : 0x3d));
+                        fileStream.Flush();
+                    }
+                    else
+                    {
+                        UpdateLabel("Unable to safely apply \"Disable FPS\" patch! (unexpected value)", true);
+                        return;
+                    }
+
+                    
+                    #if DEBUG
+                    Dev.Print($"Wrote PC Menu Disable FPS Patch //!ADD_DATA_WRITTEN to {JumpAddress + 11:X}.");
+                    #endif
+
+                    fileStream.Flush();
+                }
             }
 
 
-            UpdateGILabel("Debug Patch Applied");
+            UpdateGILabel($"Debug Patch{((bool)DisableDebugBtn.Variable ? "es" : string.Empty)} Applied");
         }
 
         #endregion

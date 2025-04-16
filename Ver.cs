@@ -337,6 +337,7 @@ namespace Dobby {
           "* 4.67.451.1087 | Misc. EbootPatchPage background/formatting changes, 'cause ADHD, I suppose.",
           "* 4.67.451.1090 | *happy blob noises* ",
           "* 4.67.451.1093 | OCD.",
+          "* 4.68.452.1098 | Added an option to the PC debug menu patch page to enable the Disable FPS option by default (or disable it, if they're disabling the debug menus).",
         };
 
         // TODO: Finish standardizing the locations and spacing of the constant controls at the bottom of most forms, based off the Eboot and PC patch pages

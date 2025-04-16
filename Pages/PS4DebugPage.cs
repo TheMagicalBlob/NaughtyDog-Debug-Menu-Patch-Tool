@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 using Dobby.Resources;
 using static Dobby.Common;
-using System.Runtime.CompilerServices;
 
 
 
@@ -63,9 +62,6 @@ namespace Dobby {
                     UpdateLabel($"Invalid Port specified; save aborted. ({Port})");
             };
 
-            // Assign IgnoreTitleID variable property
-            IgnoreTitleIDBtn.Variable = false;
-            
 
 
             if (!File.Exists(settingsFilePath))
@@ -408,7 +404,8 @@ namespace Dobby {
                     }
                 }
             }
-            catch(Exception Tabarnack) {
+            catch(Exception Tabarnack)
+            {
                 Dev.Print($"{Tabarnack.Message};{Tabarnack.StackTrace}");
                 return "UnknownGameVersion";
             }
@@ -417,26 +414,27 @@ namespace Dobby {
         
 
         /// <summary>
-        /// Asyncronously attempt to connect to a new PS4DBG instance with the current IP address
+        /// Attempt to connect to a new PS4DBG instance with the current IP address
         /// </summary>
-        /// <param name="args"></param>
-        private void ConnectionFunction(dynamic args)
+        /// <param name="IP">A dynamic[] containing the form and IP. </param>
+        private void ConnectionFunction(object IP)
         {
             try {
                 // Load Passed Parameters
-                var ip = (IPAddress)args.IP;
+                var ip = (IPAddress)IP;
                 Executable = 0;
 
-                UpdateLabel($"Connecting to Console at \"{IP}\"");
+                UpdateLabel($"Connecting to Console at \"{ip}\"");
 
                 // Establish a connection for the new PS4Debug instance
                 try {
-                    Geo = new PS4DBG(IP);
+                    Geo = new PS4DBG(ip);
                     Geo.Connect();
                 }
-                catch (SocketException oops) {
-                    UpdateLabel($"Error Connecting to \"{IP}\"");
-                    Dev.Print($"!! ERROR: Unable to connect to PS4, see exception below.\n{oops.Message}\n{oops.StackTrace.Replace("\n", "  \n")}");
+                catch (SocketException oops)
+                {
+                    UpdateLabel($"Error Connecting to \"{ip}\"");
+                    Dev.PrintError(oops);
                     return;
                 }
 
@@ -457,8 +455,11 @@ namespace Dobby {
                     int exectuable = process.pid;
                     
                     // Check To Avoid Connecting To HB Store Stuff
-                    if((titleId = Geo.GetProcessInfo(exectuable).titleid) == "FLTZ00003" || titleId == "ITEM00003") {
+                    if((titleId = Geo.GetProcessInfo(exectuable).titleid) == "FLTZ00003" || titleId == "ITEM00003")
+                    {
+                        #if DEBUG
                         Dev.Print($"Skipping Lightning's Stuff {titleId}");
+                        #endif
                         continue;
                     }
 
@@ -496,7 +497,7 @@ namespace Dobby {
             if (ConnectionThread?.ThreadState == 0)
                 ConnectionThread.Abort();
 
-            (ConnectionThread = new Thread(ConnectionFunction)).Start(new { ActiveForm, IP });
+            (ConnectionThread = new Thread(ConnectionFunction)).Start(IP);
         }
 
 

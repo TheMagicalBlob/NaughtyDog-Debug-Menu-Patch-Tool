@@ -45,6 +45,8 @@ namespace Dobby
             this.SeperatorLine1 = new System.Windows.Forms.Label();
             this.BaseDebugBtn = new Dobby.Button();
             this.DisableDebugBtn = new Dobby.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.DisableFPSBtn = new Dobby.Button();
             this.SuspendLayout();
             // 
             // MainLabel
@@ -62,11 +64,11 @@ namespace Dobby
             // 
             this.Info.Font = new System.Drawing.Font("Cambria", 9.25F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(4, 224);
+            this.Info.Location = new System.Drawing.Point(4, 251);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(312, 17);
             this.Info.TabIndex = 7;
-            this.Info.Text = "=====================================";
+            this.Info.Text = "===========================================";
             // 
             // CreditsBtn
             // 
@@ -76,7 +78,7 @@ namespace Dobby
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 173);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 198);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
@@ -94,7 +96,7 @@ namespace Dobby
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 148);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 173);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.InfoHelpBtn.Size = new System.Drawing.Size(147, 23);
@@ -143,7 +145,7 @@ namespace Dobby
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 198);
+            this.BackBtn.Location = new System.Drawing.Point(1, 223);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.BackBtn.Size = new System.Drawing.Size(75, 23);
@@ -231,12 +233,42 @@ namespace Dobby
             this.DisableDebugBtn.Variable = null;
             this.DisableDebugBtn.Click += new System.EventHandler(this.DisableDebugBtn_Click);
             // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("Cambria", 10F);
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.label1.Location = new System.Drawing.Point(2, 158);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(316, 15);
+            this.label1.TabIndex = 42;
+            this.label1.Text = "--------------------------------------------------------------";
+            // 
+            // DisableFPSBtn
+            // 
+            this.DisableFPSBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.DisableFPSBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.DisableFPSBtn.FlatAppearance.BorderSize = 0;
+            this.DisableFPSBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DisableFPSBtn.Font = new System.Drawing.Font("Cambria", 8.5F, System.Drawing.FontStyle.Bold);
+            this.DisableFPSBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.DisableFPSBtn.Location = new System.Drawing.Point(1, 143);
+            this.DisableFPSBtn.Name = "DisableFPSBtn";
+            this.DisableFPSBtn.Size = new System.Drawing.Size(180, 19);
+            this.DisableFPSBtn.TabIndex = 43;
+            this.DisableFPSBtn.Tag = "Disable the FPS and build-related debug text ";
+            this.DisableFPSBtn.Text = "Disable Performance Stats: ";
+            this.DisableFPSBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.DisableFPSBtn.UseVisualStyleBackColor = false;
+            this.DisableFPSBtn.Variable = false;
+            // 
             // PCDebugMenuPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ClientSize = new System.Drawing.Size(320, 245);
+            this.ClientSize = new System.Drawing.Size(320, 272);
+            this.Controls.Add(this.DisableFPSBtn);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.GameInfoLabel);
             this.Controls.Add(this.SeperatorLine2);
             this.Controls.Add(this.BaseDebugBtn);
@@ -278,5 +310,8 @@ namespace Dobby
         public Button DisableDebugBtn;
         public Button BaseDebugBtn;
         #endregion
+
+        public Label label1;
+        private Button DisableFPSBtn;
     }
 }
