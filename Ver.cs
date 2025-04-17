@@ -340,7 +340,7 @@ namespace Dobby {
           "* 4.68.452.1098 | Added an option to the PC debug menu patch page to enable the Disable FPS option by default (or disable it, if they're disabling the debug menus).",
           "* 4.68.454.1101 | Tested and tweaked the PC patch page's \"Disable FPS\" option; Tweaked text shown when a patch is prematurely chosen on the PC patch page to reflect the current state; Fixed unnamed SeperatorLine3.",
           "* 4.68.455.1109 | Finished standardizing the locations and spacing of the constant controls at the bottom of most forms.",
-          "* 4.68.455.1109 | ",
+          "* 4.68.456.1109 | Fixed improperly-named seperator line (blind moron).",
         };
 
 
