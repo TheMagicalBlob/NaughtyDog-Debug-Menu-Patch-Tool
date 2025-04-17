@@ -604,8 +604,8 @@ namespace Dobby {
             //#
             foreach (Control item in Controls)
             {
-                item.MouseDown += new MouseEventHandler(MouseDownFunc);
-                item.MouseUp += new MouseEventHandler(MouseUpFunc);
+                item.MouseDown += new MouseEventHandler((_, args) => MouseDownFunc(args));
+                item.MouseUp += new MouseEventHandler((sender, _) => MouseUpFunc());
 
                 // Apply the seperator drawing function to any seperator lines
                 if (item.Name.Contains("SeperatorLine") && item.GetType() == typeof(Label))
@@ -616,7 +616,7 @@ namespace Dobby {
                 // Apply the event used in dragging the form, avoiding text boxes to avoid removing the ability to drag-select text.
                 if (!(item.Name.Contains("Box") && (item.GetType() == typeof(TextBox) || item.GetType() == typeof(RichTextBox)))) // So You Can Drag Select The Text Lol
                 {
-                    item.MouseMove += new MouseEventHandler(MoveForm);
+                    item.MouseMove += new MouseEventHandler((sender, _) => MoveForm());
                 }
 
                 // Apply the Hint function to the mouse enter event, applying the resetter tag to any controls sans Tags.
@@ -646,12 +646,12 @@ namespace Dobby {
 
 
             // Apply border application method to paint event
-            Controls.Owner.Paint += DrawBorder;
+            Venat.Paint += DrawBorder;
             
             // Apply Info label reset string to form
-            Controls.Owner.Tag = " ";
-            Controls.Owner.MouseEnter += Common.HoverString;
-
+            Venat.Tag = " ";
+            Venat.MouseEnter += Common.HoverString;
+            Venat.MouseMove += (sender, _) => MoveForm();
 
 
             //#
@@ -660,7 +660,7 @@ namespace Dobby {
             var Gray = Color.FromArgb(100, 100, 100);
 
             Button ExitBtn = new Button() {
-                Location = new Point(Controls.Owner.Size.Width - 24, 1),
+                Location = new Point(Venat.Size.Width - 24, 1),
                 Size = new Size(23, 23),
                 Name = "ExitBtn",
                 Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
@@ -672,7 +672,7 @@ namespace Dobby {
                 Cursor = Cursors.Cross
             },
             MinimizeBtn = new Button() {
-                Location = new Point(Controls.Owner.Size.Width - 47, 1),
+                Location = new Point(Venat.Size.Width - 47, 1),
                 Size = new Size(23, 23),
                 Name = "MinimizeBtn",
                 Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
@@ -685,7 +685,7 @@ namespace Dobby {
             }
             #if DEBUG
             ,LogBtn = new Button() {
-                Location = new Point(Controls.Owner.Size.Width - 70, 1),
+                Location = new Point(Venat.Size.Width - 70, 1),
                 Size = new Size(23, 23),
                 Name = "LogBtn",
                 Font = new Font("Franklin Gothic Medium", 6.5F, FontStyle.Bold),
@@ -701,7 +701,7 @@ namespace Dobby {
 
             // Minimize Button Properties
             MinimizeBtn.FlatAppearance.BorderSize = 0;
-            Controls.Owner.Controls.Add(MinimizeBtn);
+            Venat.Controls.Add(MinimizeBtn);
             MinimizeBtn.BringToFront();
 
             MinimizeBtn.Click += new EventHandler(MinimizeBtn_Click);
@@ -710,7 +710,7 @@ namespace Dobby {
 
             // Exit Button Properties
             ExitBtn.FlatAppearance.BorderSize = 0;
-            Controls.Owner.Controls.Add(ExitBtn);
+            Venat.Controls.Add(ExitBtn);
             ExitBtn.BringToFront();
             
             ExitBtn.Click += new EventHandler(ExitBtn_Click);
@@ -720,7 +720,7 @@ namespace Dobby {
             #if DEBUG
             // Log Window Button Properties
             LogBtn.FlatAppearance.BorderSize = 0;
-            Controls.Owner.Controls.Add(LogBtn);
+            Venat.Controls.Add(LogBtn);
             LogBtn.BringToFront();
             
             LogBtn.Click += LogBtn_Click;
@@ -737,11 +737,11 @@ namespace Dobby {
             // Apply Info & Credits page crap, unless we're on one of those pages already
             if (!new string[] { "InfoHelpPage", "CreditsPage" }.Contains(Venat.Name))
             {
-                var helpPageButton = Controls.Owner.Controls.Find("InfoHelpBtn", true)?.Last();
+                var helpPageButton = Venat.Controls.Find("InfoHelpBtn", true)?.Last();
                 helpPageButton.Click += (_, __) => ChangeForm(PageID.InfoHelpPage);
                 helpPageButton.Tag = "View explanations for each page/other info";
                 
-                var creditsPageButton = Controls.Owner.Controls.Find("CreditsBtn", true)?.Last();
+                var creditsPageButton = Venat.Controls.Find("CreditsBtn", true)?.Last();
                 creditsPageButton.Click += (_, __) => ChangeForm(PageID.CreditsPage);
                 creditsPageButton.Tag = "View various credits for the application.";
             }
@@ -750,7 +750,7 @@ namespace Dobby {
             // Avoid searching for a back button on Main page
             if (Venat.Name != "MainPage")
             {
-                var backButton = Controls.Owner.Controls.Find("BackBtn", true)?.Last();
+                var backButton = Venat.Controls.Find("BackBtn", true)?.Last();
 
                 backButton.Click += (_, __) => ChangeForm(null);
                 backButton.Tag = "Return to the previous page";
@@ -760,7 +760,7 @@ namespace Dobby {
             // Attempt to assign static Info label refference for bs globals
             try {
                 int num;
-                InfoLabel = (Label)Controls.Owner.Controls.Find("Info", true)?.Last();
+                InfoLabel = (Label)Venat.Controls.Find("Info", true)?.Last();
 
                 InfoLabel.Text = string.Empty;
                 InfoLabel.Tag = ((num = new Random().Next() & 1) + (num >> num & 1)) == 0 ? "hey get that mouse off my face >:(" : " "; // appy a joke tag if a two random numbers are both even (for shits and giggles)
@@ -1003,7 +1003,7 @@ namespace Dobby {
         internal static void WindowBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
         internal static void MinimizeBtn_Click(object sender, EventArgs e) => ((Control)sender).FindForm().WindowState = FormWindowState.Minimized;
         
-        internal static void MouseDownFunc(object sender, MouseEventArgs e)
+        internal static void MouseDownFunc(MouseEventArgs e)
         {
             ActiveMouseButton = e.Button;
             MouseIsDown = true;
@@ -1013,13 +1013,13 @@ namespace Dobby {
 
         }
 
-        internal static void MouseUpFunc(object sender, MouseEventArgs e) {
+        internal static void MouseUpFunc() {
             MouseScrolled = MouseIsDown = false;
 
             ActiveMouseButton = MouseButtons.None;
         }
 
-        public static void MoveForm(object sender, MouseEventArgs e)
+        public static void MoveForm()
         {
             if (!MouseIsDown || ActiveForm == null)
                 return;

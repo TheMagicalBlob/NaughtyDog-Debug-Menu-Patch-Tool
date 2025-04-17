@@ -132,7 +132,7 @@ namespace Dobby
             // 
             this.Info.Font = new System.Drawing.Font("Cambria", 9.25F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(4, 427);
+            this.Info.Location = new System.Drawing.Point(4, 430);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(311, 17);
             this.Info.TabIndex = 7;
@@ -200,7 +200,7 @@ namespace Dobby
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 399);
+            this.BackBtn.Location = new System.Drawing.Point(1, 402);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(60, 22);
             this.BackBtn.TabIndex = 14;
@@ -339,7 +339,7 @@ namespace Dobby
             // 
             this.SeperatorLine3.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine3.Location = new System.Drawing.Point(2, 334);
+            this.SeperatorLine3.Location = new System.Drawing.Point(2, 338);
             this.SeperatorLine3.Name = "SeperatorLine3";
             this.SeperatorLine3.Size = new System.Drawing.Size(316, 15);
             this.SeperatorLine3.TabIndex = 26;
@@ -353,7 +353,7 @@ namespace Dobby
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 349);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 352);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.Size = new System.Drawing.Size(135, 23);
             this.InfoHelpBtn.TabIndex = 27;
@@ -370,7 +370,7 @@ namespace Dobby
             this.CreditsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreditsBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.CreditsBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.CreditsBtn.Location = new System.Drawing.Point(1, 374);
+            this.CreditsBtn.Location = new System.Drawing.Point(1, 377);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CreditsBtn.Size = new System.Drawing.Size(75, 23);
@@ -416,7 +416,7 @@ namespace Dobby
             this.IgnoreTitleIDBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IgnoreTitleIDBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.IgnoreTitleIDBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.IgnoreTitleIDBtn.Location = new System.Drawing.Point(1, 318);
+            this.IgnoreTitleIDBtn.Location = new System.Drawing.Point(1, 320);
             this.IgnoreTitleIDBtn.Name = "IgnoreTitleIDBtn";
             this.IgnoreTitleIDBtn.Size = new System.Drawing.Size(162, 23);
             this.IgnoreTitleIDBtn.TabIndex = 32;
@@ -430,7 +430,7 @@ namespace Dobby
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ClientSize = new System.Drawing.Size(320, 448);
+            this.ClientSize = new System.Drawing.Size(320, 451);
             this.Controls.Add(this.IgnoreTitleIDBtn);
             this.Controls.Add(this.ManualConnectBtn);
             this.Controls.Add(this.SeperatorLine2);

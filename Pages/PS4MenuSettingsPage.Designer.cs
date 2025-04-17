@@ -76,11 +76,11 @@ namespace Dobby
             // 
             this.Info.Font = new System.Drawing.Font("Cambria", 9.25F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
-            this.Info.Location = new System.Drawing.Point(8, 367);
+            this.Info.Location = new System.Drawing.Point(4, 373);
             this.Info.Name = "Info";
-            this.Info.Size = new System.Drawing.Size(304, 17);
+            this.Info.Size = new System.Drawing.Size(312, 17);
             this.Info.TabIndex = 7;
-            this.Info.Text = "=====================================";
+            this.Info.Text = "===========================================";
             // 
             // SeperatorLine0
             // 
@@ -243,10 +243,10 @@ namespace Dobby
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.BackBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.BackBtn.Location = new System.Drawing.Point(1, 341);
+            this.BackBtn.Location = new System.Drawing.Point(1, 345);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.BackBtn.Size = new System.Drawing.Size(65, 22);
+            this.BackBtn.Size = new System.Drawing.Size(65, 23);
             this.BackBtn.TabIndex = 41;
             this.BackBtn.Text = "Back...";
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -310,10 +310,10 @@ namespace Dobby
             this.InfoHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoHelpBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.InfoHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 298);
+            this.InfoHelpBtn.Location = new System.Drawing.Point(1, 295);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.InfoHelpBtn.Size = new System.Drawing.Size(162, 22);
+            this.InfoHelpBtn.Size = new System.Drawing.Size(162, 23);
             this.InfoHelpBtn.TabIndex = 29;
             this.InfoHelpBtn.Text = "Information / Help...";
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -331,7 +331,7 @@ namespace Dobby
             this.CreditsBtn.Location = new System.Drawing.Point(1, 320);
             this.CreditsBtn.Name = "CreditsBtn";
             this.CreditsBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.CreditsBtn.Size = new System.Drawing.Size(85, 22);
+            this.CreditsBtn.Size = new System.Drawing.Size(85, 23);
             this.CreditsBtn.TabIndex = 28;
             this.CreditsBtn.Text = "Credits...";
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -343,7 +343,7 @@ namespace Dobby
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ClientSize = new System.Drawing.Size(320, 391);
+            this.ClientSize = new System.Drawing.Size(320, 394);
             this.Controls.Add(this.NovisBtn);
             this.Controls.Add(this.ProgPauseOnCloseBtn);
             this.Controls.Add(this.CustomDebugOptionsLabel);

@@ -730,9 +730,9 @@ namespace Dobby {
 
                 GSButtons.Last().MouseEnter += (sender, e) => HoverLeave(((Control)sender), true); 
                 GSButtons.Last().MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
-                GSButtons.Last().MouseUp += MouseUpFunc;
-                GSButtons.Last().MouseDown += MouseDownFunc;
-                GSButtons.Last().MouseMove += MoveForm;
+                GSButtons.Last().MouseUp += (sender, e) => MouseUpFunc();
+                GSButtons.Last().MouseDown += (_, args) => MouseDownFunc(args);
+                GSButtons.Last().MouseMove += (sender, _) => MoveForm();
 
 
                 if (patchIndex == GSButtons.Count - 2)
@@ -768,8 +768,8 @@ namespace Dobby {
             ConfirmBtn.Location = new Point(1, ResetButtonVerticalOffset); // Right Below The GameInfoLabel
             ConfirmBtn.MouseEnter += (sender, e) => HoverLeave(((Control)sender), true);
             ConfirmBtn.MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
-            ConfirmBtn.MouseUp += MouseUpFunc;
-            ConfirmBtn.MouseDown += MouseDownFunc;
+            ConfirmBtn.MouseUp += (sender, _) => MouseUpFunc();
+            ConfirmBtn.MouseDown += (_, args) => MouseDownFunc(args);
             ConfirmBtn.Click += ConfirmBtn_Click;
             ConfirmBtn.BringToFront();
 
@@ -792,8 +792,8 @@ namespace Dobby {
             ResetBtn.Location = new Point(1, ResetButtonVerticalOffset + GSButtonHeight + 1);
             ResetBtn.MouseEnter += (sender, e) => HoverLeave(((Control)sender), true);
             ResetBtn.MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
-            ResetBtn.MouseUp += MouseUpFunc;
-            ResetBtn.MouseDown += MouseDownFunc;
+            ResetBtn.MouseUp += (sender, _) => MouseUpFunc();
+            ResetBtn.MouseDown += (_, args) => MouseDownFunc(args);
             ResetBtn.Click += (_, __) => ResetCustomDebugOptions();
             ResetBtn.BringToFront();
 
