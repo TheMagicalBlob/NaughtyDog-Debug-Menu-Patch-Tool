@@ -341,9 +341,10 @@ namespace Dobby {
           "* 4.68.454.1101 | Tested and tweaked the PC patch page's \"Disable FPS\" option; Tweaked text shown when a patch is prematurely chosen on the PC patch page to reflect the current state; Fixed unnamed SeperatorLine3.",
           "* 4.68.455.1109 | Finished standardizing the locations and spacing of the constant controls at the bottom of most forms.",
           "* 4.68.456.1109 | Fixed improperly-named seperator line (blind moron).",
+          "* 4.69.457.1111 | Fixed an incredibly stupid issue where bytes were being interpreted as integers (why did I forget it does that? the fuck was I thinking? WAS I thinking??).",
         };
 
-
+        
         
 
         public static string Build = ChangeList[ChangeList.Length - 1].Substring(2).Remove(ChangeList.Last().IndexOf(" | ") - 1).Trim(); // Trims The Last ChangeList String For Latest The Build Number

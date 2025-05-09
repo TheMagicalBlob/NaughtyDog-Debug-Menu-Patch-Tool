@@ -304,7 +304,7 @@ namespace Dobby
                     }
                     catch(Exception e) {
                         rawOutput = new string[] { "Error.", e.Message };
-                        Dev.Print($"!! ERROR: an exception occured during debug output loop while setting \"frame\".\nException: {e.Message}");
+                        Dev?.Print($"!! ERROR: an exception occured during debug output loop while setting \"frame\".\nException: {e.Message}");
                     }
 
 
@@ -376,7 +376,7 @@ namespace Dobby
                 }
                 catch(System.ObjectDisposedException)
                 {
-                    Dev.Print("UpdateConsoleOutput()");
+                    Dev?.Print("UpdateConsoleOutput()");
                 }
             }
         }

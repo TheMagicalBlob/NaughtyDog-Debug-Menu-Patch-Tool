@@ -43,7 +43,7 @@ namespace Dobby {
         #endif
                 SkipEndComment = true,
                 SkipIntegrityCheck = false,
-                LoggingMethod = (object msg) => Dev.Print(msg)
+                LoggingMethod = (object msg) => Dev?.Print(msg)
             };
             GP4Creator.DebugOutput = true;
             
@@ -86,11 +86,11 @@ namespace Dobby {
                 {
                     if (Directory.Exists(Testing.TestGamedataFolder ?? "nani??"))
                     {
-                        Dev.Print("Using assigned TestGamedataFolder Path.");
+                        Dev?.Print("Using assigned TestGamedataFolder Path.");
                         gp4.GamedataFolder = Testing.TestGamedataFolder;
                     }
                     else {
-                        Dev.Print("A value was assigned to TestGamedataFolder, but the path is not currently valid");
+                        Dev?.Print("A value was assigned to TestGamedataFolder, but the path is not currently valid");
 
                         UpdateLabel("Invalid TestGamedataFolder Path Provided.");
                         return false;
@@ -119,7 +119,7 @@ namespace Dobby {
                 gp4.OutputDirectory = GP4OutputDirectoryPathBox?.Text?.Replace("\n", string.Empty);
             }
             else {
-                Dev.Print("Using default output directory for .gp4 project file.");
+                Dev?.Print("Using default output directory for .gp4 project file.");
             }
 
 
@@ -155,12 +155,12 @@ namespace Dobby {
                 // Format improper passcodes
                 if (PasscodePathBox.Text.Length < 32)
                 {
-                    Dev.Print($"Padding provided passcode ({32 - PasscodePathBox.Text.Length} characters missing)");
+                    Dev?.Print($"Padding provided passcode ({32 - PasscodePathBox.Text.Length} characters missing)");
                     PasscodePathBox.Set(gp4.Passcode = PasscodePathBox.Text.PadRight(32, '0'));
                 }
                 else if (PasscodePathBox.Text.Length > 32)
                 {
-                    Dev.Print($"Truncating provided passcode ({PasscodePathBox.Text.Length - 32} additional characters provided)");
+                    Dev?.Print($"Truncating provided passcode ({PasscodePathBox.Text.Length - 32} additional characters provided)");
                     PasscodePathBox.Set(gp4.Passcode = PasscodePathBox.Text.Remove(32));
                 }
                 else
@@ -196,11 +196,11 @@ namespace Dobby {
                 }
 
 
-                Dev.Print($"  - newGp4: \"{newGp4}\")");
+                Dev?.Print($"  - newGp4: \"{newGp4}\")");
             }
             else {
                 UpdateLabel(".gp4 Creation Successful.");
-                Dev.Print($"  - .gp4 saved at: \"{newGp4}\"");
+                Dev?.Print($"  - .gp4 saved at: \"{newGp4}\"");
             }
         }
         #endregion
@@ -223,7 +223,7 @@ namespace Dobby {
                 BeginGP4Creation(gp4);
             }
             else {
-                Dev.Print("ApplyandVerifyGP4Options(GP4Creator) returned false, .gp4 creation not attempted.");
+                Dev?.Print("ApplyandVerifyGP4Options(GP4Creator) returned false, .gp4 creation not attempted.");
             }
         }
 

@@ -6,10 +6,10 @@ using System.Windows.Forms;
 namespace Dobby
 {
     
-    //=================================\\
-    //-|   Custom Class Extensions   |-\\
-    //=================================\\
-    #region [Class Extensions]
+    //=====================================\\
+    //---|   Custom Class Extensions   |---\\
+    //=====================================\\
+    #region [Custom Class Extensions]
     
     
     /// <summary> Custom TextBox Class to Better Handle Default TextBox Contents. </summary>
@@ -181,7 +181,7 @@ namespace Dobby
                     {
                         if (!value.GetType().Equals(MaximumValue.GetType()))
                         {
-                            Common.Dev.Print($"ERROR: Mismatch in {Name} Min/Max Value Types. (Min: {MinimumValue.GetType()} && Max: {MaximumValue.GetType()})");
+                            Common.Dev?.Print($"ERROR: Mismatch in {Name} Min/Max Value Types. (Min: {MinimumValue.GetType()} && Max: {MaximumValue.GetType()})");
                         }
                     }
 
@@ -189,7 +189,7 @@ namespace Dobby
                     {
                         if (!value.GetType().Equals(Variable.GetType()))
                         {
-                            Common.Dev.Print($"ERROR: Mismatch in {Name} MinimumValue and Variable Types. (Min: {MinimumValue.GetType()} && Variable: {Variable.GetType()})");
+                            Common.Dev?.Print($"ERROR: Mismatch in {Name} MinimumValue and Variable Types. (Min: {MinimumValue.GetType()} && Variable: {Variable.GetType()})");
                         }
                     }
                 }
@@ -216,7 +216,7 @@ namespace Dobby
                     {
                         if (!value.GetType().Equals(MinimumValue.GetType()))
                         {
-                            Common.Dev.Print($"ERROR: Mismatch in {Name} Min/Max Value Types. (Min: {MinimumValue.GetType()} && Max: {MaximumValue.GetType()})");
+                            Common.Dev?.Print($"ERROR: Mismatch in {Name} Min/Max Value Types. (Min: {MinimumValue.GetType()} && Max: {MaximumValue.GetType()})");
                         }
                     }
 
@@ -224,7 +224,7 @@ namespace Dobby
                     {
                         if (!value.GetType().Equals(Variable.GetType()))
                         {
-                            Common.Dev.Print($"ERROR: Mismatch in {Name} MaximumValue and Variable Types. (Max: {MaximumValue.GetType()} && Variable: {Variable.GetType()})");
+                            Common.Dev?.Print($"ERROR: Mismatch in {Name} MaximumValue and Variable Types. (Max: {MaximumValue.GetType()} && Variable: {Variable.GetType()})");
                         }
                     }
                 }
@@ -273,7 +273,7 @@ namespace Dobby
             // Not entirely certain this is actually required anymore
             if (((Control)sender) != Common.HoveredControl)
             {
-                Common.Dev.Print("CycleButtonVariable(): Control changed, aborting variable cycling.");
+                Common.Dev?.Print("CycleButtonVariable(): Control changed, aborting variable cycling.");
                 return;
             }
 
@@ -281,11 +281,11 @@ namespace Dobby
 
             // Check for null variable / type.                (not that I know how the latter would be null without the former being null as well, rendering the following check redundant... meh, I'm leaving both checks anyway)
             if (Variable == null) {
-                Common.Dev.Print("CycleButtonVariable(): Control's variable type was somehow null (wtf??), fix your trash.");
+                Common.Dev?.Print("CycleButtonVariable(): Control's variable type was somehow null (wtf??), fix your trash.");
                 return;
             }
             if (type == null) {
-                Common.Dev.Print("CycleButtonVariable(): Control's variable was null, fix your trash.");
+                Common.Dev?.Print("CycleButtonVariable(): Control's variable was null, fix your trash.");
                 return;
             }
 
@@ -294,13 +294,13 @@ namespace Dobby
             {
                 if (MaximumValue == null)
                 {
-                    Common.Dev.Print("CycleButtonVariable(): No Maximum value provided to go with minumum, you didn't write the code below to account for that, dumbass. Aborting");
+                    Common.Dev?.Print("CycleButtonVariable(): No Maximum value provided to go with minumum, you didn't write the code below to account for that, dumbass. Aborting");
                     return;
                 }
 
                 if (MinimumValue == null)
                 {
-                    Common.Dev.Print("No minimum value provided to go with maximum, defaulting it to 0.");
+                    Common.Dev?.Print("No minimum value provided to go with maximum, defaulting it to 0.");
                     MinimumValue = 0;
                 }
             }
@@ -310,7 +310,7 @@ namespace Dobby
             // Avoid incrementing options on MouseUp events when the scroll wheel was already used
             if (Variable != _preInputvariable && eventArgs.GetType().Name != "HandledMouseEventArgs")
             {
-                Common.Dev.Print("Variable has been scrolled, avoiding click incrementation");
+                Common.Dev?.Print("Variable has been scrolled, avoiding click incrementation");
                 return;
             }
 
@@ -376,7 +376,7 @@ namespace Dobby
             if (type == typeof(bool))
             {
                 if (MaximumValue != null)
-                    Common.Dev.Print("WARNING: A maximum value was for some reason provided for a button with a boolean variable attached");
+                    Common.Dev?.Print("WARNING: A maximum value was for some reason provided for a button with a boolean variable attached");
 
                 Variable = !(bool) Variable;
                 return;
@@ -398,7 +398,7 @@ namespace Dobby
                     if (VariableTags.Length < (long)MaximumValue)
                     {
                         MaximumValue = VariableTags.Length;
-                        Common.Dev.Print($"ERROR: Maximum value for control Variable was larger than the amount of provided VariableTags; lowered maxValue to [{MaximumValue}]");
+                        Common.Dev?.Print($"ERROR: Maximum value for control Variable was larger than the amount of provided VariableTags; lowered maxValue to [{MaximumValue}]");
                     }
 
                     if (MaximumValue.Equals(Variable))
@@ -422,7 +422,7 @@ namespace Dobby
                 if (MaximumValue != null && VariableTags?.Length < (byte)MaximumValue)
                 {
                     MaximumValue = VariableTags.Length;
-                    Common.Dev.Print($"ERROR: Maximum value for control Variable was larger than the amount of provided VariableTags; lowered maxValue to [{MaximumValue}]");
+                    Common.Dev?.Print($"ERROR: Maximum value for control Variable was larger than the amount of provided VariableTags; lowered maxValue to [{MaximumValue}]");
                 }
 
 
@@ -505,7 +505,7 @@ namespace Dobby
 
             // Check for stupidity.
             if (control.Variable == null) {
-                Common.Dev.Print($"!! ERROR: Variable property for control \"{control.Name}\" was null");
+                Common.Dev?.Print($"!! ERROR: Variable property for control \"{control.Name}\" was null");
                 return;
             }
 
@@ -520,10 +520,10 @@ namespace Dobby
                 if (control.VariableTags != null)
                 {
                     if (control.VariableTags.Length > 2)
-                        Common.Dev.Print($"WARNING: Invalid VariableTags array provided for boolean toggle; ignoring [{control.VariableTags.Length-2}] tag(s)");
+                        Common.Dev?.Print($"WARNING: Invalid VariableTags array provided for boolean toggle; ignoring [{control.VariableTags.Length-2}] tag(s)");
                     
                     if (control.VariableTags.Length < 2)
-                        Common.Dev.Print($"ERROR: Invalid VariableTags array provided for boolean toggle; less than two options provided ({control.VariableTags.Length})"); // output tag array length in case it's somehow negative, I suppose
+                        Common.Dev?.Print($"ERROR: Invalid VariableTags array provided for boolean toggle; less than two options provided ({control.VariableTags.Length})"); // output tag array length in case it's somehow negative, I suppose
 
                     else
                         variableText = control.VariableTags[(bool)control.Variable ? 1 : 0];
@@ -543,10 +543,10 @@ namespace Dobby
                 if (control.VariableTags != null)
                 {
                     if (control.VariableTags.Length > (int)control.Variable)
-                        Common.Dev.Print($"WARNING: Invalid VariableTags array provided for boolean toggle; ignoring [{control.VariableTags.Length-2}] tag(s)");
+                        Common.Dev?.Print($"WARNING: Invalid VariableTags array provided for boolean toggle; ignoring [{control.VariableTags.Length-2}] tag(s)");
                     
                     else if (control.VariableTags.Length < (int)control.Variable)
-                        Common.Dev.Print($"ERROR: Invalid VariableTags array provided for boolean toggle; less than two options provided ({control.VariableTags.Length})"); // output tag array length in case it's somehow negative, I suppose
+                        Common.Dev?.Print($"ERROR: Invalid VariableTags array provided for boolean toggle; less than two options provided ({control.VariableTags.Length})"); // output tag array length in case it's somehow negative, I suppose
 
                     variableText = control.VariableTags[(int)control.Variable];
                     
@@ -563,7 +563,7 @@ namespace Dobby
             {
                 if (control.VariableTags != null)
                 {
-                    Common.Dev.Print("WARNING: variable tags provided for floating-point button variable, cannot use a floating-point as array index. (obviously)");
+                    Common.Dev?.Print("WARNING: variable tags provided for floating-point button variable, cannot use a floating-point as array index. (obviously)");
                     return;
                 }
 
@@ -576,7 +576,7 @@ namespace Dobby
             //#
             if (variableText == null)
             {
-                Common.Dev.Print($"WARNING: An unexpected data type was provided for the Variable tied to control \"{control.Name}\". Using unformatted string representation. (Type: {control.Variable.GetType()})");
+                Common.Dev?.Print($"WARNING: An unexpected data type was provided for the Variable tied to control \"{control.Name}\". Using unformatted string representation. (Type: {control.Variable.GetType()})");
                 variableText = $"{(control.Variable ?? (object) "null")}";
             }
 

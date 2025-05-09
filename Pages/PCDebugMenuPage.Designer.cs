@@ -4,7 +4,6 @@ namespace Dobby
 {
     internal partial class PCDebugMenuPage
     {
-        
         //=====================================\\
         //--|   Designer Crap, No Touchie   |--\\
         //=====================================\\
@@ -296,6 +295,7 @@ namespace Dobby
         //--|   Control Declarations   |--\\
         //================================\\
         #region [Control Declarations]
+
         public Label MainLabel;
         public Button CreditsBtn;
         public Button InfoHelpBtn;
@@ -309,9 +309,8 @@ namespace Dobby
         public Button BackBtn;
         public Button DisableDebugBtn;
         public Button BaseDebugBtn;
-        #endregion
-
         public Label SeperatorLine3;
         private Button DisableFPSBtn;
+        #endregion
     }
 }

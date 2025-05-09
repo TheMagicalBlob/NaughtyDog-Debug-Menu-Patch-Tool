@@ -182,14 +182,14 @@ namespace Dobby {
             }
             if (JumpAddress < 0)
             {
-                Dev.Print($"ERROR: JumpAddress was negative. (fix your trash)");
+                Dev?.Print($"ERROR: JumpAddress was negative. (fix your trash)");
 
                 UpdateGILabel("Unable to Apply Debug Patch. (address > .exe length)");
                 UpdateLabel("ERROR: Invalid Jump Address (please make a bug report!)", true);
             }
             if (!File.Exists(ActiveFilePath))
             {
-                Dev.Print($"ERROR: The provided executable no longer exists.\n - Expected Path: [{ActiveFilePath ?? "null"}]");
+                Dev?.Print($"ERROR: The provided executable no longer exists.\n - Expected Path: [{ActiveFilePath ?? "null"}]");
 
                 UpdateLabel("ERROR: Executable no longer exists.", true);
                 return;
@@ -216,7 +216,7 @@ namespace Dobby {
                 fileStream.Flush(true);
 
                 #if DEBUG
-                Dev.Print($"Wrote PC Menu Patch {patch:X} to {JumpAddress:X}.");
+                Dev?.Print($"Wrote PC Menu Patch {patch:X} to {JumpAddress:X}.");
                 #endif
 
 
@@ -245,7 +245,7 @@ namespace Dobby {
                     }
                     
                     #if DEBUG
-                    Dev.Print($"Wrote PC Menu Disable FPS Patch {patch:X} to {JumpAddress + 11:X}.");
+                    Dev?.Print($"Wrote PC Menu Disable FPS Patch {patch:X} to {JumpAddress + 11:X}.");
                     #endif
 
 

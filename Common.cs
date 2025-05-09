@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
@@ -208,77 +209,50 @@ namespace Dobby {
         /// Convert a provided object in to a byte array, then writes it to the current position in the active file stream.
         /// </summary>
         /// <param name="data"> The object to convert and write. </param>
-        public static void WriteVar(FileStream fileStream, long address, object data)
+        public static void WriteVar(FileStream fileStream, int address, byte[] data)
         {
-            var type = data?.GetType();
             #if DEBUG
-            var msg = $"] Written To 0x{fileStream.Position:X} ({type})\n";
+            var msg = $"] Written To 0x{fileStream?.Position:X} ({data?.Length ?? 0xDEADDAD})\n";
             #endif
 
-
-            if (address != 0xDEADDAD)
+            if (fileStream == null)
             {
-                fileStream.Position = address;
-            }
-            if (data == null)
-            {
-                data = (byte) 0x00;
+                Dev.Print("ERROR: Filestream was disposed before the patch application process was finished.");
+                UpdateLabel("Internal patch-application error. My apologies.");
+                return;
             }
 
 
+
+            fileStream.Position = address;
 
             // Write provided data
-            if (type == typeof(int))
+            if (data.Length == 1)
             {
-                fileStream.Write(BitConverter.GetBytes((int)data), 0, 4);
+                fileStream?.WriteByte(data[0]);
 
                 #if DEBUG
-                msg = $"[{(int)data} => {BitConverter.ToString(BitConverter.GetBytes((int)data)).Replace("-", ", 0x")}" + msg;
+                msg = $"[{$"{data:X}".PadLeft(2, '0')}" + msg;
                 #endif
             }
-            else if (type == typeof(byte))
+            else if (data.Length > 1)
             {
-                data = Convert.ToByte(data); // why the fuck does casting a byte throw an invalid cast exception?? and why only for 1's but not 0's???
-                fileStream.WriteByte((byte)data);
+                fileStream?.Write(data, 0, data.Length);
 
                 #if DEBUG
-                msg = $"[{(byte)data} => {((byte)data).ToString("X").PadLeft(2, '0')}" + msg;
+                msg = $"[0x{BitConverter.ToString(data).Replace("-", ", 0x")}" + msg;
                 #endif
             }
-            else if (type == typeof(byte[]))
-            {
-                fileStream.Write((byte[])data, 0, ((byte[])data).Length);
-
-                #if DEBUG
-                msg = $"[0x{BitConverter.ToString((byte[])data).Replace("-", ", 0x")}" + msg;
-                #endif
+            else {
+                Dev?.Print($"ERROR: Zero-length array provided.");
             }
-            else if (type == typeof(bool))
-            {
-                fileStream.WriteByte((byte)((bool)data ? 1 : 0));
-
-                #if DEBUG
-                msg = $"[{(bool)data} => {((bool)data ? 1 : 0)}" + msg;
-                #endif
-            }
-            else if (type == typeof(float))
-            {
-                fileStream.Write(BitConverter.GetBytes((float)data), 0, BitConverter.GetBytes((float)data).Length);
-
-                #if DEBUG
-                msg = $"[{(float)data} => 0x{BitConverter.ToString(BitConverter.GetBytes((float)data)).Replace("-", ", 0x")}" + msg;
-                #endif
-            }
-
-            else
-                Dev.Print($"ERROR: Unexpected Variable type ({type}).");
 
 
             // Manually flush the stream just in case
-            fileStream.Flush(true);
+            fileStream?.Flush(true);
                 
             #if DEBUG
-            Dev.Print(msg);
+            Dev?.Print(msg);
             #endif
         }
         
@@ -288,14 +262,40 @@ namespace Dobby {
         /// </summary>
         /// <param name="data"> The data to write to the provided addresses. </param>
         /// <param name="addresses"> The addresses to write the data to each of. </param>
-        public static void WriteVar(FileStream fileStream, long[] addresses, object data) => Array.ForEach(addresses, address => WriteVar(fileStream, address, data));
-
+        public static void WriteVar(FileStream fileStream, object addresses, byte data)
+        {
+            if (addresses.GetType() == typeof(int[]))
+            {
+                foreach (var address in (int[])addresses)
+                {
+                    WriteVar(fileStream, address, new [] { data });
+                }
+            }
+            else {
+                WriteVar(fileStream, (int)addresses, new [] { data });
+            }
+        }
+        
+        
         /// <summary>
-        /// Shorthand for writing to the current position in <paramref name="fileStream"/>, rather than seeking to a specified address.
+        /// WriteVar() shorthand for writing the same data to multiple addresses.
         /// </summary>
-        /// <param name="data"> The data to write. </param>
-        public static void WriteVar(FileStream fileStream, object data) => WriteVar(fileStream, 0xDEADDAD, data);
-
+        /// <param name="data"> The data to write to the provided addresses. </param>
+        /// <param name="addresses"> The addresses to write the data to each of. </param>
+        public static void WriteVar(FileStream fileStream, object addresses, byte[] data)
+        {
+            if (addresses.GetType() == typeof(int[]))
+            {
+                foreach (var address in (int[])addresses)
+                {
+                    WriteVar(fileStream, address, data);
+                }
+            }
+            else {
+                WriteVar(fileStream, (int)addresses, data);
+            }
+        }
+        
 
 
         /// <summary>
@@ -481,7 +481,7 @@ namespace Dobby {
         {
             if (DisableFormChange) {
                 UpdateLabel("Disabled during .gp4 / .pkg Creation Process.");
-                Dev.Print($"Ignoring request to change form to \"{Page ?? 0}\".");
+                Dev?.Print($"Ignoring request to change form to \"{Page ?? 0}\".");
                 return;
             }
             else {
@@ -556,7 +556,7 @@ namespace Dobby {
                     return;
 
                 default:
-                    Dev.Print($"{Page} Is Not A Page!");
+                    Dev?.Print($"{Page} Is Not A Page!");
                     return;
             }
 
@@ -766,7 +766,7 @@ namespace Dobby {
                 InfoLabel.Tag = ((num = new Random().Next() & 1) + (num >> num & 1)) == 0 ? "hey get that mouse off my face >:(" : " "; // appy a joke tag if a two random numbers are both even (for shits and giggles)
             }
             catch (InvalidOperationException) {
-                Dev.Print("ERROR: Form does not contain an info label (or it has not been named \"Info\").");
+                Dev?.Print("ERROR: Form does not contain an info label (or it has not been named \"Info\").");
             }
         }
 
@@ -793,8 +793,8 @@ namespace Dobby {
                 ArrowWidth = (int) PassedControl.CreateGraphics().MeasureString(">", PassedControl.Font).Width;
             }
             catch (Exception ex) {
-                Dev.Print($"Error Getting Width Of Hover Arror From Control ({PassedControl.Name}: {(EventIsMouseEnter ? "Hover" : "Leave")})");
-                Dev.PrintError(ex);
+                Dev?.Print($"Error Getting Width Of Hover Arror From Control ({PassedControl.Name}: {(EventIsMouseEnter ? "Hover" : "Leave")})");
+                Dev?.PrintError(ex);
                 return;
             }
 
@@ -856,20 +856,20 @@ namespace Dobby {
 
             if (item == null)
             {
-                Dev.Print("!! ERROR: Invalid control passed as Seperator line.");
-                Dev.Print($"  - Control \"{item.Name}\" location: {item.Location}.");
+                Dev?.Print("!! ERROR: Invalid control passed as Seperator line.");
+                Dev?.Print($"  - Control \"{item.Name}\" location: {item.Location}.");
             }
             if (item.Name == "SeperatorLine0" && item.Location != new Point(2, 20))
             {
-                Dev.Print($"Seperator Line 0 Improperly positioned on {item.Parent.Name}");
+                Dev?.Print($"Seperator Line 0 Improperly positioned on {item.Parent.Name}");
             }
             if (item.Height != 15)
             {
-                Dev.Print($"# WARNING: \"{item.Name}\" has an invalid height!!! (Label is {item.Height} pixels in hight)");
+                Dev?.Print($"# WARNING: \"{item.Name}\" has an invalid height!!! (Label is {item.Height} pixels in hight)");
             }
             if (!(item.Location.X == 2 && item.Width == item.Parent.Width - 4))
             {
-                Dev.Print($"Moved And Resized {item.Name} ({item.Parent.Name}).");
+                Dev?.Print($"Moved And Resized {item.Name} ({item.Parent.Name}).");
 
                 item.Location = new Point(2, item.Location.Y);
                 item.Width = item.Parent.Width - 4;
@@ -909,7 +909,7 @@ namespace Dobby {
                     ActiveForm?.Update();
                 }
                 catch (Exception) {
-                    Dev.Print("Error setting label text and / or colour.");
+                    Dev?.Print("Error setting label text and / or colour.");
                 }
             };
 
@@ -953,7 +953,7 @@ namespace Dobby {
                     }
                 }
                 catch (Exception) {
-                    Dev.Print("Form Changed or Lost Focus, Killing Label Flash");
+                    Dev?.Print("Form Changed or Lost Focus, Killing Label Flash");
 
                     while (ActiveForm == null)
                         Thread.Sleep(1);
@@ -1071,11 +1071,11 @@ namespace Dobby {
                     UpdateLabel((string) ((Control)sender).Tag);
                 }
                 else
-                    Dev.Print($"Label not updated due to empty tag or active flash thread {InfoFlashes} {InfoText?.Length ?? 0xDEADDAD}");
+                    Dev?.Print($"Label not updated due to empty tag or active flash thread {InfoFlashes} {InfoText?.Length ?? 0xDEADDAD}");
             }
             catch (InvalidCastException)
             {
-                Dev.Print("ERROR: A Non-string value was assigned to a control tag");
+                Dev?.Print("ERROR: A Non-string value was assigned to a control tag");
             }
         }
         #endregion

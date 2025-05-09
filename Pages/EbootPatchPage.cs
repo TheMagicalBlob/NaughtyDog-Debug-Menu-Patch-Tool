@@ -57,12 +57,12 @@ namespace Dobby {
         {
             try { 
                 fileStream?.Dispose();
-                Dev.Print($"Initializing fileStream with \"{filePath}\".");
+                Dev?.Print($"Initializing fileStream with \"{filePath}\".");
                 fileStream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite);
             }
             catch(IOException dang)
             {
-                Dev.PrintError(dang);
+                Dev?.PrintError(dang);
                 UpdateLabel("Access Denied, File In Use Elsewhere", true);
                 return;
             }
@@ -157,7 +157,7 @@ namespace Dobby {
                 //## Unknown games
                 //#
                 default:
-                    Dev.Print($"Unknown Game Selected (GetGameID()) Game: {Game}");
+                    Dev?.Print($"Unknown Game Selected (GetGameID()) Game: {Game}");
                     RestoredDebugBtn.Enabled = false;
                     RestoredDebugBtn.Font = new Font("Cambria", 9.25F, FontStyle.Strikeout);
                     RestoredDebugBtn.Text = "Enable Debug Mode - Unavailable";
@@ -234,7 +234,7 @@ namespace Dobby {
                     return DebugJumpAddress.Empty;
 
                 default:
-                    Dev.Print($"ERROR: Invalid Game ID during EbootPatchPage.GetDebugAddress");
+                    Dev?.Print($"ERROR: Invalid Game ID during EbootPatchPage.GetDebugAddress");
                     return DebugJumpAddress.Empty;
             }
         }
@@ -317,7 +317,7 @@ namespace Dobby {
                   //UC4SP127_CustomMenu();
                     break;
                 case GameID.UC4133MP:
-                    UC4MP133_RestoredMenu();
+                    UC4MP133_RestoredMenu(fileStream);
                     break;
                 case GameID.TLL100MP:
                   //TLLMP100_RestoredMenu();
@@ -337,7 +337,7 @@ namespace Dobby {
 
         private void UC1100_RestoredMenu()
         {
-            var WhiteJumpsOneByte = new int[]
+            var WhiteJumpsOneByte = new []
             {
                 0xE20E3,  // BP UCC...
                 0xE373A,  // Collision...
@@ -359,7 +359,7 @@ namespace Dobby {
                 0x9FF43,  // CutScenes Menu Nest
                 0xD41B4   // CutScenes...
             };
-            var WhiteJumps = new int[]
+            var WhiteJumps = new []
             {
                 0x2A7E08, // Quick Menu Character Options
                 0xE2125,  // Rendering, BP Rendering, And Rendering PS3
@@ -374,7 +374,7 @@ namespace Dobby {
                 0xE4033,  // Audio...
                 0xE536E   // Language...
             };
-            var FunctionNops = new int[]
+            var FunctionNops = new []
             {
                 0x4462F6, // Particles Push
                 0x447399, // Particles Pop
@@ -388,7 +388,7 @@ namespace Dobby {
             WriteVar(fileStream, 0x2D6AD3, new byte[] { 0xE9, 0x27, 0x00, 0x00, 0x00 }); // Skip Crashing Shader Variables Code
             WriteVar(fileStream, 0x2D6B26, new byte[] { 0xEB, 0x05 });                   // Skip Some Code That Causes The Material Debug... Menu To Crash When Selected
             WriteVar(fileStream, 0x2D6C87, new byte[] { 0xE9, 0x76 });                   // Skip Crashing Shader Variables Submenu (Crashes The Game Mid-Boot)
-            WriteVar(fileStream, new long[2] { 0x2D6A50, 0x2D6A70 }, 0xEB);              // Fix The Material Debug... Options
+            WriteVar(fileStream, new [] { 0x2D6A50, 0x2D6A70 }, 0xEB);                // Fix The Material Debug... Options
 
             //WriteVar(fileStream, 0x77B2E0, new byte[] { 0x5A, 0x7D, 0x0C, 0x00 });     // Add Valid Build Number. This Enables The "Build: " & "Built: " Debug Text As Well
 
@@ -417,7 +417,7 @@ namespace Dobby {
 
         private void UC1102_RestoredMenu()
         {
-            var WhiteJumpsOneByte = new int[]
+            var WhiteJumpsOneByte = new []
             {
                 0xE21D3,    // BP UCC...
                 0xE382A,    // Collision...
@@ -437,7 +437,7 @@ namespace Dobby {
                 0x9FF63,    // CutScenes Menu Nest
                 0xD42A4     // CutScenes...
             };
-            var WhiteJumps = new int[]
+            var WhiteJumps = new []
             {
                 0x2A83F8, // Quick Menu Character Options
                 0xE2215,  // Rendering, BP Rendering, And Rendering PS3
@@ -453,7 +453,7 @@ namespace Dobby {
                 0xE545E,  // Language...
                 0x498DC8  // Some PlayGo... Options
             };
-            var FunctionNops = new int[]
+            var FunctionNops = new []
             {
                 0x31B8F7,   // State Objects Push
                 0x31BA73,   // State Objects Pop
@@ -464,7 +464,7 @@ namespace Dobby {
             };
 
             // Keep Debug Mode Enabled (It Gets Disabled On Boot, It's Actually On By Default). Also Puts The State Objects Menu In The Main Dev Menu, Which Is Where It Shows When The Gameplay Menu Isn't Loaded. It Looks Cooler, Heh.
-            WriteVar(fileStream, new long[] { 0x102187, 0x31B967 }, 0xEB);
+            WriteVar(fileStream, new [] { 0x102187, 0x31B967 }, 0xEB);
 
 
             //WriteVar(fileStream, 0x772B80, new byte[] { 0x46, 0x7F, 0x0C, 0x00 });     // Add Valid Build Number. This Enables The "Build: " & "Built: " Debug Text As Well
@@ -474,12 +474,14 @@ namespace Dobby {
 
 
             //Skip Some Code In Two Spots In The State Objects Menu To Stop Tasks From Crashing The Game Mid-Load
-            WriteVar(fileStream, new long[] { 0x30FF09, 0x30FF3C }, new byte[][] { new byte[] { 0xEB, 0x2C }, new byte[] { 0xEB, 0x17 } });
+            WriteVar(fileStream, 0x30FF09, new byte[] { 0xEB, 0x2C });
+            WriteVar(fileStream, 0x30FF3C, new byte[] { 0xEB, 0x17 });
+
 
             WriteVar(fileStream, 0x2D70C3, new byte[] { 0xE9, 0x27, 0x00, 0x00, 0x00 }); // Skip Crashing Shader Variables Code
             WriteVar(fileStream, 0x2D7116, new byte[] { 0xEB, 0x05 });                   // Skip Some Code That Causes The Material Debug... Menu To Crash When Selected
             WriteVar(fileStream, 0x2D7277, new byte[] { 0xE9, 0x76 });                   // Skip Crashing Shader Variables Submenu
-            WriteVar(fileStream, new long[] { 0x2D7060, 0x2D7040 }, 0xEB);               // Fix The Material Debug... Options
+            WriteVar(fileStream, new [] { 0x2D7060, 0x2D7040 }, 0xEB);               // Fix The Material Debug... Options
 
             WriteVar(fileStream, 0x2C7810, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Create New Level Render Settings..." From Crashing The Game When "Default Render Settings..." Is Opened
             WriteVar(fileStream, 0x2C7820, new byte[] { 0xB0, 0x01, 0xC3 });             // Stop "Load Existing Render Settings..." From Crashing The Game When "Default Render Settings..." Is Opened
@@ -503,7 +505,7 @@ namespace Dobby {
         
         private void UC2100_RestoredMenu()
         {
-            var WhiteJumpsOneByte = new int[]
+            var WhiteJumpsOneByte = new []
             {
                 0x6C9C,   // Actor Viewer... (Quick Menu)
                 0x1C46C7, // BP UCC...
@@ -525,7 +527,7 @@ namespace Dobby {
                 0x14EE6D, // CutScenes... Jump 2
                 0x1B4135  // CutScenes...
             };
-            var WhiteJumps = new int[]
+            var WhiteJumps = new []
             {
                 0x1C4708, // Rendering... & BP Rendering... & System...
                 0x545C9C, // Rendering... -> Optimization... (Load Rest Of Contents)
@@ -539,7 +541,7 @@ namespace Dobby {
                 0x1C5CB2, // Audio...
                 0x1C7746  // Language...
             };
-            var FunctionNops = new int[]
+            var FunctionNops = new []
             {
                 0x6CB7,   // Actor Viewer Push
                 0x6D5E,   // Actor Viewer Pop
@@ -592,7 +594,7 @@ namespace Dobby {
                 0x1B3B89, // CutScenes Inner Push 2
                 0x1B3E7B  // CutScenes Inner Pop  2
             };
-            var Returns = new int[] {
+            var Returns = new [] {
                 0x429840, // State Scripts Func
                 0x1C2650  // Selects Objects 
             };
@@ -618,8 +620,10 @@ namespace Dobby {
 
         }
 
-        private void UC3100_RestoredMenu() {
-            int[] FunctionNops = new int[] {
+        private void UC3100_RestoredMenu()
+        {
+            var FunctionNops = new []
+            {
                 0x151743, // System Push
                 0x15183D, // System Pop
                 0x151862, // Spawn Character Push
@@ -665,7 +669,7 @@ namespace Dobby {
               //0x833CE5, // Scripts Push
               //0x833FE6, // Scripts Pop
             };
-            int[] WhiteJumpsSmol = new int[]
+            var WhiteJumpsSmol = new []
             {
                 0x1516E7, // BP UCC...
                 0x15184A, // Spawn Character...
@@ -686,7 +690,7 @@ namespace Dobby {
                 0x152412, // Clock...
                 0x152902  // Menu...
             };
-            int[] WhiteJumpsLorge = new int[]
+            var WhiteJumpsLorge = new []
             {
                 0x151728, // System...
                 0x17010B, // Gameplay Chunk 1
@@ -698,7 +702,7 @@ namespace Dobby {
                 0x154936, // Language... / Recorder...
               //0x833CCA  // Scripts...
             };
-            var Returns = new int[]
+            var Returns = new []
             {
                 0x3F89E0, // Skip Schema Spawn Menu Update
                 0x3F93D0, // Skip DCSpawn Menu Update
@@ -718,7 +722,6 @@ namespace Dobby {
                 WriteVar(fileStream, addr, 0x00);
             foreach (int addr in Returns)
                 WriteVar(fileStream, addr, 0xC3);
-            return;
         }
 
 
@@ -732,9 +735,9 @@ namespace Dobby {
         }
 
 
-        private void UC4MP133_RestoredMenu()
+        private void UC4MP133_RestoredMenu(FileStream fileStream)
         {
-            var WhiteJumps = new int[]
+            var WhiteJumps = new []
             {
                 0x2409ED,  // Relaunch...
                 0x18725CA, // Switch On/Off Neo Resolution Mode...
@@ -782,7 +785,7 @@ namespace Dobby {
                 0x24ED5A,  // Complete Test Tasks...
                 0x1643865  // Stop SP Tasks From Crashing In Coop/MP
             };
-            var FunctionNops = new int[]
+            var FunctionNops = new []
             {
                 0x18768E9, // Rendering Push 1
                 0x187C132, // Rendering Pop  1
@@ -876,7 +879,7 @@ namespace Dobby {
                 0x24E88B,  // Extra Tasks... Options Push
                 0x24EE94   // Extra Tasks... Options Pop
             };
-            var Returns = new int[]
+            var Returns = new []
             {
                 0x421960,  // Skip Schema Spawn Menu
                 0x423590,  // Skip DC Spawn Menu
@@ -891,11 +894,12 @@ namespace Dobby {
                 //16186D0  // State Scripts Menu For Memory Reasons
             };
 
-            // Main Patches \\
-            WriteVar(fileStream, new long[] { 0x1CCEB8, 0x24E5C8 }, 0x01);                 // Enables The Debug Mode, Then The UC4 Tasks Menu
+
+            // Main Patches
+            WriteVar(fileStream, new [] { 0x1CCEB8, 0x24E5C8 }, 0x01);                 // Enables The Debug Mode, Then The UC4 Tasks Menu
             WriteVar(fileStream, 0xA37DE1, new byte[] { 0xE9, 0x08, 0x00, 0x00, 0x00 });  // Skip PSN Sign-In Check
 
-            // Misc Patches \\
+            // Misc Patches
             WriteVar(fileStream, 0x187B1F4, new byte[] { 0x90, 0x90, 0x90 });             // Skip Crashing Pre-Material Debug Function Call
             WriteVar(fileStream, 0x187B214, new byte[] { 0xE9, 0x07, 0x00, 0x00, 0x00 }); // Skip Material Debug Code That Breaks Some SP Tasks
             WriteVar(fileStream, 0x1B5A9C0, new byte[] { 0xE9, 0x0F, 0x00, 0x00, 0x00 }); // Stop Various Material Debug Options From Crashing After The Above Patch
@@ -910,14 +914,22 @@ namespace Dobby {
             WriteVar(fileStream, 0x166BF6B, new byte[] { 0xE9, 0x5B, 0x04, 0x00, 0x00 }); // Skip Select Spawner By Name Menu
             WriteVar(fileStream, 0x18E1900, new byte[] { 0xE9, 0x89, 0xC5, 0x00, 0x00 }); // Skip Most Of "Collision (Havok)..." Starting After "Destruction..."
 
-            // Mass Apply Duplicate Patches \\
-            foreach (int Address in WhiteJumps)
-                WriteVar(fileStream, Address, new byte[] { 0x00, 0x00, 0x00, 0x00 });
-            foreach (int Address in FunctionNops)
-                WriteVar(fileStream, Address, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 });
-            foreach (int Address in Returns)
-                WriteVar(fileStream, Address, 0xC3);
 
+            // Mass Apply Duplicate Patches
+            foreach (int Address in WhiteJumps)
+            {
+                WriteVar(fileStream, Address, new byte[] { 0x00, 0x00, 0x00, 0x00 });
+            }
+
+            foreach (int Address in FunctionNops)
+            {
+                WriteVar(fileStream, Address, new byte[] { 0xE9, 0x00, 0x00, 0x00, 0x00 });
+            }
+            
+            foreach (int Address in Returns)
+            {
+                WriteVar(fileStream, Address, 0xC3);
+            }
         }
 
 
@@ -956,7 +968,7 @@ namespace Dobby {
         private bool T1R11X_RestoredMenu()
         {
             try {
-                var FunctionsToSkip = new int[]
+                var FunctionsToSkip = new []
                 {
                     0x76E62C, // State Scripts Push
                     0x76F0CF, // State Scripts Pop
@@ -972,7 +984,7 @@ namespace Dobby {
                     0x75408A, // Camera Shake Push
                     0x7541E4  // Camera Shake Pop
                 };
-                var Returns = new int[]
+                var Returns = new []
                 {
                     0x76F0F0, // Skip Select State Scripts Menu Population
                     0x770D00, // Skip Select IGC... Menu Population
@@ -1001,7 +1013,7 @@ namespace Dobby {
                 // Misc Functionality Patches \\
                 WriteVar(fileStream, 0x61A4, 0xEB);                                                      // Enable Debug Menu
                 WriteVar(fileStream, 0xA34FCB, 0x87);                                                    // Change Useless Debug Rendering Toggle To A On-Screen Debug Text Toggle (L3 & Triangle)
-                WriteVar(fileStream, new long[] { 0x56F1A8, 0x56F157 }, new byte[] { 0x90, 0x90 });      // Allow Aim Sensitivity To Go Over 1.00 And Under 0.00
+                WriteVar(fileStream, new [] { 0x56F1A8, 0x56F157 }, new byte[] { 0x90, 0x90 });      // Allow Aim Sensitivity To Go Over 1.00 And Under 0.00
                 WriteVar(fileStream, 0xAF2A85, new byte[] { 0xBF, 0xB0, 0x00, 0x00, 0x00, 0xEB, 0x2A }); // Skip Some Broken Material Debug Stuff
                 WriteVar(fileStream, 0xAF2CD2, new byte[] { 0xEB, 0x79 });                               // Skip Broken Shader Variables Menu
                 WriteVar(fileStream, 0xAF255E, new byte[] { 0xEB, 0x29 });                               // Force Material Debug Text To Out Of Index To Aprivate void Crashing (What Did They Change? Wish I Knew Enough To Find Out)
@@ -1029,7 +1041,7 @@ namespace Dobby {
             }
             catch (Exception e)
             {
-                Dev.Print($"T1R11X_RestoredMenu(): Unexpected error applying patches.");
+                Dev?.Print($"T1R11X_RestoredMenu(): Unexpected error applying patches.");
                 return false;
             }
         }
@@ -1040,7 +1052,7 @@ namespace Dobby {
         private bool T2107_CustomMenu()
         {
             var CustomFunctions = new List<byte[]>();
-            var Addresses = new int[]
+            var Addresses = new []
             {
                 0x0033337c, // CustomMenuRedirect (Mem: 0072f37c)
                 0x00336afc, // Call MenuMenu And Other Misc. Submenus (Mem: 00732afc)
@@ -1116,7 +1128,7 @@ namespace Dobby {
             // Check for errors in the saved patch data
             if (Addresses.Length != CustomFunctions.Count)
             {
-                Dev.Print($"ERROR: Mismatch in sizes of address array vs custom functions array. ({Addresses.Length} != {CustomFunctions.Count})");
+                Dev?.Print($"ERROR: Mismatch in sizes of address array vs custom functions array. ({Addresses.Length} != {CustomFunctions.Count})");
 
                 UpdateLabel("Unable to apply debug patches.");
                 return false;
@@ -1127,7 +1139,7 @@ namespace Dobby {
             for(var i = 0; i < CustomFunctions.Count; WriteVar(fileStream, Addresses[i], CustomFunctions[i++]));
                 
 
-            Dev.Print($"T2107_CustomMenu(): Wrote {Addresses.Length} Patches To {fileStream.Name}.");
+            Dev?.Print($"T2107_CustomMenu(): Wrote {Addresses.Length} Patches To {fileStream.Name}.");
             return true;
         }
 
@@ -1137,7 +1149,7 @@ namespace Dobby {
         private void T2109_CustomMenu() // 1.08 as well, same offsets
         {
             var CustomFunctions = new byte[21][];
-            var Addresses = new int[]
+            var Addresses = new []
             {
                 0x00774b3c, // Call Custom Menu Redirect (Mem: 00b70b3c)
                 0x007782bc, // Add Custom Menus After "Camera..." String (Mem: 00b742bc)
@@ -1164,7 +1176,7 @@ namespace Dobby {
 
             
             // Swap "Disable Debug Rendering" and "Disable FPS" Byte Pointers In L3 + Triangle Toggle
-            WriteVar(fileStream, new long[] { 0x1C45085, 0x1C45092 }, 0xB8);
+            WriteVar(fileStream, new [] { 0x1C45085, 0x1C45092 }, 0xB8);
             WriteVar(fileStream, 0x1C450A5, 0xaa);
 
 
