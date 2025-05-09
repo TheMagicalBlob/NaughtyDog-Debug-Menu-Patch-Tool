@@ -342,6 +342,7 @@ namespace Dobby {
           "* 4.68.455.1109 | Finished standardizing the locations and spacing of the constant controls at the bottom of most forms.",
           "* 4.68.456.1109 | Fixed improperly-named seperator line (blind moron).",
           "* 4.69.457.1111 | Fixed an incredibly stupid issue where bytes were being interpreted as integers (why did I forget it does that? the fuck was I thinking? WAS I thinking??).",
+          "* 4.69.458.1117 | Updated build number to better reflect changes.",
         };
 
         
