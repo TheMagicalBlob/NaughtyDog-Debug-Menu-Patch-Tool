@@ -19,7 +19,7 @@ namespace Dobby {
             try // this crashed while opening once and I can't reproduce it, so meh (may have been a debug-only issue, anyway)
             {
                 InitializeComponent();
-                InitializeAdditionalEventHandlers(Controls);
+                InitializeAdditionalEventHandlers(this);
 
                 if(DefaultUniversalPatchValues.Length != UniversalBootSettingsPointers.Length || DefaultGSPatchValues.Length != GameSpecificBootSettingsPointers.Length)
                 {

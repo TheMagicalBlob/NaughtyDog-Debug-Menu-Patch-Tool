@@ -11,7 +11,8 @@
         /// <summary>
         /// ID's for the various pages in the application.
         /// </summary>
-        public enum PageID : byte {
+        public enum PageID : byte
+        {
             MainPage = 0,
             PS4DebugPage = 1,
             PS4DebugHelpPage = 11,

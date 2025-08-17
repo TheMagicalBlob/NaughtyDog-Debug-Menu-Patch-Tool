@@ -30,7 +30,8 @@ namespace Dobby
             base.Dispose(disposing);
         }
 
-        public void InitializeComponent() {
+        public void InitializeComponent()
+        {
             this.MainLabel = new System.Windows.Forms.Label();
             this.Info = new System.Windows.Forms.Label();
             this.SeperatorLine0 = new System.Windows.Forms.Label();

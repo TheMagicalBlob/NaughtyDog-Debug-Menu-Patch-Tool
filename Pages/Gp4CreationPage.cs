@@ -17,7 +17,7 @@ namespace Dobby {
         public GP4CreationPage()
         {
             InitializeComponent();
-            InitializeAdditionalEventHandlers(Controls);
+            InitializeAdditionalEventHandlers(this);
             
             foreach(Control control in Controls) {
                 if(control.Name.Contains("PathBox")) {

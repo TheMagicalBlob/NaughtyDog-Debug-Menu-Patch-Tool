@@ -20,6 +20,7 @@ namespace Dobby {
         // Spacing:
         // Info & Back Btn; Info: Form.Size.Y - Info.Size.Y | BackBtn Pos: (Info Vertical Pos - BackBtn.Size.Y - 3)
 
+        //! \/ Pretty sure this shit is outdated now lol, check it 
         //==================================================\\
         //                 Design Bullshit                  \\
         //__________________________________________________\\
@@ -37,12 +38,10 @@ namespace Dobby {
         // * MAJOR
         //  - Create Remaining Two Help Pages
         //  - Refactor EbootPatchPage Code. Check The Others, Too
-        //  - Gp4CreationPage Unfinished, Only Base Functionality Added
         //  - Standardize Help Page Styles
         // * MINOR 
-        //  - Update PKG Creation Page To Be More Like GP4 Creation Page
         //  - Standardize Info Label And Back Button Positioning / Spacing
-        //  - Standardize Spaceing Between Controls
+        //  - Standardize Spacing Between Controls
         //  - PS4DebugPage Consistency Fix (Can't Seem To Reproduce? [The Bug, I Mean. Not That I Don't Want The Other Thing])
 
 
@@ -232,7 +231,7 @@ namespace Dobby {
                 fileStream?.WriteByte(data[0]);
 
                 #if DEBUG
-                msg = $"[{$"{data:X}".PadLeft(2, '0')}" + msg;
+                msg = $"[{$"{data[0]:X}".PadLeft(2, '0')}" + msg;
                 #endif
             }
             else if (data.Length > 1)
@@ -519,8 +518,7 @@ namespace Dobby {
                     break;
 
                 case PageID.PS4MenuSettingsHelpPage:
-                    //PS4MiscPatchesHelpPage PS4MiscPatchesHelpPage = new PS4MiscPatchesHelpPage();
-                    //PS4MiscPatchesHelpPage.Show();
+                    NewPage = new PS4MenuSettingsHelpPage();
                     break;
 
                 case PageID.PkgCreationPage:
@@ -594,37 +592,37 @@ namespace Dobby {
         /// <summary>
         /// Mass-Apply Basic Event Handlers To Form And It's Items. (I got sick of manually editing InitializeComponent())
         /// </summary>
-        /// <param name="Controls">Collection of Controls to Apply Event Handlers to.</param>
-        public static void InitializeAdditionalEventHandlers(Control.ControlCollection Controls)
+        /// <param name="Venat"> The form who's controls are to be iterated through to apply additional event handlers/properties. </param>
+        public static void InitializeAdditionalEventHandlers(Form Venat)
         {
-            var Venat = Controls.Owner;
-
             //#
             //## Mass-Apply handler methods to basic MouseDown/Up, MouseEnter/Leave and MouseMove events
             //#
-            foreach (Control item in Controls)
+            foreach (Control control in Venat.Controls)
             {
-                item.MouseDown += new MouseEventHandler((_, args) => MouseDownFunc(args));
-                item.MouseUp += new MouseEventHandler((sender, _) => MouseUpFunc());
+                control.MouseDown += new MouseEventHandler((_, args) => MouseDownFunc(args));
+                control.MouseUp += new MouseEventHandler((sender, _) => MouseUpFunc());
+                
+                control.TabStop = false;
 
                 // Apply the seperator drawing function to any seperator lines
-                if (item.Name.Contains("SeperatorLine") && item.GetType() == typeof(Label))
+                if (control.Name.Contains("SeperatorLine") && control.GetType() == typeof(Label))
                 {
-                    item.Paint += DrawSeperatorLine;
+                    control.Paint += DrawSeperatorLine;
                 }
 
                 // Apply the event used in dragging the form, avoiding text boxes to avoid removing the ability to drag-select text.
-                if (!(item.Name.Contains("Box") && (item.GetType() == typeof(TextBox) || item.GetType() == typeof(RichTextBox)))) // So You Can Drag Select The Text Lol
+                if (!(control.Name.Contains("Box") && (control.GetType() == typeof(TextBox) || control.GetType() == typeof(RichTextBox)))) // So You Can Drag Select The Text Lol
                 {
-                    item.MouseMove += new MouseEventHandler((sender, _) => MoveForm());
+                    control.MouseMove += new MouseEventHandler((sender, _) => MoveForm());
                 }
 
                 // Apply the Hint function to the mouse enter event, applying the resetter tag to any controls sans Tags.
-                if (item.Tag == null)
+                if (control.Tag == null)
                 {
-                    item.Tag = " ";
+                    control.Tag = " ";
                 }
-                item.MouseEnter += HoverString;
+                control.MouseEnter += HoverString;
 
 
 
@@ -637,10 +635,10 @@ namespace Dobby {
                     "PathBox"
                 };
 
-                if ((item.GetType() == typeof(Dobby.Button) || item.GetType() == typeof(System.Windows.Forms.Button)) && !blacklistedItems.Contains(item.Name))
+                if ((control.GetType() == typeof(Dobby.Button) || control.GetType() == typeof(System.Windows.Forms.Button)) && !blacklistedItems.Contains(control.Name))
                 {
-                    item.MouseEnter += (sender, e) => HoverLeave(((Control)sender), true);
-                    item.MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
+                    control.MouseEnter += (sender, e) => HoverLeave(((Control)sender), true);
+                    control.MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
                 }
             }
 
@@ -737,13 +735,20 @@ namespace Dobby {
             // Apply Info & Credits page crap, unless we're on one of those pages already
             if (!new string[] { "InfoHelpPage", "CreditsPage" }.Contains(Venat.Name))
             {
-                var helpPageButton = Venat.Controls.Find("InfoHelpBtn", true)?.Last();
-                helpPageButton.Click += (_, __) => ChangeForm(PageID.InfoHelpPage);
-                helpPageButton.Tag = "View explanations for each page/other info";
+                var helpPageButton = Venat.Controls.Find("InfoHelpBtn", true)?.FirstOrDefault();
+
+                if (helpPageButton != null) {
+                    helpPageButton.Click += (_, __) => ChangeForm(PageID.InfoHelpPage);
+                    helpPageButton.Tag = "View explanations for each page/other info";
+                }
                 
-                var creditsPageButton = Venat.Controls.Find("CreditsBtn", true)?.Last();
-                creditsPageButton.Click += (_, __) => ChangeForm(PageID.CreditsPage);
-                creditsPageButton.Tag = "View various credits for the application.";
+
+                var creditsPageButton = Venat.Controls.Find("CreditsBtn", true)?.FirstOrDefault();
+
+                if (creditsPageButton != null) {
+                    creditsPageButton.Click += (_, __) => ChangeForm(PageID.CreditsPage);
+                    creditsPageButton.Tag = "View various credits for the application.";
+                }
             }
 
 

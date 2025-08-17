@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using static Dobby.Common;
 
 namespace Dobby {
     internal partial class InfoHelpPage : Form {
@@ -8,10 +9,11 @@ namespace Dobby {
         /// <summary>
         /// Initialize a new instance of the InfoHelpPage Form.
         /// </summary>
-        public InfoHelpPage() {
+        public InfoHelpPage()
+        {
             InitializeComponent();
             
-            Common.InitializeAdditionalEventHandlers(Controls);
+            InitializeAdditionalEventHandlers(this);
             BuildLabel.Text += Ver.Build;
         }
 
@@ -28,21 +30,13 @@ namespace Dobby {
                 MessageBox.Show($"Changelist Dumped To {Directory.GetCurrentDirectory()}\\ChangeLog.txt");
             }
         }
-        private void BuildLabelMH(object sender, EventArgs e) { Common.UpdateLabel("Right Click To Dump ChangeList"); }
-        private void BuildLabelML(object sender, EventArgs e) => Common.UpdateLabel("");
+        private void BuildLabelMH(object sender, EventArgs e) { UpdateLabel("Right Click To Dump ChangeList"); }
+        private void BuildLabelML(object sender, EventArgs e) => UpdateLabel("");
 
-        private void PS4DebugHelpBtn_Click(object sender, EventArgs e) => Common.ChangeForm(Common.PageID.PS4DebugHelpPage);
-        private void EbootPatchPageHelpBtn_Click(object sender, EventArgs e) => Common.ChangeForm(Common.PageID.EbootPatchHelpPage);
-        private void PS4QOLPageHelpBtn_Click(object sender, EventArgs e) {
-            #if false
-            ChangeForm(PageID.PS4MiscPatchesHelpPage);
-            #endif
-        }
-        private void PkgHelpPageBtn_Click(object sender, EventArgs e) {
-            #if false
-            ChangeForm(PageID.PkgCreationHelpPage);
-            #endif
-        }
+        private void PS4DebugHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.PS4DebugHelpPage);
+        private void EbootPatchPageHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.EbootPatchHelpPage);
+        private void PS4QOLPageHelpBtn_Click(object sender, EventArgs e) { ChangeForm(PageID.PS4MenuSettingsHelpPage); }
+        private void PkgHelpPageBtn_Click(object sender, EventArgs e) { ChangeForm(PageID.PkgCreationHelpPage); }
         #endregion
     }
 }

@@ -16,7 +16,7 @@ namespace Dobby {
             SaveMainForm(this);
             Dev = new Testing();
 
-            InitializeAdditionalEventHandlers(Controls);
+            InitializeAdditionalEventHandlers(this);
             
             // Create/Initialize the thread for updating the yellow info label at the bottom of the screen
             CreateInfoLabelUpdater();

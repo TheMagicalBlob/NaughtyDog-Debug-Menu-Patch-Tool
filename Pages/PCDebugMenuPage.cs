@@ -16,7 +16,7 @@ namespace Dobby {
         public PCDebugMenuPage()
         {
             InitializeComponent();
-            InitializeAdditionalEventHandlers(Controls);
+            InitializeAdditionalEventHandlers(this);
 
             UpdateGameInfoLabel = (str) =>
             {

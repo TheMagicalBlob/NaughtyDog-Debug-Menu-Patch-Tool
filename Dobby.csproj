@@ -83,8 +83,17 @@
       <DependentUpon>MainPage.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Pages\EbootPatchHelpPage.Designer.cs">
+      <DependentUpon>EbootPatchHelpPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Pages\InfoHelpPage.Designer.cs">
       <DependentUpon>InfoHelpPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PkgCreationHelpPage.Designer.cs">
+      <DependentUpon>PkgCreationHelpPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PS4DebugHelpPage.Designer.cs">
+      <DependentUpon>PS4DebugHelpPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Pages\PS4MenuSettingsPage.Designer.cs">
       <SubType>Form</SubType>
@@ -121,6 +130,12 @@
     </Compile>
     <Compile Include="Pages\PkgCreationPage.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pages\PS4MenuSettingsHelpPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pages\PS4MenuSettingsHelpPage.Designer.cs">
+      <DependentUpon>PS4MenuSettingsHelpPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Testing.cs" />
     <Compile Include="Pages\PS4MenuSettingsPage.cs">

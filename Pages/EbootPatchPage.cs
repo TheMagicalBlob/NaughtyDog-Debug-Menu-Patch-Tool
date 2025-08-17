@@ -16,7 +16,7 @@ namespace Dobby {
         public EbootPatchPage()
         {
             InitializeComponent();
-            InitializeAdditionalEventHandlers(Controls); 
+            InitializeAdditionalEventHandlers(this); 
         }
 
         
@@ -28,7 +28,7 @@ namespace Dobby {
 
         private static DebugJumpAddress DebugAddressForSelectedGame;
 
-        private static readonly string[] ResultStrings = new string[4]
+        private static readonly string[] ResultStrings = new []
         {
             "Debug Menus Disabled",
             "Debug Menus Enabled",
@@ -333,6 +333,8 @@ namespace Dobby {
 
             UpdateLabel($"{ActiveGameID} {ResultStrings[patchType]}", false);
         }
+
+
 
 
         private void UC1100_RestoredMenu()
@@ -933,10 +935,6 @@ namespace Dobby {
         }
 
 
-        private void TLL100_Patches() {
-        }
-
-
         private void TLL100MP_RestoredMenu() {
 
         }
@@ -1047,9 +1045,7 @@ namespace Dobby {
         }
 
 
-        // TODO:
-        // Convert Byte Arrays To Resource Files Once Finalized So The IDE Doesn't Shit The Bed
-        private bool T2107_CustomMenu()
+        private bool _T2107_CustomMenu_OLD()
         {
             var CustomFunctions = new List<byte[]>();
             var Addresses = new []
@@ -1143,11 +1139,85 @@ namespace Dobby {
             return true;
         }
 
+        
+
+        private bool T2107_CustomMenu()
+        {
+            try {
+                var Addresses = new[]
+                {
+                    0x1f2389,
+                    0x33337d,
+                    0x2446e2a,
+                    0x2446e2e,
+                    0x244702a,
+                    0x2447042,
+                    0x244705b,
+                    0x24472f7,
+                    0x24472ff,
+                    0x2447301,
+                    0x2447303,
+                    0x2447318,
+                    0x2447390,
+                    0x24473db,
+                    0x2447735,
+                    0x2447762,
+                    0x24477a5,
+                };
+
+
+
+                var Patches = new byte[][]
+                {
+                    new byte[] {  0x10, 0x54 },
+                    new byte[] {  0xef, 0x59, 0xe5, 0x01 },
+                    new byte[] {  0x48, 0x89 },
+                    new byte[] {  0xc5 },
+                    new byte[] {  0x00 },
+                    new byte[] {  0x15, 0x00, 0x00, 0x00 },
+                    new byte[] {  0x0a, 0x3d, 0x3e, 0x20, 0x5b, 0x25, 0x6c, 0x6c, 0x58, 0x5d, 0x0a, 0x00 },
+                    new byte[] {  0x55, 0x48, 0x89, 0xe5, 0x53, 0x41, 0x54 },
+                    new byte[] {  0x55 },
+                    new byte[] {  0x56 },
+                    new byte[] {  0x57, 0x49, 0x89, 0xfd, 0x41, 0x55 },
+                    new byte[] {  0xf3 },
+                    new byte[] {  0x49, 0x89, 0x5f, 0x20, 0x48, 0xbb, 0xf2, 0x87, 0x61, 0x8b, 0x72, 0x3a, 0xe3, 0x83, 0x49, 0x89, 0x5f, 0x18, 0x48, 0x31, 0xdb, 0xe8, 0x7a, 0x03, 0x00, 0x00, 0x49, 0xff, 0xcc, 0x41, 0x5d, 0x41, 0x80, 0xfd, 0x08, 0x74, 0x2a, 0x48, 0xbf, 0xc6, 0xa5, 0xc9, 0x69, 0xd1, 0xee, 0x3b, 0xf0, 0xe8, 0x60, 0x03, 0x00, 0x00, 0x48, 0xb9, 0x12, 0x13, 0x6c, 0x54, 0xc3, 0x65, 0x53, 0x91, 0x48, 0x39, 0xc1, 0x75, 0x0c, 0x48, 0xbb, 0x65, 0x79, 0x80, 0x8e, 0x60, 0x4d },
+                    new byte[] {  0x9e, 0xe7, 0xeb, 0x0a, 0x48, 0xbb, 0xad, 0xea, 0x4e, 0x4c, 0xbf, 0x98, 0x78, 0xbe, 0x49, 0x89, 0x1f, 0x48, 0xbb, 0x14, 0xe9, 0x16, 0x78, 0xd6, 0x29, 0x0d, 0x44, 0x49, 0x89, 0x5f, 0x08, 0x48, 0xbf, 0xf2, 0x59, 0x4c, 0x5f, 0x0d, 0xeb, 0x77, 0x42, 0x48, 0x31, 0xdb, 0xe8, 0x20, 0x03, 0x00, 0x00, 0x49, 0x8b, 0xff, 0x48, 0x31, 0xf6, 0xe8, 0x61, 0x76, 0x29, 0x00, 0x41, 0x5f, 0x41, 0x5e, 0x41, 0x5d, 0x41, 0x5c, 0x5b, 0x5d, 0xc3, 0x5b, 0x5d, 0xc3 },
+                    new byte[] {  0x27 },
+                    new byte[] {  0x23, 0x20, 0x45, 0x52, 0x52, 0x4f, 0x52, 0x3a, 0x20, 0x49, 0x6e, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x20, 0x53, 0x79, 0x6d, 0x62, 0x6f, 0x6c, 0x20, 0x50, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x64, 0x0a, 0x00, 0x00, 0x6e, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x20, 0x53, 0x79, 0x6d, 0x62, 0x6f, 0x6c, 0x20, 0x50, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x64, 0x0a, 0x00, 0x48, 0x89, 0xdf, 0xe8, 0xea, 0x09, 0x00 },
+                    new byte[] {  0x4c, 0x8b, 0x35, 0x4c, 0x0f, 0xe0, 0x00, 0xc3 }
+                };
+
+
+
+                if (Patches.Length != Addresses.Length)
+                {
+                    Console.WriteLine("ERROR: Mismatch in array lengths. ({Patches.Length} != {Addresses.Length}");
+                }
+
+
+                for (var i = 0; i < Patches.Length; i++)
+                {
+                    WriteVar(fileStream, Addresses[i], Patches[i]);
+                }
+
+                return true;
+            }
+            catch (Exception dang)
+            {
+                Dev?.PrintError(dang);
+                UpdateLabel("Unhandled error applying patch. (file likely moved/deleted by user)");
+                return false;
+            }
+        }
 
         // TODO:
         // Convert Byte Arrays To Resource Files Once Finalized So The IDE Doesn't Shit The Bed
         private void T2109_CustomMenu() // 1.08 as well, same offsets
         {
+            //===========================\\
+            //--|   Custom Functions  |--\\
+            //===========================\\
             var CustomFunctions = new byte[21][];
             var Addresses = new []
             {
@@ -1173,13 +1243,6 @@ namespace Dobby {
                 0x02df47dc, // Single/Int Item Data (Mem: 031f07dc)
                 0x02df491d  // Item String Data (Mem: 031f091d)
             };
-
-            
-            // Swap "Disable Debug Rendering" and "Disable FPS" Byte Pointers In L3 + Triangle Toggle
-            WriteVar(fileStream, new [] { 0x1C45085, 0x1C45092 }, 0xB8);
-            WriteVar(fileStream, 0x1C450A5, 0xaa);
-
-
 
 
             // 0x00774b3c Call Custom Menu Redirect
@@ -1231,9 +1294,16 @@ namespace Dobby {
                 WriteVar(fileStream, Addresses[i], CustomFunctions[i]);
 
 
-            //////////////\\\\\\\\\\\\\
-            // Miscellaneous Patches \\
-            //////////////\\\\\\\\\\\\\
+
+
+
+            //=================================\\
+            //--|   Miscellaneous Patches   |--\\
+            //=================================\\
+            
+            // Swap "Disable Debug Rendering" and "Disable FPS" Byte Pointers In L3 + Triangle Toggle
+            WriteVar(fileStream, new [] { 0x1C45085, 0x1C45092 }, 0xB8);
+            WriteVar(fileStream, 0x1C450A5, 0xaa);
 
             // Force "Search..." Menu In To DMenu Root
             WriteVar(fileStream, 0x774a46, new byte[] { 0x49, 0x8B, 0xD4 }); // 0x00774a46 R15 -> 12

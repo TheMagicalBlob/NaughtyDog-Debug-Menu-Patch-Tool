@@ -70,7 +70,7 @@ namespace Dobby
             this.PkgHelpPageBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PkgHelpPageBtn.FlatAppearance.BorderSize = 0;
             this.PkgHelpPageBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PkgHelpPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Strikeout))));
+            this.PkgHelpPageBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.PkgHelpPageBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.PkgHelpPageBtn.Location = new System.Drawing.Point(1, 347);
             this.PkgHelpPageBtn.Name = "PkgHelpPageBtn";
@@ -79,6 +79,7 @@ namespace Dobby
             this.PkgHelpPageBtn.Text = "Pkg Creation Page Help";
             this.PkgHelpPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PkgHelpPageBtn.UseVisualStyleBackColor = false;
+            this.PkgHelpPageBtn.Variable = null;
             this.PkgHelpPageBtn.Click += new System.EventHandler(this.PkgHelpPageBtn_Click);
             // 
             // SeperatorLine0
@@ -97,7 +98,7 @@ namespace Dobby
             this.PS4QOLPageHelpBtn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PS4QOLPageHelpBtn.FlatAppearance.BorderSize = 0;
             this.PS4QOLPageHelpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PS4QOLPageHelpBtn.Font = new System.Drawing.Font("Cambria", 9.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Strikeout))));
+            this.PS4QOLPageHelpBtn.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.PS4QOLPageHelpBtn.ForeColor = System.Drawing.SystemColors.Control;
             this.PS4QOLPageHelpBtn.Location = new System.Drawing.Point(1, 324);
             this.PS4QOLPageHelpBtn.Name = "PS4QOLPageHelpBtn";
@@ -106,6 +107,7 @@ namespace Dobby
             this.PS4QOLPageHelpBtn.Text = "Misc. Patch Page Help...";
             this.PS4QOLPageHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PS4QOLPageHelpBtn.UseVisualStyleBackColor = false;
+            this.PS4QOLPageHelpBtn.Variable = null;
             this.PS4QOLPageHelpBtn.Click += new System.EventHandler(this.PS4QOLPageHelpBtn_Click);
             // 
             // SeperatorLine2
@@ -157,6 +159,7 @@ namespace Dobby
             this.PS4DebugHelpBtn.Text = "PS4Debug Page Help...";
             this.PS4DebugHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PS4DebugHelpBtn.UseVisualStyleBackColor = false;
+            this.PS4DebugHelpBtn.Variable = null;
             this.PS4DebugHelpBtn.Click += new System.EventHandler(this.PS4DebugHelpBtn_Click);
             // 
             // label4
@@ -185,6 +188,7 @@ namespace Dobby
             this.EbootPatchPageHelpBtn.Text = "Eboot\\Executable Patch Page Help...";
             this.EbootPatchPageHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.EbootPatchPageHelpBtn.UseVisualStyleBackColor = false;
+            this.EbootPatchPageHelpBtn.Variable = null;
             this.EbootPatchPageHelpBtn.Click += new System.EventHandler(this.EbootPatchPageHelpBtn_Click);
             // 
             // Info
@@ -212,6 +216,7 @@ namespace Dobby
             this.BackBtn.Text = "Back...";
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
+            this.BackBtn.Variable = null;
             // 
             // GeneralInfoLabel
             // 

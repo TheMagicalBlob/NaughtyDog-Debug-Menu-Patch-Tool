@@ -146,9 +146,9 @@ namespace Dobby
             this.InfoHelpBtn.Location = new System.Drawing.Point(1, 210);
             this.InfoHelpBtn.Name = "InfoHelpBtn";
             this.InfoHelpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.InfoHelpBtn.Size = new System.Drawing.Size(139, 23);
+            this.InfoHelpBtn.Size = new System.Drawing.Size(187, 23);
             this.InfoHelpBtn.TabIndex = 29;
-            this.InfoHelpBtn.Text = "Information / Help...";
+            this.InfoHelpBtn.Text = "HOW TO USE / Information...";
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
             this.InfoHelpBtn.Variable = null;

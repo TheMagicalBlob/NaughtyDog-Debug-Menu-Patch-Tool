@@ -23,7 +23,7 @@ namespace Dobby {
         public PS4DebugPage()
         {
             InitializeComponent();
-            InitializeAdditionalEventHandlers(Controls);
+            InitializeAdditionalEventHandlers(this);
 
             var settingsFilePath = Directory.GetCurrentDirectory() + @"\PS4_IP.BLB";
 

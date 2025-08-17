@@ -343,6 +343,10 @@ namespace Dobby {
           "* 4.68.456.1109 | Fixed improperly-named seperator line (blind moron).",
           "* 4.69.457.1111 | Fixed an incredibly stupid issue where bytes were being interpreted as integers (why did I forget it does that? the fuck was I thinking? WAS I thinking??).",
           "* 4.69.458.1117 | Updated build number to better reflect changes.",
+          "* 4.69.458.1119 | Fixed and renamed overlapped & unnamed separator line on credits page",
+          "* 4.69.460.1122 | Changed the Information/Help button's text to be more obvious to anyone clueless; slight credits page contents tweak",
+          "* 4.69.461.1122 | Oh shit the help pages weren't even fuckin' opening D:",
+          "* 4.69.463.1127 | Re-enabled the latter two help pages to finally work on the dang things, right after reworking the odd question button implementation.",
         };
 
         

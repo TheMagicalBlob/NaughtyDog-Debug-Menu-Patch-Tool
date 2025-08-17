@@ -8,6 +8,7 @@ namespace Dobby
         //--|   Designer Crap, No Touchie   |--\\
         //=====================================\\
         #region [Designer Crap, No Touchie]
+
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -283,6 +284,7 @@ namespace Dobby
         //--|   Control Declarations   |--\\
         //================================\\
         #region [Control Declarations]
+
         public Label GameInfoLabel;
         private Button BrowseButton;
         private TextBox ExecutablePathBox;
