@@ -17,9 +17,13 @@ namespace Dobby {
             InitializeAdditionalEventHandlers(this);
 
             Question0Btn.Text = "- How Do I Get My Game's eboot.bin?";
+            Question0Btn.Tag = "";
             Question1Btn.Text = "- How Do I Extract My Game's .pkg?";
+            Question1Btn.Tag = "";
             Question2Btn.Text = "- How Do I Make A New .pkg Afterwards?";
+            Question2Btn.Tag = "";
             Question3Btn.Text = "- Why Is The Restored/Custom Button Disabled?";
+            Question3Btn.Tag = "";
         }
 
 
@@ -29,7 +33,7 @@ namespace Dobby {
         //=================================\\
         #region [Variable Declarations]
 
-        private string[] headers = new []
+        private readonly string[] headers = new []
         {
             "                  [Getting The Game's Executable]\n",
             "       [Extracting Your Game's .pkg \\ Dumping It]\n",

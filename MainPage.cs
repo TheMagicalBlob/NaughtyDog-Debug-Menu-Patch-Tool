@@ -9,7 +9,8 @@ namespace Dobby {
         /// <summary>
         /// Initialize the main instance of the MainPage form.
         /// </summary>
-        public MainPage() {
+        public MainPage()
+        {
             InitializeComponent();
             Page = PageID.MainPage;
             

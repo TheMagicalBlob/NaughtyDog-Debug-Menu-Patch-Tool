@@ -24,14 +24,16 @@ namespace Dobby {
         //======================================\\
         #region [Event Handler Declarations]
 
-        private void BuildLabel_Click(object sender, MouseEventArgs e) {
-            if(e.Button == MouseButtons.Right) {
+        private void BuildLabel_Click(object sender, MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Right)
+            {
                 File.WriteAllLines(Directory.GetCurrentDirectory() + @"\ChangeLog.txt", Ver.ChangeList);
                 MessageBox.Show($"Changelist Dumped To {Directory.GetCurrentDirectory()}\\ChangeLog.txt");
             }
         }
-        private void BuildLabelMH(object sender, EventArgs e) { UpdateLabel("Right Click To Dump ChangeList"); }
-        private void BuildLabelML(object sender, EventArgs e) => UpdateLabel("");
+        private void BuildLabelMH(object sender, EventArgs e) => UpdateLabel("Right Click To Dump ChangeList");
+        private void BuildLabelML(object sender, EventArgs e) => UpdateLabel(string.Empty);
 
         private void PS4DebugHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.PS4DebugHelpPage);
         private void EbootPatchPageHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.EbootPatchHelpPage);

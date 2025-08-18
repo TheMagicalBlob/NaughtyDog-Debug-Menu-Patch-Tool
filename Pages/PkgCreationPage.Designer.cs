@@ -29,16 +29,16 @@ namespace Dobby
             base.Dispose(disposing);
         }
         private void InitializeComponent() {
-            this.SeperatorLine2 = new System.Windows.Forms.Label();
-            this.MainLabel = new System.Windows.Forms.Label();
-            this.SeperatorLine0 = new System.Windows.Forms.Label();
-            this.OrbisCmdPathLabel = new System.Windows.Forms.Label();
-            this.GP4FilePathLabel = new System.Windows.Forms.Label();
-            this.OutputDirectoryLabel = new System.Windows.Forms.Label();
-            this.TempDirectoryPathLabel = new System.Windows.Forms.Label();
-            this.SeperatorLine3 = new System.Windows.Forms.Label();
-            this.Info = new System.Windows.Forms.Label();
-            this.SeperatorLine4 = new System.Windows.Forms.Label();
+            this.SeperatorLine2 = new Dobby.Label();
+            this.MainLabel = new Dobby.Label();
+            this.SeperatorLine0 = new Dobby.Label();
+            this.OrbisCmdPathLabel = new Dobby.Label();
+            this.GP4FilePathLabel = new Dobby.Label();
+            this.OutputDirectoryLabel = new Dobby.Label();
+            this.TempDirectoryPathLabel = new Dobby.Label();
+            this.SeperatorLine3 = new Dobby.Label();
+            this.Info = new Dobby.Label();
+            this.SeperatorLine4 = new Dobby.Label();
             this.InfoHelpBtn = new Dobby.Button();
             this.BackBtn = new Dobby.Button();
             this.CreditsBtn = new Dobby.Button();
@@ -448,12 +448,12 @@ namespace Dobby
         private TextBox TempDirectoryPathBox;
         private Button TempDirectoryBrowseBtn;
         private Button BuildPackageBtn;
-        private System.Windows.Forms.Label SeperatorLine3;
+        private Dobby.Label SeperatorLine3;
         private Button InfoHelpBtn;
         private Button BackBtn;
         private Button CreditsBtn;
-        private System.Windows.Forms.Label Info;
-        private System.Windows.Forms.Label SeperatorLine4;
+        private Dobby.Label Info;
+        private Dobby.Label SeperatorLine4;
         private Button CleanTempFilesBtn;
     }
 }

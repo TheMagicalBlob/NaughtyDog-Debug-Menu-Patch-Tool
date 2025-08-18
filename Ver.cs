@@ -347,6 +347,7 @@ namespace Dobby {
           "* 4.69.460.1122 | Changed the Information/Help button's text to be more obvious to anyone clueless; slight credits page contents tweak",
           "* 4.69.461.1122 | Oh shit the help pages weren't even fuckin' opening D:",
           "* 4.69.463.1127 | Re-enabled the latter two help pages to finally work on the dang things, right after reworking the odd question button implementation.",
+          "* 4.69.465.1132 | Ported reworked InitializeAdditionalEventHandlers and form decoration method from the dc tool poc gui.",
         };
 
         

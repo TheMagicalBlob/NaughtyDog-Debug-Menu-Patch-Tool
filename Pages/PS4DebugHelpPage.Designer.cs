@@ -32,15 +32,15 @@ namespace Dobby
         }
         public void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PS4DebugHelpPage));
-            this.MainLabel = new System.Windows.Forms.Label();
-            this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.PS4DebugAnswerLabel = new System.Windows.Forms.Label();
-            this.SeperatorLine2 = new System.Windows.Forms.Label();
-            this.SeperatorLine0 = new System.Windows.Forms.Label();
-            this.PS4DebugQuestionLabel = new System.Windows.Forms.Label();
-            this.Info = new System.Windows.Forms.Label();
-            this.CreditsBtn = new Button();
-            this.BackBtn = new Button();
+            this.MainLabel = new Dobby.Label();
+            this.SeperatorLine1 = new Dobby.Label();
+            this.PS4DebugAnswerLabel = new Dobby.Label();
+            this.SeperatorLine2 = new Dobby.Label();
+            this.SeperatorLine0 = new Dobby.Label();
+            this.PS4DebugQuestionLabel = new Dobby.Label();
+            this.Info = new Dobby.Label();
+            this.CreditsBtn = new Dobby.Button();
+            this.BackBtn = new Dobby.Button();
             this.SuspendLayout();
             // 
             // MainLabel
@@ -99,11 +99,11 @@ namespace Dobby
             // 
             this.PS4DebugQuestionLabel.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.PS4DebugQuestionLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.PS4DebugQuestionLabel.Location = new System.Drawing.Point(22, 34);
+            this.PS4DebugQuestionLabel.Location = new System.Drawing.Point(10, 30);
             this.PS4DebugQuestionLabel.Name = "PS4DebugQuestionLabel";
-            this.PS4DebugQuestionLabel.Size = new System.Drawing.Size(276, 18);
+            this.PS4DebugQuestionLabel.Size = new System.Drawing.Size(325, 18);
             this.PS4DebugQuestionLabel.TabIndex = 29;
-            this.PS4DebugQuestionLabel.Text = "[How To Enable The Debug Mode Ingame]";
+            this.PS4DebugQuestionLabel.Text = "How to use PS4Debug.bin to enable the Debug Mode";
             // 
             // Info
             // 
@@ -111,7 +111,7 @@ namespace Dobby
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
             this.Info.Location = new System.Drawing.Point(7, 402);
             this.Info.Name = "Info";
-            this.Info.Size = new System.Drawing.Size(304, 17);
+            this.Info.Size = new System.Drawing.Size(341, 17);
             this.Info.TabIndex = 7;
             this.Info.Text = "=====================================";
             // 
@@ -131,6 +131,7 @@ namespace Dobby
             this.CreditsBtn.Text = "Credits...";
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
+            this.CreditsBtn.Variable = null;
             // 
             // BackBtn
             // 
@@ -147,13 +148,14 @@ namespace Dobby
             this.BackBtn.Text = "Back...";
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
+            this.BackBtn.Variable = null;
             // 
             // PS4DebugHelpPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ClientSize = new System.Drawing.Size(320, 426);
+            this.ClientSize = new System.Drawing.Size(351, 426);
             this.Controls.Add(this.SeperatorLine1);
             this.Controls.Add(this.MainLabel);
             this.Controls.Add(this.PS4DebugAnswerLabel);

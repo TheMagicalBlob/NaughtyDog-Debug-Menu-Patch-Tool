@@ -39,16 +39,16 @@ namespace Dobby
         }
 
         private void InitializeComponent() {
-            this.MainLabel = new System.Windows.Forms.Label();
-            this.Info = new System.Windows.Forms.Label();
-            this.SeperatorLine0 = new System.Windows.Forms.Label();
-            this.CustomDebugOptionsLabel = new System.Windows.Forms.Label();
-            this.UniversalPatchesLabel = new System.Windows.Forms.Label();
-            this.GameSpecificPatchesLabel = new System.Windows.Forms.Label();
-            this.SeperatorLine3 = new System.Windows.Forms.Label();
-            this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.SeperatorLine2 = new System.Windows.Forms.Label();
-            this.GameInfoLabel = new System.Windows.Forms.Label();
+            this.MainLabel = new Dobby.Label();
+            this.Info = new Dobby.Label();
+            this.SeperatorLine0 = new Dobby.Label();
+            this.CustomDebugOptionsLabel = new Dobby.Label();
+            this.UniversalPatchesLabel = new Dobby.Label();
+            this.GameSpecificPatchesLabel = new Dobby.Label();
+            this.SeperatorLine3 = new Dobby.Label();
+            this.SeperatorLine1 = new Dobby.Label();
+            this.SeperatorLine2 = new Dobby.Label();
+            this.GameInfoLabel = new Dobby.Label();
             this.NovisBtn = new Dobby.Button();
             this.ProgPauseOnCloseBtn = new Dobby.Button();
             this.ProgPauseOnOpenBtn = new Dobby.Button();

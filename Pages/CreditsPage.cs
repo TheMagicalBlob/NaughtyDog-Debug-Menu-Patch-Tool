@@ -10,7 +10,8 @@ namespace Dobby {
         /// <summary>
         /// Initialize a new instance of the CreditsPage Form.
         /// </summary>
-        public CreditsPage() {
+        public CreditsPage()
+        {
             InitializeComponent();
             
             InitializeAdditionalEventHandlers(this);

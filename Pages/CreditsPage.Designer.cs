@@ -28,16 +28,16 @@ namespace Dobby
         public void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreditsPage));
-            this.MainLabel = new System.Windows.Forms.Label();
-            this.SeperatorLine0 = new System.Windows.Forms.Label();
-            this.IllusionBlogBtn = new System.Windows.Forms.Label();
-            this.SeperatorLine3 = new System.Windows.Forms.Label();
-            this.ContributorsLabel = new System.Windows.Forms.Label();
-            this.SeperatorLine2 = new System.Windows.Forms.Label();
-            this.NarcissismLabel = new System.Windows.Forms.Label();
-            this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.BlobGithubBtn = new System.Windows.Forms.Label();
-            this.Info = new System.Windows.Forms.Label();
+            this.MainLabel = new Dobby.Label();
+            this.SeperatorLine0 = new Dobby.Label();
+            this.IllusionBlogBtn = new Dobby.Label();
+            this.SeperatorLine3 = new Dobby.Label();
+            this.ContributorsLabel = new Dobby.Label();
+            this.SeperatorLine2 = new Dobby.Label();
+            this.NarcissismLabel = new Dobby.Label();
+            this.SeperatorLine1 = new Dobby.Label();
+            this.BlobGithubBtn = new Dobby.Label();
+            this.Info = new Dobby.Label();
             this.BackBtn = new Dobby.Button();
             this.SuspendLayout();
             // 

@@ -35,18 +35,18 @@ namespace Dobby
         public void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PkgCreationHelpPage));
-            this.MainLabel = new System.Windows.Forms.Label();
+            this.MainLabel = new Dobby.Label();
             this.Question3Btn = new Button();
             this.Question2Btn = new Button();
             this.Question1Btn = new Button();
-            this.SeperatorLine3 = new System.Windows.Forms.Label();
-            this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.PopupLabel = new System.Windows.Forms.Label();
-            this.Info = new System.Windows.Forms.Label();
+            this.SeperatorLine3 = new Dobby.Label();
+            this.SeperatorLine1 = new Dobby.Label();
+            this.PopupLabel = new Dobby.Label();
+            this.Info = new Dobby.Label();
             this.CreditsBtn = new Button();
             this.BackBtn = new Button();
-            this.DefaultQuestionBtn = new System.Windows.Forms.Label();
-            this.SeperatorLine2 = new System.Windows.Forms.Label();
+            this.DefaultQuestionBtn = new Dobby.Label();
+            this.SeperatorLine2 = new Dobby.Label();
             this.Question0Btn = new Button();
             this.SuspendLayout();
             // 

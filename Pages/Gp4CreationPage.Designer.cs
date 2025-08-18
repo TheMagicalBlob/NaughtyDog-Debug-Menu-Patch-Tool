@@ -25,18 +25,18 @@ namespace Dobby
             base.Dispose(disposing);
         }
         public void InitializeComponent() {
-            this.Info = new System.Windows.Forms.Label();
-            this.MainLabel = new System.Windows.Forms.Label();
-            this.SeperatorLine0 = new System.Windows.Forms.Label();
-            this.SeperatorLine4 = new System.Windows.Forms.Label();
-            this.GamedataPathLabel = new System.Windows.Forms.Label();
-            this.GP4OutputPathLabel = new System.Windows.Forms.Label();
-            this.PasscodeLabel = new System.Windows.Forms.Label();
-            this.FileBlacklistPathLabel = new System.Windows.Forms.Label();
-            this.BaseGamePackagePathLabel = new System.Windows.Forms.Label();
-            this.SeperatorLine2 = new System.Windows.Forms.Label();
-            this.SeperatorLine3 = new System.Windows.Forms.Label();
-            this.SeperatorLine1 = new System.Windows.Forms.Label();
+            this.Info = new Dobby.Label();
+            this.MainLabel = new Dobby.Label();
+            this.SeperatorLine0 = new Dobby.Label();
+            this.SeperatorLine4 = new Dobby.Label();
+            this.GamedataPathLabel = new Dobby.Label();
+            this.GP4OutputPathLabel = new Dobby.Label();
+            this.PasscodeLabel = new Dobby.Label();
+            this.FileBlacklistPathLabel = new Dobby.Label();
+            this.BaseGamePackagePathLabel = new Dobby.Label();
+            this.SeperatorLine2 = new Dobby.Label();
+            this.SeperatorLine3 = new Dobby.Label();
+            this.SeperatorLine1 = new Dobby.Label();
             this.GP4CreationBtn = new Dobby.Button();
             this.IgnoreKeystoneBtn = new Dobby.Button();
             this.AbsoluteFilePathsBtn = new Dobby.Button();

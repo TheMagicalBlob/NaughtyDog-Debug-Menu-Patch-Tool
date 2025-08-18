@@ -25,13 +25,13 @@ namespace Dobby
         }
 
         public void InitializeComponent() {
-            this.MainLabel = new System.Windows.Forms.Label();
-            this.Info = new System.Windows.Forms.Label();
-            this.SeperatorLine0 = new System.Windows.Forms.Label();
-            this.SeperatorLine3 = new System.Windows.Forms.Label();
-            this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.Playstation4Label = new System.Windows.Forms.Label();
-            this.PCLabel = new System.Windows.Forms.Label();
+            this.MainLabel = new Dobby.Label();
+            this.Info = new Dobby.Label();
+            this.SeperatorLine0 = new Dobby.Label();
+            this.SeperatorLine3 = new Dobby.Label();
+            this.SeperatorLine1 = new Dobby.Label();
+            this.Playstation4Label = new Dobby.Label();
+            this.PCLabel = new Dobby.Label();
             this.DownloadSourceBtn = new Dobby.Button();
             this.InfoHelpBtn = new Dobby.Button();
             this.CreditsBtn = new Dobby.Button();

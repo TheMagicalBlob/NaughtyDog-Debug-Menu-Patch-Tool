@@ -10,14 +10,15 @@ namespace Dobby
 {
     partial class DebugWindow
     {
-        public void InitializeComponent() {
-            this.MainLabel = new System.Windows.Forms.Label();
-            this.SeperatorLine0 = new System.Windows.Forms.Label();
-            this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.Playstation4Label = new System.Windows.Forms.Label();
-            this.PCLabel = new System.Windows.Forms.Label();
+        public void InitializeComponent()
+        {
+            this.MainLabel = new Dobby.Label();
+            this.SeperatorLine0 = new Dobby.Label();
+            this.SeperatorLine1 = new Dobby.Label();
+            this.Playstation4Label = new Dobby.Label();
+            this.PCLabel = new Dobby.Label();
             this.DisableDebugTextBtn = new Dobby.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.label1 = new Dobby.Label();
             this.SuspendLayout();
             // 
             // MainLabel

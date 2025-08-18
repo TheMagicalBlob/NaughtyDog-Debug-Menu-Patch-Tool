@@ -32,13 +32,13 @@ namespace Dobby
 
         public void InitializeComponent()
         {
-            this.MainLabel = new System.Windows.Forms.Label();
-            this.Info = new System.Windows.Forms.Label();
-            this.SeperatorLine0 = new System.Windows.Forms.Label();
-            this.SeperatorLine2 = new System.Windows.Forms.Label();
-            this.GameInfoLabel = new System.Windows.Forms.Label();
-            this.SeperatorLine1 = new System.Windows.Forms.Label();
-            this.SeperatorLine3 = new System.Windows.Forms.Label();
+            this.MainLabel = new Dobby.Label();
+            this.Info = new Dobby.Label();
+            this.SeperatorLine0 = new Dobby.Label();
+            this.SeperatorLine2 = new Dobby.Label();
+            this.GameInfoLabel = new Dobby.Label();
+            this.SeperatorLine1 = new Dobby.Label();
+            this.SeperatorLine3 = new Dobby.Label();
             this.DisableFPSBtn = new Dobby.Button();
             this.BaseDebugBtn = new Dobby.Button();
             this.DisableDebugBtn = new Dobby.Button();
