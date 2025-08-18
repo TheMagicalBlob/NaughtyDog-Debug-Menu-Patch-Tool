@@ -26,9 +26,9 @@ namespace Dobby
         }
         public void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InfoHelpPage));
-            this.MainLabel = new Dobby.Label();
             this.BlobLabel = new Dobby.Label();
             this.PkgHelpPageBtn = new Dobby.Button();
+            this.MainLabel = new Dobby.Label();
             this.SeperatorLine0 = new Dobby.Label();
             this.PS4QOLPageHelpBtn = new Dobby.Button();
             this.SeperatorLine2 = new Dobby.Label();
@@ -42,25 +42,16 @@ namespace Dobby
             this.GeneralInfoLabel = new Dobby.Label();
             this.SuspendLayout();
             // 
-            // MainLabel
-            // 
-            this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MainLabel.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Bold);
-            this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.MainLabel.Location = new System.Drawing.Point(1, 1);
-            this.MainLabel.Name = "MainLabel";
-            this.MainLabel.Size = new System.Drawing.Size(266, 22);
-            this.MainLabel.TabIndex = 0;
-            this.MainLabel.Text = "Information / Help";
-            // 
             // BlobLabel
             // 
             this.BlobLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.BlobLabel.Font = new System.Drawing.Font("Sitka Text", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BlobLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.BlobLabel.IsSeparatorLine = false;
             this.BlobLabel.Location = new System.Drawing.Point(149, 247);
             this.BlobLabel.Name = "BlobLabel";
             this.BlobLabel.Size = new System.Drawing.Size(170, 22);
+            this.BlobLabel.StretchToFitForm = false;
             this.BlobLabel.TabIndex = 32;
             this.BlobLabel.Text = "Created By TheMagicalBlob";
             // 
@@ -82,13 +73,28 @@ namespace Dobby
             this.PkgHelpPageBtn.Variable = null;
             this.PkgHelpPageBtn.Click += new System.EventHandler(this.PkgHelpPageBtn_Click);
             // 
+            // MainLabel
+            // 
+            this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MainLabel.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Bold);
+            this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.MainLabel.IsSeparatorLine = false;
+            this.MainLabel.Location = new System.Drawing.Point(1, 1);
+            this.MainLabel.Name = "MainLabel";
+            this.MainLabel.Size = new System.Drawing.Size(266, 22);
+            this.MainLabel.StretchToFitForm = false;
+            this.MainLabel.TabIndex = 0;
+            this.MainLabel.Text = "Information / Help";
+            // 
             // SeperatorLine0
             // 
             this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine0.IsSeparatorLine = false;
             this.SeperatorLine0.Location = new System.Drawing.Point(2, 15);
             this.SeperatorLine0.Name = "SeperatorLine0";
             this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
+            this.SeperatorLine0.StretchToFitForm = false;
             this.SeperatorLine0.TabIndex = 38;
             this.SeperatorLine0.Text = "--------------------------------------------------------------";
             // 
@@ -114,9 +120,11 @@ namespace Dobby
             // 
             this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine2.IsSeparatorLine = false;
             this.SeperatorLine2.Location = new System.Drawing.Point(2, 367);
             this.SeperatorLine2.Name = "SeperatorLine2";
             this.SeperatorLine2.Size = new System.Drawing.Size(316, 15);
+            this.SeperatorLine2.StretchToFitForm = false;
             this.SeperatorLine2.TabIndex = 37;
             this.SeperatorLine2.Text = "--------------------------------------------------------------";
             // 
@@ -125,9 +133,11 @@ namespace Dobby
             this.BuildLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.BuildLabel.Font = new System.Drawing.Font("Cambria", 10F, System.Drawing.FontStyle.Bold);
             this.BuildLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.BuildLabel.IsSeparatorLine = false;
             this.BuildLabel.Location = new System.Drawing.Point(1, 248);
             this.BuildLabel.Name = "BuildLabel";
             this.BuildLabel.Size = new System.Drawing.Size(304, 22);
+            this.BuildLabel.StretchToFitForm = false;
             this.BuildLabel.TabIndex = 20;
             this.BuildLabel.Text = "Build: ";
             this.BuildLabel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BuildLabel_Click);
@@ -138,9 +148,11 @@ namespace Dobby
             // 
             this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine1.IsSeparatorLine = false;
             this.SeperatorLine1.Location = new System.Drawing.Point(2, 265);
             this.SeperatorLine1.Name = "SeperatorLine1";
             this.SeperatorLine1.Size = new System.Drawing.Size(316, 15);
+            this.SeperatorLine1.StretchToFitForm = false;
             this.SeperatorLine1.TabIndex = 36;
             this.SeperatorLine1.Text = "--------------------------------------------------------------";
             // 
@@ -167,9 +179,11 @@ namespace Dobby
             this.label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label4.Font = new System.Drawing.Font("Cambria", 10F, System.Drawing.FontStyle.Bold);
             this.label4.ForeColor = System.Drawing.SystemColors.Control;
+            this.label4.IsSeparatorLine = false;
             this.label4.Location = new System.Drawing.Point(84, 32);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(128, 22);
+            this.label4.StretchToFitForm = false;
             this.label4.TabIndex = 34;
             this.label4.Text = "General App Info";
             // 
@@ -195,9 +209,11 @@ namespace Dobby
             // 
             this.Info.Font = new System.Drawing.Font("Cambria", 9.25F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.Info.IsSeparatorLine = false;
             this.Info.Location = new System.Drawing.Point(7, 411);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(309, 17);
+            this.Info.StretchToFitForm = false;
             this.Info.TabIndex = 7;
             this.Info.Text = "========================================";
             // 
@@ -223,9 +239,11 @@ namespace Dobby
             this.GeneralInfoLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.GeneralInfoLabel.Font = new System.Drawing.Font("Sitka Text", 9F, System.Drawing.FontStyle.Bold);
             this.GeneralInfoLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.GeneralInfoLabel.IsSeparatorLine = false;
             this.GeneralInfoLabel.Location = new System.Drawing.Point(3, 54);
             this.GeneralInfoLabel.Name = "GeneralInfoLabel";
             this.GeneralInfoLabel.Size = new System.Drawing.Size(302, 195);
+            this.GeneralInfoLabel.StretchToFitForm = false;
             this.GeneralInfoLabel.TabIndex = 33;
             this.GeneralInfoLabel.Text = resources.GetString("GeneralInfoLabel.Text");
             // 

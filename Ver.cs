@@ -348,6 +348,7 @@ namespace Dobby {
           "* 4.69.461.1122 | Oh shit the help pages weren't even fuckin' opening D:",
           "* 4.69.463.1127 | Re-enabled the latter two help pages to finally work on the dang things, right after reworking the odd question button implementation.",
           "* 4.69.465.1132 | Ported reworked InitializeAdditionalEventHandlers and form decoration method from the dc tool poc gui.",
+          "* 4.69.466.1136 | Made the question buttons implementation a bit less nonsensical in the EbootPatchHelpPage. Still a bit odd, but I'm tired.",
         };
 
         
