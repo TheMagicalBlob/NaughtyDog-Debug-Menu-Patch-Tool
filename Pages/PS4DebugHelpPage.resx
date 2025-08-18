@@ -127,17 +127,18 @@
        to your ps4's IP, and port 9090.
 
     * Use Al Azif's payload guest homebrew app to
-       load the payload from the ps4 itself (just google it...).
+       load the payload from the ps4 itself. (just google it...)
 
     * Many exploit hosts should have ps4debug as an option,
        but they may be using outdated versions.
 
 3. Boot the Uncharted | Last of Us copy you'd like
-    to try the debug menu in, then simply select
-    the name of the game you're running
+    to try the debug menu in, then simply select the name of the game
+    you're running. Be sure to have your PS4's IP set in the app first, though.
 
 
-Note: Selecting the "Manual Connect" button shouldn't ever be needed, It's just a leftover I'm keeping
-in case of confused users.</value>
+Note:
+Selecting the "Manual Connect" button shouldn't ever be needed,
+It's just a leftover I'm keeping in case of confused users.</value>
   </data>
 </root>
