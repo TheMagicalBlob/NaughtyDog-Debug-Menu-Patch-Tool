@@ -628,11 +628,11 @@ namespace Dobby {
                         // Horizontal Lines
                         hSeparatorLineScanner.Add(new []
                         { 
-                            new Point(line.StretchToFitForm ? 1 : line.Location.X, line.Location.Y + 7),
-                            new Point(line.StretchToFitForm ? line.Parent.Width - 2 : line.Location.X + line.Width, line.Location.Y + 7)
+                            new Point(line.StretchToFitForm ? 1 : line.Location.X, line.Location.Y + 9),
+                            new Point(line.StretchToFitForm ? line.Parent.Width - 2 : line.Location.X + line.Width, line.Location.Y + 9)
                         });
 
-                        Venat.Controls.Remove(line);
+                        line.Height = 2;
                     }
                     else {
                         // Vertical Lines (the + 3 is to center the line with the displayed lines in the editor)
@@ -642,7 +642,7 @@ namespace Dobby {
                             new Point(line.Location.X + 3, line.StretchToFitForm ? line.Parent.Height - 2 : line.Location.Y + line.Height)
                         });
 
-                        Venat.Controls.Remove(line);
+                        line.Height = 2;
                     }
                 }
             }

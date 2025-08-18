@@ -118,18 +118,26 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="PS4DebugAnswerLabel.Text" xml:space="preserve">
-    <value>Have Your PS4 And PC On The Same Network
-Connection, And An Active .bin Loader Active On The PS4. GoldHEN's Built In One Will Work, But So Will Webkit Ones
+    <value>1. Have your PC and PS4 connected to the same wifi/lan host.
+    (You do not need to use an ethernet cord for this)
 
-Then, Add The Local I.P. Address Of Your PS4 To The IPBox,
-(Settings -&gt;System -&gt; System Information)
-And Change The Port To Either 9090 (GoldHEN), 9020, or 9021- These Are The Most
-Common PS4 Bin Loader Ports.
+2. Inject the ps4debug.bin payload through ONE OF the following methods:
+    * Enable the "Bin Loader" feature in goldhen, and use
+       a payload sender on PC to send ps4debug.bin
+       to your ps4's IP, and port 9090.
 
-That's All, Now You Can Just Boot Your Game And Select It On The PS4Debug Page
-To Enable The Debug Mode!
+    * Use Al Azif's payload guest homebrew app to
+       load the payload from the ps4 itself (just google it...).
 
-Note: Selecting The "Manual Connect" Button Shouldn't Ever Be Needed- 
-It's Just A Leftover I'm Keeping Just-In-Case</value>
+    * Many exploit hosts should have ps4debug as an option,
+       but they may be using outdated versions.
+
+3. Boot the Uncharted | Last of Us copy you'd like
+    to try the debug menu in, then simply select
+    the name of the game you're running
+
+
+Note: Selecting the "Manual Connect" button shouldn't ever be needed, It's just a leftover I'm keeping
+in case of confused users.</value>
   </data>
 </root>

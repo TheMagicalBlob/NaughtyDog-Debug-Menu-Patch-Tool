@@ -47,9 +47,11 @@ namespace Dobby
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MainLabel.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Bold);
             this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.MainLabel.IsSeparatorLine = false;
             this.MainLabel.Location = new System.Drawing.Point(1, 1);
             this.MainLabel.Name = "MainLabel";
             this.MainLabel.Size = new System.Drawing.Size(314, 22);
+            this.MainLabel.StretchToFitForm = false;
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "Naughty Dog Debug Tool";
             // 
@@ -57,9 +59,11 @@ namespace Dobby
             // 
             this.Info.Font = new System.Drawing.Font("Cambria", 9.25F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.Info.IsSeparatorLine = false;
             this.Info.Location = new System.Drawing.Point(7, 286);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
+            this.Info.StretchToFitForm = false;
             this.Info.TabIndex = 7;
             this.Info.Text = "=====================================";
             // 
@@ -67,9 +71,11 @@ namespace Dobby
             // 
             this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine0.IsSeparatorLine = true;
             this.SeperatorLine0.Location = new System.Drawing.Point(2, 15);
             this.SeperatorLine0.Name = "SeperatorLine0";
             this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
+            this.SeperatorLine0.StretchToFitForm = true;
             this.SeperatorLine0.TabIndex = 31;
             this.SeperatorLine0.Text = "--------------------------------------------------------------";
             // 
@@ -77,9 +83,11 @@ namespace Dobby
             // 
             this.SeperatorLine3.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine3.IsSeparatorLine = true;
             this.SeperatorLine3.Location = new System.Drawing.Point(2, 194);
             this.SeperatorLine3.Name = "SeperatorLine3";
             this.SeperatorLine3.Size = new System.Drawing.Size(316, 15);
+            this.SeperatorLine3.StretchToFitForm = true;
             this.SeperatorLine3.TabIndex = 32;
             this.SeperatorLine3.Text = "--------------------------------------------------------------";
             // 
@@ -87,9 +95,11 @@ namespace Dobby
             // 
             this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine1.IsSeparatorLine = true;
             this.SeperatorLine1.Location = new System.Drawing.Point(2, 144);
             this.SeperatorLine1.Name = "SeperatorLine1";
             this.SeperatorLine1.Size = new System.Drawing.Size(316, 15);
+            this.SeperatorLine1.StretchToFitForm = true;
             this.SeperatorLine1.TabIndex = 36;
             this.SeperatorLine1.Text = "--------------------------------------------------------------";
             // 
@@ -98,9 +108,11 @@ namespace Dobby
             this.Playstation4Label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Playstation4Label.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold);
             this.Playstation4Label.ForeColor = System.Drawing.SystemColors.Control;
+            this.Playstation4Label.IsSeparatorLine = false;
             this.Playstation4Label.Location = new System.Drawing.Point(119, 30);
             this.Playstation4Label.Name = "Playstation4Label";
             this.Playstation4Label.Size = new System.Drawing.Size(73, 15);
+            this.Playstation4Label.StretchToFitForm = false;
             this.Playstation4Label.TabIndex = 36;
             this.Playstation4Label.Text = "Playstation 4";
             // 
@@ -109,9 +121,11 @@ namespace Dobby
             this.PCLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.PCLabel.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold);
             this.PCLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.PCLabel.IsSeparatorLine = false;
             this.PCLabel.Location = new System.Drawing.Point(146, 158);
             this.PCLabel.Name = "PCLabel";
             this.PCLabel.Size = new System.Drawing.Size(20, 15);
+            this.PCLabel.StretchToFitForm = false;
             this.PCLabel.TabIndex = 37;
             this.PCLabel.Text = "PC";
             // 
