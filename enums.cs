@@ -27,7 +27,9 @@
             PCDebugMenuPage = 6,
             PCDebugMenuHelpPage = 61,
             InfoHelpPage = 7,
-            CreditsPage = 8
+            CreditsPage = 8,
+
+            Error = 0xFF
         }
 
 

@@ -46,9 +46,11 @@ namespace Dobby
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MainLabel.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Bold);
             this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.MainLabel.IsSeparatorLine = false;
             this.MainLabel.Location = new System.Drawing.Point(1, 1);
             this.MainLabel.Name = "MainLabel";
             this.MainLabel.Size = new System.Drawing.Size(268, 22);
+            this.MainLabel.StretchToFitForm = false;
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "Credits";
             // 
@@ -56,9 +58,11 @@ namespace Dobby
             // 
             this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine0.IsSeparatorLine = true;
             this.SeperatorLine0.Location = new System.Drawing.Point(2, 15);
             this.SeperatorLine0.Name = "SeperatorLine0";
             this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
+            this.SeperatorLine0.StretchToFitForm = false;
             this.SeperatorLine0.TabIndex = 39;
             this.SeperatorLine0.Text = "--------------------------------------------------------------";
             // 
@@ -67,9 +71,11 @@ namespace Dobby
             this.IllusionBlogBtn.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.IllusionBlogBtn.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.IllusionBlogBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.IllusionBlogBtn.IsSeparatorLine = true;
             this.IllusionBlogBtn.Location = new System.Drawing.Point(1, 336);
             this.IllusionBlogBtn.Name = "IllusionBlogBtn";
             this.IllusionBlogBtn.Size = new System.Drawing.Size(318, 23);
+            this.IllusionBlogBtn.StretchToFitForm = false;
             this.IllusionBlogBtn.TabIndex = 32;
             this.IllusionBlogBtn.Text = "illusion\'s Blog";
             this.IllusionBlogBtn.MouseClick += new System.Windows.Forms.MouseEventHandler(this.IllusionBlogBtn_RightClick);
@@ -80,9 +86,11 @@ namespace Dobby
             // 
             this.SeperatorLine3.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine3.IsSeparatorLine = false;
             this.SeperatorLine3.Location = new System.Drawing.Point(2, 351);
             this.SeperatorLine3.Name = "SeperatorLine3";
             this.SeperatorLine3.Size = new System.Drawing.Size(316, 15);
+            this.SeperatorLine3.StretchToFitForm = false;
             this.SeperatorLine3.TabIndex = 38;
             this.SeperatorLine3.Text = "--------------------------------------------------------------";
             // 
@@ -91,9 +99,11 @@ namespace Dobby
             this.ContributorsLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ContributorsLabel.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.ContributorsLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.ContributorsLabel.IsSeparatorLine = true;
             this.ContributorsLabel.Location = new System.Drawing.Point(1, 74);
             this.ContributorsLabel.Name = "ContributorsLabel";
             this.ContributorsLabel.Size = new System.Drawing.Size(317, 232);
+            this.ContributorsLabel.StretchToFitForm = false;
             this.ContributorsLabel.TabIndex = 35;
             this.ContributorsLabel.Text = resources.GetString("ContributorsLabel.Text");
             // 
@@ -101,9 +111,11 @@ namespace Dobby
             // 
             this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine2.IsSeparatorLine = false;
             this.SeperatorLine2.Location = new System.Drawing.Point(2, 297);
             this.SeperatorLine2.Name = "SeperatorLine2";
             this.SeperatorLine2.Size = new System.Drawing.Size(316, 15);
+            this.SeperatorLine2.StretchToFitForm = false;
             this.SeperatorLine2.TabIndex = 37;
             this.SeperatorLine2.Text = "--------------------------------------------------------------";
             // 
@@ -112,9 +124,11 @@ namespace Dobby
             this.NarcissismLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.NarcissismLabel.Font = new System.Drawing.Font("Cambria", 10F, System.Drawing.FontStyle.Bold);
             this.NarcissismLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.NarcissismLabel.IsSeparatorLine = false;
             this.NarcissismLabel.Location = new System.Drawing.Point(1, 30);
             this.NarcissismLabel.Name = "NarcissismLabel";
             this.NarcissismLabel.Size = new System.Drawing.Size(311, 39);
+            this.NarcissismLabel.StretchToFitForm = false;
             this.NarcissismLabel.TabIndex = 20;
             this.NarcissismLabel.Text = "GUI and all game patches developed\r\nBy: TheMagicalBlob/TheMagicalDildo";
             // 
@@ -122,9 +136,11 @@ namespace Dobby
             // 
             this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine1.IsSeparatorLine = true;
             this.SeperatorLine1.Location = new System.Drawing.Point(2, 61);
             this.SeperatorLine1.Name = "SeperatorLine1";
             this.SeperatorLine1.Size = new System.Drawing.Size(316, 15);
+            this.SeperatorLine1.StretchToFitForm = false;
             this.SeperatorLine1.TabIndex = 36;
             this.SeperatorLine1.Text = "--------------------------------------------------------------";
             // 
@@ -133,9 +149,11 @@ namespace Dobby
             this.BlobGithubBtn.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.BlobGithubBtn.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BlobGithubBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.BlobGithubBtn.IsSeparatorLine = false;
             this.BlobGithubBtn.Location = new System.Drawing.Point(1, 312);
             this.BlobGithubBtn.Name = "BlobGithubBtn";
             this.BlobGithubBtn.Size = new System.Drawing.Size(318, 23);
+            this.BlobGithubBtn.StretchToFitForm = false;
             this.BlobGithubBtn.TabIndex = 31;
             this.BlobGithubBtn.Text = "TheMagicalBlob\'s Github";
             this.BlobGithubBtn.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BlobGithubBtn_RightClick);
@@ -144,9 +162,11 @@ namespace Dobby
             // 
             // Info
             // 
+            this.Info.IsSeparatorLine = false;
             this.Info.Location = new System.Drawing.Point(0, 0);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(0, 0);
+            this.Info.StretchToFitForm = false;
             this.Info.TabIndex = 6;
             // 
             // BackBtn

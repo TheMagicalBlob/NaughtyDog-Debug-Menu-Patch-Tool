@@ -62,9 +62,11 @@ namespace Dobby
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MainLabel.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Bold);
             this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.MainLabel.IsSeparatorLine = false;
             this.MainLabel.Location = new System.Drawing.Point(1, 1);
             this.MainLabel.Name = "MainLabel";
             this.MainLabel.Size = new System.Drawing.Size(318, 22);
+            this.MainLabel.StretchToFitForm = false;
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "PS4Debug Menu";
             // 
@@ -90,9 +92,11 @@ namespace Dobby
             // 
             this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine0.IsSeparatorLine = true;
             this.SeperatorLine0.Location = new System.Drawing.Point(2, 15);
             this.SeperatorLine0.Name = "SeperatorLine0";
             this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
+            this.SeperatorLine0.StretchToFitForm = false;
             this.SeperatorLine0.TabIndex = 30;
             this.SeperatorLine0.Text = "--------------------------------------------------------------";
             // 
@@ -132,9 +136,11 @@ namespace Dobby
             // 
             this.Info.Font = new System.Drawing.Font("Cambria", 9.25F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.Info.IsSeparatorLine = false;
             this.Info.Location = new System.Drawing.Point(4, 430);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(311, 17);
+            this.Info.StretchToFitForm = false;
             this.Info.TabIndex = 7;
             this.Info.Text = "=======================================";
             // 
@@ -267,9 +273,11 @@ namespace Dobby
             // 
             this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine1.IsSeparatorLine = true;
             this.SeperatorLine1.Location = new System.Drawing.Point(2, 208);
             this.SeperatorLine1.Name = "SeperatorLine1";
             this.SeperatorLine1.Size = new System.Drawing.Size(316, 15);
+            this.SeperatorLine1.StretchToFitForm = false;
             this.SeperatorLine1.TabIndex = 20;
             this.SeperatorLine1.Text = "--------------------------------------------------------------";
             // 
@@ -312,9 +320,11 @@ namespace Dobby
             this.IPLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IPLabel.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.IPLabel.ForeColor = System.Drawing.Color.Silver;
+            this.IPLabel.IsSeparatorLine = false;
             this.IPLabel.Location = new System.Drawing.Point(1, 222);
             this.IPLabel.Name = "IPLabel";
             this.IPLabel.Size = new System.Drawing.Size(88, 22);
+            this.IPLabel.StretchToFitForm = false;
             this.IPLabel.TabIndex = 24;
             this.IPLabel.Text = "I.P. Address:";
             this.IPLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -327,9 +337,11 @@ namespace Dobby
             this.PortLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PortLabel.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
             this.PortLabel.ForeColor = System.Drawing.Color.Silver;
+            this.PortLabel.IsSeparatorLine = false;
             this.PortLabel.Location = new System.Drawing.Point(1, 245);
             this.PortLabel.Name = "PortLabel";
             this.PortLabel.Size = new System.Drawing.Size(45, 22);
+            this.PortLabel.StretchToFitForm = false;
             this.PortLabel.TabIndex = 25;
             this.PortLabel.Text = "Port:";
             this.PortLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -339,9 +351,11 @@ namespace Dobby
             // 
             this.SeperatorLine3.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine3.IsSeparatorLine = true;
             this.SeperatorLine3.Location = new System.Drawing.Point(2, 338);
             this.SeperatorLine3.Name = "SeperatorLine3";
             this.SeperatorLine3.Size = new System.Drawing.Size(316, 15);
+            this.SeperatorLine3.StretchToFitForm = false;
             this.SeperatorLine3.TabIndex = 26;
             this.SeperatorLine3.Text = "--------------------------------------------------------------_";
             // 
@@ -402,9 +416,11 @@ namespace Dobby
             // 
             this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
             this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.SeperatorLine2.IsSeparatorLine = true;
             this.SeperatorLine2.Location = new System.Drawing.Point(2, 306);
             this.SeperatorLine2.Name = "SeperatorLine2";
             this.SeperatorLine2.Size = new System.Drawing.Size(316, 15);
+            this.SeperatorLine2.StretchToFitForm = false;
             this.SeperatorLine2.TabIndex = 31;
             this.SeperatorLine2.Text = "--------------------------------------------------------------_";
             // 

@@ -258,7 +258,7 @@ namespace Dobby {
         /// <summary>
         /// Switch to the GP4CreationPage to utilize libgp4.dll and make a new .gp4 project file.
         /// </summary>
-        private void GP4CreationPageBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.Gp4CreationPage);
+        private void GP4CreationPageBtn_Click(object sender, EventArgs e) => OpenNewPage(PageID.Gp4CreationPage);
 
 
         /// <summary>

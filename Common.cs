@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
@@ -62,7 +63,7 @@ namespace Dobby {
         public static GameID Game = GameID.Empty;
 
         /// <summary> ID for the currently loaded form. </summary>
-        public static PageID? Page;
+        public static PageID? ActivePage;
         public static List<PageID?> Pages = new List<PageID?>();
 
         public static bool
@@ -119,7 +120,42 @@ namespace Dobby {
 
 
         /// <summary> Refference to the originally launched form. </summary>
-        private static Form Venat;
+        public static Form Venat
+        {
+            get {
+                if (_venat == null)
+                {
+                    // bitch and mosn
+                    return ActiveForm ?? null;
+                }
+
+                return _venat;
+            }
+            set {
+                _venat = value;
+            }
+        }
+        private static Form _venat;
+
+        
+        /// <summary> Refference to the originally launched form. </summary>
+        public static MainPageDummy YoshiP
+        {
+            get {
+                if (_yoshiP == null)
+                {
+                    // bitch and mosn
+                    return null;
+                }
+
+                return _yoshiP;
+            }
+            set {
+                _yoshiP = value;
+            }
+        }
+        private static MainPageDummy _yoshiP;
+
         public static Form PopupBox;
 
         /// <summary> Static refference to the active form's "Info" label control for usage in static functions. (because I'm lazy) </summary>
@@ -154,8 +190,9 @@ namespace Dobby {
 
             set {
                 FormDecorationPen.Color = value;
-                ActiveForm?.PerformLayout();
-                ActiveForm?.Update();
+
+                Venat?.PerformLayout();
+                Venat?.Update();
             }
         }
 
@@ -170,12 +207,23 @@ namespace Dobby {
         private static Point[][] VSeparatorLines;
 
 
-        #if DEBUG
+#if DEBUG
         /// <summary> Disable drawing of form border/separator lines </summary>
-        public static bool noDraw;
-        #endif
+        public static bool NoDraw
+        {
+            get => _noDraw;
+            
+            set {
+                _noDraw = value;
+
+                Venat?.Update();
+                Venat?.Refresh();
+            }
+        }
+        private static bool _noDraw;
+#endif
         #endregion
-        
+
 
 
         //#
@@ -449,12 +497,6 @@ namespace Dobby {
         //## Form Functionality
         //#
         #region (form functionality)
-        
-        /// <summary>
-        /// Save a refference to the orignal launch form.
-        /// </summary>
-        /// <param name="form"> The orignal form </param>
-        public static void SaveMainForm(Form form) => Venat = form;
 
 
         /// <summary>
@@ -481,11 +523,28 @@ namespace Dobby {
         /// </summary>
         public static void CreateInfoLabelUpdater()
         {
-            LabelUpdateThread = new Thread(LabelUpdateMethod) {
+            LabelUpdateThread = new Thread(LabelUpdateMethod)
+            {
                 Name = "MainPage Label Update Worker"
             };
 
             LabelUpdateThread.Start();
+        }
+
+        
+
+        public static void OpenNewPage(PageID NewPage)
+        {
+            Pages.Add(NewPage);
+            ChangePage(Pages.Last());
+        }
+
+        public static void ReturnToPreviousPage()
+        {
+            var prevPage = Pages.Last();
+            Pages.RemoveAt(Pages.Count - 1);
+            
+            ChangePage(prevPage);
         }
 
 
@@ -493,26 +552,28 @@ namespace Dobby {
         /// Loads The Specified Page From The PageId Group (E.g. ChangeForm(PageID.PS4MiscPageId))
         /// </summary>
         /// <param name="Page"> The Page To Change To. </param>
-        public static void ChangeForm(PageID? Page, bool ReturningToPreviousPage = false)
+        private static void ChangePage(PageID? Page = null)
         {
-            if (DisableFormChange) {
+            if (DisableFormChange)
+            {
                 UpdateLabel("Disabled during .gp4 / .pkg Creation Process.");
-                Dev?.Print($"Ignoring request to change form to \"{Page ?? 0}\".");
+                Dev?.Print($"Ignoring request to change form to \"{Page}\".");
                 return;
             }
             else {
                 InfoFlashes = -1;
+
                 InfoText = null;
                 InfoLabel = null;
             }
 
 
-            var NewPage = ActiveForm;
-            
+
+            Form NewPage;
             switch (Page)
             {
                 case PageID.MainPage:
-                    NewPage = Venat;
+                    NewPage = new MainPage();
                     break;
                 case PageID.PS4DebugPage:
                     NewPage = new PS4DebugPage();
@@ -551,6 +612,7 @@ namespace Dobby {
                     break;
 
                 case PageID.Gp4CreationHelpPage:
+                    NewPage = null;
                     break;
 
                 case PageID.PCDebugMenuPage:
@@ -566,41 +628,32 @@ namespace Dobby {
                     NewPage = new CreditsPage();
                     break;
 
-                case null:
-                    ChangeForm(Pages.Last(), true);
-                    return;
 
                 default:
                     Dev?.Print($"{Page} Is Not A Page!");
                     return;
             }
 
-            
-            LastFormPosition = ActiveForm.Location;
-            var PageToClose = ActiveForm;
 
             
-            // Subtract a page from the list of previous pages when going back one
-            if (ReturningToPreviousPage)
-                Pages.RemoveAt(Pages.Count - 1);
-            else
-                Pages.Add(Common.Page);
+            LastFormPosition = Venat.Location;
 
-
+            Common.ActivePage = Page;
             
-            // Show the new form, then hide or dispose of the previous page
-            NewPage?.Show();
+
 #if DEBUG
             DebugWindow?.SetDebugWindowParent(NewPage);
 #endif
-            Common.Page = Page;
-            ActiveForm.Location = LastFormPosition;
+            
 
+            // Show the new form, then hide or dispose of the previous page
+            var PageToClose = Venat;
 
-            if (PageToClose.Name == "MainPage")
-                PageToClose.Hide();
-            else
-                PageToClose.Close();
+            Venat = NewPage;
+            Venat.Show();
+            Venat.Location = LastFormPosition;
+            
+            PageToClose.Close();
         }
 
 
@@ -809,12 +862,12 @@ namespace Dobby {
             //#
 
             // Apply Info & Credits page crap, unless we're on one of those pages already
-            if (!new string[] { "InfoHelpPage", "CreditsPage" }.Contains(Venat.Name))
+            if (!new [] { "InfoHelpPage", "CreditsPage" }.Contains(Venat.Name))
             {
                 var helpPageButton = Venat.Controls.Find("InfoHelpBtn", true)?.FirstOrDefault();
 
                 if (helpPageButton != null) {
-                    helpPageButton.Click += (_, __) => ChangeForm(PageID.InfoHelpPage);
+                    helpPageButton.Click += (_, __) => OpenNewPage(PageID.InfoHelpPage);
                     helpPageButton.Tag = "View explanations for each page/other info";
                 }
                 
@@ -822,7 +875,7 @@ namespace Dobby {
                 var creditsPageButton = Venat.Controls.Find("CreditsBtn", true)?.FirstOrDefault();
 
                 if (creditsPageButton != null) {
-                    creditsPageButton.Click += (_, __) => ChangeForm(PageID.CreditsPage);
+                    creditsPageButton.Click += (_, __) => OpenNewPage(PageID.CreditsPage);
                     creditsPageButton.Tag = "View various credits for the application.";
                 }
             }
@@ -831,9 +884,9 @@ namespace Dobby {
             // Avoid searching for a back button on Main page
             if (Venat.Name != "MainPage")
             {
-                var backButton = Venat.Controls.Find("BackBtn", true)?.Last();
+                var backButton = Venat.Controls.Find("BackBtn", true)?[0];
 
-                backButton.Click += (_, __) => ChangeForm(null);
+                backButton.Click += (_, __) => ReturnToPreviousPage();
                 backButton.Tag = "Return to the previous page";
             }
 
@@ -844,197 +897,13 @@ namespace Dobby {
                 InfoLabel = (Label)Venat.Controls.Find("Info", true)?.Last();
 
                 InfoLabel.Text = string.Empty;
-                InfoLabel.Tag = ((num = new Random().Next() & 1) + (num >> num & 1)) == 0 ? "hey get that mouse off my face >:(" : " "; // appy a joke tag if a two random numbers are both even (for shits and giggles)
+                InfoLabel.Tag = ((num = new Random().Next() & 1) + (num >> num & 1)) == 0 ? "hey get that mouse off my face >:(" : " "; // apply a joke tag if a two random numbers are both even (for shits and giggles)
             }
             catch (InvalidOperationException) {
                 Dev?.Print("ERROR: Form does not contain an info label (or it has not been named \"Info\").");
             }
         }
 
-
-
-        /// <summary>
-        /// Mass-Apply Basic Event Handlers To Form And It's Items. (I got sick of manually editing InitializeComponent())
-        /// </summary>
-        /// <param name="Venat"> The form who's controls are to be iterated through to apply additional event handlers/properties. </param>
-        ///
-        /*
-        public static void InitializeAdditionalEventHandlers(Form Venat)
-        {
-            //#
-            //## Mass-Apply handler methods to basic MouseDown/Up, MouseEnter/Leave and MouseMove events
-            //#
-            
-            // Avoid assigning a hover arrow to unintended controls (blacklisted ones, and any non-button controls)
-            var blacklistedItems = new[]
-            {
-                "DebugControl",
-                "ExitBtn",
-                "MinimizeBtn",
-                "LabelBtn",
-                "PathBox"
-            };
-
-            foreach (Control control in Venat.Controls)
-            {
-                // Disable tab select functionality because nothing's ordered correctly and I'm not fixing it- plus, I doubt anyone would use that in this app anyway
-                control.TabStop = false;
-                
-
-                // Apply the event used in dragging the form, avoiding text boxes to avoid removing the ability to drag-select text.
-                if (!(control.Name.Contains("Box") && (control.GetType() == typeof(TextBox) || control.GetType() == typeof(RichTextBox)))) // So You Can Drag Select The Text Lol
-                {
-                    control.MouseMove += new MouseEventHandler((sender, _) => MoveForm());
-                }
-
-                // Apply the Hint function to the mouse enter event, applying the resetter tag to any controls sans Tags.
-                if (control.Tag == null)
-                {
-                    control.Tag = " ";
-                }
-                control.MouseEnter += (sender, _) => HoverString(sender);
-
-
-                if ((control.GetType() == typeof(Dobby.Button) || control.GetType() == typeof(System.Windows.Forms.Button)) && !blacklistedItems.Contains(control.Name))
-                {
-                    control.MouseEnter += (sender, e) => HoverLeave(((Control)sender), true);
-                    control.MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
-                }
-            }
-
-
-            // Apply border application method to paint event
-            Venat.Paint += DrawBorder;
-            
-            // Apply Info label reset string to form
-            Venat.Tag = " ";
-            Venat.MouseEnter += (sender, _) => HoverString(sender);
-            Venat.MouseMove += (sender, _) => MoveForm();
-
-
-            //#
-            //## Create Exit And Minimize Buttons, And Add Them To The Top Right Of The Form
-            //#
-            var Gray = Color.FromArgb(100, 100, 100);
-
-            Button ExitBtn = new Button() {
-                Location = new Point(Venat.Size.Width - 24, 1),
-                Size = new Size(23, 23),
-                Name = "ExitBtn",
-                Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
-                Text = "X",
-                FlatStyle = FlatStyle.Flat,
-                BackColor = Gray,
-                ForeColor = SystemColors.Control,
-                TextAlign = ContentAlignment.MiddleLeft,
-                Cursor = Cursors.Cross
-            },
-            MinimizeBtn = new Button() {
-                Location = new Point(Venat.Size.Width - 47, 1),
-                Size = new Size(23, 23),
-                Name = "MinimizeBtn",
-                Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
-                Text = "--",
-                FlatStyle = FlatStyle.Flat,
-                BackColor = Gray,
-                ForeColor = SystemColors.Control,
-                TextAlign = ContentAlignment.MiddleLeft,
-                Cursor = Cursors.Cross
-            }
-            #if DEBUG
-            ,LogBtn = new Button() {
-                Location = new Point(Venat.Size.Width - 70, 1),
-                Size = new Size(23, 23),
-                Name = "LogBtn",
-                Font = new Font("Franklin Gothic Medium", 6.5F, FontStyle.Bold),
-                Text = "Log",
-                FlatStyle = FlatStyle.Flat,
-                BackColor = Gray,
-                ForeColor = SystemColors.Control,
-                TextAlign = ContentAlignment.MiddleLeft,
-                Cursor = Cursors.Cross
-            }
-            #endif
-            ;
-
-            // Minimize Button Properties
-            MinimizeBtn.FlatAppearance.BorderSize = 0;
-            Venat.Controls.Add(MinimizeBtn);
-            MinimizeBtn.BringToFront();
-
-            MinimizeBtn.Click += new EventHandler(MinimizeBtn_Click);
-            MinimizeBtn.MouseEnter += new EventHandler(WindowBtnMH);
-            MinimizeBtn.MouseLeave += new EventHandler(WindowBtnML);
-
-            // Exit Button Properties
-            ExitBtn.FlatAppearance.BorderSize = 0;
-            Venat.Controls.Add(ExitBtn);
-            ExitBtn.BringToFront();
-            
-            ExitBtn.Click += new EventHandler(ExitBtn_Click);
-            ExitBtn.MouseEnter += new EventHandler(WindowBtnMH);
-            ExitBtn.MouseLeave += new EventHandler(WindowBtnML);
-
-            #if DEBUG
-            // Log Window Button Properties
-            LogBtn.FlatAppearance.BorderSize = 0;
-            Venat.Controls.Add(LogBtn);
-            LogBtn.BringToFront();
-            
-            LogBtn.Click += LogBtn_Click;
-            LogBtn.MouseEnter += new EventHandler(WindowBtnMH);
-            LogBtn.MouseLeave += new EventHandler(WindowBtnML);
-            #endif
-
-
-
-            //#
-            //## Apply event handlers and tags to the common buttons at the bottom of each page
-            //#
-
-            // Apply Info & Credits page crap, unless we're on one of those pages already
-            if (!new string[] { "InfoHelpPage", "CreditsPage" }.Contains(Venat.Name))
-            {
-                var helpPageButton = Venat.Controls.Find("InfoHelpBtn", true)?.FirstOrDefault();
-
-                if (helpPageButton != null) {
-                    helpPageButton.Click += (_, __) => ChangeForm(PageID.InfoHelpPage);
-                    helpPageButton.Tag = "View explanations for each page/other info";
-                }
-                
-
-                var creditsPageButton = Venat.Controls.Find("CreditsBtn", true)?.FirstOrDefault();
-
-                if (creditsPageButton != null) {
-                    creditsPageButton.Click += (_, __) => ChangeForm(PageID.CreditsPage);
-                    creditsPageButton.Tag = "View various credits for the application.";
-                }
-            }
-
-
-            // Avoid searching for a back button on Main page
-            if (Venat.Name != "MainPage")
-            {
-                var backButton = Venat.Controls.Find("BackBtn", true)?.Last();
-
-                backButton.Click += (_, __) => ChangeForm(null);
-                backButton.Tag = "Return to the previous page";
-            }
-
-
-            // Attempt to assign static Info label refference for bs globals
-            try {
-                int num;
-                InfoLabel = (Label)Venat.Controls.Find("Info", true)?.Last();
-
-                InfoLabel.Text = string.Empty;
-                InfoLabel.Tag = ((num = new Random().Next() & 1) + (num >> num & 1)) == 0 ? "hey get that mouse off my face >:(" : " "; // appy a joke tag if a two random numbers are both even (for shits and giggles)
-            }
-            catch (InvalidOperationException) {
-                Dev?.Print("ERROR: Form does not contain an info label (or it has not been named \"Info\").");
-            }
-        }
-        */
         #endregion
 
 
@@ -1094,60 +963,6 @@ namespace Dobby {
 
 
 
-
-        ///<summary>
-        /// Create And Apply A Thin Border To The Form
-        ///</summary>
-        public static void DrawBorder(object sender, PaintEventArgs e)
-        {
-            var itemPtr = sender as Form;
-
-            e.Graphics.Clear(Color.FromArgb(100, 100, 100));
-            e.Graphics.DrawLines(FormDecorationPen, new Point[] {
-                Point.Empty,
-                new Point(itemPtr.Width - 1, 0),
-                new Point(itemPtr.Width - 1, itemPtr.Height - 1),
-                new Point(0, itemPtr.Height - 1),
-                Point.Empty
-            });
-        }
-
-
-        /// <summary> Create and draw a thin white line from one end of the form to the other. (placeholder code atm)
-        ///</summary>
-        public static void DrawSeperatorLine(object sender, PaintEventArgs @event)
-        {
-            var item = sender as Label;
-
-            if (item == null)
-            {
-                Dev?.Print("!! ERROR: Invalid control passed as Seperator line.");
-                Dev?.Print($"  - Control \"{item.Name}\" location: {item.Location}.");
-            }
-            if (item.Name == "SeperatorLine0" && item.Location != new Point(2, 20))
-            {
-                Dev?.Print($"Seperator Line 0 Improperly positioned on {item.Parent.Name}");
-            }
-            if (item.Height != 15)
-            {
-                Dev?.Print($"# WARNING: \"{item.Name}\" has an invalid height!!! (Label is {item.Height} pixels in hight)");
-            }
-            if (!(item.Location.X == 2 && item.Width == item.Parent.Width - 4))
-            {
-                Dev?.Print($"Moved And Resized {item.Name} ({item.Parent.Name}).");
-
-                item.Location = new Point(2, item.Location.Y);
-                item.Width = item.Parent.Width - 4;
-            }
-
-
-            @event.Graphics.Clear(Color.FromArgb(100, 100, 100));
-            @event.Graphics.DrawLines(FormDecorationPen, new Point[] {
-                new Point(0, 9),
-                new Point(item.Parent.Width, 9)
-            });
-        }
-
         
         
         /// <summary>
@@ -1156,15 +971,14 @@ namespace Dobby {
         ///</summary>
         public static void DrawFormDecorations(Form venat, PaintEventArgs yoshiP)
         {
+            yoshiP.Graphics.Clear(venat.BackColor); // Clear line bounds with the current form's background colour
+
             # if DEBUG
-            if (noDraw)
+            if (NoDraw)
             {
                 return;
             }
             #endif
-
-            yoshiP.Graphics.Clear(venat.BackColor); // Clear line bounds with the current form's background colour
-
             
             //## Draw Vertical Lines
             foreach (var line in VSeparatorLines ?? Array.Empty<Point[]>())
@@ -1208,10 +1022,10 @@ namespace Dobby {
                         if (colour != null)
                             label.ForeColor = colour;
 
-                        ActiveForm?.Update();
+                        Venat?.Update();
                     }
 
-                    ActiveForm?.Update();
+                    Venat?.Update();
                 }
                 catch (Exception) {
                     Dev?.Print("Error setting label text and / or colour.");
@@ -1239,7 +1053,7 @@ namespace Dobby {
                         while (ActiveForm == null)
                             Thread.Sleep(1);
 
-                        ActiveForm?.Invoke(setLabelState, InfoLabel, (InfoFlashes-- & 1) == 0 ? Color.FromArgb(255, 227, 0) : Color.White, notifyMessage);
+                        Venat?.Invoke(setLabelState, InfoLabel, (InfoFlashes-- & 1) == 0 ? Color.FromArgb(255, 227, 0) : Color.White, notifyMessage);
                         
                         if (InfoFlashes == -1)
                         {
@@ -1253,7 +1067,7 @@ namespace Dobby {
                     // Set The Text of The Yellow Label At The Bottom Of The Form
                     if (InfoText != null)
                     {
-                        ActiveForm?.Invoke(setLabelState, InfoLabel, Color.FromArgb(255, 227, 0), InfoText);
+                        Venat?.Invoke(setLabelState, InfoLabel, Color.FromArgb(255, 227, 0), InfoText);
                         InfoText = null;
                     }
                 }
@@ -1313,7 +1127,7 @@ namespace Dobby {
             ActiveMouseButton = e.Button;
             MouseIsDown = true;
             
-            LastFormPosition = ActiveForm?.Location ?? LastFormPosition;
+            LastFormPosition = Venat?.Location ?? LastFormPosition;
             MouseDif = new Point(MousePosition.X - LastFormPosition.X, MousePosition.Y - LastFormPosition.Y);
 
         }
@@ -1329,8 +1143,12 @@ namespace Dobby {
             if (!MouseIsDown || ActiveForm == null)
                 return;
 
-            ActiveForm.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
-            ActiveForm.Update();
+            if (Venat != null)
+            {
+                Venat.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
+                Venat.Update();
+            }
+
 
             #if DEBUG
             DebugWindow?.MoveLogToAppEdge();

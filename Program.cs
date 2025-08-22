@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static Dobby.Common;
 
 namespace Dobby {
     static class Program {
@@ -14,8 +15,13 @@ namespace Dobby {
         [STAThread]
         static void Main() {
             Application.EnableVisualStyles();
+
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainPage());
+
+
+            var baseApp = new MainPageDummy();
+            baseApp.Visible = false;
+            Application.Run(baseApp);
         }
     }
 }

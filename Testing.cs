@@ -163,8 +163,8 @@ namespace Dobby {
 
             PopupGroupBox = new GroupBox() {
                 Cursor = Cursors.Cross,
-                Size = new Size(250, ActiveForm.Size.Height - 65),
-                Location = new Point(35, ActiveForm.Controls.Find("SeperatorLine0", true)[0].Location.Y + 8),
+                Size = new Size(250, Venat?.Size.Height - 65),
+                Location = new Point(35, Venat?.Controls.Find("SeperatorLine0", true)[0].Location.Y + 8),
                 BackColor = Color.FromArgb(255, Color.FromArgb(100, 100, 100))
             };
 
@@ -201,7 +201,7 @@ namespace Dobby {
             PopupGroupBox.Controls.Add(textBox);
             PopupGroupBox.Controls.Add(closeBtn);
             PopupGroupBox.Controls.Add(popupBoxLabel);
-            ActiveForm.Controls.Add(PopupGroupBox);
+            Venat?.Controls.Add(PopupGroupBox);
 
             PopupGroupBox.BringToFront(); textBox.BringToFront();
             closeBtn.BringToFront(); popupBoxLabel.BringToFront();

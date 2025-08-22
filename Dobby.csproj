@@ -78,6 +78,9 @@
     <Compile Include="extentions.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="MainPageDummy.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MainPage.Designer.cs">
       <SubType>Form</SubType>
       <DependentUpon>MainPage.cs</DependentUpon>

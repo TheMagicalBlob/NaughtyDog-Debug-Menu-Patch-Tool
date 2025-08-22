@@ -35,10 +35,10 @@ namespace Dobby {
         private void BuildLabelMH(object sender, EventArgs e) => UpdateLabel("Right Click To Dump ChangeList");
         private void BuildLabelML(object sender, EventArgs e) => UpdateLabel(string.Empty);
 
-        private void PS4DebugHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.PS4DebugHelpPage);
-        private void EbootPatchPageHelpBtn_Click(object sender, EventArgs e) => ChangeForm(PageID.EbootPatchHelpPage);
-        private void PS4QOLPageHelpBtn_Click(object sender, EventArgs e) { ChangeForm(PageID.PS4MenuSettingsHelpPage); }
-        private void PkgHelpPageBtn_Click(object sender, EventArgs e) { ChangeForm(PageID.PkgCreationHelpPage); }
+        private void PS4DebugHelpBtn_Click(object sender, EventArgs e) => OpenNewPage(PageID.PS4DebugHelpPage);
+        private void EbootPatchPageHelpBtn_Click(object sender, EventArgs e) => OpenNewPage(PageID.EbootPatchHelpPage);
+        private void PS4QOLPageHelpBtn_Click(object sender, EventArgs e) { OpenNewPage(PageID.PS4MenuSettingsHelpPage); }
+        private void PkgHelpPageBtn_Click(object sender, EventArgs e) { OpenNewPage(PageID.PkgCreationHelpPage); }
         #endregion
     }
 }

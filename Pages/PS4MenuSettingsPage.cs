@@ -34,7 +34,7 @@ namespace Dobby {
                 Dev?.Print("\nError initializing PS4MenuSettingsPage, returning to main page.");
                 
                 // Return to the previous page
-                ChangeForm(null);
+                OpenNewPage(PageID.MainPage);
             }
         }
 

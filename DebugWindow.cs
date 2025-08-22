@@ -19,12 +19,18 @@ namespace Dobby
         {
             InitializeComponent();
 
+            foreach (var control in this.Controls.OfType<Dobby.Button>())
+            {
+                control.Click += (sender, args) => Venat.Focus();
+            }
+
+
+            
             LogPtr = this;
             ParentPtr = Gaia;
 
             ParentPtr.LocationChanged += (sender, args) => MoveLogToAppEdge();
             return;
-
 
 
             var DButtonFont = new Font("Cambria", 7F, FontStyle.Bold);
@@ -233,6 +239,11 @@ namespace Dobby
 
         private readonly Thread LogThread;
 
+        private void DisableDebugTextBtn_Click(object sender, EventArgs e)
+        {
+            Venat.CreateGraphics().Clear(Venat.BackColor);
+        }
+
 
         /// <summary> Main LogWindow output loop. </summary>
         public void UpdateConsoleOutput()
@@ -257,7 +268,7 @@ namespace Dobby
                     var controlType = Common.HoveredControl?.GetType().ToString();
 
                     try {
-                        activePage = OverrideDynamicOutput ? PageID.MainPage : Common.Page;
+                        activePage = OverrideDynamicOutput ? PageID.MainPage : Common.ActivePage;
 
                         // Switch between various formats of debug output based on the current page.
                         switch(activePage) {
@@ -265,9 +276,9 @@ namespace Dobby
                                 rawOutput = new string[] {
                                     $"Build: {Ver.Build}",
                                     " ",
-                                    $"Parent Form: {(ActiveForm != null ? $"{ActiveForm?.Name} | # Of Children: {ActiveForm?.Controls?.Count}" : "Console")}",
+                                    $"Parent Form: {(ActiveForm != null ? $"{Venat?.Name} | # Of Children: {Venat?.Controls?.Count}" : "Console")}",
                                     " ",
-                                    $"Active Page: {Common.Page}",
+                                    $"Active Page: {Common.ActivePage}",
                                     $"  Pages: {string.Join(", ", Pages)}",
                                     " ",
                                     $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}",
@@ -283,10 +294,10 @@ namespace Dobby
                                 rawOutput = new string[] {
                                     $"Build: {Ver.Build}",
                                     " ",
-                                    $"Parent Form: {(ActiveForm != null ? $"{ActiveForm?.Name} | # Of Children: {ActiveForm?.Controls?.Count}" : "Console")}",
+                                    $"Parent Form: {(ActiveForm != null ? $"{Venat?.Name} | # Of Children: {Venat?.Controls?.Count}" : "Console")}",
                                     " ",
                                     //$"TitleID: {(PS4DebugPage.TitleID == "?" ? "UNK" : PS4DebugPage.TitleID)} | Game Version: {PS4DebugPage.GameVersion}",
-                                    $"GameID: {ActiveGameID} | {(Common.Page == PageID.PS4DebugPage ? $"Peek Test: {ActivePage.TitleID}" : "load the page, fucker")}",
+                                    $"GameID: {ActiveGameID} | {(Common.ActivePage == PageID.PS4DebugPage ? $"Peek Test: {ActivePage.TitleID}" : "load the page, fucker")}",
                                     //$"ProcessName: {PS4DebugPage.ProcessName} | PDbg Connected: {PS4DebugPage.PS4DebugIsConnected}",
                                     " ",
                                     $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}",

@@ -350,6 +350,7 @@ namespace Dobby {
           "* 4.69.465.1132 | Ported reworked InitializeAdditionalEventHandlers and form decoration method from the dc tool poc gui.",
           "* 4.69.466.1136 | Made the question buttons implementation a bit less nonsensical in the EbootPatchHelpPage. Still a bit odd, but I'm tired.",
           "* 4.69.467.1139 | Redid the PS4DebugHelpPage to be slightly-less cursed than before, tweaking sep line shit",
+          "* 4.69.470.1148 | Reworking the ChangeFOrm bs (ffs I'm stupid rn); Updated EbootPatchHelpPage information, as well as slightly tweaked the look; Additional miscellaneous help page tweaks; Removed that odd \"SaveMainForm\" function and changed the Venat global a bit.; Added a loop to the DebugWindow to re-focus the main form when a debug item is clicked, so I can stop having to spam click it...",
         };
 
         
