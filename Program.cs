@@ -19,10 +19,7 @@ namespace Dobby {
 
 
             // A dummy form to always keep alive as a host for the rest of them, while also copying the looks of the main page becau- okay this is dumb
-            var baseApp = new MainPageDummy();
-            baseApp.Visible = false;
-
-            Application.Run(baseApp);
+            Application.Run(new MainPageDummy());
         }
     }
 }

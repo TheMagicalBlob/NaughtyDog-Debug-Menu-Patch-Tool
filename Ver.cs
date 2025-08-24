@@ -352,6 +352,7 @@ namespace Dobby {
           "* 4.69.467.1139 | Redid the PS4DebugHelpPage to be slightly-less cursed than before, tweaking sep line shit",
           "* 4.69.470.1148 | Reworking the ChangeForm bs (ffs I'm stupid rn); Updated EbootPatchHelpPage information, as well as slightly tweaked the look; Additional miscellaneous help page tweaks; Removed that odd \"SaveMainForm\" function and changed the Venat global a bit.; Added a loop to the DebugWindow to re-focus the main form when a debug item is clicked, so I can stop having to spam click it...",
           "* 4.69.471.1150 | ChangeForm bs stopped telling me to eat shit suddenly, main page now re-opens like normal; What the hell was even that",
+          "* 4.69.472.1151 | Stripped down dummy form UwU",
         };
 
         

@@ -86,6 +86,9 @@
       <DependentUpon>MainPage.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="MainPageDummy.Designer.cs">
+      <DependentUpon>MainPageDummy.cs</DependentUpon>
+    </Compile>
     <Compile Include="Pages\EbootPatchHelpPage.Designer.cs">
       <DependentUpon>EbootPatchHelpPage.cs</DependentUpon>
     </Compile>
