@@ -63,8 +63,8 @@ namespace Dobby {
         public static GameID Game = GameID.Empty;
 
         /// <summary> ID for the currently loaded form. </summary>
-        public static PageID? ActivePage;
-        public static List<PageID?> Pages = new List<PageID?>();
+        public static PageID ActivePage;
+        public static List<PageID> Pages = new List<PageID>();
 
         public static bool
             MouseScrolled,
@@ -535,13 +535,14 @@ namespace Dobby {
 
         public static void OpenNewPage(PageID NewPage)
         {
-            Pages.Add(NewPage);
-            ChangePage(Pages.Last());
+            Pages.Add(ActivePage);
+            ChangePage(NewPage);
         }
 
         public static void ReturnToPreviousPage()
         {
             var prevPage = Pages.Last();
+            Console.WriteLine($"Attempting to open page \"{prevPage}\"");
             Pages.RemoveAt(Pages.Count - 1);
             
             ChangePage(prevPage);
@@ -552,7 +553,7 @@ namespace Dobby {
         /// Loads The Specified Page From The PageId Group (E.g. ChangeForm(PageID.PS4MiscPageId))
         /// </summary>
         /// <param name="Page"> The Page To Change To. </param>
-        private static void ChangePage(PageID? Page = null)
+        private static void ChangePage(PageID Page)
         {
             if (DisableFormChange)
             {
@@ -568,64 +569,71 @@ namespace Dobby {
             }
 
 
+            
 
-            Form NewPage;
+
+            // Save the position of the closing form for the next one
+            LastFormPosition = Venat?.Location ?? ActiveForm?.Location ?? new Point(25, 25);
+
+            // Show the new form, then hide or dispose of the previous page
+            var PageToClose = Venat;
+            
             switch (Page)
             {
                 case PageID.MainPage:
-                    NewPage = new MainPage();
+                    Venat = new MainPage();
                     break;
                 case PageID.PS4DebugPage:
-                    NewPage = new PS4DebugPage();
+                    Venat = new PS4DebugPage();
                     break;
 
                 case PageID.PS4DebugHelpPage:
-                    NewPage = new PS4DebugHelpPage();
+                    Venat = new PS4DebugHelpPage();
                     break;
 
                 case PageID.EbootPatchPage:
-                    NewPage = new EbootPatchPage();
+                    Venat = new EbootPatchPage();
                     break;
 
                 case PageID.EbootPatchHelpPage:
-                    NewPage = new EbootPatchHelpPage();
+                    Venat = new EbootPatchHelpPage();
                     break;
 
                 case PageID.PS4MenuSettingsPage:
-                    NewPage = new PS4MenuSettingsPage();
+                    Venat = new PS4MenuSettingsPage();
                     break;
 
                 case PageID.PS4MenuSettingsHelpPage:
-                    NewPage = new PS4MenuSettingsHelpPage();
+                    Venat = new PS4MenuSettingsHelpPage();
                     break;
 
                 case PageID.PkgCreationPage:
-                    NewPage = new PkgCreationPage();
+                    Venat = new PkgCreationPage();
                     break;
 
                 case PageID.PkgCreationHelpPage:
-                    NewPage = new PkgCreationHelpPage();
+                    Venat = new PkgCreationHelpPage();
                     break;
 
                 case PageID.Gp4CreationPage:
-                    NewPage = new GP4CreationPage();
+                    Venat = new GP4CreationPage();
                     break;
 
                 case PageID.Gp4CreationHelpPage:
-                    NewPage = null;
+                    Venat = null;
                     break;
 
                 case PageID.PCDebugMenuPage:
-                    NewPage = new PCDebugMenuPage();
+                    Venat = new PCDebugMenuPage();
                     //MessageBox.Show("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
                     break;
 
                 case PageID.InfoHelpPage:
-                    NewPage = new InfoHelpPage();
+                    Venat = new InfoHelpPage();
                     break;
 
                 case PageID.CreditsPage:
-                    NewPage = new CreditsPage();
+                    Venat = new CreditsPage();
                     break;
 
 
@@ -635,25 +643,16 @@ namespace Dobby {
             }
 
 
-            
-            LastFormPosition = Venat.Location;
 
-            Common.ActivePage = Page;
-            
-
-#if DEBUG
-            DebugWindow?.SetDebugWindowParent(NewPage);
-#endif
-            
-
-            // Show the new form, then hide or dispose of the previous page
-            var PageToClose = Venat;
-
-            Venat = NewPage;
             Venat.Show();
             Venat.Location = LastFormPosition;
-            
             PageToClose.Close();
+            Common.ActivePage = Page;
+
+#if DEBUG
+            DebugWindow?.SetDebugWindowParent(Venat);
+#endif
+            
         }
 
 

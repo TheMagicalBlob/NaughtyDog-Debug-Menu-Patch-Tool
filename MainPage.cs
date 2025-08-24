@@ -12,7 +12,6 @@ namespace Dobby {
         public MainPage()
         {
             InitializeComponent();
-            ActivePage = PageID.MainPage;
             
             Venat = this;
             Dev = new Testing();

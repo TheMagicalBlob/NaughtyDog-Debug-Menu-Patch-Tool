@@ -27,6 +27,13 @@ namespace Dobby
 
         public MainPageDummy() 
         {
+            this.Paint += (sender, e) => { 
+            this.Hide();
+            this.Visible = false; };
+
+
+            goto tmp;
+            #region Initialize Component
             this.MainLabel = new Dobby.Label();
             this.Info = new Dobby.Label();
             this.SeperatorLine0 = new Dobby.Label();
@@ -300,11 +307,9 @@ namespace Dobby
             this.Controls.Add(this.SeperatorLine3);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "MainPage";
+            tmp:
             this.ResumeLayout(false);
-
-            this.Paint += (sender, e) => { 
-            this.Hide();
-            this.Visible = false; };
+            #endregion (initialize component)
 
             Common.YoshiP = this;
             new MainPage().Show();
