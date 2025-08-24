@@ -31,7 +31,7 @@ namespace Dobby {
         //=================================\\
         #region [Variable Declarations]
 
-        //! Why the fuck is this a seperate thing? This was the LESS inconvenient thing??
+        //! Why the fuck is this a separate thing? This was the LESS inconvenient thing??
         private readonly string[] headers = new []
         {
             "                  [Getting The Game's Executable]\n",

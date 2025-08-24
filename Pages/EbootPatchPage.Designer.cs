@@ -29,11 +29,11 @@ namespace Dobby
 
         public void InitializeComponent() {
             this.GameInfoLabel = new Dobby.Label();
-            this.SeperatorLine1 = new Dobby.Label();
-            this.SeperatorLine2 = new Dobby.Label();
+            this.separatorLine1 = new Dobby.Label();
+            this.separatorLine2 = new Dobby.Label();
             this.Info = new Dobby.Label();
             this.MainLabel = new Dobby.Label();
-            this.SeperatorLine0 = new Dobby.Label();
+            this.separatorLine0 = new Dobby.Label();
             this.BrowseButton = new Dobby.Button();
             this.ExecutablePathBox = new Dobby.TextBox();
             this.RestoredDebugBtn = new Dobby.Button();
@@ -48,40 +48,48 @@ namespace Dobby
             // 
             this.GameInfoLabel.Font = new System.Drawing.Font("Cambria", 9.25F);
             this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.GameInfoLabel.IsSeparatorLine = false;
             this.GameInfoLabel.Location = new System.Drawing.Point(1, 144);
             this.GameInfoLabel.Name = "GameInfoLabel";
             this.GameInfoLabel.Size = new System.Drawing.Size(316, 19);
+            this.GameInfoLabel.StretchToFitForm = false;
             this.GameInfoLabel.TabIndex = 32;
             this.GameInfoLabel.Text = "No File Selected";
             this.GameInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // SeperatorLine1
+            // separatorLine1
             // 
-            this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 98);
-            this.SeperatorLine1.Name = "SeperatorLine1";
-            this.SeperatorLine1.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine1.TabIndex = 29;
-            this.SeperatorLine1.Text = "--------------------------------------------------------------";
+            this.separatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
+            this.separatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.separatorLine1.IsSeparatorLine = true;
+            this.separatorLine1.Location = new System.Drawing.Point(2, 98);
+            this.separatorLine1.Name = "separatorLine1";
+            this.separatorLine1.Size = new System.Drawing.Size(316, 15);
+            this.separatorLine1.StretchToFitForm = false;
+            this.separatorLine1.TabIndex = 29;
+            this.separatorLine1.Text = "--------------------------------------------------------------";
             // 
-            // SeperatorLine2
+            // separatorLine2
             // 
-            this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(2, 158);
-            this.SeperatorLine2.Name = "SeperatorLine2";
-            this.SeperatorLine2.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine2.TabIndex = 14;
-            this.SeperatorLine2.Text = "--------------------------------------------------------------";
+            this.separatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
+            this.separatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.separatorLine2.IsSeparatorLine = true;
+            this.separatorLine2.Location = new System.Drawing.Point(2, 158);
+            this.separatorLine2.Name = "separatorLine2";
+            this.separatorLine2.Size = new System.Drawing.Size(316, 15);
+            this.separatorLine2.StretchToFitForm = false;
+            this.separatorLine2.TabIndex = 14;
+            this.separatorLine2.Text = "--------------------------------------------------------------";
             // 
             // Info
             // 
             this.Info.Font = new System.Drawing.Font("Cambria", 9.25F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.Info.IsSeparatorLine = false;
             this.Info.Location = new System.Drawing.Point(4, 250);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(312, 19);
+            this.Info.StretchToFitForm = false;
             this.Info.TabIndex = 7;
             this.Info.Text = "===========================================";
             // 
@@ -90,21 +98,25 @@ namespace Dobby
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MainLabel.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Bold);
             this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.MainLabel.IsSeparatorLine = false;
             this.MainLabel.Location = new System.Drawing.Point(1, 1);
             this.MainLabel.Name = "MainLabel";
             this.MainLabel.Size = new System.Drawing.Size(314, 22);
+            this.MainLabel.StretchToFitForm = false;
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "Eboot Patch Page";
             // 
-            // SeperatorLine0
+            // separatorLine0
             // 
-            this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine0.Location = new System.Drawing.Point(2, 15);
-            this.SeperatorLine0.Name = "SeperatorLine0";
-            this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine0.TabIndex = 33;
-            this.SeperatorLine0.Text = "--------------------------------------------------------------";
+            this.separatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
+            this.separatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.separatorLine0.IsSeparatorLine = true;
+            this.separatorLine0.Location = new System.Drawing.Point(2, 15);
+            this.separatorLine0.Name = "separatorLine0";
+            this.separatorLine0.Size = new System.Drawing.Size(316, 15);
+            this.separatorLine0.StretchToFitForm = false;
+            this.separatorLine0.TabIndex = 33;
+            this.separatorLine0.Text = "--------------------------------------------------------------";
             // 
             // BrowseButton
             // 
@@ -262,10 +274,10 @@ namespace Dobby
             this.Controls.Add(this.DisableDebugBtn);
             this.Controls.Add(this.CreditsBtn);
             this.Controls.Add(this.Info);
-            this.Controls.Add(this.SeperatorLine2);
-            this.Controls.Add(this.SeperatorLine1);
+            this.Controls.Add(this.separatorLine2);
+            this.Controls.Add(this.separatorLine1);
             this.Controls.Add(this.EnableDebugBtn);
-            this.Controls.Add(this.SeperatorLine0);
+            this.Controls.Add(this.separatorLine0);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
@@ -288,17 +300,17 @@ namespace Dobby
         public Label GameInfoLabel;
         private Button BrowseButton;
         private TextBox ExecutablePathBox;
-        private Label SeperatorLine1;
+        private Label separatorLine1;
         private Button RestoredDebugBtn;
         private Button InfoHelpBtn;
-        private Label SeperatorLine2;
+        private Label separatorLine2;
         private Button BackBtn;
         private Button DisableDebugBtn;
         private Button EnableDebugBtn;
         private Label Info;
         private Button CreditsBtn;
         private Label MainLabel;
-        private Label SeperatorLine0;
+        private Label separatorLine0;
         #endregion
     }
 }

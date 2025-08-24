@@ -136,7 +136,7 @@ namespace Dobby {
             // Assign blacklist contents
             if (!FileBlacklistPathBox.IsDefault())
             {
-                if (new char[] { ',', ';', '|' }.Any(seperator => FileBlacklistPathBox.Text.Contains(seperator)))
+                if (new char[] { ',', ';', '|' }.Any(separator => FileBlacklistPathBox.Text.Contains(separator)))
                 {
                     gp4.FileBlacklist = FileBlacklistPathBox?.Text?.Split(',', ';', '|');
                 }

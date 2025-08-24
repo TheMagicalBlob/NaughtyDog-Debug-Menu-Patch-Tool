@@ -30,7 +30,7 @@ namespace Dobby {
         // - Use Franklin Gothic 10pt For Basic Controls    \\
         // - Use Cambria 9.75pt For Information Pages       \\
         //                                                  \\
-        // * Borders And Seperator Lines                    \\
+        // * Borders And separator Lines                    \\
         // - Keep Controls At Least 1 Pixel From Form Edge  \\
         // - Lines Should Be 2 Pixels From Either Form Edge \\
         //==================================================\\
@@ -204,7 +204,7 @@ namespace Dobby {
         private static Point[][] HSeparatorLines;
         
         /// <summary> An array of Point() arrays with the start and end points of a line to draw. </summary>
-        private static Point[][] VSeparatorLines;
+        //private static Point[][] VSeparatorLines;
 
 
 #if DEBUG
@@ -666,45 +666,26 @@ namespace Dobby {
             var controls = Venat.Controls.Cast<Control>().ToArray();
 
             var hSeparatorLineScanner = new List<Point[]>();
-            var vSeparatorLineScanner = new List<Point[]>();
 
 
 
-            // Apply the seperator drawing function to any seperator lines
+            // Apply the separator drawing function to any separator lines
             foreach (var line in controls.OfType<Dobby.Label>())
             {
                 if (line.IsSeparatorLine)
                 {
-                    if (line.Size.Width > line.Size.Height)
-                    {
-                        // Horizontal Lines
-                        hSeparatorLineScanner.Add(new []
-                        { 
-                            new Point(line.StretchToFitForm ? 1 : line.Location.X, line.Location.Y + 9),
-                            new Point(line.StretchToFitForm ? line.Parent.Width - 2 : line.Location.X + line.Width, line.Location.Y + 9)
-                        });
+                    // Horizontal Lines
+                    hSeparatorLineScanner.Add(new []
+                    { 
+                        new Point(line.StretchToFitForm ? 1 : line.Location.X, line.Location.Y + 9),
+                        new Point(line.StretchToFitForm ? line.Parent.Width - 2 : line.Location.X + line.Width, line.Location.Y + 9)
+                    });
 
-                        line.Height = 2;
-                    }
-                    else {
-                        // Vertical Lines (the + 3 is to center the line with the displayed lines in the editor)
-                        vSeparatorLineScanner.Add(new []
-                        {
-                            new Point(line.Location.X + 3, line.StretchToFitForm ? 1 : line.Location.Y),
-                            new Point(line.Location.X + 3, line.StretchToFitForm ? line.Parent.Height - 2 : line.Location.Y + line.Height)
-                        });
-
-                        line.Height = 2;
-                    }
+                    line.Height = 2;
                 }
             }
 
-            if (hSeparatorLineScanner.Count > 0) {
-                HSeparatorLines = hSeparatorLineScanner.ToArray();
-            }
-            if (vSeparatorLineScanner.Count > 0) {
-                VSeparatorLines = vSeparatorLineScanner.ToArray();
-            }
+            HSeparatorLines = hSeparatorLineScanner.ToArray();
 
 
             
@@ -979,11 +960,6 @@ namespace Dobby {
             }
             #endif
             
-            //## Draw Vertical Lines
-            foreach (var line in VSeparatorLines ?? Array.Empty<Point[]>())
-            {
-                yoshiP?.Graphics.DrawLine(FormDecorationPen, line[0], line[1]);
-            }
 
             //## Draw Horizontal Lines
             foreach (var line in HSeparatorLines ?? Array.Empty<Point[]>())
@@ -991,8 +967,11 @@ namespace Dobby {
                 yoshiP?.Graphics.DrawLine(FormDecorationPen, line[0], line[1]);
             }
 
-            // Draw a thin (1 pixel) border around the form with the current Pen
-            yoshiP?.Graphics.DrawLines(FormDecorationPen, new [] {
+
+
+            //## Draw a thin (1 pixel) border around the form with the current Pen
+            yoshiP?.Graphics.DrawLines(FormDecorationPen, new []
+            {
                 Point.Empty,
                 new Point(venat.Width-1, 0),
                 new Point(venat.Width-1, venat.Height-1),

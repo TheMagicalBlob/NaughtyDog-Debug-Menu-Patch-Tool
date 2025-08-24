@@ -13,8 +13,8 @@ namespace Dobby
         public void InitializeComponent()
         {
             this.MainLabel = new Dobby.Label();
-            this.SeperatorLine0 = new Dobby.Label();
-            this.SeperatorLine1 = new Dobby.Label();
+            this.separatorLine0 = new Dobby.Label();
+            this.separatorLine1 = new Dobby.Label();
             this.Playstation4Label = new Dobby.Label();
             this.PCLabel = new Dobby.Label();
             this.DisableDebugTextBtn = new Dobby.Button();
@@ -35,29 +35,29 @@ namespace Dobby
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "DevPanel";
             // 
-            // SeperatorLine0
+            // separatorLine0
             // 
-            this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine0.IsSeparatorLine = false;
-            this.SeperatorLine0.Location = new System.Drawing.Point(2, 15);
-            this.SeperatorLine0.Name = "SeperatorLine0";
-            this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine0.StretchToFitForm = false;
-            this.SeperatorLine0.TabIndex = 31;
-            this.SeperatorLine0.Text = "--------------------------------------------------------------";
+            this.separatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
+            this.separatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.separatorLine0.IsSeparatorLine = false;
+            this.separatorLine0.Location = new System.Drawing.Point(2, 15);
+            this.separatorLine0.Name = "separatorLine0";
+            this.separatorLine0.Size = new System.Drawing.Size(316, 15);
+            this.separatorLine0.StretchToFitForm = false;
+            this.separatorLine0.TabIndex = 31;
+            this.separatorLine0.Text = "--------------------------------------------------------------";
             // 
-            // SeperatorLine1
+            // separatorLine1
             // 
-            this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.IsSeparatorLine = false;
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 144);
-            this.SeperatorLine1.Name = "SeperatorLine1";
-            this.SeperatorLine1.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine1.StretchToFitForm = false;
-            this.SeperatorLine1.TabIndex = 36;
-            this.SeperatorLine1.Text = "--------------------------------------------------------------";
+            this.separatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
+            this.separatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.separatorLine1.IsSeparatorLine = false;
+            this.separatorLine1.Location = new System.Drawing.Point(2, 144);
+            this.separatorLine1.Name = "separatorLine1";
+            this.separatorLine1.Size = new System.Drawing.Size(316, 15);
+            this.separatorLine1.StretchToFitForm = false;
+            this.separatorLine1.TabIndex = 36;
+            this.separatorLine1.Text = "--------------------------------------------------------------";
             // 
             // Playstation4Label
             // 
@@ -146,9 +146,9 @@ namespace Dobby
             this.Controls.Add(this.button1);
             this.Controls.Add(this.DisableDebugTextBtn);
             this.Controls.Add(this.Playstation4Label);
-            this.Controls.Add(this.SeperatorLine1);
+            this.Controls.Add(this.separatorLine1);
             this.Controls.Add(this.MainLabel);
-            this.Controls.Add(this.SeperatorLine0);
+            this.Controls.Add(this.separatorLine0);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "DebugWindow";
             this.ResumeLayout(false);
@@ -162,8 +162,8 @@ namespace Dobby
         //================================\\
         #region [Control Declarations]
         public Label MainLabel;
-        public Label SeperatorLine0;
-        public Label SeperatorLine1;
+        public Label separatorLine0;
+        public Label separatorLine1;
         public Label Playstation4Label;
         public Label PCLabel;
         #endregion

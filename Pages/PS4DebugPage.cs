@@ -564,16 +564,16 @@ namespace Dobby {
             if (File.Exists(settingsFilePath))
                 using (var settingsFile = new FileStream(settingsFilePath, FileMode.Open, FileAccess.Read))
                 {
-                    int seperator;
+                    int separator;
                     byte[] buffer;
 
                     settingsFile.Read(buffer = new byte[settingsFile.Length], 0, (int) settingsFile.Length);
-                    seperator = buffer.ToList().FindLastIndex(item => item == 0x3B);
+                    separator = buffer.ToList().FindLastIndex(item => item == 0x3B);
 
 
-                    if (!IPAddress.TryParse(Encoding.UTF8.GetString(buffer, 0, seperator), out IPAddress ip))
+                    if (!IPAddress.TryParse(Encoding.UTF8.GetString(buffer, 0, separator), out IPAddress ip))
                     {
-                        Dev?.Print($"!! ERROR: Unable to part IP Address from settings file. (attempted to parse: {Encoding.UTF8.GetString(buffer, 0, seperator)})");
+                        Dev?.Print($"!! ERROR: Unable to part IP Address from settings file. (attempted to parse: {Encoding.UTF8.GetString(buffer, 0, separator)})");
                         UpdateLabel("Unable to parse settings file.");
 
                         // use the default IP.
@@ -581,7 +581,7 @@ namespace Dobby {
                     }
 
                     settingsFile.Dispose();
-                    return new object[] { ip, BitConverter.ToInt16(buffer, seperator + 1) };
+                    return new object[] { ip, BitConverter.ToInt16(buffer, separator + 1) };
                 }
             else
             {

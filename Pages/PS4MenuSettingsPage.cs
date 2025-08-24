@@ -807,13 +807,13 @@ namespace Dobby {
             Dev?.Print("Saving original control positions and form vertical height.\n");
 
             ControlsToMove = new Control[] { // Every Control Below The "Game Specific Patches" Label
-                SeperatorLine2,
+                separatorLine2,
                 BrowseButton,
                 ExecutablePathBox,
                 GameInfoLabel,
                 ResetBtn,   // These two buttons are only initialized after the game-specific patch buttons have been created. odd way to do it, but it works, and I need to do other things first
                 ConfirmBtn, // ^^^
-                SeperatorLine3,
+                separatorLine3,
                 InfoHelpBtn,
                 CreditsBtn,
                 BackBtn,
@@ -851,7 +851,7 @@ namespace Dobby {
 
 
             // Move The Controls Below The Confirm And Reset Buttons A Bit Farther Down To Make Room For Them
-            for (int i = Array.FindIndex(ControlsToMove, control => control == (object)SeperatorLine3); i < ControlsToMove.Length; i++)
+            for (int i = Array.FindIndex(ControlsToMove, control => control == (object)separatorLine3); i < ControlsToMove.Length; i++)
             {
                 ControlsToMove[i].Location = new Point(ControlsToMove[i].Location.X, ControlsToMove[i].Location.Y + GSButtonHeight * 2);
             }

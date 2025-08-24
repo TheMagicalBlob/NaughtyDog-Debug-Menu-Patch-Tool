@@ -41,13 +41,13 @@ namespace Dobby
         private void InitializeComponent() {
             this.MainLabel = new Dobby.Label();
             this.Info = new Dobby.Label();
-            this.SeperatorLine0 = new Dobby.Label();
+            this.separatorLine0 = new Dobby.Label();
             this.CustomDebugOptionsLabel = new Dobby.Label();
             this.UniversalPatchesLabel = new Dobby.Label();
             this.GameSpecificPatchesLabel = new Dobby.Label();
-            this.SeperatorLine3 = new Dobby.Label();
-            this.SeperatorLine1 = new Dobby.Label();
-            this.SeperatorLine2 = new Dobby.Label();
+            this.separatorLine3 = new Dobby.Label();
+            this.separatorLine1 = new Dobby.Label();
+            this.separatorLine2 = new Dobby.Label();
             this.GameInfoLabel = new Dobby.Label();
             this.NovisBtn = new Dobby.Button();
             this.ProgPauseOnCloseBtn = new Dobby.Button();
@@ -66,9 +66,11 @@ namespace Dobby
             this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MainLabel.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Bold);
             this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.MainLabel.IsSeparatorLine = false;
             this.MainLabel.Location = new System.Drawing.Point(1, 1);
             this.MainLabel.Name = "MainLabel";
             this.MainLabel.Size = new System.Drawing.Size(314, 22);
+            this.MainLabel.StretchToFitForm = false;
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "Misc. PS4  Patches Page";
             // 
@@ -76,30 +78,36 @@ namespace Dobby
             // 
             this.Info.Font = new System.Drawing.Font("Cambria", 9.25F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.Info.IsSeparatorLine = false;
             this.Info.Location = new System.Drawing.Point(4, 373);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(312, 17);
+            this.Info.StretchToFitForm = false;
             this.Info.TabIndex = 7;
             this.Info.Text = "===========================================";
             // 
-            // SeperatorLine0
+            // separatorLine0
             // 
-            this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine0.Location = new System.Drawing.Point(2, 15);
-            this.SeperatorLine0.Name = "SeperatorLine0";
-            this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine0.TabIndex = 31;
-            this.SeperatorLine0.Text = "--------------------------------------------------------------";
+            this.separatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
+            this.separatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.separatorLine0.IsSeparatorLine = true;
+            this.separatorLine0.Location = new System.Drawing.Point(2, 15);
+            this.separatorLine0.Name = "separatorLine0";
+            this.separatorLine0.Size = new System.Drawing.Size(316, 15);
+            this.separatorLine0.StretchToFitForm = false;
+            this.separatorLine0.TabIndex = 31;
+            this.separatorLine0.Text = "--------------------------------------------------------------";
             // 
             // CustomDebugOptionsLabel
             // 
             this.CustomDebugOptionsLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.CustomDebugOptionsLabel.Font = new System.Drawing.Font("Cambria", 8.75F, System.Drawing.FontStyle.Bold);
             this.CustomDebugOptionsLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.CustomDebugOptionsLabel.IsSeparatorLine = false;
             this.CustomDebugOptionsLabel.Location = new System.Drawing.Point(7, 208);
             this.CustomDebugOptionsLabel.Name = "CustomDebugOptionsLabel";
             this.CustomDebugOptionsLabel.Size = new System.Drawing.Size(303, 19);
+            this.CustomDebugOptionsLabel.StretchToFitForm = false;
             this.CustomDebugOptionsLabel.TabIndex = 54;
             this.CustomDebugOptionsLabel.Text = "(Load An Executable To Show Game-Specific Options)";
             // 
@@ -108,9 +116,11 @@ namespace Dobby
             this.UniversalPatchesLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.UniversalPatchesLabel.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold);
             this.UniversalPatchesLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.UniversalPatchesLabel.IsSeparatorLine = false;
             this.UniversalPatchesLabel.Location = new System.Drawing.Point(102, 33);
             this.UniversalPatchesLabel.Name = "UniversalPatchesLabel";
             this.UniversalPatchesLabel.Size = new System.Drawing.Size(111, 14);
+            this.UniversalPatchesLabel.StretchToFitForm = false;
             this.UniversalPatchesLabel.TabIndex = 53;
             this.UniversalPatchesLabel.Text = "Universal Patches";
             // 
@@ -119,49 +129,59 @@ namespace Dobby
             this.GameSpecificPatchesLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.GameSpecificPatchesLabel.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold);
             this.GameSpecificPatchesLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.GameSpecificPatchesLabel.IsSeparatorLine = false;
             this.GameSpecificPatchesLabel.Location = new System.Drawing.Point(88, 184);
             this.GameSpecificPatchesLabel.Name = "GameSpecificPatchesLabel";
             this.GameSpecificPatchesLabel.Size = new System.Drawing.Size(136, 15);
+            this.GameSpecificPatchesLabel.StretchToFitForm = false;
             this.GameSpecificPatchesLabel.TabIndex = 52;
             this.GameSpecificPatchesLabel.Text = "Game-Specific Patches";
             // 
-            // SeperatorLine3
+            // separatorLine3
             // 
-            this.SeperatorLine3.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine3.Location = new System.Drawing.Point(2, 281);
-            this.SeperatorLine3.Name = "SeperatorLine3";
-            this.SeperatorLine3.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine3.TabIndex = 32;
-            this.SeperatorLine3.Text = "--------------------------------------------------------------";
+            this.separatorLine3.Font = new System.Drawing.Font("Cambria", 10F);
+            this.separatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.separatorLine3.IsSeparatorLine = true;
+            this.separatorLine3.Location = new System.Drawing.Point(2, 281);
+            this.separatorLine3.Name = "separatorLine3";
+            this.separatorLine3.Size = new System.Drawing.Size(316, 15);
+            this.separatorLine3.StretchToFitForm = false;
+            this.separatorLine3.TabIndex = 32;
+            this.separatorLine3.Text = "--------------------------------------------------------------";
             // 
-            // SeperatorLine1
+            // separatorLine1
             // 
-            this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 165);
-            this.SeperatorLine1.Name = "SeperatorLine1";
-            this.SeperatorLine1.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine1.TabIndex = 37;
-            this.SeperatorLine1.Text = "--------------------------------------------------------------";
+            this.separatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
+            this.separatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.separatorLine1.IsSeparatorLine = true;
+            this.separatorLine1.Location = new System.Drawing.Point(2, 165);
+            this.separatorLine1.Name = "separatorLine1";
+            this.separatorLine1.Size = new System.Drawing.Size(316, 15);
+            this.separatorLine1.StretchToFitForm = false;
+            this.separatorLine1.TabIndex = 37;
+            this.separatorLine1.Text = "--------------------------------------------------------------";
             // 
-            // SeperatorLine2
+            // separatorLine2
             // 
-            this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(2, 224);
-            this.SeperatorLine2.Name = "SeperatorLine2";
-            this.SeperatorLine2.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine2.TabIndex = 36;
-            this.SeperatorLine2.Text = "--------------------------------------------------------------";
+            this.separatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
+            this.separatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.separatorLine2.IsSeparatorLine = true;
+            this.separatorLine2.Location = new System.Drawing.Point(2, 224);
+            this.separatorLine2.Name = "separatorLine2";
+            this.separatorLine2.Size = new System.Drawing.Size(316, 15);
+            this.separatorLine2.StretchToFitForm = false;
+            this.separatorLine2.TabIndex = 36;
+            this.separatorLine2.Text = "--------------------------------------------------------------";
             // 
             // GameInfoLabel
             // 
             this.GameInfoLabel.Font = new System.Drawing.Font("Cambria", 10F);
             this.GameInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.GameInfoLabel.IsSeparatorLine = false;
             this.GameInfoLabel.Location = new System.Drawing.Point(2, 268);
             this.GameInfoLabel.Name = "GameInfoLabel";
             this.GameInfoLabel.Size = new System.Drawing.Size(316, 19);
+            this.GameInfoLabel.StretchToFitForm = false;
             this.GameInfoLabel.TabIndex = 40;
             this.GameInfoLabel.Text = "No File Selected";
             this.GameInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -351,7 +371,7 @@ namespace Dobby
             this.Controls.Add(this.GameSpecificPatchesLabel);
             this.Controls.Add(this.ProgPauseOnOpenBtn);
             this.Controls.Add(this.GameInfoLabel);
-            this.Controls.Add(this.SeperatorLine3);
+            this.Controls.Add(this.separatorLine3);
             this.Controls.Add(this.DisableDebugTextBtn);
             this.Controls.Add(this.BackBtn);
             this.Controls.Add(this.DisablePausedIconBtn);
@@ -360,10 +380,10 @@ namespace Dobby
             this.Controls.Add(this.Info);
             this.Controls.Add(this.InfoHelpBtn);
             this.Controls.Add(this.CreditsBtn);
-            this.Controls.Add(this.SeperatorLine1);
-            this.Controls.Add(this.SeperatorLine2);
+            this.Controls.Add(this.separatorLine1);
+            this.Controls.Add(this.separatorLine2);
             this.Controls.Add(this.MainLabel);
-            this.Controls.Add(this.SeperatorLine0);
+            this.Controls.Add(this.separatorLine0);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PS4MenuSettingsPage";
             this.Tag = " ";
@@ -390,10 +410,10 @@ namespace Dobby
         private Label GameSpecificPatchesLabel;
         private Label CustomDebugOptionsLabel;
         private Label UniversalPatchesLabel;
-        private Label SeperatorLine0;
-        private Label SeperatorLine1;
-        private Label SeperatorLine2;
-        private Label SeperatorLine3;
+        private Label separatorLine0;
+        private Label separatorLine1;
+        private Label separatorLine2;
+        private Label separatorLine3;
         private Label GameInfoLabel;
         private Label MainLabel;
         private Label Info;

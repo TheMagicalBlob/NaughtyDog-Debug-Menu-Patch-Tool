@@ -27,16 +27,16 @@ namespace Dobby
         public void InitializeComponent() {
             this.Info = new Dobby.Label();
             this.MainLabel = new Dobby.Label();
-            this.SeperatorLine0 = new Dobby.Label();
-            this.SeperatorLine4 = new Dobby.Label();
+            this.separatorLine0 = new Dobby.Label();
+            this.separatorLine4 = new Dobby.Label();
             this.GamedataPathLabel = new Dobby.Label();
             this.GP4OutputPathLabel = new Dobby.Label();
             this.PasscodeLabel = new Dobby.Label();
             this.FileBlacklistPathLabel = new Dobby.Label();
             this.BaseGamePackagePathLabel = new Dobby.Label();
-            this.SeperatorLine2 = new Dobby.Label();
-            this.SeperatorLine3 = new Dobby.Label();
-            this.SeperatorLine1 = new Dobby.Label();
+            this.separatorLine2 = new Dobby.Label();
+            this.separatorLine3 = new Dobby.Label();
+            this.separatorLine1 = new Dobby.Label();
             this.GP4CreationBtn = new Dobby.Button();
             this.IgnoreKeystoneBtn = new Dobby.Button();
             this.AbsoluteFilePathsBtn = new Dobby.Button();
@@ -75,27 +75,27 @@ namespace Dobby
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "GP4 Creation Page";
             // 
-            // SeperatorLine0
+            // separatorLine0
             // 
-            this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine0.Location = new System.Drawing.Point(2, 20);
-            this.SeperatorLine0.Name = "SeperatorLine0";
-            this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine0.TabIndex = 33;
-            this.SeperatorLine0.Text = "--------------------------------------------------------------";
-            this.SeperatorLine0.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.separatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
+            this.separatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.separatorLine0.Location = new System.Drawing.Point(2, 20);
+            this.separatorLine0.Name = "separatorLine0";
+            this.separatorLine0.Size = new System.Drawing.Size(316, 15);
+            this.separatorLine0.TabIndex = 33;
+            this.separatorLine0.Text = "--------------------------------------------------------------";
+            this.separatorLine0.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // SeperatorLine4
+            // separatorLine4
             // 
-            this.SeperatorLine4.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine4.Location = new System.Drawing.Point(2, 382);
-            this.SeperatorLine4.Name = "SeperatorLine4";
-            this.SeperatorLine4.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine4.TabIndex = 29;
-            this.SeperatorLine4.Text = "--------------------------------------------------------------";
-            this.SeperatorLine4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.separatorLine4.Font = new System.Drawing.Font("Cambria", 10F);
+            this.separatorLine4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.separatorLine4.Location = new System.Drawing.Point(2, 382);
+            this.separatorLine4.Name = "separatorLine4";
+            this.separatorLine4.Size = new System.Drawing.Size(316, 15);
+            this.separatorLine4.TabIndex = 29;
+            this.separatorLine4.Text = "--------------------------------------------------------------";
+            this.separatorLine4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // GamedataPathLabel
             // 
@@ -153,38 +153,38 @@ namespace Dobby
             this.BaseGamePackagePathLabel.Text = "Base Game Package Directory:                               (patches/updates only)" +
     "";
             // 
-            // SeperatorLine2
+            // separatorLine2
             // 
-            this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(2, 82);
-            this.SeperatorLine2.Name = "SeperatorLine2";
-            this.SeperatorLine2.Size = new System.Drawing.Size(295, 15);
-            this.SeperatorLine2.TabIndex = 86;
-            this.SeperatorLine2.Text = "--------------------------------------------------------------";
-            this.SeperatorLine2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.separatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
+            this.separatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.separatorLine2.Location = new System.Drawing.Point(2, 82);
+            this.separatorLine2.Name = "separatorLine2";
+            this.separatorLine2.Size = new System.Drawing.Size(295, 15);
+            this.separatorLine2.TabIndex = 86;
+            this.separatorLine2.Text = "--------------------------------------------------------------";
+            this.separatorLine2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // SeperatorLine3
+            // separatorLine3
             // 
-            this.SeperatorLine3.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine3.Location = new System.Drawing.Point(2, 282);
-            this.SeperatorLine3.Name = "SeperatorLine3";
-            this.SeperatorLine3.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine3.TabIndex = 87;
-            this.SeperatorLine3.Text = "--------------------------------------------------------------";
-            this.SeperatorLine3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.separatorLine3.Font = new System.Drawing.Font("Cambria", 10F);
+            this.separatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.separatorLine3.Location = new System.Drawing.Point(2, 282);
+            this.separatorLine3.Name = "separatorLine3";
+            this.separatorLine3.Size = new System.Drawing.Size(316, 15);
+            this.separatorLine3.TabIndex = 87;
+            this.separatorLine3.Text = "--------------------------------------------------------------";
+            this.separatorLine3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // SeperatorLine1
+            // separatorLine1
             // 
-            this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 318);
-            this.SeperatorLine1.Name = "SeperatorLine1";
-            this.SeperatorLine1.Size = new System.Drawing.Size(326, 15);
-            this.SeperatorLine1.TabIndex = 91;
-            this.SeperatorLine1.Text = "--------------------------------------------------------------";
-            this.SeperatorLine1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.separatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
+            this.separatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.separatorLine1.Location = new System.Drawing.Point(2, 318);
+            this.separatorLine1.Name = "separatorLine1";
+            this.separatorLine1.Size = new System.Drawing.Size(326, 15);
+            this.separatorLine1.TabIndex = 91;
+            this.separatorLine1.Text = "--------------------------------------------------------------";
+            this.separatorLine1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // GP4CreationBtn
             // 
@@ -290,7 +290,7 @@ namespace Dobby
             this.FileBlacklistPathBox.Name = "FileBlacklistPathBox";
             this.FileBlacklistPathBox.Size = new System.Drawing.Size(395, 23);
             this.FileBlacklistPathBox.TabIndex = 77;
-            this.FileBlacklistPathBox.Text = "Blacklisted Files/Folders To Exclude, Seperated By ; or ,";
+            this.FileBlacklistPathBox.Text = "Blacklisted Files/Folders To Exclude, separated By ; or ,";
             this.FileBlacklistPathBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // FileBlacklistBrowseBtn
@@ -429,12 +429,12 @@ namespace Dobby
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ClientSize = new System.Drawing.Size(467, 498);
-            this.Controls.Add(this.SeperatorLine1);
+            this.Controls.Add(this.separatorLine1);
             this.Controls.Add(this.GP4CreationBtn);
             this.Controls.Add(this.IgnoreKeystoneBtn);
             this.Controls.Add(this.AbsoluteFilePathsBtn);
-            this.Controls.Add(this.SeperatorLine3);
-            this.Controls.Add(this.SeperatorLine2);
+            this.Controls.Add(this.separatorLine3);
+            this.Controls.Add(this.separatorLine2);
             this.Controls.Add(this.BaseGamePackagePathLabel);
             this.Controls.Add(this.BaseGamePackagePathBox);
             this.Controls.Add(this.BaseGamePackageBrowseBtn);
@@ -454,8 +454,8 @@ namespace Dobby
             this.Controls.Add(this.BackBtn);
             this.Controls.Add(this.CreditsBtn);
             this.Controls.Add(this.Info);
-            this.Controls.Add(this.SeperatorLine4);
-            this.Controls.Add(this.SeperatorLine0);
+            this.Controls.Add(this.separatorLine4);
+            this.Controls.Add(this.separatorLine0);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
@@ -473,11 +473,11 @@ namespace Dobby
         //================================\\
         #region [Control Declarations]
         private Label MainLabel;
-        private Label SeperatorLine0;
-        private Label SeperatorLine1;
-        private Label SeperatorLine2;
-        private Label SeperatorLine3;
-        private Label SeperatorLine4;
+        private Label separatorLine0;
+        private Label separatorLine1;
+        private Label separatorLine2;
+        private Label separatorLine3;
+        private Label separatorLine4;
         private Label GamedataPathLabel;
         private TextBox GamedataPathBox;
         private Button GamedataPathBrowseBtn;

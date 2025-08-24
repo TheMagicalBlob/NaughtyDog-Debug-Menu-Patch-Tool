@@ -33,7 +33,7 @@ namespace Dobby
         {
             this.MainLabel = new Dobby.Label();
             this.TLLBtn = new Dobby.Button();
-            this.SeperatorLine0 = new Dobby.Label();
+            this.separatorLine0 = new Dobby.Label();
             this.ManualConnectBtn = new Dobby.Button();
             this.IpBox = new Dobby.TextBox();
             this.Info = new Dobby.Label();
@@ -44,16 +44,16 @@ namespace Dobby
             this.UC1Btn = new Dobby.Button();
             this.UC2Btn = new Dobby.Button();
             this.UC3Btn = new Dobby.Button();
-            this.SeperatorLine1 = new Dobby.Label();
+            this.separatorLine1 = new Dobby.Label();
             this.PS4DebugPayloadBtn = new Dobby.Button();
             this.PortBox = new Dobby.TextBox();
             this.IPLabel = new Dobby.Label();
             this.PortLabel = new Dobby.Label();
-            this.SeperatorLine3 = new Dobby.Label();
+            this.separatorLine3 = new Dobby.Label();
             this.InfoHelpBtn = new Dobby.Button();
             this.CreditsBtn = new Dobby.Button();
             this.UC4MPBetaBtn = new Dobby.Button();
-            this.SeperatorLine2 = new Dobby.Label();
+            this.separatorLine2 = new Dobby.Label();
             this.IgnoreTitleIDBtn = new Dobby.Button();
             this.SuspendLayout();
             // 
@@ -88,17 +88,17 @@ namespace Dobby
             this.TLLBtn.Variable = null;
             this.TLLBtn.Click += new System.EventHandler(this.UCTLLBtn);
             // 
-            // SeperatorLine0
+            // separatorLine0
             // 
-            this.SeperatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine0.IsSeparatorLine = true;
-            this.SeperatorLine0.Location = new System.Drawing.Point(2, 15);
-            this.SeperatorLine0.Name = "SeperatorLine0";
-            this.SeperatorLine0.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine0.StretchToFitForm = false;
-            this.SeperatorLine0.TabIndex = 30;
-            this.SeperatorLine0.Text = "--------------------------------------------------------------";
+            this.separatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
+            this.separatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.separatorLine0.IsSeparatorLine = true;
+            this.separatorLine0.Location = new System.Drawing.Point(2, 15);
+            this.separatorLine0.Name = "separatorLine0";
+            this.separatorLine0.Size = new System.Drawing.Size(316, 15);
+            this.separatorLine0.StretchToFitForm = false;
+            this.separatorLine0.TabIndex = 30;
+            this.separatorLine0.Text = "--------------------------------------------------------------";
             // 
             // ManualConnectBtn
             // 
@@ -269,17 +269,17 @@ namespace Dobby
             this.UC3Btn.Variable = null;
             this.UC3Btn.Click += new System.EventHandler(this.UC3Btn_Click);
             // 
-            // SeperatorLine1
+            // separatorLine1
             // 
-            this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.IsSeparatorLine = true;
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 208);
-            this.SeperatorLine1.Name = "SeperatorLine1";
-            this.SeperatorLine1.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine1.StretchToFitForm = false;
-            this.SeperatorLine1.TabIndex = 20;
-            this.SeperatorLine1.Text = "--------------------------------------------------------------";
+            this.separatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
+            this.separatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.separatorLine1.IsSeparatorLine = true;
+            this.separatorLine1.Location = new System.Drawing.Point(2, 208);
+            this.separatorLine1.Name = "separatorLine1";
+            this.separatorLine1.Size = new System.Drawing.Size(316, 15);
+            this.separatorLine1.StretchToFitForm = false;
+            this.separatorLine1.TabIndex = 20;
+            this.separatorLine1.Text = "--------------------------------------------------------------";
             // 
             // PS4DebugPayloadBtn
             // 
@@ -347,17 +347,17 @@ namespace Dobby
             this.PortLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PortLabel.Click += new System.EventHandler(this.PortLabelBtn_Click);
             // 
-            // SeperatorLine3
+            // separatorLine3
             // 
-            this.SeperatorLine3.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine3.IsSeparatorLine = true;
-            this.SeperatorLine3.Location = new System.Drawing.Point(2, 338);
-            this.SeperatorLine3.Name = "SeperatorLine3";
-            this.SeperatorLine3.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine3.StretchToFitForm = false;
-            this.SeperatorLine3.TabIndex = 26;
-            this.SeperatorLine3.Text = "--------------------------------------------------------------_";
+            this.separatorLine3.Font = new System.Drawing.Font("Cambria", 10F);
+            this.separatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.separatorLine3.IsSeparatorLine = true;
+            this.separatorLine3.Location = new System.Drawing.Point(2, 338);
+            this.separatorLine3.Name = "separatorLine3";
+            this.separatorLine3.Size = new System.Drawing.Size(316, 15);
+            this.separatorLine3.StretchToFitForm = false;
+            this.separatorLine3.TabIndex = 26;
+            this.separatorLine3.Text = "--------------------------------------------------------------_";
             // 
             // InfoHelpBtn
             // 
@@ -412,17 +412,17 @@ namespace Dobby
             this.UC4MPBetaBtn.Variable = null;
             this.UC4MPBetaBtn.Click += new System.EventHandler(this.UC4MPBetaBtn_Click);
             // 
-            // SeperatorLine2
+            // separatorLine2
             // 
-            this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.IsSeparatorLine = true;
-            this.SeperatorLine2.Location = new System.Drawing.Point(2, 306);
-            this.SeperatorLine2.Name = "SeperatorLine2";
-            this.SeperatorLine2.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine2.StretchToFitForm = false;
-            this.SeperatorLine2.TabIndex = 31;
-            this.SeperatorLine2.Text = "--------------------------------------------------------------_";
+            this.separatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
+            this.separatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.separatorLine2.IsSeparatorLine = true;
+            this.separatorLine2.Location = new System.Drawing.Point(2, 306);
+            this.separatorLine2.Name = "separatorLine2";
+            this.separatorLine2.Size = new System.Drawing.Size(316, 15);
+            this.separatorLine2.StretchToFitForm = false;
+            this.separatorLine2.TabIndex = 31;
+            this.separatorLine2.Text = "--------------------------------------------------------------_";
             // 
             // IgnoreTitleIDBtn
             // 
@@ -449,7 +449,7 @@ namespace Dobby
             this.ClientSize = new System.Drawing.Size(320, 451);
             this.Controls.Add(this.IgnoreTitleIDBtn);
             this.Controls.Add(this.ManualConnectBtn);
-            this.Controls.Add(this.SeperatorLine2);
+            this.Controls.Add(this.separatorLine2);
             this.Controls.Add(this.PortBox);
             this.Controls.Add(this.IpBox);
             this.Controls.Add(this.UC4MPBetaBtn);
@@ -465,12 +465,12 @@ namespace Dobby
             this.Controls.Add(this.T2Btn);
             this.Controls.Add(this.Info);
             this.Controls.Add(this.UC2Btn);
-            this.Controls.Add(this.SeperatorLine1);
-            this.Controls.Add(this.SeperatorLine3);
+            this.Controls.Add(this.separatorLine1);
+            this.Controls.Add(this.separatorLine3);
             this.Controls.Add(this.BackBtn);
             this.Controls.Add(this.CreditsBtn);
             this.Controls.Add(this.MainLabel);
-            this.Controls.Add(this.SeperatorLine0);
+            this.Controls.Add(this.separatorLine0);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PS4DebugPage";
@@ -501,16 +501,16 @@ namespace Dobby
         public Label PortLabel;
         public TextBox PortBox;
         public Button PS4DebugPayloadBtn;
-        public Label SeperatorLine0;
-        public Label SeperatorLine1;
-        public Label SeperatorLine3;
+        public Label separatorLine0;
+        public Label separatorLine1;
+        public Label separatorLine3;
         public Button EPPBackBtn;
         public Button UC4MPBetaBtn;
         public Button InfoHelpBtn;
         public Button CreditsBtn;
         public Button BackBtn;
         public Label Info;
-        public Label SeperatorLine2;
+        public Label separatorLine2;
         public Button IgnoreTitleIDBtn;
         #endregion
     }

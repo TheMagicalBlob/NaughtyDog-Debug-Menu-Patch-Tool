@@ -15,6 +15,15 @@ namespace Dobby {
             
             InitializeAdditionalEventHandlers(this);
             BuildLabel.Text += Ver.Build;
+
+            #if !DEBUG
+            // DIsable these until finished
+            PS4QOLPageHelpBtn.Enabled = false;
+            PkgHelpPageBtn.Enabled = false;
+
+            PS4QOLPageHelpBtn.Font = new System.Drawing.Font(PkgHelpPageBtn.Font.FontFamily, PkgHelpPageBtn.Font.Size, System.Drawing.FontStyle.Strikeout);
+            PkgHelpPageBtn.Font = new System.Drawing.Font(PkgHelpPageBtn.Font.FontFamily, PkgHelpPageBtn.Font.Size, System.Drawing.FontStyle.Strikeout);
+            #endif
         }
 
         

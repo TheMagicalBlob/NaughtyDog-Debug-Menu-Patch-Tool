@@ -39,14 +39,14 @@ namespace Dobby
             this.Question3Btn = new Button();
             this.Question2Btn = new Button();
             this.Question1Btn = new Button();
-            this.SeperatorLine3 = new Dobby.Label();
-            this.SeperatorLine1 = new Dobby.Label();
+            this.separatorLine3 = new Dobby.Label();
+            this.separatorLine1 = new Dobby.Label();
             this.PopupLabel = new Dobby.Label();
             this.Info = new Dobby.Label();
             this.CreditsBtn = new Button();
             this.BackBtn = new Button();
             this.DefaultQuestionBtn = new Dobby.Label();
-            this.SeperatorLine2 = new Dobby.Label();
+            this.separatorLine2 = new Dobby.Label();
             this.Question0Btn = new Button();
             this.SuspendLayout();
             // 
@@ -103,25 +103,25 @@ namespace Dobby
             this.Question1Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.Question1Btn.Click += new System.EventHandler(this.Question2Btn_Click);
             // 
-            // SeperatorLine3
+            // separatorLine3
             // 
-            this.SeperatorLine3.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine3.Location = new System.Drawing.Point(2, 394);
-            this.SeperatorLine3.Name = "SeperatorLine3";
-            this.SeperatorLine3.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine3.TabIndex = 40;
-            this.SeperatorLine3.Text = "--------------------------------------------------------------";
+            this.separatorLine3.Font = new System.Drawing.Font("Cambria", 10F);
+            this.separatorLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.separatorLine3.Location = new System.Drawing.Point(2, 394);
+            this.separatorLine3.Name = "separatorLine3";
+            this.separatorLine3.Size = new System.Drawing.Size(316, 15);
+            this.separatorLine3.TabIndex = 40;
+            this.separatorLine3.Text = "--------------------------------------------------------------";
             // 
-            // SeperatorLine1
+            // separatorLine1
             // 
-            this.SeperatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine1.Location = new System.Drawing.Point(2, 15);
-            this.SeperatorLine1.Name = "SeperatorLine1";
-            this.SeperatorLine1.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine1.TabIndex = 39;
-            this.SeperatorLine1.Text = "--------------------------------------------------------------";
+            this.separatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
+            this.separatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.separatorLine1.Location = new System.Drawing.Point(2, 15);
+            this.separatorLine1.Name = "separatorLine1";
+            this.separatorLine1.Size = new System.Drawing.Size(316, 15);
+            this.separatorLine1.TabIndex = 39;
+            this.separatorLine1.Text = "--------------------------------------------------------------";
             // 
             // PopupLabel
             // 
@@ -189,15 +189,15 @@ namespace Dobby
             this.DefaultQuestionBtn.TabIndex = 34;
             this.DefaultQuestionBtn.Text = resources.GetString("DefaultQuestionBtn.Text");
             // 
-            // SeperatorLine2
+            // separatorLine2
             // 
-            this.SeperatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
-            this.SeperatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.SeperatorLine2.Location = new System.Drawing.Point(2, 291);
-            this.SeperatorLine2.Name = "SeperatorLine2";
-            this.SeperatorLine2.Size = new System.Drawing.Size(316, 15);
-            this.SeperatorLine2.TabIndex = 38;
-            this.SeperatorLine2.Text = "--------------------------------------------------------------";
+            this.separatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
+            this.separatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.separatorLine2.Location = new System.Drawing.Point(2, 291);
+            this.separatorLine2.Name = "separatorLine2";
+            this.separatorLine2.Size = new System.Drawing.Size(316, 15);
+            this.separatorLine2.TabIndex = 38;
+            this.separatorLine2.Text = "--------------------------------------------------------------";
             // 
             // Question0Btn
             // 
@@ -222,15 +222,15 @@ namespace Dobby
             this.Controls.Add(this.Question3Btn);
             this.Controls.Add(this.Question2Btn);
             this.Controls.Add(this.Question1Btn);
-            this.Controls.Add(this.SeperatorLine3);
+            this.Controls.Add(this.separatorLine3);
             this.Controls.Add(this.MainLabel);
-            this.Controls.Add(this.SeperatorLine1);
+            this.Controls.Add(this.separatorLine1);
             this.Controls.Add(this.PopupLabel);
             this.Controls.Add(this.Info);
             this.Controls.Add(this.CreditsBtn);
             this.Controls.Add(this.BackBtn);
             this.Controls.Add(this.DefaultQuestionBtn);
-            this.Controls.Add(this.SeperatorLine2);
+            this.Controls.Add(this.separatorLine2);
             this.Controls.Add(this.Question0Btn);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PkgCreationHelpPage";
@@ -254,9 +254,9 @@ namespace Dobby
         public Button BackBtn;
         private Button Question0Btn;
         private Label PopupLabel;
-        public Label SeperatorLine1;
-        public Label SeperatorLine2;
-        public Label SeperatorLine3;
+        public Label separatorLine1;
+        public Label separatorLine2;
+        public Label separatorLine3;
         private Label DefaultQuestionBtn;
         private Button Question3Btn;
         private Button Question2Btn;

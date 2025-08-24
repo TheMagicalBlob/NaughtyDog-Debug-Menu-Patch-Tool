@@ -164,7 +164,7 @@ namespace Dobby {
             PopupGroupBox = new GroupBox() {
                 Cursor = Cursors.Cross,
                 Size = new Size(250, Venat?.Size.Height - 65),
-                Location = new Point(35, Venat?.Controls.Find("SeperatorLine0", true)[0].Location.Y + 8),
+                Location = new Point(35, Venat?.Controls.Find("separatorLine0", true)[0].Location.Y + 8),
                 BackColor = Color.FromArgb(255, Color.FromArgb(100, 100, 100))
             };
 
