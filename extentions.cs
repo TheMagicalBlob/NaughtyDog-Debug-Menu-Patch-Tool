@@ -49,7 +49,7 @@ namespace Dobby
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] // Designer autogenerates code settings the Variable & VariableTags properties to null, annoyingly. More of an issue for the former though, due to the Properties window not letting you edit objects
         [TypeConverter(typeof(BooleanConverter))]
-        //[DefaultValue(false)]
+        [DefaultValue(null)]
         public object Variable
         {
             get => _Variable;

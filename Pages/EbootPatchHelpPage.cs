@@ -129,5 +129,10 @@ namespace Dobby {
         private void WithSomeExceptionsLabelMH(object sender, EventArgs e) => AdditionalInfoButton.ForeColor = Color.Aqua;
         private void WithSomeExceptionsLabelML(object sender, EventArgs e) => AdditionalInfoButton.ForeColor = Color.White;
         #endregion
+
+        private void DefaultQuestionBtn_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

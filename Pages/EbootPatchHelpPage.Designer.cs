@@ -212,6 +212,7 @@ namespace Dobby
             this.DefaultQuestionBtn.StretchToFitForm = false;
             this.DefaultQuestionBtn.TabIndex = 0;
             this.DefaultQuestionBtn.Text = resources.GetString("DefaultQuestionBtn.Text");
+            this.DefaultQuestionBtn.Click += new System.EventHandler(this.DefaultQuestionBtn_Click);
             // 
             // separatorLine1
             // 

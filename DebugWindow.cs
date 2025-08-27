@@ -30,89 +30,15 @@ namespace Dobby
             ParentPtr = Gaia;
 
             ParentPtr.LocationChanged += (sender, args) => MoveLogToAppEdge();
-            return;
-
-
-            var DButtonFont = new Font("Cambria", 7F, FontStyle.Bold);
-
-            var DButtons = new Button[] {
-                new Button {
-                    ForeColor = SystemColors.Control,
-                    Font = DButtonFont,
-                    Text = "LogTxt",
-                    Name = "DebugControl"
-                },
-                new Button {
-                    ForeColor = SystemColors.Control,
-                    Font = DButtonFont,
-                    Text = "Boot Release",
-                    Name = "DebugControl"
-                },
-                new Button {
-                    ForeColor = SystemColors.Control,
-                    Font = DButtonFont,
-                    Text = "Clear Info Label",
-                    Name = "DebugControl"
-                },
-                new Button {
-                    ForeColor = SystemColors.Control,
-                    Font = DButtonFont,
-                    Text = "Theme tst",
-                    Name = "DebugControl"
-                },
-                new Button {
-                    ForeColor = SystemColors.Control,
-                    Font = DButtonFont,
-                    Text = "GS_Btn tst",
-                    Name = "DebugControl"
-                }
-            };
-
-            var Handlers = new EventHandler[] {
-                new EventHandler((_, __) => { 
-                    if(MessageBox.Show("Open Log?", "", MessageBoxButtons.OKCancel) != DialogResult.OK)
-                        return;
-
-                    System.Diagnostics.Process.Start($"{Directory.GetCurrentDirectory()}\\out.txt");
-                    Dispose();
-                    Environment.Exit(0);
-                }),
-                new EventHandler((_, __) => {
-                    Dispose();
-                    System.Diagnostics.Process.Start($@"{Directory.GetParent(Directory.GetCurrentDirectory())}\Release\ND Debug Enabler.exe");
-                    Environment.Exit(1);
-                }),
-                new EventHandler((control, args) => UpdateLabel(string.Empty)),
-                new EventHandler((control, args) => HighlightColour = Color.FromArgb(255, 0, 255)),
-                new EventHandler((control, args) => ActivePage.TestGSButtons())
-            };
-
-
-
-
-            // LogWindow Form And Control Initializations
-            BackColor = Gaia.BackColor;
-            FormBorderStyle = FormBorderStyle.None;
-            Name = "LogWindow";
-            for (int i = 0; i < DButtons.Length; i++)
-            {
-                var debugControl = DButtons[i];
-                var debugMethod = Handlers[i];
-                Controls.Add(debugControl);
-                debugControl.FlatStyle = FlatStyle.Flat;
-                debugControl.FlatAppearance.BorderSize = 0;
-                debugControl.Click += debugMethod;
-                debugControl.Size = Dev.TryAutosize(debugControl);
-                debugControl.BringToFront();
-
-            }
-
 
             // LogWindow Event Handlers
             MouseDown  += MouseDownFunc;
             MouseUp    += MouseUpFunc;
+            MouseMove  += (sender, args) => MoveForm();
+            return;
 
 
+            // old shit I still may rework and use
             LogWindowRenderer = CreateGraphics();
 
             LogFile = File.CreateText($"{Directory.GetCurrentDirectory()}\\out.txt");
@@ -138,6 +64,9 @@ namespace Dobby
 
         public static string[] OutputStrings = new string[35];
             
+        private readonly Thread LogThread;
+
+
         
         /// <summary> Active Page reference for debug output loop. </summary>
         private dynamic ActivePage {
@@ -236,13 +165,16 @@ namespace Dobby
             LogShouldRefresh = true;
         }
 
+        private void NoDrawBtn_Click(object sender, EventArgs e) => NoDraw ^= true;
 
-        private readonly Thread LogThread;
-
-        private void DisableDebugTextBtn_Click(object sender, EventArgs e)
+        private void PopupTestBtn_Click(object sender, EventArgs e)
         {
-            Venat.CreateGraphics().Clear(Venat.BackColor);
+            ShowPopup("Message", "Title");
         }
+
+
+
+
 
 
         /// <summary> Main LogWindow output loop. </summary>

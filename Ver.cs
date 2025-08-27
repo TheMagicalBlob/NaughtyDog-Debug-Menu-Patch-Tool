@@ -354,6 +354,7 @@ namespace Dobby {
           "* 4.69.471.1150 | ChangeForm bs stopped telling me to eat shit suddenly, main page now re-opens like normal; What the hell was even that",
           "* 4.69.472.1151 | Stripped down dummy form",
           "* 4.69.475.1160 | Updated all the remaining separator lines (how long had the credits page been like that??); Fixed line drawing implementation; forms without lines were not emptying the line array of the previous form's lines. I am an idiot.; Removed vertical line implementation as it won't be used anyway.",
+          "* 4.69.476.1163 | Lazy popup window implementation (W.I.P.- distracted by life. pushing J.I.C.)",
         };
 
         

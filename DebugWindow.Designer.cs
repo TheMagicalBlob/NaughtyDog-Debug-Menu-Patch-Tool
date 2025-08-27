@@ -17,9 +17,10 @@ namespace Dobby
             this.separatorLine1 = new Dobby.Label();
             this.Playstation4Label = new Dobby.Label();
             this.PCLabel = new Dobby.Label();
-            this.DisableDebugTextBtn = new Dobby.Button();
+            this.NoDrawBtn = new Dobby.Button();
             this.label1 = new Dobby.Label();
-            this.button1 = new Dobby.Button();
+            this.richTextBox1 = new Dobby.RichTextBox();
+            this.PopupTestBtn = new Dobby.Button();
             this.SuspendLayout();
             // 
             // MainLabel
@@ -85,55 +86,65 @@ namespace Dobby
             this.PCLabel.TabIndex = 37;
             this.PCLabel.Text = "Log Window";
             // 
-            // DisableDebugTextBtn
+            // NoDrawBtn
             // 
-            this.DisableDebugTextBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.DisableDebugTextBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.DisableDebugTextBtn.FlatAppearance.BorderSize = 0;
-            this.DisableDebugTextBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DisableDebugTextBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
-            this.DisableDebugTextBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.DisableDebugTextBtn.Location = new System.Drawing.Point(5, 48);
-            this.DisableDebugTextBtn.Name = "DisableDebugTextBtn";
-            this.DisableDebugTextBtn.Size = new System.Drawing.Size(251, 24);
-            this.DisableDebugTextBtn.TabIndex = 43;
-            this.DisableDebugTextBtn.Tag = "Disable the 2D performance and build stats";
-            this.DisableDebugTextBtn.Text = "Disable 2D Debug Text On Startup: ";
-            this.DisableDebugTextBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.DisableDebugTextBtn.UseVisualStyleBackColor = false;
-            this.DisableDebugTextBtn.Variable = false;
-            this.DisableDebugTextBtn.Click += new System.EventHandler(this.DisableDebugTextBtn_Click);
+            this.NoDrawBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.NoDrawBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.NoDrawBtn.FlatAppearance.BorderSize = 0;
+            this.NoDrawBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.NoDrawBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
+            this.NoDrawBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.NoDrawBtn.Location = new System.Drawing.Point(1, 44);
+            this.NoDrawBtn.Name = "NoDrawBtn";
+            this.NoDrawBtn.Size = new System.Drawing.Size(93, 24);
+            this.NoDrawBtn.TabIndex = 43;
+            this.NoDrawBtn.Tag = "";
+            this.NoDrawBtn.Text = "NoDraw:";
+            this.NoDrawBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.NoDrawBtn.UseVisualStyleBackColor = false;
+            this.NoDrawBtn.Variable = false;
+            this.NoDrawBtn.Click += new System.EventHandler(this.NoDrawBtn_Click);
             // 
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("Cambria", 10F);
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.label1.IsSeparatorLine = false;
-            this.label1.Location = new System.Drawing.Point(2, 172);
+            this.label1.Location = new System.Drawing.Point(2, 167);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(316, 15);
             this.label1.StretchToFitForm = false;
             this.label1.TabIndex = 44;
             this.label1.Text = "--------------------------------------------------------------";
             // 
-            // button1
+            // richTextBox1
             // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.button1.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
-            this.button1.ForeColor = System.Drawing.SystemColors.Control;
-            this.button1.Location = new System.Drawing.Point(1, 78);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 24);
-            this.button1.TabIndex = 43;
-            this.button1.Tag = "Disable the 2D performance and build stats";
-            this.button1.Text = "uhhh";
-            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Variable = true;
-            this.button1.Click += new System.EventHandler(this.DisableDebugTextBtn_Click);
+            this.richTextBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.richTextBox1.ForeColor = System.Drawing.SystemColors.Control;
+            this.richTextBox1.Location = new System.Drawing.Point(2, 180);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(316, 127);
+            this.richTextBox1.TabIndex = 45;
+            this.richTextBox1.Text = "";
+            // 
+            // PopupTestBtn
+            // 
+            this.PopupTestBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.PopupTestBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.PopupTestBtn.FlatAppearance.BorderSize = 0;
+            this.PopupTestBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PopupTestBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
+            this.PopupTestBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.PopupTestBtn.Location = new System.Drawing.Point(1, 70);
+            this.PopupTestBtn.Name = "PopupTestBtn";
+            this.PopupTestBtn.Size = new System.Drawing.Size(105, 24);
+            this.PopupTestBtn.TabIndex = 46;
+            this.PopupTestBtn.Tag = "";
+            this.PopupTestBtn.Text = "PopupTest";
+            this.PopupTestBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.PopupTestBtn.UseVisualStyleBackColor = false;
+            this.PopupTestBtn.Variable = false;
+            this.PopupTestBtn.Click += new System.EventHandler(this.PopupTestBtn_Click);
             // 
             // DebugWindow
             // 
@@ -141,10 +152,11 @@ namespace Dobby
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ClientSize = new System.Drawing.Size(320, 309);
+            this.Controls.Add(this.PopupTestBtn);
+            this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.PCLabel);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.DisableDebugTextBtn);
+            this.Controls.Add(this.NoDrawBtn);
             this.Controls.Add(this.Playstation4Label);
             this.Controls.Add(this.separatorLine1);
             this.Controls.Add(this.MainLabel);
@@ -168,9 +180,10 @@ namespace Dobby
         public Label PCLabel;
         #endregion
 
-        private Button DisableDebugTextBtn;
+        private Button NoDrawBtn;
         public Label label1;
-        private Button button1;
+        private RichTextBox richTextBox1;
+        private Button PopupTestBtn;
     }
 }
 #endif

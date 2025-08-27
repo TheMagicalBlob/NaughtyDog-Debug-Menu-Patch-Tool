@@ -125,7 +125,6 @@ namespace Dobby {
             get {
                 if (_venat == null)
                 {
-                    // bitch and mosn
                     return ActiveForm ?? null;
                 }
 
@@ -156,7 +155,7 @@ namespace Dobby {
         }
         private static MainPageDummy _yoshiP;
 
-        public static Form PopupBox;
+        private static PopupWindow Navi;
 
         /// <summary> Static refference to the active form's "Info" label control for usage in static functions. (because I'm lazy) </summary>
         public static Label InfoLabel;
@@ -251,6 +250,11 @@ namespace Dobby {
 
         #endregion
         #endregion (global variable declarations)
+
+
+
+
+
 
 
 
@@ -688,6 +692,7 @@ namespace Dobby {
             HSeparatorLines = hSeparatorLineScanner.ToArray();
 
 
+
             
 
             // Buttons to avoid assigning a hover arrow to
@@ -884,6 +889,23 @@ namespace Dobby {
             }
         }
 
+
+        public static void ShowPopup(string Message, string Title = null)
+        {
+            if (PopupWindow.HasActiveWindow)
+            {
+                Dev?.Print($"WARNING: An attempt to open a PopupWindow while one was still active was made; Title: \"{Title ?? "null"}\".");
+                return;
+            }
+
+
+            var popupWindow = new PopupWindow(Message, Title);
+
+            popupWindow.Show();
+            popupWindow.BringToFront();
+
+            popupWindow.Center(Venat.Location);
+        }
         #endregion
 
 
@@ -949,9 +971,9 @@ namespace Dobby {
         /// Draw a thin border over the for edges on repaint.
         /// <br/>Draw a thin line from one end of the painted control to the other.
         ///</summary>
-        public static void DrawFormDecorations(Form venat, PaintEventArgs yoshiP)
+        public static void DrawFormDecorations(Form venat, PaintEventArgs localYoshiP, bool borderOnly = false)
         {
-            yoshiP.Graphics.Clear(venat.BackColor); // Clear line bounds with the current form's background colour
+            localYoshiP.Graphics.Clear(venat.BackColor); // Clear line bounds with the current form's background colour
 
             # if DEBUG
             if (NoDraw)
@@ -960,17 +982,9 @@ namespace Dobby {
             }
             #endif
             
-
-            //## Draw Horizontal Lines
-            foreach (var line in HSeparatorLines ?? Array.Empty<Point[]>())
-            {
-                yoshiP?.Graphics.DrawLine(FormDecorationPen, line[0], line[1]);
-            }
-
-
-
+            
             //## Draw a thin (1 pixel) border around the form with the current Pen
-            yoshiP?.Graphics.DrawLines(FormDecorationPen, new []
+            localYoshiP?.Graphics.DrawLines(FormDecorationPen, new []
             {
                 Point.Empty,
                 new Point(venat.Width-1, 0),
@@ -978,6 +992,19 @@ namespace Dobby {
                 new Point(0, venat.Height-1),
                 Point.Empty
             });
+
+            if (borderOnly)
+            {
+                return;
+            }
+
+
+
+            //## Draw Horizontal Lines
+            foreach (var line in HSeparatorLines ?? Array.Empty<Point[]>())
+            {
+                localYoshiP?.Graphics.DrawLine(FormDecorationPen, line[0], line[1]);
+            }
         }
 
 
@@ -1110,7 +1137,8 @@ namespace Dobby {
 
         }
 
-        internal static void MouseUpFunc() {
+        internal static void MouseUpFunc()
+        {
             MouseScrolled = MouseIsDown = false;
 
             ActiveMouseButton = MouseButtons.None;
@@ -1121,11 +1149,10 @@ namespace Dobby {
             if (!MouseIsDown || ActiveForm == null)
                 return;
 
-            if (Venat != null)
-            {
-                Venat.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
-                Venat.Update();
-            }
+            Venat.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
+            Venat.Update();
+
+            Navi?.Center(Venat.Location);
 
 
             #if DEBUG
