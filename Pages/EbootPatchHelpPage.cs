@@ -60,22 +60,20 @@ namespace Dobby {
         //=============================================\\
         #region [Background Function Delcarations]
 
-        private void LoadQuestions(int Index) {
-            
-            for (int i = 0; i < Questions.Length; i++) // Reset The Other Buttons
-            {
-                if(i != Index) Questions[i] = false;
-            }
+        private void LoadQuestions(int Index)
+        {
+            // Reset The Other Buttons
+            for (int i = 0; i < Questions.Length; Questions[i] = Index == i ? !Questions[i] : Index == i, i++);
 
-            
 
-            if(Questions[Index] = !Questions[Index]) // Reset to the default help text
+
+            if(Questions[Index])
             {
                 DefaultQuestion = false;
-
-                DefaultQuestionBtn.Text = headers[Index] + Controls.Find($"Question{Index}Btn", true)?[0].Tag ?? $"\"Question{Index}Btn\" Not Found.";
+                DefaultQuestionBtn.Text = (Controls.Find($"Question{Index}Btn", true)?[0].Tag ?? $"\"Question{Index}Btn\" Not Found.").ToString();
             
                 AdditionalInfoButton.Visible = DefaultQuestion;
+
                 if(Questions[1])
                 {
                     AdditionalInfoButton.Text = "Homebrew Store";
@@ -83,24 +81,28 @@ namespace Dobby {
                     AdditionalInfoButton.Size = new Size(108, 15);
                     AdditionalInfoButton.Location = new Point(12, 80);
                     AdditionalInfoButton.Font = new Font("Cambria", 9.5F, FontStyle.Bold | FontStyle.Underline);
+
                     AdditionalInfoButton.Visible = true;
                 }
             }
+            // Reset to the default help text
             else {
-                AdditionalInfoButton.Text = "*(With Some Exceptions)";
+                DefaultQuestion = true;
+                DefaultQuestionBtn.Text = DefaultButtonText;
+
+
+                AdditionalInfoButton.Text = "*(with some exceptions)";
 
                 AdditionalInfoButton.Size = new Size(130, 17);
                 AdditionalInfoButton.Location = new Point(184, 83);
                 AdditionalInfoButton.Font = new Font("Cambria", 8F, FontStyle.Bold);
+
                 AdditionalInfoButton.Visible = true;
-
-
-                DefaultQuestion = true;
-                DefaultQuestionBtn.Text = DefaultButtonText;
             }
 
         }
         #endregion
+
 
         
 

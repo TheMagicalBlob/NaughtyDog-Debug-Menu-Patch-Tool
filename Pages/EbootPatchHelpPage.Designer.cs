@@ -63,7 +63,6 @@ namespace Dobby
             this.Question3Btn.Text = "- Why Is The Restored/Custom Button Disabled?";
             this.Question3Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.Question3Btn.UseVisualStyleBackColor = false;
-            this.Question3Btn.Variable = null;
             this.Question3Btn.Click += new System.EventHandler(this.Question3Btn_Click);
             // 
             // separatorLine2
@@ -108,12 +107,12 @@ namespace Dobby
             this.AdditionalInfoButton.Font = new System.Drawing.Font("Cambria", 8.25F, System.Drawing.FontStyle.Bold);
             this.AdditionalInfoButton.ForeColor = System.Drawing.SystemColors.Control;
             this.AdditionalInfoButton.IsSeparatorLine = false;
-            this.AdditionalInfoButton.Location = new System.Drawing.Point(184, 83);
+            this.AdditionalInfoButton.Location = new System.Drawing.Point(181, 82);
             this.AdditionalInfoButton.Name = "AdditionalInfoButton";
             this.AdditionalInfoButton.Size = new System.Drawing.Size(130, 17);
             this.AdditionalInfoButton.StretchToFitForm = false;
             this.AdditionalInfoButton.TabIndex = 36;
-            this.AdditionalInfoButton.Text = "*(With Some Exceptions)";
+            this.AdditionalInfoButton.Text = "*(with some exceptions)";
             this.AdditionalInfoButton.Click += new System.EventHandler(this.WithSomeExceptionsLabel_Click);
             this.AdditionalInfoButton.MouseEnter += new System.EventHandler(this.WithSomeExceptionsLabelMH);
             this.AdditionalInfoButton.MouseLeave += new System.EventHandler(this.WithSomeExceptionsLabelML);
@@ -133,7 +132,6 @@ namespace Dobby
             this.Question2Btn.Text = "- How Do I Make A New .pkg Afterwards?";
             this.Question2Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.Question2Btn.UseVisualStyleBackColor = false;
-            this.Question2Btn.Variable = null;
             this.Question2Btn.Click += new System.EventHandler(this.Question2Btn_Click);
             // 
             // Question1Btn
@@ -151,7 +149,6 @@ namespace Dobby
             this.Question1Btn.Text = "- How Do I Extract My Game\'s .pkg?";
             this.Question1Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.Question1Btn.UseVisualStyleBackColor = false;
-            this.Question1Btn.Variable = null;
             this.Question1Btn.Click += new System.EventHandler(this.Question1Btn_Click);
             // 
             // Info
@@ -182,7 +179,6 @@ namespace Dobby
             this.CreditsBtn.Text = "Credits...";
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
-            this.CreditsBtn.Variable = null;
             // 
             // BackBtn
             // 
@@ -199,7 +195,6 @@ namespace Dobby
             this.BackBtn.Text = "Back...";
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
-            this.BackBtn.Variable = null;
             // 
             // DefaultQuestionBtn
             // 
@@ -242,7 +237,6 @@ namespace Dobby
             this.Question0Btn.Text = "- How Do I Get My Game\'s eboot.bin?";
             this.Question0Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.Question0Btn.UseVisualStyleBackColor = false;
-            this.Question0Btn.Variable = null;
             this.Question0Btn.Click += new System.EventHandler(this.Question0Btn_Click);
             // 
             // EbootPatchHelpPage

@@ -146,6 +146,9 @@
     <Compile Include="PopupWindow.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="TEST.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Testing.cs" />
     <Compile Include="Pages\PS4MenuSettingsPage.cs">
       <SubType>Form</SubType>
@@ -235,6 +238,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TEST.resx">
+      <DependentUpon>TEST.cs</DependentUpon>
     </EmbeddedResource>
     <None Include=".editorconfig" />
     <None Include="Resources\bin\ps4debug.bin" />

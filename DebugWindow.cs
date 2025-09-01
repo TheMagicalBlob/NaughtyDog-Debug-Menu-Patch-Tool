@@ -18,6 +18,7 @@ namespace Dobby
         public DebugWindow(Form Gaia)
         {
             InitializeComponent();
+            InitializeAdditionalEventHandlers(this, true);
 
             foreach (var control in this.Controls.OfType<Dobby.Button>())
             {
@@ -69,14 +70,14 @@ namespace Dobby
 
         
         /// <summary> Active Page reference for debug output loop. </summary>
-        private dynamic ActivePage {
-            get => activePage;
+        private dynamic D_ActivePage {
+            get => d_activePage;
             set {
-                activePage = value;
+                d_activePage = value;
                 SetDebugWindowParent(value);
             }
         }
-        private dynamic activePage;
+        private dynamic d_activePage;
 
 
             
@@ -229,7 +230,7 @@ namespace Dobby
                                     $"Parent Form: {(ActiveForm != null ? $"{Venat?.Name} | # Of Children: {Venat?.Controls?.Count}" : "Console")}",
                                     " ",
                                     //$"TitleID: {(PS4DebugPage.TitleID == "?" ? "UNK" : PS4DebugPage.TitleID)} | Game Version: {PS4DebugPage.GameVersion}",
-                                    $"GameID: {ActiveGameID} | {(Common.ActivePage == PageID.PS4DebugPage ? $"Peek Test: {ActivePage.TitleID}" : "load the page, fucker")}",
+                                    $"GameID: {ActiveGameID} | {(Common.ActivePage == PageID.PS4DebugPage ? $"Peek Test: {D_ActivePage.TitleID}" : "load the page, fucker")}",
                                     //$"ProcessName: {PS4DebugPage.ProcessName} | PDbg Connected: {PS4DebugPage.PS4DebugIsConnected}",
                                     " ",
                                     $"MouseIsDown: {MouseIsDown} | MouseScrolled: {MouseScrolled}",
@@ -241,7 +242,7 @@ namespace Dobby
                             break;
 
                             case PageID.PS4MenuSettingsPage:
-                                rawOutput = ActivePage.PeekMenuSettingsOptions();
+                                rawOutput = D_ActivePage.PeekMenuSettingsOptions();
                             break;
                         }
                     }

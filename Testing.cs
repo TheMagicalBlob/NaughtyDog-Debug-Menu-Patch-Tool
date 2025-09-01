@@ -31,7 +31,11 @@ namespace Dobby {
             TestEbootPath = @"C:\Users\blob\Misc\eboot3.bin";
             TestGP4Path = @"C:\Users\msblob\Misc\gp4_tst\CUSA00009-app.gp4";
 
+
             OverrideDynamicOutput = false;
+
+
+            //PageToForce = PageID.InfoHelpPage;
         }
 #endif
 
@@ -56,6 +60,9 @@ namespace Dobby {
 
         internal int ClickErrors = 0;
         internal int ClickEventCheck = 0;
+
+        /// <summary> Rhe page to open immediately to save a smidge of time constantly opening the damn thing. </summary>
+        internal static PageID PageToForce = PageID.Error;
 
 
 

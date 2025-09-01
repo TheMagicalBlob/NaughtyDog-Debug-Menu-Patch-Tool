@@ -117,21 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DefaultQuestionBtn.Text" xml:space="preserve">
-    <value>                                     [General Info]
-
-- Default Debug: Turns The Debug Mode On
-   Without Any Other Changes
-
-- Restored Debug: Load some hidden menus which don't normally load, without changing anything about them
-
-- Custom Debug: Customized menu, some useless things may be deleted, other things changed for convenience
-
-- Disable Debug: Only disables the debug mode/menus; does not remove any other patches
-
-- PC Debug Menu: Limited support through pattern scan, use the SDK from illuisiony. My laptop's too week to even run this game, anyway</value>
-  </data>
-  <data name="Question0Btn.Tag" xml:space="preserve">
-    <value>                  [Getting The Game's Executable]\n\n\n- FTP: Have Your PC And PS4 On The Same Network,\n  And Either Send The FTP Payload To Your PS4,\n  Or Enable FTP In GoldHEN's Settings.\n  Then, Go To mnt/sandbox/CUSAXXXXX/app0,\n  You Game's Executables And\n  Other Files Will Be There.\n\n- App Dumper: Dump The App Via The\n  Homebrew Store, Or Vortex Dumper\n  1.8 Payload. The Unsigned Eboot Will\n  Be In The Dumped Game Data,\n  Ready To Be Patched.\n\n- orbis-pub-chk.exe: Extract The .pkg With The\n  Hacked PS4 SDK Tool orbis-pub-chk.exe, Then\n  Unsign/Decrypt The eboot With Unfself.exe/.py\n</value>
-  </data>
 </root>

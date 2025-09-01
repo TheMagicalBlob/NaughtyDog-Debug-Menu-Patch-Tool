@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 using static Dobby.Common;
 
@@ -23,7 +24,25 @@ namespace Dobby {
 
             #if DEBUG
             NoDraw = false;
-            #endif
+
+
+            // Force a page to open immediately to save a smidge of time constantly opening the damn thing
+            Venat.Shown += (unused, bleh) =>
+            {
+                if (Pages.All(page => page == PageID.MainPage) && Testing.PageToForce != ActivePage)
+                {
+                    Pages.Add(Testing.PageToForce);
+                    OpenNewPage(Testing.PageToForce);
+                }
+            };
+#endif
+            }
+
+
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ShowPopup(new string('F', 123), new string('H', 24));
         }
 
 

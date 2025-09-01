@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Dobby
 {
-    internal partial class GP4CreationPage : System.Windows.Forms.Form
+    internal partial class GP4CreationPage : Form
     {
         //=====================================\\
         //--|   Designer Crap, No Touchie   |--\\

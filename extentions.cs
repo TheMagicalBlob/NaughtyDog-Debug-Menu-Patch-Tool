@@ -2,6 +2,8 @@
 using System.Drawing;
 using System.ComponentModel;
 using System.Windows.Forms;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Dobby
 {
@@ -10,7 +12,6 @@ namespace Dobby
     //---|   Custom Class Extensions   |---\\
     //=====================================\\
     #region [Custom Class Extensions]
-    
 
 
     /// <summary>
@@ -546,10 +547,10 @@ namespace Dobby
 
         public bool StretchToFitForm
         {
-            get => _stretchToFitForm & IsSeparatorLine;
-            set => _stretchToFitForm = value;
+            get => true; //_stretchToFitForm & IsSeparatorLine;
+            set => _stretchToFitForm = true; //value;
         }
-        private bool _stretchToFitForm = false;
+        private bool _stretchToFitForm = true;
     }
 
     

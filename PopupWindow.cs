@@ -15,9 +15,14 @@ namespace Dobby
         {
             public PopupWindow(string Message, string Title)
             {
+                // Create and decorate the form, then apply basic event handlers and line decorations
                 InitializeComponent();
-                Paint += (sender, paintArgs) => DrawFormDecorations(this, paintArgs);
+                InitializeAdditionalEventHandlers(this, true);
 
+
+
+
+                // Create the exit button and related events
                 var ExitBtn = new Button()
                 {
                     Location = new Point(this.Size.Width - 24, 1),
@@ -33,13 +38,20 @@ namespace Dobby
                 };
                 ExitBtn.FlatAppearance.BorderSize = 0;
                 Controls.Add(ExitBtn);
-                ExitBtn.BringToFront();
+                ExitBtn.BringToFront();/**/
             
                 FormClosed += (sender, args) => HasActiveWindow = false;
                 
                 ExitBtn.Click += new EventHandler((sender, args) => { this.Close(); });
                 ExitBtn.MouseEnter += new EventHandler(Common.WindowBtnMH);
                 ExitBtn.MouseLeave += new EventHandler(Common.WindowBtnML);
+
+
+                
+                // Fix inconsistent margins (left-side spacing is ~17 while the right gets left to 1 - 2)
+                PopupMessageTextBox.RightMargin = PopupMessageTextBox.Width - 17;
+
+
 
 
 
@@ -49,16 +61,21 @@ namespace Dobby
                     MainLabel.Text = Title;
                 }
 
-
                 // Assign message box text
-                PopupMessageTextBox.Text = Message ?? "Null Message Provided!!!"; 
-
-                if (Message.Length < 1)
+                if (Message?.Length < 1)
                 {
                     PopupMessageTextBox.Text = "Empty Message Provided!!!";
                 }
+                else {
+                    PopupMessageTextBox.Text = Message ?? "Null Message Provided!!!";
+                }
 
                 HasActiveWindow = true;
+
+                Update();
+                Center(Venat.Location);
+                
+                Focus();
             }
 
 
@@ -76,18 +93,20 @@ namespace Dobby
             #region [Function Declarations]
             public void Center(Point parentLocation)
             {
+                BringToFront();
                 var horizontalOffset = parentLocation.X;
+                var @switch = Width < Venat.Width ? 1 : -1;
+
 
                 if (Width < Venat.Width)
                 {
-
                 }
                 else if (Width > Venat.Width)
                 {
-
                 }
 
 
+                horizontalOffset += (Width - Venat.Width) / 2 * @switch;
                 Location = new Point(horizontalOffset, parentLocation.Y + 30);
             }
             #endregion
@@ -135,10 +154,10 @@ namespace Dobby
                 this.separatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
                 this.separatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
                 this.separatorLine0.IsSeparatorLine = true;
-                this.separatorLine0.Location = new System.Drawing.Point(21, 16);
-                this.separatorLine0.Name = "separatorLine0";
-                this.separatorLine0.Size = new System.Drawing.Size(316, 15);
                 this.separatorLine0.StretchToFitForm = true;
+                this.separatorLine0.Location = new System.Drawing.Point(1, 20);
+                this.separatorLine0.Name = "separatorLine0";
+                this.separatorLine0.Size = new System.Drawing.Size(326, 15);
                 this.separatorLine0.TabIndex = 39;
                 this.separatorLine0.Text = "--------------------------------------------------------------";
                 // 
@@ -155,6 +174,7 @@ namespace Dobby
                 this.PopupMessageTextBox.Size = new System.Drawing.Size(359, 152);
                 this.PopupMessageTextBox.TabIndex = 40;
                 this.PopupMessageTextBox.Text = "";
+                this.PopupMessageTextBox.Visible = false;
                 // 
                 // PopupWindow
                 // 

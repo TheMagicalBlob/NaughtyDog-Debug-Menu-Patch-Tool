@@ -26,6 +26,8 @@ namespace Dobby
             
             Common.YoshiP = this;
             new MainPage().Show();
+
+            Common.ActivePage = Common.PageID.MainPage;
         }
     }
 }

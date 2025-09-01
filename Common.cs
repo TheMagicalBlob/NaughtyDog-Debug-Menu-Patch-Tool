@@ -125,7 +125,7 @@ namespace Dobby {
             get {
                 if (_venat == null)
                 {
-                    return ActiveForm ?? null;
+                    return (Form) ActiveForm ?? null;
                 }
 
                 return _venat;
@@ -156,6 +156,7 @@ namespace Dobby {
         private static MainPageDummy _yoshiP;
 
         private static PopupWindow Navi;
+
 
         /// <summary> Static refference to the active form's "Info" label control for usage in static functions. (because I'm lazy) </summary>
         public static Label InfoLabel;
@@ -198,12 +199,6 @@ namespace Dobby {
         ///<summary> Form Border Pen </summary>
         private static Pen FormDecorationPen = new Pen(Color.White);
         
-
-        /// <summary> An array of Point() arrays with the start and end points of a line to draw. </summary>
-        private static Point[][] HSeparatorLines;
-        
-        /// <summary> An array of Point() arrays with the start and end points of a line to draw. </summary>
-        //private static Point[][] VSeparatorLines;
 
 
 #if DEBUG
@@ -508,11 +503,16 @@ namespace Dobby {
         /// </summary>
         /// <param name="newText"> The string to apply to the label's Text property. </param>
         /// <param name="flashLabel"> If true, flash the label to indicate an error or otherwise get the user's attention. (switches between white/yellow) </param>
-        public static void UpdateLabel(string newText, bool flashLabel = false)
+        public static void UpdateLabel(object newText, bool flashLabel = false)
         {
+            if (newText.GetType() != typeof(string))
+            {
+                newText = " ";
+            }
+
             if ((InfoText == " " || InfoText == null) && newText != null)
             {
-                InfoText = newText;
+                InfoText = (string) newText;
             }
 
             if (flashLabel)
@@ -665,7 +665,7 @@ namespace Dobby {
         /// Post-InitializeComponent Configuration. <br/><br/>
         /// Create Assign Anonomous Event Handlers to Parent and Children.
         /// </summary>
-        public static void InitializeAdditionalEventHandlers(Form Venat)
+        public static void InitializeAdditionalEventHandlers(Form Venat, bool subForm = false)
         {
             var controls = Venat.Controls.Cast<Control>().ToArray();
 
@@ -678,18 +678,30 @@ namespace Dobby {
             {
                 if (line.IsSeparatorLine)
                 {
+                    if (line.StretchToFitForm)
+                    {
+                        Dev?.Print($"Changing the width of line \"{line.Name}\" on \"{Venat.Name}\"");
+
+                        line.Size = new Size(Venat.Width - 2, line.Height);
+                        line.Location = new Point(2, line.Location.Y);
+                    }
+                    else
+                    {
+                        Dev?.Print($"All my homies hate \"{line.Name}\"");
+                    }
+
                     // Horizontal Lines
                     hSeparatorLineScanner.Add(new []
                     { 
-                        new Point(line.StretchToFitForm ? 1 : line.Location.X, line.Location.Y + 9),
-                        new Point(line.StretchToFitForm ? line.Parent.Width - 2 : line.Location.X + line.Width, line.Location.Y + 9)
+                        new Point(line.Location.X, line.Location.Y + 9),
+                        new Point(line.Location.X + line.Width, line.Location.Y + 9)
                     });
 
                     line.Height = 2;
                 }
             }
 
-            HSeparatorLines = hSeparatorLineScanner.ToArray();
+            Venat.Tag = hSeparatorLineScanner.ToArray();
 
 
 
@@ -723,7 +735,6 @@ namespace Dobby {
      
                 item.MouseDown += (sender, args) => MouseDownFunc(args);
                 item.MouseUp   += (sender, _) => MouseUpFunc();
-                
                 
                 // Apply the Hint function to the mouse enter event, applying the resetter tag to any controls sans Tags.
                 if (item.Tag == null)
@@ -759,8 +770,12 @@ namespace Dobby {
             
 
             // Apply Info label reset string to form
-            Venat.Tag = " ";
+            //Venat.Tag = " ";
 
+            if (subForm)
+            {
+                return;
+            }
 
 
 
@@ -869,10 +884,13 @@ namespace Dobby {
             // Avoid searching for a back button on Main page
             if (Venat.Name != "MainPage")
             {
-                var backButton = Venat.Controls.Find("BackBtn", true)?[0];
+                var backButton = Venat.Controls.Find("BackBtn", true)?.FirstOrDefault();
 
-                backButton.Click += (_, __) => ReturnToPreviousPage();
-                backButton.Tag = "Return to the previous page";
+                if (backButton != null)
+                {
+                    backButton.Click += (_, __) => ReturnToPreviousPage();
+                    backButton.Tag = "Return to the previous page";
+                }
             }
 
 
@@ -898,13 +916,13 @@ namespace Dobby {
                 return;
             }
 
+            Navi = new PopupWindow(Message, Title);
 
-            var popupWindow = new PopupWindow(Message, Title);
 
-            popupWindow.Show();
-            popupWindow.BringToFront();
-
-            popupWindow.Center(Venat.Location);
+            Navi.Show();
+            Venat.SendToBack();
+            Navi.BringToFront();
+            Navi.Center(Venat.Location);
         }
         #endregion
 
@@ -1001,7 +1019,12 @@ namespace Dobby {
 
 
             //## Draw Horizontal Lines
-            foreach (var line in HSeparatorLines ?? Array.Empty<Point[]>())
+            if (Venat.Tag?.GetType() != typeof(Point[][]))
+            {
+                Dev?.Print($"Form \"{Venat.Name}\"\'s Tag was not a jagged point array ({Venat.Tag?.GetType()?.ToString() ?? "null"})");
+                return;
+            }
+            foreach (var line in (Point[][]) Venat.Tag ?? Array.Empty<Point[]>())
             {
                 localYoshiP?.Graphics.DrawLine(FormDecorationPen, line[0], line[1]);
             }
@@ -1107,7 +1130,8 @@ namespace Dobby {
             else
             {
                 // Create the log window and make it invisible until it's been moved to the parent form.
-                DebugWindow = new DebugWindow(((Control)sender).FindForm()) {
+                DebugWindow = new DebugWindow((Form) ((Control)sender).FindForm())
+                {
                     Visible = false
                 };
 
@@ -1135,6 +1159,7 @@ namespace Dobby {
             LastFormPosition = Venat?.Location ?? LastFormPosition;
             MouseDif = new Point(MousePosition.X - LastFormPosition.X, MousePosition.Y - LastFormPosition.Y);
 
+            Navi?.Center(Venat.Location);
         }
 
         internal static void MouseUpFunc()
@@ -1142,6 +1167,8 @@ namespace Dobby {
             MouseScrolled = MouseIsDown = false;
 
             ActiveMouseButton = MouseButtons.None;
+
+            Navi?.BringToFront();
         }
 
         public static void MoveForm()
@@ -1152,12 +1179,11 @@ namespace Dobby {
             Venat.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
             Venat.Update();
 
-            Navi?.Center(Venat.Location);
-
-
             #if DEBUG
             DebugWindow?.MoveLogToAppEdge();
             #endif
+         
+            Navi?.Center(Venat.Location);
         }
 
 
@@ -1184,11 +1210,10 @@ namespace Dobby {
         /// 
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="args"></param>
         public static void HoverString(object sender)
         {
             try {
-                // Oh my god fuck it, lazy fix for winforms stupid fucking asynchronous contol initialization, god I fucking hate this stupid clunky bullshit sometimes, how the fuck is the control null after being created, initialzed, and added to the form??? I CAN LITERALLY SEE THE CONTROL, IT'S NOT FUCKING NULL
+                // Oh my god fuck it, lazy fix for winforms stupid asynchronous contol initialization, how the fuck is the control null after being created, initialzed, and added to the form??? I CAN LITERALLY SEE THE CONTROL, IT AIN'T NULL
                 if (InfoLabel == null && ((Control)sender).FindForm().Name == "MainPage")
                 {
                     InfoLabel = (Label) Venat.Controls.Find("Info", true)?[0];
@@ -1196,7 +1221,7 @@ namespace Dobby {
 
                 if (((string) ((Control)sender).Tag ?? string.Empty).Length > 0) //! test this
                 {
-                    UpdateLabel((string) ((Control)sender).Tag);
+                    UpdateLabel(((Control)sender).Tag);
                 }
                 else
                     Dev?.Print($"Label not updated due to empty tag or active flash thread {InfoFlashes} {InfoText?.Length ?? 0xDEADDAD}");
