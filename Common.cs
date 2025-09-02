@@ -665,9 +665,9 @@ namespace Dobby {
         /// Post-InitializeComponent Configuration. <br/><br/>
         /// Create Assign Anonomous Event Handlers to Parent and Children.
         /// </summary>
-        public static void InitializeAdditionalEventHandlers(Form Venat, bool subForm = false)
+        public static void InitializeAdditionalEventHandlers(Form venat, bool subForm = false)
         {
-            var controls = Venat.Controls.Cast<Control>().ToArray();
+            var controls = venat.Controls.Cast<Control>().ToArray();
 
             var hSeparatorLineScanner = new List<Point[]>();
 
@@ -680,9 +680,9 @@ namespace Dobby {
                 {
                     if (line.StretchToFitForm)
                     {
-                        Dev?.Print($"Changing the width of line \"{line.Name}\" on \"{Venat.Name}\"");
+                        Dev?.Print($"Changing the width of line \"{line.Name}\" on \"{venat.Name}\"");
 
-                        line.Size = new Size(Venat.Width - 2, line.Height);
+                        line.Size = new Size(venat.Width - 4, line.Height);
                         line.Location = new Point(2, line.Location.Y);
                     }
                     else
@@ -701,7 +701,7 @@ namespace Dobby {
                 }
             }
 
-            Venat.Tag = hSeparatorLineScanner.ToArray();
+            venat.Tag = hSeparatorLineScanner.ToArray();
 
 
 
@@ -751,7 +751,7 @@ namespace Dobby {
                 {
                     if (arg.KeyData == Keys.Escape)
                     {
-                        Venat.Focus();
+                        venat.Focus();
                     }
                 };
             }
@@ -760,13 +760,13 @@ namespace Dobby {
 
 
             // Set Event Handlers for Form Dragging
-            Venat.MouseDown += (sender, args) => MouseDownFunc(args);
-            Venat.MouseUp   += (sender, _) => MouseUpFunc();
+            venat.MouseDown += (sender, args) => MouseDownFunc(args);
+            venat.MouseUp   += (sender, _) => MouseUpFunc();
             
-            Venat.MouseEnter += (sender, _) => HoverString(sender);
-            Venat.MouseMove += (sender, _) => MoveForm();
+            venat.MouseEnter += (sender, _) => HoverString(sender);
+            venat.MouseMove += (sender, _) => MoveForm();
             
-            Venat.Paint += (venat, yoshiP) => DrawFormDecorations((Form)venat, yoshiP);
+            venat.Paint += (_venat, yoshiP) => DrawFormDecorations((Form)_venat, yoshiP);
             
 
             // Apply Info label reset string to form
@@ -787,7 +787,7 @@ namespace Dobby {
             var Gray = Color.FromArgb(100, 100, 100);
 
             Button ExitBtn = new Button() {
-                Location = new Point(Venat.Size.Width - 24, 1),
+                Location = new Point(venat.Size.Width - 24, 1),
                 Size = new Size(23, 23),
                 Name = "ExitBtn",
                 Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
@@ -799,7 +799,7 @@ namespace Dobby {
                 Cursor = Cursors.Cross
             },
             MinimizeBtn = new Button() {
-                Location = new Point(Venat.Size.Width - 47, 1),
+                Location = new Point(venat.Size.Width - 47, 1),
                 Size = new Size(23, 23),
                 Name = "MinimizeBtn",
                 Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
@@ -812,7 +812,7 @@ namespace Dobby {
             }
             #if DEBUG
             ,LogBtn = new Button() {
-                Location = new Point(Venat.Size.Width - 70, 1),
+                Location = new Point(venat.Size.Width - 70, 1),
                 Size = new Size(23, 23),
                 Name = "LogBtn",
                 Font = new Font("Franklin Gothic Medium", 6.5F, FontStyle.Bold),
@@ -828,7 +828,7 @@ namespace Dobby {
 
             // Minimize Button Properties
             MinimizeBtn.FlatAppearance.BorderSize = 0;
-            Venat.Controls.Add(MinimizeBtn);
+            venat.Controls.Add(MinimizeBtn);
             MinimizeBtn.BringToFront();
 
             MinimizeBtn.Click += new EventHandler(MinimizeBtn_Click);
@@ -837,7 +837,7 @@ namespace Dobby {
 
             // Exit Button Properties
             ExitBtn.FlatAppearance.BorderSize = 0;
-            Venat.Controls.Add(ExitBtn);
+            venat.Controls.Add(ExitBtn);
             ExitBtn.BringToFront();
             
             ExitBtn.Click += new EventHandler(ExitBtn_Click);
@@ -847,7 +847,7 @@ namespace Dobby {
             #if DEBUG
             // Log Window Button Properties
             LogBtn.FlatAppearance.BorderSize = 0;
-            Venat.Controls.Add(LogBtn);
+            venat.Controls.Add(LogBtn);
             LogBtn.BringToFront();
             
             LogBtn.Click += LogBtn_Click;
@@ -862,9 +862,9 @@ namespace Dobby {
             //#
 
             // Apply Info & Credits page crap, unless we're on one of those pages already
-            if (!new [] { "InfoHelpPage", "CreditsPage" }.Contains(Venat.Name))
+            if (!new [] { "InfoHelpPage", "CreditsPage" }.Contains(venat.Name))
             {
-                var helpPageButton = Venat.Controls.Find("InfoHelpBtn", true)?.FirstOrDefault();
+                var helpPageButton = venat.Controls.Find("InfoHelpBtn", true)?.FirstOrDefault();
 
                 if (helpPageButton != null) {
                     helpPageButton.Click += (_, __) => OpenNewPage(PageID.InfoHelpPage);
@@ -872,7 +872,7 @@ namespace Dobby {
                 }
                 
 
-                var creditsPageButton = Venat.Controls.Find("CreditsBtn", true)?.FirstOrDefault();
+                var creditsPageButton = venat.Controls.Find("CreditsBtn", true)?.FirstOrDefault();
 
                 if (creditsPageButton != null) {
                     creditsPageButton.Click += (_, __) => OpenNewPage(PageID.CreditsPage);
@@ -882,9 +882,9 @@ namespace Dobby {
 
 
             // Avoid searching for a back button on Main page
-            if (Venat.Name != "MainPage")
+            if (venat.Name != "MainPage")
             {
-                var backButton = Venat.Controls.Find("BackBtn", true)?.FirstOrDefault();
+                var backButton = venat.Controls.Find("BackBtn", true)?.FirstOrDefault();
 
                 if (backButton != null)
                 {
@@ -897,7 +897,7 @@ namespace Dobby {
             // Attempt to assign static Info label refference for bs globals
             try {
                 int num;
-                InfoLabel = (Label)Venat.Controls.Find("Info", true)?.Last();
+                InfoLabel = (Label)venat.Controls.Find("Info", true)?.Last();
 
                 InfoLabel.Text = string.Empty;
                 InfoLabel.Tag = ((num = new Random().Next() & 1) + (num >> num & 1)) == 0 ? "hey get that mouse off my face >:(" : " "; // apply a joke tag if a two random numbers are both even (for shits and giggles)
@@ -1019,12 +1019,12 @@ namespace Dobby {
 
 
             //## Draw Horizontal Lines
-            if (Venat.Tag?.GetType() != typeof(Point[][]))
+            if (venat.Tag?.GetType() != typeof(Point[][]))
             {
-                Dev?.Print($"Form \"{Venat.Name}\"\'s Tag was not a jagged point array ({Venat.Tag?.GetType()?.ToString() ?? "null"})");
+                Dev?.Print($"Form \"{venat.Name}\"\'s Tag was not a jagged point array ({venat.Tag?.GetType()?.ToString() ?? "null"})");
                 return;
             }
-            foreach (var line in (Point[][]) Venat.Tag ?? Array.Empty<Point[]>())
+            foreach (var line in (Point[][]) venat.Tag ?? Array.Empty<Point[]>())
             {
                 localYoshiP?.Graphics.DrawLine(FormDecorationPen, line[0], line[1]);
             }
@@ -1186,6 +1186,25 @@ namespace Dobby {
             Navi?.Center(Venat.Location);
         }
 
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        public static void HoverString(object sender)
+        {
+            // Oh my god fuck it, lazy fix for winforms stupid asynchronous contol initialization, how the fuck is the control null after being created, initialzed, and added to the form??? I CAN LITERALLY SEE THE CONTROL, IT AIN'T NULL
+            if (InfoLabel == null && ((Control)sender).FindForm().Name == "MainPage")
+            {
+                InfoLabel = (Label) Venat.Controls.Find("Info", true)?[0];
+            }
+
+            if (((Control)sender).Tag.GetType() == typeof(string) && ((string) ((Control)sender).Tag ?? string.Empty).Length > 0) //! test this
+            {
+                UpdateLabel(((Control)sender).Tag);
+            }
+        }
+
 
         /// <summary>
         /// 
@@ -1205,32 +1224,6 @@ namespace Dobby {
 
         }
 
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        public static void HoverString(object sender)
-        {
-            try {
-                // Oh my god fuck it, lazy fix for winforms stupid asynchronous contol initialization, how the fuck is the control null after being created, initialzed, and added to the form??? I CAN LITERALLY SEE THE CONTROL, IT AIN'T NULL
-                if (InfoLabel == null && ((Control)sender).FindForm().Name == "MainPage")
-                {
-                    InfoLabel = (Label) Venat.Controls.Find("Info", true)?[0];
-                }
-
-                if (((string) ((Control)sender).Tag ?? string.Empty).Length > 0) //! test this
-                {
-                    UpdateLabel(((Control)sender).Tag);
-                }
-                else
-                    Dev?.Print($"Label not updated due to empty tag or active flash thread {InfoFlashes} {InfoText?.Length ?? 0xDEADDAD}");
-            }
-            catch (InvalidCastException)
-            {
-                Dev?.Print("ERROR: A Non-string value was assigned to a control tag");
-            }
-        }
         #endregion
     }
 }

@@ -66,7 +66,6 @@ namespace Dobby {
             for (int i = 0; i < Questions.Length; Questions[i] = Index == i ? !Questions[i] : Index == i, i++);
 
 
-
             if(Questions[Index])
             {
                 DefaultQuestion = false;
