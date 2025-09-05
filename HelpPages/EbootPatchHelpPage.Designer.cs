@@ -43,7 +43,7 @@ namespace Dobby
             this.Info = new Dobby.Label();
             this.CreditsBtn = new Dobby.Button();
             this.BackBtn = new Dobby.Button();
-            this.DefaultQuestionBtn = new Dobby.Label();
+            this.ActiveQuestionBtn = new Dobby.Label();
             this.separatorLine1 = new Dobby.Label();
             this.Question0Btn = new Dobby.Button();
             this.SuspendLayout();
@@ -198,16 +198,15 @@ namespace Dobby
             // 
             // DefaultQuestionBtn
             // 
-            this.DefaultQuestionBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DefaultQuestionBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.DefaultQuestionBtn.IsSeparatorLine = false;
-            this.DefaultQuestionBtn.Location = new System.Drawing.Point(3, 36);
-            this.DefaultQuestionBtn.Name = "DefaultQuestionBtn";
-            this.DefaultQuestionBtn.Size = new System.Drawing.Size(316, 290);
-            this.DefaultQuestionBtn.StretchToFitForm = false;
-            this.DefaultQuestionBtn.TabIndex = 0;
-            this.DefaultQuestionBtn.Text = resources.GetString("DefaultQuestionBtn.Text");
-            this.DefaultQuestionBtn.Click += new System.EventHandler(this.DefaultQuestionBtn_Click);
+            this.ActiveQuestionBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ActiveQuestionBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.ActiveQuestionBtn.IsSeparatorLine = false;
+            this.ActiveQuestionBtn.Location = new System.Drawing.Point(3, 36);
+            this.ActiveQuestionBtn.Name = "DefaultQuestionBtn";
+            this.ActiveQuestionBtn.Size = new System.Drawing.Size(316, 290);
+            this.ActiveQuestionBtn.StretchToFitForm = false;
+            this.ActiveQuestionBtn.TabIndex = 0;
+            this.ActiveQuestionBtn.Text = resources.GetString("DefaultQuestionBtn.Text");
             // 
             // separatorLine1
             // 
@@ -255,7 +254,7 @@ namespace Dobby
             this.Controls.Add(this.Info);
             this.Controls.Add(this.CreditsBtn);
             this.Controls.Add(this.BackBtn);
-            this.Controls.Add(this.DefaultQuestionBtn);
+            this.Controls.Add(this.ActiveQuestionBtn);
             this.Controls.Add(this.separatorLine1);
             this.Controls.Add(this.Question0Btn);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -281,7 +280,7 @@ namespace Dobby
         private Button Question1Btn;
         private Button Question2Btn;
         private Button Question3Btn;
-        private Label DefaultQuestionBtn;
+        private Label ActiveQuestionBtn;
         private Label AdditionalInfoButton;
         public Label separatorLine0;
         public Label separatorLine1;

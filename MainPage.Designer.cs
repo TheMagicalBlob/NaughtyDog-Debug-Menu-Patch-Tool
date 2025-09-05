@@ -40,7 +40,6 @@ namespace Dobby
             this.PS4DebugPageBtn = new Dobby.Button();
             this.EbootPatchPageBtn = new Dobby.Button();
             this.PS4MenuSettingsPageBtn = new Dobby.Button();
-            this.button1 = new Dobby.Button();
             this.SuspendLayout();
             // 
             // MainLabel
@@ -274,31 +273,12 @@ namespace Dobby
             this.PS4MenuSettingsPageBtn.UseVisualStyleBackColor = false;
             this.PS4MenuSettingsPageBtn.Click += new System.EventHandler(this.PS4MenuSettingsPageBtn_Click);
             // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.button1.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
-            this.button1.ForeColor = System.Drawing.SystemColors.Control;
-            this.button1.Location = new System.Drawing.Point(8, 27);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(24, 24);
-            this.button1.TabIndex = 38;
-            this.button1.Tag = "Enable the debug mode via memory editing (RTM)";
-            this.button1.Text = "Enable Debug Mode With PS4Debug...";
-            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // MainPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ClientSize = new System.Drawing.Size(319, 307);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.DownloadSourceBtn);
             this.Controls.Add(this.PCLabel);
             this.Controls.Add(this.Playstation4Label);
@@ -345,7 +325,5 @@ namespace Dobby
         public Label PCLabel;
         public Button DownloadSourceBtn;
         #endregion
-
-        public Button button1;
     }
 }

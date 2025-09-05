@@ -143,7 +143,8 @@ namespace Dobby {
             // Print output string
             System.Diagnostics.Debug.Write(str);
 
-            if (!Console.IsInputRedirected) {
+            if (!Console.IsInputRedirected)
+            {
                 Console.Write(str);
             }
         }
@@ -224,11 +225,12 @@ namespace Dobby {
 
         private static void PauseRendering(Control control) => UpdateRendering((IntPtr)0, control);
         private static void ResumeRendering(Control control) => UpdateRendering((IntPtr)1, control);
-        private static void UpdateRendering(IntPtr toggle, Control control) {
-            var Window = NativeWindow.FromHandle(control.Handle);
-            var Msg = Message.Create(control.Handle, 11, toggle, IntPtr.Zero);
+        private static void UpdateRendering(IntPtr toggle, Control control)
+        {
+            var window = NativeWindow.FromHandle(control.Handle);
+            var msg = Message.Create(control.Handle, 11, toggle, IntPtr.Zero);
 
-            Window.DefWndProc(ref Msg);
+            window.DefWndProc(ref msg);
 
             if(toggle != IntPtr.Zero)
                 control.Update();

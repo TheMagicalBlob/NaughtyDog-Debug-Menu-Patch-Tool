@@ -335,7 +335,7 @@ namespace Dobby {
           "* 4.67.447.1083 | Slightly altered the text of the page buttons on the main page, as well as their hint tags. Shrunk info label font to match GameInfoLabel font. Was limiting what I could write too much for comfort.",
           "* 4.67.448.1083 | Removed a check for what I thought was redundant assignment in the info label, as it was hiding hint tags with resets after specific timing, and I can't find any reason to have it there.",
           "* 4.67.451.1087 | Misc. EbootPatchPage background/formatting changes, 'cause ADHD, I suppose.",
-          "* 4.67.451.1090 | *happy blob noises* ",
+          "* 4.67.451.1090 | *happy blob noises*.",
           "* 4.67.451.1093 | OCD.",
           "* 4.68.452.1098 | Added an option to the PC debug menu patch page to enable the Disable FPS option by default (or disable it, if they're disabling the debug menus).",
           "* 4.68.454.1101 | Tested and tweaked the PC patch page's \"Disable FPS\" option; Tweaked text shown when a patch is prematurely chosen on the PC patch page to reflect the current state; Fixed unnamed separatorLine3.",
@@ -355,7 +355,10 @@ namespace Dobby {
           "* 4.69.472.1151 | Stripped down dummy form",
           "* 4.69.475.1160 | Updated all the remaining separator lines (how long had the credits page been like that??); Fixed line drawing implementation; forms without lines were not emptying the line array of the previous form's lines. I am an idiot.; Removed vertical line implementation as it won't be used anyway.",
           "* 4.69.476.1163 | Lazy popup window implementation (W.I.P.- distracted by life. pushing J.I.C.)",
-          "* 4.69.479.1176 | Finished that lazy popup window implementation, tweaked separator line shit again. re-enabled the label controls themselves to allow for easily drawing the lines over other controls by simply having the labels on a higher layer."
+          "* 4.70.479.1176 | Finished that lazy popup window implementation, tweaked separator line shit again. re-enabled the label controls themselves to allow for easily drawing the lines over other controls by simply having the labels on a higher layer.",
+          "* 4.71.483.1183 | Moved help pages from the Pages folder in to a newly-created HelpPages folder instead; Separated help page functionality from the EbootPatchHelpPage and into a HelpPageCommon class for consistent functionality between them all one they're finished (may undo that and move what's currently only one function in to the regular Dobby.Common class); Fixed stupid issue with the HoverLeave bs only being applied to blacklisted controls- I forgot the exclamation mark...; Other misc background tweaks (formatting, mostly).",
+          "* 4.71.484.1189 | Miscellaneous background tweaks.",
+          "* | ",
         };
 
         

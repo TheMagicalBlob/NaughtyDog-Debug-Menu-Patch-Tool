@@ -1037,9 +1037,10 @@ namespace Dobby {
 
                 return true;
             }
-            catch (Exception e)
+            catch (Exception dang)
             {
                 Dev?.Print($"T1R11X_RestoredMenu(): Unexpected error applying patches.");
+                Dev.PrintError(dang);
                 return false;
             }
         }

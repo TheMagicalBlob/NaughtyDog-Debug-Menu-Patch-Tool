@@ -2,11 +2,17 @@
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Drawing;
+using static Dobby.HelpPageCommon;
 using static Dobby.Common;
+using System.Linq;
+using System.IO;
 
 namespace Dobby {
-    public partial class EbootPatchHelpPage : Form {
-        
+    public partial class EbootPatchHelpPage : Form
+    {
+        //================================\\
+        //--|   Class Initialization   |--\\
+        //================================\\
         /// <summary>
         /// Initialize a new instance of the EbootPatchHelpPage Form.
         /// </summary>
@@ -21,59 +27,22 @@ namespace Dobby {
             Question2Btn.Tag = "\n- The First Way Is With The Official PS4 SDK Tools,\n  Which I Can Not Include In My Projects Due To\n  Them Being Copyrighted Sony PS4 SDK Tools.\n\n  Use The PkgCreationPage To Build A New\n  .pkg Once You've Got The FakePKGTools\n  Downloaded, And Have Made A .gp4\n  \n\n- The Second Way Is With The Patch Builder\n  App From ModdedWarfrare, Which You\n  Can Easily Find With A Quick Google\n  Or Even Youtube Search\n\n";
             Question3Btn.Tag = "\nBecause Depending On The Game, There May\nEither Be A Large Amount Of Skipped Or \nUncalled Code That Can Be Restored With\nVarrying Levels Of Effort-\n\nOr, There May Only Be Small Things Leftover\nWhich I Just Add To Existing Submenus For\nThe \"Custom Debug\".\n\nHowever- I'm not Gonna Sit Around And\nMake These Patches For Every Version Of\nEvery Game. For These, The Button's Disabled";
             
-            DefaultButtonText = DefaultQuestionBtn.Text;
-        }
-
-
-        
-        //=================================\\
-        //--|   Variable Declarations   |--\\
-        //=================================\\
-        #region [Variable Declarations]
-
-        //! Why the fuck is this a separate thing? This was the LESS inconvenient thing??
-        private readonly string[] headers = new []
-        {
-            "                  [Getting The Game's Executable]\n",
-            "       [Extracting Your Game's .pkg \\ Dumping It]\n",
-            "                             [Building A New .pkg]\n",
-            "           [Why Is \"Restored/Custom\" Disabled?]\n"
-        };
-
-        /// <summary>
-        /// #1 How Do I Get My Game's eboot.bin?<br/>
-        /// #2 How Do I Extract My Game's .pkg?<br/>
-        /// #3 How Do I Make A New .pkg Afterwards?<br/>
-        /// #4 Why Is The Restored/Custom Button Disabled?<br/>
-        /// </summary>
-        private bool[] Questions = new bool[4];
-        private bool DefaultQuestion = true;
-        private readonly string DefaultButtonText;
-        #endregion
+            DefaultQuestion = ActiveQuestionBtn.Text;
 
 
 
 
-        
-        //=============================================\\
-        //--|   Background Function Delcarations   |---\\
-        //=============================================\\
-        #region [Background Function Delcarations]
-
-        private void LoadQuestions(int Index)
-        {
-            // Reset The Other Buttons
-            for (int i = 0; i < Questions.Length; Questions[i] = Index == i ? !Questions[i] : Index == i, i++);
+            Questions = new bool[Controls.OfType<Dobby.Button>().Where(button => button.Name.Contains("Question")).Count()];
 
 
-            if(Questions[Index])
+            Actions = new[]
             {
-                DefaultQuestion = false;
-                DefaultQuestionBtn.Text = (Controls.Find($"Question{Index}Btn", true)?[0].Tag ?? $"\"Question{Index}Btn\" Not Found.").ToString();
-            
-                AdditionalInfoButton.Visible = DefaultQuestion;
+                new Action(() =>
+                {
+                    AdditionalInfoButton.Visible = false;
+                }),
 
-                if(Questions[1])
+                new Action(() =>
                 {
                     AdditionalInfoButton.Text = "Homebrew Store";
 
@@ -82,14 +51,21 @@ namespace Dobby {
                     AdditionalInfoButton.Font = new Font("Cambria", 9.5F, FontStyle.Bold | FontStyle.Underline);
 
                     AdditionalInfoButton.Visible = true;
-                }
-            }
-            // Reset to the default help text
-            else {
-                DefaultQuestion = true;
-                DefaultQuestionBtn.Text = DefaultButtonText;
+                }),
+                
+                new Action(() =>
+                {
+                    AdditionalInfoButton.Visible = false;
+                }),
+                
+                new Action(() =>
+                {
+                    AdditionalInfoButton.Visible = false;
+                }),
+            };
 
-
+            DefaultAction = new Action(() =>
+            {
                 AdditionalInfoButton.Text = "*(with some exceptions)";
 
                 AdditionalInfoButton.Size = new Size(130, 17);
@@ -97,13 +73,72 @@ namespace Dobby {
                 AdditionalInfoButton.Font = new Font("Cambria", 8F, FontStyle.Bold);
 
                 AdditionalInfoButton.Visible = true;
-            }
+            });
 
+
+
+            if (Actions.Length != Questions.Length)
+            {
+                var message = $"Mismatched sizes for Actions and Questions array! (Actions.Length {(Actions.Length < Questions.Length ? '<' : '>')} Questions.Length)";
+                #if DEBUG
+                    ShowPopup(message, "ERROR INITIALIZING " + nameof(EbootPatchHelpPage).ToUpper() + ';');
+                #else
+                    throw new InvalidDataException(message);
+                #endif
+            }
+            else
+                Dev?.Print(Questions.Length);
+        }
+
+
+
+
+
+        
+        //=================================\\
+        //--|   Variable Declarations   |--\\
+        //=================================\\
+        #region [Variable Declarations]
+        /// <summary>
+        /// #1 How Do I Get My Game's eboot.bin?<br/>
+        /// #2 How Do I Extract My Game's .pkg?<br/>
+        /// #3 How Do I Make A New .pkg Afterwards?<br/>
+        /// #4 Why Is The Restored/Custom Button Disabled?<br/>
+        /// </summary>
+        public readonly bool[] Questions;
+
+        public readonly string DefaultQuestion;
+
+        public bool IsDefaultQuestion = true;
+
+        public Action[] Actions;
+
+        public Action DefaultAction;
+
+
+
+        private enum QuestionIDs : byte
+        {
+            HowToGetEboot,
+            HowToExtractPkg,
+            HowToBuildNewPkg,
+            WhyRestoredAndCustomDisabled
         }
         #endregion
 
 
-        
+
+
+
+        //==================================\\
+        //--|   Function Delcarations   |---\\
+        //==================================\\
+        #region [Function Delcarations]
+
+        #endregion
+
+
+
 
 
         //======================================\\
@@ -111,14 +146,15 @@ namespace Dobby {
         //======================================\\
         #region [Event Handler Declarations]
 
-        private void Question0Btn_Click(object sender, EventArgs e) => LoadQuestions(0);
-        private void Question1Btn_Click(object sender, EventArgs e) => LoadQuestions(1);
-        private void Question2Btn_Click(object sender, EventArgs e) => LoadQuestions(2);
-        private void Question3Btn_Click(object sender, EventArgs e) => LoadQuestions(3);
+        private void Question0Btn_Click(object sender, EventArgs e) => LoadHelpPageQuestion(this, 0);
+        private void Question1Btn_Click(object sender, EventArgs e) => LoadHelpPageQuestion(this, 1);
+        private void Question2Btn_Click(object sender, EventArgs e) => LoadHelpPageQuestion(this, 2);
+        private void Question3Btn_Click(object sender, EventArgs e) => LoadHelpPageQuestion(this, 3);
+
 
         private void WithSomeExceptionsLabel_Click(object sender, EventArgs e)
         {
-            if (DefaultQuestion)
+            if (IsDefaultQuestion)
             {
                 MessageBox.Show("Some Misc. Patches Will Be Applied To Uncharted 4/Lost Legacy Multiplayer Eboots To Make The Game Playable");
             }
@@ -130,10 +166,5 @@ namespace Dobby {
         private void WithSomeExceptionsLabelMH(object sender, EventArgs e) => AdditionalInfoButton.ForeColor = Color.Aqua;
         private void WithSomeExceptionsLabelML(object sender, EventArgs e) => AdditionalInfoButton.ForeColor = Color.White;
         #endregion
-
-        private void DefaultQuestionBtn_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

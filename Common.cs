@@ -505,11 +505,6 @@ namespace Dobby {
         /// <param name="flashLabel"> If true, flash the label to indicate an error or otherwise get the user's attention. (switches between white/yellow) </param>
         public static void UpdateLabel(object newText, bool flashLabel = false)
         {
-            if (newText.GetType() != typeof(string))
-            {
-                newText = " ";
-            }
-
             if ((InfoText == " " || InfoText == null) && newText != null)
             {
                 InfoText = (string) newText;
@@ -668,8 +663,9 @@ namespace Dobby {
         public static void InitializeAdditionalEventHandlers(Form venat, bool subForm = false)
         {
             var controls = venat.Controls.Cast<Control>().ToArray();
-
             var hSeparatorLineScanner = new List<Point[]>();
+
+            Venat = venat;
 
 
 
@@ -685,10 +681,7 @@ namespace Dobby {
                         line.Size = new Size(venat.Width - 4, line.Height);
                         line.Location = new Point(2, line.Location.Y);
                     }
-                    else
-                    {
-                        Dev?.Print($"All my homies hate \"{line.Name}\"");
-                    }
+
 
                     // Horizontal Lines
                     hSeparatorLineScanner.Add(new []
@@ -707,6 +700,10 @@ namespace Dobby {
 
             
 
+            //#
+            //## ASSIGN HOVER ARROW & INFO/HINT FUNCTIONALITY TO BUTTONS
+            //#
+
             // Buttons to avoid assigning a hover arrow to
             var blacklistedItems = new[]
             {
@@ -716,31 +713,39 @@ namespace Dobby {
                 "LabelBtn",
                 "PathBox"
             };
-            foreach (var button in controls.OfType<Dobby.Button>().Where(item => blacklistedItems.Contains(item.Name)))
+
+            foreach (var button in controls.OfType<Dobby.Button>().Where(item => !blacklistedItems.Contains(item.Name)))
             {
                 button.MouseEnter += (sender, e) => HoverLeave((Control)sender, true);
                 button.MouseLeave += (sender, e) => HoverLeave((Control)sender, false);
+            }
+            foreach (var control in controls)
+            {
+                control.MouseEnter += (sender, e) => HoverString(sender);
+                control.MouseLeave += (sender, e) => HoverString(sender, true);
             }
 
 
 
             
+            
+            //#
+            //## SET MOUSE/KEY-RELATED INPUT EVENT HANDLERS
+            //#
+
             // Set appropriate event handlers for the controls on the form as well, as well as other miscellaneous shit
             foreach (var item in controls.Where(item => !item.Name.Contains("TextBox")))
             {
                 if (item.Name == "SwapBrowseModeBtn") // lazy fix to avoid the mouse down event confliciting with the button
+                {
                     continue;
+                }
+
 
                 item.TabStop = false;
      
                 item.MouseDown += (sender, args) => MouseDownFunc(args);
                 item.MouseUp   += (sender, _) => MouseUpFunc();
-                
-                // Apply the Hint function to the mouse enter event, applying the resetter tag to any controls sans Tags.
-                if (item.Tag == null)
-                {
-                    item.Tag = " ";
-                }
 
                 // Add the event handler to everything that's not a text container
                 item.MouseMove += new MouseEventHandler((sender, e) => MoveForm());
@@ -757,6 +762,15 @@ namespace Dobby {
             }
 
 
+            foreach (var control in controls)
+            {
+                // Apply the Hint function to the mouse enter event, applying the resetter tag to any controls sans Tags.
+                if (control.Tag == null || control.Tag.Equals(string.Empty))
+                {
+                    control.Tag = " ";
+                }
+            }
+
 
 
             // Set Event Handlers for Form Dragging
@@ -768,9 +782,6 @@ namespace Dobby {
             
             venat.Paint += (_venat, yoshiP) => DrawFormDecorations((Form)_venat, yoshiP);
             
-
-            // Apply Info label reset string to form
-            //Venat.Tag = " ";
 
             if (subForm)
             {
@@ -786,7 +797,8 @@ namespace Dobby {
             //#
             var Gray = Color.FromArgb(100, 100, 100);
 
-            Button ExitBtn = new Button() {
+            var ExitBtn = new Button()
+            {
                 Location = new Point(venat.Size.Width - 24, 1),
                 Size = new Size(23, 23),
                 Name = "ExitBtn",
@@ -797,8 +809,9 @@ namespace Dobby {
                 ForeColor = SystemColors.Control,
                 TextAlign = ContentAlignment.MiddleLeft,
                 Cursor = Cursors.Cross
-            },
-            MinimizeBtn = new Button() {
+            };
+            var MinimizeBtn = new Button()
+            {
                 Location = new Point(venat.Size.Width - 47, 1),
                 Size = new Size(23, 23),
                 Name = "MinimizeBtn",
@@ -809,22 +822,25 @@ namespace Dobby {
                 ForeColor = SystemColors.Control,
                 TextAlign = ContentAlignment.MiddleLeft,
                 Cursor = Cursors.Cross
-            }
+            };
+
             #if DEBUG
-            ,LogBtn = new Button() {
-                Location = new Point(venat.Size.Width - 70, 1),
-                Size = new Size(23, 23),
-                Name = "LogBtn",
+            var ToggleDebugWindowBtn = new Button() {
+                Size = new Size(39, 23),
+                Name = "ToggleDebugWindowBtn",
                 Font = new Font("Franklin Gothic Medium", 6.5F, FontStyle.Bold),
-                Text = "Log",
+                Text = "^ Log",
                 FlatStyle = FlatStyle.Flat,
                 BackColor = Gray,
                 ForeColor = SystemColors.Control,
                 TextAlign = ContentAlignment.MiddleLeft,
                 Cursor = Cursors.Cross
-            }
+            };
+            ToggleDebugWindowBtn.Location = new Point(venat.Size.Width - MinimizeBtn.Width - ExitBtn.Width - ToggleDebugWindowBtn.Width - 1, 1);
             #endif
-            ;
+
+
+
 
             // Minimize Button Properties
             MinimizeBtn.FlatAppearance.BorderSize = 0;
@@ -846,13 +862,13 @@ namespace Dobby {
 
             #if DEBUG
             // Log Window Button Properties
-            LogBtn.FlatAppearance.BorderSize = 0;
-            venat.Controls.Add(LogBtn);
-            LogBtn.BringToFront();
+            ToggleDebugWindowBtn.FlatAppearance.BorderSize = 0;
+            venat.Controls.Add(ToggleDebugWindowBtn);
+            ToggleDebugWindowBtn.BringToFront();
             
-            LogBtn.Click += LogBtn_Click;
-            LogBtn.MouseEnter += new EventHandler(WindowBtnMH);
-            LogBtn.MouseLeave += new EventHandler(WindowBtnML);
+            ToggleDebugWindowBtn.Click += ToggleDebugWindowBtn_CLick;
+            ToggleDebugWindowBtn.MouseEnter += new EventHandler(WindowBtnMH);
+            ToggleDebugWindowBtn.MouseLeave += new EventHandler(WindowBtnML);
             #endif
 
 
@@ -940,7 +956,8 @@ namespace Dobby {
         /// </summary>
         /// <param name="PassedControl"> The control to append the arrow to. </param>
         /// <param name="EventIsMouseEnter"> Whether or not the  </param>
-        public static void HoverLeave(Control PassedControl, bool EventIsMouseEnter) {
+        public static void HoverLeave(Control PassedControl, bool EventIsMouseEnter) 
+        {
             int ArrowWidth;
 
             try {
@@ -952,12 +969,20 @@ namespace Dobby {
                 return;
             }
 
+            #if DEBUG
+            if (EventIsMouseEnter)
+            {
+                Dev?.Print($"Hovered Control: {PassedControl.Name}; Tag: {((PassedControl.Tag ?? "Null").Equals("Null") ? "Null" : PassedControl.Tag.GetType() == typeof (string) ? $"\n  Hint: {PassedControl.Tag.ToString()}" : "Unrelated")}");
+            }
+            else
+                Dev?.Print($"Leave from control \"{PassedControl.Name}\".");
+            #endif
+
 
 
             if (MouseScrolled = EventIsMouseEnter) //! <-- is this intentional? could swear it should only be set to false in one of the cases and left alone in the other, not set to true
             {
                 HoveredControl = PassedControl;
-
                 HoveredControl.Text = '>' + HoveredControl.Text;
             }
             else {
@@ -1037,7 +1062,8 @@ namespace Dobby {
         /// </summary>
         private static void LabelUpdateMethod()
         {
-            LabelUpdateCallback setLabelState = (label, colour, text) => {
+            LabelUpdateCallback setLabelState = (label, colour, text) =>
+            {
                 try {
                     while (ActiveForm == null)
                         Thread.Sleep(1);
@@ -1066,22 +1092,25 @@ namespace Dobby {
                 try {
                     // Wait for something to do
                     for (;InfoLabel == null || InfoFlashes == -1 && InfoText == null; Thread.Sleep(1));
-                        
+
+                    var newMessage = InfoText ?? "error?";
+
+
 
                     // Try to avoid hiding hint strings with the label reset
-                    if (InfoText != null && InfoText == " ")
+                    if (InfoText != null && (InfoText == " "))
                     {
                         for (var time = 0; InfoText == " " && time++ < 35; Thread.Sleep(1));
                     }
 
 
                     // Flash the label if applicable
-                    for (var notifyMessage = InfoText; InfoFlashes != -1;)
+                    for (; InfoFlashes != -1;)
                     {
                         while (ActiveForm == null)
                             Thread.Sleep(1);
 
-                        Venat?.Invoke(setLabelState, InfoLabel, (InfoFlashes-- & 1) == 0 ? Color.FromArgb(255, 227, 0) : Color.White, notifyMessage);
+                        Venat?.Invoke(setLabelState, InfoLabel, (InfoFlashes-- & 1) == 0 ? Color.FromArgb(255, 227, 0) : Color.White, newMessage);
                         
                         if (InfoFlashes == -1)
                         {
@@ -1092,7 +1121,8 @@ namespace Dobby {
                         Thread.Sleep(135);
                     }
 
-                    // Set The Text of The Yellow Label At The Bottom Of The Form
+
+                    // Set the info label's text
                     if (InfoText != null)
                     {
                         Venat?.Invoke(setLabelState, InfoLabel, Color.FromArgb(255, 227, 0), InfoText);
@@ -1110,25 +1140,31 @@ namespace Dobby {
 
         #endregion (form/control drawing-related functions)
 
-        #endregion [Static Background Function Declarations]
+        #endregion [Global Function Declarations]
 
 
 
 
 
-        //=============================================\\
-        //--|   Static Event Handler Declarations   |--\\
-        //=============================================\\
-        #region [Static Event Handler Declarations]
+
+
+        //======================================\\
+        //--|   Event Handler Declarations   |--\\
+        //======================================\\
+        #region [Event Handler Declarations]
 
         #if DEBUG
-        public static void LogBtn_Click(object sender, EventArgs args) {
-            if (DebugWindow != null) {
+        /// <summary>
+        /// 
+        /// </summary>
+        internal static void ToggleDebugWindowBtn_CLick(object sender, EventArgs args)
+        {
+            if (DebugWindow != null)
+            {
                 DebugWindow?.Dispose();
                 DebugWindow = null;
             }
-            else
-            {
+            else {
                 // Create the log window and make it invisible until it's been moved to the parent form.
                 DebugWindow = new DebugWindow((Form) ((Control)sender).FindForm())
                 {
@@ -1142,6 +1178,45 @@ namespace Dobby {
         }
         #endif
         
+        
+        /// <summary>
+        /// Update the info label with the Tag from the hovered control, or start the reset timer if there's no hint text.
+        /// </summary>
+        /// <param name="Sender"> The control from which to get the hint text from the Tag property. </param>
+        public static void HoverString(object Sender, bool eventIsLeave = false)
+        {
+            var sender = Sender as Control;
+            if (sender.Tag == null)
+            {
+                Dev?.Print("Null tag, returning.");
+                return;
+            }
+
+
+
+
+            // Force-Set InfoLabel reference if it isn't set due to microshaft bs
+            if (InfoLabel == null && sender.FindForm().Name == "MainPage") // Oh my god fuck it, lazy fix for winforms stupid asynchronous contol initialization, how the fuck is the control null after being created, initialzed, and added to the form??? I CAN LITERALLY SEE THE CONTROL, IT AIN'T NULL
+            {
+                InfoLabel = (Label) Venat.Controls.Find("Info", true)?[0];
+            }
+
+
+
+            string newText;
+
+            if (sender.Tag.GetType() != typeof(string) || ((string) sender.Tag).Length < 1)
+            {
+                newText = " ";
+            }
+            else
+                newText = sender.Tag?.ToString() ?? "null hint, somehow";
+            
+            
+            // Update the label with the new text
+            UpdateLabel(newText);
+        }
+
         internal static void ExitBtn_Click(object sender, EventArgs e)
         {
             Venat.Dispose();  //! 90% sure this isn't implemented properly.
@@ -1185,45 +1260,6 @@ namespace Dobby {
          
             Navi?.Center(Venat.Location);
         }
-
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        public static void HoverString(object sender)
-        {
-            // Oh my god fuck it, lazy fix for winforms stupid asynchronous contol initialization, how the fuck is the control null after being created, initialzed, and added to the form??? I CAN LITERALLY SEE THE CONTROL, IT AIN'T NULL
-            if (InfoLabel == null && ((Control)sender).FindForm().Name == "MainPage")
-            {
-                InfoLabel = (Label) Venat.Controls.Find("Info", true)?[0];
-            }
-
-            if (((Control)sender).Tag.GetType() == typeof(string) && ((string) ((Control)sender).Tag ?? string.Empty).Length > 0) //! test this
-            {
-                UpdateLabel(((Control)sender).Tag);
-            }
-        }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="control"></param>
-        public static void ControlHover(Control control)
-        {
-
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="control"></param>
-        public static void ControlLeave(Control control)
-        {
-
-        }
-
         #endregion
     }
 }

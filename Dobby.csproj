@@ -89,17 +89,36 @@
     <Compile Include="MainPageDummy.Designer.cs">
       <DependentUpon>MainPageDummy.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\EbootPatchHelpPage.Designer.cs">
+    <Compile Include="HelpPages\EbootPatchHelpPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HelpPages\EbootPatchHelpPage.Designer.cs">
       <DependentUpon>EbootPatchHelpPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\InfoHelpPage.Designer.cs">
+    <Compile Include="HelpPageCommon.cs" />
+    <Compile Include="HelpPages\InfoHelpPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HelpPages\InfoHelpPage.Designer.cs">
       <DependentUpon>InfoHelpPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\PkgCreationHelpPage.Designer.cs">
+    <Compile Include="HelpPages\PkgCreationHelpPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HelpPages\PkgCreationHelpPage.Designer.cs">
       <DependentUpon>PkgCreationHelpPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\PS4DebugHelpPage.Designer.cs">
+    <Compile Include="HelpPages\PS4DebugHelpPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HelpPages\PS4DebugHelpPage.Designer.cs">
       <DependentUpon>PS4DebugHelpPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HelpPages\PS4MenuSettingsHelpPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HelpPages\PS4MenuSettingsHelpPage.Designer.cs">
+      <DependentUpon>PS4MenuSettingsHelpPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Pages\PS4MenuSettingsPage.Designer.cs">
       <SubType>Form</SubType>
@@ -131,17 +150,8 @@
     <Compile Include="Pages\GP4CreationPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Pages\PkgCreationHelpPage.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Pages\PkgCreationPage.cs">
       <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Pages\PS4MenuSettingsHelpPage.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Pages\PS4MenuSettingsHelpPage.Designer.cs">
-      <DependentUpon>PS4MenuSettingsHelpPage.cs</DependentUpon>
     </Compile>
     <Compile Include="PopupWindow.cs">
       <SubType>Form</SubType>
@@ -156,12 +166,6 @@
     <Compile Include="Pages\PCDebugMenuPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Pages\EbootPatchHelpPage.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Pages\PS4DebugHelpPage.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Common.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -169,9 +173,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Pages\EbootPatchPage.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Pages\InfoHelpPage.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainPage.cs">
@@ -194,9 +195,19 @@
     <EmbeddedResource Include="DebugWindow.resx">
       <DependentUpon>DebugWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\EbootPatchHelpPage.resx">
+    <EmbeddedResource Include="HelpPages\EbootPatchHelpPage.resx">
       <DependentUpon>EbootPatchHelpPage.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HelpPages\InfoHelpPage.resx">
+      <DependentUpon>InfoHelpPage.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HelpPages\PkgCreationHelpPage.resx">
+      <DependentUpon>PkgCreationHelpPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HelpPages\PS4DebugHelpPage.resx">
+      <DependentUpon>PS4DebugHelpPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\CreditsPage.resx">
       <DependentUpon>CreditsPage.cs</DependentUpon>
@@ -209,15 +220,8 @@
     <EmbeddedResource Include="Pages\GP4CreationPage.resx">
       <DependentUpon>GP4CreationPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\InfoHelpPage.resx">
-      <DependentUpon>InfoHelpPage.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="MainPage.resx">
       <DependentUpon>MainPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Pages\PkgCreationHelpPage.resx">
-      <DependentUpon>PkgCreationHelpPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\PkgCreationPage.resx">
       <DependentUpon>PkgCreationPage.cs</DependentUpon>
@@ -230,9 +234,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\PS4DebugPage.resx">
       <DependentUpon>PS4DebugPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Pages\PS4DebugHelpPage.resx">
-      <DependentUpon>PS4DebugHelpPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Resource.resx">
       <Generator>ResXFileCodeGenerator</Generator>

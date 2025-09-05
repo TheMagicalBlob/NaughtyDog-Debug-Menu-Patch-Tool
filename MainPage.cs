@@ -13,16 +13,23 @@ namespace Dobby {
         public MainPage()
         {
             InitializeComponent();
-            
-            Venat = this;
-            Dev = new Testing();
-
             InitializeAdditionalEventHandlers(this);
-            
+
+
+            #if DEBUG
+            // Create/Initialize the Debug class
+            Dev = new Testing();
+            #endif
+
             // Create/Initialize the thread for updating the yellow info label at the bottom of the screen
             CreateInfoLabelUpdater();
 
+
+
             #if DEBUG
+            //#
+            //## DEBUG SHIT
+            //#
             NoDraw = false;
 
 
@@ -35,15 +42,8 @@ namespace Dobby {
                     OpenNewPage(Testing.PageToForce);
                 }
             };
-#endif
+            #endif
             }
-
-
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            ShowPopup(new string('F', 123), new string('H', 24));
-        }
 
 
         
