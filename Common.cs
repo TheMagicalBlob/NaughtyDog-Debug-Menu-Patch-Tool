@@ -505,7 +505,10 @@ namespace Dobby {
         /// <param name="flashLabel"> If true, flash the label to indicate an error or otherwise get the user's attention. (switches between white/yellow) </param>
         public static void UpdateLabel(object newText, bool flashLabel = false)
         {
-            if ((InfoText == " " || InfoText == null) && newText != null)
+            Dev?.Print($"UpdateLabel(\"{newText}\", {flashLabel})");
+
+            // Avoid uhh what
+            if ((InfoText ?? " ") == " " && newText != null && InfoLabel.Text != (string) newText)
             {
                 InfoText = (string) newText;
             }
@@ -969,15 +972,6 @@ namespace Dobby {
                 return;
             }
 
-            #if DEBUG
-            if (EventIsMouseEnter)
-            {
-                Dev?.Print($"Hovered Control: {PassedControl.Name}; Tag: {((PassedControl.Tag ?? "Null").Equals("Null") ? "Null" : PassedControl.Tag.GetType() == typeof (string) ? $"\n  Hint: {PassedControl.Tag.ToString()}" : "Unrelated")}");
-            }
-            else
-                Dev?.Print($"Leave from control \"{PassedControl.Name}\".");
-            #endif
-
 
 
             if (MouseScrolled = EventIsMouseEnter) //! <-- is this intentional? could swear it should only be set to false in one of the cases and left alone in the other, not set to true
@@ -989,11 +983,16 @@ namespace Dobby {
                 //ArrowWidth = ~ArrowWidth ^ 1; I'm an idiot
                 ArrowWidth = -ArrowWidth;
 
+
                 if (HoveredControl == PassedControl)
+                {
                     HoveredControl = null;
+                }
 
                 if (PassedControl.Text.Contains('>'))
-                PassedControl.Text = PassedControl.Text.Substring(1);
+                {
+                    PassedControl.Text = PassedControl.Text.Substring(1);
+                }
             }
 
 
@@ -1093,19 +1092,18 @@ namespace Dobby {
                     // Wait for something to do
                     for (;InfoLabel == null || InfoFlashes == -1 && InfoText == null; Thread.Sleep(1));
 
-                    var newMessage = InfoText ?? "error?";
-
 
 
                     // Try to avoid hiding hint strings with the label reset
-                    if (InfoText != null && (InfoText == " "))
+                    if (InfoText == " ")
                     {
-                        for (var time = 0; InfoText == " " && time++ < 35; Thread.Sleep(1));
+                        for (var time = 0; InfoText == " " && time++ < 42; Thread.Sleep(1));
                     }
 
 
+
                     // Flash the label if applicable
-                    for (; InfoFlashes != -1;)
+                    for (var newMessage = InfoText ?? "error?"; InfoFlashes != -1;)
                     {
                         while (ActiveForm == null)
                             Thread.Sleep(1);
@@ -1122,6 +1120,7 @@ namespace Dobby {
                     }
 
 
+
                     // Set the info label's text
                     if (InfoText != null)
                     {
@@ -1129,8 +1128,9 @@ namespace Dobby {
                         InfoText = null;
                     }
                 }
-                catch (Exception) {
-                    Dev?.Print("Form Changed or Lost Focus, Killing Label Flash");
+                catch (Exception darn) {
+                    //Dev?.Print("Form Changed or Lost Focus, Killing Label Flash");
+                    Dev?.PrintError(darn);
 
                     while (ActiveForm == null)
                         Thread.Sleep(1);
