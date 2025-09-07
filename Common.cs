@@ -106,7 +106,7 @@ namespace Dobby {
         public static Testing Dev;
     #if DEBUG
         private static DebugWindow DebugWindow;
-    #endif
+#endif
         #endregion
 
 
@@ -116,7 +116,21 @@ namespace Dobby {
         //#
         #region [Control Refferences]
 
-        public static Control HoveredControl;
+        public static Control HoveredControl
+        {
+            get => _hoveredControl ?? Venat;
+
+            set {
+                _hoveredControl = value;
+
+                if (value != null && InfoFlashes == -1 && InfoLabel.Text == value.Tag.ToString())
+                {
+                    HoverString(value);
+                }
+            }
+        }
+        private static Control _hoveredControl;
+
 
 
         /// <summary> Refference to the originally launched form. </summary>
@@ -668,7 +682,6 @@ namespace Dobby {
             var controls = venat.Controls.Cast<Control>().ToArray();
             var hSeparatorLineScanner = new List<Point[]>();
 
-            Venat = venat;
 
 
 
@@ -791,6 +804,8 @@ namespace Dobby {
                 return;
             }
 
+
+            Venat = venat;
 
 
 
@@ -986,7 +1001,7 @@ namespace Dobby {
 
                 if (HoveredControl == PassedControl)
                 {
-                    HoveredControl = null;
+                    HoveredControl = Venat;
                 }
 
                 if (PassedControl.Text.Contains('>'))
@@ -1124,6 +1139,12 @@ namespace Dobby {
                     // Set the info label's text
                     if (InfoText != null)
                     {
+                        // Last-moment check to try and avoid suppressing hint tags if timed poorly, without just making a seperate worker to check for it occasionally
+                        if (HoveredControl.Tag != null && HoveredControl.Tag.GetType() == typeof (string) && (string) HoveredControl.Tag != InfoText)
+                        {
+                            InfoText = (string) HoveredControl.Tag;
+                        }
+
                         Venat?.Invoke(setLabelState, InfoLabel, Color.FromArgb(255, 227, 0), InfoText);
                         InfoText = null;
                     }
@@ -1186,13 +1207,11 @@ namespace Dobby {
         public static void HoverString(object Sender, bool eventIsLeave = false)
         {
             var sender = Sender as Control;
-            if (sender.Tag == null)
+            if (sender?.Tag== null)
             {
                 Dev?.Print("Null tag, returning.");
                 return;
             }
-
-
 
 
             // Force-Set InfoLabel reference if it isn't set due to microshaft bs

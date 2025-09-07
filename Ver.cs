@@ -359,6 +359,7 @@ namespace Dobby {
           "* 4.71.483.1183 | Moved help pages from the Pages folder in to a newly-created HelpPages folder instead; Separated help page functionality from the EbootPatchHelpPage and into a HelpPageCommon class for consistent functionality between them all one they're finished (may undo that and move what's currently only one function in to the regular Dobby.Common class); Fixed stupid issue with the HoverLeave bs only being applied to blacklisted controls- I forgot the exclamation mark...; Other misc background tweaks (formatting, mostly).",
           "* 4.71.484.1189 | Miscellaneous background tweaks.",
           "* 4.71.486.1191 | Reimplemented check removed in 4.67.448.1083, turns out it was responsible for resetting the label once a hint-less control was hovered over... I should really remember how I wrote some of these things.",
+          "* 4.71.486.1194 | Huh?",
           "* | ",
         };
 

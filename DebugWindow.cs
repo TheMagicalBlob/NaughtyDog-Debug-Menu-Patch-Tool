@@ -39,6 +39,7 @@ namespace Dobby
             return;
 
 
+
             // old shit I still may rework and use
             LogWindowRenderer = CreateGraphics();
 
