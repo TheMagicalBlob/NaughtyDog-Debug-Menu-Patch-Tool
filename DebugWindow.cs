@@ -1,5 +1,6 @@
 ﻿# if DEBUG
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -167,11 +168,33 @@ namespace Dobby
             LogShouldRefresh = true;
         }
 
-        private void NoDrawBtn_Click(object sender, EventArgs e) => NoDraw ^= true;
+        private void NoDrawBtn_Click(object sender, EventArgs e) => Environment.Exit(0);//NoDraw ^= true;
 
         private void PopupTestBtn_Click(object sender, EventArgs e)
         {
+            Debug.WriteLine("IF IT DOESNT WORK THROW A FUCKING WRRRO WHAT IT SSNDRMFK XDCA4YWOSIHVJGFTRD" +
+                "']");
+
             ShowPopup("Message", "Title");
+        }
+
+        private void PopupTest2Btn_Click(object sender, EventArgs e)
+        {
+            Environment.Exit(1);
+            Dev?.Print("Seriously");
+
+            if (ShowPopup("eat", "pant", true) == DialogResult.OK)
+            {
+                Environment.Exit(0);
+            }
+            else {
+
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Environment.Exit(0);
         }
 
 
@@ -298,7 +321,7 @@ namespace Dobby
                             LogPtr.Invoke(ResizeLog);
                         }
                         catch(InvalidOperationException) {
-                            MessageBox.Show("Error Resizing Log Form");
+                            ShowPopup("Error Resizing Log Form");
                         }
 
 

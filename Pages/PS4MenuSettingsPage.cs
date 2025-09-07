@@ -259,14 +259,14 @@ namespace Dobby {
 
             if (GSGameIndex == 0xBADBEEF)
             {
-                MessageBox.Show("Selected Game Not Currently Supported", $"Patches For {GameInfoLabel.Text} Not Added Yet");
+                ShowPopup("Selected Game Not Currently Supported", $"Patches For {GameInfoLabel.Text} Not Added Yet");
                 UpdateLabel("Unsupported Game Selected", true);
                 ExecutablePathBox.Reset();
                 return;
             }
             if (GSGameIndex == 0xDEADDAD)
             {
-                MessageBox.Show("Unknown Game Provided", $"Game unlikely to be Uncharted or Tlou");
+                ShowPopup("Unknown Game Provided", $"Game unlikely to be Uncharted or Tlou");
                 UpdateLabel("Unknown Game Selected", true);
                 ExecutablePathBox.Reset();
                 return;
@@ -345,7 +345,7 @@ namespace Dobby {
         private string ApplyMenuSettings(int gameIndex)
         {
             if(BootSettingsCallAddress[gameIndex] == 0 || BootSettingsFunctionAddress[gameIndex] == 0) {
-                MessageBox.Show($"Game #{gameIndex} Has Is Missing An Address For BootSettings (Function Call: {BootSettingsCallAddress[gameIndex]} / Function Data: {BootSettingsFunctionAddress[gameIndex]})");
+                ShowPopup($"Game #{gameIndex} Has Is Missing An Address For BootSettings (Function Call: {BootSettingsCallAddress[gameIndex]} / Function Data: {BootSettingsFunctionAddress[gameIndex]})");
                 return "error";
             }
 
@@ -1019,7 +1019,7 @@ namespace Dobby {
             if (result == "error")
             {
                 #if !DEBUG
-                MessageBox.Show($"An Unexpected Error Occured While Applying The Patches, Please Ensure You're Running The Latest Release Build\nIf You Are, Report It To The Moron Typing Out This Error Message", "Internal Error Applying Patch Data");
+                ShowPopup($"An Unexpected Error Occured While Applying The Patches, Please Ensure You're Running The Latest Release Build\nIf You Are, Report It To The Moron Typing Out This Error Message", "Internal Error Applying Patch Data");
                 #endif
                 Dev?.Print("ApplyMenuSettings returned error status.");
                 return;

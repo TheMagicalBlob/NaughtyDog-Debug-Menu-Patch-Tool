@@ -156,9 +156,9 @@ namespace Dobby {
         {
             if (IsDefaultQuestion)
             {
-                MessageBox.Show("Some Misc. Patches Will Be Applied To Uncharted 4/Lost Legacy Multiplayer Eboots To Make The Game Playable");
+                ShowPopup("Some Misc. Patches Will Be Applied To Uncharted 4/Lost Legacy Multiplayer Eboots To Make The Game Playable");
             }
-            else if (MessageBox.Show("Do You Want To Open Your Browser To The Homebrew Store/Itemzflow Download Page?", "Open Itemzflow Download Page On pkg-zone?", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            else if (ShowPopup("Do You Want To Open Your Browser To The Homebrew Store/Itemzflow Download Page?", "Open Itemzflow Download Page On pkg-zone?", true) == DialogResult.Yes)
             {
                 Process.Start("https://pkg-zone.com/details/ITEM00001");
             }

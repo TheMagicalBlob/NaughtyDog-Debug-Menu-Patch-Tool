@@ -30,7 +30,7 @@ namespace Dobby {
         {
             if (e.Button == MouseButtons.Right)
             {
-                MessageBox.Show("https://github.com/TheMagicalBlob");
+                ShowPopup("https://github.com/TheMagicalBlob");
             }
             else
                 Process.Start("https://github.com/TheMagicalBlob");
@@ -44,7 +44,7 @@ namespace Dobby {
         {
             if (e.Button == MouseButtons.Right)
             {
-                MessageBox.Show("https://illusion0001.com/");
+                ShowPopup("https://illusion0001.com/");
             }
             else
                 Process.Start("https://illusion0001.com/");

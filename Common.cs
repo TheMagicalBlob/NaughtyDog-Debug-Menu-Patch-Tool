@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Forms;
 #if DEBUG
@@ -123,7 +121,7 @@ namespace Dobby {
             set {
                 _hoveredControl = value;
 
-                if (value != null && InfoFlashes == -1 && InfoLabel.Text == value.Tag.ToString())
+                if (value != null && InfoFlashes == -1 && InfoLabel?.Text == value.Tag?.ToString())
                 {
                     HoverString(value);
                 }
@@ -428,7 +426,7 @@ namespace Dobby {
             stream.Read(LocalExecutableCheck = new byte[4], 0, 4);
 
             if (BitConverter.ToInt32(LocalExecutableCheck, 0) != 1179403647)
-                MessageBox.Show($"Executable Still Encrypted (self) | Must Be Decrypted/Unsigned");
+                ShowPopup($"Executable Still Encrypted (self) | Must Be Decrypted/Unsigned");
 
 
             // Read a string of data at a specific address to determine the current game (why is it 160 bytes??? I thought it was a 32-bit integer)
@@ -519,8 +517,6 @@ namespace Dobby {
         /// <param name="flashLabel"> If true, flash the label to indicate an error or otherwise get the user's attention. (switches between white/yellow) </param>
         public static void UpdateLabel(object newText, bool flashLabel = false)
         {
-            Dev?.Print($"UpdateLabel(\"{newText}\", {flashLabel})");
-
             // Avoid uhh what
             if ((InfoText ?? " ") == " " && newText != null && InfoLabel.Text != (string) newText)
             {
@@ -641,7 +637,7 @@ namespace Dobby {
 
                 case PageID.PCDebugMenuPage:
                     Venat = new PCDebugMenuPage();
-                    //MessageBox.Show("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
+                    //ShowPopup("Note:\nI'v Only Got The Executables For Either The Epic Or Steam Version, And I Don't Even Know Which...\n\nIf The Tools Says Your Executable Is Unknown, Send It To Me And I'll Add Support For It\nI Would Advise Alternate Methods, Though");
                     break;
 
                 case PageID.InfoHelpPage:
@@ -942,21 +938,47 @@ namespace Dobby {
         }
 
 
-        public static void ShowPopup(string Message, string Title = null)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Message"></param>
+        /// <param name="Title"></param>
+        /// <param name="IsQuestion"></param>
+        public static DialogResult ShowPopup(string Message, string Title = "Notice:", bool IsQuestion = false)
         {
             if (PopupWindow.HasActiveWindow)
             {
                 Dev?.Print($"WARNING: An attempt to open a PopupWindow while one was still active was made; Title: \"{Title ?? "null"}\".");
-                return;
             }
+            //var wait = true;
 
-            Navi = new PopupWindow(Message, Title);
+            //Task thisIsDumb()
+            //{
+            //    while (wait) Thread.Sleep(1);
+
+            //    return Task.CompletedTask;
+            //}
+            Dev?.Print("Fuck sake");
 
 
+
+            // Create and display the popup window
+            Navi = new PopupWindow(Message, Title, IsQuestion);
             Navi.Show();
+
+            
+            // Make sure it's being shown on/in the correct layer/position
             Venat.SendToBack();
             Navi.BringToFront();
             Navi.Center(Venat.Location);
+            //Venat?.Update();
+            //Navi?.Update();
+
+            //Navi.FormClosing += (meh, bleh) => wait = false;
+
+
+            //await thisIsDumb();
+            return Navi.PreviousResult;
         }
         #endregion
 

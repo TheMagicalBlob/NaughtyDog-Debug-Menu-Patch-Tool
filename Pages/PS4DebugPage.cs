@@ -242,7 +242,7 @@ namespace Dobby {
                 if(payloadSocket.Connected)
                 {
                     UpdateLabel("Payload Injected Successfully");
-                    MessageBox.Show("PS4Debug Update 1.1.15 By ctn123\nPS4Debug Created By Golden", "Payload Injected Successfully, Here's Some Credits"); // Excessive Credits To Try Avoiding Beef lol
+                    ShowPopup("PS4Debug Update 1.1.15 By ctn123\nPS4Debug Created By Golden", "Payload Injected Successfully, Here's Some Credits"); // Excessive Credits To Try Avoiding Beef lol
                 }
             }
         }
@@ -275,7 +275,7 @@ namespace Dobby {
 
                                 default:
                                     Dev?.Print($"Error, Game Was T1R But None of The Checks Matched! || {T1RCheck}");
-                                    MessageBox.Show($"The Game Was Determined To Be The Last of Us: Remastered, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{T1RCheck} {TitleID}", "Error Finding App Version");
+                                    ShowPopup($"The Game Was Determined To Be The Last of Us: Remastered, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{T1RCheck} {TitleID}", "Error Finding App Version");
                                     return "UnknownT1RGameVersion";
                             }
                         case "CUSA10249":
@@ -295,7 +295,7 @@ namespace Dobby {
 
                                 default:
                                     Dev?.Print($"Error, Game Was T2 But None of The Checks Matched! || chk:{T2Check}");
-                                    MessageBox.Show($"The Game Was Determined To Be The Last of Us Part II, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{T2Check} {TitleID}", "Error Finding App Version");
+                                    ShowPopup($"The Game Was Determined To Be The Last of Us Part II, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{T2Check} {TitleID}", "Error Finding App Version");
                                     DebugModePointerOffset = 0xDEADDAD;
                                     return "UnknownT2GameVersion";
                             }
@@ -315,7 +315,7 @@ namespace Dobby {
 
                                 default:
                                     Dev?.Print($"Error, Game Was UCC But None of The Checks Matched! || chk:{UCCCheck}");
-                                    MessageBox.Show($"The Game Was Determined To Be The Uncharted Collection, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{UCCCheck} {TitleID}", "Error Finding App Version");
+                                    ShowPopup($"The Game Was Determined To Be The Uncharted Collection, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{UCCCheck} {TitleID}", "Error Finding App Version");
                                     return "UnknownUCCGameVersion";
                             }
                         case "CUSA00341":
@@ -363,7 +363,7 @@ namespace Dobby {
 
                                 default:
                                     Dev?.Print($"Error, Game Was UC4, But None of The Checks Matched! || chk:{U4Check}");
-                                    MessageBox.Show($"The Game Was Determined To Be UC4, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{U4Check} {TitleID}", "Error Finding App Version");
+                                    ShowPopup($"The Game Was Determined To Be UC4, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{U4Check} {TitleID}", "Error Finding App Version");
                                     return "UnknownUC4GameVersion";
                             }
                         case "CUSA04030":
@@ -377,7 +377,7 @@ namespace Dobby {
 
                                 default:
                                     Dev?.Print($"Error, Game Was UC4 MP Beta, But None of The Checks Matched! || chk:{U4MPBetaCheck}");
-                                    MessageBox.Show($"The Game Was Determined To Be The UC4 MP Beta (Nice), But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{U4MPBetaCheck} {TitleID}", "Error Finding App Version");
+                                    ShowPopup($"The Game Was Determined To Be The UC4 MP Beta (Nice), But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{U4MPBetaCheck} {TitleID}", "Error Finding App Version");
                                     return "UnknownUC4GameVersion";
                             }
                         
@@ -396,7 +396,7 @@ namespace Dobby {
 
                                 default:
                                     Dev?.Print($"Error, Game Was UCC But None of The Checks Matched! || chk:{TLLCheck}");
-                                    MessageBox.Show($"The Game Was Determined To Be The The Lost Legacy, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{TLLCheck} {TitleID}", "Error Finding App Version");
+                                    ShowPopup($"The Game Was Determined To Be The The Lost Legacy, But The Executable Didn't Match Anything. This Could Be Caused By A Backported .bin\nPlease Send It To TheMagicalBlob To Quickly Have It Supported.\n{TLLCheck} {TitleID}", "Error Finding App Version");
                                     return "UnknownTLLGameVersion";
                             }
 

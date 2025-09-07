@@ -38,7 +38,7 @@ namespace Dobby {
             if(e.Button == MouseButtons.Right)
             {
                 File.WriteAllLines(Directory.GetCurrentDirectory() + @"\ChangeLog.txt", Ver.ChangeList);
-                MessageBox.Show($"Changelist Dumped To {Directory.GetCurrentDirectory()}\\ChangeLog.txt");
+                ShowPopup($"Changelist Dumped To {Directory.GetCurrentDirectory()}\\ChangeLog.txt");
             }
         }
         private void BuildLabelMH(object sender, EventArgs e) => UpdateLabel("Right Click To Dump ChangeList");

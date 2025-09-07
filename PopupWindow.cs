@@ -13,11 +13,14 @@ namespace Dobby
     {
         private partial class PopupWindow : Form
         {
-            public PopupWindow(string Message, string Title)
+            public PopupWindow(string Message, string Title, bool IsQuestion)
             {
+                Dev?.Print("Creating Popup Window...");
+
                 //#
                 //## Create and decorate the form, then apply basic event handlers and line decorations
                 //#
+                #region go away
                 this.MainLabel = new Dobby.Label();
                 this.separatorLine0 = new Dobby.Label();
                 this.PopupMessageTextBox = new Dobby.RichTextBox();
@@ -75,8 +78,12 @@ namespace Dobby
                 this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
                 this.Name = "PopupWindow";
                 this.ResumeLayout(false);
+                #endregion
 
 
+
+
+                Dev?.Print("Populating Popup Window...");
 
                 // Create the exit button and related events
                 var ExitBtn = new Button()
@@ -94,16 +101,71 @@ namespace Dobby
                 };
                 ExitBtn.FlatAppearance.BorderSize = 0;
                 Controls.Add(ExitBtn);
-                ExitBtn.BringToFront();/**/
+                ExitBtn.BringToFront();
             
                 FormClosed += (sender, args) => HasActiveWindow = false;
                 
                 ExitBtn.Click += new EventHandler((sender, args) => { this.Close(); });
                 ExitBtn.MouseEnter += new EventHandler(Common.WindowBtnMH);
                 ExitBtn.MouseLeave += new EventHandler(Common.WindowBtnML);
+                /*
+                if (IsQuestion)
+                {
+                    var ConfirmBtn = new Button()
+                    {
+                        Location = new Point(this.Size.Width - 24, 1),
+                        Size = new Size(32, 23),
+                        Name = "ConfirmBtn",
+                        Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
+                        Text = "Ok",
+                        FlatStyle = FlatStyle.Flat,
+                        BackColor = Color.Gray,
+                        ForeColor = SystemColors.Control,
+                        TextAlign = ContentAlignment.MiddleLeft,
+                        Cursor = Cursors.Cross
+                    };
+                    ConfirmBtn.FlatAppearance.BorderSize = 0;
+                    Controls.Add(ConfirmBtn);
+                    ConfirmBtn.BringToFront();
+            
+                    FormClosed += (sender, args) => HasActiveWindow = false;
                 
+                    ConfirmBtn.Click += new EventHandler((sender, args) => { PreviousResult = DialogResult.OK; this.Close(); });
+                    ConfirmBtn.MouseEnter += new EventHandler(Common.WindowBtnMH);
+                    ConfirmBtn.MouseLeave += new EventHandler(Common.WindowBtnML);
+
+                    
+
+                    var CancelBtn = new Button()
+                    {
+                        Location = new Point(this.Size.Width - 24, 1),
+                        Size = new Size(50, 23),
+                        Name = "CancelBtn",
+                        Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
+                        Text = "Cancel",
+                        FlatStyle = FlatStyle.Flat,
+                        BackColor = Color.Gray,
+                        ForeColor = SystemColors.Control,
+                        TextAlign = ContentAlignment.MiddleLeft,
+                        Cursor = Cursors.Cross
+                    };
+                    CancelBtn.FlatAppearance.BorderSize = 0;
+                    Controls.Add(ConfirmBtn);
+                    CancelBtn.BringToFront();
+            
+                    FormClosed += (sender, args) => HasActiveWindow = false;
                 
+                    CancelBtn.Click += new EventHandler((sender, args) => { PreviousResult = DialogResult.Cancel; this.Close(); });
+                    CancelBtn.MouseEnter += new EventHandler(Common.WindowBtnMH);
+                    CancelBtn.MouseLeave += new EventHandler(Common.WindowBtnML);
+                }
+                */
+                return;
                 InitializeAdditionalEventHandlers(this, true);
+
+
+                
+                Dev?.Print("Fuck sake");
 
 
                 
@@ -111,14 +173,12 @@ namespace Dobby
                 PopupMessageTextBox.RightMargin = PopupMessageTextBox.Width - 17;
 
 
-
-
-
                 // Assign title text if applicable
                 if (Title != null)
                 {
                     MainLabel.Text = Title;
                 }
+
 
                 // Assign message box text
                 if (Message?.Length < 1)
@@ -129,10 +189,13 @@ namespace Dobby
                     PopupMessageTextBox.Text = Message ?? "Null Message Provided!!!";
                 }
 
+
+
                 HasActiveWindow = true;
 
                 Update();
                 Center(Venat.Location);
+                Dev?.Print("EAT SHIT sake");
                 
                 Focus();
             }
@@ -143,7 +206,10 @@ namespace Dobby
             //=================================\\
             #region [Variable Declarations]
             internal static bool HasActiveWindow = false;
+
+            internal DialogResult PreviousResult;
             #endregion
+
 
 
             //=================================\\

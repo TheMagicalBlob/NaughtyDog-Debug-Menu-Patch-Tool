@@ -51,7 +51,7 @@ namespace Dobby
             this.MainLabel.Location = new System.Drawing.Point(1, 1);
             this.MainLabel.Name = "MainLabel";
             this.MainLabel.Size = new System.Drawing.Size(314, 22);
-            this.MainLabel.StretchToFitForm = false;
+            this.MainLabel.StretchToFitForm = true;
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "Naughty Dog Debug Tool";
             // 
@@ -63,7 +63,7 @@ namespace Dobby
             this.Info.Location = new System.Drawing.Point(7, 286);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
-            this.Info.StretchToFitForm = false;
+            this.Info.StretchToFitForm = true;
             this.Info.TabIndex = 7;
             this.Info.Text = "=====================================";
             // 
@@ -112,7 +112,7 @@ namespace Dobby
             this.Playstation4Label.Location = new System.Drawing.Point(119, 30);
             this.Playstation4Label.Name = "Playstation4Label";
             this.Playstation4Label.Size = new System.Drawing.Size(73, 15);
-            this.Playstation4Label.StretchToFitForm = false;
+            this.Playstation4Label.StretchToFitForm = true;
             this.Playstation4Label.TabIndex = 36;
             this.Playstation4Label.Text = "Playstation 4";
             // 
@@ -125,7 +125,7 @@ namespace Dobby
             this.PCLabel.Location = new System.Drawing.Point(146, 158);
             this.PCLabel.Name = "PCLabel";
             this.PCLabel.Size = new System.Drawing.Size(20, 15);
-            this.PCLabel.StretchToFitForm = false;
+            this.PCLabel.StretchToFitForm = true;
             this.PCLabel.TabIndex = 37;
             this.PCLabel.Text = "PC";
             // 

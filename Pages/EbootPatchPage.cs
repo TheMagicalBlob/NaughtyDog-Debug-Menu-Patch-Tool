@@ -273,7 +273,7 @@ namespace Dobby {
             bool status; 
             switch(Game) {
                 default:
-                    MessageBox.Show("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported\n" + Game);
+                    ShowPopup("Couldn't Determine The Game This Executable Belongs To, Send It To Blob To Have It's Title ID Supported\n" + Game);
                     break;
                 case GameID.T1R100:
                 case GameID.T1R109:

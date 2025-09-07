@@ -21,6 +21,8 @@ namespace Dobby
             this.label1 = new Dobby.Label();
             this.richTextBox1 = new Dobby.RichTextBox();
             this.PopupTestBtn = new Dobby.Button();
+            this.button1 = new Dobby.Button();
+            this.button2 = new Dobby.Button();
             this.SuspendLayout();
             // 
             // MainLabel
@@ -32,7 +34,7 @@ namespace Dobby
             this.MainLabel.Location = new System.Drawing.Point(1, 1);
             this.MainLabel.Name = "MainLabel";
             this.MainLabel.Size = new System.Drawing.Size(80, 22);
-            this.MainLabel.StretchToFitForm = false;
+            this.MainLabel.StretchToFitForm = true;
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "DevPanel";
             // 
@@ -44,7 +46,7 @@ namespace Dobby
             this.separatorLine0.Location = new System.Drawing.Point(2, 15);
             this.separatorLine0.Name = "separatorLine0";
             this.separatorLine0.Size = new System.Drawing.Size(316, 15);
-            this.separatorLine0.StretchToFitForm = false;
+            this.separatorLine0.StretchToFitForm = true;
             this.separatorLine0.TabIndex = 31;
             this.separatorLine0.Text = "--------------------------------------------------------------";
             // 
@@ -56,7 +58,7 @@ namespace Dobby
             this.separatorLine1.Location = new System.Drawing.Point(2, 144);
             this.separatorLine1.Name = "separatorLine1";
             this.separatorLine1.Size = new System.Drawing.Size(316, 15);
-            this.separatorLine1.StretchToFitForm = false;
+            this.separatorLine1.StretchToFitForm = true;
             this.separatorLine1.TabIndex = 36;
             this.separatorLine1.Text = "--------------------------------------------------------------";
             // 
@@ -69,7 +71,7 @@ namespace Dobby
             this.Playstation4Label.Location = new System.Drawing.Point(119, 30);
             this.Playstation4Label.Name = "Playstation4Label";
             this.Playstation4Label.Size = new System.Drawing.Size(73, 15);
-            this.Playstation4Label.StretchToFitForm = false;
+            this.Playstation4Label.StretchToFitForm = true;
             this.Playstation4Label.TabIndex = 36;
             this.Playstation4Label.Text = "Functions";
             // 
@@ -82,7 +84,7 @@ namespace Dobby
             this.PCLabel.Location = new System.Drawing.Point(118, 159);
             this.PCLabel.Name = "PCLabel";
             this.PCLabel.Size = new System.Drawing.Size(70, 14);
-            this.PCLabel.StretchToFitForm = false;
+            this.PCLabel.StretchToFitForm = true;
             this.PCLabel.TabIndex = 37;
             this.PCLabel.Text = "Log Window";
             // 
@@ -113,7 +115,7 @@ namespace Dobby
             this.label1.Location = new System.Drawing.Point(2, 167);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(316, 15);
-            this.label1.StretchToFitForm = false;
+            this.label1.StretchToFitForm = true;
             this.label1.TabIndex = 44;
             this.label1.Text = "--------------------------------------------------------------";
             // 
@@ -146,12 +148,48 @@ namespace Dobby
             this.PopupTestBtn.Variable = false;
             this.PopupTestBtn.Click += new System.EventHandler(this.PopupTestBtn_Click);
             // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.button1.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
+            this.button1.ForeColor = System.Drawing.SystemColors.Control;
+            this.button1.Location = new System.Drawing.Point(1, 100);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(113, 24);
+            this.button1.TabIndex = 47;
+            this.button1.Tag = "";
+            this.button1.Text = "PopupTest2";
+            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Variable = false;
+            this.button1.Click += new System.EventHandler(this.PopupTest2Btn_Click);
+            // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.button2.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Font = new System.Drawing.Font("Cambria", 9.25F, System.Drawing.FontStyle.Bold);
+            this.button2.Location = new System.Drawing.Point(216, 44);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(47, 19);
+            this.button2.TabIndex = 48;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // DebugWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ClientSize = new System.Drawing.Size(320, 309);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.PopupTestBtn);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.PCLabel);
@@ -184,6 +222,8 @@ namespace Dobby
         public Label label1;
         private RichTextBox richTextBox1;
         private Button PopupTestBtn;
+        private Button button1;
+        private Button button2;
     }
 }
 #endif
