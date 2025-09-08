@@ -25,6 +25,7 @@ namespace Dobby
             FlatStyle = FlatStyle.Flat;
             FlatAppearance.BorderSize = 0;
             BackColor = Color.FromArgb(100, 100, 100);
+            ForeColor = SystemColors.Control;
 
             Font = new Font("Cambria", 9.25F, FontStyle.Bold);
             Cursor = Cursors.Cross;
@@ -48,9 +49,9 @@ namespace Dobby
         /// <summary>
         /// Custom value associated with the control to be rendered alongside it, and edited via manually assigned per-control events.
         /// </summary>
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] // Designer autogenerates code settings the Variable & VariableTags properties to null, annoyingly. More of an issue for the former though, due to the Properties window not letting you edit objects
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] // Designer autogenerates code setting the Variable & VariableTags properties to null, annoyingly. More of an issue for the former though, due to the Properties window not letting you edit objects
         [TypeConverter(typeof(BooleanConverter))]
-        [DefaultValue(null)]
+        [DefaultValue(false)]
         public object Variable
         {
             get => _Variable;

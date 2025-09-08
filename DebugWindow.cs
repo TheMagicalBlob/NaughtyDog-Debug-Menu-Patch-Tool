@@ -16,25 +16,25 @@ namespace Dobby
     /// </summary>
     partial class DebugWindow : Form
     {
-        public DebugWindow(Form Gaia)
+        public DebugWindow()
         {
             InitializeComponent();
             InitializeAdditionalEventHandlers(this, true);
 
-            foreach (var control in this.Controls.OfType<Dobby.Button>())
+            foreach (var control in Controls.OfType<Dobby.Button>())
             {
-                control.Click += (sender, args) => Venat.Focus();
+                control.Click += (sender, args) => Common.Venat.Focus();
             }
 
 
-            
-            LogPtr = this;
-            ParentPtr = Gaia;
 
-            ParentPtr.LocationChanged += (sender, args) => MoveLogToAppEdge();
+            
+            DebugWindowPtr = this;
+            Venat.LocationChanged += (sender, args) => MoveDebugWindowToAppEdge();
+
 
             // LogWindow Event Handlers
-            MouseDown  += MouseDownFunc;
+            MouseDown  += Common.MouseDownFunc;
             MouseUp    += MouseUpFunc;
             MouseMove  += (sender, args) => MoveForm();
             return;
@@ -50,8 +50,8 @@ namespace Dobby
 
         
 
-        public static Form ParentPtr;
-        public static Form LogPtr;
+
+        public static Form DebugWindowPtr;
         
         public static Size FormScale;
 
@@ -70,42 +70,33 @@ namespace Dobby
         private readonly Thread LogThread;
 
 
+
         
         /// <summary> Active Page reference for debug output loop. </summary>
-        private dynamic D_ActivePage {
+        private dynamic D_ActivePage
+        {
             get => d_activePage;
             set {
                 d_activePage = value;
-                SetDebugWindowParent(value);
             }
         }
         private dynamic d_activePage;
 
 
-            
-        /// <summary>
-        /// Sets the form to anchor the log window to.
-        /// </summary>
-        /// <param name="Gaia"> The anchor form. </param>
-        public void SetDebugWindowParent(Form Gaia)
+        public void MoveDebugWindowToAppEdge()
         {
-            ParentPtr = Gaia;
-        }
-
-
-        public void MoveLogToAppEdge()
-        {
-            if (LogPtr == null)
+            if (DebugWindowPtr == null)
             {
+                Dev?.Print($"WARNING: An attempt to call {nameof(MoveDebugWindowToAppEdge)} was made while {nameof(DebugWindowPtr)} was null.");
                 return;
             }
 
 
-            LogPtr.BringToFront();
-            ParentPtr.BringToFront();
+            Venat.BringToFront(); //! fuck sake
 
-            LogPtr.Location = new Point(ParentPtr.Location.X - LogPtr.Size.Width, ParentPtr.Location.Y);
-            LogPtr.Update();
+            DebugWindowPtr.BringToFront();
+            DebugWindowPtr.Location = new Point(Venat.Location.X - DebugWindowPtr.Size.Width, Venat.Location.Y);
+            DebugWindowPtr.Update();
         }
 
             
@@ -118,20 +109,20 @@ namespace Dobby
 
         public static Scaling ResizeLog = new Scaling(() =>
         { 
-            LogPtr.Size = FormScale;
-            LogWindowRenderer = LogPtr.CreateGraphics(); //! required?
+            DebugWindowPtr.Size = FormScale;
+            LogWindowRenderer = DebugWindowPtr.CreateGraphics(); //! required?
 
         Reset:
-            LogPtr.Location = new Point(ParentPtr.Location.X - LogPtr.Size.Width, ParentPtr.Location.Y);
-            LogPtr.Update();
+            DebugWindowPtr.Location = new Point(Venat.Location.X - DebugWindowPtr.Size.Width, Venat.Location.Y);
+            DebugWindowPtr.Update();
             //ParentPtr.BringToFront();
 
             var ControlOffset = 0;
-            foreach(Control control in LogPtr.Controls)
+            foreach(Control control in DebugWindowPtr.Controls)
             {
-                control.Location = new Point(LogPtr.Size.Width - control.Size.Width - ControlOffset - 1, 1);
+                control.Location = new Point(DebugWindowPtr.Size.Width - control.Size.Width - ControlOffset - 1, 1);
                 if(control.Location.X < 0) {
-                    LogPtr.Size = new Size(LogPtr.Size.Width + control.Size.Width + 1, LogPtr.Size.Height);
+                    DebugWindowPtr.Size = new Size(DebugWindowPtr.Size.Width + control.Size.Width + 1, DebugWindowPtr.Size.Height);
                     goto Reset;
                 }
 
@@ -168,28 +159,21 @@ namespace Dobby
             LogShouldRefresh = true;
         }
 
-        private void NoDrawBtn_Click(object sender, EventArgs e) => Environment.Exit(0);//NoDraw ^= true;
+        private void NoDrawBtn_Click(object sender, EventArgs e) => NoDraw ^= true;
 
         private void PopupTestBtn_Click(object sender, EventArgs e)
         {
-            Debug.WriteLine("IF IT DOESNT WORK THROW A FUCKING WRRRO WHAT IT SSNDRMFK XDCA4YWOSIHVJGFTRD" +
-                "']");
-
-            ShowPopup("Message", "Title");
-        }
-
-        private void PopupTest2Btn_Click(object sender, EventArgs e)
-        {
-            Environment.Exit(1);
-            Dev?.Print("Seriously");
-
-            if (ShowPopup("eat", "pant", true) == DialogResult.OK)
+            if (ShowPopup("eat", "pant", true).Result == DialogResult.OK)
             {
                 Environment.Exit(0);
             }
             else {
-
+                Common.Venat.Location = Point.Empty;
             }
+        }
+
+        private void PopupTest2Btn_Click(object sender, EventArgs e)
+        {
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -233,7 +217,7 @@ namespace Dobby
                                 rawOutput = new string[] {
                                     $"Build: {Ver.Build}",
                                     " ",
-                                    $"Parent Form: {(ActiveForm != null ? $"{Venat?.Name} | # Of Children: {Venat?.Controls?.Count}" : "Console")}",
+                                    $"Parent Form: {(ActiveForm != null ? $"{Common.Venat?.Name} | # Of Children: {Common.Venat?.Controls?.Count}" : "Console")}",
                                     " ",
                                     $"Active Page: {Common.ActivePage}",
                                     $"  Pages: {string.Join(", ", Pages)}",
@@ -251,7 +235,7 @@ namespace Dobby
                                 rawOutput = new string[] {
                                     $"Build: {Ver.Build}",
                                     " ",
-                                    $"Parent Form: {(ActiveForm != null ? $"{Venat?.Name} | # Of Children: {Venat?.Controls?.Count}" : "Console")}",
+                                    $"Parent Form: {(ActiveForm != null ? $"{Common.Venat?.Name} | # Of Children: {Common.Venat?.Controls?.Count}" : "Console")}",
                                     " ",
                                     //$"TitleID: {(PS4DebugPage.TitleID == "?" ? "UNK" : PS4DebugPage.TitleID)} | Game Version: {PS4DebugPage.GameVersion}",
                                     $"GameID: {ActiveGameID} | {(Common.ActivePage == PageID.PS4DebugPage ? $"Peek Test: {D_ActivePage.TitleID}" : "load the page, fucker")}",
@@ -318,7 +302,7 @@ namespace Dobby
 
                         // Resize Form Back On Main LogWindow Thread
                         try {
-                            LogPtr.Invoke(ResizeLog);
+                            DebugWindowPtr.Invoke(ResizeLog);
                         }
                         catch(InvalidOperationException) {
                             ShowPopup("Error Resizing Log Form");
@@ -327,13 +311,13 @@ namespace Dobby
 
                         // Clear Last "Frame", Draw Text And Border
                         LogWindowRenderer.Clear(Common.MainColour);
-                        LogWindowRenderer.DrawLine(logPen, 0f, 30f, (float)LogPtr.Width, 30f);
+                        LogWindowRenderer.DrawLine(logPen, 0f, 30f, (float)DebugWindowPtr.Width, 30f);
 
                         LogWindowRenderer.DrawLines(logPen, new Point[] {
                                 Point.Empty,
-                                new Point(LogPtr.Width-1, 0),
-                                new Point(LogPtr.Width-1, LogPtr.Height-1),
-                                new Point(0, LogPtr.Height-1),
+                                new Point(DebugWindowPtr.Width-1, 0),
+                                new Point(DebugWindowPtr.Width-1, DebugWindowPtr.Height-1),
+                                new Point(0, DebugWindowPtr.Height-1),
                                 Point.Empty
                         });
 
@@ -359,7 +343,7 @@ namespace Dobby
         new public void Dispose()
         {
             LogThread?.Abort();
-            LogPtr?.Dispose();
+            DebugWindowPtr?.Dispose();
             LogFile?.Dispose();
 
             base.Dispose();

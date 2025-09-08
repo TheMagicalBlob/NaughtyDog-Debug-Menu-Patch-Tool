@@ -660,11 +660,6 @@ namespace Dobby {
             Venat.Location = LastFormPosition;
             PageToClose.Close();
             Common.ActivePage = Page;
-
-#if DEBUG
-            DebugWindow?.SetDebugWindowParent(Venat);
-#endif
-            
         }
 
 
@@ -709,6 +704,7 @@ namespace Dobby {
             venat.Tag = hSeparatorLineScanner.ToArray();
 
 
+           
 
             
 
@@ -737,6 +733,7 @@ namespace Dobby {
                 control.MouseLeave += (sender, e) => HoverString(sender, true);
             }
 
+            
 
 
             
@@ -744,6 +741,8 @@ namespace Dobby {
             //#
             //## SET MOUSE/KEY-RELATED INPUT EVENT HANDLERS
             //#
+            
+            
 
             // Set appropriate event handlers for the controls on the form as well, as well as other miscellaneous shit
             foreach (var item in controls.Where(item => !item.Name.Contains("TextBox")))
@@ -756,11 +755,16 @@ namespace Dobby {
 
                 item.TabStop = false;
      
-                item.MouseDown += (sender, args) => MouseDownFunc(args);
+                item.MouseDown += MouseDownFunc;
                 item.MouseUp   += (sender, _) => MouseUpFunc();
+                
 
                 // Add the event handler to everything that's not a text container
-                item.MouseMove += new MouseEventHandler((sender, e) => MoveForm());
+                if (item.GetType() != typeof(Dobby.Button))
+                {
+                    item.MouseMove += new MouseEventHandler((sender, e) => MoveForm());
+                }
+                
 
 
                 // Avoid applying MouseMove and KeyDown event handlers to text containters (to retain the ability to drag-select text)
@@ -784,16 +788,14 @@ namespace Dobby {
             }
 
 
-
             // Set Event Handlers for Form Dragging
-            venat.MouseDown += (sender, args) => MouseDownFunc(args);
+            venat.MouseDown += MouseDownFunc;
             venat.MouseUp   += (sender, _) => MouseUpFunc();
             
             venat.MouseEnter += (sender, _) => HoverString(sender);
             venat.MouseMove += (sender, _) => MoveForm();
             
             venat.Paint += (_venat, yoshiP) => DrawFormDecorations((Form)_venat, yoshiP);
-            
 
             if (subForm)
             {
@@ -944,40 +946,39 @@ namespace Dobby {
         /// <param name="Message"></param>
         /// <param name="Title"></param>
         /// <param name="IsQuestion"></param>
-        public static DialogResult ShowPopup(string Message, string Title = "Notice:", bool IsQuestion = false)
+        public static async Task<DialogResult> ShowPopup(string Message, string Title = "Notice:", bool IsQuestion = false)
         {
             if (PopupWindow.HasActiveWindow)
             {
                 Dev?.Print($"WARNING: An attempt to open a PopupWindow while one was still active was made; Title: \"{Title ?? "null"}\".");
             }
-            //var wait = true;
+            var wait = true;
 
-            //Task thisIsDumb()
-            //{
-            //    while (wait) Thread.Sleep(1);
+            Task thisIsDumb()
+            {
+                while (wait) Thread.Sleep(1);
 
-            //    return Task.CompletedTask;
-            //}
+                return Task.CompletedTask;
+            }
             Dev?.Print("Fuck sake");
 
 
 
             // Create and display the popup window
             Navi = new PopupWindow(Message, Title, IsQuestion);
-            Navi.Show();
-
             
+
             // Make sure it's being shown on/in the correct layer/position
             Venat.SendToBack();
             Navi.BringToFront();
             Navi.Center(Venat.Location);
-            //Venat?.Update();
-            //Navi?.Update();
+            Venat?.Update();
+            Navi?.Update();
 
-            //Navi.FormClosing += (meh, bleh) => wait = false;
+            Navi.FormClosing += (meh, bleh) => wait = false;
 
 
-            //await thisIsDumb();
+            await thisIsDumb();
             return Navi.PreviousResult;
         }
         #endregion
@@ -1209,13 +1210,13 @@ namespace Dobby {
             }
             else {
                 // Create the log window and make it invisible until it's been moved to the parent form.
-                DebugWindow = new DebugWindow((Form) ((Control)sender).FindForm())
+                DebugWindow = new DebugWindow()
                 {
                     Visible = false
                 };
 
                 DebugWindow.Show();
-                DebugWindow.MoveLogToAppEdge();
+                DebugWindow.MoveDebugWindowToAppEdge();
                 DebugWindow.Visible = true;
             }
         }
@@ -1267,7 +1268,7 @@ namespace Dobby {
         internal static void WindowBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
         internal static void MinimizeBtn_Click(object sender, EventArgs e) => ((Control)sender).FindForm().WindowState = FormWindowState.Minimized;
         
-        internal static void MouseDownFunc(MouseEventArgs e)
+        internal static void MouseDownFunc(object _, MouseEventArgs e)
         {
             ActiveMouseButton = e.Button;
             MouseIsDown = true;
@@ -1281,11 +1282,11 @@ namespace Dobby {
         internal static void MouseUpFunc()
         {
             MouseScrolled = MouseIsDown = false;
-
             ActiveMouseButton = MouseButtons.None;
-
-            Navi?.BringToFront();
+           
+            Navi?.Center(Venat.Location);
         }
+
 
         public static void MoveForm()
         {
@@ -1296,7 +1297,7 @@ namespace Dobby {
             Venat.Update();
 
             #if DEBUG
-            DebugWindow?.MoveLogToAppEdge();
+            //DebugWindow?.MoveDebugWindowToAppEdge();
             #endif
          
             Navi?.Center(Venat.Location);

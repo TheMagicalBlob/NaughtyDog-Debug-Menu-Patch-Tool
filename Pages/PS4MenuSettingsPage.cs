@@ -731,7 +731,7 @@ namespace Dobby {
                 GSButtons.Last().MouseEnter += (sender, e) => HoverLeave(((Control)sender), true); 
                 GSButtons.Last().MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
                 GSButtons.Last().MouseUp += (sender, e) => MouseUpFunc();
-                GSButtons.Last().MouseDown += (_, args) => MouseDownFunc(args);
+                GSButtons.Last().MouseDown += MouseDownFunc;
                 GSButtons.Last().MouseMove += (sender, _) => MoveForm();
 
 
@@ -763,15 +763,18 @@ namespace Dobby {
                 BackColor = Color.FromArgb(100, 100, 100),
                 Cursor = Cursors.Cross
             });
+
             ConfirmBtn.FlatAppearance.BorderSize = 0;
 
             ConfirmBtn.Location = new Point(1, ResetButtonVerticalOffset); // Right Below The GameInfoLabel
             ConfirmBtn.MouseEnter += (sender, e) => HoverLeave(((Control)sender), true);
             ConfirmBtn.MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
             ConfirmBtn.MouseUp += (sender, _) => MouseUpFunc();
-            ConfirmBtn.MouseDown += (_, args) => MouseDownFunc(args);
+            ConfirmBtn.MouseDown += MouseDownFunc;
             ConfirmBtn.Click += ConfirmBtn_Click;
             ConfirmBtn.BringToFront();
+
+
 
 
             // Create the "Reset Page" button
@@ -787,17 +790,20 @@ namespace Dobby {
                 BackColor = Color.FromArgb(100, 100, 100),
                 Cursor = Cursors.Cross
             });
+
             ResetBtn.FlatAppearance.BorderSize = 0;
             
             ResetBtn.Location = new Point(1, ResetButtonVerticalOffset + GSButtonHeight + 1);
             ResetBtn.MouseEnter += (sender, e) => HoverLeave(((Control)sender), true);
             ResetBtn.MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
             ResetBtn.MouseUp += (sender, _) => MouseUpFunc();
-            ResetBtn.MouseDown += (_, args) => MouseDownFunc(args);
+            ResetBtn.MouseDown += MouseDownFunc;
             ResetBtn.Click += (_, __) => ResetCustomDebugOptions();
             ResetBtn.BringToFront();
 
             
+
+
 
             
             //#

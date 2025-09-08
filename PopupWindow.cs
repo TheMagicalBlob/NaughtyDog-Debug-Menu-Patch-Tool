@@ -108,12 +108,12 @@ namespace Dobby
                 ExitBtn.Click += new EventHandler((sender, args) => { this.Close(); });
                 ExitBtn.MouseEnter += new EventHandler(Common.WindowBtnMH);
                 ExitBtn.MouseLeave += new EventHandler(Common.WindowBtnML);
-                /*
+                
                 if (IsQuestion)
                 {
                     var ConfirmBtn = new Button()
                     {
-                        Location = new Point(this.Size.Width - 24, 1),
+                        Location = new Point(this.Size.Width / 2 - 30, this.Size.Height - 30),
                         Size = new Size(32, 23),
                         Name = "ConfirmBtn",
                         Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
@@ -138,7 +138,7 @@ namespace Dobby
 
                     var CancelBtn = new Button()
                     {
-                        Location = new Point(this.Size.Width - 24, 1),
+                        Location = new Point(this.Size.Width / 2 + 1, this.Size.Height - 30),
                         Size = new Size(50, 23),
                         Name = "CancelBtn",
                         Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
@@ -159,14 +159,11 @@ namespace Dobby
                     CancelBtn.MouseEnter += new EventHandler(Common.WindowBtnMH);
                     CancelBtn.MouseLeave += new EventHandler(Common.WindowBtnML);
                 }
-                */
-                return;
+                
                 InitializeAdditionalEventHandlers(this, true);
 
 
                 
-                Dev?.Print("Fuck sake");
-
 
                 
                 // Fix inconsistent margins (left-side spacing is ~17 while the right gets left to 1 - 2)
@@ -193,12 +190,15 @@ namespace Dobby
 
                 HasActiveWindow = true;
 
-                Update();
+                Show();
                 Center(Venat.Location);
-                Dev?.Print("EAT SHIT sake");
-                
                 Focus();
             }
+
+
+
+
+
 
 
             //=================================\\
@@ -212,29 +212,28 @@ namespace Dobby
 
 
 
+
+
             //=================================\\
             //--|   Function Declarations   |--\\
             //=================================\\
             #region [Function Declarations]
             public void Center(Point parentLocation)
             {
-                BringToFront();
-                var horizontalOffset = parentLocation.X;
                 var @switch = Width < Venat.Width ? 1 : -1;
 
-
-                if (Width < Venat.Width)
-                {
-                }
-                else if (Width > Venat.Width)
-                {
-                }
+                var horizontalOffset = parentLocation.X + (Width - Venat.Width) / 2 * @switch;
 
 
-                horizontalOffset += (Width - Venat.Width) / 2 * @switch;
+                
+                Update();
+                BringToFront();
+
                 Location = new Point(horizontalOffset, parentLocation.Y + 30);
+                Update();
             }
             #endregion
+
 
 
 
@@ -253,16 +252,16 @@ namespace Dobby
                 base.Dispose(disposing);
             }
 
-            
-        
+
+
+
+
             //================================\\
             //--|   Control Declarations   |--\\
             //================================\\
-            #region [Control Declarations]
             public Label MainLabel;
             public Label separatorLine0;
             private RichTextBox PopupMessageTextBox;
-            #endregion
             #endregion
         }
     }
