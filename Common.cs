@@ -1,19 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
+using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Security.Cryptography;
+
+using static System.Windows.Forms.Form;
 #if DEBUG
 #endif
 
 
 namespace Dobby {
     
-    internal partial class Common : MainPage, IDisposable
+    internal partial class Common
     {
         //#error version
 
@@ -62,7 +63,7 @@ namespace Dobby {
 
         /// <summary> ID for the currently loaded form. </summary>
         public static PageID ActivePage;
-        public static List<PageID> Pages = new List<PageID>();
+        public static List<PageID> PreviousPages = new List<PageID>();
 
         public static bool
             MouseScrolled,
@@ -82,8 +83,6 @@ namespace Dobby {
 
         public static Size OriginalFormScale = Size.Empty;
 
-        public static Color NDYellow = Color.FromArgb(255, 227, 0);
-
 
         /// <summary>
         /// A string used as a frontend label for the active game (patch version for PS4 games, build number for PC)
@@ -102,10 +101,9 @@ namespace Dobby {
         
         /// <summary> Debug class instance. </summary>
         public static Testing Dev;
-    #if DEBUG
-        private static DebugWindow DebugWindow;
-#endif
         #endregion
+
+
 
 
 
@@ -113,10 +111,20 @@ namespace Dobby {
         //## Control Refferences
         //#
         #region [Control Refferences]
+        
+
 
         public static Control HoveredControl
         {
-            get => _hoveredControl ?? Venat;
+            get {
+                if (_hoveredControl == null)
+                {
+                    Dev?.Print("WARNING: HoveredControl returned null, so Venat was used instead.");
+                    return Venat;
+                }
+                else
+                    return _hoveredControl;
+            }
 
             set {
                 _hoveredControl = value;
@@ -125,49 +133,69 @@ namespace Dobby {
                 {
                     HoverString(value);
                 }
+                else if (value == null)
+                {
+                    Dev?.Print("WARNING: A null value was provided as the HoveredControl. Automatically assigning as Venat to avoid duplicate warning on read.");
+                    _hoveredControl = Venat;
+                }
             }
         }
         private static Control _hoveredControl;
 
 
 
-        /// <summary> Refference to the originally launched form. </summary>
+        /// <summary>
+        /// A static fallback refference to the currently active page (main form, doesn't include additional windows like popups/debug panels)
+        /// </summary>
         public static Form Venat
         {
             get {
+                // Just in case, I guess
                 if (_venat == null)
                 {
-                    return (Form) ActiveForm ?? null;
+                    _venat = ActiveForm;
+                    Dev?.Print("ERROR: Venat was null! (MOMMY???)\n\t Returning and setting Venat to ActiveForm instead...");
+
+                    if (_venat == null)
+                    {
+                        Dev?.Print("Fuck, Mo- I mean Venat's still null.");
+                    }
                 }
 
                 return _venat;
             }
             set {
                 _venat = value;
+
+                if (value == null)
+                {
+                    throw new InvalidDataException("A null value was provided as the current form");
+                }
             }
         }
         private static Form _venat;
 
         
-        /// <summary> Refference to the originally launched form. </summary>
-        public static MainPageDummy YoshiP
+        /// <summary>
+        /// Refference to the originally launched form which remains active but hidden until the visible forms are closed.
+        /// </summary>
+        public static MainPageDummy Dummy
         {
             get {
-                if (_yoshiP == null)
-                {
-                    // bitch and mosn
-                    return null;
-                }
-
-                return _yoshiP;
+                return _dummy;
             }
             set {
-                _yoshiP = value;
+                _dummy = value;
             }
         }
-        private static MainPageDummy _yoshiP;
+        private static MainPageDummy _dummy;
+
 
         private static PopupWindow Navi;
+        
+        #if DEBUG
+        public static DebugWindow Elidibus;
+        #endif
 
 
         /// <summary> Static refference to the active form's "Info" label control for usage in static functions. (because I'm lazy) </summary>
@@ -176,6 +204,7 @@ namespace Dobby {
         /// <summary> GroupBox for eventual use in yet-unfinished custom popup box function. (so they fit the app's "theme") </summary>
         public static GroupBox PopupGroupBox;
         #endregion Control Refferences
+
 
         
         
@@ -187,15 +216,29 @@ namespace Dobby {
 
         public static bool StyleTest = false;
 
-        public static Font ControlFont = new Font("Cambria", 9.75F, FontStyle.Bold);
-        public static Font AltControlFont = new Font("Consolas", 9.75F, FontStyle.Bold);
-        public static Font SmallControlFont = new Font("Verdana", 8F);
+        //public static Font AltControlFont = new Font("Consolas", 9.25F, FontStyle.Bold);
+        public static Font SmallControlFont = new Font("Verdana", 6.5F, FontStyle.Bold);
+        public static Font MainControlFont = new Font("Cambria", 9.25F, FontStyle.Bold);
+        public static Font LargeControlFont = new Font("Cambria", 12F, FontStyle.Bold);
 
         public static Font TextFont = new Font("Cambria", 10F);
         public static Font DefaultTextFont = new Font("Cambria", 10F, FontStyle.Bold | FontStyle.Italic);
 
+        /// <summary>
+        /// The exact yellow highlight NaughtyDog uses in their debug menu (0xFFE300 / 255, 227, 0)
+        /// </summary>
+        public static readonly Color NDYellow = Color.FromArgb(0xFFE300);
 
-        public static Color MainColour = Color.FromArgb(100, 100, 100);
+        /// <summary>
+        /// Close Enough, I forget whether this is the gray they use in any of the menus' slightly-different iterations
+        /// </summary>
+        public static readonly Color NDGray = Color.FromArgb(0x646464);
+
+        ///<summary>
+        /// Form Border Pen.
+        ///</summary>
+        private static Pen FormDecorationPen = new Pen(Color.White);
+        
         public static Color HighlightColour
         {
             get => FormDecorationPen.Color;
@@ -208,9 +251,6 @@ namespace Dobby {
             }
         }
 
-        ///<summary> Form Border Pen </summary>
-        private static Pen FormDecorationPen = new Pen(Color.White);
-        
 
 
 #if DEBUG
@@ -232,6 +272,10 @@ namespace Dobby {
 
 
 
+
+
+
+
         //#
         //## Threading Components
         //#
@@ -248,14 +292,15 @@ namespace Dobby {
 
 
 
+
+
         //#
         //## Network-Related Components
         //#
         #region [Network-Related Components]
-
         // None
-
         #endregion
+
         #endregion (global variable declarations)
 
 
@@ -292,7 +337,7 @@ namespace Dobby {
 
             if (fileStream == null)
             {
-                Dev.Print("ERROR: Filestream was disposed before the patch application process was finished.");
+                Dev?.Print("ERROR: Filestream was disposed before the patch application process was finished.");
                 UpdateLabel("Internal patch-application error. My apologies.");
                 return;
             }
@@ -426,7 +471,7 @@ namespace Dobby {
             stream.Read(LocalExecutableCheck = new byte[4], 0, 4);
 
             if (BitConverter.ToInt32(LocalExecutableCheck, 0) != 1179403647)
-                ShowPopup($"Executable Still Encrypted (self) | Must Be Decrypted/Unsigned");
+                ShowPopup($"Executable Still Encrypted (self) | Must Be Decrypted/Unsigned", "ERROR:");
 
 
             // Read a string of data at a specific address to determine the current game (why is it 160 bytes??? I thought it was a 32-bit integer)
@@ -547,15 +592,15 @@ namespace Dobby {
 
         public static void OpenNewPage(PageID NewPage)
         {
-            Pages.Add(ActivePage);
+            PreviousPages.Add(ActivePage);
             ChangePage(NewPage);
         }
 
         public static void ReturnToPreviousPage()
         {
-            var prevPage = Pages.Last();
+            var prevPage = PreviousPages.Last();
             Console.WriteLine($"Attempting to open page \"{prevPage}\"");
-            Pages.RemoveAt(Pages.Count - 1);
+            PreviousPages.RemoveAt(PreviousPages.Count - 1);
             
             ChangePage(prevPage);
         }
@@ -675,7 +720,6 @@ namespace Dobby {
 
 
 
-
             // Apply the separator drawing function to any separator lines
             foreach (var line in controls.OfType<Dobby.Label>())
             {
@@ -716,6 +760,8 @@ namespace Dobby {
             var blacklistedItems = new[]
             {
                 "DebugControl",
+                "ConfirmBtn",
+                "CancelBtn",
                 "ExitBtn",
                 "MinimizeBtn",
                 "LabelBtn",
@@ -762,7 +808,7 @@ namespace Dobby {
                 // Add the event handler to everything that's not a text container
                 if (item.GetType() != typeof(Dobby.Button))
                 {
-                    item.MouseMove += new MouseEventHandler((sender, e) => MoveForm());
+                    item.MouseMove += new MouseEventHandler((sender, e) => MouseMoveFunc(sender));
                 }
                 
 
@@ -793,7 +839,7 @@ namespace Dobby {
             venat.MouseUp   += (sender, _) => MouseUpFunc();
             
             venat.MouseEnter += (sender, _) => HoverString(sender);
-            venat.MouseMove += (sender, _) => MoveForm();
+            venat.MouseMove += (sender, _) => MouseMoveFunc(sender);
             
             venat.Paint += (_venat, yoshiP) => DrawFormDecorations((Form)_venat, yoshiP);
 
@@ -941,45 +987,27 @@ namespace Dobby {
 
 
         /// <summary>
-        /// 
+        /// Show a custom PopupWindow/MessageBox. Same functionality, but bite me.
         /// </summary>
-        /// <param name="Message"></param>
-        /// <param name="Title"></param>
-        /// <param name="IsQuestion"></param>
-        public static async Task<DialogResult> ShowPopup(string Message, string Title = "Notice:", bool IsQuestion = false)
+        /// <param name="Message"> The message/warning contents of the PopupWindow. </param>
+        /// <param name="Title"> The title of the PopupWindow. </param>
+        /// <param name="buttons"> The MessageBoxButtons to be added to the form. </param>
+        public static DialogResult ShowPopup(string Message, string Title = "Notice:", MessageBoxButtons buttons = MessageBoxButtons.OK)
         {
+            // Fairly sure this is pointless now that I'm using ShowDialog, but whatever
             if (PopupWindow.HasActiveWindow)
             {
                 Dev?.Print($"WARNING: An attempt to open a PopupWindow while one was still active was made; Title: \"{Title ?? "null"}\".");
+                return DialogResult.None;
             }
-            var wait = true;
-
-            Task thisIsDumb()
-            {
-                while (wait) Thread.Sleep(1);
-
-                return Task.CompletedTask;
-            }
-            Dev?.Print("Fuck sake");
-
-
-
-            // Create and display the popup window
-            Navi = new PopupWindow(Message, Title, IsQuestion);
             
 
-            // Make sure it's being shown on/in the correct layer/position
-            Venat.SendToBack();
-            Navi.BringToFront();
-            Navi.Center(Venat.Location);
-            Venat?.Update();
-            Navi?.Update();
 
-            Navi.FormClosing += (meh, bleh) => wait = false;
+            MouseIsDown = false; // Causes issues otherwise lol
+            Navi = new PopupWindow(Venat, Message, Title, buttons);
 
-
-            await thisIsDumb();
-            return Navi.PreviousResult;
+            // Create and display the popup window
+            return Navi.ShowDialog();
         }
         #endregion
 
@@ -1053,7 +1081,7 @@ namespace Dobby {
         ///</summary>
         public static void DrawFormDecorations(Form venat, PaintEventArgs localYoshiP, bool borderOnly = false)
         {
-            localYoshiP.Graphics.Clear(venat.BackColor); // Clear line bounds with the current form's background colour
+            localYoshiP?.Graphics.Clear(venat.BackColor); // Clear line bounds with the current form's background colour
 
             # if DEBUG
             if (NoDraw)
@@ -1203,21 +1231,21 @@ namespace Dobby {
         /// </summary>
         internal static void ToggleDebugWindowBtn_CLick(object sender, EventArgs args)
         {
-            if (DebugWindow != null)
+            if (Elidibus != null)
             {
-                DebugWindow?.Dispose();
-                DebugWindow = null;
+                Elidibus?.Dispose();
+                Elidibus = null;
             }
             else {
                 // Create the log window and make it invisible until it's been moved to the parent form.
-                DebugWindow = new DebugWindow()
+                Elidibus = new DebugWindow()
                 {
                     Visible = false
                 };
 
-                DebugWindow.Show();
-                DebugWindow.MoveDebugWindowToAppEdge();
-                DebugWindow.Visible = true;
+                Elidibus.Show();
+                Elidibus.MoveDebugWindowToAppEdge();
+                Elidibus.Visible = true;
             }
         }
         #endif
@@ -1261,46 +1289,65 @@ namespace Dobby {
 
         internal static void ExitBtn_Click(object sender, EventArgs e)
         {
-            Venat.Dispose();  //! 90% sure this isn't implemented properly.
-            Environment.Exit(0); // off we fuck
+            #if DEBUG
+            Elidibus?.Dispose();
+            #endif
+            Venat?.Dispose();
+            Navi?.Dispose();
+
+            // off we fuck
+            Environment.Exit(0);
         }
-        internal static void WindowBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 227, 0);
+        internal static void WindowBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(0xFFE300);
         internal static void WindowBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
         internal static void MinimizeBtn_Click(object sender, EventArgs e) => ((Control)sender).FindForm().WindowState = FormWindowState.Minimized;
         
-        internal static void MouseDownFunc(object _, MouseEventArgs e)
+        internal static void MouseDownFunc(object sender, MouseEventArgs eventArgs)
         {
-            ActiveMouseButton = e.Button;
+            ActiveMouseButton = eventArgs.Button;
             MouseIsDown = true;
             
-            LastFormPosition = Venat?.Location ?? LastFormPosition;
-            MouseDif = new Point(MousePosition.X - LastFormPosition.X, MousePosition.Y - LastFormPosition.Y);
+            Form form;
+            if (sender.GetType() == typeof(Form))
+            {
+                form = sender as Form;
+            }
+            else {
+                form = ((Control)sender).FindForm();
+            }
 
-            Navi?.Center(Venat.Location);
+
+            LastFormPosition = form?.Location ?? LastFormPosition;
+            MouseDif = new Point(Control.MousePosition.X - LastFormPosition.X, Control.MousePosition.Y - LastFormPosition.Y);
         }
 
         internal static void MouseUpFunc()
         {
             MouseScrolled = MouseIsDown = false;
             ActiveMouseButton = MouseButtons.None;
-           
-            Navi?.Center(Venat.Location);
         }
 
 
-        public static void MoveForm()
+        public static void MouseMoveFunc(object sender)
         {
-            if (!MouseIsDown || ActiveForm == null)
-                return;
+            if (MouseIsDown && sender != null)
+            {
+                Control form;
+                #if DEBUG
+                if (sender.GetType() == typeof(Form) || Testing.EditorMode)
+                #else
+                if (sender.GetType() == typeof(Form))
+                #endif
+                {
+                    form = sender as Control;
+                }
+                else {
+                    form = ((Control)sender).FindForm();
+                }
 
-            Venat.Location = new Point(MousePosition.X - MouseDif.X, MousePosition.Y - MouseDif.Y);
-            Venat.Update();
-
-            #if DEBUG
-            //DebugWindow?.MoveDebugWindowToAppEdge();
-            #endif
-         
-            Navi?.Center(Venat.Location);
+                form.Location = new Point(Control.MousePosition.X - MouseDif.X, Control.MousePosition.Y - MouseDif.Y);
+                form.Update();
+            }
         }
         #endregion
     }

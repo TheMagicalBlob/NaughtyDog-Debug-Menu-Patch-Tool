@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Security.Policy;
 
 namespace Dobby
 {
@@ -13,14 +14,29 @@ namespace Dobby
     {
         private partial class PopupWindow : Form
         {
-            public PopupWindow(string Message, string Title, bool IsQuestion)
+            /// <summary>
+            /// Custom MessageBox class for stuff and things
+            /// </summary>
+            /// <param name="ParentForm"> </param>
+            /// <param name="Message"> </param>
+            /// <param name="Title"> </param>
+            /// <param name="buttons"> </param>
+            public PopupWindow(Form ParentForm, string Message, string Title, MessageBoxButtons buttons)
             {
-                Dev?.Print("Creating Popup Window...");
+                
+                //#
+                //## Set a few things I'd rather be set as soon as possible, jic
+                //#
+                FormClosed += (_, __) => HasActiveWindow = false;
+                HasActiveWindow = true;
+
+
 
                 //#
-                //## Create and decorate the form, then apply basic event handlers and line decorations
+                //## Create and decorate the form
                 //#
-                #region go away
+                Dev?.Print("Creating Popup Window...");
+                #region [Create and decorate the form]
                 this.MainLabel = new Dobby.Label();
                 this.separatorLine0 = new Dobby.Label();
                 this.PopupMessageTextBox = new Dobby.RichTextBox();
@@ -64,6 +80,7 @@ namespace Dobby
                 this.PopupMessageTextBox.ShowSelectionMargin = true;
                 this.PopupMessageTextBox.Size = new System.Drawing.Size(359, 152);
                 this.PopupMessageTextBox.TabIndex = 40;
+                this.PopupMessageTextBox.TabStop = false;
                 this.PopupMessageTextBox.Text = "";
                 // 
                 // PopupWindow
@@ -82,7 +99,11 @@ namespace Dobby
 
 
 
-
+                
+                //#
+                //## Create and add relevant buttons
+                //#
+                #region [Create and decorate the form]
                 Dev?.Print("Populating Popup Window...");
 
                 // Create the exit button and related events
@@ -102,97 +123,152 @@ namespace Dobby
                 ExitBtn.FlatAppearance.BorderSize = 0;
                 Controls.Add(ExitBtn);
                 ExitBtn.BringToFront();
-            
-                FormClosed += (sender, args) => HasActiveWindow = false;
                 
                 ExitBtn.Click += new EventHandler((sender, args) => { this.Close(); });
                 ExitBtn.MouseEnter += new EventHandler(Common.WindowBtnMH);
                 ExitBtn.MouseLeave += new EventHandler(Common.WindowBtnML);
                 
-                if (IsQuestion)
+
+                
+
+                //#
+                //## Create and add the 
+                //#
+                if (buttons != MessageBoxButtons.OK)
                 {
                     var ConfirmBtn = new Button()
                     {
-                        Location = new Point(this.Size.Width / 2 - 30, this.Size.Height - 30),
+                        Location = new Point((this.Size.Width / 2) - 30, this.Size.Height - 30),
                         Size = new Size(32, 23),
                         Name = "ConfirmBtn",
                         Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
-                        Text = "Ok",
+                        Text = MessageBoxButtonText[(int)buttons],
                         FlatStyle = FlatStyle.Flat,
                         BackColor = Color.Gray,
                         ForeColor = SystemColors.Control,
                         TextAlign = ContentAlignment.MiddleLeft,
                         Cursor = Cursors.Cross
                     };
-                    ConfirmBtn.FlatAppearance.BorderSize = 0;
-                    Controls.Add(ConfirmBtn);
-                    ConfirmBtn.BringToFront();
-            
-                    FormClosed += (sender, args) => HasActiveWindow = false;
-                
-                    ConfirmBtn.Click += new EventHandler((sender, args) => { PreviousResult = DialogResult.OK; this.Close(); });
+           
+                    ConfirmBtn.Click += new EventHandler((sender, args) =>
+                    {
+                        DialogResult = DialogResult.OK;
+                        this.Close();
+                    });
                     ConfirmBtn.MouseEnter += new EventHandler(Common.WindowBtnMH);
                     ConfirmBtn.MouseLeave += new EventHandler(Common.WindowBtnML);
+
+                    Controls.Add(ConfirmBtn);
+                    ConfirmBtn.BringToFront();
 
                     
 
                     var CancelBtn = new Button()
                     {
-                        Location = new Point(this.Size.Width / 2 + 1, this.Size.Height - 30),
+                        Location = new Point((this.Size.Width / 2) + 1, this.Size.Height - 30),
                         Size = new Size(50, 23),
                         Name = "CancelBtn",
                         Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
-                        Text = "Cancel",
+                        Text = MessageBoxButtonText[(int)buttons + 1],
+                        FlatStyle = FlatStyle.Flat,
+                        TextAlign = ContentAlignment.MiddleLeft,
+                        Cursor = Cursors.Cross
+                    };
+
+                    CancelBtn.Click += new EventHandler((sender, args) =>
+                    {
+                        DialogResult = DialogResult.Cancel;
+                        this.Close();
+                    });
+                    CancelBtn.MouseEnter += new EventHandler(Common.WindowBtnMH);
+                    CancelBtn.MouseLeave += new EventHandler(Common.WindowBtnML);
+                    
+                    Controls.Add(CancelBtn);
+                    CancelBtn.BringToFront();
+                }
+
+                // Just create the "OK" Button
+                else {
+                    var ConfirmBtn = new Button()
+                    {
+                        Location = new Point((this.Size.Width / 2) - 30, this.Size.Height - 30),
+                        Size = new Size(32, 23),
+                        Name = "ConfirmBtn",
+                        Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
+                        Text = MessageBoxButtonText[(int)buttons],
                         FlatStyle = FlatStyle.Flat,
                         BackColor = Color.Gray,
                         ForeColor = SystemColors.Control,
                         TextAlign = ContentAlignment.MiddleLeft,
                         Cursor = Cursors.Cross
                     };
-                    CancelBtn.FlatAppearance.BorderSize = 0;
+           
+                    ConfirmBtn.Click += new EventHandler((sender, args) =>
+                    {
+                        DialogResult = DialogResult.OK;
+                        this.Close();
+                    });
+                    ConfirmBtn.MouseEnter += new EventHandler(Common.WindowBtnMH);
+                    ConfirmBtn.MouseLeave += new EventHandler(Common.WindowBtnML);
+
                     Controls.Add(ConfirmBtn);
-                    CancelBtn.BringToFront();
-            
-                    FormClosed += (sender, args) => HasActiveWindow = false;
-                
-                    CancelBtn.Click += new EventHandler((sender, args) => { PreviousResult = DialogResult.Cancel; this.Close(); });
-                    CancelBtn.MouseEnter += new EventHandler(Common.WindowBtnMH);
-                    CancelBtn.MouseLeave += new EventHandler(Common.WindowBtnML);
+                    ConfirmBtn.BringToFront();
                 }
+                #endregion
+
+
+
                 
+                //#
+                //## Apply basic event handlers and line decorations
+                //#
                 InitializeAdditionalEventHandlers(this, true);
 
-
                 
 
                 
+                //#
+                //## Words
+                //#
+                #region [Words]
+
                 // Fix inconsistent margins (left-side spacing is ~17 while the right gets left to 1 - 2)
                 PopupMessageTextBox.RightMargin = PopupMessageTextBox.Width - 17;
 
 
-                // Assign title text if applicable
-                if (Title != null)
+                // Assign title & nessage box text
+                if (Title?.Length < 1)
                 {
-                    MainLabel.Text = Title;
-                }
-
-
-                // Assign message box text
-                if (Message?.Length < 1)
-                {
-                    PopupMessageTextBox.Text = "Empty Message Provided!!!";
+                    MainLabel.Text = "Empty Title Provided. (???)";
                 }
                 else {
-                    PopupMessageTextBox.Text = Message ?? "Null Message Provided!!!";
+                    MainLabel.Text = Title ?? "Null Title Provided. (???)";
+                }
+
+                if (Message?.Length < 1)
+                {
+                    PopupMessageTextBox.Text = "Empty Message Provided. (???)";
+                }
+                else {
+                    PopupMessageTextBox.Text = Message ?? "Null Message Provided. (???)";
                 }
 
 
 
-                HasActiveWindow = true;
 
-                Show();
-                Center(Venat.Location);
-                Focus();
+                Shown += (dont, care) =>
+                {
+                    BringToFront();
+                    var @switch = Width < ParentForm.Width ? 1 : -1;
+                    var horizontalOffset = ParentForm.Location.X + (Width - ParentForm.Width) / 2 * @switch;
+
+
+                    Location = new Point(horizontalOffset, ParentForm.Location.Y + 30);
+                    Update();
+
+                    LocationChanged += (eat, pant) => CenterParent(ParentForm);
+                };
+                #endregion
             }
 
 
@@ -208,7 +284,30 @@ namespace Dobby
             internal static bool HasActiveWindow = false;
 
             internal DialogResult PreviousResult;
+
+            private string[] MessageBoxButtonText = new[]
+            {
+                 "Ok", // None
+                 "OK",
+                 "Cancel",
+                 "Abort",
+                 "Retry",
+                 "Ignore",
+                 "Yes",
+                 "No"
+            };
+
+            //public enum essageBoxButtons
+            //{
+            //    OK,
+            //    OKCancel,
+            //    AbortRetryIgnore,
+            //    YesNoCancel,
+            //    YesNo,
+            //    RetryCancel
+            //}
             #endregion
+
 
 
 
@@ -218,18 +317,37 @@ namespace Dobby
             //--|   Function Declarations   |--\\
             //=================================\\
             #region [Function Declarations]
-            public void Center(Point parentLocation)
+
+            #if DEBUG
+            /// <summary>
+            /// Move the PopupWindow to the center(-ish) of the parent form, after ensuring it's still on the right layer. (don't think I need to do that anymore, but meh)
+            /// </summary>
+            /// <param name="parentForm"> The form which opened the PopupWindow. </param>
+            private void Center(Form parentForm)
             {
-                var @switch = Width < Venat.Width ? 1 : -1;
-
-                var horizontalOffset = parentLocation.X + (Width - Venat.Width) / 2 * @switch;
-
-
-                
-                Update();
                 BringToFront();
+                var @switch = Width < parentForm.Width ? 1 : -1;
+                var horizontalOffset = parentForm.Location.X + (Width - parentForm.Width) / 2 * @switch;
 
-                Location = new Point(horizontalOffset, parentLocation.Y + 30);
+
+                Location = new Point(horizontalOffset, parentForm.Location.Y + 30);
+                Update();
+            }
+            #endif
+
+            
+            /// <summary>
+            /// Move the ParentForm back behind the PopupWindow
+            /// </summary>
+            /// <param name="parentForm"> The form which opened the PopupWindow. </param>
+            private void CenterParent(Form parentForm)
+            {
+                var @switch = Width < parentForm.Width ? 1 : -1;
+                var horizontalOffset = Location.X + (parentForm.Width - Width) / 2 * @switch;
+
+
+                BringToFront();
+                parentForm.Location = new Point(horizontalOffset, Location.Y - 30);
                 Update();
             }
             #endregion

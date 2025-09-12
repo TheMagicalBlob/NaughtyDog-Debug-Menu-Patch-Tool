@@ -51,7 +51,7 @@ namespace Dobby
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] // Designer autogenerates code setting the Variable & VariableTags properties to null, annoyingly. More of an issue for the former though, due to the Properties window not letting you edit objects
         [TypeConverter(typeof(BooleanConverter))]
-        [DefaultValue(false)]
+        //[DefaultValue(false)]
         public object Variable
         {
             get => _Variable;
@@ -291,8 +291,11 @@ namespace Dobby
                 }
                 if (type == typeof(int) || type == typeof(byte))
                 {
+                    #if DEBUG
+                    inc = 1; //!
+                    #else
                     inc = 5;
-
+                    #endif
                 }
 
 

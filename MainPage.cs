@@ -36,9 +36,9 @@ namespace Dobby {
             // Force a page to open immediately to save a smidge of time constantly opening the damn thing
             Venat.Shown += (unused, bleh) =>
             {
-                if (Pages.All(page => page == PageID.MainPage) && Testing.PageToForce != ActivePage)
+                if (PreviousPages.All(page => page == PageID.MainPage) && Testing.PageToForce != ActivePage)
                 {
-                    Pages.Add(Testing.PageToForce);
+                    PreviousPages.Add(Testing.PageToForce);
                     OpenNewPage(Testing.PageToForce);
                 }
             };
@@ -58,10 +58,5 @@ namespace Dobby {
         private void PCDebugMenuPageBtn_Click(object sender, EventArgs e)     => OpenNewPage(PageID.PCDebugMenuPage);
         private void DownloadSourceBtn_Click(object sender, EventArgs e)      => System.Diagnostics.Process.Start(@"https://github.com/TheMagicalBlob/NaughtyDog-Debug-Menu-Patch-Tool/archive/refs/heads/master.zip");
         #endregion
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Environment.Exit(0);
-        }
     }
 }

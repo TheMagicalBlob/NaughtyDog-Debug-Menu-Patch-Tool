@@ -252,7 +252,7 @@ namespace Dobby {
             fileStream = File.Open(filePath, FileMode.Open, FileAccess.ReadWrite);
 
             // Read the selected executable to determine the game/patch, and update the Info label
-            GameInfoLabel.Text = GetGameID(fileStream);
+            GameInfoLabel.Text = Common.GetGameID(fileStream);
             GSGameIndex = GetGSPatchesGameIndex(Game);
 
 
@@ -717,12 +717,12 @@ namespace Dobby {
                     TextAlign = ContentAlignment.MiddleLeft,
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = SystemColors.Control,
-                    BackColor = MainColour,
+                    BackColor = NDGray,
                     Cursor = Cursors.Cross,
 
                     Location = new Point(1, ButtonsVerticalStartOffset),
                     Size = new Size(Width - 2, GSButtonHeight),
-                    Font = ControlFont,
+                    Font = MainControlFont,
                     Text = GSButtonsText[patchIndex],
                     Tag = GSButtonHints[patchIndex]
                 });
@@ -732,7 +732,7 @@ namespace Dobby {
                 GSButtons.Last().MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
                 GSButtons.Last().MouseUp += (sender, e) => MouseUpFunc();
                 GSButtons.Last().MouseDown += MouseDownFunc;
-                GSButtons.Last().MouseMove += (sender, _) => MoveForm();
+                GSButtons.Last().MouseMove += (sender, _) => Common.MouseMoveFunc(sender);
 
 
                 if (patchIndex == GSButtons.Count - 2)

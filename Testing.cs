@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+
 #if DEBUG
 using System.IO;
 using System.Linq;
@@ -33,6 +35,7 @@ namespace Dobby {
 
 
             OverrideDynamicOutput = false;
+            EditorMode = false;
 
 
             //PageToForce = PageID.InfoHelpPage;
@@ -61,8 +64,10 @@ namespace Dobby {
         internal int ClickErrors = 0;
         internal int ClickEventCheck = 0;
 
+        internal static bool EditorMode;
+
         /// <summary> Rhe page to open immediately to save a smidge of time constantly opening the damn thing. </summary>
-        internal static PageID PageToForce = PageID.Error;
+        internal static PageID PageToForce = PageID.MainPage;
 
 
 
@@ -147,6 +152,10 @@ namespace Dobby {
             {
                 Console.Write(str);
             }
+
+            #if DEBUG
+            Elidibus?.LogOut(str.Replace("\n", string.Empty));
+            #endif
         }
 
         

@@ -106,12 +106,12 @@ namespace Dobby
             // Playstation4Label
             // 
             this.Playstation4Label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Playstation4Label.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold);
+            this.Playstation4Label.Font = new System.Drawing.Font("Verdana", 6.5F, System.Drawing.FontStyle.Bold);
             this.Playstation4Label.ForeColor = System.Drawing.SystemColors.Control;
             this.Playstation4Label.IsSeparatorLine = false;
             this.Playstation4Label.Location = new System.Drawing.Point(119, 30);
             this.Playstation4Label.Name = "Playstation4Label";
-            this.Playstation4Label.Size = new System.Drawing.Size(73, 15);
+            this.Playstation4Label.Size = new System.Drawing.Size(75, 15);
             this.Playstation4Label.StretchToFitForm = true;
             this.Playstation4Label.TabIndex = 36;
             this.Playstation4Label.Text = "Playstation 4";
@@ -119,7 +119,7 @@ namespace Dobby
             // PCLabel
             // 
             this.PCLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.PCLabel.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold);
+            this.PCLabel.Font = new System.Drawing.Font("Verdana", 6.5F, System.Drawing.FontStyle.Bold);
             this.PCLabel.ForeColor = System.Drawing.SystemColors.Control;
             this.PCLabel.IsSeparatorLine = false;
             this.PCLabel.Location = new System.Drawing.Point(146, 158);
@@ -146,6 +146,7 @@ namespace Dobby
             this.DownloadSourceBtn.Text = "Download Latest Source Code (Download Link)";
             this.DownloadSourceBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DownloadSourceBtn.UseVisualStyleBackColor = false;
+            this.DownloadSourceBtn.Variable = null;
             this.DownloadSourceBtn.Click += new System.EventHandler(this.DownloadSourceBtn_Click);
             // 
             // InfoHelpBtn
@@ -164,6 +165,7 @@ namespace Dobby
             this.InfoHelpBtn.Text = "HOW TO USE / Information...";
             this.InfoHelpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.InfoHelpBtn.UseVisualStyleBackColor = false;
+            this.InfoHelpBtn.Variable = null;
             // 
             // CreditsBtn
             // 
@@ -181,6 +183,7 @@ namespace Dobby
             this.CreditsBtn.Text = "Credits...";
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
+            this.CreditsBtn.Variable = null;
             // 
             // PCDebugMenuPageBtn
             // 
@@ -198,6 +201,7 @@ namespace Dobby
             this.PCDebugMenuPageBtn.Text = "Patch tlou.exe With The Debug Menu...";
             this.PCDebugMenuPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PCDebugMenuPageBtn.UseVisualStyleBackColor = false;
+            this.PCDebugMenuPageBtn.Variable = null;
             this.PCDebugMenuPageBtn.Click += new System.EventHandler(this.PCDebugMenuPageBtn_Click);
             // 
             // PkgCreationPageBtn
@@ -216,6 +220,7 @@ namespace Dobby
             this.PkgCreationPageBtn.Text = "Build New Patch Or Base Game .pkg...";
             this.PkgCreationPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PkgCreationPageBtn.UseVisualStyleBackColor = false;
+            this.PkgCreationPageBtn.Variable = null;
             this.PkgCreationPageBtn.Click += new System.EventHandler(this.PkgPageBtn_Click);
             // 
             // PS4DebugPageBtn
@@ -234,6 +239,7 @@ namespace Dobby
             this.PS4DebugPageBtn.Text = "Enable Debug Mode With PS4Debug...";
             this.PS4DebugPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PS4DebugPageBtn.UseVisualStyleBackColor = false;
+            this.PS4DebugPageBtn.Variable = null;
             this.PS4DebugPageBtn.Click += new System.EventHandler(this.PS4DebugPageBtn_Click);
             // 
             // EbootPatchPageBtn
@@ -252,6 +258,7 @@ namespace Dobby
             this.EbootPatchPageBtn.Text = "Patch eboot.bin With The Debug Menu...";
             this.EbootPatchPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.EbootPatchPageBtn.UseVisualStyleBackColor = false;
+            this.EbootPatchPageBtn.Variable = null;
             this.EbootPatchPageBtn.Click += new System.EventHandler(this.EbootPatchPageBtn_Click);
             // 
             // PS4MenuSettingsPageBtn
@@ -271,6 +278,7 @@ namespace Dobby
             this.PS4MenuSettingsPageBtn.Text = "Change Debug Mode Settings";
             this.PS4MenuSettingsPageBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PS4MenuSettingsPageBtn.UseVisualStyleBackColor = false;
+            this.PS4MenuSettingsPageBtn.Variable = null;
             this.PS4MenuSettingsPageBtn.Click += new System.EventHandler(this.PS4MenuSettingsPageBtn_Click);
             // 
             // MainPage
