@@ -97,6 +97,7 @@ namespace Dobby
                 this.ResumeLayout(false);
                 #endregion
 
+                var Renderer = CreateGraphics();
 
 
                 
@@ -127,25 +128,29 @@ namespace Dobby
                 ExitBtn.Click += new EventHandler((sender, args) => { this.Close(); });
                 ExitBtn.MouseEnter += new EventHandler(Common.WindowBtnMH);
                 ExitBtn.MouseLeave += new EventHandler(Common.WindowBtnML);
-                
 
-                
+
+
 
                 //#
-                //## Create and add the 
+                //## Create and add the relevant MessageBoxButtons to the PopupWindow
                 //#
+                switch (buttons)
+                {
+                    case MessageBoxButtons.OK:
+                        break;
+                }
                 if (buttons != MessageBoxButtons.OK)
                 {
+                    var measuredConfirmButtonWidth = TryAutosize(MessageBoxButtonText[(int)buttons][0]);
                     var ConfirmBtn = new Button()
                     {
-                        Location = new Point((this.Size.Width / 2) - 30, this.Size.Height - 30),
-                        Size = new Size(32, 23),
+                        Location = new Point((this.Size.Width / 2) - measuredConfirmButtonWidth, this.Size.Height - 30),
                         Name = "ConfirmBtn",
-                        Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
-                        Text = MessageBoxButtonText[(int)buttons],
+                        Font = MainControlFont,
+                        Text = MessageBoxButtonText[(int)buttons][0],
+                        Size = new Size(measuredConfirmButtonWidth, 23),
                         FlatStyle = FlatStyle.Flat,
-                        BackColor = Color.Gray,
-                        ForeColor = SystemColors.Control,
                         TextAlign = ContentAlignment.MiddleLeft,
                         Cursor = Cursors.Cross
                     };
@@ -162,14 +167,13 @@ namespace Dobby
                     ConfirmBtn.BringToFront();
 
                     
-
                     var CancelBtn = new Button()
                     {
                         Location = new Point((this.Size.Width / 2) + 1, this.Size.Height - 30),
-                        Size = new Size(50, 23),
+                        Size = new Size(TryAutosize(MessageBoxButtonText[(int)buttons][1]), 23),
                         Name = "CancelBtn",
-                        Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
-                        Text = MessageBoxButtonText[(int)buttons + 1],
+                        Font = MainControlFont,
+                        Text = MessageBoxButtonText[(int)buttons][1],
                         FlatStyle = FlatStyle.Flat,
                         TextAlign = ContentAlignment.MiddleLeft,
                         Cursor = Cursors.Cross
@@ -185,6 +189,31 @@ namespace Dobby
                     
                     Controls.Add(CancelBtn);
                     CancelBtn.BringToFront();
+
+
+                    
+                    var RetryBtn = new Button()
+                    {
+                        Location = new Point((this.Size.Width / 2) + 1, this.Size.Height - 30),
+                        Size = new Size(TryAutosize(MessageBoxButtonText[(int)buttons][2]), 23),
+                        Name = "RetryBtn",
+                        Font = MainControlFont,
+                        Text = MessageBoxButtonText[(int)buttons][2],
+                        FlatStyle = FlatStyle.Flat,
+                        TextAlign = ContentAlignment.MiddleLeft,
+                        Cursor = Cursors.Cross
+                    };
+
+                    RetryBtn.Click += new EventHandler((sender, args) =>
+                    {
+                        DialogResult = DialogResult.Cancel;
+                        this.Close();
+                    });
+                    RetryBtn.MouseEnter += new EventHandler(Common.WindowBtnMH);
+                    RetryBtn.MouseLeave += new EventHandler(Common.WindowBtnML);
+                    
+                    Controls.Add(RetryBtn);
+                    RetryBtn.BringToFront();
                 }
 
                 // Just create the "OK" Button
@@ -195,7 +224,7 @@ namespace Dobby
                         Size = new Size(32, 23),
                         Name = "ConfirmBtn",
                         Font = new Font("Franklin Gothic Medium", 7.5F, FontStyle.Bold),
-                        Text = MessageBoxButtonText[(int)buttons],
+                        Text = MessageBoxButtonText[(int)buttons][0],
                         FlatStyle = FlatStyle.Flat,
                         BackColor = Color.Gray,
                         ForeColor = SystemColors.Control,
@@ -285,16 +314,14 @@ namespace Dobby
 
             internal DialogResult PreviousResult;
 
-            private string[] MessageBoxButtonText = new[]
+            private readonly string[][] MessageBoxButtonText = new string[][]
             {
-                 "Ok", // None
-                 "OK",
-                 "Cancel",
-                 "Abort",
-                 "Retry",
-                 "Ignore",
-                 "Yes",
-                 "No"
+                 new [] { "OK" },
+                 new [] { "Ok", "Cancel" },
+                 new [] { "Abort", "Retry", "Ignore" },
+                 new [] { "Yes", "No", "Cancel" },
+                 new [] { "Yes", "No" },
+                 new [] { "Retry", "Cancel" },
             };
 
             //public enum essageBoxButtons

@@ -36,7 +36,7 @@ namespace Dobby {
 
             OverrideDynamicOutput = false;
             EditorMode = false;
-
+            ShowErrorsInPopup = false;
 
             //PageToForce = PageID.InfoHelpPage;
         }
@@ -65,6 +65,8 @@ namespace Dobby {
         internal int ClickEventCheck = 0;
 
         internal static bool EditorMode;
+
+        internal static bool ShowErrorsInPopup;
 
         /// <summary> Rhe page to open immediately to save a smidge of time constantly opening the damn thing. </summary>
         internal static PageID PageToForce = PageID.MainPage;
@@ -170,6 +172,13 @@ namespace Dobby {
 #endif
 
             Print($"!! ERROR: {message}");
+
+            #if DEBUG
+            if (Testing.ShowErrorsInPopup)
+            {
+
+            }
+            #endif
         }
 
 

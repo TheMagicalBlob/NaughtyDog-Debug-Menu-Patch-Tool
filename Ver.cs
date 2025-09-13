@@ -361,7 +361,7 @@ namespace Dobby {
           "* 4.71.486.1191 | Reimplemented check removed in 4.67.448.1083, turns out it was responsible for resetting the label once a hint-less control was hovered over... I should really remember how I wrote some of these things.",
           "* 4.71.486.1194 | Huh?",
           "* 4.71.489.1199 | Removed MoveForm event subscription from buttons, not really neccessary, plus it can result in click events not firing if the mouse isn't kept perfectly still during the click; Misc DebugWindow changes",
-          "* 4.71.494.1216 | ",
+          "* 4.71.495.1219 | ",
           "* | ",
         };
 

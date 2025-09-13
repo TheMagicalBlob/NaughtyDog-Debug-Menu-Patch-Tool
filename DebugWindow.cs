@@ -3,6 +3,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading;
 using System.Windows.Forms;
 using static Dobby.Common;
@@ -180,51 +181,51 @@ namespace Dobby
 
         private void NoDrawBtn_Click(object sender, EventArgs e) => NoDraw ^= true;
 
-
         private void PopupTestBtn_Click(object sender, EventArgs e)
         {
-/*
-public enum DialogResult
-{
-    None,
-    OK,
-    Cancel,
-    Abort,
-    Retry,
-    Ignore,
-    Yes,
-    No
-}
-public enum MessageBoxButtons
-{
-    OK,
-    OKCancel,
-    AbortRetryIgnore,
-    YesNoCancel,
-    YesNo,
-    RetryCancel
-}*/
+            var popupResult = ShowPopup("", "", (MessageBoxButtons) PopupTestIndexBtn.Variable);
 
-            var f = ShowPopup("", "", (MessageBoxButtons) TempMBBIndex);
-
-            if (f == DialogResult.OK)
+            switch (popupResult)
             {
+                case DialogResult.None:
+                    return;
+                    
+                case DialogResult.OK:
+                    return;
+                    
+                case DialogResult.Cancel:
+                    return;
+                    
+                case DialogResult.Abort:
+                    return;
+                    
+                case DialogResult.Retry:
+                    return;
+                    
+                case DialogResult.Ignore:
+                    return;
+                
+                case DialogResult.Yes:
+                    return;
+                case DialogResult.No:
+                    return;
 
-            }
-            else if (f == DialogResult.Cancel)
-            {
 
-            }
-            else
-            {
-                Dev?.Print($"None?: {f}");
+                default:
+                    Dev?.Print($"Unexpected DialogResult \"{popupResult}\".");
+                    return;
             }
         }
 
-        private void EditorModeBtn_Click(object sender, EventArgs e)
+        private void ToggleEditorMode(object sender, EventArgs e)
         {
-            Testing.EditorMode = (bool) ((Button)sender).Variable;
+            EditorMode = (bool) ((Dobby.Button)sender).Variable;
         }
+        private void ToggleShowErrInPopup(object sender, EventArgs e)
+        {
+            ShowErrorsInPopup = (bool) ((Dobby.Button)sender).Variable;
+        }
+
         #endregion
     }
 }

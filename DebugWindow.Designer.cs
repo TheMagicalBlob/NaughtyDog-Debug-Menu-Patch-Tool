@@ -23,6 +23,7 @@ namespace Dobby
             this.separatorLine1 = new Dobby.Label();
             this.MainLabel = new Dobby.Label();
             this.separatorLine0 = new Dobby.Label();
+            this.ShowErrInPopupBtn = new Dobby.Button();
             this.SuspendLayout();
             // 
             // PopupTestIndexBtn
@@ -33,13 +34,12 @@ namespace Dobby
             this.PopupTestIndexBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PopupTestIndexBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.PopupTestIndexBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.PopupTestIndexBtn.Location = new System.Drawing.Point(1, 63);
+            this.PopupTestIndexBtn.Location = new System.Drawing.Point(1, 126);
             this.PopupTestIndexBtn.Name = "PopupTestIndexBtn";
             this.PopupTestIndexBtn.Size = new System.Drawing.Size(82, 24);
             this.PopupTestIndexBtn.TabIndex = 48;
             this.PopupTestIndexBtn.Tag = "";
             this.PopupTestIndexBtn.Text = "PopupTestIndex: ";
-            this.PopupTestIndexBtn.Variable = 0;
             this.PopupTestIndexBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PopupTestIndexBtn.UseVisualStyleBackColor = false;
             this.PopupTestIndexBtn.Variable = null;
@@ -52,7 +52,7 @@ namespace Dobby
             this.EditorModeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EditorModeBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.EditorModeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.EditorModeBtn.Location = new System.Drawing.Point(1, 117);
+            this.EditorModeBtn.Location = new System.Drawing.Point(1, 62);
             this.EditorModeBtn.Name = "EditorModeBtn";
             this.EditorModeBtn.Size = new System.Drawing.Size(118, 24);
             this.EditorModeBtn.TabIndex = 47;
@@ -61,7 +61,7 @@ namespace Dobby
             this.EditorModeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.EditorModeBtn.UseVisualStyleBackColor = false;
             this.EditorModeBtn.Variable = false;
-            this.EditorModeBtn.Click += new System.EventHandler(this.EditorModeBtn_Click);
+            this.EditorModeBtn.Click += new System.EventHandler(this.ToggleEditorMode);
             // 
             // PopupTestBtn
             // 
@@ -71,7 +71,7 @@ namespace Dobby
             this.PopupTestBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PopupTestBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
             this.PopupTestBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.PopupTestBtn.Location = new System.Drawing.Point(12, 87);
+            this.PopupTestBtn.Location = new System.Drawing.Point(12, 150);
             this.PopupTestBtn.Name = "PopupTestBtn";
             this.PopupTestBtn.Size = new System.Drawing.Size(82, 24);
             this.PopupTestBtn.TabIndex = 46;
@@ -86,7 +86,7 @@ namespace Dobby
             // 
             this.DebugLogTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.DebugLogTextBox.ForeColor = System.Drawing.SystemColors.Control;
-            this.DebugLogTextBox.Location = new System.Drawing.Point(1, 176);
+            this.DebugLogTextBox.Location = new System.Drawing.Point(2, 212);
             this.DebugLogTextBox.Name = "DebugLogTextBox";
             this.DebugLogTextBox.Size = new System.Drawing.Size(316, 127);
             this.DebugLogTextBox.TabIndex = 45;
@@ -98,7 +98,7 @@ namespace Dobby
             this.PCLabel.Font = new System.Drawing.Font("Cambria", 8F, System.Drawing.FontStyle.Bold);
             this.PCLabel.ForeColor = System.Drawing.SystemColors.Control;
             this.PCLabel.IsSeparatorLine = false;
-            this.PCLabel.Location = new System.Drawing.Point(119, 159);
+            this.PCLabel.Location = new System.Drawing.Point(123, 188);
             this.PCLabel.Name = "PCLabel";
             this.PCLabel.Size = new System.Drawing.Size(70, 14);
             this.PCLabel.StretchToFitForm = true;
@@ -110,7 +110,7 @@ namespace Dobby
             this.label1.Font = new System.Drawing.Font("Cambria", 10F);
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.label1.IsSeparatorLine = false;
-            this.label1.Location = new System.Drawing.Point(2, 167);
+            this.label1.Location = new System.Drawing.Point(2, 197);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(316, 15);
             this.label1.StretchToFitForm = true;
@@ -154,7 +154,7 @@ namespace Dobby
             this.separatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
             this.separatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.separatorLine1.IsSeparatorLine = false;
-            this.separatorLine1.Location = new System.Drawing.Point(2, 144);
+            this.separatorLine1.Location = new System.Drawing.Point(2, 174);
             this.separatorLine1.Name = "separatorLine1";
             this.separatorLine1.Size = new System.Drawing.Size(316, 15);
             this.separatorLine1.StretchToFitForm = true;
@@ -186,12 +186,32 @@ namespace Dobby
             this.separatorLine0.TabIndex = 31;
             this.separatorLine0.Text = "--------------------------------------------------------------";
             // 
+            // button1
+            // 
+            this.ShowErrInPopupBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.ShowErrInPopupBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.ShowErrInPopupBtn.FlatAppearance.BorderSize = 0;
+            this.ShowErrInPopupBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ShowErrInPopupBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
+            this.ShowErrInPopupBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.ShowErrInPopupBtn.Location = new System.Drawing.Point(97, 42);
+            this.ShowErrInPopupBtn.Name = "ShowErrInPopupBtn";
+            this.ShowErrInPopupBtn.Size = new System.Drawing.Size(132, 24);
+            this.ShowErrInPopupBtn.TabIndex = 49;
+            this.ShowErrInPopupBtn.Tag = "";
+            this.ShowErrInPopupBtn.Text = "ShowErrInPop:";
+            this.ShowErrInPopupBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ShowErrInPopupBtn.UseVisualStyleBackColor = false;
+            this.ShowErrInPopupBtn.Variable = false;
+            this.ShowErrInPopupBtn.Click += new System.EventHandler(this.ToggleShowErrInPopup);
+            // 
             // DebugWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ClientSize = new System.Drawing.Size(320, 309);
+            this.ClientSize = new System.Drawing.Size(320, 341);
+            this.Controls.Add(this.ShowErrInPopupBtn);
             this.Controls.Add(this.PopupTestIndexBtn);
             this.Controls.Add(this.EditorModeBtn);
             this.Controls.Add(this.PopupTestBtn);
@@ -228,6 +248,7 @@ namespace Dobby
         private Button PopupTestBtn;
         private Button EditorModeBtn;
         private Button PopupTestIndexBtn;
+        private Button ShowErrInPopupBtn;
     }
 }
 #endif

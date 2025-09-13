@@ -216,13 +216,34 @@ namespace Dobby {
 
         public static bool StyleTest = false;
 
-        //public static Font AltControlFont = new Font("Consolas", 9.25F, FontStyle.Bold);
-        public static Font SmallControlFont = new Font("Verdana", 6.5F, FontStyle.Bold);
+
+
+        /// <summary>
+        /// The base amount of padding button text has, which is present even with horizontal padding set to 0.
+        /// <br/> (only used for specific controlls with dynamic text contents blah blah eugh)
+        /// <br/> (Last set for: ["Cambria", 9.25F, FontStyle.Bold])
+        /// </summary>
+        public static float MainControlFontPadding = 12.5f;
+        /// <summary> The font used for the majority of controls on each form. </summary>
         public static Font MainControlFont = new Font("Cambria", 9.25F, FontStyle.Bold);
+
+        public static Font SmallControlFont = new Font("Verdana", 6.5F, FontStyle.Bold);
+        public static int SmallControlFontPadding = 5;
+
+#if DEBUG
+        /// <summary> Unused, as it turns out. Meh. Keeping. </summary>
         public static Font LargeControlFont = new Font("Cambria", 12F, FontStyle.Bold);
+
+        /// <sUmMaRy> Get fucked I guess </sUmMaRy>
+        public static Font AltControlFont = new Font("Consolas", 9.25F, FontStyle.Bold);
+        public static int AltControlFontPadding = 8; // I just pulled this number out of my ass
+#endif
 
         public static Font TextFont = new Font("Cambria", 10F);
         public static Font DefaultTextFont = new Font("Cambria", 10F, FontStyle.Bold | FontStyle.Italic);
+
+
+
 
         /// <summary>
         /// The exact yellow highlight NaughtyDog uses in their debug menu (0xFFE300 / 255, 227, 0)
@@ -1118,6 +1139,39 @@ namespace Dobby {
             {
                 localYoshiP?.Graphics.DrawLine(FormDecorationPen, line[0], line[1]);
             }
+        }
+
+
+
+        /// <summary>
+        /// Lazy. Tired.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="Renderer"></param>
+        /// <returns></returns>
+        public static int TryAutosize(string str, Graphics Renderer = null)
+        {
+            var measuredString = 0f;
+
+            if (Renderer == null)
+            {
+                try {
+                    Renderer = Venat?.CreateGraphics();
+                }
+                catch (Exception dang)
+                {
+                    Dev?.PrintError(dang);
+                    measuredString = str.Length * 5.5f; // Lazy
+                }
+            }
+
+            if (measuredString == 0f)
+            {
+                measuredString = Renderer.MeasureString(str, MainControlFont).Width;
+            }
+
+
+            return (int) (measuredString + MainControlFontPadding);
         }
 
 

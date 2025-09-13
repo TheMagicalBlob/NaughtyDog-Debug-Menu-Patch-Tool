@@ -429,7 +429,7 @@ namespace Dobby
             // Convert control to avoid constant casting
             var control = item as Dobby.Button;
             string variableText = null;
-            var padding = 5; // distance from the right-most bounds of the control to the start of the control's Text (at least, seems to be for the font and size most of the buttons are using)
+            var SmallControlFontPadding = 5; // distance from the right-most bounds of the control to the start of the control's Text (at least, seems to be for the font and size most of the buttons are using)
 
 
             float
@@ -522,8 +522,8 @@ namespace Dobby
 
             // Design-related bits //!
             variableSize = paintEvent.Graphics.MeasureString(variableText, control.Font).Width;
-            baseContentSize = controlTextSize + padding;
-            expectedSize = baseContentSize + variableSize + (padding * 2);
+            baseContentSize = controlTextSize + SmallControlFontPadding;
+            expectedSize = baseContentSize + variableSize + (SmallControlFontPadding * 2);
 
             if (expectedSize != control.Width)
             {
@@ -533,7 +533,7 @@ namespace Dobby
 
 
             // Draw the Variable's string representation appended to the control's text (visually)
-            paintEvent.Graphics.DrawString(variableText, Common.SmallControlFont, Brushes.LightGreen, new Point((int) baseContentSize + (padding * 2), 5));
+            paintEvent.Graphics.DrawString(variableText, Common.SmallControlFont, Brushes.LightGreen, new Point((int) baseContentSize + (SmallControlFontPadding * 2), 5));
         }
 
     }
