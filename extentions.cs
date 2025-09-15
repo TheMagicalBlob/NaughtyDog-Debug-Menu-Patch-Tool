@@ -57,7 +57,7 @@ namespace Dobby
             get => _Variable;
 
             set {
-                if (value == null || value.ToString().Length > 0)
+                if (value == null || value.ToString().Length < 1)
                 {
                     if (hasPrivateEvents) {
                         Paint -= DrawButtonVariable;
