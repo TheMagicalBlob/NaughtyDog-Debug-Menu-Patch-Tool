@@ -362,7 +362,7 @@ namespace Dobby {
           "* 4.71.486.1194 | Huh?",
           "* 4.71.489.1199 | Removed MoveForm event subscription from buttons, not really neccessary, plus it can result in click events not firing if the mouse isn't kept perfectly still during the click; Misc DebugWindow changes",
           "* 4.71.497.1222 | Finished implementing the PopupWindow's MessageBoxButtons & DialogResult functionality; A whole bunch of other shit I incremented the build number for, but couldn't be bothered to write down and have already forgotted",
-          "* 4.71.498.1222 | Oops",
+          "* 4.71.499.1223 | Fixed typo in Dobby.Button bs (oops); Random debug option tweak",
           "* | ",
         };
 

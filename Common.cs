@@ -1385,7 +1385,7 @@ namespace Dobby {
             ActiveMouseButton = MouseButtons.None;
         }
 
-        public static void MouseMoveFunc(object sender)
+        public static void MouseMoveFunc(object sender, EventArgs e = null)
         {
             if (MouseIsDown && sender != null)
             {

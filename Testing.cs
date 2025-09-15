@@ -64,7 +64,29 @@ namespace Dobby {
         internal int ClickErrors = 0;
         internal int ClickEventCheck = 0;
 
-        internal static bool EditorMode;
+        internal static bool EditorMode
+        {
+            get => _editorMode;
+
+            set {
+                _editorMode = value;
+
+                if (value)
+                {
+                    foreach (var button in Venat.Controls.OfType<Button>())
+                    {
+                        button.MouseMove += MouseMoveFunc;
+                    }
+                }
+                else {
+                    foreach (var button in Venat.Controls.OfType<Button>())
+                    {
+                        button.MouseMove -= MouseMoveFunc;
+                    }
+                }
+            }
+        }
+        internal static bool _editorMode;
 
         internal static bool ShowErrorsInPopup;
 
