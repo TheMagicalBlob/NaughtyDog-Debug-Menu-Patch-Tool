@@ -36,7 +36,7 @@ namespace Dobby
             // LogWindow Event Handlers
             MouseDown  += Common.MouseDownFunc;
             MouseUp    += MouseUpFunc;
-            MouseMove  += (sender, args) => Common.MouseMoveFunc(sender as Form);
+            MouseMove  += (sender, _) => MouseMoveFunc(sender);
             
             var fuckIt = Controls.Find(nameof(DebugLogTextBox), true);
 
@@ -49,6 +49,7 @@ namespace Dobby
             
             
             this.PopupTestIndexBtn.Variable = 0;
+            this.PopupTestIndexBtn.VariableTags = new[] { "Ok", "Ok / Cancel", "Abort / Retry / Ignore", "Yes / No / Cancel", "Yes / No", "Abort / Cancel" };
 
             /*
             //#
@@ -181,46 +182,13 @@ namespace Dobby
 
         private void NoDrawBtn_Click(object sender, EventArgs e) => NoDraw ^= true;
 
-        private void PopupTestBtn_Click(object sender, EventArgs e)
-        {
-            var popupResult = ShowPopup("", "", (MessageBoxButtons) PopupTestIndexBtn.Variable);
-
-            switch (popupResult)
-            {
-                case DialogResult.None:
-                    return;
-                    
-                case DialogResult.OK:
-                    return;
-                    
-                case DialogResult.Cancel:
-                    return;
-                    
-                case DialogResult.Abort:
-                    return;
-                    
-                case DialogResult.Retry:
-                    return;
-                    
-                case DialogResult.Ignore:
-                    return;
-                
-                case DialogResult.Yes:
-                    return;
-                case DialogResult.No:
-                    return;
-
-
-                default:
-                    Dev?.Print($"Unexpected DialogResult \"{popupResult}\".");
-                    return;
-            }
-        }
+        private void PopupTestBtn_Click(object sender, EventArgs e) => Dev?.Print($"Result: " + ShowPopup(popupContentsTextBox.Text, popupTitleTextBox.Text, (MessageBoxButtons) PopupTestIndexBtn.Variable));
 
         private void ToggleEditorMode(object sender, EventArgs e)
         {
             EditorMode = (bool) ((Dobby.Button)sender).Variable;
         }
+
         private void ToggleShowErrInPopup(object sender, EventArgs e)
         {
             ShowErrorsInPopup = (bool) ((Dobby.Button)sender).Variable;

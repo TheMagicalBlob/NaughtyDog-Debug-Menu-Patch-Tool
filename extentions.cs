@@ -27,16 +27,16 @@ namespace Dobby
             BackColor = Color.FromArgb(100, 100, 100);
             ForeColor = SystemColors.Control;
 
-            Font = new Font("Cambria", 9.25F, FontStyle.Bold);
+            Font = Common.MainControlFont;
             Cursor = Cursors.Cross;
-
+            TextAlign = ContentAlignment.MiddleLeft;
 
             //Variable = null;
             VariableTags = null;
-            hasEvents = false;
+            hasPrivateEvents = false;
             
 
-            MouseDown += (sender, _) => ForeColor = Color.FromArgb(255, 227, 0);
+            MouseDown += (sender, _) => ForeColor = Common.NDYellow;
             MouseUp += (sender, _) => ForeColor = Color.FromArgb(255, 255, 255);
         }
 
@@ -51,44 +51,44 @@ namespace Dobby
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] // Designer autogenerates code setting the Variable & VariableTags properties to null, annoyingly. More of an issue for the former though, due to the Properties window not letting you edit objects
         [TypeConverter(typeof(BooleanConverter))]
-        //[DefaultValue(false)]
+        [DefaultValue(false)]
         public object Variable
         {
             get => _Variable;
 
             set {
-                if (value != null && value.ToString().Length > 0)
+                if (value == null || value.ToString().Length > 0)
                 {
-                    _Variable = value;
-                    this.ResetFlagsandPaint();
-
-                    if (!hasEvents) {
-                        Paint += DrawButtonVariable;
-
-                        MouseDown += (eugh, meh) => SavePreInputVariable(Variable);
-                        MouseUp += CycleButtonVariable;
-                        MouseWheel += CycleButtonVariable;
-
-                        hasEvents = true;
-                    }
-                }
-                else {
-                    if (hasEvents) {
+                    if (hasPrivateEvents) {
                         Paint -= DrawButtonVariable;
 
                         MouseDown -= (eugh, meh) => SavePreInputVariable(Variable);
                         MouseUp -= CycleButtonVariable;
                         MouseWheel -= CycleButtonVariable;
                         
-                        hasEvents = false;
+                        hasPrivateEvents = false;
                     }
 
                     _Variable = value;
                 }
+                else {
+                    _Variable = value;
+                    ResetFlagsandPaint();
+
+                    if (!hasPrivateEvents) {
+                        Paint += DrawButtonVariable;
+
+                        MouseDown += (eugh, meh) => SavePreInputVariable(Variable);
+                        MouseUp += CycleButtonVariable;
+                        MouseWheel += CycleButtonVariable;
+
+                        hasPrivateEvents = true;
+                    }
+                }
             }
         }
         private object _Variable;
-        private object _preInputvariable;
+        private object _preInputVariable;
 
 
         /// <summary>
@@ -169,7 +169,11 @@ namespace Dobby
         private object maxValue;
 
 
-        private bool hasEvents; // Lazy Fix
+        /// <summary> Lazy fix. </summary>
+        private bool hasPrivateEvents;
+
+
+
 
 
 
@@ -180,7 +184,7 @@ namespace Dobby
         
         private void SavePreInputVariable(object variable)
         {
-            _preInputvariable = variable;
+            _preInputVariable = variable;
         }
 
         private float _inc;
@@ -242,7 +246,7 @@ namespace Dobby
 
 
             // Avoid incrementing options on MouseUp events when the scroll wheel was already used
-            if (Variable != _preInputvariable && eventArgs.GetType().Name != "HandledMouseEventArgs")
+            if (Variable != _preInputVariable && eventArgs.GetType().Name != "HandledMouseEventArgs")
             {
                 Common.Dev?.Print("Variable has been scrolled, avoiding click incrementation");
                 return;
@@ -479,13 +483,14 @@ namespace Dobby
             {
                 if (control.VariableTags != null)
                 {
-                    if (control.VariableTags.Length > (int)control.Variable)
+                    if (control.VariableTags.Length >= (int)control.Variable)
                         Common.Dev?.Print($"WARNING: Invalid VariableTags array provided for boolean toggle; ignoring [{control.VariableTags.Length-2}] tag(s)");
                     
-                    else if (control.VariableTags.Length < (int)control.Variable)
+                    else if (control.VariableTags.Length <= (int)control.Variable)
                         Common.Dev?.Print($"ERROR: Invalid VariableTags array provided for boolean toggle; less than two options provided ({control.VariableTags.Length})"); // output tag array length in case it's somehow negative, I suppose
-
-                    variableText = control.VariableTags[(int)control.Variable];
+                    
+                    //else
+                        variableText = control.VariableTags[(int)control.Variable];
                     
                 }
                 else {
@@ -664,5 +669,6 @@ namespace Dobby
             }
         }
     }
+
     #endregion [Class Extensions]
 }

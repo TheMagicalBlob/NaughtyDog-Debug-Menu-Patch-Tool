@@ -12,9 +12,7 @@ namespace Dobby
     {
         public void InitializeComponent()
         {
-            this.PopupTestIndexBtn = new Dobby.Button();
             this.EditorModeBtn = new Dobby.Button();
-            this.PopupTestBtn = new Dobby.Button();
             this.DebugLogTextBox = new Dobby.RichTextBox();
             this.PCLabel = new Dobby.Label();
             this.label1 = new Dobby.Label();
@@ -24,25 +22,11 @@ namespace Dobby
             this.MainLabel = new Dobby.Label();
             this.separatorLine0 = new Dobby.Label();
             this.ShowErrInPopupBtn = new Dobby.Button();
+            this.PopupTestIndexBtn = new Dobby.Button();
+            this.PopupTestBtn = new Dobby.Button();
+            this.popupContentsTextBox = new Dobby.TextBox();
+            this.popupTitleTextBox = new Dobby.TextBox();
             this.SuspendLayout();
-            // 
-            // PopupTestIndexBtn
-            // 
-            this.PopupTestIndexBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.PopupTestIndexBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.PopupTestIndexBtn.FlatAppearance.BorderSize = 0;
-            this.PopupTestIndexBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PopupTestIndexBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
-            this.PopupTestIndexBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.PopupTestIndexBtn.Location = new System.Drawing.Point(1, 126);
-            this.PopupTestIndexBtn.Name = "PopupTestIndexBtn";
-            this.PopupTestIndexBtn.Size = new System.Drawing.Size(82, 24);
-            this.PopupTestIndexBtn.TabIndex = 48;
-            this.PopupTestIndexBtn.Tag = "";
-            this.PopupTestIndexBtn.Text = "PopupTestIndex: ";
-            this.PopupTestIndexBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.PopupTestIndexBtn.UseVisualStyleBackColor = false;
-            this.PopupTestIndexBtn.Variable = null;
             // 
             // EditorModeBtn
             // 
@@ -61,26 +45,7 @@ namespace Dobby
             this.EditorModeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.EditorModeBtn.UseVisualStyleBackColor = false;
             this.EditorModeBtn.Variable = false;
-            this.EditorModeBtn.Click += new System.EventHandler(this.ToggleEditorMode);
-            // 
-            // PopupTestBtn
-            // 
-            this.PopupTestBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.PopupTestBtn.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.PopupTestBtn.FlatAppearance.BorderSize = 0;
-            this.PopupTestBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PopupTestBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
-            this.PopupTestBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.PopupTestBtn.Location = new System.Drawing.Point(12, 150);
-            this.PopupTestBtn.Name = "PopupTestBtn";
-            this.PopupTestBtn.Size = new System.Drawing.Size(82, 24);
-            this.PopupTestBtn.TabIndex = 46;
-            this.PopupTestBtn.Tag = "";
-            this.PopupTestBtn.Text = "PopupTest";
-            this.PopupTestBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.PopupTestBtn.UseVisualStyleBackColor = false;
-            this.PopupTestBtn.Variable = null;
-            this.PopupTestBtn.Click += new System.EventHandler(this.PopupTestBtn_Click);
+            this.EditorModeBtn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ToggleEditorMode);
             // 
             // DebugLogTextBox
             // 
@@ -186,7 +151,7 @@ namespace Dobby
             this.separatorLine0.TabIndex = 31;
             this.separatorLine0.Text = "--------------------------------------------------------------";
             // 
-            // button1
+            // ShowErrInPopupBtn
             // 
             this.ShowErrInPopupBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ShowErrInPopupBtn.Cursor = System.Windows.Forms.Cursors.Cross;
@@ -205,12 +170,69 @@ namespace Dobby
             this.ShowErrInPopupBtn.Variable = false;
             this.ShowErrInPopupBtn.Click += new System.EventHandler(this.ToggleShowErrInPopup);
             // 
+            // PopupTestIndexBtn
+            // 
+            this.PopupTestIndexBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.PopupTestIndexBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.PopupTestIndexBtn.FlatAppearance.BorderSize = 0;
+            this.PopupTestIndexBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PopupTestIndexBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
+            this.PopupTestIndexBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.PopupTestIndexBtn.Location = new System.Drawing.Point(85, 129);
+            this.PopupTestIndexBtn.Name = "PopupTestIndexBtn";
+            this.PopupTestIndexBtn.Size = new System.Drawing.Size(82, 24);
+            this.PopupTestIndexBtn.TabIndex = 48;
+            this.PopupTestIndexBtn.Tag = "";
+            this.PopupTestIndexBtn.Text = "PopupTestIndex: ";
+            this.PopupTestIndexBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.PopupTestIndexBtn.UseVisualStyleBackColor = false;
+            this.PopupTestIndexBtn.Variable = null;
+            // 
+            // PopupTestBtn
+            // 
+            this.PopupTestBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.PopupTestBtn.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.PopupTestBtn.FlatAppearance.BorderSize = 0;
+            this.PopupTestBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PopupTestBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
+            this.PopupTestBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.PopupTestBtn.Location = new System.Drawing.Point(108, 154);
+            this.PopupTestBtn.Name = "PopupTestBtn";
+            this.PopupTestBtn.Size = new System.Drawing.Size(82, 24);
+            this.PopupTestBtn.TabIndex = 46;
+            this.PopupTestBtn.Tag = "";
+            this.PopupTestBtn.Text = "PopupTest";
+            this.PopupTestBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.PopupTestBtn.UseVisualStyleBackColor = false;
+            this.PopupTestBtn.Variable = null;
+            this.PopupTestBtn.Click += new System.EventHandler(this.PopupTestBtn_Click);
+            // 
+            // popupContentsTextBox
+            // 
+            this.popupContentsTextBox.Font = new System.Drawing.Font("Cambria", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
+            this.popupContentsTextBox.Location = new System.Drawing.Point(5, 155);
+            this.popupContentsTextBox.Name = "popupContentsTextBox";
+            this.popupContentsTextBox.Size = new System.Drawing.Size(100, 23);
+            this.popupContentsTextBox.TabIndex = 50;
+            this.popupContentsTextBox.Text = "popup contents";
+            // 
+            // popupTitleTextBox
+            // 
+            this.popupTitleTextBox.Font = new System.Drawing.Font("Cambria", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
+            this.popupTitleTextBox.Location = new System.Drawing.Point(5, 132);
+            this.popupTitleTextBox.Name = "popupTitleTextBox";
+            this.popupTitleTextBox.Size = new System.Drawing.Size(76, 23);
+            this.popupTitleTextBox.TabIndex = 51;
+            this.popupTitleTextBox.Text = "popup title";
+            // 
             // DebugWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.ClientSize = new System.Drawing.Size(320, 341);
+            this.Controls.Add(this.popupTitleTextBox);
+            this.Controls.Add(this.popupContentsTextBox);
             this.Controls.Add(this.ShowErrInPopupBtn);
             this.Controls.Add(this.PopupTestIndexBtn);
             this.Controls.Add(this.EditorModeBtn);
@@ -226,6 +248,7 @@ namespace Dobby
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "DebugWindow";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -245,10 +268,12 @@ namespace Dobby
         private Button NoDrawBtn;
         public Label label1;
         private RichTextBox DebugLogTextBox;
-        private Button PopupTestBtn;
         private Button EditorModeBtn;
-        private Button PopupTestIndexBtn;
         private Button ShowErrInPopupBtn;
+        private Button PopupTestIndexBtn;
+        private Button PopupTestBtn;
+        private TextBox popupContentsTextBox;
+        private TextBox popupTitleTextBox;
     }
 }
 #endif

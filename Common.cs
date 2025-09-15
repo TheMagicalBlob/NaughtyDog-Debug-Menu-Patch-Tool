@@ -829,7 +829,7 @@ namespace Dobby {
                 // Add the event handler to everything that's not a text container
                 if (item.GetType() != typeof(Dobby.Button))
                 {
-                    item.MouseMove += new MouseEventHandler((sender, e) => MouseMoveFunc(sender));
+                    item.MouseMove += (sender, _) => MouseMoveFunc(sender);
                 }
                 
 
@@ -1149,9 +1149,9 @@ namespace Dobby {
         /// <param name="str"></param>
         /// <param name="Renderer"></param>
         /// <returns></returns>
-        public static int TryAutosize(string str, Graphics Renderer = null)
+        public static Size TryAutosize(string str, Graphics Renderer = null)
         {
-            var measuredString = 0f;
+            var measuredString = SizeF.Empty;
 
             if (Renderer == null)
             {
@@ -1161,17 +1161,17 @@ namespace Dobby {
                 catch (Exception dang)
                 {
                     Dev?.PrintError(dang);
-                    measuredString = str.Length * 5.5f; // Lazy
+                    measuredString = new Size((int) (str.Length * 5.5f), 23); // Lazy
                 }
             }
 
-            if (measuredString == 0f)
+            if (measuredString == SizeF.Empty)
             {
-                measuredString = Renderer.MeasureString(str, MainControlFont).Width;
+                measuredString = Renderer.MeasureString(str, MainControlFont);
             }
 
 
-            return (int) (measuredString + MainControlFontPadding);
+            return new Size((int)(measuredString.Width + MainControlFontPadding), (int)(measuredString.Height + (MainControlFontPadding / 2)));
         }
 
 
@@ -1361,10 +1361,14 @@ namespace Dobby {
             ActiveMouseButton = eventArgs.Button;
             MouseIsDown = true;
             
-            Form form;
+            Control form;
+            #if DEBUG
+            if (sender.GetType() == typeof(Form) || Testing.EditorMode)
+            #else
             if (sender.GetType() == typeof(Form))
+            #endif
             {
-                form = sender as Form;
+                form = sender as Control;
             }
             else {
                 form = ((Control)sender).FindForm();
@@ -1381,26 +1385,27 @@ namespace Dobby {
             ActiveMouseButton = MouseButtons.None;
         }
 
-
         public static void MouseMoveFunc(object sender)
         {
             if (MouseIsDown && sender != null)
             {
-                Control form;
+                Control control;
+
                 #if DEBUG
                 if (sender.GetType() == typeof(Form) || Testing.EditorMode)
                 #else
                 if (sender.GetType() == typeof(Form))
                 #endif
                 {
-                    form = sender as Control;
+                    control = sender as Control;
                 }
                 else {
-                    form = ((Control)sender).FindForm();
+                    control = ((Control)sender).FindForm();
                 }
+                
 
-                form.Location = new Point(Control.MousePosition.X - MouseDif.X, Control.MousePosition.Y - MouseDif.Y);
-                form.Update();
+                control.Location = new Point(Control.MousePosition.X - MouseDif.X, Control.MousePosition.Y - MouseDif.Y);
+                control.Update();
             }
         }
         #endregion

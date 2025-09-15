@@ -732,7 +732,7 @@ namespace Dobby {
                 GSButtons.Last().MouseLeave += (sender, e) => HoverLeave(((Control)sender), false);
                 GSButtons.Last().MouseUp += (sender, e) => MouseUpFunc();
                 GSButtons.Last().MouseDown += MouseDownFunc;
-                GSButtons.Last().MouseMove += (sender, _) => Common.MouseMoveFunc(sender);
+                GSButtons.Last().MouseMove += (sender, _) => MouseMoveFunc(sender);
 
 
                 if (patchIndex == GSButtons.Count - 2)
