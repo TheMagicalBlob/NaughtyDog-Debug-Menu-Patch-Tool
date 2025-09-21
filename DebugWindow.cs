@@ -47,6 +47,7 @@ namespace Dobby
             
             
             
+            this.popupContentsTextBox.Text = "WARNING: Invalid VariableTags array provided for boolean toggle; ignoring [4] tag(s)\r\nWARNING: Invalid VariableTags array provided for boolean toggle; ignoring [4] tag(s)\r\nWARNING: Invalid VariableTags array provided for boolean toggle; ignoring [4] tag(s)\r\nWARNING: Invalid VariableTags array provided for boolean toggle; ignoring [4] tag(s)\r\nWARNING: Invalid VariableTags array provided for boolean toggle; ignoring [4] tag(s)\r\nWARNING: Invalid VariableTags array provided for boolean toggle; ignoring [4] tag(s)\r\nWARNING: Invalid VariableTags array provided for boolean toggle; ignoring [4] tag(s)\r\nWARNING: Invalid VariableTags array provided for boolean toggle; ignoring [4] tag(s)\r\nWARNING: Invalid VariableTags array provided for boolean toggle; ignoring [4] tag(s)\r\nWARNING: Invalid VariableTags array provided for boolean toggle; ignoring [4] tag(s)\r\nWARNING: Invalid VariableTags array provided for boolean toggle; ignoring [4] tag(s)\r\nWARNING: Invalid VariableTags array provided for boolean toggle; ignoring [4] tag(s)\r\nCreating Popup Window...\r\nPopulating Popup Window...\r\nChanging the width of line \"separatorLine0\" on \"PopupWindow\"\r\nResult: OK\r\n";
             
             this.PopupTestIndexBtn.Variable = 0;
             this.PopupTestIndexBtn.VariableTags = new[] { "Ok", "Ok / Cancel", "Abort / Retry / Ignore", "Yes / No / Cancel", "Yes / No", "Abort / Cancel" };

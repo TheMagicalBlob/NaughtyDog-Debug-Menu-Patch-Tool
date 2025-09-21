@@ -1030,7 +1030,39 @@ namespace Dobby {
             // Create and display the popup window
             return Navi.ShowDialog();
         }
+
+        
+        /// <summary>
+        /// Enable/Disable the HelpPage.Question associated with the selected control, as well as reset the others.<br/>
+        /// Also runs a possible function tied to said button.
+        /// </summary>
+        /// <param name="HelpPage"> The Help Page instance to interact with</param>
+        /// <param name="Index"> The index of the question associated with the selected button. </param>
+        public static void LoadHelpPageQuestion(dynamic HelpPage, int Index)
+        {
+            var questions = (bool[]) HelpPage.QuestionBooleans;
+
+            // Reset The Other Buttons
+            for (int i = 0; i < questions.Length; questions[i] = Index == i ? !questions[i] : Index == i, i++);
+
+
+            // Reset to the default help text if the current question was just disabled
+            if(!questions[Index])
+            {
+                HelpPage.IsDefaultQuestion = true;
+                HelpPage.ResetActiveAnswerText();
+
+                HelpPage.DefaultAction();
+            }
+            // Enable seelcted question, then do any question-specific stuff if applicable
+            else {
+                HelpPage.IsDefaultQuestion = false;
+                HelpPage.SetActiveAnswerText((HelpPage.Controls.Find($"Question{Index}Btn", true)?[0].Tag ?? $"\"Question{Index}Btn\" Not Found.").ToString());
+                HelpPage.Actions[Index]();
+            }
+        }
         #endregion
+
 
 
 
@@ -1144,15 +1176,20 @@ namespace Dobby {
 
 
         /// <summary>
-        /// Lazy. Tired.
+        /// Attempt to guess the appropriate size for a control based on the control's text and font
         /// </summary>
-        /// <param name="str"></param>
-        /// <param name="Renderer"></param>
-        /// <returns></returns>
-        public static Size TryAutosize(string str, Graphics Renderer = null)
+        /// <param name="str"> The string to measure to get the guesses size; ideally the control's text... obviously. </param>
+        /// <param name="Renderer"> a System.Drawing.Graphics instance with which to measure <paramref name="str"/>. </param>
+        /// <returns> A guessed size of the control based on the measured size of the provided <paramref name="str"/>. </returns>
+        public static Size TryAutosize(string str, Font font, float? padding = null, Graphics Renderer = null)
         {
+            if (padding == null)
+            {
+                padding = MainControlFontPadding;
+            }
             var measuredString = SizeF.Empty;
 
+            retry:
             if (Renderer == null)
             {
                 try {
@@ -1161,17 +1198,40 @@ namespace Dobby {
                 catch (Exception dang)
                 {
                     Dev?.PrintError(dang);
-                    measuredString = new Size((int) (str.Length * 5.5f), 23); // Lazy
+                    
+                    var reply = ShowPopup(dang.Message, "An error occured during " + nameof(TryAutosize), MessageBoxButtons.AbortRetryIgnore);
+                    switch (reply)
+                    {
+                        case DialogResult.Abort:
+                            Venat?.Dispose();
+                            Environment.Exit(0);
+                            break;
+
+                        case DialogResult.Retry:
+                            if (Venat == null)
+                            {
+                                Renderer = ActiveForm?.CreateGraphics();
+                            }
+                            goto retry;
+                            
+                        case DialogResult.Ignore:
+                            return new Size(33, 33);
+                    }
                 }
             }
 
             if (measuredString == SizeF.Empty)
             {
-                measuredString = Renderer.MeasureString(str, MainControlFont);
+                measuredString = Renderer.MeasureString(str, font);
             }
 
 
-            return new Size((int)(measuredString.Width + MainControlFontPadding), (int)(measuredString.Height + (MainControlFontPadding / 2)));
+            return new Size((int)(measuredString.Width + padding), (int)(measuredString.Height + (padding / 1.5)));
+        }
+
+        public static Size TryAutosize(Control control, Graphics Renderer = null)
+        {
+            return TryAutosize(control.Text, control.Font, Renderer:Renderer);
         }
 
 
@@ -1352,8 +1412,15 @@ namespace Dobby {
             // off we fuck
             Environment.Exit(0);
         }
-        internal static void WindowBtnMH(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(0xFFE300);
-        internal static void WindowBtnML(object sender, EventArgs e) => ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
+        internal static void WindowBtnMH(object sender, EventArgs e)
+        {
+            Dev?.Print($"Button Pos: {((Control)sender).Location.X}");
+            ((Control)sender).ForeColor = Color.FromArgb(0xFFE300);
+        }
+        internal static void WindowBtnML(object sender, EventArgs e)
+        {
+            ((Control)sender).ForeColor = Color.FromArgb(255, 255, 255);
+        }
         internal static void MinimizeBtn_Click(object sender, EventArgs e) => ((Control)sender).FindForm().WindowState = FormWindowState.Minimized;
         
         internal static void MouseDownFunc(object sender, MouseEventArgs eventArgs)

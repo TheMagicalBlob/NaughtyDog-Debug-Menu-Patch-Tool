@@ -32,35 +32,25 @@ namespace Dobby
         }
         public void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EbootPatchHelpPage));
-            this.MainLabel = new Dobby.Label();
-            this.Question3Btn = new Button();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PkgCreationHelpPage));
+            this.Question3Btn = new Dobby.Button();
             this.separatorLine2 = new Dobby.Label();
+            this.MainLabel = new Dobby.Label();
             this.separatorLine0 = new Dobby.Label();
-            this.WithSomeExceptionsLabel = new Dobby.Label();
-            this.Question2Btn = new Button();
-            this.Question1Btn = new Button();
+            this.Question2Btn = new Dobby.Button();
+            this.Question1Btn = new Dobby.Button();
             this.Info = new Dobby.Label();
-            this.CreditsBtn = new Button();
-            this.BackBtn = new Button();
-            this.DefaultQuestionBtn = new Dobby.Label();
+            this.CreditsBtn = new Dobby.Button();
+            this.BackBtn = new Dobby.Button();
+            this.ActiveQuestionBtn = new Dobby.Label();
             this.separatorLine1 = new Dobby.Label();
-            this.Question0Btn = new Button();
+            this.Question0Btn = new Dobby.Button();
             this.SuspendLayout();
-            // 
-            // MainLabel
-            // 
-            this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MainLabel.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Bold);
-            this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.MainLabel.Location = new System.Drawing.Point(1, 1);
-            this.MainLabel.Name = "MainLabel";
-            this.MainLabel.Size = new System.Drawing.Size(265, 22);
-            this.MainLabel.TabIndex = 0;
-            this.MainLabel.Text = "Eboot Patch Page Information";
             // 
             // Question3Btn
             // 
+            this.Question3Btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.Question3Btn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.Question3Btn.FlatAppearance.BorderSize = 0;
             this.Question3Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Question3Btn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
@@ -69,41 +59,52 @@ namespace Dobby
             this.Question3Btn.Name = "Question3Btn";
             this.Question3Btn.Size = new System.Drawing.Size(318, 24);
             this.Question3Btn.TabIndex = 4;
-            this.Question3Btn.Text = resources.GetString("Question3Btn.Text");
+            this.Question3Btn.Text = "- Why Is The Restored/Custom Button Disabled?";
             this.Question3Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.Question3Btn.UseVisualStyleBackColor = false;
+            this.Question3Btn.Variable = null;
             // 
             // separatorLine2
             // 
             this.separatorLine2.Font = new System.Drawing.Font("Cambria", 10F);
             this.separatorLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.separatorLine2.IsSeparatorLine = true;
             this.separatorLine2.Location = new System.Drawing.Point(2, 416);
             this.separatorLine2.Name = "separatorLine2";
             this.separatorLine2.Size = new System.Drawing.Size(316, 15);
+            this.separatorLine2.StretchToFitForm = true;
             this.separatorLine2.TabIndex = 40;
             this.separatorLine2.Text = "--------------------------------------------------------------";
+            // 
+            // MainLabel
+            // 
+            this.MainLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MainLabel.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Bold);
+            this.MainLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.MainLabel.IsSeparatorLine = false;
+            this.MainLabel.Location = new System.Drawing.Point(1, 1);
+            this.MainLabel.Name = "MainLabel";
+            this.MainLabel.Size = new System.Drawing.Size(265, 22);
+            this.MainLabel.StretchToFitForm = true;
+            this.MainLabel.TabIndex = 0;
+            this.MainLabel.Text = "Eboot Patch Page Information";
             // 
             // separatorLine0
             // 
             this.separatorLine0.Font = new System.Drawing.Font("Cambria", 10F);
             this.separatorLine0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.separatorLine0.IsSeparatorLine = true;
             this.separatorLine0.Location = new System.Drawing.Point(2, 15);
             this.separatorLine0.Name = "separatorLine0";
             this.separatorLine0.Size = new System.Drawing.Size(316, 15);
+            this.separatorLine0.StretchToFitForm = true;
             this.separatorLine0.TabIndex = 39;
             this.separatorLine0.Text = "--------------------------------------------------------------";
             // 
-            // WithSomeExceptionsLabel
-            // 
-            this.WithSomeExceptionsLabel.Font = new System.Drawing.Font("Cambria", 8.25F, System.Drawing.FontStyle.Bold);
-            this.WithSomeExceptionsLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.WithSomeExceptionsLabel.Location = new System.Drawing.Point(184, 83);
-            this.WithSomeExceptionsLabel.Name = "WithSomeExceptionsLabel";
-            this.WithSomeExceptionsLabel.Size = new System.Drawing.Size(130, 17);
-            this.WithSomeExceptionsLabel.TabIndex = 36;
-            this.WithSomeExceptionsLabel.Text = "*(With Some Exceptions)";
-            // 
             // Question2Btn
             // 
+            this.Question2Btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.Question2Btn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.Question2Btn.FlatAppearance.BorderSize = 0;
             this.Question2Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Question2Btn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
@@ -112,11 +113,15 @@ namespace Dobby
             this.Question2Btn.Name = "Question2Btn";
             this.Question2Btn.Size = new System.Drawing.Size(318, 24);
             this.Question2Btn.TabIndex = 3;
-            this.Question2Btn.Text = resources.GetString("Question2Btn.Text");
+            this.Question2Btn.Text = "- How Do I Make A New .pkg Afterwards?";
             this.Question2Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.Question2Btn.UseVisualStyleBackColor = false;
+            this.Question2Btn.Variable = null;
             // 
             // Question1Btn
             // 
+            this.Question1Btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.Question1Btn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.Question1Btn.FlatAppearance.BorderSize = 0;
             this.Question1Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Question1Btn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
@@ -125,16 +130,20 @@ namespace Dobby
             this.Question1Btn.Name = "Question1Btn";
             this.Question1Btn.Size = new System.Drawing.Size(318, 24);
             this.Question1Btn.TabIndex = 2;
-            this.Question1Btn.Text = resources.GetString("Question1Btn.Text");
+            this.Question1Btn.Text = "- How Do I Extract My Game\'s .pkg?";
             this.Question1Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.Question1Btn.UseVisualStyleBackColor = false;
+            this.Question1Btn.Variable = null;
             // 
             // Info
             // 
             this.Info.Font = new System.Drawing.Font("Cambria", 9.25F);
             this.Info.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(227)))), ((int)(((byte)(0)))));
+            this.Info.IsSeparatorLine = false;
             this.Info.Location = new System.Drawing.Point(9, 483);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(304, 17);
+            this.Info.StretchToFitForm = true;
             this.Info.TabIndex = 7;
             this.Info.Text = "=====================================";
             // 
@@ -154,6 +163,7 @@ namespace Dobby
             this.CreditsBtn.Text = "Credits...";
             this.CreditsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.CreditsBtn.UseVisualStyleBackColor = false;
+            this.CreditsBtn.Variable = null;
             // 
             // BackBtn
             // 
@@ -170,29 +180,36 @@ namespace Dobby
             this.BackBtn.Text = "Back...";
             this.BackBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BackBtn.UseVisualStyleBackColor = false;
+            this.BackBtn.Variable = null;
             // 
-            // DefaultQuestionBtn
+            // ActiveQuestionBtn
             // 
-            this.DefaultQuestionBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DefaultQuestionBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.DefaultQuestionBtn.Location = new System.Drawing.Point(3, 36);
-            this.DefaultQuestionBtn.Name = "DefaultQuestionBtn";
-            this.DefaultQuestionBtn.Size = new System.Drawing.Size(316, 290);
-            this.DefaultQuestionBtn.TabIndex = 0;
-            this.DefaultQuestionBtn.Text = resources.GetString("DefaultQuestionBtn.Text");
+            this.ActiveQuestionBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ActiveQuestionBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.ActiveQuestionBtn.IsSeparatorLine = false;
+            this.ActiveQuestionBtn.Location = new System.Drawing.Point(3, 36);
+            this.ActiveQuestionBtn.Name = "ActiveQuestionBtn";
+            this.ActiveQuestionBtn.Size = new System.Drawing.Size(316, 290);
+            this.ActiveQuestionBtn.StretchToFitForm = true;
+            this.ActiveQuestionBtn.TabIndex = 0;
+            this.ActiveQuestionBtn.Text = resources.GetString("ActiveQuestionBtn.Text");
             // 
             // separatorLine1
             // 
             this.separatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
             this.separatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+            this.separatorLine1.IsSeparatorLine = true;
             this.separatorLine1.Location = new System.Drawing.Point(2, 320);
             this.separatorLine1.Name = "separatorLine1";
             this.separatorLine1.Size = new System.Drawing.Size(316, 15);
+            this.separatorLine1.StretchToFitForm = true;
             this.separatorLine1.TabIndex = 38;
             this.separatorLine1.Text = "--------------------------------------------------------------";
             // 
             // Question0Btn
             // 
+            this.Question0Btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.Question0Btn.Cursor = System.Windows.Forms.Cursors.Cross;
             this.Question0Btn.FlatAppearance.BorderSize = 0;
             this.Question0Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Question0Btn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
@@ -201,10 +218,12 @@ namespace Dobby
             this.Question0Btn.Name = "Question0Btn";
             this.Question0Btn.Size = new System.Drawing.Size(318, 24);
             this.Question0Btn.TabIndex = 1;
-            this.Question0Btn.Text = resources.GetString("Question0Btn.Text");
+            this.Question0Btn.Text = "- How Do I Get My Game\'s eboot.bin?";
             this.Question0Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.Question0Btn.UseVisualStyleBackColor = false;
+            this.Question0Btn.Variable = null;
             // 
-            // EbootPatchHelpPage
+            // PkgCreationHelpPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -214,17 +233,16 @@ namespace Dobby
             this.Controls.Add(this.separatorLine2);
             this.Controls.Add(this.MainLabel);
             this.Controls.Add(this.separatorLine0);
-            this.Controls.Add(this.WithSomeExceptionsLabel);
             this.Controls.Add(this.Question2Btn);
             this.Controls.Add(this.Question1Btn);
             this.Controls.Add(this.Info);
             this.Controls.Add(this.CreditsBtn);
             this.Controls.Add(this.BackBtn);
-            this.Controls.Add(this.DefaultQuestionBtn);
+            this.Controls.Add(this.ActiveQuestionBtn);
             this.Controls.Add(this.separatorLine1);
             this.Controls.Add(this.Question0Btn);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "EbootPatchHelpPage";
+            this.Name = "PkgCreationHelpPage";
             this.ResumeLayout(false);
 
         }
@@ -246,8 +264,7 @@ namespace Dobby
         private Button Question1Btn;
         private Button Question2Btn;
         private Button Question3Btn;
-        private Label DefaultQuestionBtn;
-        private Label WithSomeExceptionsLabel;
+        private Label ActiveQuestionBtn;
         public Label separatorLine0;
         public Label separatorLine1;
         public Label separatorLine2;

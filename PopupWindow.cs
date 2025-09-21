@@ -38,6 +38,7 @@ namespace Dobby
                 #region [Create and decorate the form]
                 MainLabel = new Dobby.Label();
                 separatorLine0 = new Dobby.Label();
+                separatorLine1 = new Dobby.Label();
                 PopupMessageTextBox = new Dobby.RichTextBox();
                 SuspendLayout();
                 // 
@@ -67,18 +68,31 @@ namespace Dobby
                 separatorLine0.TabIndex = 39;
                 separatorLine0.Text = "--------------------------------------------------------------";
                 // 
+                // separatorLine1
+                // 
+                separatorLine1.Font = new System.Drawing.Font("Cambria", 10F);
+                separatorLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
+                separatorLine1.IsSeparatorLine = true;
+                separatorLine1.StretchToFitForm = true;
+                separatorLine1.Location = new System.Drawing.Point(1, 165);
+                separatorLine1.Name = "separatorLine1";
+                separatorLine1.Size = new System.Drawing.Size(336, 15);
+                separatorLine1.TabIndex = 39;
+                separatorLine1.Text = "--------------------------------------------------------------";
+                // 
                 // PopupMessageTextBox
                 // 
                 PopupMessageTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
                 PopupMessageTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
                 PopupMessageTextBox.ForeColor = System.Drawing.SystemColors.Control;
-                PopupMessageTextBox.Location = new System.Drawing.Point(1, 31);
+                PopupMessageTextBox.Location = new System.Drawing.Point(1, 30);
                 PopupMessageTextBox.Name = "PopupMessageTextBox";
                 PopupMessageTextBox.ReadOnly = true;
                 PopupMessageTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
                 PopupMessageTextBox.ShowSelectionMargin = true;
-                PopupMessageTextBox.Size = new System.Drawing.Size(359, 152);
+                PopupMessageTextBox.Size = new System.Drawing.Size(380, 144);
                 PopupMessageTextBox.TabIndex = 40;
+                PopupMessageTextBox.Font = Common.TextFont;
                 PopupMessageTextBox.TabStop = false;
                 PopupMessageTextBox.Text = "";
                 // 
@@ -87,10 +101,11 @@ namespace Dobby
                 AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
                 AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
                 BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-                ClientSize = new System.Drawing.Size(361, 188);
+                ClientSize = new System.Drawing.Size(382, 204);
                 Controls.Add(PopupMessageTextBox);
                 Controls.Add(MainLabel);
                 Controls.Add(separatorLine0);
+                Controls.Add(separatorLine1);
                 FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
                 Name = "PopupWindow";
                 ResumeLayout(false);
@@ -127,6 +142,19 @@ namespace Dobby
                 ExitBtn.Click += new EventHandler((sender, args) => { Close(); });
                 ExitBtn.MouseEnter += new EventHandler(Common.WindowBtnMH);
                 ExitBtn.MouseLeave += new EventHandler(Common.WindowBtnML);
+                this.MouseHover += (form, meh) => 
+                {
+                    Dev?.Print($"{((Form)form).Size.Width}");
+                };
+                
+                
+                
+                
+                //#
+                //## Apply basic event handlers and line decorations
+                //#
+                InitializeAdditionalEventHandlers(this, true);
+
 
 
 
@@ -138,7 +166,7 @@ namespace Dobby
                 Button previousButton = null;
 
                 // Create whichever other buttons bite me
-                for (int i = 0; i < MessageBoxButtonText[(int)buttons].Length; i++)
+                for (int i = 0; i < MessageBoxButtonText[(int)buttons].Length; ++i)
                 {
                     var buttonText = MessageBoxButtonText[(int)buttons][i];
 
@@ -146,9 +174,10 @@ namespace Dobby
                     {
                         Text = buttonText,
                         Name = $"{buttonText}Btn",
-                        Size = TryAutosize(buttonText),
                         Tag = Array.IndexOf(ResultStrings, buttonText)
                     };
+                    newButton.Size = TryAutosize(newButton);
+                    newButton.Location = getButtonOffset(previousButton, newButton, i, MessageBoxButtonText[(int)buttons].Length);
                     
 
 
@@ -163,21 +192,18 @@ namespace Dobby
 
 
                     // Set the button position before adding it to the PopupWindow, and layering it above the window's main text box.
-                    newButton.Location = getButtonOffset(previousButton, newButton, i, MessageBoxButtonText[(int)buttons].Length);
                     Controls.Add(newButton);
                     newButton.BringToFront();
 
+                    if (i > MessageBoxButtonText[(int)buttons].Length)
+                    {
+  //                      previousButton?.Dispose();
+//                        previousButton = null;
+                        break;
+                    }
                     previousButton = newButton;
                 }
                 #endregion
-
-
-
-                
-                //#
-                //## Apply basic event handlers and line decorations
-                //#
-                InitializeAdditionalEventHandlers(this, true);
 
                 
 
@@ -308,7 +334,7 @@ namespace Dobby
 
             private Point getButtonOffset(Button previousButton, Button button, int buttonIndex, int buttonArrayLength)
             {
-                var horiOffset = Size.Height - (Size.Height / 5);
+                var horiOffset = Height - button.Height - 4;
 
                 switch (buttonArrayLength)
                 {
@@ -322,7 +348,7 @@ namespace Dobby
                         return new Point((Size.Width / 2) - button.Width, horiOffset);
                             
                     case 2 when buttonIndex == 1:
-                        return new Point((Size.Width / 2) + 1, horiOffset);
+                        return new Point((Size.Width / 2), horiOffset);
                             
 
                     // Three buttons
@@ -370,6 +396,7 @@ namespace Dobby
             //================================\\
             private readonly Label MainLabel;
             private readonly Label separatorLine0;
+            private readonly Label separatorLine1;
             private readonly RichTextBox PopupMessageTextBox;
             #endregion
         }

@@ -63,7 +63,6 @@ namespace Dobby
             this.Question3Btn.Text = "- Why Is The Restored/Custom Button Disabled?";
             this.Question3Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.Question3Btn.UseVisualStyleBackColor = false;
-            this.Question3Btn.Click += new System.EventHandler(this.Question3Btn_Click);
             // 
             // separatorLine2
             // 
@@ -132,7 +131,6 @@ namespace Dobby
             this.Question2Btn.Text = "- How Do I Make A New .pkg Afterwards?";
             this.Question2Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.Question2Btn.UseVisualStyleBackColor = false;
-            this.Question2Btn.Click += new System.EventHandler(this.Question2Btn_Click);
             // 
             // Question1Btn
             // 
@@ -149,7 +147,6 @@ namespace Dobby
             this.Question1Btn.Text = "- How Do I Extract My Game\'s .pkg?";
             this.Question1Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.Question1Btn.UseVisualStyleBackColor = false;
-            this.Question1Btn.Click += new System.EventHandler(this.Question1Btn_Click);
             // 
             // Info
             // 
@@ -236,7 +233,6 @@ namespace Dobby
             this.Question0Btn.Text = "- How Do I Get My Game\'s eboot.bin?";
             this.Question0Btn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.Question0Btn.UseVisualStyleBackColor = false;
-            this.Question0Btn.Click += new System.EventHandler(this.Question0Btn_Click);
             // 
             // EbootPatchHelpPage
             // 

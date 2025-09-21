@@ -34,7 +34,7 @@ namespace Dobby
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PS4DebugHelpPage));
             this.MainLabel = new Dobby.Label();
             this.separatorLine1 = new Dobby.Label();
-            this.PS4DebugAnswerLabel = new Dobby.Label();
+            this.ActiveQuestionBtn = new Dobby.Label();
             this.separatorLine2 = new Dobby.Label();
             this.separatorLine0 = new Dobby.Label();
             this.PS4DebugQuestionLabel = new Dobby.Label();
@@ -52,7 +52,7 @@ namespace Dobby
             this.MainLabel.Location = new System.Drawing.Point(1, 1);
             this.MainLabel.Name = "MainLabel";
             this.MainLabel.Size = new System.Drawing.Size(259, 22);
-            this.MainLabel.StretchToFitForm = false;
+            this.MainLabel.StretchToFitForm = true;
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = "PS4Debug Page Information";
             // 
@@ -68,18 +68,18 @@ namespace Dobby
             this.separatorLine1.TabIndex = 33;
             this.separatorLine1.Text = "--------------------------------------------------------------";
             // 
-            // PS4DebugAnswerLabel
+            // ActiveQuestionBtn
             // 
-            this.PS4DebugAnswerLabel.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
-            this.PS4DebugAnswerLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.PS4DebugAnswerLabel.IsSeparatorLine = false;
-            this.PS4DebugAnswerLabel.Location = new System.Drawing.Point(2, 57);
-            this.PS4DebugAnswerLabel.Name = "PS4DebugAnswerLabel";
-            this.PS4DebugAnswerLabel.Padding = new System.Windows.Forms.Padding(0, 0, 25, 0);
-            this.PS4DebugAnswerLabel.Size = new System.Drawing.Size(483, 320);
-            this.PS4DebugAnswerLabel.StretchToFitForm = false;
-            this.PS4DebugAnswerLabel.TabIndex = 30;
-            this.PS4DebugAnswerLabel.Text = resources.GetString("PS4DebugAnswerLabel.Text");
+            this.ActiveQuestionBtn.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Bold);
+            this.ActiveQuestionBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.ActiveQuestionBtn.IsSeparatorLine = false;
+            this.ActiveQuestionBtn.Location = new System.Drawing.Point(2, 57);
+            this.ActiveQuestionBtn.Name = "ActiveQuestionBtn";
+            this.ActiveQuestionBtn.Padding = new System.Windows.Forms.Padding(0, 0, 25, 0);
+            this.ActiveQuestionBtn.Size = new System.Drawing.Size(483, 320);
+            this.ActiveQuestionBtn.StretchToFitForm = true;
+            this.ActiveQuestionBtn.TabIndex = 30;
+            this.ActiveQuestionBtn.Text = resources.GetString("ActiveQuestionBtn.Text");
             // 
             // separatorLine2
             // 
@@ -113,7 +113,7 @@ namespace Dobby
             this.PS4DebugQuestionLabel.Location = new System.Drawing.Point(71, 32);
             this.PS4DebugQuestionLabel.Name = "PS4DebugQuestionLabel";
             this.PS4DebugQuestionLabel.Size = new System.Drawing.Size(330, 18);
-            this.PS4DebugQuestionLabel.StretchToFitForm = false;
+            this.PS4DebugQuestionLabel.StretchToFitForm = true;
             this.PS4DebugQuestionLabel.TabIndex = 29;
             this.PS4DebugQuestionLabel.Text = "[How to use PS4Debug.bin to enable the Debug Mode]";
             this.PS4DebugQuestionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -126,7 +126,7 @@ namespace Dobby
             this.Info.Location = new System.Drawing.Point(7, 432);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(409, 17);
-            this.Info.StretchToFitForm = false;
+            this.Info.StretchToFitForm = true;
             this.Info.TabIndex = 7;
             this.Info.Text = "=====================================";
             // 
@@ -173,7 +173,7 @@ namespace Dobby
             this.ClientSize = new System.Drawing.Size(491, 456);
             this.Controls.Add(this.separatorLine1);
             this.Controls.Add(this.MainLabel);
-            this.Controls.Add(this.PS4DebugAnswerLabel);
+            this.Controls.Add(this.ActiveQuestionBtn);
             this.Controls.Add(this.separatorLine2);
             this.Controls.Add(this.separatorLine0);
             this.Controls.Add(this.PS4DebugQuestionLabel);
@@ -200,7 +200,7 @@ namespace Dobby
         public Button CreditsBtn;
         public Button BackBtn;
         private Label PS4DebugQuestionLabel;
-        private Label PS4DebugAnswerLabel;
+        private Label ActiveQuestionBtn;
         public Label separatorLine2;
         public Label separatorLine0;
         public Label separatorLine1;

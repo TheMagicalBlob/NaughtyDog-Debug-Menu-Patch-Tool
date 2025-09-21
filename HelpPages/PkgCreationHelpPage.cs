@@ -1,101 +1,151 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
-using System.Drawing;
+using System.Diagnostics;
 using System.Windows.Forms;
-using System.Threading.Tasks;
-using System.Collections.Generic;
+using System.Drawing;
 using static Dobby.Common;
-
+using System.Linq;
+using System.IO;
 
 namespace Dobby {
     public partial class PkgCreationHelpPage : Form
     {
+        //================================\\
+        //--|   Class Initialization   |--\\
+        //================================\\
         /// <summary>
         /// Initialize a new instance of the PkgCreationHelpPage Form.
         /// </summary>
         public PkgCreationHelpPage()
         {
             InitializeComponent();
-            
             InitializeAdditionalEventHandlers(this);
 
-            Question0Btn.Text = "- Button Text Here";
-            Question1Btn.Text = "- Button Text Here";
-            Question2Btn.Text = "- Button Text Here";
-            Question3Btn.Text = "- Button Text Here";
+
+            // Get the question buttons by just checking the names of each button
+            var questionButtons = Controls.OfType<Dobby.Button>().Where(button => button.Name.Contains("Question")).ToArray<Dobby.Button>();
+
+            // An array of the answers to be displayed when the corresponding button is clicked
+            // (Just write the contents inside the designer's little editor for the Text property, then paste here. Still better than the previous method)
+            var Answers = new[]
+            {
+                "",
+                "",
+                "",
+                "",
+            };
+            
+
+            // Save the default question for later resetting
+            DefaultQuestion = ActiveQuestionBtn.Text;
+
+            QuestionBooleans = new bool[questionButtons.Count()];
+
+
+
+            // An array of Actions to be ran when the corresponding question button is activated
+            Actions = new[]
+            {
+                new Action(() =>
+                {
+                    
+                }),
+            };
+
+            // The action to be ran when the default question is restored
+            DefaultAction = new Action(() =>
+            {
+            });
+
+
+
+
+
+            for (var i = 0; i < QuestionBooleans.Length; ++i)
+            {
+                questionButtons[i].Click += (sender, e) => LoadHelpPageQuestion(this, i);
+                
+                if (i < Answers.Length)
+                {
+                    questionButtons[i].Tag = Answers[i];
+                }
+            }
+
+
+
+            if (Actions.Length != QuestionBooleans.Length)
+            {
+                var message = $"Mismatched sizes for Actions and Questions array! (Actions.Length {(Actions.Length < QuestionBooleans.Length ? '<' : '>')} Questions.Length)";
+                #if DEBUG
+                    ShowPopup(message, "ERROR INITIALIZING " + nameof(PkgCreationHelpPage).ToUpper() + ';');
+                #else
+                    throw new InvalidDataException(message);
+                #endif
+            }
+            else
+                Dev?.Print(QuestionBooleans.Length);
         }
 
-        
 
+
+
+
+        
         //=================================\\
         //--|   Variable Declarations   |--\\
         //=================================\\
         #region [Variable Declarations]
 
-        private static readonly string[] Headers = new []
+        /// <summary>
+        /// #1 <br/>
+        /// #2 <br/>
+        /// #3 <br/>
+        /// #4 <br/>
+        /// </summary>
+        public readonly bool[] QuestionBooleans;
+
+        private readonly string DefaultQuestion;
+
+        public bool IsDefaultQuestion = true;
+
+        public readonly Action[] Actions;
+
+        public readonly Action DefaultAction;
+
+
+
+        private enum QuestionIDs : byte
         {
-            "\t\t\t\t[Page Title]\n",
-            "\t\t\t\t[Page Title]\n",
-            "\t\t\t\t[Page Title]\n",
-            "\t\t\t\t[Page Title]\n"
-        };
-
-        private static bool[] Questions = new bool[4];
-        private static bool DefaultQuestionIsActive = true;
-        #endregion
-
-
-
-
-
-        //=============================================\\
-        //--|   Background Function Delcarations   |---\\
-        //=============================================\\
-        #region [Background Function Delcarations]
-
-        private void LoadQuestions(int questionIndex) {
-
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PkgCreationHelpPage));
-
-            for(int i = 0; i < Questions.Length;) // Reset The Other Buttons
-            {
-                Questions[i] = i ++ == questionIndex;
-            }
-
-            Questions[questionIndex] = !Questions[questionIndex];
-
-            if(Questions[questionIndex] == false)
-            {
-                DefaultQuestionIsActive = true;
-                DefaultQuestionBtn.Text = resources.GetString("DefaultQuestionBtn.Text");
-                return;
-            }
-            else
-                DefaultQuestionIsActive = false;
-
-
-            DefaultQuestionBtn.Text = Headers[questionIndex] + resources.GetString($"Question{questionIndex}Btn.Text");
-            PopupLabel.Visible = DefaultQuestionIsActive;
         }
         #endregion
-        
+
+
+
+
+
+        //==================================\\
+        //--|   Function Delcarations   |---\\
+        //==================================\\
+        #region [Function Delcarations]        
+        public void ResetActiveAnswerText()
+        {
+            ActiveQuestionBtn.Text = DefaultQuestion;
+        }
+
+        public void SetActiveAnswerText(string answer)
+        {
+            ActiveQuestionBtn.Text = answer;
+        }
+        #endregion
+
+
+
 
 
         //======================================\\
         //--|   Event Handler Declarations   |--\\
         //======================================\\
         #region [Event Handler Declarations]
-
-        private void Question1Btn_Click(object sender, EventArgs e) => LoadQuestions(0);
-        private void Question2Btn_Click(object sender, EventArgs e) => LoadQuestions(1);
-        private void Question3Btn_Click(object sender, EventArgs e) => LoadQuestions(2);
-        private void Question4Btn_Click(object sender, EventArgs e) => LoadQuestions(3);
-
-
-        private void PopupLabel_Click(object sender, EventArgs e) { }
-        private void PopupLabelMH(object sender, EventArgs e) => PopupLabel.ForeColor = Color.Aqua;
-        private void PopupLabelML(object sender, EventArgs e) => PopupLabel.ForeColor = Color.White;
+        
         #endregion
     }
 }

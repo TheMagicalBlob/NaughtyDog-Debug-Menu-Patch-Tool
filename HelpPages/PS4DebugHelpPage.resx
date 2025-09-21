@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="PS4DebugAnswerLabel.Text" xml:space="preserve">
+  <data name="ActiveQuestionBtn.Text" xml:space="preserve">
     <value>1. Have your PC and PS4 connected to the same wifi/lan host.
     (You do not need to use an ethernet cord for this)
 
